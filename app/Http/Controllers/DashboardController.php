@@ -66,7 +66,7 @@ class DashboardController extends Controller
       //     ->select('users.id', 'users.name', 'users.username', 'role.role_name')
       //     ->where('users.id', '=', $id)
       //     ->first();
-      // dd($data['user']);
+      // dd($roleID);
 
       // $user = auth()->user();
       // echo $role = $user->role->role_name; exit; // Name of relation function in user model and gather all role data
@@ -171,7 +171,7 @@ class DashboardController extends Controller
          $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
          $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
 
-        $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
+         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
          $data['total_user'] = DB::table('users')->count();
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
@@ -230,15 +230,15 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-        $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
+         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
             ->orderby('id', 'DESC')
             ->groupBy('hearing_date');
-        $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
+         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
-        $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-        ->orderby('id', 'DESC')
-        ->groupBy('hearing_date');
-        $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
+          ->orderby('id', 'DESC')
+          ->groupBy('hearing_date');
+         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
 
          // View
          $data['page_title'] = 'ভূমি মন্ত্রণালয়ের সচিবের ড্যাশবোর্ড';
@@ -299,16 +299,16 @@ class DashboardController extends Controller
          }
 
 
-        $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
+         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
             ->orderby('id', 'DESC')
             ->groupBy('hearing_date');
-        $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
+         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
-        $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-        $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-        ->orderby('id', 'DESC')
-        ->groupBy('hearing_date');
-        $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
+         ->orderby('id', 'DESC')
+         ->groupBy('hearing_date');
+         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
 
          // View
          $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';

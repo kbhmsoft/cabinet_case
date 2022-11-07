@@ -186,7 +186,7 @@
             return output.join('');
         }
 
-        document.getElementById('r').textContent = replaceNumbers('count');
+        // document.getElementById('r').textContent = replaceNumbers('count'); // comment on 07/11/2022 shahajahan
     </script>
 
     <script>

@@ -24,6 +24,7 @@
 		<link href="{{ asset('css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('css/themes/layout/brand/light.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('css/themes/layout/aside/light.css') }}" rel="stylesheet" type="text/css" />
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<!--end::Layout Themes-->
 
 		<!--begin::Page Vendors Styles(used by this page)-->
@@ -129,6 +130,8 @@
 
 		<!--begin::Page Vendors(used by this page)-->
 		{{-- Includable JS Related Page--}}
+		{{-- Select2 library --}}
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 		{{-- Toster Alert --}}
 		<script src="{{ asset('js/pages/features/miscellaneous/toastr.js') }}"></script>
         <script>

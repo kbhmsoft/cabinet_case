@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
 
 
     /////****************** RM Report Module *************/////
-    Route::get('/rmcase/report', [RM_ReportController::class, 'index'])->name('report');
+    Route::get('/rmcase/report', [RM_ReportController::class, 'index'])->name('reports');
     Route::get('/rmcase/report/caselist', [RM_ReportController::class, 'caselist'])->name('report.rmcaselist');
     Route::post('/rmcase/report/pdf', [RM_ReportController::class, 'pdf_generate']);
     // Route::get('/report/old-case', [RM_ReportController::class, 'old_case']);
@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
 
 
     /////****************** Gov Case Report Module *************/////
-    Route::get('/govcase/report', [Gov_ReportController::class, 'index'])->name('report');
+    Route::get('/govcase/report', [Gov_ReportController::class, 'index'])->name('reportss');
     Route::get('/govcase/report/caselist', [Gov_ReportController::class, 'caselist'])->name('report.govcaselist');
     Route::post('/govcase/report/pdf', [Gov_ReportController::class, 'pdf_generate']);
     // Route::get('/report/old-case', [RM_ReportController::class, 'old_case']);

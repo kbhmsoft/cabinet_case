@@ -52,7 +52,11 @@ class GovCaseRegisterRepository
             $case->subject_matter= $caseInfo->subject_matter;
             $case->postponed_details= $caseInfo->postponed_details;
             $case->interim_order= $caseInfo->interim_order;
-            $case->important_cause= $caseInfo->important_cause;
+            $case->result_sending_date= $caseInfo->result_sending_date;
+            $case->reply_submission_date= $caseInfo->reply_submission_date;
+            $case->result_short_dtails= $caseInfo->result_short_dtails;
+            $case->result= $caseInfo->result;
+            $case->is_appeal= $caseInfo->is_appeal;
             $case->arji_file= null;
             $case->status= 1;
             $case->case_status_id= 33;

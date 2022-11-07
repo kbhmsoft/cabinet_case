@@ -102,12 +102,6 @@
                             <legend> মামলার সাধারণ তথ্য</legend>
                             <div class="form-group row">
                                 <div class="col-lg-4 mb-5">
-                                    <label>মামলা নং <span class="text-danger">*</span></label>
-                                    <input type="text" name="case_no" id="case_no" class="form-control form-control-sm"
-                                        placeholder="মামলা নং ">
-                                        <input type="hidden" name="caseId" value="">
-                                </div>
-                                <div class="col-lg-4 mb-5">
                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
                                     <select name="court" id="court" class="form-control form-control-sm">
                                         <option value=""> -- নির্বাচন করুন --</option>
@@ -119,6 +113,25 @@
                                     </select>
                                 </div>
 
+                                <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
+                                    <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
+                                    <select name="appeal_case" id="appeal_case" class="form-control form-control-sm">
+                                        <option value=""> -- নির্বাচন করুন --</option>
+                                        @foreach ($appealCase as $value)
+                                            <option value="{{ $value->id }}"
+                                                {{ old('appeal_case') == $value->id ? 'selected' : '' }}>
+                                                {{ $value->case_no }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-4 mb-5">
+                                    <label>মামলা নং <span class="text-danger">*</span></label>
+                                    <input type="text" name="case_no" id="case_no" class="form-control form-control-sm"
+                                        placeholder="মামলা নং ">
+                                        <input type="hidden" name="caseId" value="">
+                                </div>
+
                                 <div class="col-lg-4 mb-5">
                                     <label>বছর <span class="text-danger">*</span></label>
                                     <input type="text" name="case_year" id="case_year"
@@ -126,7 +139,7 @@
                                         autocomplete="off">
                                 </div>
                                 <div class="col-lg-4 mb-5">
-                                    <label>মামলা রুজুর তারিখ <span class="text-danger">*</span></label>
+                                    <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
                                     <input type="text" name="case_date" id="case_date"
                                         class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর"
                                         autocomplete="off">
@@ -153,7 +166,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <label>দায়িত্ব প্রাপ্ত কর্মকর্তা <span class="text-danger">*</span></label>
+                                    <label>দায়িত্ব প্রাপ্ত আইন কর্মকর্তা <span class="text-danger">*</span></label>
                                     <select name="concern_person" id="concern_person" class="form-control form-control-sm">
                                         <option value="">-- নির্বাচন করুন --</option>
                                         @foreach ($concern_person as $value)
@@ -270,6 +283,54 @@
                                         </div>
                                     </div>
                                 </fieldset>
+                            </div>
+                            <div class="col-lg-6 mb-5">
+                                <label class="form-group font-weight-bolder font-size-h5">সরকারের পক্ষে জবাব প্রেরনের তারিখ </label>
+                                <input type="text" name="result_sending_date" id="result_sending_date"
+                                    class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর"
+                                    autocomplete="off">
+                            </div>
+                            <div class="col-lg-6 mb-5">
+                                <label class="form-group font-weight-bolder font-size-h5">সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
+                                <input type="text" name="reply_submission_date" id="reply_submission_date"
+                                    class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর"
+                                    autocomplete="off">
+                            </div>
+                            <div class="col-md-6">
+                                <fieldset class="mb-6">
+                                    <legend>মামলার রায়/ চূড়ান্ত আদেশের সংক্ষিপ্ত বিবরণ
+                                    </legend>
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label></label>
+                                            <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
+                                                spellcheck="false"></textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-group font-weight-bolder font-size-h5">ফলাফল </label>
+                                <div class="radio-inline">
+                                    <label class="radio">
+                                        <input type="radio" name="result" id="result" value="1"
+                                            checked="checke" />
+                                        <span></span>সরকারের পক্ষে</label>
+                                    <label class="radio">
+                                        <input type="radio" name="result" id="result" value="2" />
+                                        <span></span>সরকারের বিপক্ষে</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-group font-weight-bolder font-size-h5">সরকারের বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
+                                <div class="radio-inline">
+                                    <label class="radio">
+                                        <input type="radio" name="is_appeal" id="is_appeal" value="1"/>
+                                        <span></span>হ্যাঁ </label>
+                                    <label class="radio">
+                                        <input type="radio" name="is_appeal" id="is_appeal" value="2" checked="checke"/>
+                                        <span></span>না</label>
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <fieldset class="">
@@ -480,7 +541,17 @@
 
 {{-- Includable CSS Related Page --}}
 @section('styles')
-
+    <style>
+        /*.select2-container .select2-selection--single {
+            height: 37px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 5px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 25px !important;
+        }*/
+    </style>
     <!--end::Page Vendors Styles-->
 @endsection
 
@@ -493,4 +564,71 @@
             addBibadiRowFunc();
         });
     </script>
+
+    <script type="text/javascript">
+        // dynamically change high court / appeal court
+        $(document).ready(function() {
+            $("#court").change(function(){
+                var getCourt = $('#court').find(":selected").val();
+                if (getCourt == 1) {
+                    $('#appeal_hide_show').show();
+                } else {
+                    $('#appeal_hide_show').hide();
+                }
+            });
+
+            $("#appeal_case").change(function(){
+                var case_id = $('#appeal_case').find(":selected").val();
+                $.ajax({
+                    url: '{{ route('cabinet.case.get_details') }}',
+                    method: 'get',
+                    data: {
+                        case_id: case_id,
+                         _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                         if (response.id == case_id) {
+                            $('#case_year').val(response.year);
+                            $('#case_date').val(response.date_issuing_rule_nishi);
+
+                            $( "select[name='case_category']").find('option[value="'+response.case_category_id+'"]').attr('selected','selected');
+
+                            $( "select[name='concern_person']").find('option[value="'+response.concern_user_id+'"]').attr('selected','selected');
+
+                            $('#subject_matter').val(response.subject_matter);
+                            $('#postponed_details').val(response.postponed_details);
+                            $('#interim_order').val(response.interim_order);
+                            $('#important_cause').val(response.important_cause);
+                            /*Swal.close();
+                            $('.perssion_list').html(response.html);*/
+
+                        }
+                    }
+                });
+            });
+
+
+            /*$("#court").change(function(){
+                var items = '';
+                var getCourt = $('#court').find(":selected").val();
+                if (getCourt == 1) {
+                    items += '<div class="col-lg-4 mb-5" id="getAppealCase">';
+                    items += '<label>মামলা অনুসন্ধান করুন <span class="text-danger">*</span></label>';
+                    items += '<select name="old_case_no" id="old_case_no" class="form-control form-control-sm">';
+                    items += '<option value="">-- নির্বাচন করুন --</option>';
+                    items += '</select>';
+                    items += '</div>';
+                    $('#selectCourt').after(items);
+                    // $('#old_case_no').select2();
+                } else {
+                    $('#getAppealCase').remove();
+                    // $('form').trigger("reset");
+                }
+            });*/
+        });
+    </script>
+
 @endsection
+
+
+                                

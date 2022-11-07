@@ -8,7 +8,7 @@
       <div class="card-title">
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
-     <!--  @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
+      <!-- @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
       <div class="card-toolbar">
          <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
@@ -22,15 +22,15 @@
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
          @endif
-         <a href="{{ route('cabinet.case.index') }}" class="btn btn-sm btn-success font-weight-bolder">সমন্বিত
+         <a href="{{ route('cabinet.case.index') }}" class="btn btn-sm btn-primary font-weight-bolder">সমন্বিত
          </a>
-         <a href="{{ route('cabinet.case.division_wise',2) }}" class="btn btn-sm btn-primary font-weight-bolder mx-2">হাইকোর্ট
+         <a href="{{ route('cabinet.case.division_wise',2) }}" class="btn btn-sm btn-{{($division_wise_id == 2)? 'success':'primary'}} font-weight-bolder mx-2">হাইকোর্ট
          </a>
-         <a href="{{ route('cabinet.case.division_wise',1) }}" class="btn btn-sm btn-primary font-weight-bolder">আপিল
+         <a href="{{ route('cabinet.case.division_wise',1) }}" class="btn btn-sm btn-{{($division_wise_id == 1)? 'success':'primary'}} font-weight-bolder">আপিল
          </a>
       </div>
-      
 
+      
    </div>
    <div class="card-body">
       @if ($message = Session::get('success'))

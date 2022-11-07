@@ -38,16 +38,16 @@ class GovCaseRegisterController extends Controller
         }
 
         if(!empty($_GET['case_no'])) {
-            $query->where('r_m__case_rgisters.case_no','=',$_GET['case_no']);
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
         }
         if(!empty($_GET['division'])) {
-            $query->where('r_m__case_rgisters.division_id','=',$_GET['division']);
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
         }
         if(!empty($_GET['district'])) {
-            $query->where('r_m__case_rgisters.district_id','=',$_GET['district']);
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
         }
         if(!empty($_GET['upazila'])) {
-            $query->where('r_m__case_rgisters.upazila_id','=',$_GET['upazila']);
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
         }
         if($roleID == 5 || $roleID == 7){
             $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
@@ -56,6 +56,8 @@ class GovCaseRegisterController extends Controller
         }
 
         $data['cases'] = $query->paginate(10);
+
+        // echo "<pre>"; print_r($data['cases']); exit();
 
           // Dorpdown
 
@@ -68,7 +70,310 @@ class GovCaseRegisterController extends Controller
         // dd($data['cases']);
         return view('gov_case.case_register.index')->with($data);
     }
-     public function create()
+
+
+    //============Running Case list============//
+    public function running_case()
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.status',1);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.index')->with($data);
+    }
+
+
+    //============Appeal Case list============//
+    public function appeal_case()
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.status',2);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.index')->with($data);
+    }
+
+
+    //============Complete Case list============/
+    public function complete_case()
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.status',3);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.index')->with($data);
+    }    
+
+
+    //============Not Against Govt Case list============/
+    public function govt_not_against_case()
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.in_favour_govt',1);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.index')->with($data);
+    }
+
+
+    //============Against Govt Case list============/
+    public function govt_against_case()
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.in_favour_govt',0);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.index')->with($data);
+    }
+
+
+    //============Division Wise Case list============/
+    public function division_wise($id)
+    {
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.case_division_id',$id);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $data['division_wise_id'] = $id;
+        $data['upazilas'] = NULL;
+        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
+
+
+        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+
+        return view('gov_case.case_register.division_wise_list')->with($data);
+    }
+
+
+    public function create()
     {
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -82,6 +387,7 @@ class GovCaseRegisterController extends Controller
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();;
 
         $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
@@ -91,6 +397,15 @@ class GovCaseRegisterController extends Controller
         // dd($data);
         return view('gov_case.case_register.create')->with($data);
     }
+
+    public function get_details(Request $request)
+    {
+        //$query =  DB::table('gov_case_registers')->where('id',$request->case_id)->first();
+       $query =  GovCaseRegister::where('id',$request->case_id)->first();
+        return $query;
+        
+    }
+
 
     public function store(Request $request)
     {
@@ -176,6 +491,7 @@ class GovCaseRegisterController extends Controller
            }
         return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
+
     public function getCaseCategory($id)
     {
         $categories = GovCaseDivisionCategory::orderby('id', 'desc')->where('gov_case_division_id', $id)->pluck("name_bn","id");
