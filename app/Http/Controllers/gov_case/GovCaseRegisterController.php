@@ -128,7 +128,7 @@ class GovCaseRegisterController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
 
-        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.status',2);
+        $query =  GovCaseRegister::orderby('id','DESC')->where('status',2);
 
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
@@ -178,7 +178,7 @@ class GovCaseRegisterController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
 
-        $query =  GovCaseRegister::orderby('id','DESC')->where('gov_case_registers.status',3);
+        $query =  GovCaseRegister::orderby('id','DESC')->where('status',3);
 
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
@@ -370,6 +370,108 @@ class GovCaseRegisterController extends Controller
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
 
         return view('gov_case.case_register.division_wise_list')->with($data);
+    }
+
+    //============Ministry Wise Case list============/
+    public function ministry_wise_list($id)
+    {
+        // dd($id);
+
+
+        $query = DB::table('office')
+                ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                    \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
+                    \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
+                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
+                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                )
+                ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+                ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                ->where('office.parent', $id);
+
+               /*if($status == 0) {
+                   $query->where('gcr.in_favour_govt',$is_fav);
+                }
+                if($status != 0) {
+                    if ($status == 3) {
+                       $query->where('gcr.status',$status);
+                    } else {
+                       $query->whereIn('gcr.status',[1,2]);
+                    }
+                }*/
+
+        $data['ministry_wise'] = $query->groupBy('office.id')
+                                        ->groupBy('gcb.department_id')
+                                        ->orderBy('office.id', 'asc')
+                                        ->paginate(10);
+
+        // $data['ministry_wise'] = $query;
+        // Dorpdown
+        $data['ministry'] = DB::table('office')->select('id', 'office_name_bn')->where('id',$id)->first();
+        $data['page_title'] =   $data['ministry']->office_name_bn.' এর মামলার তালিকা';
+
+        return view('gov_case.case_register.ministry_wise_list')->with($data);
+    }
+
+    //============Department Wise Case list============/
+    public function department_wise_list($id)
+    {
+        // dd($id);
+        /*$data['ministry_wise'] = DB::table('office')
+                ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                    \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
+                    \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
+                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
+                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                )
+                ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+                ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                ->where('office.id', $id)->groupBy('office.id')->groupBy('gcb.department_id')
+                ->orderBy('office.id', 'asc')->paginate(10);*/
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+
+        $query =  GovCaseRegister::select('gov_case_registers.*')->orderby('gov_case_registers.id','DESC');
+        $query->leftJoin('gov_case_bibadis as gcb', 'gov_case_registers.id', '=', 'gcb.gov_case_id');
+        $query->where('gcb.department_id', $id);
+
+        if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('gov_case_registers.case_date', [$dateFrom, $dateTo]);
+        }
+
+        if(!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
+        }
+        if(!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id','=',$_GET['division']);
+        }
+        if(!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id','=',$_GET['district']);
+        }
+        if(!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
+        }
+
+        if($roleID == 5 || $roleID == 7){
+            $query->where('gov_case_registers.district_id',$officeInfo->district_id)->orderby('id','DESC');
+        }elseif($roleID == 9 || $roleID == 21){
+            $query->where('gov_case_registers.upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        // Dorpdown
+        $ministry = DB::table('office')->select('office.id', 'op.office_name_bn', 'office.office_name_bn as ministry_name')
+                        ->leftJoin('office as op', 'office.id', '=', 'op.parent')
+                        ->where('op.id',$id)->first();
+
+        $data['ministry'] = $ministry;
+        $data['page_title'] =   $data['ministry']->office_name_bn.' এর মামলার তালিকা';
+        return view('gov_case.case_register.department_wise_list')->with($data);
     }
 
 

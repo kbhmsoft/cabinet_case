@@ -252,6 +252,10 @@ class DashboardController extends Controller
          $data['running_case'] = GovCaseRegister::where('status', 1)->count();
          $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
          $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+
+         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->count();
        
@@ -263,12 +267,25 @@ class DashboardController extends Controller
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
          $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
+         // count ministry wise case status
+         $ministry_wise = DB::table('office')
+                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                              )
+                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.ministry_id')
+                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                              ->where('office.level', 9)
+                              ->groupBy('office.id')
+                              ->groupBy('gcb.ministry_id')
+                              ->orderBy('office.id', 'asc')
+                              ->paginate(10);
 
-
+         $data['ministry_wise'] = $ministry_wise;
          // Drildown Statistics
          $ministry_list = DB::table('office')
          ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
@@ -322,6 +339,9 @@ class DashboardController extends Controller
          $data['running_case'] = GovCaseRegister::where('status', 1)->count();
          $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
          $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->count();
 
@@ -336,6 +356,25 @@ class DashboardController extends Controller
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
          ->get();
+
+
+         // count ministry wise case status
+         $ministry_wise = DB::table('office')
+                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                              )
+                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.ministry_id')
+                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                              ->where('office.level', 9)
+                              ->groupBy('office.id')
+                              ->groupBy('gcb.ministry_id')
+                              ->orderBy('office.id', 'asc')
+                              ->paginate(10);
+
+         $data['ministry_wise'] = $ministry_wise;
 
 
          // Drildown Statistics

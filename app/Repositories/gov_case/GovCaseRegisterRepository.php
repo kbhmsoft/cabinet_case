@@ -37,23 +37,28 @@ class GovCaseRegisterRepository
     public static function storeGovCase($caseInfo){
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         // dd($case);
+        $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
 
         try {
-            $case->case_no=$caseInfo->case_no;;
+            $case->case_no=$caseInfo->case_no;
+            $case->case_type=$caseInfo->case_type;
             $case->court_id= $caseInfo->court;
             $case->action_user_id= userInfo()->id;
             $case->action_user_role_id= userInfo()->role_id;
             $case->create_by= userInfo()->id;
             $case->year= $caseInfo->case_year;
             $case->date_issuing_rule_nishi =date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id= $caseInfo->case_department;
+            $case->case_division_id= $caseInfo->court;
             $case->case_category_id= $caseInfo->case_category;
             $case->concern_user_id= $caseInfo->concern_person;
             $case->subject_matter= $caseInfo->subject_matter;
             $case->postponed_details= $caseInfo->postponed_details;
+            $case->important_cause= $caseInfo->important_cause;
             $case->interim_order= $caseInfo->interim_order;
-            $case->result_sending_date= $caseInfo->result_sending_date;
-            $case->reply_submission_date= $caseInfo->reply_submission_date;
+            $case->gov_case_ref_id= $caseInfo->appeal_case_id;
+            $case->ref_gov_case_no= $ref_case_num;
+            $case->result_sending_date= date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date)));
+            $case->reply_submission_date=date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));  
             $case->result_short_dtails= $caseInfo->result_short_dtails;
             $case->result= $caseInfo->result;
             $case->is_appeal= $caseInfo->is_appeal;

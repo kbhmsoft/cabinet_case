@@ -75,7 +75,7 @@
                         <td>{{ $case->case_no ?? '-'}}</td>
                      </tr>
                      <tr>
-                        <th scope="row">মামলা রুজুর তারিখ</th>
+                        <th scope="row">রুল ইস্যুর তারিখ</th>
                         <td>{{ en2bn($case->date_issuing_rule_nishi) ?? '-'}}</td>
                      </tr>
                      <tr>
@@ -107,6 +107,14 @@
                            <td>{{ $case->interim_order }}</td>
                         </tr>
                      @endif
+                     @if($case->result_short_dtails)
+                        <tr>
+                           <th scope="row"> চূড়ান্ত আদেশের সংক্ষিপ্ত বিবরণ ( যদি থাকে )</th>
+                           <td>{{ $case->result_short_dtails }}</td>
+                        </tr>
+                     @endif
+
+
                      <tr>
                         <th scope="row">ফলাফল</th>
                            <td>
@@ -120,7 +128,8 @@
                               @endif --}}
                            </td>
                         {{-- @dd($case->case_result) --}}
-                     </tr>
+                     </tr> 
+
                      @if (!empty($case->lost_reason))
                      <tr>
                         <th scope="row">পরাজয়ের কারণ</th>
@@ -129,7 +138,7 @@
                      @endif
                      <tr>
                         <th scope="row">মামলায় হেরে গিয়ে কি আপিল করা হয়েছে</th>
-                        <td>@if ($case->is_lost_appeal == 1)
+                        <td>@if ($case->is_lost_appeal == 2)
                                                 হ্যা!
                                              @else
                                                 না!

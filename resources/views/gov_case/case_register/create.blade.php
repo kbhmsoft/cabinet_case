@@ -101,6 +101,16 @@
                         <fieldset class="mb-8">
                             <legend> মামলার সাধারণ তথ্য</legend>
                             <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>মামলার ধরন <span class="text-danger">*</span></label>
+                                    <select name="case_type" id="case_type" class="form-control form-control-sm">
+                                        <option value="">-- নির্বাচন করুন --</option>
+                                        <option value="1">নতুন মামলা</option>
+                                        <option value="2">চলমান মামলা</option>
+                                        <option value="3">নিষ্পত্তি মামলা</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-lg-4 mb-5">
                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
                                     <select name="court" id="court" class="form-control form-control-sm">
@@ -115,16 +125,29 @@
 
                                 <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
                                     <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
-                                    <select name="appeal_case" id="appeal_case" class="form-control form-control-sm">
+                                    <select name="appeal_case_id" id="appeal_case_id" class="form-control form-control-sm">
                                         <option value=""> -- নির্বাচন করুন --</option>
                                         @foreach ($appealCase as $value)
                                             <option value="{{ $value->id }}"
-                                                {{ old('appeal_case') == $value->id ? 'selected' : '' }}>
+                                                {{ old('appeal_case_id') == $value->id ? 'selected' : '' }}>
                                                 {{ $value->case_no }} </option>
                                         @endforeach
                                     </select>
                                 </div>
 
+                                <div class="col-lg-4 mb-5">
+                                    <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
+                                    <!-- <input type="text" name="case_type" id="case_type" class="form-control form-control-sm" placeholder="মামলার ধরণ" autocomplete="off"> -->
+                                    <div class="" id="CaseCategorDiv">
+                                        <select name="case_category" id="CaseCategory" class="form-control form-control-sm">
+                                            <option value="">-- নির্বাচন করুন --</option>
+                                            @foreach ($GovCaseDivisionCategory as $value)
+                                                <option value="{{ $value->id }}" {{ old('case_category') == $value->id ? 'selected' : '' }}> {{ $value->name_bn }} </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
                                 <div class="col-lg-4 mb-5">
                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                     <input type="text" name="case_no" id="case_no" class="form-control form-control-sm"
@@ -153,18 +176,7 @@
                                         @endforeach
                                     </select>
                                 </div> -->
-                                <div class="col-lg-4 mb-5">
-                                    <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
-                                    <!-- <input type="text" name="case_type" id="case_type" class="form-control form-control-sm" placeholder="মামলার ধরণ" autocomplete="off"> -->
-                                    <div class="" id="CaseCategorDiv">
-                                        <select name="case_category" id="CaseCategory" class="form-control form-control-sm">
-                                            <option value="">-- নির্বাচন করুন --</option>
-                                            @foreach ($GovCaseDivisionCategory as $value)
-                                                <option value="{{ $value->id }}" {{ old('case_category') == $value->id ? 'selected' : '' }}> {{ $value->name_bn }} </option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="col-lg-4">
                                     <label>দায়িত্ব প্রাপ্ত আইন কর্মকর্তা <span class="text-danger">*</span></label>
                                     <select name="concern_person" id="concern_person" class="form-control form-control-sm">
@@ -577,8 +589,8 @@
                 }
             });
 
-            $("#appeal_case").change(function(){
-                var case_id = $('#appeal_case').find(":selected").val();
+            $("#appeal_case_id").change(function(){
+                var case_id = $('#appeal_case_id').find(":selected").val();
                 $.ajax({
                     url: '{{ route('cabinet.case.get_details') }}',
                     method: 'get',
