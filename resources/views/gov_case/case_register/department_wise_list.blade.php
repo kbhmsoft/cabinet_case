@@ -17,7 +17,11 @@
       @endif -->
 
       <div class="card-toolbar">
+         @if($roleID == 27 || $roleID == 28)
          <a href="{{ route('cabinet.case.ministry_wise_list', $ministry->id) }}" class="btn btn-sm btn-primary font-weight-bolder mr-2">{{$ministry->ministry_name}} এর তালিকা</a>
+         @else
+         <a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary font-weight-bolder mr-2">ড্যাশবোর্ড</a>
+         @endif
       </div>
 
       

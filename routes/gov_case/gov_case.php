@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
             Route::get('govt_not_against_case', [GovCaseRegisterController::class, 'govt_not_against_case'])->name('not_against');
             Route::get('govt_against_case', [GovCaseRegisterController::class, 'govt_against_case'])->name('against');
+            
             Route::get('division_wise/{id}', [GovCaseRegisterController::class, 'division_wise'])->name('division_wise');
             Route::get('get_details', [GovCaseRegisterController::class, 'get_details'])->name('get_details');
             Route::get('ministry_wise_list/{id}', [GovCaseRegisterController::class, 'ministry_wise_list'])->name('ministry_wise_list');

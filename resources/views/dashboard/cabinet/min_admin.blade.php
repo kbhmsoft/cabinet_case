@@ -28,50 +28,67 @@ foreach ($cases as $val)
 <!--begin::Dashboard-->
 
 <div class="row mb-5">
-   <div class="col-md-3">
+   <!-- <div class="col-md-3">
       <div class="card-counter primary">
          <a href="{{ route('case') }}"><i class="fa fas fa-layer-group text-white"></i></a>
          <span class="count-numbers"><a href="{{ route('case') }}"><?=en2bn($total_case)?></a></span>
          <span class="count-name"><a href="{{ route('case') }}">মোট মামলা</a></span>
       </div>
+   </div> -->
+
+   <div class="col-md-3">
+      <div class="card-counter danger">
+         <a href="{{ route('cabinet.case.running') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.running') }}"><?=en2bn($running_case_appeal)?></a></span>
+         <span class="count-name"><a href="{{ route('cabinet.case.running') }}">চলমান মামলা</a></span>
+      </div>
    </div>
 
    <div class="col-md-3">
       <div class="card-counter danger">
-         <a href="{{ route('case.running') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-         <span class="count-numbers"><a href="{{ route('case.running') }}"><?=en2bn($running_case)?></a></span>
-         <span class="count-name"><a href="{{ route('case.running') }}">চলমান মামলা</a></span>
+         <a href="{{ route('cabinet.case.appeal') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.appeal') }}"><?=en2bn($high_court_case)?></a></span>
+         <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
+            <a href="{{ route('cabinet.case.division_wise', 2) }}">হাইকোর্ট বিভাগে চলমান মামলা</a></span>
+      </div>
+   </div>
+
+   <div class="col-md-3">
+      <div class="card-counter info">
+         <a href="{{ route('cabinet.case.appeal') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.appeal') }}"><?=en2bn($appeal_court_case)?></a></span>
+         <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+            <a href="{{ route('cabinet.case.division_wise', 1) }}">আপিল বিভাগে চলমান মামলা</a></span>
       </div>
    </div>
 
    <div class="col-md-3">
       <div class="card-counter success">
-         <a href="{{ route('case.complete') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-         <span class="count-numbers"><a href="{{ route('case.complete') }}"><?=en2bn($completed_case)?></a></span>
-         <span class="count-name"><a href="{{ route('case.complete') }}">সম্পাদিত মামলা</a></span>
+         <a href="{{ route('cabinet.case.complete') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.complete') }}"><?=en2bn($completed_case)?></a></span>
+         <span class="count-name"><a href="{{ route('cabinet.case.complete') }}">সম্পাদিত মামলা</a></span>
       </div>
    </div>
-   <div class="col-md-3">
-      <div class="card-counter primary">
-         <a href="{{ route('case.complete') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-         <span class="count-numbers"><a href="{{ route('case.complete') }}"><?=en2bn($against_gov)?></a></span>
-         <span class="count-name"><a href="{{ route('case.complete') }}">সরকারের বিপক্ষে </a></span>
-      </div>
-   </div>
-
-
-
 </div>
 
 <div class="row mb-5">
     <div class="col-md-3">
       <div class="card-counter success">
-         <a href="{{ route('case.complete') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-         <span class="count-numbers"><a href="{{ route('case.complete') }}"><?=en2bn($not_against_gov)?></a></span>
-         <span class="count-name"><a href="{{ route('case.complete') }}">সরকারের পক্ষে </a></span>
+         <a href="{{ route('cabinet.case.not_against') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.not_against') }}"><?=en2bn($not_against_gov)?></a></span>
+         <span class="count-name"><a href="{{ route('cabinet.case.not_against') }}">সরকারের পক্ষে </a></span>
       </div>
    </div>
+
    <div class="col-md-3">
+      <div class="card-counter primary">
+         <a href="{{ route('cabinet.case.against') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+         <span class="count-numbers"><a href="{{ route('cabinet.case.against') }}"><?=en2bn($against_gov)?></a></span>
+         <span class="count-name"><a href="{{ route('cabinet.case.against') }}">সরকারের বিপক্ষে </a></span>
+      </div>
+   </div>
+
+   <!-- <div class="col-md-3">
       <div class="card-counter warning">
          <a href="{{ route('office') }}"><i class="fa fas fa-archway text-white"></i></a>
          <span class="count-numbers"><a href="{{ route('office') }}"><?=en2bn($total_office)?></a></span>
@@ -84,16 +101,16 @@ foreach ($cases as $val)
          <span class="count-numbers"><a href="{{ route('user-management.index') }}"><?=en2bn($total_user)?></a></span>
          <span class="count-name"><a href="{{ route('user-management.index') }}">মোট ইউজার</a></span>
       </div>
-   </div>
-
-   <div class="col-md-3">
+   </div> -->
+   <!-- <div class="col-md-3">
       <div class="card-counter submarine">
          <a href="{{ route('court') }}"><i class="fa fas fa-balance-scale text-white"></i></a>
          <span class="count-numbers"><a href="{{ route('court') }}"><?=en2bn($total_court)?></a></span>
          <span class="count-name"><a href="{{ route('court') }}">মোট আদালত</a></span>
       </div>
-   </div>
+   </div> -->
 </div>
+
 <div class="row">
     <div class="col-md-8">
         <div class="card card-custom">
@@ -136,6 +153,44 @@ foreach ($cases as $val)
         </div>
      </div>
 </div>
+
+   <!-- Ministry case list -->
+   <br>
+   <div class="container card">
+      <div class="card-body">
+         <table class="table table-hover mb-6 font-size-h5">
+            <thead class="thead-light font-size-h6">
+               <tr>
+                  <th scope="col" width="30">#</th>
+                  <th scope="col">দপ্তর-সংস্থার নাম</th>
+                  <th scope="col">চলমান মামলা</th>
+                  <th scope="col">নিস্পত্তি মামলা</th>
+                  <th scope="col">সরকারের পক্ষে</th>
+                  <th scope="col">সরকারের বিপক্ষে</th>
+               </tr>
+            </thead>
+            <tbody> 
+               @foreach ($ministry_wise as $key => $row)
+               <tr>
+                  <td>{{ en2bn($key + $ministry_wise->firstItem()) }}</td>
+                  <td><a href="{{ route('cabinet.case.department_wise_list', $row->id) }}">{{ $row->office_name_bn }}</a></td>
+                  <td align="center">{{ en2bn($row->running_case) }}</td>
+                  <td align="center">{{ en2bn($row->completed_case) }}</td>
+                  <td align="center">{{ en2bn($row->against_gov) }}</td>
+                  <td align="center">{{ en2bn($row->not_against_gov) }}</td>
+               </tr>
+               @endforeach
+            </tbody>
+         </table>
+
+         <div class="d-flex justify-content-center">
+            {!! $ministry_wise->links() !!}
+         </div>
+      </div>
+   </div>
+    <!-- end Ministry case list -->
+
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -249,11 +304,11 @@ input[type="number"] {
 @include('dashboard.calendar.calender_need')
 @endif
 {{-- -------------callender end---------- --}}
-<div class="card card-custom mt-5">
+<!-- <div class="card card-custom mt-5">
     <figure class="highcharts-figure" style="width: 100%">
     <div id="container"></div>
     </figure>
-</div>
+</div> -->
 
 
 <!--end::Dashboard-->
