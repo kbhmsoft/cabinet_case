@@ -69,11 +69,15 @@
             @php 
                $department = '';
                $ministry = '';
-               if(($row->bibadis->first()->department != null || $row->bibadis->first()->department != '') && $row->bibadis->first()->is_main_bibadi == 1)
-               $department = ' এর '. $row->bibadis->first()->department->office_name_bn;
+               if(($row->bibadis->first()->department != null && $row->bibadis->first()->department != '') && $row->bibadis->first()->is_main_bibadi == 1) {
+                  $department = ' এর '. $row->bibadis->first()->department->office_name_bn;
+               }
 
-               $ministry = $row->bibadis->first()->is_main_bibadi == 1 ? $row->bibadis->first()->ministry->office_name_bn  :'-';
+               if($row->bibadis->first()->ministry != null && $row->bibadis->first()->ministry != '' && $row->bibadis->first()->is_main_bibadi == 1) {
+                  $ministry = $row->bibadis->first()->ministry->office_name_bn;
+               }
             @endphp
+            
 
             
             <tr>
@@ -85,8 +89,8 @@
 
                <td>{{ $row->subject_matter ?? '-'}}</td>
                <td>{{ $row->postponed_details ?? '-'}}</td>
+               <td>{{ $row->reply_submission_date ?? '-'}}</td>
                <!-- <td>{{ $row->case_division->name_bn ?? '-'}}</td> -->
-               <td>- </td>
                <td>{{ $row->case_status->status_name ?? '-' }} </td>
                <!-- <td>{{ $row->role->role_name ?? '-' }} </td> -->
                <td>

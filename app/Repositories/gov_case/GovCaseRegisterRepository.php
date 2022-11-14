@@ -37,8 +37,19 @@ class GovCaseRegisterRepository
     public static function storeGovCase($caseInfo){
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
-        if ($caseInfo->appeal_case_id != NULL || $caseInfo->appeal_case_id != '') {
+        if ($caseInfo->appeal_case_id != NULL && $caseInfo->appeal_case_id != '') {
             $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
+        }
+
+        if ($caseInfo->result_sending_date != NULL && $caseInfo->result_sending_date != '') {
+            $result_sending_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date)));        
+        } else {
+            $result_sending_date = null;
+        }
+        if ($caseInfo->reply_submission_date != NULL && $caseInfo->reply_submission_date != '') {
+            $reply_submission_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));        
+        } else {
+            $reply_submission_date = null;
         }
         // dd($ref_case_num);
 
@@ -60,8 +71,8 @@ class GovCaseRegisterRepository
             $case->interim_order= $caseInfo->interim_order;
             $case->gov_case_ref_id= $caseInfo->appeal_case_id;
             $case->ref_gov_case_no= $ref_case_num;
-            $case->result_sending_date= date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date)));
-            $case->reply_submission_date=date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));  
+            $case->result_sending_date = $result_sending_date;
+            $case->reply_submission_date = $reply_submission_date;  
             $case->result_short_dtails= $caseInfo->result_short_dtails;
             $case->result= $caseInfo->result;
             $case->is_appeal= $caseInfo->is_appeal;

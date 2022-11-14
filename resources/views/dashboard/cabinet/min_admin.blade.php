@@ -66,7 +66,7 @@ foreach ($cases as $val)
       <div class="card-counter success">
          <a href="{{ route('cabinet.case.complete') }}"><i class="fa fas fa-layer-group text-white"></i></a>
          <span class="count-numbers"><a href="{{ route('cabinet.case.complete') }}"><?=en2bn($completed_case)?></a></span>
-         <span class="count-name"><a href="{{ route('cabinet.case.complete') }}">সম্পাদিত মামলা</a></span>
+         <span class="count-name"><a href="{{ route('cabinet.case.complete') }}">নিস্পত্তিকৃত মামলা</a></span>
       </div>
    </div>
 </div>
