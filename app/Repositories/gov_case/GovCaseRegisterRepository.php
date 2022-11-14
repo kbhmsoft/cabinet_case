@@ -36,8 +36,11 @@ class GovCaseRegisterRepository
     }
     public static function storeGovCase($caseInfo){
         $case = self::checkGovCaseExist($caseInfo['caseId']);
-        // dd($case);
-        $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
+        $ref_case_num = null;
+        if ($caseInfo->appeal_case_id != NULL || $caseInfo->appeal_case_id != '') {
+            $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
+        }
+        // dd($ref_case_num);
 
         try {
             $case->case_no=$caseInfo->case_no;
