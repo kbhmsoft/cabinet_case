@@ -24,8 +24,6 @@
    </div>
    <div class="card-body">
 
-      <!-- @include('gov_case.search') -->
-
       <table class="table table-hover mb-6 font-size-h5">
          <thead class="thead-light font-size-h6">
             <tr>

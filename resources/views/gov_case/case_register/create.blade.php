@@ -613,7 +613,6 @@
                             $('#important_cause').val(response.important_cause);
                             /*Swal.close();
                             $('.perssion_list').html(response.html);*/
-
                         }
                     }
                 });

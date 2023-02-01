@@ -47,6 +47,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -77,7 +85,8 @@ class GovCaseRegisterController extends Controller
         // echo "<pre>"; print_r($data['cases']); exit();
 
           // Dorpdown
-
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -115,6 +124,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -144,10 +161,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -182,6 +197,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -211,10 +234,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -249,6 +270,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -278,10 +307,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -316,6 +343,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -345,10 +380,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -383,6 +416,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -412,10 +453,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -450,6 +489,14 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
+
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -480,10 +527,8 @@ class GovCaseRegisterController extends Controller
 
         // Dorpdown
         $data['division_wise_id'] = $id;
-        $data['upazilas'] = NULL;
-        $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['gp_users'] = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('role')->select('id', 'role_name')->get();
 
 
@@ -527,6 +572,8 @@ class GovCaseRegisterController extends Controller
 
         // $data['ministry_wise'] = $query;
         // Dorpdown
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get(); 
         $data['ministry'] = DB::table('office')->select('id', 'office_name_bn')->where('id',$id)->first();
         $data['page_title'] =   $data['ministry']->office_name_bn.' এর মামলার তালিকা';
 
@@ -555,6 +602,14 @@ class GovCaseRegisterController extends Controller
         $query =  GovCaseRegister::select('gov_case_registers.*')->orderby('gov_case_registers.id','DESC');
         $query->leftJoin('gov_case_bibadis as gcb', 'gov_case_registers.id', '=', 'gcb.gov_case_id');
         $query->where('gcb.department_id', $id);
+
+        if(!empty($_GET['case_division_id'])) {
+            $query->where('gov_case_registers.case_division_id','=',$_GET['case_division_id']);
+        }
+
+        if(!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
+        }
 
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
@@ -585,6 +640,8 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         // Dorpdown
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $ministry = DB::table('office')->select('office.id', 'op.office_name_bn', 'office.office_name_bn as ministry_name')
                         ->leftJoin('office as op', 'office.id', '=', 'op.parent')
                         ->where('op.id',$id)->first();
