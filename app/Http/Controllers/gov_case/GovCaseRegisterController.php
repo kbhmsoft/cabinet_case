@@ -664,6 +664,11 @@ class GovCaseRegisterController extends Controller
                 ->whereIn('id',[1,2])
                 ->get();
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        if($roleID != 33){
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        }else{
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();;
