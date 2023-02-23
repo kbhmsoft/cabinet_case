@@ -339,7 +339,7 @@ class DashboardController extends Controller
          $data['running_case'] = GovCaseRegister::where('status', 1)->count();
          $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
          $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
+         $data['running_case_appeal'] = GovCaseRegister::where('status', '!=' , 3)->count();
          $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
          $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();

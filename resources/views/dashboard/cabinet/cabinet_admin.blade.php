@@ -28,13 +28,6 @@
    <!--begin::Dashboard-->
 
    <div class="row mb-5">
-      <!-- <div class="col-md-3">
-         <div class="card-counter primary">
-            <a href="{{ route('cabinet.case.index') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a href="{{ route('cabinet.case.index') }}"><?=en2bn($total_case)?></a></span>
-            <span class="count-name"><a href="{{ route('cabinet.case.index') }}">মোট মামলা</a></span>
-         </div>
-      </div> -->
 
       <div class="col-md-3">
          <div class="card-counter primary">

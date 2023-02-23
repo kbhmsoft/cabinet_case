@@ -92,7 +92,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
         // return $atcases;
-        // return $data['cases'];
+        // return $data;
         // dd($data['cases']);
         return view('gov_case.case_register.index')->with($data);
     }
@@ -179,7 +179,7 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $query =  GovCaseRegister::orderby('id','DESC')->where('status',2);
+        $query =  GovCaseRegister::orderby('id','DESC')->where('case_division_id', 1)->where('status', '!=' , 3);
 
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
@@ -722,10 +722,18 @@ class GovCaseRegisterController extends Controller
     }
     public function edit($id)
     {
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['ministrys'] = Office::whereIn('level', [8,9])->get();
         $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
         $data['courts'] = Court::select('id', 'court_name')->get();
+        if($roleID != 33){
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        }else{
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['page_title'] =   'মামলা সংশোধন';
         // return $data;

@@ -118,16 +118,15 @@
                      <tr>
                         <th scope="row">ফলাফল</th>
                            <td>
-                              {{ $case->case_result ?? 'চলমান' }}
-                              {{-- @if($case->case_result == '1')
+                              @if($case->result == '1')
                               জয়!
-                              @elseif($case->case_result == '0')
+                              @elseif($case->result == '0')
                               পরাজয়!
                               @else
                               চলমান
-                              @endif --}}
+                              @endif
                            </td>
-                        {{-- @dd($case->case_result) --}}
+                        {{-- @dd($case->result) --}}
                      </tr> 
 
                      @if (!empty($case->lost_reason))
@@ -148,7 +147,11 @@
                      @if(!empty( $case->status))
                      <tr>
                         <th scope="row">মামলার বর্তমান অবস্থান</th>
-                        <td>{{ $case->case_status->status_name ?? '-' }}</td>
+                          @if ($case->status == 1)
+                            <td>{{ $case->case_status->status_name ?? '-' }}</td>
+                          @elseif ($case->status == 3)
+                            <td> আর্কাইভ !</td>
+                          @endif
                      </tr>
                      @endif
                      <tr>
