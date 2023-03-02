@@ -22,4 +22,9 @@ class GovCaseHearing extends Model
     'created_at',
     'updated_at',
 	];
+
+
+	public function gov_case_register(){
+		return $this->hasOne(GovCaseRegister::class, 'id', 'gov_case_id');
+	}
 }

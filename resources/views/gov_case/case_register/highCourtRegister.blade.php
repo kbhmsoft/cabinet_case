@@ -7,52 +7,26 @@
 
 @section('content')
 
-<style type="text/css">
+<!-- <style type="text/css">
    .tg {border-collapse:collapse;border-spacing:0;width: 100%;}
    .tg td{border-color:black;border-style:solid;border-width:1px;font-size:14px;overflow:hidden;padding:6px 5px;word-break:normal;}
    .tg th{border-color:black;border-style:solid;border-width:1px;font-size:14px;font-weight:normal;overflow:hidden;padding:6px 5px;word-break:normal;}
    .tg .tg-nluh{background-color:#dae8fc;border-color:#cbcefb;text-align:left;vertical-align:top}
    .tg .tg-19u4{background-color:#ecf4ff;border-color:#cbcefb;font-weight:bold;text-align:right;vertical-align:top}
-</style>
+</style> -->
 
 <!--begin::Card-->
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
-      {{-- <div class="card-title"> --}}
+     
           <div class="container">
               <div class="row">
                   <div class="col-10"><h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3></div>
-                  {{-- <div class="col-8">fdsafsad</div> --}}
-                  {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
-                 <!--  <div class="col-2">
-                      @if(Auth::user()->role_id == 2)
-                      <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
-                        @endif
-                    </div> -->
+                  
+                 
               </div>
           </div>
-         {{-- <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-
-         <table>
-             <tr align="right">
-                 <th>
-                     <a  href="" class="btn btn-primary float-right">Message</a>
-
-                 </th>
-             </tr>
-         </table> --}}
-      {{-- </div> --}}
-      @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 21 || Auth::user()->role_id == 22 || Auth::user()->role_id == 24)
-         @if($case->action_user_role_id == Auth::user()->role_id )
-            @if($case->status == 1)
-               <div class="card-toolbar">
-                  <a href="{{ route('rmcase.edit', $case->id) }}" class="btn btn-sm btn-primary font-weight-bolder">
-                     <i class="la la-edit"></i>মামলা সংশোধন করুন
-                  </a>
-               </div>
-            @endif
-         @endif
-      @endif
+      
    </div>
    <div class="card-body">
       @if ($message = Session::get('success'))
@@ -62,184 +36,147 @@
       @endif
 
       <div class="row">
-         <div class="col-md-6">
-            <table class="table table-striped border">
-               <thead>
+         <div class="col-md-12">
+              <table class="table ">
+                <thead>
+                  <tr class="bg-light-primary">
+                    <th scope="row">মামলা নম্বর/ক্যাটাগরি</th>
+                    <th scope="row">পিটিশনারের নাম ও ঠিকানা</th>
+                    <th scope="row">মুল প্রতিবাদি দপ্তর-সংস্থা</th>
+                    <th scope="row">মামলার বিষয়বস্তু</th>
+                    <th scope="row">রুল ইস্যুর তারিখ</th>
+                    <th scope="row">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
+                    <th scope="row">এটর্নি জেনারেল অফিসে প্রেরণের তারিখ</th>
+                    <th scope="row">সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ</th>
+                  </tr>
+                </thead>
+                <tbody>
                   <tr>
-                      <th class="h3" scope="col" colspan="2">সাধারণ তথ্য</th>
+                    <td>{{ $case->case_no ?? '-'}}/{{ $case->case_category->name_bn ?? '-'}}</td>
+                    <td>
+                      @foreach ($caseBadi as $key=>$badi)
+                         
+                            {{en2bn($key+1)}}. {{ $badi->name }} ,{{ $badi->address }}<br>
+                         
+                      @endforeach
+
+                    </td>
+                    <td>
+                      @foreach ($caseMainBibadi as $key=>$bibadi)
+                        {{en2bn($key+1)}}.{{ $bibadi->ministry->office_name_bn ?? '-' }},{{ $bibadi->department->office_name_bn ?? '-' }}<br>
+                      @endforeach
+                    </td>
+                    <td>{{ $case->subject_matter }}</td>
+                    <td>{{ $case->date_issuing_rule_nishi ? en2bn($case->date_issuing_rule_nishi) : '-'}}</td>
+                    <td>{{ $case->result_sending_date ? en2bn($case->result_sending_date) : '-'}}</td>
+                    <td>{{ $case->ag_office_sending_date ? en2bn($case->ag_office_sending_date) : '-'}}</td>
+                    <td>{{ $case->reply_submission_date ? en2bn($case->reply_submission_date) : '-'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table ">
+                <thead>
+                  <tr class="bg-light-primary">
+                    <th scope="row">শুনানির তারিখ সমুহ</th>
+                    <th scope="row">রায়/আদেশ ঘোষণার তারিখ</th>
+                    <th scope="row">রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ</th>
+                    <th scope="row">রায়ের নকল প্রাপ্তির তারিখ</th>
+                    <th scope="row">প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের স্মারক ও তারিখ</th>
+                    <th scope="row">আপিল মামলা নম্বর ও দায়েরের তারিখ</th>
+                    <th scope="row">আপিল/রিভিউ দায়ের না করার সিদ্বান্ত হলে তার কারণ</th>
+                    <th scope="row">প্রযোজ্য ক্ষেত্রে কন্টেম্পট মামলা নম্বর ও রুল ইস্যুর তারিখ</th>
+                    <th scope="row">কন্টেম্পট মামলায় জবাব প্রেরণের তারিখ</th>
+                    <th scope="row">কন্টেম্পট মামলার আদেশ</th>
+                    <th scope="row">অন্যান্য পদক্ষেপ</th>
                   </tr>
               </thead>
-               <tbody>
-                     <tr>
-                        <th scope="row">মামলা নং</th>
-                        <td>{{ $case->case_no ?? '-'}}</td>
-                     </tr>
-                     <tr>
-                        <th scope="row">রুল ইস্যুর তারিখ</th>
-                        <td>{{ en2bn($case->date_issuing_rule_nishi) ?? '-'}}</td>
-                     </tr>
-                     <tr>
-                        <th scope="row">বিষয়বস্তু(সংক্ষিপ্ত)</th>
-                        <td>{{ $case->subject_matter }}</td>
-                     </tr>
-                     @if($case->postponed_details)
-                        <tr>
-                           <th scope="row">স্থগিতাদেশের বিবরণ</th>
-                           <td>{{ $case->postponed_details }}</td>
-                        </tr>
-                     @endif
-                     @if($case->gov_case_ref_id)
-                        <tr>
-                           <th scope="row">পূর্বের মামলা নং </th>
-                           <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
-                        </tr>
-                     @endif
-                     @if($case->important_cause)
-                        <tr>
-                           <th scope="row">গুরুত্বপূর্ণতার কারণ</th>
-                           <td>{{ $case->important_cause }}</td>
-                        </tr>
-                     @endif
-                     <tr>
-                     @if($case->interim_order)
-                        <tr>
-                           <th scope="row">অন্তর্বর্তীকালীন আদেশের বিবরণ(যদি থাকে )</th>
-                           <td>{{ $case->interim_order }}</td>
-                        </tr>
-                     @endif
-                     @if($case->result_short_dtails)
-                        <tr>
-                           <th scope="row"> চূড়ান্ত আদেশের সংক্ষিপ্ত বিবরণ ( যদি থাকে )</th>
-                           <td>{{ $case->result_short_dtails }}</td>
-                        </tr>
-                     @endif
-
-
-                     <tr>
-                        <th scope="row">ফলাফল</th>
-                           <td>
-                              @if($case->result == '1')
-                              জয়!
-                              @elseif($case->result == '0')
-                              পরাজয়!
-                              @else
-                              চলমান
-                              @endif
-                           </td>
-                        {{-- @dd($case->result) --}}
-                     </tr> 
-
-                     @if (!empty($case->lost_reason))
-                     <tr>
-                        <th scope="row">পরাজয়ের কারণ</th>
-                        <td>{{ $case->lost_reason ?? '-'}}</td>
-                     </tr>
-                     @endif
-                     <tr>
-                        <th scope="row">মামলায় হেরে গিয়ে কি আপিল করা হয়েছে</th>
-                        <td>@if ($case->is_lost_appeal == 2)
-                                                হ্যা!
-                                             @else
-                                                না!
-                                             @endif
-                        </td>
-                     </tr>
-                     @if(!empty( $case->status))
-                     <tr>
-                        <th scope="row">মামলার বর্তমান অবস্থান</th>
-                          @if ($case->status == 1)
-                            <td>{{ $case->case_status->status_name ?? '-' }}</td>
-                          @elseif ($case->status == 3)
-                            <td> আর্কাইভ !</td>
-                          @endif
-                     </tr>
-                     @endif
-                     <tr>
-                        <th scope="row">মন্তব্য</th>
-                        <td>{{ $case->comments ?? '-' }}</td>
-                     </tr>
-                     <tr>
-                        <th scope="row">বর্তমান ষ্ট্যাটাস</th>
-                        <td> @if ($case->status == 1)
-                                                নতুন চলমান!
-                                             @elseif ($case->status == 2)
-                                                আপিল করা হয়েছে!
-                                             @elseif ($case->status == 3)
-                                                সম্পাদিত !
-                                             @endif
-
-                        </td>
-                     </tr>
-
+              <tbody>
+                <tr>
+                  <td>
+                    @forelse ($hearings as $key=> $row)
+                      {{ en2bn($key+1) }}. {{ en2bn($row->hearing_date) }}
+                    @empty
+                          শুনানির কোন নোটিশ পাওয়া যাইনি
+                    @endforelse
+                  </td>
+                  <td>{{ $case->result_date ? en2bn($case->result_date) : '-'}}</td>
+                  <td>{{ $case->result_copy_asking_date ? en2bn($case->result_copy_asking_date) : '-'}}</td>
+                  <td>{{ $case->result_copy_reciving_date ? en2bn($case->result_copy_reciving_date) : '-'}}</td>
+                  <td>{{ $case->appeal_requesting_memorial ?? '-' }},{{ $case->appeal_requesting_date ? en2bn($case->appeal_requesting_date) : '-'}}</td>
+                  <td></td>
+                  <td>{{ $case->reason_of_not_appealing ?? '-' }}</td>
+                  <td>{{ $case->contempt_case_no ?? '-' }},{{ $case->contempt_case_isuue_date ? en2bn($case->contempt_case_isuue_date) : '-'}}</td>
+                  <td>{{ $case->contempt_case_answer_sending_date ? en2bn($case->contempt_case_answer_sending_date) : '-'}}</td>
+                  <td>{{ $case->contempt_case_order ?? '-' }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table ">
+              <thead>
+                  <tr class="bg-light-primary">
+                    @if($case->postponed_details)
+                      <th scope="row">স্থগিতাদেশের বিবরণ</th>
+                    @endif
+                    @if($case->gov_case_ref_id)
+                       <th scope="row">পূর্বের মামলা নং </th>
+                    @endif
+                    @if($case->important_cause)
+                       <th scope="row">গুরুত্বপূর্ণতার কারণ</th>
+                    @endif
+                    @if($case->interim_order)
+                       <th scope="row">অন্তর্বর্তীকালীন আদেশের বিবরণ(যদি থাকে )</th>
+                    @endif
+                    @if($case->result_short_dtails)
+                       <th scope="row"> চূড়ান্ত আদেশের সংক্ষিপ্ত বিবরণ ( যদি থাকে )</th>
+                    @endif
+                    @if(!empty($case->lost_reason))
+                      <th scope="row">পরাজয়ের কারণ</th>
+                    @endif
+                    @if(!empty( $case->status))
+                      <th scope="row">মামলার বর্তমান অবস্থান</th>
+                    @endif
+                  </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    @if($case->postponed_details)
+                      <td>{{ $case->postponed_details }}</td>
+                    @endif
+                    @if($case->gov_case_ref_id)
+                      <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
+                    @endif
+                    @if($case->important_cause)
+                      <td>{{ $case->important_cause }}</td>
+                    @endif
+                    @if($case->interim_order)
+                      <td>{{ $case->interim_order }}</td>
+                    @endif
+                    @if($case->result_short_dtails)
+                      <td>{{ $case->result_short_dtails }}</td>
+                    @endif
+                    @if (!empty($case->lost_reason))
+                      <td>{{ $case->lost_reason ?? '-'}}</td>
+                    @endif
+                    @if(!empty( $case->status))
+                      @if ($case->status == 1)
+                        <td>{{ $case->case_status->status_name ?? '-' }}</td>
+                      @elseif ($case->status == 3)
+                        <td> আর্কাইভ !</td>
+                      @endif
+                    @endif
+                </tr>
                </tbody>
             </table>
          </div>
-         <div class="col-md-6">
-               <table class="table table-striped border">
-                  <thead>
-                     <tr>
-                         <th class="h3" scope="col" colspan="4">বাদীর বিবরণ</th>
-                     </tr>
-                     <tr class="bg-light-primary">
-                        <th scope="row" width="10">ক্রম</th>
-                        <th scope="row" class="text-center" width="200">নাম</th>
-                        <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>
-                        <th scope="row" class="text-center">ঠিকানা</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-               @php $k = 1; @endphp
-            @foreach ($caseBadi as $badi)
-               <tr>
-                  <td>{{en2bn($k)}}.</td>
-                  <td>{{ $badi->name }}</td>
-                  <td>{{ $badi->spouse_name }}</td>
-                  <td>{{ $badi->address }}</td>
-               </tr>
-            @php $k++; @endphp
-            @endforeach
-                  </tbody>
-               </table>
-
-
-               <br>
-               <table class="table table-striped border">
-                  <thead>
-                     <tr>
-                         <th class="h3" scope="col" colspan="4">বিবাদীর বিবরণ</th>
-                     </tr>
-                     <tr class="bg-light-primary">
-                        <th scope="row"  width="10">ক্রম</th>
-                        <th scope="row" class="text-center" width="200">নাম</th>
-                        <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>
-                        <th scope="row" class="text-center">ধরন</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-               @php $k = 1; @endphp
-               @foreach ($caseBibadi as $bibadi)
-
-                     <tr>
-                        <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                        <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                        <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td>
-                        <td class="tg-nluh">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী'}}</td>
-                     </tr>
-               @php $k++; @endphp
-               @endforeach
-                  </tbody>
-               </table>
-
-
-         </div>
-   </div>
+      </div>
     {{--  @php
         $hearings = App\Models\gov_case\GovCaseHearing::orderby('id', 'DESC')->where('gov_case_id', $case->id)->get();
     @endphp  --}}
     @if (count($hearings) != 0)
     <div class="row">
         <div class="col-md-12">
-           <table class="table table-striped border">
+           <table class="table ">
             <thead>
                <tr>
                   <th class="h3" scope="col" colspan="6">শুনানির নোটিশ</th>

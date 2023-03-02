@@ -49,7 +49,18 @@ class GovCaseBadiBibadiRepository
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->ministry_id = $caseInfo->ministry[$key];
                 $bibadi->department_id = $caseInfo->doptor[$key];
-                $bibadi->is_main_bibadi = $key == 0 ? 1 : 0;
+                $bibadi->save();
+            }
+        }
+        foreach($caseInfo->main_ministry as $key => $val)
+        {
+            // dd($key);
+            if($caseInfo->main_ministry[$key] != null){
+                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->ministry_id = $caseInfo->main_ministry[$key];
+                $bibadi->department_id = $caseInfo->main_doptor[$key];
+                $bibadi->is_main_bibadi = 1;
                 $bibadi->save();
             }
         }
@@ -71,6 +82,10 @@ class GovCaseBadiBibadiRepository
     public static function getBibadiByCaseId($caseId){
         $bibadi=GovCaseBibadi::where('gov_case_id', $caseId)->get();
         return $bibadi;
+    }
+    public static function getMainBibadiByCaseId($caseId){
+        $main_bibadi=GovCaseBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', 1)->get();
+        return $main_bibadi;
     }
 
 

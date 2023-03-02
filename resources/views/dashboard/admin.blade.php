@@ -1,4 +1,5 @@
-@extends('layouts.default')
+>@extends('layouts.cabinet.cab_default')
+
 @yield('style')
 <link href="{{ asset('plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
 

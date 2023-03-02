@@ -3,7 +3,8 @@ $roleID = Auth::user()->role_id;
 $officeInfo = user_office_info();
 @endphp
 
-@extends('layouts.default')
+>@extends('layouts.cabinet.cab_default')
+
 
 @section('content')
     <!--begin::Card-->

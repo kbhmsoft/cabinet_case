@@ -23,7 +23,6 @@
       @endif
       @include('messages.inc.search')
       @if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4)
-         {{-- @include('court.search') --}}
       @endif
       <div class="overflow-auto">
 
@@ -63,7 +62,7 @@
                         <td>{{ $row->name }}</td>
                         <td>{{ $row->username }}</td>
                         <td>{{ $row->role_name }}</td>
-                        <td>{{ $row->office_name_bn }}, {{ $row->upazila_name_bn }} {{ $row->district_name_bn }}</td>
+                        <td>{{ $row->office_name_bn }}</td>
                         <td>{{ $row->email }}</td>
                         <td>
                             <a href="{{ route('messages_single', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>

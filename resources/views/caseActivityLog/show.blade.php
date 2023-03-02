@@ -3,7 +3,8 @@ $user = Auth::user();
 $roleID = Auth::user()->role_id;
 @endphp
 
-@extends('layouts.default')
+>@extends('layouts.cabinet.cab_default')
+
 
 @section('content')
 

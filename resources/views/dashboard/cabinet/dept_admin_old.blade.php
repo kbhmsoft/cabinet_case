@@ -27,6 +27,9 @@ foreach ($cases as $val)
 
 <!--begin::Dashboard-->
 
+<!-- Dashboard Counter -->
+@include('dashboard.cabinet.inc._dashboard_counter_card')
+<!-- //Dashboard Counter -->
 <div class="row mb-5">
    <div class="col-md-3">
       <div class="card-counter primary">

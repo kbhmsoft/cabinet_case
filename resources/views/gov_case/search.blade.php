@@ -5,18 +5,6 @@ $officeInfo = user_office_info();
 <form class="form-inline" method="GET">
    <div class="row">
       <div class="col-lg-2 mb-5 px-2">
-         <select name="case_division_id" class="w-100 form-control">
-            <option value=""> আদালতের নাম </option>
-            @foreach ($case_divisions as $value)
-               <option value="{{ $value->id }}"
-                  {{ old('case_divisions') == $value->id ? 'selected' : '' }}>
-                  {{ $value->name_bn }} 
-               </option>
-             @endforeach
-         </select>
-         <!-- <input type="text" name=""  class="w-100 form-control" placeholder="তারিখ হতে" autocomplete="off"> -->
-      </div>
-      <div class="col-lg-2 mb-5 px-2">
          <select name="case_category_id" class="w-100 form-control">
             <option value=""> মামলা ক্যাটেগরি </option>
             @foreach ($division_categories as $value)

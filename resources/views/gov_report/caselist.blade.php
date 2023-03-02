@@ -42,7 +42,7 @@
 
                             <div class="form-group row">
                                 <div class="col-lg-6 mb-5">
-                                <select name="ministry" class="form-control form-control-sm">
+                                <select name="ministry" id="department_id" class="form-control form-control-sm">
                                     <option value="">-মন্ত্রণালয় নির্বাচন করুন-</option>
                                     @foreach ($ministry as $value)
                                     <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>

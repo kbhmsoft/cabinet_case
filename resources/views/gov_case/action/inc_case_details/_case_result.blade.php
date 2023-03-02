@@ -58,7 +58,6 @@
                 <!--begin::Card-->
                 <div class="card card-custom example example-compact">
                     <!--begin::Form-->
-                    {{-- @if ($case->in_favour_govt == null) --}}
                         <form id="ajax-caseResult-upload" action="{{ url('rmcase.action.result_update') }}" class="form"
                             method="POST" enctype="multipart/form-data">
                             @csrf
@@ -69,7 +68,7 @@
                                 <div class="col-md-12">
                                     <fieldset>
                                         <div class="form-group row">
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-7">
                                                 <div class="form-group">
                                                     <label>ফলাফলের ফাইল আপলোড করুন <span
                                                             class="text-danger">*</span></label>
@@ -81,38 +80,53 @@
                                                             করুন</label>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="form-group">
-                                                    <label>ফলাফল <span class="text-danger">*</span></label>
-                                                    <input type="text" name="result_text" class="form-control" placeholder="ফলাফল">
-                                                </div> --}}
                                             </div>
-                                            <div class="col-lg-7">
+                                            <div class="col-lg-5">
                                                 <label>মামলার বর্তমান অবস্থা <span class="text-danger">*</span></label>
                                                 <select name="condition_name" class="form-control" id="condition_name"
                                                     class="form-control form-control-sm">
                                                     <option value="">-- নির্বাচন করুন --</option>
-                                                    <option value="2">আপিল</option>
                                                     <option value="3">সম্পাদিত</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-4">
                                                 <label>ফলাফল <span class="text-danger">*</span></label>
                                                 <div class="radio-inline">
                                                     <label class="radio">
                                                         <input type="radio" name="result" id="win" value="1"
                                                             checked="checke" />
-                                                        <span></span>জয়</label>
+                                                        <span></span>সরকারের পক্ষে</label>
                                                     <label class="radio">
                                                         <input type="radio" name="result" id="lost" value="0" />
-                                                        <span></span>পরাজয়</label>
+                                                        <span></span>সরকারে বিপক্ষে</label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-7" id="lostReason">
+                                            <div class="col-lg-4" id="lostReason">
                                                 <label>পরাজয়ের কারণ </label>
                                                 <textarea name="lost_reason" id="lost_reason" class="form-control"
                                                     rows="3" spellcheck="false"></textarea>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>রায় ঘোষণার তারিখ<span class="text-danger">*</span></label>
+                                                    <input type="text" name="result_date" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span class="text-danger">*</span></label>
+                                                    <input type="text" name="result_copy_asking_date" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>রায়ের নকল প্রাপ্তির তারিখ<span class="text-danger">*</span></label>
+                                                    <input type="text" name="result_copy_reciving_date" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
                                             </div>
                                         </div>
                                         <input type="hidden" name="hide_case_id" id="hide_case_id"

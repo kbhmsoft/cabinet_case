@@ -1,4 +1,5 @@
-@extends('layouts.default')
+>@extends('layouts.cabinet.cab_default')
+
 @section('content')
 {{-- <div class="col-lg-12">
     <ul class="submenu">

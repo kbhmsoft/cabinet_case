@@ -6,7 +6,8 @@
    // print_r($data);
 @endphp
 
-@extends('layouts.default')
+>@extends('layouts.cabinet.cab_default')
+
 @section('content')
 <style type="text/css">
    .tg {border-collapse:collapse;border-spacing:0;width: 100%;}

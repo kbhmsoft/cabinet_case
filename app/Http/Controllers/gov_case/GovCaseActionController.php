@@ -138,47 +138,24 @@ class GovCaseActionController extends Controller
 
     public function receive($statusID)
     {
-        // return 'hi';
+        // return userInfo();
         $roleID = userInfo()->role_id;
         $officeInfo = user_office_info();
+        $officeID = user_office_info()->office_id;
 
         // echo $roleID = userInfo()->role_id; exit;
-        // dd($officeInfo);
         $query= GovCaseRegister::orderBy('id','DESC')
-       
-        ->where('case_status_id', $statusID);
+                ->where('status','!=', 3)
+                ->where('action_user_role_id', $roleID)
+                ->where('case_status_id', $statusID);
         if($roleID == 36 && $statusID == 39){
             $query->whereIn('action_user_role_id', [$roleID,14]);
-        }else{
-            $query->where('action_user_role_id', $roleID);
+        }elseif($roleID == 29 || $roleID == 31 && $statusID != 33){
+            $query->where('action_user_role_id', $roleID)->where('selected_main_min_id', $officeID);
+        }elseif($roleID == 32 || $roleID == 33 && $statusID != 33){
+            $query->where('action_user_role_id', $roleID)->where('selected_main_dept_id', $officeID);
         }
-
-        // ->where('case_register.district_id','=', $officeInfo->district_id)
-        // Check User Role ID
-        // if($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13){
-        //     $query->where('district_id','=', $officeInfo->district_id);
-        //     //$query->where('district_id','=', $officeInfo->district_id);
-        // }elseif($roleID == 9 || $roleID == 10 || $roleID == 11){
-        //     // dd($officeInfo->upazila_id);
-        //     $query->where('upazila_id','=', $officeInfo->upazila_id);
-        //     // $query->where('upazila_id','=', $officeInfo->upazila_id);
-        // }elseif($roleID == 12){
-        //     $moujaIDs = $this->get_mouja_by_ulo_office_id(userInfo()->office_id);
-        //    // dd($moujaIDs);
-        //    /*
-        //     print_r($moujaIDs); exit;*/
-        //     $query->whereIn('mouja_id', $moujaIDs);
-        // }
-        // $query->where('case_register.action_user_group_id', '=', userInfo()->role_id);
         $data['cases'] = $query->get();
-        // dd($data['cases']);
-
-        // return view('dashboard.receive', compact('page_title', 'cases'))
-        // ->with('i', (request()->input('page',1) - 1) * 5);
-
-        // All user list
-        // $cases = CaseRegister::latest()->paginate(5);
-        // $data['page_title'] = 'নতুন মামলা রেজিষ্টার এন্ট্রি ফরম'; //exit;
 
         $data['page_title'] = 'ভূমি রাজস্ব মামলার তালিকা';
         return view('gov_case.action.receive')->with($data);
@@ -574,15 +551,16 @@ class GovCaseActionController extends Controller
      */
     public function result_update(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'result' => 'required',
-            // 'result_text' => 'required',
+            'result_date' => 'required',
             'condition_name' => 'required',
             'result_file' => 'required|mimes:pdf|max:10240',
             ],
             [
                 'condition_name.required' => 'মামলার বর্তমান অবস্থা নির্বাচন করুন',
-                // 'result_text.required' => 'মামলার ফলাফল নির্বাচন করুন',
+                'result_date.required' => 'রায় ঘোষণার তারিখ নির্বাচন করুন',
                 'result_file.required' => 'ফলাফলের ফাইল নির্বাচন করুন',
                 'result_file.mimes' => 'শুধু মাত্র পিডিএফ ফাইল নির্বাচন করুন',
                 'result_file.max' => 'সর্বোচ্চ ফাইলের আকার: ১০২৪০ কে বি',
@@ -599,14 +577,20 @@ class GovCaseActionController extends Controller
                             request()->result_file,
                             $caseID
                         );
+        $result_date_format = date('Y-m-d',strtotime(str_replace('/', '-', $request->result_date)));
+        $resultCopyAsking_date_format = date('Y-m-d',strtotime(str_replace('/', '-', $request->result_copy_asking_date)));
+        $resultCopyReciving_date_format = date('Y-m-d',strtotime(str_replace('/', '-', $request->result_copy_reciving_date)));
         $result = [
-            // 'result_text'  => $request->result_text,
+            'result_date'  => $result_date_format,
             'result'  => $request->result,
             'result_file'  => $pathFileName,
             'govt_lost_reason'  => $request->lost_reason,
             'status'  => $request->condition_name,
             'in_favour_govt'  => $request->result,
+            'result_copy_asking_date'  => $resultCopyAsking_date_format,
+            'result_copy_reciving_date'  => $resultCopyReciving_date_format,
         ];
+        // dd($result);
         GovCaseRegister::whereId($caseID)->update($result);
 
         $data['case'] = GovCaseRegister::where('id', $caseID)->first();
@@ -799,6 +783,7 @@ class GovCaseActionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // return $request;
         $validator = Validator::make($request->all(), [
             'group' => 'required',

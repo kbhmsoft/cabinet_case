@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +49,7 @@
 		}
 	</style>
 </head>
-<body>
+<body onload="myFunction()">
 	<div class="priview-body">
 		<div class="priview-header">
 			<div class="row">
@@ -56,11 +57,11 @@
 					 <?=en2bn(date('d-m-Y'))?>
 				</div>
 				<div class="col-6 text-center float-left">
-					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সিভিলস্যুট ম্যানেজমেন্ট সিস্টেম</span><br> মন্ত্রিপরিষদ বিভাগ-গণপ্রজাতন্ত্রী বাংলাদেশ সরকার,<br> বাংলাদেশ সচিবালয়, ঢাকা</p>
+					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সরকারি স্বার্থ সংশ্লিষ্ট মামলা ব্যাবস্থাপনা</span><br> মন্ত্রিপরিষদ বিভাগ-গণপ্রজাতন্ত্রী বাংলাদেশ সরকার,<br> বাংলাদেশ সচিবালয়, ঢাকা</p>
 
 				</div>
 				<div class="col-2 text-right float-right">
-					স্লোগান
+					ডিজিটাল বাংলাদেশ, স্কল সেবা হাতের মুঠয়।
 				</div>
 			</div>
 		</div>
@@ -68,7 +69,7 @@
 			<div class="priview-memorandum">
 				<div class="row">
 					<div class="col-12 text-center">
-						<div style="font-size:12px;"><u><?=$page_title?></u></div>
+						<div style="font-size:12px;"><u><?=$results[0]['ministry_name_bn']?><?=$page_title?></u></div>
 						<div style="font-size:12px;"><u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
 					</div>
 				</div>
@@ -78,8 +79,9 @@
 				<table class="" style="width:100%">
 					<thead class="headding">
 						<tr>
+							<!-- <th class="text-center" width="50" >ক্রম</th>
+							<th width="250" >মন্ত্রনালয়</th> -->
 							<th class="text-center" width="50" >ক্রম</th>
-							<th width="250" >মন্ত্রনালয়</th>
 							<th width="50" style="font-size:13px;"  class="text-center" >মাঠ প্রশাসন/দপ্তর </th>
                             <th class="text-center" >বিবেচ্য সময়কালে<br> দায়েরকৃত মামলার সংখ্যা</th>
 							<th class="text-center" >বিবেচ্য সময়কালের <br>পূর্ব পর্যন্ত অনিস্পন্ন<br> মামলার সংখ্যা</th>
@@ -96,8 +98,8 @@
                             foreach ($results as $key => $value) {
 						        ?>
                                 <tr>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>" class="text-center"><?=en2bn($key+1)?>.</td>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>"><?=$value['ministry_name_bn']?></td>
+                                    <!-- <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>" class="text-center"><?=en2bn($key+1)?>.</td>
+                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>"><?=$value['ministry_name_bn']?></td> -->
                                     <?php
                                     if(count($value['doptor']) != 0){
                                         foreach ($value['doptor'] as $mk => $row) {
@@ -105,6 +107,7 @@
                                                 echo '<tr>';
                                             }
                                             ?>
+                                                <td class="text-center" ><?=en2bn($mk+1)?></td>
                                                 <td class="text-left" ><?=$row->doptor_name?></td>
                                                 <td class="text-left" ><?=$row->dateBetween?></td>
                                                 <td class="text-left" ><?=$row->prevUndoneCase?></td>
@@ -142,4 +145,9 @@
 
 	</body>
 	</html>
+	<script type="text/javascript">
+		function myFunction() {
+		  window.print();
+		}
+	</script>
 

@@ -37,29 +37,7 @@
             </tr>
          </thead>
          <tbody>
-            {{-- @foreach ($msg_request as $msg)
-                <tr>
-                    <th scope="row" class="tg-bn">
-                        @if ($msg->sender->profile_pic != null)
-                        <img style="width: 40px; border-radius: 60%;"
-                           src="{{ url('/') }}/uploads/profile/{{ $msg->sender->profile_pic }}" alt="">
-                        @else
-                        @php
-                           $str = $msg->sender->username;
-                        @endphp
-                           <span class="badge badge-danger rounded-circle text-capitalize h3 mr-3">{{ substr($str, 0, 1) }}</span>
-                        @endif
-                     </th>
-                    <td>{{ $msg->sender->name ?? '' }} <span class="badge badge-danger">নতুন</span></td>
-                    <td>{{ $msg->sender->username ?? '' }}</td>
-                    <td>{{ $msg->sender->role->role_name ?? '' }}</td>
-                    <td>{{ $msg->sender->office->office_name_bn ?? '' }}, {{ $msg->sender->office->upazila->upazila_name_bn ?? '' }} {{ $msg->sender->office->district->district_name_bn ?? '' }}</td>
-                    <td>{{ $msg->sender->email ?? '' }}</td>
-                    <td>
-                    <a href="{{ route('messages_single', $msg->sender->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
-                    </td>
-                </tr>
-            @endforeach --}}
+            
             @forelse($users as $user)
                 @php
                     $Ncount = App\Models\Message::select('id')
@@ -101,7 +79,7 @@
                     <td>{{ $user->office->office_name_bn ?? '' }}, {{ $user->office->upazila->upazila_name_bn ?? '' }} {{ $user->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $user->email ?? '' }}</td>
                     <td>
-                    <a href="{{ route('messages_single', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+                    <a href="{{ route('cabinet.messages_single', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
                     </td>
                 </tr>
             @empty

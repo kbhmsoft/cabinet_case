@@ -14,7 +14,7 @@ use App\Models\RM_CaseActivityLog;
 if (!function_exists('user_office_info')) {
 	function user_office_info() {
 		$user = Auth::user();
-		return DB::table('users')->select('users.id AS user_id','division.id AS division_id', 'division.division_name_bn', 'district.id  AS district_id', 'district.district_name_bn', 'upazila.id  AS upazila_id', 'upazila.upazila_name_bn', 'office.office_name_bn')
+		return DB::table('users')->select('users.id AS user_id','division.id AS division_id', 'division.division_name_bn', 'district.id  AS district_id', 'district.district_name_bn', 'upazila.id  AS upazila_id', 'upazila.upazila_name_bn', 'office.office_name_bn', 'office.id AS office_id')
 		->leftJoin('office', 'users.office_id', '=', 'office.id')
 		->leftJoin('division', 'office.division_id', '=', 'division.id')
 		->leftJoin('district', 'office.district_id', '=', 'district.id')

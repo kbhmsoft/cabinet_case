@@ -108,6 +108,18 @@
 
         // On Change Load Case Status checked User Role Foward ID
         jQuery('input[type=radio][name=group]').on('change',function(){
+            var radioValue = $("input[name='group']:checked").val();
+            alert(radioValue);
+            if(radioValue == 29 || radioValue == 31){
+                $('#minSelection').show();
+                $('#deptSelection').hide();
+            }else if(radioValue == 32 || radioValue == 33){
+                $('#minSelection').hide();
+                $('#deptSelection').show();
+            }else{
+                $('#minSelection').hide();
+                $('#deptSelection').hide();
+            }
             case_status_dd();
         });
 
@@ -382,6 +394,8 @@
         $('#formSubmit').click(function(e) {
             e.preventDefault();
             var radioValue = $("input[name='group']:checked").val();
+            var minIdValue = $("input[name='main_min_id']:checked").val();
+            var deptIdValue = $("input[name='main_dept_id']:checked").val();
             $("#formSubmit").addClass('spinner spinner-white spinner-right disabled');
 
 
@@ -391,6 +405,8 @@
                 data: {
                     case_id: $('#hide_case_id').val(),
                     group: radioValue,
+                    main_min_id: minIdValue,
+                    main_dept_id: deptIdValue,
                     status_id: $('#status_id').val(),
                     comment: $('#comment').val()
                 },

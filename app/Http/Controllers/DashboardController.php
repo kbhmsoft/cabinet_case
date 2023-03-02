@@ -256,8 +256,8 @@ class DashboardController extends Controller
          $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
          $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
          $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->count();
+         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
        
 
          $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
@@ -342,8 +342,8 @@ class DashboardController extends Controller
          $data['running_case_appeal'] = GovCaseRegister::where('status', '!=' , 3)->count();
          $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
          $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->count();
+         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
          $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
          $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
@@ -739,10 +739,16 @@ class DashboardController extends Controller
          // Solicitor
          // Get case status by group
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+         $data['total_case'] = GovCaseRegister::count();
+         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+
+         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -760,7 +766,7 @@ class DashboardController extends Controller
 
          // dd($data['gov_case_status']);
          $data['page_title'] = 'আইনজীবীর ড্যাশবোর্ড';
-         return view('dashboard.ulao')->with($data);
+         return view('dashboard.cabinet.solicitor')->with($data);
       }elseif($roleID == 15 ){
          // Attorney General
          // Get case status by group
@@ -1422,7 +1428,6 @@ class DashboardController extends Controller
 
       }elseif($roleID == 32){
          // Department/Odhidhoptor dashboard
-
           // Counter
          $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->count();
          $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 1)->count();
@@ -1531,7 +1536,6 @@ class DashboardController extends Controller
 
       }elseif($roleID == 33){
          // Asst. Department/Odhidhoptor dashboard
-
          // Counter
          $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->count();
          $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 1)->count();
@@ -1682,10 +1686,18 @@ class DashboardController extends Controller
          // Solicitor
          // Get case status by group
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+
+        
+         $data['total_case'] = GovCaseRegister::count();
+         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+
+         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')

@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.cabinet.cab_default')
 
 @section('content')
 
@@ -25,7 +25,7 @@
          @csrf
          <div class="card-body">
             <fieldset>
-               <legend>ব্যাবহারকারীর তথ্য</legend> 
+               <legend>ব্যবহারকারীর তথ্য</legend> 
                <div class=" col-12 row">
                   <div class="col-4">
                      <div class="form-group">

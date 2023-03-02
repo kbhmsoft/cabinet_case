@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\gov_case\GovCaseActionController;
+use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RM_CaseActionController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
@@ -31,7 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/messages_remove/{id}', [GovCaseMessageController::class, 'messages_remove'])->name('messages_remove');
         Route::post('/messages/send', [GovCaseMessageController::class, 'messages_send'])->name('messages_send');
         Route::get('/messages_group', [GovCaseMessageController::class, 'messages_group'])->name('messages_group');
-        // Route::get('/hearing_date', [GovCaseMessageController::class, 'hearing_date'])->name('hearing_date');
+        Route::get('/hearing_date', [GovCaseUserNotificationController::class, 'hearing_date'])->name('hearing_date');
+        Route::get('/results_completed', [GovCaseUserNotificationController::class, 'results_completed'])->name('results_completed');
         // Route::get('/new_sf_list', [GovCaseMessageController::class, 'newSFlist'])->name('newSFlist');
         // Route::get('/new_sf_details/{id}', [GovCaseMessageController::class, 'newSFdetails'])->name('newSFdetails');
         Route::get('/script', [GovCaseMessageController::class, 'script']);
@@ -41,6 +43,8 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
+            Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('running_case', [GovCaseRegisterController::class, 'running_case'])->name('running');
             Route::get('appeal_case', [GovCaseRegisterController::class, 'appeal_case'])->name('appeal');
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
@@ -60,6 +64,7 @@ Route::middleware('auth')->group(function () {
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('store_appeal');
             Route::get('edit/{id}', [GovCaseRegisterController::class, 'edit'])->name('edit');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
+            Route::get('register/{id}', [GovCaseRegisterController::class, 'register'])->name('register');
             Route::post('getCaseCategory/{id}', [GovCaseRegisterController::class, 'getCaseCategory'])->name('getCaseCategory');
             route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class , 'ajax_badi_del']);
             route::post('ajax_bibadi_del/{id}', [GovCaseRegisterController::class , 'ajax_bibadi_del']);

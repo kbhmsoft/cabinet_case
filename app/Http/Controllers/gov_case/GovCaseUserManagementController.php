@@ -25,6 +25,7 @@ class GovCaseUserManagementController extends Controller
     {   
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
+        // dd($officeInfo);
         // All user list
         // $users = UserManagement::latest()->paginate(5);
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
@@ -45,8 +46,8 @@ class GovCaseUserManagementController extends Controller
                             ->leftJoin('district', 'office.district_id', '=', 'district.id')
                             ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
                             ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-                            ->where('office.id', $officeInfo->id)
-                            ->orWhere('office.parent', $officeInfo->id)
+                            ->where('office.id', $officeInfo->office_id)
+                            ->orWhere('office.parent', $officeInfo->office_id)
                             ->paginate(10);
         }
         $page_title = 'ইউজার ম্যানেজমেন্ট তালিকা';

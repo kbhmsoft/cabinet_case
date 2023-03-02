@@ -25,8 +25,9 @@
         $('form').submit(function () { $('[disabled]').removeAttr('disabled'); })
         $(document).ready(function() {
             // addBadiRowFunc();
-            // addBibadiRowFunc();
-            if("{{ userInfo()->role_id }}" != 28 && "{{ request('red') }}" == ''){
+            addMainBibadiRowFunc();
+            addFileRowFunc();
+            /*if("{{ userInfo()->role_id }}" != 28 && "{{ request('red') }}" == ''){
                 $(function(){
                     id = "{{ userInfo()->office->parent != null ? userInfo()->office->Parent->id : userInfo()->office_id }}"
                     // console.log("{{ userInfo()->id}}");
@@ -45,7 +46,7 @@
                         });
                     }
                 });
-            }
+            }*/
         });
 
         /*********************** Add multiple badi *************************/
@@ -117,6 +118,72 @@
                 }
 
         }
+        function getMainDoptor(main_ministry=null, rowId, mainid=null) {
+                var id = main_ministry.value;
+                if(id==null){
+                    id = mainid;
+                }
+                var params = $.extend({}, doAjax_params_default);
+                    params['url'] = "{{ url('/') }}/case/dropdownlist/getdependentDoptor/"+id;
+                    params['requestType'] = "GET";
+                    params['data'] = {};
+                    params['successCallbackFunction'] = success;
+                    params['errorCallBackFunction'] = error;
+                    doAjax(params);
+                function success(data){
+                    var row = '#' + rowId;
+                    // console.log(data);
+                    $(row + ' select[name="main_doptor[]"]').html('<div class="loadersmall"></div>');
+                    $(row + ' select[name="main_doptor[]"]').html('<option value="">-- নির্বাচন করুন --</option>');
+                    $.each(data, function(key, value) {
+                        $(row + ' select[name="main_doptor[]"]').append('<option value="' + key + '">' + value + '</option>');
+                    });
+                }
+                function error(data){
+                    console.log(data);
+                }
+
+        }
+        /************************ Add multiple Main bibadi *************************/
+
+        $("#addMainBibadiRow").click(function(e) {
+            addMainBibadiRowFunc();
+        });
+
+        //add row function
+        function addMainBibadiRowFunc() {
+            var countVal = parseInt($('#mainBibadi_count').val());
+            $('#mainBibadi_count').val(countVal+1);
+            var mk_main = $('#MainBibadiDiv tr').length;
+            var MainCount = $('#MainBibadiDiv tr').length;
+            console.log(MainCount);
+            $('#MainBibadiDiv tr:last').after(ItemMain(mk_main+1, 'other'));
+            /*if(MainCount ==3){
+                $('#MainBibadiDiv tr:last').after(ItemMain(MainCount, 'main'));
+            }*/
+
+            function ItemMain(count, type=NULL){
+                var items = '';
+                items += '<tr id="bibadi_'+(count)+'">';
+                items +=
+                    '<td><select onchange="getMainDoptor(this, \'bibadi_'+(count)+'\')" name="main_ministry[]" id="ministry_id" class="form-control form-control-sm" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                items += '<input type="hidden" name="bibadi_id[]" value="">';
+                items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                // console.log(count);
+                if(countVal != 1){
+                    items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+                }
+                items += '</tr>';
+                // console.log(items);
+                return items;
+            }
+        }
+
+        //remove row function
+        function removeMainBibadiRow(id) {
+            $(id).closest("tr").remove();
+        }
+        /************************ //Add multiple Main bibadi *************************/
 
         $("#addBibadiRow").click(function(e) {
             addBibadiRowFunc();
@@ -128,9 +195,9 @@
             var MainCount = $('#MainBibadiDiv tr').length;
             // console.log(MainCount);
             $('#bibadiDiv tr:last').after(Item(mk+1, 'other'));
-            if(MainCount ==3){
+            /*if(MainCount ==3){
                 $('#MainBibadiDiv tr:last').after(Item(MainCount, 'main'));
-            }
+            }*/
 
             function Item(count, type=NULL){
                 var items = '';

@@ -8,13 +8,6 @@
       <div class="card-title">
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
-     <!--  @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
-      <div class="card-toolbar">
-         <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
-         </a>
-      </div>
-      @endif -->
 
       <div class="card-toolbar">
          @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
@@ -22,13 +15,7 @@
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
          @endif
-         <!-- <a href="{{ route('cabinet.case.index') }}" class="btn btn-sm btn-success font-weight-bolder">সমন্বিত -->
-         <a href="{{ route('cabinet.case.running') }}" class="btn btn-sm btn-success font-weight-bolder">সমন্বিত
-         </a>
-         <a href="{{ route('cabinet.case.division_wise',2) }}" class="btn btn-sm btn-primary font-weight-bolder mx-2">হাইকোর্ট
-         </a>
-         <a href="{{ route('cabinet.case.division_wise',1) }}" class="btn btn-sm btn-primary font-weight-bolder">আপিল
-         </a>
+         
       </div>
       
 
@@ -41,20 +28,18 @@
       @endif
 
       @include('gov_case.search')
-      {{--  @include('rm_case.rm_case_register.search')  --}}
-
+     
       <table class="table table-hover mb-6 font-size-h5">
          <thead class="thead-light font-size-h6">
             <tr>
-               <th scope="col" width="30">#</th>
+               <th scope="col" width="30">ক্রমিক</th>
                <th scope="col">মামলা নং</th>
                <th scope="col">ক্যাটাগরি</th>
-               <th scope="col">পিটিশনার</th>
+               <th scope="col">পিটিশনারের নাম ও ঠিকানা</th>
                <th scope="col">মূল বিবাদী</th>
-               <th scope="col">বিষয়বস্তু</th>
-               <th scope="col">স্থগিতাদেশ নিষেধাজ্ঞা</th>
-               <th scope="col">জবাব প্রেরনের তারিখ</th>
-               <th scope="col">সর্বশেষ অবস্থা </th>
+               <th scope="col">মামলার বিষয়বস্তু</th>
+               <th scope="col">রুল ইস্যুর তারিখ/প্রাপ্তির তারিখ</th>
+               <th scope="col">দফাওয়ারি জবাব</th>
                <th scope="col" width="70">অ্যাকশন</th>
             </tr>
          </thead>
@@ -84,15 +69,12 @@
                <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                <td>{{ $row->case_no }}</td>
                <td>{{ $row->case_category->name_bn ?? '-' }}</td>
-               <td>{{ $row->badis->first()->name ?? '-' }} </td>
+               <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
                <td>{{ $ministry . $department }} </td>
 
                <td>{{ $row->subject_matter ?? '-'}}</td>
                <td>{{ $row->postponed_details ?? '-'}}</td>
                <td>{{ $row->reply_submission_date ?? '-'}}</td>
-               <!-- <td>{{ $row->case_division->name_bn ?? '-'}}</td> -->
-               <td>{{ $row->case_status->status_name ?? '-' }} </td>
-               <!-- <td>{{ $row->role->role_name ?? '-' }} </td> -->
                <td>
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>

@@ -100,6 +100,24 @@
                                         </label>
                                         <textarea name="comment" id="comment" class="form-control form-control-solid" rows="7" style="border: 1px solid #ccc;"></textarea>
                                     </div>
+                                    <div class="form-group" id="minSelection" style="display: none;">
+                                        <fieldset>
+                                            <legend>রেস্পন্ডেন্ট মন্ত্রণালয় নির্বাচন করুণ</legend>
+                                            @foreach($caseMainBibadi as $key=>$bibadi)
+                                                    <input type="radio" name="main_min_id" id="main_min_id" value="{{ $bibadi->ministry_id }}"/>
+                                                    <span></span><b>{{ $bibadi->ministry->office_name_bn ?? '-' }}</b><br>
+                                            @endforeach
+                                        </fieldset>  
+                                    </div>
+                                    <div class="form-group" id="deptSelection" style="display: none;">
+                                        <fieldset>
+                                            <legend>রেস্পন্ডেন্ট অধিদপ্তর নির্বাচন করুণ</legend>
+                                            @foreach($caseMainBibadi as $key=>$bibadi)
+                                                    <input type="radio" name="main_dept_id" id="main_dept_id" value="{{ $bibadi->department_id }}"/>
+                                                    <span></span><b>{{ $bibadi->department->office_name_bn ?? '-' }}</b><br>
+                                            @endforeach
+                                        </fieldset>  
+                                    </div>
                                     <input type="hidden" name="hide_case_id" id="hide_case_id"
                                         value="{{ $case->id ?? '' }}">
                                 </div>

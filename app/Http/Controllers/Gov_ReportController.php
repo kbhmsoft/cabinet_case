@@ -32,21 +32,29 @@ class Gov_ReportController extends Controller
 
     public function pdf_generate(Request $request)
     {
-        // return $request;
         //=========================Ministry Wise Case Report========================//
 
         if($request->btnsubmit == 'pdf_num_ministry'){
+        // return $request;
             $data['page_title'] = 'সরকারি মামলার তালিকা'; //exit;
             $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
             $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
 
              // Validation
             $request->validate(
-              ['date_start' => 'required', 'date_end' => 'required'],
-              ['date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন', 'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন']
-              );
+                [
+                    'ministry' => 'required',
+                    'date_start' => 'required',
+                    'date_end' => 'required'
+                ],
+                [
+                    'ministry.required' => 'মন্ত্রণালয় নির্বাচন করুন',
+                    'date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন', 
+                    'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন'
+                ]
+            );
 
-            $data['page_title'] = 'মন্ত্রণালয় ভিত্তিক সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
+            $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
             $min_id = $request->ministry;
             $dept_id = $request->department;
 
@@ -228,7 +236,8 @@ class Gov_ReportController extends Controller
 
     public function imprtant_case_last_taken_step($caseID){
 
-        $query = GovCaseLog::where('gov_case_id', $caseID)->first()->case_status->status_name;
+        // $query = GovCaseLog::where('gov_case_id', $caseID)->first()->case_status->status_name;
+        $query = GovCaseRegister::where('id', $caseID)->first()->case_status->status_name;
         return $query;
     }
 
@@ -265,6 +274,8 @@ class Gov_ReportController extends Controller
     ]);
     $mpdf->WriteHTML($html);
     $mpdf->Output();
+    // $mpdf->shrink_tables_to_fit = 1;
+    $mpdf->use_kwt = true;
   }
 
    /**

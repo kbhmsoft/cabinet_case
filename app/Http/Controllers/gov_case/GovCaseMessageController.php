@@ -28,19 +28,16 @@ class GovCaseMessageController extends Controller
                 ->orderBy('id','DESC')
                 ->join('role', 'users.role_id', '=', 'role.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->leftJoin('district', 'office.district_id', '=', 'district.id')
-                ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn');
+                ->select('users.*', 'role.role_name', 'office.office_name_bn')
+                ->where('users.is_gov', 1);
                 // ->paginate(10);
         }else{
             $users= DB::table('users')
                 ->orderBy('id','DESC')
                 ->join('role', 'users.role_id', '=', 'role.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->leftJoin('district', 'office.district_id', '=', 'district.id')
-                ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-                ->where('office.district_id', $officeInfo->district_id);
+                ->select('users.*', 'role.role_name', 'office.office_name_bn')
+                ->where('users.is_gov', 1);
                 // ->paginate(10);
         }
 
@@ -56,8 +53,8 @@ class GovCaseMessageController extends Controller
             $users->where('office.upazila_id','=',$_GET['upazila']);
         }
 
+        // return $users->toSql();
         $users = $users->paginate(10);
-
         $page_title = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.messages.list', compact('page_title','users'))
@@ -96,41 +93,6 @@ class GovCaseMessageController extends Controller
             ->orderByRaw(DB::raw('FIELD(id,' . implode(",",$arr). ')'))
             ->paginate(15);
 
-
-        // return $data['users'];
-
-        // $data['msgs'] = Message::select(DB::raw('id, user_sender, user_receiver, max(id) as mid'))
-        //     ->where('user_sender',$user->id)
-        //     ->orderBy('mid', 'desc')
-        //     ->groupBy(['user_receiver'])
-        //     ->paginate(15);
-
-        // // $data['msg_request'] = [];
-        // $data['msgs'] = Message::select('id','user_sender', 'user_receiver', 'msg_reqest')
-        //     ->where('user_sender', [Auth::user()->id])
-        //     // ->Where('msg_reqest', 1)
-        //     ->orderby('created_at', 'DESC')
-        //     // ->groupby('user_receiver')
-        //     ->get();
-
-        // $data['msgs'] = Message::orderby('id', 'DESC')
-        //     // ->select('user_sender', 'user_receiver')
-        //     ->where('user_sender', [Auth::user()->id])
-        //     ->groupby('user_receiver')
-        //     ->paginate(20);
-
-        // $data['arr'] = [];
-        // foreach($data['msgs'] as $mes){
-        //     if( $mes->user_receiver != Auth::user()->id ){
-        //         array_push($data['arr'], $mes->user_receiver);
-        //     }
-        // }
-        // $data['arr'] =array_unique($data['arr']);
-        // $arr =array_unique($data['arr']);
-        // return $data['users'] = User::select('id')
-        //                     ->whereIn('id', array_unique($data['arr']))
-        //                     ->orderByRaw(DB::raw('FIELD(id,' . implode(",",$arr). ')'))
-        //                     ->paginate(3);
 
         $data['page_title'] = 'সাম্প্রতিক বার্তা';
 
@@ -186,15 +148,6 @@ class GovCaseMessageController extends Controller
                 $msg->save();
             }
         }
-        // $messages = $data['messages']->toArray();
-        // // return $messages = Arr::sort($messages);
-        // $data['messages'] = array_values(Arr::sort($messages['data'], function ($key, $value) {
-        //     return $key;
-        // }));
-
-        // $msg =arsort($messages);
-        // $messa = $messages->toArray()->sortBy('id','ASC');
-        // dd(collect($messages)->sortByAsc('id'));
 
         $data['page_title'] = 'বার্তা বিনিময়';
 
