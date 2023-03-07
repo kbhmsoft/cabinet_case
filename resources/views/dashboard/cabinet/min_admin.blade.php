@@ -5,32 +5,18 @@
 @section('content')
 <!--begin::Dashboard-->
 
-@php
-$new=$running=$finished=$applied=0;
-foreach ($cases as $val)
-{
-   if($val->status == 1){
-         $new++;
-   }
-   if($val->status == 2){
-         $running++;
-   }
-   if($val->status == 3){
-         $applied++;
-   }
-   if($val->status == 4){
-         $finished++;
-   }
-}
-
-@endphp
 
 <!--begin::Dashboard-->
 <!-- Dashboard Counter -->
 @include('dashboard.cabinet.inc._dashboard_counter_card')
 <!-- //Dashboard Counter -->
-
-
+@if(!empty($notice))
+  <marquee width="100%" direction="left" height="100px" class="text-danger font-weight-bolder font-size-h3">
+    @foreach($notice as $key=>$val)
+      {{ $val->description }}
+    @endforeach
+  </marquee>
+@endif
 <div class="row">
     <div class="col-md-8">
         <div class="card card-custom">

@@ -25,9 +25,6 @@ class GovCaseUserManagementController extends Controller
     {   
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        // dd($officeInfo);
-        // All user list
-        // $users = UserManagement::latest()->paginate(5);
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
             $users= DB::table('users')
                             ->orderBy('id','DESC')

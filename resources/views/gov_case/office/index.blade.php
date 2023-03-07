@@ -26,40 +26,11 @@
          <!-- <p>{{ $message }}</p> -->
       <!-- </div> -->
       @endif
-
-      <!-- <form class="form-inline" method="GET">      
-                
-         <div class="form-group mb-2 mr-2">
-            <select name="division" class="form-control">
-               <option value="">-বিভাগ নির্বাচন করুন-</option>
-               @foreach ($divisions as $value)
-               <option value="{{ $value->id }}"> {{ $value->division_name_bn }} </option>
-               @endforeach
-            </select>
-         </div>
-         <div class="form-group mb-2 mr-2">
-            <select name="district" id="district_id" class="form-control">
-               <option value="">-জেলা নির্বাচন করুন-</option>              
-            </select>
-         </div>
-         <div class="form-group mb-2 mr-2">
-            <select name="upazila" id="upazila_id" class="form-control">
-               <option value="">-উপজেলা নির্বাচন করুন-</option>               
-            </select>
-         </div>
-         <button type="submit" class="btn btn-success font-weight-bolder mb-2 ml-2">অনুসন্ধান করুন</button>
-      </form> -->
       <table class="table table-hover mb-6 font-size-h6">
          <thead class="thead-light">
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">অফিসের নাম</th>
-               <th scope="col">বিভাগের নাম</th>
-               <th scope="col">জেলার নাম</th>
-               <th scope="col">উপজেলার নাম</th><!-- 
-               <th scope="col">ইউজারনেম</th>
-               <th scope="col">ইউজার রোল</th>
-               <th scope="col">ইমেইল এড্রেস</th> -->
                <th scope="col">স্ট্যাটাস</th>
                <th scope="col">অ্যাকশন</th>
             </tr>
@@ -75,10 +46,7 @@
             ?>
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn(++$i) }}.</th>
-               <td>{{ $row->office_name_bn }}</td>
-               <td>{{ $row->division_name_bn ?? '-' }}</td>
-               <td>{{ $row->district_name_bn ?? '-'  }}</td>
-               <td>{{ $row->upazila_name_bn ?? '-'  }}</td>               
+               <td>{{ $row->office_name_bn }}</td>          
                <td><?=$officeStatus?></td>
                <td>
                   <a href="{{ route('cabinet.office.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>

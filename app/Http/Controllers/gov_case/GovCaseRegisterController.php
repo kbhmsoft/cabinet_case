@@ -9,6 +9,7 @@ use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseDivision;
 use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\Office;
 use App\Models\User;
@@ -799,6 +800,7 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();
 
         $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
@@ -918,6 +920,13 @@ class GovCaseRegisterController extends Controller
     public function getCaseCategory($id)
     {
         $categories = GovCaseDivisionCategory::orderby('id', 'desc')->where('gov_case_division_id', $id)->pluck("name_bn","id");
+        return json_encode($categories);
+
+    }
+
+    public function getDependentCaseCategoryType($id)
+    {
+        $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_en","id");
         return json_encode($categories);
 
     }

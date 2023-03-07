@@ -79,10 +79,31 @@
                   <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ইউজার ম্যানেজমেন্ট</span>
                </a>
             </li>
-             <li class="menu-item {{ request()->is('cabinet.office') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-               <a href="{{ route('cabinet.office') }}" class="menu-link">
-                  <span class="menu-text font-weight-bolder"><i class="la la-briefcase"></i> অফিস সেটিংস</span>
+
+            <li class="menu-item {{ request()->is('cabinet/office' ,'cabinet/office/create') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+               <a href="javascript:;" class="menu-link menu-toggle">
+                  <span class="menu-text font-weight-bolder"><i class="la la-briefcase"></i> অফিস ব্যবস্থাপনা</span>
+                  <i class="menu-arrow"></i>
                </a>
+               <div class="menu-submenu">
+                  <i class="menu-arrow"></i>
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.office.create') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">নতুন অফিস এন্ট্রি</span>
+                        </a>
+                     </li>
+                  </ul>
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.office') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">অফিসের তালিকা</span>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
             </li>
             @endif
 
@@ -202,6 +223,14 @@
                            </a>
                         </li>
                         @endif
+                        @if (Auth::user()->role_id != 17 || Auth::user()->role_id != 18)
+                       <li class="menu-item" aria-haspopup="true">
+                           <a href="{{ route('cabinet.notice.list') }}" class="menu-link">
+                              <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                              <span class="menu-text font-weight-bolder">নোটিশ</span>
+                           </a>
+                        </li>
+                        @endif
                          <li class="menu-item" aria-haspopup="true">
                             <a href="{{ route('cabinet.messages') }}" class="menu-link">
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
@@ -212,6 +241,47 @@
                    </div>
                </li>
             @endif
+           @php 
+           
+           
+           $supremeCourtCaseCout=DB::select( DB::raw("SELECT count(id) as total_hearing FROM gov_case_notify_supre_court WHERE date = '27/02/2023'") )[0]->total_hearing;
+           
+           @endphp
+            @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
+            <li class="menu-item {{ request()->is('search/supremecourt/causelist', 'show/notification/supremecourt', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                   <span class="menu-text font-weight-bolder"><i class="fas fa-file-contract"></i> সুপ্রীম কোর্ট</span>
+                    
+                   <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                   <i class="menu-arrow"></i>
+                   <ul class="menu-subnav">
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ url('search/supremecourt/case') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">মামলা অনুসন্ধান</span>
+                        </a>
+                     </li>
+                    
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ url('search/supremecourt/causelist') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">কজলিস্ট</span>
+                        </a>
+                     </li>
+                     @if ($supremeCourtCaseCout != 0)
+                      <li class="menu-item" aria-haspopup="true">
+                         <a href="{{ url('show/notification/supremecourt') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                            <span class="menu-text font-weight-bolder">আজকের শুনানির তালিকা</span>
+                         </a>
+                      </li>
+                      @endif
+                   </ul>
+                </div>
+            </li>
+         @endif
 
             
 

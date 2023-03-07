@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CaseHearing;
 use App\Http\Resources\calendar\CaseHearingCollection;
 use App\Http\Resources\calendar\RM_CaseHearingCollection;
+use App\Models\gov_case\GovCaseNotice;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\RM_CaseHearing;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
@@ -253,9 +254,11 @@ class DashboardController extends Controller
          $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
          $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
 
-         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1])->count();
+         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
+         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', 1)->count();
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
        
@@ -339,9 +342,11 @@ class DashboardController extends Controller
          $data['running_case'] = GovCaseRegister::where('status', 1)->count();
          $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
          $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-         $data['running_case_appeal'] = GovCaseRegister::where('status', '!=' , 3)->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
+         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
+         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status',1)->count();
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
@@ -1139,9 +1144,7 @@ class DashboardController extends Controller
          $data['total_ct'] = DB::table('case_type')->count();
          $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
+         $data['notice'] = GovCaseNotice::where('notice_for',$roleID)->where('expiry_date','>=', date(now()))->get();
 
          // count ministry wise case status
          $ministry = DB::table('office')
@@ -1202,6 +1205,7 @@ class DashboardController extends Controller
          // View
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
          $data['page_title'] = 'মিনিস্ট্রি এডমিনের ড্যাশবোর্ড';
+         // return $data;
          return view('dashboard.cabinet.min_admin')->with($data);
 
       }elseif($roleID == 30){

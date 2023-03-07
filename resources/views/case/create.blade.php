@@ -448,7 +448,7 @@ for($i=0;$i<sizeof($land_types);$i++){
               {
                   $('select[name="district"]').empty();
               }
-          });
+            });
 
                 //===========Upazila================//
 

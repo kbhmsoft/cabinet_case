@@ -10,6 +10,17 @@
 <style type="text/css">
     #appRowDiv td{padding: 5px; border-color: #ccc;}
     #appRowDiv th{padding: 5px;text-align:center;border-color: #ccc; color: black;}
+
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        /*cursor: pointer;
+        display: block;*/
+        height: 41px;
+        /*user-select: none;
+        -webkit-user-select: none;
+        padding-top: 6px;*/ 
+        font-size:1.2rem
+    }
 </style> 
 <!--begin::Row-->
 <div class="row">
@@ -39,80 +50,56 @@
  					
  				@endif
             <!--begin::Form-->
-            <form action="{{ route('office.save') }}" class="form" method="POST">
+            <form action="{{ route('cabinet.office.save') }}" class="form" method="POST">
             @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="container">
                             <div class="row">
-                                 <div class="col-lg-4">
-                                    <div class="form-group mb-2">
-                                      <label>বিভাগ</label>
-                                       <select name="division" class="form-control w-100">
-                                          <option value="">-বিভাগ নির্বাচন করুন-</option>
-                                          @foreach ($division as $value)
-                                          <option value="{{ $value->id }}"> {{ $value->division_name_bn }} </option>
-                                          @endforeach
-                                       </select>
-                                    </div>
-                                 </div>
-                                 <div class="col-lg-4">
-                                    <div class="form-group mb-2">
-                                        <label>জেলা</label>
-                                       <select name="district" id="district_id" class="form-control w-100">
-                                          <option value="">-জেলা নির্বাচন করুন-</option>
-                                       </select>
-                                    </div>
-                                 </div>
-                                 <div class="col-lg-4 mb-2">
-                                    <label>উপজেলা</label>
-                                    <select name="upazila" id="upazila_id" class="form-control w-100">
-                                       <option value="">-উপজেলা নির্বাচন করুন-</option>
-                                    </select>
-                                 </div>
-                            </div>
-                        </div>
-                        <div class="container">
-                            <div class="row">
                                 <div class="col-lg-4 mb-5">
-                                    <label>অফিসের ধরণ <span class="text-danger">*</span></label>
+                                    <label>অফিস লেভেল</label>
                                     
-                                    <select name="office_lavel" id="office_lavel"  class="form-control w-100">
+                                    <select name="level" id="level"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($office_type as $value)
                                           <option value="{{ $value->id }}"> {{ $value->type_name_bn }} </option>
                                           @endforeach
                                        </select>
                                 </div>
-                                <div class="col-lg-4 mb-5">
-                                    <label>প্যারেন্ট অফিসের নাম</label>
-                                    
-                                    <select name="parent_id" id="parent_id"  class="form-control w-100">
-                                          <option value="">-- নির্বাচন করুন --</option>
-                                          @foreach ($office as $value)
-                                          <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
-                                          @endforeach
-                                       </select>
-                                </div>
-                                
-
-        		             	<div class="col-lg-4">
-        		                  <label>স্ট্যাটাস <span class="text-danger">*</span></label>
-        							<div class="radio-inline">
-        								<label class="radio">
-        								<input type="radio" name="status" value="1" checked="checke" />
-        								<span></span>এনাবল</label>
-        								<label class="radio">
-        								<input type="radio" name="status" value="0" />
-        								<span></span>ডিজেবল</label>
-        							</div>
-        	                	</div>
-                                <div class="form-group col-lg-12">
+                                <div class="form-group col-lg-8">
                                     <label for="office_name" class=" form-control-label">অফিসের নাম <span class="text-danger">*</span></label>
                                     <input type="text" id="office_name" name="office_name" placeholder="অফিসের নাম লিখুন" class="form-control form-control-sm">
                                     <span style="color: red">
-                                        {{ $errors->first('name') }}
+                                        {{ $errors->first('office_name') }}
                                     </span>
+                                </div>
+                                <div class="col-lg-5 mb-5">
+                                    <label>অফিসের ধরণ <span class="text-danger">*</span></label>
+                                    
+                                    <select name="type" id="type"  class="form-control w-100">
+                                          <option value="">-- নির্বাচন করুন --</option>
+                                          <option value="1"> সরকারি </option>
+                                          <option value="2"> সংবিধিবদ্ধ/স্বশাসিত </option>
+                                          <option value="3"> আধা-সরকারি </option>
+                                       </select>
+                                </div>
+                                <div class="form-group col-lg-5">
+                                    <label for="office_head_desig" class=" form-control-label">অফিস প্রধানের পদবি<span class="text-danger">*</span></label>
+                                    <input type="text" id="office_head_desig" name="office_head_desig" placeholder="অফিসের নাম লিখুন" class="form-control form-control-sm">
+                                    <span style="color: red">
+                                        {{ $errors->first('office_head_desig') }}
+                                    </span>
+                                </div>
+                                <div class="col-lg-2">
+                                  <label>স্ট্যাটাস <span class="text-danger">*</span></label>
+                                  <div class="radio-inline">
+                                    <label class="radio">
+                                    <input type="radio" name="status" value="1" checked="checke" />
+                                    <span></span>এনাবল</label>
+                                    <label class="radio">
+                                    <input type="radio" name="status" value="0" />
+                                    <span></span>ডিজেবল</label>
+                                  </div>
                                 </div>
                             </div>
                         </div>
@@ -240,10 +227,15 @@
           });
 
         });
-</script>  -->       
-   <script type="text/javascript">
+</script>  -->     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+  <script type="text/javascript">
       jQuery(document).ready(function ()
       {
+
+          $('#parent_id').select2();
+          // $('#district_id').select2();
          // District Dropdown
          jQuery('select[name="division"]').on('change',function(){
             var dataID = jQuery(this).val();

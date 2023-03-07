@@ -22,22 +22,9 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         // dd($officeInfo);
         $data['page_title']= 'অফিস সেটিং তালিকা';
-        $query= DB::table('office')
-                ->leftjoin('division', 'office.division_id', '=', 'division.id')
-                ->leftjoin('district', 'office.district_id', '=', 'district.id')
-                ->leftjoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->where('office.is_gov', 1)
-                ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
-        if($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13){
-            $query->where('office.district_id','=', $officeInfo->district_id);
-        }elseif($roleID == 9 || $roleID == 10 || $roleID == 11){
-            $query->where('office.upazila_id','=', $officeInfo->upazila_id);    
-        }/*elseif($roleID == 12){
-            $moujaIDs = $this->get_mouja_by_ulo_office_id(Auth::user()->office_id);
-            // dd($moujaIDs);
-            // print_r($moujaIDs); exit;
-            $query->where('office.mouja_id', $moujaIDs);    
-        }   */     
+        $query= DB::table('gov_case_office')
+                ->select('gov_case_office.*');
+            
 
         //Add Conditions 
 
@@ -180,31 +167,21 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         //
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
-            $data['office']= DB::table('office')
-                            ->select('office.*')
-                            ->where('is_gov',1)
+            $data['offices']= DB::table('gov_case_office')
+                            ->select('gov_case_office.*')
+                            ->where('type',1)
+                            ->where('level',1)
                             ->get();
-                        $data['division']= DB::table('division')
+            $data['division']= DB::table('division')
                             ->select('division.*')
                             ->get();
             $data['court_type']= DB::table('court_type')
                             ->select('court_type.*')
                             ->get();
-            $data['office_type']= DB::table('office_type')
-                            ->select('office_type.*')
+            $data['office_type']= DB::table('gov_case_office_type')
+                            ->select('gov_case_office_type.*')
                             ->get();
             $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
-        }elseif($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
-
-            $data['district']= DB::table('district')
-                            ->select('district.*')
-                            ->where('id',$officeInfo->district_id)
-                            ->get();
-            /*$data['court_type']= DB::table('court_type')
-                            ->select('court_type.*')
-                            ->get();*/
-            $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
-
         }   
         // dd($data); 
 
@@ -223,29 +200,19 @@ class GovCaseOfficeController extends Controller
         //
         // dd($request->all());
         $roleID = Auth::user()->role_id;
-        // dd($roleID);
-        // $officeInfo = user_office_info();
-        //
-        // if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
+        
             $validator = $request->validate([
-                // 'division' => 'required',
-                // 'district' => 'required',
-                'office_lavel' => 'required',
                 'office_name' => 'required',
                 'status' => 'required'
             ]);
-            DB::table('office')->insert([
-               // 'division_id' => $request->division, 
-               // 'district_id' => $request->district,
-               // 'upazila_id' => $request->upazila,
+            DB::table('gov_case_office')->insert([
                'level' => $request->office_lavel, 
                'office_name_bn' => $request->office_name,
-               'parent' => $request->parent_id, 
                'status' => $request->status, 
-               'is_gov' => 1, 
+               'type' => $request->type, 
+               'level' => 2, 
             ]);
-        // }
-        return redirect()->route('office')
+        return redirect()->route('cabinet.office')
             ->with('success', 'অফিস সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 

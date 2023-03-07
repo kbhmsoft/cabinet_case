@@ -8,8 +8,28 @@ use App\Http\Controllers\gov_case\GovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
 use App\Http\Controllers\gov_case\GovCaseOfficeController;
 use App\Http\Controllers\gov_case\GovCaseMessageController;
+use App\Http\Controllers\gov_case\GovCaseNoticeController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
+
 
 Route::middleware('auth')->group(function () {
+
+   /////************** Supream Court **************/////
+
+    Route::get('/search/supremecourt/case', [SumpremCourtController::class, 'search_case']);
+    Route::post('/search/supremecourt/case/post/value', [SumpremCourtController::class, 'search_case_post_function'])->name('supremecourt.case.search.post.value');
+    
+    Route::get('/search/supremecourt/causelist', [SumpremCourtController::class, 'supremecourt_causelist']);
+    
+    Route::post('/search/supremecourt/cause/list', [SumpremCourtController::class, 'supremecourt_causelist_pull_data'])->name('supremecourt.cause.list.pull.data');
+    
+    //Route::get('/get/notification/supremecourt', [SumpremCourtController::class, 'supremecourt_get_notification']);
+    
+    Route::get('/show/notification/supremecourt', [SumpremCourtController::class, 'supremecourt_show_notification'])->name('show.notification.supremecourt');
+    
+    Route::get('/modal/case/details/view', [SumpremCourtController::class, 'modal_case_details_view'])->name('modal.case.details.view');
+    
+
 
     Route::group(['prefix' => 'cabinet/', 'as' => 'cabinet.'], function () {
         Route::resource('user-management', GovCaseUserManagementController::class);
@@ -34,6 +54,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/messages_group', [GovCaseMessageController::class, 'messages_group'])->name('messages_group');
         Route::get('/hearing_date', [GovCaseUserNotificationController::class, 'hearing_date'])->name('hearing_date');
         Route::get('/results_completed', [GovCaseUserNotificationController::class, 'results_completed'])->name('results_completed');
+        Route::get('/notice/list', [GovCaseNoticeController::class, 'index'])->name('notice.list');
+        Route::get('/notice/create', [GovCaseNoticeController::class, 'create'])->name('notice.create');
+        Route::post('/notice/store', [GovCaseNoticeController::class, 'store'])->name('notice.store');
+        Route::get('/notice/edit/{id}', [GovCaseNoticeController::class, 'edit'])->name('notice.edit');
+        Route::get('/notice/show/{id}', [GovCaseNoticeController::class, 'show'])->name('notice.show');
+        Route::post('/notice/update', [GovCaseNoticeController::class, 'update'])->name('notice.update');
         // Route::get('/new_sf_list', [GovCaseMessageController::class, 'newSFlist'])->name('newSFlist');
         // Route::get('/new_sf_details/{id}', [GovCaseMessageController::class, 'newSFdetails'])->name('newSFdetails');
         Route::get('/script', [GovCaseMessageController::class, 'script']);
@@ -42,6 +68,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
+            Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
