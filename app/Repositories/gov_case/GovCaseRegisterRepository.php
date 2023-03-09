@@ -91,6 +91,36 @@ class GovCaseRegisterRepository
         } else {
             $civil_appeal_order_date = null;
         }
+        if ($caseInfo->result_sending_date_solisitor_to_ag != NULL && $caseInfo->result_sending_date_solisitor_to_ag != '') {
+            $result_sending_date_solisitor_to_ag = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date_solisitor_to_ag)));        
+        } else {
+            $result_sending_date_solisitor_to_ag = null;
+        }
+        if ($caseInfo->tamil_requesting_date != NULL && $caseInfo->tamil_requesting_date != '') {
+            $tamil_requesting_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->tamil_requesting_date)));        
+        } else {
+            $tamil_requesting_date = null;
+        }
+        if ($caseInfo->appeal_against_postpond_interim_order_date != NULL && $caseInfo->appeal_against_postpond_interim_order_date != '') {
+            $appeal_against_postpond_interim_order_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->appeal_against_postpond_interim_order_date)));        
+        } else {
+            $appeal_against_postpond_interim_order_date = null;
+        }
+        if ($caseInfo->result_date != NULL && $caseInfo->result_date != '') {
+            $result_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_date)));        
+        } else {
+            $result_date = null;
+        }
+        if ($caseInfo->result_copy_asking_date != NULL && $caseInfo->result_copy_asking_date != '') {
+            $result_copy_asking_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_copy_asking_date)));        
+        } else {
+            $result_copy_asking_date = null;
+        }
+        if ($caseInfo->result_copy_reciving_date != NULL && $caseInfo->result_copy_reciving_date != '') {
+            $result_copy_reciving_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_copy_reciving_date)));        
+        } else {
+            $result_copy_reciving_date = null;
+        }
         // dd($ref_case_num);
 
         try {
@@ -104,14 +134,21 @@ class GovCaseRegisterRepository
             $case->date_issuing_rule_nishi =date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->case_date)));
             $case->case_division_id= $caseInfo->court;
             $case->case_category_id= $caseInfo->case_category;
+            $case->case_type_id= $caseInfo->case_category_type;
             $case->concern_user_id= $caseInfo->concern_person;
             $case->subject_matter= $caseInfo->subject_matter;
+            $case->postponed_order= $caseInfo->postponed_order;
             $case->postponed_details= $caseInfo->postponed_details;
             $case->important_cause= $caseInfo->important_cause;
             $case->interim_order= $caseInfo->interim_order;
+            $case->interim_order_details= $caseInfo->interim_order_details;
             $case->gov_case_ref_id= $caseInfo->appeal_case_id;
             $case->ref_gov_case_no= $ref_case_num;
             $case->result_sending_date = $result_sending_date;
+            $case->result_sending_memorial= $caseInfo->result_sending_memorial;
+            $case->result_sending_date_solisitor_to_ag= $result_sending_date_solisitor_to_ag;
+            $case->result_sending_memorial_solisitor_to_ag= $caseInfo->result_sending_memorial_solisitor_to_ag;
+            $case->result_sending_memorial= $caseInfo->result_sending_memorial;
             $case->reply_submission_date = $reply_submission_date;  
             $case->result_short_dtails= $caseInfo->result_short_dtails;
             $case->result= $caseInfo->result;
@@ -137,6 +174,15 @@ class GovCaseRegisterRepository
             $case->review_case_order_details= $caseInfo->review_case_order_details;
             $case->civil_appeal_order_date = $civil_appeal_order_date;  
             $case->civil_appeal_order_details= $caseInfo->civil_appeal_order_details;
+            $case->tamil_requesting_memorial= $caseInfo->tamil_requesting_memorial;
+            $case->tamil_requesting_date= $tamil_requesting_date;
+            $case->appeal_against_postpond_interim_order= $caseInfo->appeal_against_postpond_interim_order;
+            $case->appeal_against_postpond_interim_order_date= $appeal_against_postpond_interim_order_date;
+            $case->appeal_against_postpond_interim_order_details= $caseInfo->appeal_against_postpond_interim_order_details;
+            $case->result_date= $result_date;
+            $case->result_copy_asking_date= $result_copy_asking_date;
+            $case->result_copy_reciving_date= $result_copy_reciving_date;
+            $case->others_action_detials= $caseInfo->others_action_detials;
             if($case->save()){
                 $caseId=$case->id;
                 if ($caseInfo->appeal_case_id != NULL && $caseInfo->appeal_case_id != '') {

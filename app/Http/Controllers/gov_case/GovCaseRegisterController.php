@@ -8,6 +8,7 @@ use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivisionCategory;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Models\gov_case\GovCaseHearing;
@@ -785,7 +786,9 @@ class GovCaseRegisterController extends Controller
     {
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+        $data['ministrys'] = GovCaseOffice::get();
+        // $data['ministrys'] = DB::table('gov_case_office')->get();
 
         $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
         $data['courts'] = DB::table('court')
@@ -823,7 +826,7 @@ class GovCaseRegisterController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
+        // return $request;
         $caseId = $request->caseId;
         // 'email' => 'unique:users,email_address,'.$user->id
 
@@ -857,10 +860,12 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
         
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+        $data['ministrys'] = GovCaseOffice::get();
         $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
         $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['courts'] = Court::select('id', 'court_name')->get();
         if($roleID != 33){
             $data['depatments'] = Office::where('parent', $officeID)->get();

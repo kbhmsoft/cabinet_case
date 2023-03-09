@@ -280,11 +280,11 @@ class DashboardController extends Controller
                                  \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
                                  \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
                               )
-                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.ministry_id')
+                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
                               ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
                               ->where('office.level', 9)
                               ->groupBy('office.id')
-                              ->groupBy('gcb.ministry_id')
+                              ->groupBy('gcb.respondent_id')
                               ->orderBy('office.id', 'asc')
                               ->paginate(10);
 
@@ -371,11 +371,11 @@ class DashboardController extends Controller
                                  \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
                                  \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
                               )
-                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.ministry_id')
+                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
                               ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
                               ->where('office.level', 9)
                               ->groupBy('office.id')
-                              ->groupBy('gcb.ministry_id')
+                              ->groupBy('gcb.respondent_id')
                               ->orderBy('office.id', 'asc')
                               ->paginate(10);
 
@@ -1084,55 +1084,55 @@ class DashboardController extends Controller
          // Counter
          $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->count();
 
          $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 1)->count();
 
          $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 2)->count();
 
          $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 3)->count();
 
          $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->whereIn('status', [1,2])->count();
 
          $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
 
          $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
 
          $data['not_against_gov'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('in_favour_govt', 1)->count();
 
          $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('in_favour_govt', 0)->count();
 
@@ -1299,55 +1299,55 @@ class DashboardController extends Controller
          // Counter
          $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->count();
 
          $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 1)->count();
 
          $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 2)->count();
 
          $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('status', 3)->count();
 
          $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->whereIn('status', [1,2])->count();
 
          $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
 
          $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
 
          $data['not_against_gov'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('in_favour_govt', 1)->count();
 
          $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis', 
                function ($query)use($officeID) {
-                  $query->where('ministry_id', $officeID)->where('is_main_bibadi',1);
+                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
                }
             )->where('in_favour_govt', 0)->count();
 
@@ -1924,7 +1924,7 @@ class DashboardController extends Controller
      $query = DB::table('gov_case_bibadis');
 
      if($ministry != NULL){
-       $query->where('ministry_id', $ministry);
+       $query->where('respondent_id', $ministry);
        $query->where('is_main_bibadi',1);
        // $query->groupBy('gov_case_id');
     }

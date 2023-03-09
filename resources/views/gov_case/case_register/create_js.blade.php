@@ -27,6 +27,9 @@
             // addBadiRowFunc();
             addMainBibadiRowFunc();
             addFileRowFunc();
+            /*$('.main_respondent').select2();
+            $('#ministry_id').select2();*/
+
 
 
             //===========caseType================//
@@ -205,9 +208,9 @@
                 var items = '';
                 items += '<tr id="bibadi_'+(count)+'">';
                 items +=
-                    '<td><select onchange="getMainDoptor(this, \'bibadi_'+(count)+'\')" name="main_ministry[]" id="ministry_id" class="form-control form-control-sm" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                    '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
                 items += '<input type="hidden" name="bibadi_id[]" value="">';
-                items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
                 // console.log(count);
                 if(countVal != 1){
                     items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
@@ -242,9 +245,9 @@
                 var items = '';
                 items += '<tr id="bibadi_'+(count)+'">';
                 items +=
-                    '<td><select onchange="getDoptor(this, \'bibadi_'+(count)+'\')" name="ministry[]" id="ministry_id" class="form-control form-control-sm" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                    '<td><select onchange="getDoptor(this, \'bibadi_'+(count)+'\')" name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
                 items += '<input type="hidden" name="bibadi_id[]" value="">';
-                items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
                 // console.log(count);
                 if(type == 'other'){
                     items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';

@@ -63,13 +63,13 @@
                     </td>
                     <td>
                       @foreach ($caseMainBibadi as $key=>$bibadi)
-                        {{en2bn($key+1)}}.{{ $bibadi->ministry->office_name_bn ?? '-' }},{{ $bibadi->department->office_name_bn ?? '-' }}<br>
+                        {{en2bn($key+1)}}.{{ $bibadi->ministry->office_name_bn ?? '-' }}<br>
                       @endforeach
                     </td>
                     <td>{{ $case->subject_matter }}</td>
                     <td>{{ $case->date_issuing_rule_nishi ? en2bn($case->date_issuing_rule_nishi) : '-'}}</td>
                     <td>{{ $case->result_sending_date ? en2bn($case->result_sending_date) : '-'}}</td>
-                    <td>{{ $case->ag_office_sending_date ? en2bn($case->ag_office_sending_date) : '-'}}</td>
+                    <td>{{ $case->result_sending_date_solisitor_to_ag ? en2bn($case->result_sending_date_solisitor_to_ag) : '-'}}</td>
                     <td>{{ $case->reply_submission_date ? en2bn($case->reply_submission_date) : '-'}}</td>
                   </tr>
                 </tbody>

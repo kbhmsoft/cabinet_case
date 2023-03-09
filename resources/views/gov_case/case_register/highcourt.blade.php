@@ -34,12 +34,10 @@
             <tr>
                <th scope="col" width="30">ক্রমিক</th>
                <th scope="col">মামলা নং</th>
-               <!-- <th scope="col">ক্যাটাগরি</th> -->
                <th scope="col">পিটিশনারের নাম ও ঠিকানা</th>
-               <!-- <th scope="col">মূল বিবাদী</th> -->
                <th scope="col">মামলার বিষয়বস্তু</th>
                <th scope="col">রুল ইস্যুর তারিখ/প্রাপ্তির তারিখ</th>
-               <th scope="col">দফাওয়ারি জবাব</th>
+               <th scope="col">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
                <th scope="col" width="70">অ্যাকশন</th>
             </tr>
          </thead>
@@ -58,12 +56,10 @@
             <tr>
                <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                <td style="width: 10px;">{{ $row->case_no }}</td>
-               <!-- <td>{{ $row->case_category->name_bn ?? '-' }}</td> -->
                <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
-
                <td>{{ $row->subject_matter ?? '-'}}</td>
-               <td>{{ $row->postponed_details ?? '-'}}</td>
-               <td>{{ $row->reply_submission_date ?? '-'}}</td>
+               <td>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi):'-'}}</td>
+               <td>{{ $row->result_sending_date ? en2bn($row->result_sending_date):'-'}}</td>
                <td>
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>

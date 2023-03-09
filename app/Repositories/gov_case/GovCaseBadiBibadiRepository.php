@@ -10,6 +10,7 @@ namespace App\Repositories\gov_case;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseOffice;
 use CreateGovCaseBadiTable;
 
 class GovCaseBadiBibadiRepository
@@ -42,24 +43,22 @@ class GovCaseBadiBibadiRepository
     }
 
     public static function storeBibadi($caseInfo, $govCaseId){
-        foreach($caseInfo->ministry as $key => $val)
+        foreach($caseInfo->other_respondent as $key => $val)
         {
-            if($caseInfo->ministry[$key] != null){
+            if($caseInfo->other_respondent[$key] != null){
                 $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
                 $bibadi->gov_case_id = $govCaseId;
-                $bibadi->ministry_id = $caseInfo->ministry[$key];
-                $bibadi->department_id = $caseInfo->doptor[$key];
+                $bibadi->respondent_id = $caseInfo->other_respondent[$key];
                 $bibadi->save();
             }
         }
-        foreach($caseInfo->main_ministry as $key => $val)
+        foreach($caseInfo->main_respondent as $key => $val)
         {
             // dd($key);
-            if($caseInfo->main_ministry[$key] != null){
+            if($caseInfo->main_respondent[$key] != null){
                 $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
                 $bibadi->gov_case_id = $govCaseId;
-                $bibadi->ministry_id = $caseInfo->main_ministry[$key];
-                $bibadi->department_id = $caseInfo->main_doptor[$key];
+                $bibadi->respondent_id = $caseInfo->main_respondent[$key];
                 $bibadi->is_main_bibadi = 1;
                 $bibadi->save();
             }

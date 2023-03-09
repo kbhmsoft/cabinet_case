@@ -18,10 +18,7 @@ class GovCaseRegister extends Model
 {
 	use HasFactory;
 
-
-	// protected $table = 'mouja';
 	public $timestamps = true;
-     
     protected $fillable = [
 		'id',  
         'case_no', 
@@ -45,14 +42,23 @@ class GovCaseRegister extends Model
         'case_status_id',  
         'case_division_id',    
         'case_category_id',    
+        'case_type_id',    
         'year',    
         'concern_user_id', 
         'subject_matter',  
+        'postponed_order',   
         'postponed_details',   
         'important_cause', 
         'interim_order',   
+        'interim_order_details',   
         'is_appeal',   
         'result_sending_date', 
+        'result_sending_memorial', 
+        'result_sending_date_solisitor_to_ag', 
+        'result_sending_memorial_solisitor_to_ag', 
+        'appeal_against_postpond_interim_order',   
+        'appeal_against_postpond_interim_order_date',  
+        'appeal_against_postpond_interim_order_details', 
         'reply_submission_date',   
         'ag_office_sending_date',  
         'result_short_dtails', 
@@ -62,6 +68,8 @@ class GovCaseRegister extends Model
         'selected_main_dept_id',   
         'appeal_requesting_memorial',  
         'appeal_requesting_date',  
+        'tamil_requesting_memorial',   
+        'tamil_requesting_date',    
         'reason_of_not_appealing', 
         'contempt_case_no',    
         'contempt_case_isuue_date',    
@@ -77,6 +85,7 @@ class GovCaseRegister extends Model
         'review_case_order_details',
         'civil_appeal_order_date',
         'civil_appeal_order_details',
+        'others_action_detials',
 	];
 
     public function users(){

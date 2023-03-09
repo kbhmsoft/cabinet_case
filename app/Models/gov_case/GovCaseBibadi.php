@@ -3,6 +3,7 @@
 namespace App\Models\gov_case;
 
 use App\Models\Office;
+use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,13 +16,13 @@ class GovCaseBibadi extends Model
 	protected $fillable = [
         'id',
         'gov_case_id',
-        'ministry_id',
+        'respondent_id',
         'department_id',
         'is_main_bibadi',
 	];
 
     public function ministry(){
-        return $this->hasOne(Office::class, 'id', 'ministry_id');
+        return $this->hasOne(GovCaseOffice::class, 'id', 'respondent_id');
     }
     public function department(){
         return $this->hasOne(Office::class, 'id', 'department_id');
