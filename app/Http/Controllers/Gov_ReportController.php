@@ -44,13 +44,13 @@ class Gov_ReportController extends Controller
             $request->validate(
                 [
                     'ministry' => 'required',
-                    'date_start' => 'required',
-                    'date_end' => 'required'
+                    // 'date_start' => 'required',
+                    // 'date_end' => 'required'
                 ],
                 [
                     'ministry.required' => 'মন্ত্রণালয় নির্বাচন করুন',
-                    'date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন', 
-                    'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন'
+                    // 'date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন', 
+                    // 'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন'
                 ]
             );
 
@@ -216,7 +216,7 @@ class Gov_ReportController extends Controller
 
     public function imprtant_case_mul_bibadi($caseID){
 
-          $query = GovCaseBibadi::select('ministry_id','department_id')->where('gov_case_id', $caseID)->where('is_main_bibadi',1)->with(['ministry' => function($query){
+          $query = GovCaseBibadi::select('respondent_id','department_id')->where('gov_case_id', $caseID)->where('is_main_bibadi',1)->with(['ministry' => function($query){
             $query->select('id','office_name_bn');
         }])->with(['department' => function($query){
             $query->select('id','office_name_bn');
@@ -226,7 +226,7 @@ class Gov_ReportController extends Controller
 
     public function imprtant_case_other_bibadi($caseID){
 
-        $query = GovCaseBibadi::select('ministry_id','department_id')->where('gov_case_id', $caseID)->where('is_main_bibadi',0)->with(['ministry' => function($query){
+        $query = GovCaseBibadi::select('respondent_id','department_id')->where('gov_case_id', $caseID)->where('is_main_bibadi',0)->with(['ministry' => function($query){
             $query->select('id','office_name_bn');
         }])->with(['department' => function($query){
             $query->select('id','office_name_bn');

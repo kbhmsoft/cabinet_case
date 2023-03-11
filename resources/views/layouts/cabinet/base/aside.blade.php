@@ -105,6 +105,44 @@
                   </ul>
                </div>
             </li>
+
+            <li class="menu-item {{ request()->is('cabinet/settings/*','cabinet/settings/category_type/*','cabinet/settings/office_type/*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+               <a href="javascript:;" class="menu-link menu-toggle">
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-cogs"></i> জেনারেল সেটিংস</span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="menu-submenu">
+                  <i class="menu-arrow"></i>
+                  <ul class="menu-subnav">
+                     <li class="menu-item {{ request()->is('cabinet/settings/category/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.settings.category.list') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">মামলার ক্যাটেগরি</span>
+                        </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('cabinet/settings/category_type/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.settings.category_type.list') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">মামলার শ্রেণী</span>
+                        </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('cabinet/settings/office_type/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.settings.office_type.list') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">অফিসের শ্রেণী</span>
+                        </a>
+                     </li>
+                  </ul>
+                  <!-- <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.office') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">অফিসের তালিকা</span>
+                        </a>
+                     </li>
+                  </ul> -->
+               </div>
+            </li>
             @endif
 
             {{-- // ========== Notification start =================== --}}
