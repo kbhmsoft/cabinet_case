@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         route::get('/office/create', [GovCaseOfficeController::class, 'create'])->name('office.create');
         Route::post('/office/save', [GovCaseOfficeController::class, 'store'])->name('office.save');
         route::get('/office/edit/{id}', [GovCaseOfficeController::class, 'edit'])->name('office.edit');
-        route::post('/office/update/{id}', [GovCaseOfficeController::class, 'update'])->name('office.update');
+        route::post('/office/update', [GovCaseOfficeController::class, 'update'])->name('office.update');
         route::get('/office/dropdownlist/getdependentdistrict/{id}', [GovCaseOfficeController::class , 'getDependentDistrict']);
         route::get('/office/dropdownlist/getdependentupazila/{id}', [GovCaseOfficeController::class , 'getDependentUpazila']);
             /////************** //Office Setting **************/////
@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
+            route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class , 'getdependentMinDept']);
             Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');

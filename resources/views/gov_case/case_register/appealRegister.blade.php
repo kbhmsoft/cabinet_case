@@ -57,7 +57,11 @@
                       @endforeach
                     </td>
                     <td>{{ $case->subject_matter }}</td>
-                    <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
+                    @if($case->ref_gov_case_no)
+                      <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
+                    @else
+                      <td>-</td>
+                    @endif
                     <td>
                       @forelse ($hearings as $key=> $row)
                         {{ en2bn($key+1) }}. {{ en2bn($row->hearing_date) }}

@@ -21,7 +21,8 @@ class Gov_ReportController extends Controller
           // Dropdown List
         $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
         $data['roles'] = DB::table('role')->select('id', 'role_name')->where('in_action', 1)->get();
-        $data['ministry'] = DB::table('office')->select('id', 'office_name_bn')->whereIn('level',[8,9])->get();
+        $data['officeTypes'] = DB::table('gov_case_office_type')->select('id', 'type_name_bn')->get();
+        // $data['ministry'] = DB::table('gov_case_office')->select('id', 'office_name_bn')->get();
 
         $data['getMonth'] = date('M', mktime(0,0,0));
 
@@ -34,45 +35,48 @@ class Gov_ReportController extends Controller
     {
         //=========================Ministry Wise Case Report========================//
 
-        if($request->btnsubmit == 'pdf_num_ministry'){
+        if($request->btnsubmit == 'pdf_num_office_wise'){
         // return $request;
             $data['page_title'] = 'সরকারি মামলার তালিকা'; //exit;
-            $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
-            $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
+            if ($request->date_start || $request->date_end) {
+                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
+            }else{
+                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', now())));
+            }
 
              // Validation
             $request->validate(
                 [
-                    'ministry' => 'required',
+                    'office_type' => 'required',
                     // 'date_start' => 'required',
                     // 'date_end' => 'required'
                 ],
                 [
-                    'ministry.required' => 'মন্ত্রণালয় নির্বাচন করুন',
+                    'office_type.required' => 'অফিসের ধরণ নির্বাচন করুন',
                     // 'date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন', 
                     // 'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন'
                 ]
             );
 
             $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
-            $min_id = $request->ministry;
-            $dept_id = $request->department;
+            $office_type = $request->office_type;
+            $dept_id = $request->ministry;
 
              // Get ministry
-            if($min_id != NULL){
+            if($office_type != NULL){
 
-                $data['ministry'] = DB::table('office')->select('id as min_id', 'office_name_bn')->where('id',$min_id)->get();
-            }else{
-                $data['ministry'] = DB::table('office')->select('id as min_id', 'office_name_bn')->whereIn('level',[8,9])->get();
+                $data['offices'] = DB::table('gov_case_office')->select('id as office_id', 'office_name_bn')->where('id',$office_type)->get();
             }
 
-            foreach ($data['ministry'] as $key => $value) {
+            foreach ($data['offices'] as $key => $value) {
                 $data['results'][$key]['ministry_name_bn'] = $value->office_name_bn;
-                $data['results'][$key]['min_id'] = $value->min_id;
+                $data['results'][$key]['office_id'] = $value->office_id;
                 if ($dept_id != NULL) {
-                    $data['results'][$key]['doptor'] = DB::table('office')->select('id as doptor_id', 'office_name_bn as doptor_name')->whereIn('level',[10,11,12])->where('parent',$data['results'][$key]['min_id'])->where('id',$dept_id)->get();
+                    $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level',$office_type)->where('id',$dept_id)->get();
                 }else{
-                    $data['results'][$key]['doptor'] = DB::table('office')->select('id as doptor_id', 'office_name_bn as doptor_name')->whereIn('level',[10,11,12])->where('parent',$data['results'][$key]['min_id'])->get();
+                    $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level',$office_type)->get();
                 }
 
                 foreach ($data['results'][$key]['doptor'] as $k => $val){
@@ -93,6 +97,53 @@ class Gov_ReportController extends Controller
              $this->generatePDF($html);
               // return view('gov_report.pdf_num_ministry')->with($data);
         }
+
+        /*if($request->btnsubmit == 'pdf_num_ministry'){
+            return $request;
+            $data['page_title'] = 'সরকারি মামলার তালিকা'; //exit;
+            if ($request->date_start || $request->date_end) {
+                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
+            }else{
+                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', now())));
+            }
+
+             // Validation
+            $request->validate(
+                [
+                    'ministry' => 'required',
+                ],
+                [
+                    'ministry.required' => 'মন্ত্রণালয় নির্বাচন করুন',
+                ]
+            );
+
+            $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
+            $min_id = $request->ministry;
+
+             // Get ministry
+            if($min_id != NULL){
+
+                $data['ministry'] = DB::table('gov_case_office')->select('id as min_id', 'office_name_bn')->where('id',$min_id)->first();
+            }
+            // return $min_id;
+            
+            $data['dateBetween'] = $this->case_count_by_dateBetween_highCourt($min_id,$data)->count();
+            $data['prevUndoneCase'] = $this->previous_undone_case_count_firstDate_highCourt($min_id,$data)->count();
+            $data['totalCase'] = $this->total_case_count_by_highCourt($min_id,$data)->count();
+            $data['doneCase'] = $this->done_case_count_by_dateBetween_highCourt($min_id,$data)->count();
+            $data['againstGov'] = $this->done_against_gov_case_count_highCourt($min_id,$data)->count();
+            $data['appealCase'] = $this->appeal_case_count_by_dateBetween_highCourt($min_id,$data)->count();
+            $data['lastWorkDay'] = $this->previous_undone_case_count_lastDate_highCourt($min_id,$data)->count();
+            $data['importantCase'] = $this->imprtant_case_count_by_dateBetween_highCourt($min_id,$data)->count();
+               
+            // return $data;
+            $html = view('gov_report.pdf_num_office_wise')->with($data);
+             // Generate PDF
+             $this->generatePDF($html);
+              // return view('gov_report.pdf_num_ministry')->with($data);
+        }*/
 
             //=======================//Ministry Wise Case Report========================//
 
@@ -140,7 +191,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -148,7 +199,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::where('date_issuing_rule_nishi', '<=', $from)->where('result', null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::where('date_issuing_rule_nishi', '<=', $from)->where('result', null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -156,7 +207,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -165,7 +216,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('result','!=',null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('result','!=',null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -174,7 +225,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('result','!=',null)->where('in_favour_govt', 0)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('result','!=',null)->where('in_favour_govt', 0)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -183,7 +234,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::where('status', 2)->where('in_favour_govt', 0)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::where('status', 2)->where('in_favour_govt', 0)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -192,7 +243,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::where('date_issuing_rule_nishi', '<=', $from)->where('result', null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::where('date_issuing_rule_nishi', '<=', $from)->where('result', null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -201,7 +252,7 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('important_cause','!=',null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('department_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
+        $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->where('important_cause','!=',null)->orderby('id', 'DESC')->whereHas( 'bibadis', function ($query)use($id) {$query->where('respondent_id', $id)->where('is_main_bibadi',1)->groupBy('gov_case_id');})->get();
 
         return $query;
     }
@@ -261,7 +312,7 @@ class Gov_ReportController extends Controller
 
    public function generatePDF($html){
     $mpdf = new \Mpdf\Mpdf([
-     'default_font_size' => 10,
+     'default_font_size' => 12,
      'default_font'      => 'kalpurush',
      'format' => 'A4-L',
      'orientation' => 'L',

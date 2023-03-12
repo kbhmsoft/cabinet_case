@@ -59,6 +59,16 @@
             <div class="card card-custom gutter-b example example-compact">
                 <div class="card-header">
                     <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
+                
+                
+                     @if($case->court_id == 2)
+                         <a href="{{ route('cabinet.case.highcourt') }}" class="btn btn-sm btn-primary font-weight-bolder float-right mt-5" style="height: 30px;">তালিকা
+                         </a>
+                     @else
+                         <a href="{{ route('cabinet.case.appellateDivision') }}" class="btn btn-sm btn-primary font-weight-bolder float-right mt-5" style="height: 30px;">তালিকা
+                         </a>
+                     @endif
+                     
                 </div>
                 <!-- <div class="loadersmall"></div> -->
                 @if ($errors->any())

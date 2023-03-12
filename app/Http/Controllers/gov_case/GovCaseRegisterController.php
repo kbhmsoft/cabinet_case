@@ -812,7 +812,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'নতুন মামলা রেজিষ্টার এন্ট্রি ফরম'; //exit;
         // dd($data);
-        return view('gov_case.case_register.create')->with($data);
+        return view('gov_case.case_register.create_new')->with($data);
     }
 
     public function get_details(Request $request)
@@ -982,5 +982,10 @@ class GovCaseRegisterController extends Controller
             return Response()->json(["error" => 'Something Went Wrong']);
         }
         return Response()->json(["success" => 'সফলভাবে তথ্য  মুছে ফেলা হয়েছে']);
+    }
+    public function getdependentMinDept($id)
+    {
+        $getdependentDoptor = GovCaseOffice::where('level', $id)->pluck("office_name_bn","id");
+        return json_encode($getdependentDoptor);
     }
 }

@@ -26,11 +26,24 @@
          <!-- <p>{{ $message }}</p> -->
       <!-- </div> -->
       @endif
+
+      <form class="form-inline" method="GET">
+            <div class="form-group mb-2 mr-2">
+              <select name="office_type" class="form-control">
+                 <option value="">-বিভাগ নির্বাচন করুন-</option>
+                 @foreach ($office_types as $value)
+                 <option value="{{ $value->id }}{{ $_GET['office_type'] == $value->id ? 'selected' : '' }}"> {{ $value->type_name_bn }} </option>
+                 @endforeach
+              </select>
+           </div>            
+           <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
+      </form>
       <table class="table table-hover mb-6 font-size-h6">
          <thead class="thead-light">
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">অফিসের নাম</th>
+               <th scope="col">অফিসের ধরণ</th>
                <th scope="col">স্ট্যাটাস</th>
                <th scope="col">অ্যাকশন</th>
             </tr>
@@ -47,6 +60,7 @@
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn(++$i) }}.</th>
                <td>{{ $row->office_name_bn }}</td>          
+               <td>{{ $row->office_type->type_name_bn }}</td>          
                <td><?=$officeStatus?></td>
                <td>
                   <a href="{{ route('cabinet.office.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>

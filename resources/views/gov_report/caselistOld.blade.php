@@ -42,19 +42,40 @@
 
                             <div class="form-group row">
                                 <div class="col-lg-6 mb-5">
-                                  <select name="office_type" id="office_type_id" class="form-control form-control-sm">
-                                      <option value="">-ধরণ নির্বাচন করুন-</option>
-                                      @foreach ($officeTypes as $value)
-                                      <option value="{{ $value->id }}"> {{ $value->type_name_bn }} </option>
-                                      @endforeach
-                                  </select>
+                                <select name="ministry" id="department_id" class="form-control form-control-sm">
+                                    <option value="">-মন্ত্রণালয় নির্বাচন করুন-</option>
+                                    @foreach ($ministry as $value)
+                                    <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
+                                    @endforeach
+                                </select>
                                 </div>
                                 <div class="col-lg-6 mb-5">
-                                  <select name="ministry" id="ministry_id" class="form-control form-control-sm">
-                                      <option value="">-মন্ত্রণালয়/অধিদপ্তর নির্বাচন করুন-</option>
-                                      
-                                  </select>
+
+                                <select name="department" id="department_id" class="form-control form-control-sm">
+                                    <option value="">-অধিদপ্তর নির্বাচন করুন-</option>
+                                </select>
                                 </div>
+
+                                {{--  <div class="col-lg-4 mb-5">
+                                <select id="year" class="form-control form-control-sm" name="year">
+                                    <option value="">সাল নির্বাচন করুন</option>
+                                    {{ $year = date('Y') }}
+                                    @for ($year = 1971; $year <= 2021; $year++)
+                                    <option value="{{ $year }}">{{ en2bn($year) }}</option>
+                                    @endfor
+                                </select>
+                                </div>
+
+                                <div class="col-lg-4 mb-5">
+                                <select  class="form-control" id="month" name="month">
+                                    <option value=""> মাস নির্বাচন করুন </option>
+                                    @foreach(range(1,12) as $month)
+                                    <option value="{{$month}}">
+                                        {{ date("M", strtotime('2016-'.$month)) }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                </div> --}}
 
                                 <div class="col-lg-6 mb-5">
                                 <input type="text" name="date_start"  class="form-control form-control-sm common_datepicker" placeholder="তারিখ হতে" autocomplete="off">
@@ -71,7 +92,7 @@
                             <fieldset class="text-center">
                                 <legend>সংখ্যা ভিত্তিক রিপোর্ট বাটন</legend>
 
-                                    <button type="submit" name="btnsubmit" value="pdf_num_office_wise" class="btn btn-info btn-cons margin-top"> উচ্চ আদালতে চলমান</button>
+                                    <button type="submit" name="btnsubmit" value="pdf_num_ministry" class="btn btn-info btn-cons margin-top"> উচ্চ আদালতে চলমান</button>
 
                                     <button type="submit" name="btnsubmit" value="pdf_num_importance" class="btn btn-info btn-cons margin-top"> গুরুত্বপূর্ণ ভিত্তিক </button>
 
@@ -118,23 +139,23 @@
   jQuery(document).ready(function ()
    {
    // Doptor Dropdown
-      jQuery('select[name="office_type"]').on('change',function(){
+      jQuery('select[name="ministry"]').on('change',function(){
          var dataID = jQuery(this).val();
             // var category_id = jQuery('#category_id option:selected').val();
-            jQuery("#ministry_id").after('<div class="loadersmall"></div>');
+            jQuery("#department_id").after('<div class="loadersmall"></div>');
             if(dataID)
             {
                jQuery.ajax({
-                  url : '{{url("/")}}/cabinet/case/dropdownlist/getdependentmindept/' +dataID,
+                  url : '{{url("/")}}/case/dropdownlist/getdependentDoptor/' +dataID,
                   type : "GET",
                   dataType : "json",
                   success:function(data)
                   {
-                     jQuery('select[name="ministry"]').html('<div class="loadersmall"></div>');
+                     jQuery('select[name="department"]').html('<div class="loadersmall"></div>');
 
-                     jQuery('select[name="ministry"]').html('<option value="">-- নির্বাচন করুন --</option>');
+                     jQuery('select[name="department"]').html('<option value="">-- নির্বাচন করুন --</option>');
                      jQuery.each(data, function(key,value){
-                        jQuery('select[name="ministry"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        jQuery('select[name="department"]').append('<option value="'+ key +'">'+ value +'</option>');
                      });
                      jQuery('.loadersmall').remove();
 
@@ -143,7 +164,7 @@
             }
             else
             {
-               $('select[name="ministry"]').empty();
+               $('select[name="department"]').empty();
             }
       });
    });

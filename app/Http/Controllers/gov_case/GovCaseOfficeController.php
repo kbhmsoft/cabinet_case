@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use \Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseOfficeType;
 use Validator,Redirect,Response;
 
 class GovCaseOfficeController extends Controller
@@ -22,20 +24,15 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         // dd($officeInfo);
         $data['page_title']= 'অফিস সেটিং তালিকা';
-        $query= DB::table('gov_case_office')
-                ->select('gov_case_office.*');
+        // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
+        $data['office_types'] = GovCaseOfficeType::orderby('id','ASC')->get();
             
 
         //Add Conditions 
-
-        if(!empty($_GET['division'])) {
-        $query->where('office.division_id','=',$_GET['division']);
-        }
-        if(!empty($_GET['district'])) {
-            $query->where('office.district_id','=',$_GET['district']);
-        }
-        if(!empty($_GET['upazila'])) {
-            $query->where('office.upazila_id','=',$_GET['upazila']);
+        
+        $query= GovCaseOffice::orderby('id','DESC');
+        if(!empty($_GET['office_type'])) {
+        $query->where('gov_case_office.level','=',$_GET['office_type']);
         }
         
 
@@ -210,7 +207,7 @@ class GovCaseOfficeController extends Controller
                'office_name_bn' => $request->office_name,
                'status' => $request->status, 
                'type' => $request->type, 
-               'level' => 2, 
+               'level' =>$request->level, 
             ]);
         return redirect()->route('cabinet.office')
             ->with('success', 'অফিস সফলভাবে সংরক্ষণ করা হয়েছে');
@@ -236,25 +233,17 @@ class GovCaseOfficeController extends Controller
     public function edit($id)
     {
         //
-       $data['offices'] = DB::table('office')
-        ->select('office.*')
-        /*->where('district_id', 38)*/
-        ->where('office.id', $id)
-        ->get();
-        $data['districts'] = DB::table('district')
-        ->join('division', 'district.division_id', '=', 'division.id')
-        ->select('district.*','division.division_name_bn')
-        /*->where('district.id', 38)*/
-        ->get(); 
-        $data['upazila'] = DB::table('upazila')
-        ->select('id', 'upazila_name_bn')
-        /*->where('district_id', 38)*/
+       $data['offices'] = DB::table('gov_case_office')
+        ->select('gov_case_office.*')
+        ->where('gov_case_office.id', $id)
+        ->first();
+
+        $data['office_type'] = DB::table('gov_case_office_type')
+        ->select('gov_case_office_type.*')
         ->get(); 
 
-        $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
-
-         // dd( $data['offices']);
-
+        $data['page_title'] = 'অফিসের তথ্য হালনাগাদ ফরম';
+        // return $data;
         return view('gov_case.office.edit')->with($data);
         
     }
@@ -266,29 +255,27 @@ class GovCaseOfficeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $id = $request->office_id;
         $validator = $request->validate([
-            'division_id' => 'required',
-            'district_id' => 'required',
-            'upazila_id' => 'required',
-            'office_name_bn' => 'required',
-            'status' => 'required'
+                'office_name' => 'required',
+                'status' => 'required'
         ]);
         $data = [
-           'division_id' => $request->division_id, 
-           'district_id' => $request->district_id, 
-           'upazila_id' => $request->upazila_id, 
-           'office_name_bn' => $request->office_name_bn, 
-           'status' => $request->status,  
+           'level' => $request->office_lavel, 
+           'office_name_bn' => $request->office_name,
+           'status' => $request->status, 
+           'type' => $request->type, 
+           'level' =>$request->level,  
         ];
 
-        DB::table('office')
+        DB::table('gov_case_office')
             ->where('id', $id)
             ->update($data);
 
-        return redirect()->route('office')
+        return redirect()->route('cabinet.office')
             ->with('success', 'অফিস সফলভাবে সংশোধন করা হয়েছে');
     }
 

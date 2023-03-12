@@ -4,6 +4,7 @@ namespace App\Models\gov_case;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\gov_case\GovCaseOfficeType;
 
 class GovCaseOffice extends Model
 {
@@ -23,5 +24,9 @@ class GovCaseOffice extends Model
 	'type',
 	'office_head_desig',
 	];
+
+    public function office_type(){
+        return $this->hasOne(GovCaseOfficeType::class,'id', 'level');
+    }
 	
 }
