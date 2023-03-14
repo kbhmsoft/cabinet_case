@@ -23,11 +23,11 @@ class ProfileController extends BaseController
     public function details($id)
     {
         $data  = DB::table('users')
-                ->join('role', 'users.role_id', '=', 'role.id')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
                 ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.id','users.name','users.email','users.mobile_no','users.profile_pic','users.signature', 'role.role_name', 'office.office_name_bn',
+                ->select('users.id','users.name','users.email','users.mobile_no','users.profile_pic','users.signature', 'roles.role_name', 'office.office_name_bn',
                     'district.district_name_bn', 'upazila.upazila_name_bn')
                 ->where('users.id',$id)
                 ->get()->first();

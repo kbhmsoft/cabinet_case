@@ -28,21 +28,21 @@ class GovCaseUserManagementController extends Controller
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
             $users= DB::table('users')
                             ->orderBy('id','DESC')
-                            ->join('role', 'users.role_id', '=', 'role.id')
+                            ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('office', 'users.office_id', '=', 'office.id')
                             ->leftJoin('district', 'office.district_id', '=', 'district.id')
                             ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                            ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+                            ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
                             ->where('users.is_gov', 1)
                             ->paginate(10);
         }else{                    
             $users= DB::table('users')
                             ->orderBy('id','DESC')
-                            ->join('role', 'users.role_id', '=', 'role.id')
+                            ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('office', 'users.office_id', '=', 'office.id')
                             ->leftJoin('district', 'office.district_id', '=', 'district.id')
                             ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                            ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+                            ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
                             ->where('office.id', $officeInfo->office_id)
                             ->orWhere('office.parent', $officeInfo->office_id)
                             ->paginate(10);
@@ -63,7 +63,7 @@ class GovCaseUserManagementController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $role = array('1','27');
-        $data['roles'] = DB::table('role')
+        $data['roles'] = DB::table('roles')
         ->select('id', 'role_name')
         ->whereNotIn('id', $role)
         ->where('is_gov', 1)
@@ -144,11 +144,11 @@ class GovCaseUserManagementController extends Controller
     public function show($id = '')
     {        
         $data['userManagement'] = DB::table('users')
-                        ->join('role', 'users.role_id', '=', 'role.id')
+                        ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'role.role_name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.role_name', 'office.office_name_bn', 
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
@@ -167,16 +167,16 @@ class GovCaseUserManagementController extends Controller
     public function edit($id)
     {
          $data['userManagement'] = DB::table('users')
-                        ->join('role', 'users.role_id', '=', 'role.id')
+                        ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'role.role_name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.role_name', 'office.office_name_bn', 
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
                   // dd($userManagement);     
-        $data['roles'] = DB::table('role')
+        $data['roles'] = DB::table('roles')
         ->select('id', 'role_name')
         ->get(); 
 

@@ -373,7 +373,7 @@ class SettingController extends Controller
                 ->where('case_status.id',$id)
                 ->first();
         $roleIdArr = explode(',', $data['case_status']->role_access);
-        $data['roles'] = DB::table('role')->whereIn('id', $roleIdArr )
+        $data['roles'] = DB::table('roles')->whereIn('id', $roleIdArr )
                 ->select('role_name')
                 ->get();
                         // dd($data['role']);
@@ -385,7 +385,7 @@ class SettingController extends Controller
     public function case_status_add()
     {
         //
-        $data['roles'] = DB::table('role')->select('id', 'role_name')->where('in_action', 1)->get();
+        $data['roles'] = DB::table('roles')->select('id', 'role_name')->where('in_action', 1)->get();
         $data['page_title'] = 'মামলার স্ট্যাটাস এন্ট্রি ফরম';
         return view('setting.case_status_add')->with($data);
     }
@@ -424,7 +424,7 @@ class SettingController extends Controller
     public function case_status_edit($id)
     {
         //
-        $data['roles'] = DB::table('role')->select('id', 'role_name')->where('in_action', 1)->get();
+        $data['roles'] = DB::table('roles')->select('id', 'role_name')->where('in_action', 1)->get();
         $data['page_title'] = 'মামলার স্ট্যাটাস এন্ট্রি ফরম';
 
         $data['case_status']= DB::table('case_status')

@@ -26,20 +26,20 @@ class MessageController extends Controller
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
             $users= DB::table('users')
                 ->orderBy('id','DESC')
-                ->join('role', 'users.role_id', '=', 'role.id')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
                 ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn');
+                ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn');
                 // ->paginate(10);
         }else{
             $users= DB::table('users')
                 ->orderBy('id','DESC')
-                ->join('role', 'users.role_id', '=', 'role.id')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
                 ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+                ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
                 ->where('office.district_id', $officeInfo->district_id);
                 // ->paginate(10);
         }

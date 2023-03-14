@@ -58,8 +58,8 @@ class DashboardController extends Controller
       // dd($user->role_id);
 
       // $data['user'] = DB::table('users')
-      //     ->join('role', 'users.role_id', '=', 'role.id')
-      //     ->select('users.id', 'users.name', 'users.username', 'role.role_name')
+      //     ->join('roles', 'users.role_id', '=', 'roles.id')
+      //     ->select('users.id', 'users.name', 'users.username', 'roles.role_name')
       //     ->where('users.id', '=', $id)
       //     ->first();
       // dd($roleID);
@@ -1108,9 +1108,9 @@ class DashboardController extends Controller
 
         // Get SF Details
      $data['logs'] = DB::table('case_log')
-     ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'role.role_name', 'users.name')
+     ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.role_name', 'users.name')
      ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
-     ->leftJoin('role', 'case_log.send_user_group_id', '=', 'role.id')
+     ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
      ->join('users', 'case_log.user_id', '=', 'users.id')
      ->where('case_log.case_id', '=', $id)
      ->orderBy('case_log.id', 'desc')
@@ -1125,7 +1125,7 @@ class DashboardController extends Controller
      ->get();
 
         // Dropdown
-     $data['roles'] = DB::table('role')
+     $data['roles'] = DB::table('roles')
      ->select('id', 'role_name')
      ->where('in_action', '=', 1)
      ->orderBy('sort_order', 'asc')
@@ -1228,9 +1228,9 @@ class DashboardController extends Controller
 
         // Get SF Details
         $data['logs'] = DB::table('case_log')
-        ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'role.role_name', 'users.name')
+        ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.role_name', 'users.name')
         ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
-        ->leftJoin('role', 'case_log.send_user_group_id', '=', 'role.id')
+        ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
         ->join('users', 'case_log.user_id', '=', 'users.id')
         ->where('case_log.case_id', '=', $id)
         ->orderBy('case_log.id', 'desc')
@@ -1245,7 +1245,7 @@ class DashboardController extends Controller
         ->get();
 
         // Dropdown
-        $data['roles'] = DB::table('role')
+        $data['roles'] = DB::table('roles')
         ->select('id', 'role_name')
         ->where('in_action', '=', 1)
         ->orderBy('sort_order', 'asc')

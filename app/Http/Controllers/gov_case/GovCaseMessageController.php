@@ -26,17 +26,17 @@ class GovCaseMessageController extends Controller
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
             $users= DB::table('users')
                 ->orderBy('id','DESC')
-                ->join('role', 'users.role_id', '=', 'role.id')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn')
+                ->select('users.*', 'roles.role_name', 'office.office_name_bn')
                 ->where('users.is_gov', 1);
                 // ->paginate(10);
         }else{
             $users= DB::table('users')
                 ->orderBy('id','DESC')
-                ->join('role', 'users.role_id', '=', 'role.id')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'role.role_name', 'office.office_name_bn')
+                ->select('users.*', 'roles.role_name', 'office.office_name_bn')
                 ->where('users.is_gov', 1);
                 // ->paginate(10);
         }

@@ -24,7 +24,7 @@ class LoginController extends BaseController
             // dd($user);
 
             // role name //
-            $roleName = DB::table('role')->select('role_name')->where('id', $user->role_id)
+            $roleName = DB::table('roles')->select('role_name')->where('id', $user->role_id)
                                         ->first()->role_name;
              // Office name //
             $officeInfo = DB::table('office')->select('office_name_bn', 'division_id', 'district_id', 'upazila_id')->where('id', $user->office_id)

@@ -24,11 +24,11 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $userManagement = DB::table('users')
-                        ->join('role', 'users.role_id', '=', 'role.id')
+                        ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'role.role_name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.role_name', 'office.office_name_bn', 
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$user_id)
                         ->get()->first();
@@ -48,15 +48,15 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $data['userManagement'] = DB::table('users')
-                        ->join('role', 'users.role_id', '=', 'role.id')
+                        ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'role.role_name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.role_name', 'office.office_name_bn', 
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$user_id)
                         ->get()->first();
-        $data['roles'] = DB::table('role')
+        $data['roles'] = DB::table('roles')
         ->select('id', 'role_name')
         ->get(); 
 
