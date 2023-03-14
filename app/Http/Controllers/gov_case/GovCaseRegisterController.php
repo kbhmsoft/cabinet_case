@@ -826,7 +826,7 @@ class GovCaseRegisterController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
+        return $request;
         $caseId = $request->caseId;
         // 'email' => 'unique:users,email_address,'.$user->id
 
