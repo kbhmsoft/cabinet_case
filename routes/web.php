@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\MyprofileController;
@@ -36,7 +37,10 @@ Route::middleware('auth')->group(function () {
     // setting
     Route::get('site_setting', [SiteSettingController::class, 'edit'])->name('app.setting.index');
     Route::post('site_setting', [SiteSettingController::class, 'update'])->name('app.setting.update');
-
+    
+    Route::get('/home', [HomeController::class, 'index']);
+    Route::get('/databaseCaseCheck', [HomeController::class, 'databaseCaseCheck']);
+    Route::get('/databaseDataUpdated', [HomeController::class, 'databaseDataUpdated']);
     /////****************** Dashboard *****************/////
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/hearing-case-details/{id}', [DashboardController::class, 'hearing_case_details'])->name('dashboard.hearing-case-details');
