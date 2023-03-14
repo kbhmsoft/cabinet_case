@@ -4,19 +4,14 @@ namespace App\Http\Controllers;
 
 // use Auth;
 use App\Models\Dashboard;
-use App\Models\CaseRegister;
 
-use App\Models\AtCaseRegister;
-use App\Models\RM_CaseRgister;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\CaseHearing;
 use App\Http\Resources\calendar\CaseHearingCollection;
 use App\Http\Resources\calendar\RM_CaseHearingCollection;
 use App\Models\gov_case\GovCaseNotice;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\RM_CaseHearing;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -82,7 +77,7 @@ class DashboardController extends Controller
 
          // Counter
          $data['total_case'] = DB::table('case_register')->count();
-         $data['total_at_case'] = AtCaseRegister::count();
+         $data['total_at_case'] = '';
          $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
          $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
          $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
@@ -161,90 +156,6 @@ class DashboardController extends Controller
          $data['page_title'] = 'সুপার অ্যাডমিন ড্যাশবোর্ড';
          return view('dashboard.superadmin')->with($data);
 
-      }elseif($roleID == 2){
-         // Superadmin dashboard
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['total_at_case'] = AtCaseRegister::count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
-
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
-
-         // Division List
-         foreach ($division_list as $division) {
-            // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
-            // Division Data
-            $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
-
-            // District List
-            $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
-            foreach ($district_list as $district) {
-               // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
-               // $number2 = (int) $dis_count['count']; //exit;
-
-               $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
-
-               // Upazila Data
-               // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
-               $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
-               foreach ($upazila_list as $upazila) {
-                  // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
-                  // $number3 = (int) $upa_count['count']; //exit;
-
-                  $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
-               }
-
-               $upadata = $upa_data[$district->id];
-               $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
-            }
-
-            $disdata = $dis_data[$division->id];
-            $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
-
-            $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
-
-         }
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
-
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
-
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-          ->orderby('id', 'DESC')
-          ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
-
-         // View
-         $data['page_title'] = 'ভূমি মন্ত্রণালয়ের সচিবের ড্যাশবোর্ড';
-         return view('dashboard.admin')->with($data);
-
       }elseif($roleID == 27){
          // Superadmin dashboard
 
@@ -319,16 +230,11 @@ class DashboardController extends Controller
          }
 
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+         
          $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         
 
          // View
          $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
@@ -356,7 +262,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+         
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -412,333 +318,11 @@ class DashboardController extends Controller
          }
 
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
-
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
-
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
 
          // View
          $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের সহকারীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.cabinet_admin')->with($data);
-
-      }elseif($roleID == 4){
-         // digital cell dashboard
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         $data['page_title'] = 'ভূমি মন্ত্রণালয়ের ডিজিটাইজেশন মনিটরিং সেল এর সেল-প্রধানের ড্যাশবোর্ড';
-         return view('dashboard.admin')->with($data);
-
-      }elseif($roleID == 5){
-         // DC office assistant dashboard
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('district_id', $districtID)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', 'is_appeal', DB::raw('COUNT(id) as total_case'))
-            ->where('action_user_role_id', $roleID)
-            ->where('is_appeal', '=', null)
-            ->orWhere('is_appeal', '=', 0)
-            ->where('upazila_id','=', $officeInfo->upazila_id)
-            // ->where('case_status_id', '20')
-            ->groupBy('case_status_id')
-            ->get();
-
-         /* $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-         //  ->where('upazila_id','=', $officeInfo->upazila_id)
-          ->where('action_user_role_id', $roleID)
-          ->groupBy('case_status_id')
-          ->get();*/
-
-            // Get case status by group
-         //  return $data['ak_case_status'] = DB::table('r_m__case_rgisters')
-         //  ->select('r_m__case_rgisters.case_type_id', 'case_status.status_name', DB::raw('COUNT(r_m__case_rgisters.id) as total_case'))
-         //  ->leftJoin('case_status', 'r_m__case_rgisters.case_status_id', '=', 'case_status.id')
-         //  ->groupBy('r_m__case_rgisters.case_status_id')
-         //  ->where('r_m__case_rgisters.district_id','=', $officeInfo->district_id)
-         //  ->where('r_m__case_rgisters.action_user_role_id', $roleID)
-         //  ->get();
-
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-         $data['page_title'] = 'জেলা অফিস সহকারীর ড্যাশবোর্ড';
-
-         return view('dashboard.dc_assistant')->with($data);
-
-      }elseif($roleID == 6){
-         // DC office
-         $district_user = DB::table('users')
-         ->join('role', 'users.role_id', '=', 'role.id')
-         ->join('office', 'users.office_id', '=', 'office.id')
-         ->leftJoin('district', 'office.district_id', '=', 'district.id')
-         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-         ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-         ->where('office.district_id', $officeInfo->district_id)
-         ->get();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['running_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->where('district_id', $districtID)->count();
-         $data['total_user'] = $district_user->count();
-         $data['total_court'] = DB::table('court')->where('district_id', $districtID)->count();
-         $data['total_mouja'] = DB::table('mouja')->where('district_id', $districtID)->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('district_id', $districtID)->count();
-
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'জেলা প্রশাসকের ড্যাশবোর্ড';
-
-         return view('dashboard.dc')->with($data);
-
-      }elseif($roleID == 7){
-         // ADC (Reveneu) office
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['running_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 3)->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('district_id', $districtID)->count();
-
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-          ->where('upazila_id','=', $officeInfo->upazila_id)
-          ->where('action_user_role_id', $roleID)
-          ->groupBy('case_status_id')
-          ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'অতিরিক্ত জেলা প্রশাসক (রেভিনিউ) এর ড্যাশবোর্ড';
-         return view('dashboard.adc')->with($data);
-
-      }elseif($roleID == 8){
-         // AC(RM) office
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['running_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 3)->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('district_id', $districtID)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'সহকারী কমিশনার (আরএম) এর ড্যাশবোর্ড';
-         return view('dashboard.ac_rm')->with($data);
-
-      }elseif($roleID == 9){
-         // AC(Land) office
-         $officeInfo = user_office_info();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->count();
-         $data['running_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 3)->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('upazila_id', $upazilaID)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-         ->where('upazila_id','=', $officeInfo->upazila_id)
-         ->where('action_user_role_id', $roleID)
-         ->groupBy('case_status_id')
-         ->get();
-
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.upazila_id','=', $officeInfo->upazila_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-            $data['page_title'] = 'সহকারী কমিশনার (ভূমি) এর ড্যাশবোর্ড';
-
-
-         return view('dashboard.ac_land')->with($data);
-
-      }elseif($roleID == 10){
-         // Serveyor office
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->count();
-         $data['running_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 3)->count();
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.upazila_id','=', $officeInfo->upazila_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'সার্ভেয়রের ড্যাশবোর্ড';
-         return view('dashboard.surveyor')->with($data);
-
-      }elseif($roleID == 11){
-         // Kanungo office
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->count();
-         $data['running_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 3)->count();
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.upazila_id','=', $officeInfo->upazila_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'কানুনগোর ড্যাশবোর্ড';
-         return view('dashboard.kanungo')->with($data);
-
-      }elseif($roleID == 12){
-         $moujaIDs = $this->get_mouja_by_ulo_office_id(Auth::user()->office_id);
-         // ULAO office
-         // Counter
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('mouja_id', [$moujaIDs])->count();
-         $data['running_case'] = DB::table('case_register')->where('mouja_id', [$moujaIDs])->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('mouja_id', [$moujaIDs])->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('mouja_id', [$moujaIDs])->where('status', 3)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-         // echo $roleID; exit;
-
-         // Get case status by group
-
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->whereIn('case_register.mouja_id', $moujaIDs)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'ইউনিয়ন ভূমি সহকারী অফিসের ড্যাশবোর্ড';
-         return view('dashboard.ulao')->with($data);
-
-      }elseif($roleID == 13){
-         // GP office
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['running_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 3)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'জিপির ড্যাশবোর্ড';
-         return view('dashboard.ulao')->with($data);
 
       }elseif($roleID == 14){
          // Solicitor
@@ -772,312 +356,6 @@ class DashboardController extends Controller
          // dd($data['gov_case_status']);
          $data['page_title'] = 'আইনজীবীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.solicitor')->with($data);
-      }elseif($roleID == 15 ){
-         // Attorney General
-         // Get case status by group
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'অ্যাটর্নি জেনারেল';
-         return view('dashboard.ulao')->with($data);
-      }elseif($roleID == 16){
-         // AGP office
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('district_id', $districtID)->count();
-         $data['running_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('district_id', $districtID)->where('status', 3)->count();
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['page_title'] = 'এজিপির ড্যাশবোর্ড';
-         return view('dashboard.ulao')->with($data);
-      }elseif($roleID == 17){
-
-         $data['page_title'] = 'অফিস প্রধানের ড্যাশবোর্ড';
-         return view('dashboard.office_head')->with($data);
-
-      }elseif($roleID == 18 ){
-
-
-         $data['page_title'] = 'ডেস্ক অফিসার এর ড্যাশবোর্ড';
-         return view('dashboard.office_head')->with($data);
-
-      }elseif($roleID == 19 ){
-
-
-         $data['page_title'] = 'অফিস সহকারীর ড্যাশবোর্ড';
-         return view('dashboard.office_head')->with($data);
-
-      }elseif($roleID == 20 ){
-
-
-         $data['page_title'] = 'অ্যাডভোকেট এর ড্যাশবোর্ড';
-         return view('dashboard.office_head')->with($data);
-
-      }elseif($roleID == 21){
-         // AC(Land) office
-         $officeInfo = user_office_info();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->count();
-         $data['running_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('upazila_id', $upazilaID)->where('status', 3)->count();
-         $data['total_rm_case'] = RM_CaseRgister::where('upazila_id', $upazilaID)->count();
-
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
-
-         // Get case status by group
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-          ->where('upazila_id','=', $officeInfo->upazila_id)
-          ->where('action_user_role_id', $roleID)
-          ->groupBy('case_status_id')
-          ->get();
-         //  $data['rm_case_status'][0]['total_case'];
-
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.upazila_id','=', $officeInfo->upazila_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-         $data['page_title'] = 'সহকারী কমিশনার (ভূমি) এর অফিস সহকারীর ড্যাশবোর্ড';
-
-
-         return view('dashboard.ac_land')->with($data);
-
-      }elseif($roleID == 22){
-         // DC office
-         $district_user = DB::table('users')
-         ->join('role', 'users.role_id', '=', 'role.id')
-         ->join('office', 'users.office_id', '=', 'office.id')
-         ->leftJoin('district', 'office.district_id', '=', 'district.id')
-         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-         ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-         ->where('office.district_id', $officeInfo->district_id)
-         ->get();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->count();
-         $data['total_user'] = $district_user->count();
-         $data['total_court'] = DB::table('court')->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
-
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', 'is_appeal', DB::raw('COUNT(id) as total_case'))
-            ->where('action_user_role_id', $roleID)
-            ->where('is_appeal', '=', null)
-            ->orWhere('is_appeal', '=', 0)
-            ->where('division_id','=', $officeInfo->division_id)
-            // ->where('case_status_id', '20')
-            ->groupBy('case_status_id')
-            ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-
-
-         $data['page_title'] = 'বিভাগীয় কমিশনার (ভূমি) এর অফিস সহকারীর ড্যাশবোর্ড';
-
-
-
-         return view('dashboard.dc')->with($data);
-
-      }elseif($roleID == 23){
-         // DC office
-         $district_user = DB::table('users')
-         ->join('role', 'users.role_id', '=', 'role.id')
-         ->join('office', 'users.office_id', '=', 'office.id')
-         ->leftJoin('district', 'office.district_id', '=', 'district.id')
-         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-         ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-         ->where('office.district_id', $officeInfo->district_id)
-         ->get();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->count();
-         $data['total_user'] = $district_user->count();
-         $data['total_court'] = DB::table('court')->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
-
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-          ->where('division_id','=', $officeInfo->division_id)
-          ->where('action_user_role_id', $roleID)
-          ->groupBy('case_status_id')
-          ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-         $data['page_title'] = 'বিভাগীয় কমিশনার (ভূমি) এর ড্যাশবোর্ড';
-
-
-         return view('dashboard.dc')->with($data);
-
-      }elseif($roleID == 24 ){
-         // DC office
-         $district_user = DB::table('users')
-         ->join('role', 'users.role_id', '=', 'role.id')
-         ->join('office', 'users.office_id', '=', 'office.id')
-         ->leftJoin('district', 'office.district_id', '=', 'district.id')
-         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-         ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-         ->where('office.district_id', $officeInfo->district_id)
-         ->get();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->count();
-         $data['total_user'] = $district_user->count();
-         $data['total_court'] = DB::table('court')->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
-
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', 'is_appeal', DB::raw('COUNT(id) as total_case'))
-            ->where('action_user_role_id', $roleID)
-            ->where('is_appeal', '=', null)
-            ->orWhere('is_appeal', '=', 0)
-            // ->where('upazila_id','=', $officeInfo->upazila_id)
-            // ->where('case_status_id', '20')
-            ->groupBy('case_status_id')
-            ->get();
-
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-
-            $data['page_title'] = 'ভূমি সংস্কার বোর্ড চেয়ারম্যানের অফিস সহকারীর ড্যাশবোর্ড';
-
-
-         return view('dashboard.dc')->with($data);
-
-      }elseif($roleID == 25){
-         // DC office
-         $district_user = DB::table('users')
-         ->join('role', 'users.role_id', '=', 'role.id')
-         ->join('office', 'users.office_id', '=', 'office.id')
-         ->leftJoin('district', 'office.district_id', '=', 'district.id')
-         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-         ->select('users.*', 'role.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-         ->where('office.district_id', $officeInfo->district_id)
-         ->get();
-
-         // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->count();
-         $data['total_user'] = $district_user->count();
-         $data['total_court'] = DB::table('court')->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
-
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
-
-         $data['rm_case_status'] = RM_CaseRgister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
-          // ->where('upazila_id','=', $officeInfo->upazila_id)
-          ->where('action_user_role_id', $roleID)
-          ->groupBy('case_status_id')
-          ->get();
-         // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.district_id','=', $officeInfo->district_id)
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
-
-         // dd($data['case_status']);
-
-            $data['page_title'] = 'ভূমি সংস্কার বোর্ড চেয়ারম্যানের ড্যাশবোর্ড';
-
-
-         return view('dashboard.dc')->with($data);
-
       }elseif($roleID == 29){
          // Ministry dashboard
 
@@ -1192,9 +470,7 @@ class DashboardController extends Controller
          }
          
 
-        $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+        
         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
@@ -1278,15 +554,10 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+         
          $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         
 
          // View
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
@@ -1415,15 +686,10 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+         
          $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         
 
          // View
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
@@ -1523,16 +789,11 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+         
          $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         
 
          // View
          $data['page_title'] = 'অধিদপ্তর এডমিনের ড্যাশবোর্ড';
@@ -1625,15 +886,10 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-         $hearingCalender = CaseHearing::select('id','case_id', 'hearing_comment', 'hearing_date' ,DB::raw('count(*) as total'))
-            ->orderby('id', 'DESC')
-            ->groupBy('hearing_date');
+         
          $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
 
-         $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-         ->orderby('id', 'DESC')
-         ->groupBy('hearing_date');
-         $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+         
 
          // View
          $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
@@ -1724,30 +980,7 @@ class DashboardController extends Controller
 
    }
 
-    /*public function receive($statusID)
-    {
-        $data['cases'] = DB::table('case_register')
-        ->join('court', 'case_register.court_id', '=', 'court.id')
-        ->join('district', 'case_register.district_id', '=', 'district.id')
-        ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-        ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-        ->select('case_register.*', 'court.court_name', 'mouja.mouja_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-
-        ->where('case_register.cs_id', '=', $statusID)
-        ->get();
-
-        // dd($data['cases']);
-
-        // return view('dashboard.receive', compact('page_title', 'cases'))
-        // ->with('i', (request()->input('page',1) - 1) * 5);
-
-        // All user list
-        // $cases = CaseRegister::latest()->paginate(5);
-        // $data['page_title'] = 'নতুন মামলা রেজিষ্টার এন্ট্রি ফরম'; //exit;
-
-        $data['page_title'] = 'মামলার তালিকা';
-        return view('dashboard.receive')->with($data);
-     }   */
+   
 
 
      public function hearing_date_today()
