@@ -3,12 +3,10 @@
 // namespace App\Http\Controllers;
 // use Illuminate\Support\Str;
 
-use App\Models\CaseActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 // use App\Http\Controllers\CommonController;
 use App\Models\User;
-use App\Models\RM_CaseActivityLog;
 
 
 if (!function_exists('user_office_info')) {
@@ -93,61 +91,3 @@ if (!function_exists('case_status')) {
 	}
 }
 
-// if (!function_exists('english2bangli')) {
-//    function english2bangli($item) {
-//       // return CommonController::en2bn($item);
-//       return 'A';
-//    }
-// }
-
-
-if (!function_exists('case_activity_logs')) {
-	function case_activity_logs($data) {
-
-        $user = Auth::user();
-        $userDivision = user_division();
-        $userDistrict = user_district();
-        $userOffice = user_office_info();
-
-
-
-        $log = new CaseActivityLog;
-        $log->user_id = $user->id;
-        $log->case_register_id = $data['case_register_id'];
-        $log->user_roll_id = $user->role_id;
-        $log->activity_type = $data['activity_type'];
-        $log->message = $data['message'];
-        $log->office_id = $user->office_id;
-        $log->division_id = $userDivision == null ? null : $userDivision;
-        $log->district_id = $userDistrict == null ? null : $userDistrict;
-        $log->upazila_id = $userOffice->upazila_id == null ? null : $userOffice->upazila_id;
-        $log->old_data = $data['old_data'];
-        $log->new_data = $data['new_data'];
-        $log->ip_address = request()->ip();
-        $log->user_agent = request()->userAgent();
-        $log->save();
-        return $log;
-	}
-}
-
-if (!function_exists('RM_case_activity_logs')) {
-	function RM_case_activity_logs($data) {
-
-        $user_id = Auth::user()->id;
-        $user_info = User::where('id', $user_id)->with('office', 'role')->get()->toArray();
-        $user_info = array_merge( $user_info, [
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent()
-        ]);
-
-        $log = new RM_CaseActivityLog;
-        $log->user_info = json_encode($user_info);
-        $log->rm_case_id = $data['rm_case_id'];
-        $log->activity_type = $data['activity_type'];
-        $log->massage = $data['message'];
-        $log->old_data = $data['old_data'];
-        $log->new_data = $data['new_data'];
-        $log->save();
-        return $log;
-	}
-}

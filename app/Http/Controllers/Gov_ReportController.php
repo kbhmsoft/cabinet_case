@@ -9,6 +9,7 @@ use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseDivision;
 use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseOfficeType;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\Court;
 use App\Models\User;
@@ -63,7 +64,7 @@ class Gov_ReportController extends Controller
             $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
             $office_type = $request->office_type;
             $dept_id = $request->ministry;
-
+            $data['type_name'] = GovCaseOfficeType::where('id',$office_type)->first()->type_name_bn;
              // Get ministry
             if($office_type != NULL){
 
@@ -91,7 +92,7 @@ class Gov_ReportController extends Controller
                     $data['results'][$key]['doptor'][$k]->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->doptor_id,$data)->count();
                 }
             }
-            // return $data['results'];
+            // return $data;
             $html = view('gov_report.pdf_num_ministry')->with($data);
              // Generate PDF
              $this->generatePDF($html);

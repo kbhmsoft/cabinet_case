@@ -34,6 +34,9 @@ class GovCaseOfficeController extends Controller
         if(!empty($_GET['office_type'])) {
         $query->where('gov_case_office.level','=',$_GET['office_type']);
         }
+        if(!empty($_GET['office_name'])) {
+        $query->where('gov_case_office.office_name_bn','LIKE', '%'.$_GET['office_name'].'%');
+        }
         
 
         $data['offices'] = $query->paginate(10)->withQueryString();
@@ -48,7 +51,6 @@ class GovCaseOfficeController extends Controller
             $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
 
         }
-
         return view('gov_case.office.index')
         ->with($data)
         ->with('i', (request()->input('page',1) - 1) * 10);
@@ -257,7 +259,7 @@ class GovCaseOfficeController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        // return $request;
         $id = $request->office_id;
         $validator = $request->validate([
                 'office_name' => 'required',

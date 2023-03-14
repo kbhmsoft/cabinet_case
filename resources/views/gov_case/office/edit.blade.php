@@ -104,6 +104,7 @@
                                     <span></span>ডিজেবল</label>
                                   </div>
                                 </div>
+                                    <input type="hidden" id="office_id" name="office_id" value="{{ $offices->id }}">
                             </div>
                         </div>
                     </div>

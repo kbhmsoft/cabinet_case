@@ -69,8 +69,10 @@
 			<div class="priview-memorandum">
 				<div class="row">
 					<div class="col-12 text-center">
-						<div style="font-size:12px;"><u><?=$results[0]['ministry_name_bn']?><?=$page_title?></u></div>
-						<div style="font-size:12px;"><u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
+						<div style="font-size:12px;"><u><?=$type_name?><?=$page_title?></u></div>
+						<?php if($date_start != '1970-01-01'){?>
+						<div style="font-size:13px;"><u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
+						<?php }?>
 					</div>
 				</div>
 			</div>

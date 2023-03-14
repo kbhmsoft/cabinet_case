@@ -30,11 +30,15 @@
       <form class="form-inline" method="GET">
             <div class="form-group mb-2 mr-2">
               <select name="office_type" class="form-control">
-                 <option value="">-বিভাগ নির্বাচন করুন-</option>
+                 <option value="">-বিভাগ নির্বাচন করুন-</option>3
                  @foreach ($office_types as $value)
-                 <option value="{{ $value->id }}{{ $_GET['office_type'] == $value->id ? 'selected' : '' }}"> {{ $value->type_name_bn }} </option>
+                 <option value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}> {{ $value->type_name_bn }} </option>
                  @endforeach
               </select>
+           </div>
+            <div class="form-group mb-2 mr-2">
+              <input type="text" name="office_name" value="{{ (isset($_GET['office_name']) ? $_GET['office_name']:'')}}" class="form-control w-100" >
+              
            </div>            
            <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
       </form>
