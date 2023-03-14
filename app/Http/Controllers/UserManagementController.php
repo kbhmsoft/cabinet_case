@@ -22,6 +22,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {   
+
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         // All user list
