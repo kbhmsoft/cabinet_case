@@ -56,8 +56,8 @@ class HomeController extends Controller
         // $user = Auth::user();
         // $id = Auth::id();
         // dd($id);
-        return view('home');
+        // return view('home');
         /* return view('dashboard.index');*/
-        // return redirect('/dashboard');
+        return redirect('/dashboard');
     }
 }
