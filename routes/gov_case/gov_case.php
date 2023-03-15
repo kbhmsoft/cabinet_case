@@ -10,7 +10,7 @@ use App\Http\Controllers\gov_case\GovCaseOfficeController;
 use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
-use App\Http\Controllers\gov_case\SumpremCourtController;
+use App\Http\Controllers\gov_case\AclController;
 
 
 Route::middleware('auth')->group(function () {
@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::group(['prefix' => 'cabinet/', 'as' => 'cabinet.'], function () {
+
         Route::resource('user-management', GovCaseUserManagementController::class);
         /////************** Office Setting **************/////
         Route::get('/office', [GovCaseOfficeController::class, 'index'])->name('office');
@@ -61,22 +62,52 @@ Route::middleware('auth')->group(function () {
         Route::get('/notice/edit/{id}', [GovCaseNoticeController::class, 'edit'])->name('notice.edit');
         Route::get('/notice/show/{id}', [GovCaseNoticeController::class, 'show'])->name('notice.show');
         Route::post('/notice/update', [GovCaseNoticeController::class, 'update'])->name('notice.update');
+
+        // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
+        Route::get('/user-role-management', [AclController::class, 'roleManagement'])->name('roleManagement');
+        Route::post('/store-user-role', [AclController::class, 'storeRole'])->name('storeRole');
+        Route::post('/update-user-role', [AclController::class, 'updateRole'])->name('updateRole');
+        Route::get('/delete-user-role/{id}', [AclController::class, 'roleItemDelete'])->name('roleItemDelete');
+
+        // for permissions 
+        Route::get('/user-permissions', [AclController::class, 'permissionManagement'])->name('permissionManagement');
+        Route::post('/store-user-permission', [AclController::class, 'storePermission'])->name('storePermission');
+        Route::post('/update-user-permission', [AclController::class, 'updatePermission'])->name('updatePermission');
+        Route::get('/delete-user-permission/{id}', [AclController::class, 'permissionItemDelete'])->name('permissionItemDelete');
+        
+
+     
+
+        // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
+
+
+
+
+
+
+
         Route::group(['prefix' => 'settings/', 'as' => 'settings.'], function () {
             Route::get('/category/list', [GovCaseSettingsController::class, 'div_category_index'])->name('category.list');
             Route::get('/category/add', [GovCaseSettingsController::class, 'div_category_add'])->name('category.add');
-            Route::post('/category/store}', [GovCaseSettingsController::class, 'div_category_store'])->name('category.store');
+            Route::post('/category/store', [GovCaseSettingsController::class, 'div_category_store'])->name('category.store');
             Route::get('/category/edit/{id}', [GovCaseSettingsController::class, 'div_category_edit'])->name('category.edit');
             Route::post('/category/update}', [GovCaseSettingsController::class, 'div_category_update'])->name('category.update');
             Route::get('/category_type/list', [GovCaseSettingsController::class, 'div_category_type_index'])->name('category_type.list');
             Route::get('/category_type/add', [GovCaseSettingsController::class, 'div_category_type_add'])->name('category_type.add');
-            Route::post('/category_type/store}', [GovCaseSettingsController::class, 'div_category_type_store'])->name('category_type.store');
+            Route::post('/category_type/store', [GovCaseSettingsController::class, 'div_category_type_store'])->name('category_type.store');
             Route::get('/category_type/edit/{id}', [GovCaseSettingsController::class, 'div_category_type_edit'])->name('category_type.edit');
-            Route::post('/category_type/update}', [GovCaseSettingsController::class, 'div_category_type_update'])->name('category_type.update');
+            Route::post('/category_type/update', [GovCaseSettingsController::class, 'div_category_type_update'])->name('category_type.update');
             Route::get('/office_type/list', [GovCaseSettingsController::class, 'office_type_index'])->name('office_type.list');
             Route::get('/office_type/add', [GovCaseSettingsController::class, 'office_type_add'])->name('office_type.add');
-            Route::post('/office_type/store}', [GovCaseSettingsController::class, 'office_type_store'])->name('office_type.store');
+            Route::post('/office_type/store', [GovCaseSettingsController::class, 'office_type_store'])->name('office_type.store');
             Route::get('/office_type/edit/{id}', [GovCaseSettingsController::class, 'office_type_edit'])->name('office_type.edit');
-            Route::post('/office_type/update}', [GovCaseSettingsController::class, 'office_type_update'])->name('office_type.update');
+            Route::post('/office_type/update', [GovCaseSettingsController::class, 'office_type_update'])->name('office_type.update');
+
+
+
+
+
+
         });
         // Route::get('/new_sf_list', [GovCaseMessageController::class, 'newSFlist'])->name('newSFlist');
         // Route::get('/new_sf_details/{id}', [GovCaseMessageController::class, 'newSFdetails'])->name('newSFdetails');

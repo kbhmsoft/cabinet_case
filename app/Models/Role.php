@@ -13,11 +13,15 @@ class Role extends Model
 	// public $timestamps = true;   
 
 	protected $fillable = [
-	'role_name'
+	'role_name', 'status', 'user_id'
 	];
 
 	public function users() {
 		return $this->HasMany(User::class);
+	}
+
+	public function user() {
+		return $this->belongsTo(User::class, 'user_id');
 	}
 
 	// public function subcategories(){

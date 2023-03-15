@@ -74,8 +74,6 @@
                </div>
             </li>
             
-       
-
             <li class="menu-item {{ request()->is('cabinet/user-management') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী পরিচালনা</span>
@@ -87,7 +85,23 @@
                      <li class="menu-item" aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                           <span class="menu-text font-weight-bolder">ব্যাবহারকারী তালিকা</span>
+                           <span class="menu-text font-weight-bolder">ব্যাবহারকারীর তালিকা</span>
+                        </a>
+                     </li>
+                  </ul>
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.roleManagement') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">ভূমিকা পরিচালনা</span>
+                        </a>
+                     </li>
+                  </ul>
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">সকল অনুমতি</span>
                         </a>
                      </li>
                   </ul>
