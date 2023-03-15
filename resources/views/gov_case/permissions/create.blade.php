@@ -10,6 +10,10 @@
          <h2>অনুমতি পরিচালনা </h2>
       </div>
       <div class="card-toolbar">        
+         <button type="button" data-toggle="modal" data-target="#parentPermissionNameModal" class="btn btn-sm btn-success mr-3 font-weight-bolder">
+            <i class="la la-plus"></i>পেরেন্ট অনুমতি নামে তৈরি
+         </button>  
+
          <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>অনুমতি তৈরি করুন
          </button>                
@@ -36,6 +40,7 @@
                <th scope="col" width="30">#</th>
                <th scope="col">প্রদর্শনী নাম</th>
                <th scope="col">অনুমতি নাম</th>
+               <th scope="col">প্যারেন্ট অনুমতি নাম</th>
                <th scope="col">প্রস্তুতকারক</th>
                <th scope="col">অবস্থা</th>
                <th scope="col" width="150">অ্যাকশন</th>
@@ -52,6 +57,7 @@
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
                <td>{{ $permission->display_name }}</td>
                <td>{{ $permission->name }}</td>
+               <td>{{ $permission->parentName->name }}</td>
                <td>{{ $permission->user? $permission->user->name: '' }}</td>
                <td>
                   @if($permission->status == 1)
@@ -139,9 +145,52 @@
          @csrf
          <div class="modal-body">
              <div class="card-body card-block">
+
+                <div class="form-group">
+                    <label for="name" class=" form-control-label">প্যারেন্ট অনুমতি নাম<span class="text-danger">*</span></label>
+                     <select name="parent_permission_id" class="form-control">
+                        @foreach($parentPermissions as $parent)
+                        <option value="{{$parent->id}}">{{$parent->name}}</option>
+                        @endforeach
+                     </select>
+                </div>
+
                   <div class="form-group">
                       <label for="name" class=" form-control-label">অনুমতি নাম <span class="text-danger">*</span></label>
                       <input type="text" id="name" name="name" placeholder="অনুমতির নাম লিখুন" class="form-control form-control-sm" required>
+                     
+                  </div>
+                
+            </div>
+         </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ</button>
+        <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+      </div>
+   </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- parent permission name Modal -->
+<div class="modal fade" id="parentPermissionNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">প্যারেন্ট অনুমতি নাম তৈরি করুন</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('cabinet.storePatentPermissionName') }}" method="POST">
+         @csrf
+         <div class="modal-body">
+             <div class="card-body card-block">
+                  <div class="form-group">
+                      <label for="name" class=" form-control-label">প্যারেন্ট নাম <span class="text-danger">*</span></label>
+                      <input type="text" id="name" name="name" placeholder="প্যারেন্ট অনুমতির নাম লিখুন" class="form-control form-control-sm" required>
                      
                   </div>
                 
