@@ -77,9 +77,9 @@
    @if(Auth::user()->role_id ==27 || Auth::user()->role_id ==28)
       <div class="col-md-3">
          <div class="card-counter lightgreen">
-            <a href="{{ route('office.level', 9) }}"><i class="fa fas fa-archway text-white"></i></a>
-            <span class="count-numbers"><a href="{{ route('office.level', 9) }}"><?=en2bn($total_ministry)?></a></span>
-            <span class="count-name"><a href="{{ route('office.level', 9) }}">মোট মন্ত্রনালয়</a></span>
+            <a href="#"><i class="fa fas fa-archway text-white"></i></a>
+            <span class="count-numbers"><a href="#"><?=en2bn($total_ministry)?></a></span>
+            <span class="count-name"><a href="#">মোট মন্ত্রনালয়</a></span>
          </div>
       </div>
    @endif
