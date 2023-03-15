@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'civilsuit',
+    'name' => 'GovCase',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -186,7 +186,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/cache/data',
+        'path' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -226,7 +226,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'civilsuit_cache',
+    'prefix' => 'govcase_cache',
   ),
   'cors' => 
   array (
@@ -325,7 +325,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'civilsuit_database_',
+        'prefix' => 'govcase_database_',
       ),
       'default' => 
       array (
@@ -357,7 +357,7 @@
     array (
       'enabled' => true,
       'driver' => 'file',
-      'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\debugbar',
+      'path' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\debugbar',
       'connection' => NULL,
       'provider' => '',
       'hostname' => '127.0.0.1',
@@ -459,12 +459,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app',
+        'root' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+        'root' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -481,7 +481,7 @@
     ),
     'links' => 
     array (
-      'C:\\laragon\\www\\cabinet_case\\public\\storage' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+      'F:\\xampp\\htdocs\\cabinet_case\\public\\storage' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -515,13 +515,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -572,7 +572,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -622,14 +622,14 @@
     'from' => 
     array (
       'address' => NULL,
-      'name' => 'civilsuit',
+      'name' => 'GovCase',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views/vendor/mail',
+        0 => 'F:\\xampp\\htdocs\\cabinet_case\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -712,7 +712,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/sessions',
+    'files' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -721,7 +721,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'civilsuit_session',
+    'cookie' => 'govcase_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -732,9 +732,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views',
+      0 => 'F:\\xampp\\htdocs\\cabinet_case\\resources\\views',
     ),
-    'compiled' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework\\views',
+    'compiled' => 'F:\\xampp\\htdocs\\cabinet_case\\storage\\framework\\views',
   ),
   'flare' => 
   array (
