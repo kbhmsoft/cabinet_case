@@ -101,9 +101,9 @@
                                 @csrf
                                 <!-- start step indicators -->
                                 <div class="form-header d-flex mb-4">
-                                    <span class="stepIndicator">মামলার সাধারণ তথ্য</span> 
-                                    <span class="stepIndicator">Social Profiles</span> 
-                                    <span class="stepIndicator">Personal Details</span>
+                                    <span class="stepIndicator one">মামলার সাধারণ তথ্য</span> 
+                                    <span class="stepIndicator two">Social Profiles</span> 
+                                    <span class="stepIndicator three">Personal Details</span>
                                 </div>
                                 <!-- end step indicators -->
                                 <!-- step one -->

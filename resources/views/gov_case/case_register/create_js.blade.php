@@ -527,7 +527,7 @@
             items += '<td><div class="custom-file"><input type="file" required name="file_name[]" onChange="attachmentTitle(' +
                 count + ')" class="custom-file-input" id="customFile' + count +
                 '" /><label class="custom-file-label custom-input' + count + '" for="customFile' + count +
-                '" required>ফাইল নির্বাচন করুন</label></div></td>';
+                '" >ফাইল নির্বাচন করুন</label></div></td>';
             items += '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#fileDiv tr:last').after(items);
