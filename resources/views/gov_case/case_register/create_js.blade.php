@@ -448,7 +448,7 @@
           x = document.getElementsByClassName("step");
           // y = x[currentTab].getElementsByTagName("input");
           y = x[currentTab].querySelectorAll("[required]");
-          console.log(y);
+          console.log(y.name);
           // A loop that checks every input field in the current tab:
           for (i = 0; i < y.length; i++) {
             // If a field is empty...
@@ -458,6 +458,12 @@
               // and set the current valid status to false
               valid = false;
             }
+            if( document.getElementById("ruleFile").files.length == 0 ){
+                console.log("no files selected");
+                $('#file_input_label').css("border-color","#FF0000");  
+
+            }
+
           }
           // If the valid status is true, mark the step as finished and valid:
           if (valid) {
@@ -524,9 +530,9 @@
             var items = '';
             items += '<tr>';
             items += '<td><input type="text" name="file_type[]" class="form-control form-control-sm" placeholder=""required ></td>';
-            items += '<td><div class="custom-file"><input type="file" required name="file_name[]" onChange="attachmentTitle(' +
+            items += '<td><div class="custom-file"><input type="file" id="ruleFile" required name="file_name[]" onChange="attachmentTitle(' +
                 count + ')" class="custom-file-input" id="customFile' + count +
-                '" /><label class="custom-file-label custom-input' + count + '" for="customFile' + count +
+                '" /><label id="file_input_label"  class="custom-file-label custom-input' + count + '" for="customFile' + count +
                 '" >ফাইল নির্বাচন করুন</label></div></td>';
             items += '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
