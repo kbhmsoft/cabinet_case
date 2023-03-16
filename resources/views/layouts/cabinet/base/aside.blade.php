@@ -38,24 +38,21 @@
                </a>
             </li>
             @if(userInfo()->role_id == 28 || userInfo()->role_id == 31 || userInfo()->role_id == 33)
-
-            @can('add_case')
             <li class="menu-item {{ request()->is('cabinet/case/create') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.create') }}" class="menu-link">
-                  <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> নতুন মামলা এন্ট্রি</span>
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-plus-circle"></i> নতুন মামলা এন্ট্রি</span>
                </a>
             </li>
-            @endcan
 
             @endif
             <li class="menu-item {{ request()->is('cabinet/case/highcourt') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
-                  <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> হাইকোর্ট বিভাগ</span>
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট বিভাগ</span>
                </a>
             </li>
             <li class="menu-item {{ request()->is('cabinet/case/appellateDivision') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
-                  <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> আপিল বিভাগ</span>
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i> আপিল বিভাগ</span>
                </a>
             </li>
             @if(userInfo()->role_id == 1 || userInfo()->role_id == 2 || userInfo()->role_id == 27 || userInfo()->role_id == 28)
@@ -268,7 +265,7 @@
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
                <li class="menu-item {{ request()->is('cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent','cabinet/messages_request') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                    <a href="javascript:;" class="menu-link menu-toggle">
-                      <span class="menu-text font-weight-bolder"><i class="fas fa-file-contract"></i> বার্তা</span>
+                      <span class="menu-text font-weight-bolder"><i class="fa fa-envelope" aria-hidden="true"></i> বার্তা</span>
                        @if($Ncount !=0)
                        <span class="menu-label">
                            <span class="label label-rounded label-danger">{{ $Ncount }}</span>
@@ -328,7 +325,7 @@
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
             <li class="menu-item {{ request()->is('search/supremecourt/causelist', 'show/notification/supremecourt', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle">
-                   <span class="menu-text font-weight-bolder"><i class="fas fa-file-contract"></i> সুপ্রীম কোর্ট</span>
+                   <span class="menu-text font-weight-bolder"><i class="fa fa-search"></i> মামলার তথ্য যাচাই</span>
                     
                    <i class="menu-arrow"></i>
                 </a>

@@ -100,10 +100,10 @@
         function addBadiRowFunc() {
             var items = '';
             items += '<tr>';
-            items += '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder=""></td>';
+            items += '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required></td>';
             items += '<input type="hidden" name="badi_id[]" value="">';
-            items += '<td><input type="text" name="badi_spouse_name[]" class="form-control form-control-sm" placeholder=""></td>';
-            items += '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""></td>';
+            items += '<td><input type="text" name="badi_spouse_name[]" class="form-control form-control-sm" placeholder="" required></td>';
+            items += '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required></td>';
             items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#badiDiv tr:last').after(items);
@@ -198,7 +198,7 @@
             $('#mainBibadi_count').val(countVal+1);
             var mk_main = $('#MainBibadiDiv tr').length;
             var MainCount = $('#MainBibadiDiv tr').length;
-            console.log(MainCount);
+            // console.log(MainCount);
             $('#MainBibadiDiv tr:last').after(ItemMain(mk_main+1, 'other'));
             /*if(MainCount ==3){
                 $('#MainBibadiDiv tr:last').after(ItemMain(MainCount, 'main'));
@@ -458,9 +458,9 @@
               // and set the current valid status to false
               valid = false;
             }
-            if( document.getElementById("ruleFile").files.length == 0 ){
+            if( document.getElementById("customFile1").files.length == 0 ){
                 console.log("no files selected");
-                $('#file_input_label').css("border-color","#FF0000");  
+                $('.custom-file-label').css("border-color","#FF0000");  
 
             }
 
@@ -530,18 +530,16 @@
             var items = '';
             items += '<tr>';
             items += '<td><input type="text" name="file_type[]" class="form-control form-control-sm" placeholder=""required ></td>';
-            items += '<td><div class="custom-file"><input type="file" id="ruleFile" required name="file_name[]" onChange="attachmentTitle(' +
-                count + ')" class="custom-file-input" id="customFile' + count +
-                '" /><label id="file_input_label"  class="custom-file-label custom-input' + count + '" for="customFile' + count +
-                '" >ফাইল নির্বাচন করুন</label></div></td>';
+            items+= '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle('+count+',this)" class="custom-file-input" id="customFile'+count+'" /><label id="file_error'+count+'" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input'+count+'" for="customFile'+count+'">ফাইল নির্বাচন করুন</label></div></td>';
             items += '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#fileDiv tr:last').after(items);
         }
         //Attachment Title Change
         function attachmentTitle(id) {
-            var value = $('#customFile' + id).val();
-            $('.custom-input' + id).text(value);
+            // var value = $('#customFile' + id).val();
+            var value = $('#customFile' + id)[0].files[0];
+            $('.custom-input' + id).text(value['name']);
         }
         //remove Attachment
         function removeBibadiRow(id) {

@@ -20,6 +20,7 @@
     position: relative;
     flex: 1;
     padding-bottom: 30px;
+    font-size: 18px;
 }
 #signUpForm .form-header .stepIndicator.active {
     font-weight: 600;

@@ -102,8 +102,8 @@
                                 <!-- start step indicators -->
                                 <div class="form-header d-flex mb-4">
                                     <span class="stepIndicator one">মামলার সাধারণ তথ্য</span> 
-                                    <span class="stepIndicator two">Social Profiles</span> 
-                                    <span class="stepIndicator three">Personal Details</span>
+                                    <span class="stepIndicator two">মামলার ফলাফল</span> 
+                                    <span class="stepIndicator three">পদক্ষেপের বিবরণ</span>
                                 </div>
                                 <!-- end step indicators -->
                                 <!-- step one -->
@@ -432,20 +432,6 @@
                                                 <div class="col-lg-4 mb-5" >
                                                     <label>প্রযোজ্য ক্ষেত্রে তামিল প্রতিবেদন প্রেরণের তারিখ <span class="text-danger"></span></label>
                                                     <input type="text" name="tamil_requesting_date" id="tamil_requesting_date" class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল </label>
-                                                    <input type="text" name="appeal_against_postpond_interim_order" id="appeal_against_postpond_interim_order" class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off">
-                                                </div>
-                                                <div class="col-lg-4 mb-5" >
-                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের তারিখ <span class="text-danger"></span></label>
-                                                    <input type="text" name="appeal_against_postpond_interim_order_date" id="appeal_against_postpond_interim_order_date" class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                </div>
-                                                <div class="col-lg-4 mb-5" >
-                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের বিবরণ <span class="text-danger"></span></label>
-                                                    <textarea type="text" name="appeal_against_postpond_interim_order_details" id="appeal_against_postpond_interim_order_details" class="form-control form-control-sm"autocomplete="off"></textarea>
                                                 </div>
                                             </div>  
                                     
