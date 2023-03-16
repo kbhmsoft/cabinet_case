@@ -74,6 +74,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/store-user-permission', [AclController::class, 'storePermission'])->name('storePermission');
         Route::post('/update-user-permission', [AclController::class, 'updatePermission'])->name('updatePermission');
         Route::get('/delete-user-permission/{id}', [AclController::class, 'permissionItemDelete'])->name('permissionItemDelete');
+
+
+        // parent permission name
+        Route::post('/parent-permission-name', [AclController::class, 'storePatentPermissionName'])->name('storePatentPermissionName');
+        
+
+        // give permission to users
+        Route::get('/user-permission-management', [AclController::class, 'permissionToUserManagement'])->name('permissionToUserManagement');
+
+        Route::get('/manage-user-permission/{user_id}', [AclController::class, 'userPermissionManage'])->name('userPermissionManage');
+
+        Route::post('/update-user-permission', [AclController::class, 'storeUpdateUserPermissionAll'])->name('storeUpdateUserPermissionAll');
         
 
      

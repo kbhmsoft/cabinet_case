@@ -39,11 +39,14 @@
             </li>
             @if(userInfo()->role_id == 28 || userInfo()->role_id == 31 || userInfo()->role_id == 33)
 
+            @can('add_case')
             <li class="menu-item {{ request()->is('cabinet/case/create') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.create') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> নতুন মামলা এন্ট্রি</span>
                </a>
             </li>
+            @endcan
+
             @endif
             <li class="menu-item {{ request()->is('cabinet/case/highcourt') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
@@ -102,6 +105,14 @@
                         <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">সকল অনুমতি</span>
+                        </a>
+                     </li>
+                  </ul>
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">অনুমতি প্রদান পরিচালনা করুন</span>
                         </a>
                      </li>
                   </ul>
