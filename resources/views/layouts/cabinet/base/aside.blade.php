@@ -268,7 +268,7 @@
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
                <li class="menu-item {{ request()->is('cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent','cabinet/messages_request') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                    <a href="javascript:;" class="menu-link menu-toggle">
-                      <span class="menu-text font-weight-bolder"><i class="fa fa-envelope" aria-hidden="true"></i> বার্তা</span>
+                      <span class="menu-text font-weight-bolder"><i class="fas fa-envelope" aria-hidden="true"></i> বার্তা</span>
                        @if($Ncount !=0)
                        <span class="menu-label">
                            <span class="label label-rounded label-danger">{{ $Ncount }}</span>
@@ -328,7 +328,7 @@
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
             <li class="menu-item {{ request()->is('search/supremecourt/causelist', 'show/notification/supremecourt', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle">
-                   <span class="menu-text font-weight-bolder"><i class="fa fa-search"></i> মামলার তথ্য যাচাই</span>
+                   <span class="menu-text font-weight-bolder"><i class="fas fa-search"></i> মামলার তথ্য যাচাই</span>
                     
                    <i class="menu-arrow"></i>
                 </a>

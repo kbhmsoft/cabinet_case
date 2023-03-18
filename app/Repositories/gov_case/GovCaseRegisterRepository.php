@@ -50,6 +50,8 @@ class GovCaseRegisterRepository
         }
         if ($caseInfo->reply_submission_date != NULL && $caseInfo->reply_submission_date != '') {
             $reply_submission_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));        
+        } else {
+            $reply_submission_date = null;
         }
         if ($caseInfo->appeal_requesting_date != NULL && $caseInfo->appeal_requesting_date != '') {
             $appeal_requesting_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->appeal_requesting_date)));        
