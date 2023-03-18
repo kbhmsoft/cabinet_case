@@ -6,34 +6,45 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
- 
 use App\Models\User;
- 
 use App\Models\ParentPermissionName;
 use App\Models\RolePermission;
+use App\Models\ModelHasPermission;
 use Auth;
 
 class AclController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+         // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:create', ['only' => ['roleManagement']]);
+  
+    }
+
+
      
     // for roles 
     public function roleManagement(){
+        $data['page_title'] = 'ভুমিকা পরিচালনা';
 
-        
-
-
-        $roles = Role::where('status', 1)->paginate(25);
-        return view('gov_case.roles.create', compact('roles'));
+        $roles = Role::paginate(25);
+        return view('gov_case.roles.create', compact('roles'))->with($data);
     }
 
     public function storeRole(Request $request){
         $this->validate($request, [
-            'role_name' => 'required|unique:roles'
+            'name' => 'required|unique:roles'
         ]);
 
         Role::create([
-            'role_name' => $request->role_name,
-            'user_id' => Auth::user()->id,
+            'name' => $request->name,
+            'created_by' => Auth::user()->id,
             'status' => 1,
         ]);
 
@@ -42,11 +53,11 @@ class AclController extends Controller
 
     public function updateRole(Request $request){
         $this->validate($request, [
-            'role_name' => 'required|unique:roles'
+            'name' => 'required'
         ]);
 
         Role::where('id', $request->role_id)->update([
-            'role_name' => $request->role_name,
+            'name' => $request->name,
             'status' => $request->status,
         ]);
 
@@ -65,10 +76,11 @@ class AclController extends Controller
 
     // for permissions 
     public function permissionManagement(){
-        $permissions = Permission::where('status', 1)->paginate(25);
+        $data['page_title'] = 'অনুমতি পরিচালনা';
+        $permissions = Permission::paginate(25);
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
-        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'));
+        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions')) ;
     }
 
     public function storePermission(Request $request){
@@ -90,7 +102,7 @@ class AclController extends Controller
 
     public function updatePermission(Request $request){
         $this->validate($request, [
-            'name' => 'required|unique:permissions'
+            'name' => 'required'
         ]);
         $nameLower = str_replace('_', ' ', $request->name);
 
@@ -133,24 +145,29 @@ class AclController extends Controller
     // for give user permissions 
 
     public function permissionToUserManagement(Request $request){
+
+        $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
         $users = User::where('is_gov', 1)->get();
 
-        return view('gov_case.user_permissions.index', compact('users'));
+        return view('gov_case.user_permissions.index', compact('users'))->with($data);
     }
 
 
     public function userPermissionManage(Request $request, $user_id){
+        $data['page_title'] = 'অনুমতি প্রদান পরিচালনা করুন
+';
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
         $rolePermissions = RolePermission::where('user_id', $user_id)->get();
 
-        return view('gov_case.user_permissions.manage_permissions', compact('user_id', 'parentPermissions', 'rolePermissions'));
+        return view('gov_case.user_permissions.manage_permissions', compact('user_id', 'parentPermissions', 'rolePermissions'))->with($data);
     }
 
 
     public function storeUpdateUserPermissionAll(Request $request){
        RolePermission::where('user_id', $request->user_id)->delete();
+       ModelHasPermission::where('model_id', $request->user_id)->delete();
+ 
        $user = User::find($request->user_id);
-        
         foreach($request->permissionId as $index => $permission_id){
             RolePermission::create([
                 'user_id' => $request->user_id,
@@ -158,6 +175,10 @@ class AclController extends Controller
                 'permission_id' => $permission_id,
                 'created_by' => Auth::user()->id,
             ]);
+
+            $permission = Permission::find($permission_id);
+            // Adding permissions to a user
+            $user->givePermissionTo($permission->name);
         }
 
         return back()->with('success','অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');

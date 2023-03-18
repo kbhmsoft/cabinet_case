@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
         // for permissions 
         Route::get('/user-permissions', [AclController::class, 'permissionManagement'])->name('permissionManagement');
         Route::post('/store-user-permission', [AclController::class, 'storePermission'])->name('storePermission');
-        Route::post('/update-user-permission', [AclController::class, 'updatePermission'])->name('updatePermission');
+        Route::post('/update-permission', [AclController::class, 'updatePermission'])->name('updatePermission');
         Route::get('/delete-user-permission/{id}', [AclController::class, 'permissionItemDelete'])->name('permissionItemDelete');
 
 

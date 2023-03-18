@@ -30,7 +30,7 @@
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">ইউজার রোলঃ</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $userManagement->role_name}}</span>
+         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $userManagement->name}}</span>
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">মোবাইল নাম্বারঃ</span>

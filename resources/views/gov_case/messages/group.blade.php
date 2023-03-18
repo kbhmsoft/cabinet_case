@@ -93,7 +93,7 @@ $officeInfo = user_office_info();
                                                   @endif
                                                </th>
                                                <td>{{ $row->name ?? '' }}</td>
-                                               <td>{{ $row->role->role_name ?? '' }}</td>
+                                               <td>{{ $row->role->name ?? '' }}</td>
                                                <td>{{ $row->office->office_name_bn ?? '' }}, {{ $row->office->upazila->upazila_name_bn ?? '' }}, {{ $row->office->district->district_name_bn ?? '' }}</td>
                                                <td>{{ $row->email ?? '' }}</td>
                                                {{-- <td>
@@ -124,7 +124,7 @@ $officeInfo = user_office_info();
                                             src="{{ url('/') }}/uploads/profile/default.jpg" alt="">
                                     @endif
                                     {{ $user->name }},
-                                    <span class="text-primary">{{ $user->role->role_name }}</span>
+                                    <span class="text-primary">{{ $user->role->name }}</span>
                                 </th>
                             </tr>
                         </thead>

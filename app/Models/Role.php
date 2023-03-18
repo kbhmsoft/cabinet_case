@@ -13,7 +13,7 @@ class Role extends Model
 	// public $timestamps = true;   
 
 	protected $fillable = [
-	'role_name', 'status', 'user_id'
+	'name', 'status', 'created_by', 'guard_name'
 	];
 
 	public function users() {

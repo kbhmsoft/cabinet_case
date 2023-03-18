@@ -53,7 +53,7 @@
 				               <select name="role_id" id="role_id" class="form-control-sm form-control">
 				               	<option value="">-- নির্বাচন করুন --</option>
 		                                @foreach ($roles as $value)
-		                                    <option value="{{ $value->id }}"> {{ $value->role_name }} </option>
+		                                    <option value="{{ $value->id }}"> {{ $value->name }} </option>
 		                                @endforeach
 				               </select>
 				               <span style="color: red">

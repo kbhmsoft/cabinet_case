@@ -16,7 +16,7 @@
                                     <span class="text-muted ml-2 font-size-h6 ">
                                         {{ en2bn($row->created_at) }} |
                                         {{ $row->user->name ?? '' }} |
-                                        {{  $row->user->role->role_name ?? '' }}
+                                        {{  $row->user->role->name ?? '' }}
                                     </span>
                                 </div>
                             </div>

@@ -32,7 +32,7 @@
             <tr>
                <th class="tg-19u4">ইউজাররোল</th>
                @forelse($roles as $role)
-               <td class="tg-nluh">{{ $role->role_name }}</td>
+               <td class="tg-nluh">{{ $role->name }}</td>
                @empty
                <td class="tg-nluh">কোনো ডাটা খুঁজে পাওয়া যায়নি</td>
                @endforelse

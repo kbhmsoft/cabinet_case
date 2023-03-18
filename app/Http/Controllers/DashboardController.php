@@ -59,14 +59,14 @@ class DashboardController extends Controller
 
       // $data['user'] = DB::table('users')
       //     ->join('roles', 'users.role_id', '=', 'roles.id')
-      //     ->select('users.id', 'users.name', 'users.username', 'roles.role_name')
+      //     ->select('users.id', 'users.name', 'users.username', 'roles.name')
       //     ->where('users.id', '=', $id)
       //     ->first();
       // dd($roleID);
 
       // $user = auth()->user();
-      // echo $role = $user->role->role_name; exit; // Name of relation function in user model and gather all role data
-      // echo $user = auth()->user()->role->role_name; exit;
+      // echo $role = $user->role->name; exit; // Name of relation function in user model and gather all role data
+      // echo $user = auth()->user()->role->name; exit;
       // echo $user = auth()->user()->office->office_name_bn; exit;
       $data = [];
       $data['rm_case_status'] = [];
@@ -1108,7 +1108,7 @@ class DashboardController extends Controller
 
         // Get SF Details
      $data['logs'] = DB::table('case_log')
-     ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.role_name', 'users.name')
+     ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
      ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
      ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
      ->join('users', 'case_log.user_id', '=', 'users.id')
@@ -1126,7 +1126,7 @@ class DashboardController extends Controller
 
         // Dropdown
      $data['roles'] = DB::table('roles')
-     ->select('id', 'role_name')
+     ->select('id', 'name')
      ->where('in_action', '=', 1)
      ->orderBy('sort_order', 'asc')
      ->get();
@@ -1228,7 +1228,7 @@ class DashboardController extends Controller
 
         // Get SF Details
         $data['logs'] = DB::table('case_log')
-        ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.role_name', 'users.name')
+        ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
         ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
         ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
         ->join('users', 'case_log.user_id', '=', 'users.id')
@@ -1246,7 +1246,7 @@ class DashboardController extends Controller
 
         // Dropdown
         $data['roles'] = DB::table('roles')
-        ->select('id', 'role_name')
+        ->select('id', 'name')
         ->where('in_action', '=', 1)
         ->orderBy('sort_order', 'asc')
         ->get();

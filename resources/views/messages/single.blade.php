@@ -143,7 +143,7 @@ a{
                                                         src="{{ url('/') }}/uploads/profile/default.jpg" alt=""> --}}
                                                 @endif
                                                 {{ $user->name }},
-                                                <span class="text-primary">{{ $user->role->role_name }}</span>
+                                                <span class="text-primary">{{ $user->role->name }}</span>
                                             </th>
                                             <th><a id="refresh" class="btn btn-sm btn-primary right" >Refresh</a></th>
                                         </tr>
@@ -261,7 +261,7 @@ a{
                                                             src="{{ url('/') }}/uploads/profile/default.jpg" alt="">
                                                     @endif
                                                     {{ $user->name }},
-                                                    <span class="text-primary">{{ $user->role->role_name }}</span>
+                                                    <span class="text-primary">{{ $user->role->name }}</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -402,7 +402,7 @@ a{
                                             src="{{ url('/') }}/uploads/profile/default.jpg" alt="">
                                     @endif
                                     {{ $user->name }},
-                                    <span class="text-primary">{{ $user->role->role_name }}</span>
+                                    <span class="text-primary">{{ $user->role->name }}</span>
                                 </th>
                             </tr>
                         </thead>

@@ -21,7 +21,7 @@ class Gov_ReportController extends Controller
     {
           // Dropdown List
         $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
-        $data['roles'] = DB::table('roles')->select('id', 'role_name')->where('in_action', 1)->get();
+        $data['roles'] = DB::table('roles')->select('id', 'name')->where('in_action', 1)->get();
         $data['officeTypes'] = DB::table('gov_case_office_type')->select('id', 'type_name_bn')->get();
         // $data['ministry'] = DB::table('gov_case_office')->select('id', 'office_name_bn')->get();
 

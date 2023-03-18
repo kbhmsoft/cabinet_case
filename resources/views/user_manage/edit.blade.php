@@ -76,7 +76,7 @@
                            <select name="role_id" id="role_id" class="form-control-sm form-control">
                               <option value="">-- নির্বাচন করুন --</option>
                                       @foreach ($roles as $value)
-                                          <option value="{{ $value->id }}" {{ $value->id == $userManagement->role_id ? "selected" : ''}}> {{ $value->role_name }} </option>
+                                          <option value="{{ $value->id }}" {{ $value->id == $userManagement->role_id ? "selected" : ''}}> {{ $value->name }} </option>
                                       @endforeach
                            </select>
                            <span style="color: red">

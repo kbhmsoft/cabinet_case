@@ -74,8 +74,8 @@
                                             <label class="radio {{ $radio_disable }}">
                                                 <input type="radio" name="group" value="{{ $row->id }}"
                                                     {{ $disable }} {{ $checked }} />
-                                                <!-- <span></span>{{ $row->role_name . $row->id }} -->
-                                                <span></span>{{ $row->role_name }}
+                                                <!-- <span></span>{{ $row->name . $row->id }} -->
+                                                <span></span>{{ $row->name }}
                                             </label>
                                         @endforeach
                                     </div>

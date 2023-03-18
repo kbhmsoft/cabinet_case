@@ -22,7 +22,7 @@ class UserCollection extends JsonResource
             'email' => $this->email,
             'mobile_no' => $this->mobile_no,
             'profile_pic' => $this->profile_pic == null ? null : url('/') .'/uploads/profile/' . $this->profile_pic,
-            'role_name' => $this->role->role_name,
+            'name' => $this->role->name,
             'office_name' => $this->office->office_name_bn,
             'district_name' => $this->office->dis_name_bn,
             'upazila_name' => $this->office->upa_name_bn,

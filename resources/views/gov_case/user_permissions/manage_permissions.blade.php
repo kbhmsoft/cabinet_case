@@ -15,21 +15,20 @@
       <div class="card-title mb-0 mt-2" >
          <h2 style="display: contents">অনুমতি প্রদান পরিচালনা করুন </h2>
 
-         <button type="submit" class="btn btn-sm btn-primary font-weight-bolder float-right">
-            <i class="la file-check"></i>অনুমতি বরাদ্দ সংশোধন
+         <button type="submit" class="btn btn-sm btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
+            <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
          </button>  
       </div>
       <div class="card-toolbar">        
        
-              
       </div>
    </div>
    <div class="card-body">
       
-   <div class="row">
+   <div class="row grid">
 
       @foreach($parentPermissions as $parentPermission )
-      <div class="col-lg-4 col-md-4 mb-5">
+      <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
                <div class="cardheader">
                      {{ $parentPermission->name }}
@@ -41,7 +40,8 @@
                         $rolePermission = App\Models\RolePermission::where(['permission_id' => $permission->id, 'user_id' => $user_id])->first();
                      ?>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> {{$permission->name}}
+                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> 
+                         <span>{{$permission->name}}</span>
                      </li>
                      @endforeach
                   </ul>
@@ -79,11 +79,16 @@
 <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
 <!--end::Page Scripts-->
-
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 <script>
-   
  
+   // jQuery
+$('.grid').masonry({
+  
+  itemSelector: '.grid-item'
+});
+    
 </script>
 
 

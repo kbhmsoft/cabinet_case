@@ -24,7 +24,7 @@
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">ইউজার রোল</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $notice->role->role_name}}</span>
+         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $notice->role->name}}</span>
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">প্রকাশের তারিখ</span>

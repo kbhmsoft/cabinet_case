@@ -78,7 +78,7 @@
                <!-- <td>{{ $row->case_division->name_bn ?? '-'}}</td> -->
                <td>- </td>
                <td>{{ $row->case_status->status_name ?? '-' }} </td>
-               <!-- <td>{{ $row->role->role_name ?? '-' }} </td> -->
+               <!-- <td>{{ $row->role->name ?? '-' }} </td> -->
                <td>
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>

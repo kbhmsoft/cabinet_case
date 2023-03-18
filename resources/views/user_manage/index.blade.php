@@ -41,7 +41,7 @@
                <th scope="row" class="tg-bn">{{ en2bn(++$i) }}</th>
                <td>{{ $row->name }}</td>
                <td>{{ $row->username }}</td>
-               <td>{{ $row->role_name }}</td>
+               <td>{{ $row->name }}</td>
                <td>{{ $row->office_name_bn }}, {{ $row->upazila_name_bn }} {{ $row->district_name_bn }}</td>
                <td>{{ $row->email }}</td>
                <!-- <td>

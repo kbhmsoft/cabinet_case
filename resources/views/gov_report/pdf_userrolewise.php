@@ -69,7 +69,7 @@
 						<?php 
 						if(!empty($results)){
 						?>
-						<div style="font-size:12px;">ইউজার রোলঃ <br><u><?=$results[0]->role_name;?></u></div>
+						<div style="font-size:12px;">ইউজার রোলঃ <br><u><?=$results[0]->name;?></u></div>
 						<?php } ?>
 					</div>
 					<div class="col-6 text-center float-left">

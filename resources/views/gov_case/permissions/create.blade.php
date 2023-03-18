@@ -1,9 +1,8 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
- 
-
-<!--begin::Card-->
+  
+  <!--begin::Card-->
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
@@ -52,24 +51,30 @@
 
             ?>
             @foreach ($permissions as $permission)
+ 
+            <?php
+                $parentName = App\Models\ParentPermissionName::find($permission->parent_permission_name_id);
+                $user = App\Models\User::find($permission->user_id);
+
+            ?>
 
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
                <td>{{ $permission->display_name }}</td>
                <td>{{ $permission->name }}</td>
-               <td>{{ $permission->parentName->name }}</td>
-               <td>{{ $permission->user? $permission->user->name: '' }}</td>
+               <td>{{ $parentName? $parentName->name: '' }}</td>
+               <td>{{ $user? $user->name: '' }}</td>
                <td>
                   @if($permission->status == 1)
                      <span class="badge badge-primary">সক্রিয়</span>
                   @else
-                     <span class="badge badge-warning">নিশক্রিয়</span>
+                     <span class="badge badge-secondary">নিশক্রিয়</span>
                   @endif
 
                </td>
                
                <td>
-                  <button type="button" onclick="updatePermissionModal({{$permission->id}}, '{{$permission->name}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                  <button type="button" onclick="updatePermissionModal({{$permission->id}}, '{{$permission->name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                   <a href="{{ route('cabinet.permissionItemDelete', $permission->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
@@ -77,7 +82,7 @@
            
          </tbody>
       </table>      
-    
+        {{ $permissions->links() }}
    </div>
 </div>
 <!--end::Card-->
@@ -109,8 +114,8 @@
                         <div class="form-group">
                             <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
                              <select name="status" class="form-control">
-                                <option value="1">সক্রিয়</option>
-                                <option value="0">নিশক্রিয়</option>
+                                <option class="status1" value="1">সক্রিয়</option>
+                                <option class="status2" value="0">নিশক্রিয়</option>
                              </select>
                         </div>
                       
@@ -225,12 +230,21 @@
 
 <script>
    
-   function updatePermissionModal(id, name){
+   function updatePermissionModal(id, name, status){
        $('#updateRoleItem').modal().show();
 
        $('#roleID').val(id);
        $('#update_name').val(name);
 
+       var checkstatus = status;
+
+        $('.status2').attr('selected', false);
+        $('.status2').attr('selected', false);
+       if(checkstatus == '0'){
+            $('.status2').attr('selected','selected');
+       }else{
+          $('.status1').attr('selected','selected');
+       }
 
    }
 </script>

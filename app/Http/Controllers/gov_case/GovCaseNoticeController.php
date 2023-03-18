@@ -22,7 +22,7 @@ class GovCaseNoticeController extends Controller
      public function create()
     {   
 
-        $data['roles'] = Role::select('id', 'role_name')
+        $data['roles'] = Role::select('id', 'name')
         ->where('is_gov', 1)
         ->orderBy('sort_order', 'ASC')
         ->get(); 
@@ -66,7 +66,7 @@ class GovCaseNoticeController extends Controller
      public function edit($id)
     {   
 
-        $data['roles'] = Role::select('id', 'role_name')
+        $data['roles'] = Role::select('id', 'name')
         ->where('is_gov', 1)
         ->orderBy('sort_order', 'ASC')
         ->get(); 

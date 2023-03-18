@@ -89,7 +89,7 @@ class GovCaseRegisterController extends Controller
           // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -156,7 +156,7 @@ class GovCaseRegisterController extends Controller
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
@@ -219,7 +219,7 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
@@ -293,7 +293,7 @@ class GovCaseRegisterController extends Controller
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -366,7 +366,7 @@ class GovCaseRegisterController extends Controller
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -439,7 +439,7 @@ class GovCaseRegisterController extends Controller
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -512,7 +512,7 @@ class GovCaseRegisterController extends Controller
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -585,7 +585,7 @@ class GovCaseRegisterController extends Controller
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
@@ -659,7 +659,7 @@ class GovCaseRegisterController extends Controller
         $data['division_wise_id'] = $id;
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';

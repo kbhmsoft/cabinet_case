@@ -44,7 +44,7 @@
                <td>{{ $user->name }}</td>
                <td>{{ $user->email }}</td>
                <td>{{ $user->mobile_no }}</td>
-               <td>{{ $user->role? $user->role->role_name: '' }}</td>
+               <td>{{ $user->role? $user->role->name: '' }}</td>
                <td>{{ $user->office? $user->office->office_name_bn: '' }}</td>
                 
                <td>

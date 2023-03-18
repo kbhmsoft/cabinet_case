@@ -84,7 +84,7 @@ class GovCaseUserNotificationController extends Controller
           // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'role_name')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
         $data['page_title'] =   'ফলাফল সম্পন্ন মামলা';
@@ -111,7 +111,7 @@ class GovCaseUserNotificationController extends Controller
         ->join('case_status', 'case_register.cs_id', '=', 'case_status.id')
         ->join('case_badi', 'case_register.id', '=', 'case_badi.case_id')
         ->join('case_bibadi', 'case_register.id', '=', 'case_bibadi.case_id')
-        ->select('case_register.*', 'court.court_name','users.name', 'division.division_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_status.status_name', 'roles.role_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
+        ->select('case_register.*', 'court.court_name','users.name', 'division.division_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_status.status_name', 'roles.name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
         ->where('case_register.id', '=', $id)
         ->first();
 
@@ -129,7 +129,7 @@ class GovCaseUserNotificationController extends Controller
 
         // Get SF Signature
         $data['sf_signatures'] = DB::table('case_sf_log')
-        ->select('case_sf_log.user_id', 'users.name', 'roles.role_name', 'office.office_name_bn', 'users.signature')
+        ->select('case_sf_log.user_id', 'users.name', 'roles.name', 'office.office_name_bn', 'users.signature')
         ->join('users', 'users.id', '=', 'case_sf_log.user_id')
         ->join('roles', 'roles.id', '=', 'users.role_id')
         ->join('office', 'office.id', '=', 'users.office_id')
@@ -222,7 +222,7 @@ class GovCaseUserNotificationController extends Controller
         $upazilas = NULL;
         $courts = DB::table('court')->select('id', 'court_name')->get();
         $divisions = DB::table('division')->select('id', 'division_name_bn')->get();
-        $user_role = DB::table('roles')->select('id', 'role_name')->get();
+        $user_role = DB::table('roles')->select('id', 'name')->get();
 
         if($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13){
             $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', NULL)->get();
@@ -295,7 +295,7 @@ class GovCaseUserNotificationController extends Controller
         $upazilas = NULL;
         $courts = DB::table('court')->select('id', 'court_name')->get();
         $divisions = DB::table('division')->select('id', 'division_name_bn')->get();
-        $user_role = DB::table('roles')->select('id', 'role_name')->get();
+        $user_role = DB::table('roles')->select('id', 'name')->get();
 
         if($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13){
             $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', NULL)->get();

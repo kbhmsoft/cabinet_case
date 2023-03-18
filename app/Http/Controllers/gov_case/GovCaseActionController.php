@@ -76,7 +76,7 @@ class GovCaseActionController extends Controller
         // Get Upazila based Role Signature
 
         $data['upazila_signatures'] = DB::table('users')
-        ->select('users.name', 'roles.role_name', 'office.office_name_bn', 'users.signature')
+        ->select('users.name', 'roles.name', 'office.office_name_bn', 'users.signature')
         ->join('roles', 'roles.id', '=', 'users.role_id')
         ->join('office', 'office.id', '=', 'users.office_id')
         ->where('office.upazila_id', '=', $data['info']->upazila_id)
@@ -87,7 +87,7 @@ class GovCaseActionController extends Controller
         // Get SF Signature
 
        /* $data['sf_signatures'] = DB::table('case_sf_log')
-        ->select('case_sf_log.user_id', 'users.name', 'roles.role_name', 'office.office_name_bn', 'users.signature')
+        ->select('case_sf_log.user_id', 'users.name', 'roles.name', 'office.office_name_bn', 'users.signature')
         ->join('users', 'users.id', '=', 'case_sf_log.user_id')
         ->join('roles', 'roles.id', '=', 'users.role_id')
         ->join('office', 'office.id', '=', 'users.office_id')
@@ -257,7 +257,7 @@ class GovCaseActionController extends Controller
         // ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
         // ->join('roles', 'case_register.action_user_group_id', '=', 'roles.id')
         // ->join('case_status', 'case_register.cs_id', '=', 'case_status.id')
-        // ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'roles.role_name', 'case_status.status_name')
+        // ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'roles.name', 'case_status.status_name')
         // ->where('case_register.id', '=', $caseID)
         // ->first();
 
@@ -280,7 +280,7 @@ class GovCaseActionController extends Controller
         // ->first();
 
         // $data['sf_signatures'] = DB::table('case_sf_log')
-        // ->select('case_sf_log.user_id', 'users.name', 'roles.role_name', 'office.office_name_bn', 'users.signature')
+        // ->select('case_sf_log.user_id', 'users.name', 'roles.name', 'office.office_name_bn', 'users.signature')
         // ->join('users', 'users.id', '=', 'case_sf_log.user_id')
         // ->join('roles', 'roles.id', '=', 'users.role_id')
         // ->join('office', 'office.id', '=', 'users.office_id')
@@ -375,7 +375,7 @@ class GovCaseActionController extends Controller
         // ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
         // ->join('roles', 'case_register.action_user_group_id', '=', 'roles.id')
         // ->join('case_status', 'case_register.cs_id', '=', 'case_status.id')
-        // ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'roles.role_name', 'case_status.status_name')
+        // ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'roles.name', 'case_status.status_name')
         // ->where('case_register.id', '=', $caseID)
         // ->first();
 
@@ -398,7 +398,7 @@ class GovCaseActionController extends Controller
         // ->first();
 
         // $data['sf_signatures'] = DB::table('case_sf_log')
-        // ->select('case_sf_log.user_id', 'users.name', 'roles.role_name', 'office.office_name_bn', 'users.signature')
+        // ->select('case_sf_log.user_id', 'users.name', 'roles.name', 'office.office_name_bn', 'users.signature')
         // ->join('users', 'users.id', '=', 'case_sf_log.user_id')
         // ->join('roles', 'roles.id', '=', 'users.role_id')
         // ->join('office', 'office.id', '=', 'users.office_id')

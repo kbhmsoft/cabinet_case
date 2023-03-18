@@ -67,19 +67,22 @@
 #signUpForm .form-header .stepIndicator:last-child:after {
     display: none;
 }
-#signUpForm input {
+/*#signUpForm input {
     padding: 15px 20px;
     width: 100%;
     font-size: 1em;
     border: 1px solid #e3e3e3;
     border-radius: 5px;
-}
+}*/
 #signUpForm input:focus {
-    border: 1px solid #009688;
+    border: 2px solid #009688;
     outline: 0;
 }
 #signUpForm input.invalid {
-    border: 1px solid #ffaba5;
+    border: 2px solid #ffaba5;
+}
+#signUpForm .invalid {
+    border: 2px solid #ffaba5;
 }
 #signUpForm .step {
     display: none;

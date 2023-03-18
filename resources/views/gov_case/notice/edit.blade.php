@@ -30,7 +30,7 @@
 				               	<option value="">-- নির্বাচন করুন --</option>
 		                                @foreach ($roles as $value)
 		                                    <option value="{{ $value->id }}"
-		                                    	{{ old('role_id') == $value->id || $notice->notice_for == $value->id ? 'selected' : '' }}> {{ $value->role_name }} </option>
+		                                    	{{ old('role_id') == $value->id || $notice->notice_for == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>
 		                                @endforeach
 				               </select>
 				               <span style="color: red">

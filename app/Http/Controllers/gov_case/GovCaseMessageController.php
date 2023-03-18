@@ -28,7 +28,7 @@ class GovCaseMessageController extends Controller
                 ->orderBy('id','DESC')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'roles.role_name', 'office.office_name_bn')
+                ->select('users.*', 'roles.name', 'office.office_name_bn')
                 ->where('users.is_gov', 1);
                 // ->paginate(10);
         }else{
@@ -36,7 +36,7 @@ class GovCaseMessageController extends Controller
                 ->orderBy('id','DESC')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'roles.role_name', 'office.office_name_bn')
+                ->select('users.*', 'roles.name', 'office.office_name_bn')
                 ->where('users.is_gov', 1);
                 // ->paginate(10);
         }

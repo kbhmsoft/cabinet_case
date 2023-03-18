@@ -37,7 +37,7 @@
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($key+1) }}</th>
                <td>{{ $row->description }}</td>
-               <td>{{ $row->role->role_name }}</td>
+               <td>{{ $row->role->name }}</td>
                <td>{{ en2bn($row->publish_date) }}</td>
                <td>{{ en2bn($row->expiry_date) }}</td>
                

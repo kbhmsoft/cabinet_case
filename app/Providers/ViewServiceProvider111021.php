@@ -50,7 +50,7 @@ class ViewServiceProvider extends AppServiceProvider
             $upazilas = NULL;
             $courts = DB::table('court')->select('id', 'court_name')->get();
             $divisions = DB::table('division')->select('id', 'division_name_bn')->get();
-            $user_role = DB::table('roles')->select('id', 'role_name')->get();
+            $user_role = DB::table('roles')->select('id', 'name')->get();
 
             if($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13 || $roleID == 16){
                 $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', NULL)->get();

@@ -53,7 +53,7 @@
                      </th>
                     <td>{{ $msg->sender->name ?? '' }} <span class="badge badge-danger">নতুন</span></td>
                     <td>{{ $msg->sender->username ?? '' }}</td>
-                    <td>{{ $msg->sender->role->role_name ?? '' }}</td>
+                    <td>{{ $msg->sender->role->name ?? '' }}</td>
                     <td>{{ $msg->sender->office->office_name_bn ?? '' }}, {{ $msg->sender->office->upazila->upazila_name_bn ?? '' }} {{ $msg->sender->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $msg->sender->email ?? '' }}</td>
                     <td>
@@ -98,7 +98,7 @@
                         @endif --}}
                     <td>{{ $user->name ?? '' }} <span class="badge badge-danger">{{ $Ncount != 0 ? $Ncount : ''  }}</span></td>
                     <td>{{ $user->username ?? '' }}</td>
-                    <td>{{ $user->role->role_name ?? '' }}</td>
+                    <td>{{ $user->role->name ?? '' }}</td>
                     <td>{{ $user->office->office_name_bn ?? '' }}, {{ $user->office->upazila->upazila_name_bn ?? '' }} {{ $user->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $user->email ?? '' }}</td>
                     <td>

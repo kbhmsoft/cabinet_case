@@ -66,6 +66,7 @@
                </a>
                <div class="menu-submenu">
                   <i class="menu-arrow"></i>
+                  
                   <ul class="menu-subnav">
                      <li class="menu-item" aria-haspopup="true">
                         <a href="{{ route('report.govcaselist') }}" class="menu-link">
@@ -74,6 +75,7 @@
                         </a>
                      </li>
                   </ul>
+                 
                </div>
             </li>
             
@@ -92,6 +94,7 @@
                         </a>
                      </li>
                   </ul>
+                  @can('create223')
                   <ul class="menu-subnav">
                      <li class="menu-item" aria-haspopup="true">
                         <a href="{{ route('cabinet.roleManagement') }}" class="menu-link">
@@ -116,7 +119,7 @@
                         </a>
                      </li>
                   </ul>
-                  
+                  @endcan
                </div>
             </li>
 

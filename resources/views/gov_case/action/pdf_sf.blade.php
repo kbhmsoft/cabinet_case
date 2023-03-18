@@ -98,7 +98,7 @@
                   <?php } ?>
                   <br><strong><?=$row->name ?></strong><br>
                   <span style="font-size:15px;">
-                  <?=$row->role_name ?><br>
+                  <?=$row->name ?><br>
                   <?=$row->office_name_bn ?><br></span>          
                </td>
                <?php } ?>

@@ -30,7 +30,7 @@ class MessageController extends Controller
                 ->join('office', 'users.office_id', '=', 'office.id')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
                 ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn');
+                ->select('users.*', 'roles.name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn');
                 // ->paginate(10);
         }else{
             $users= DB::table('users')
@@ -39,7 +39,7 @@ class MessageController extends Controller
                 ->join('office', 'users.office_id', '=', 'office.id')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
                 ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                ->select('users.*', 'roles.role_name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+                ->select('users.*', 'roles.name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
                 ->where('office.district_id', $officeInfo->district_id);
                 // ->paginate(10);
         }

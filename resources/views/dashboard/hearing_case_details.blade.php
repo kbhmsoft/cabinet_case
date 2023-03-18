@@ -579,7 +579,7 @@
                                           <div class="d-flex align-items-center justify-content-between mb-3">
                                              <div class="mr-2">
                                                 <a href="javascript:void(0)" class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5"><?=$row->status_name?></a>
-                                                <span class="text-muted ml-2 font-size-h6 "><?=$row->created_at?> | <?=$row->name?> | <?=$row->role_name?></span>
+                                                <span class="text-muted ml-2 font-size-h6 "><?=$row->created_at?> | <?=$row->name?> | <?=$row->name?></span>
                                              </div>
                                           </div>
                                           <p class="p-0 font-italic font-size-h5"><?=$row->comment?></p>

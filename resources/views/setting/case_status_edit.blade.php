@@ -75,7 +75,7 @@
                                            <input type="checkbox" name="role_id[]"  value="{{ $row->id }}" {{ in_array($row->id, $mk) ? 'checked': '' }} /><span></span>
                                         </div>
                                      </td>
-                                      <td>{{ $row->role_name }}</td>
+                                      <td>{{ $row->name }}</td>
                                      
                                    </tr>
                                    @endforeach

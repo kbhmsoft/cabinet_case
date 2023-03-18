@@ -61,7 +61,7 @@
                      </th>
                     <td>{{ $msg->sender->name ?? '' }} <span class="badge badge-danger">নতুন {{ $Ncount }}</span></td>
                     <td>{{ $msg->sender->username ?? '' }}</td>
-                    <td>{{ $msg->sender->role->role_name ?? '' }}</td>
+                    <td>{{ $msg->sender->role->name ?? '' }}</td>
                     <td>{{ $msg->sender->office->office_name_bn ?? '' }}, {{ $msg->sender->office->upazila->upazila_name_bn ?? '' }} {{ $msg->sender->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $msg->sender->email ?? '' }}</td>
                     <td>
@@ -91,7 +91,7 @@
                      </th>
                     <td>{{ $msg->receiver->name ?? '' }} <span class="badge badge-danger">{{ $Ncount != 0 ? $Ncount : ''  }}</span></td>
                     <td>{{ $msg->receiver->username ?? '' }}</td>
-                    <td>{{ $msg->receiver->role->role_name ?? '' }}</td>
+                    <td>{{ $msg->receiver->role->name ?? '' }}</td>
                     <td>{{ $msg->receiver->office->office_name_bn ?? '' }}, {{ $msg->receiver->office->upazila->upazila_name_bn ?? '' }} {{ $msg->receiver->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $msg->receiver->email ?? '' }}</td>
                     <td>

@@ -70,7 +70,7 @@
                                        <input type="checkbox" name="role_id[]"  value="{{ $row->id }}" /><span></span>
                                     </div>
                                  </td>
-                                  <td>{{ $row->role_name }}</td>
+                                  <td>{{ $row->name }}</td>
                                  
                                </tr>
                                @endforeach

@@ -220,7 +220,7 @@
                                     alt="{{ $signature->name }}" height="50">
                             @endif
                             <br><strong>{{ $signature->name }}</strong><br>
-                            <span style="font-size:15px;">{{ $signature->role_name }}<br>
+                            <span style="font-size:15px;">{{ $signature->name }}<br>
                                 {{ $signature->office_name_bn }}<br></span>
                         </td>
                     @endforeach --}}

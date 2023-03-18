@@ -29,7 +29,7 @@ class MessageRecentCollection extends JsonResource
             'mobile_no' => $this->receiver->mobile_no,
             // 'profile_pic' => $this->receiver->profile_pic == null ? null : url('/') .'/uploads/profile/' . $this->receiver->profile_pic,
             'profile_pic' => url('/') .'/uploads/profile/' . $this->receiver->profile_pic,
-            'role_name' => $this->receiver->role->role_name,
+            'name' => $this->receiver->role->name,
             'office_name' => $this->receiver->office->office_name_bn,
             'district_name' => $this->receiver->office->dis_name_bn,
             'upazila_name' => $this->receiver->office->upa_name_bn,

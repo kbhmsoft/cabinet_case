@@ -30,7 +30,7 @@ class MessageRequestCollection extends JsonResource
             'mobile_no' => $this->receiver->mobile_no,
             // 'profile_pic' => $this->receiver->profile_pic == null ? null : url('/') .'/uploads/profile/' . $this->receiver->profile_pic,
             'profile_pic' => url('/') .'/uploads/profile/' . $this->receiver->profile_pic,
-            'role_name' => $this->sender->role->role_name,
+            'name' => $this->sender->role->name,
             'office_name' => $this->sender->office->office_name_bn,
             'district_name' => $this->sender->office->dis_name_bn,
             'upazila_name' => $this->sender->office->upa_name_bn,

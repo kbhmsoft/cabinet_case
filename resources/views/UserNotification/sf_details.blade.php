@@ -75,7 +75,7 @@ $roleID = Auth::user()->role_id;
            </tr>
            <tr>
             <th class="tg-19u4">মামলার বর্তমান অবস্থান</th>
-            <td class="tg-nluh">{{ $info->status_name }}, এর জন্য {{ $info->role_name }} এর কাছে</td>
+            <td class="tg-nluh">{{ $info->status_name }}, এর জন্য {{ $info->name }} এর কাছে</td>
             <th class="tg-19u4">বর্তমান ষ্ট্যাটাস</th>
             <td class="tg-nluh"> @if ($info->status === 1)
               নতুন চলমান!
@@ -140,7 +140,7 @@ $roleID = Auth::user()->role_id;
                          <img src="{{ asset('uploads/signature/'.$signature->signature) }}" alt="{{ $signature->name }}" height="50">
                          @endif
                          <br><strong>{{ $signature->name }}</strong><br>
-                         <span style="font-size:15px;">{{ $signature->role_name }}<br>
+                         <span style="font-size:15px;">{{ $signature->name }}<br>
                          {{ $signature->office_name_bn }}<br></span>
                       </td>
                       @endforeach

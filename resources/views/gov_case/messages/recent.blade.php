@@ -75,7 +75,7 @@
                         @endif --}}
                     <td>{{ $user->name ?? '' }} <span class="badge badge-danger">{{ $Ncount != 0 ? $Ncount : ''  }}</span></td>
                     <td>{{ $user->username ?? '' }}</td>
-                    <td>{{ $user->role->role_name ?? '' }}</td>
+                    <td>{{ $user->role->name ?? '' }}</td>
                     <td>{{ $user->office->office_name_bn ?? '' }}, {{ $user->office->upazila->upazila_name_bn ?? '' }} {{ $user->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $user->email ?? '' }}</td>
                     <td>

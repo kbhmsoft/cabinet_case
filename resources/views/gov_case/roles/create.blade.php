@@ -46,41 +46,38 @@
 
             ?>
             @foreach ($roles as $role)
-
-             
+                <?php
+                    $user = App\Models\User::find($role->created_by);
+                ?>
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
-               <td>{{ $role->role_name }}</td>
-               <td>{{ $role->user? $role->user->name: '' }}</td>
+               <td>{{ $role->name }}</td>
+               <td>{{ $user? $user->name: '' }}</td>
                <td>
                   @if($role->status == 1)
                      <span class="badge badge-primary">সক্রিয়</span>
                   @else
-                     <span class="badge badge-warning">নিশক্রিয়</span>
+                     <span class="badge badge-secondary">নিশক্রিয়</span>
                   @endif
 
                </td>
                
                 
                <td>
-                  <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->role_name}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                  <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                   <a href="{{ route('cabinet.roleItemDelete', $role->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
-
-
-
 
             @endforeach
            
          </tbody>
       </table>      
+         {{ $roles->links() }}
     
    </div>
 </div>
 <!--end::Card-->
-
-
 
 
 
@@ -101,14 +98,14 @@
                    <div class="card-body card-block">
                         <div class="form-group">
                             <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
-                            <input type="text" id="update_name" name="role_name" class="form-control form-control-sm" required>
+                            <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
                              
                         </div>
                         <div class="form-group">
                             <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
                              <select name="status" class="form-control">
-                                <option value="1">সক্রিয়</option>
-                                <option value="0">নিশক্রিয়</option>
+                                <option class="status1" value="1">সক্রিয়</option>
+                                <option class="status2" value="0">নিশক্রিয়</option>
                              </select>
                         </div>
                       
@@ -145,9 +142,9 @@
              <div class="card-body card-block">
                   <div class="form-group">
                       <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
-                      <input type="text" id="name" name="role_name" placeholder="ভূমিকার নাম লিখুন" class="form-control form-control-sm" required>
+                      <input type="text" id="name" name="name" placeholder="ভূমিকার নাম লিখুন" class="form-control form-control-sm" required>
                       <span style="color: red">
-                        {{ $errors->first('role_name') }}
+                        {{ $errors->first('name') }}
                      </span>
                   </div>
                 
@@ -182,18 +179,24 @@
 
 <script>
    
-   function updateRoleModal(id, name){
+   function updateRoleModal(id, name, status){
        $('#updateRoleItem').modal().show();
 
        $('#roleID').val(id);
        $('#update_name').val(name);
 
+        $('.status2').attr('selected', false);
+        $('.status2').attr('selected', false);
+   
+       var checkstatus = status;
+       if(checkstatus == '0'){
+            $('.status2').attr('selected','selected');
+       }else{
+          $('.status1').attr('selected','selected');
+       }
 
    }
 </script>
-
-
-
 
 
 @endsection

@@ -6,10 +6,24 @@
 
 
 ------Date------=====>>> 3-15-2023:
-===========================================
-1. give permission to user - working
-2. 
+=========================================== net off 3-4 hours that day
+1. give permission to user - done
+2. parent permission name - done
+3. setup spatie - laravel package
+4. create some tables for spatie-permission
+5. test role and permission to user -- test success
 
+
+------Date------=====>>> 3-16-2023:
+=========================================== net off 1 hour that day
+1. make some model for spatie-permission tables related
+2. give mulltiple permission for a user
+3. update permissions for user
+4. test: give multiple method/url permission against one permission
+5. fix some issues a) not working eloqueant-relationship in Permission and Role models, because 
+		      Permission and Role models used from Spatie/Permission
+		   b) since relationship not working so.. fetch some data manually in view.
+6. fix some design issues (with js)
 
 
 

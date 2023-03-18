@@ -208,7 +208,7 @@
                 var items = '';
                 items += '<tr id="bibadi_'+(count)+'">';
                 items +=
-                    '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                    '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
                 items += '<input type="hidden" name="bibadi_id[]" value="">';
                 // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
                 // console.log(count);
@@ -245,7 +245,7 @@
                 var items = '';
                 items += '<tr id="bibadi_'+(count)+'">';
                 items +=
-                    '<td><select onchange="getDoptor(this, \'bibadi_'+(count)+'\')" name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" ><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                    '<td><select name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
                 items += '<input type="hidden" name="bibadi_id[]" value="">';
                 // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
                 // console.log(count);
@@ -415,16 +415,15 @@
             document.getElementById("prevBtn").style.display = "inline";
           }
           if (n == (x.length - 1)) {
-            document.getElementById("nextBtn").innerHTML = "Submit";
+            document.getElementById("nextBtn").innerHTML = "সংরক্ষণ";
           } else {
-            document.getElementById("nextBtn").innerHTML = "Next";
+            document.getElementById("nextBtn").innerHTML = "পরবর্তী";
           }
           //... and run a function that will display the correct step indicator:
           fixStepIndicator(n)
         }
         
         function nextPrev(n) {
-            alert(n);
           // This function will figure out which tab to display
           var x = document.getElementsByClassName("step");
           // Exit the function if any field in the current tab is invalid:
@@ -447,7 +446,8 @@
           // This function deals with validation of the form fields
           var x, y, i, valid = true;
           x = document.getElementsByClassName("step");
-          y = x[currentTab].getElementsByTagName("input");
+          // y = x[currentTab].getElementsByTagName("input");
+          y = x[currentTab].querySelectorAll("[required]");
           console.log(y);
           // A loop that checks every input field in the current tab:
           for (i = 0; i < y.length; i++) {
@@ -523,11 +523,11 @@
             $('#other_attachment_count').val(count + 1);
             var items = '';
             items += '<tr>';
-            items += '<td><input type="text" name="file_type[]" class="form-control form-control-sm" placeholder=""></td>';
-            items += '<td><div class="custom-file"><input type="file" name="file_name[]" onChange="attachmentTitle(' +
+            items += '<td><input type="text" name="file_type[]" class="form-control form-control-sm" placeholder=""required ></td>';
+            items += '<td><div class="custom-file"><input type="file" required name="file_name[]" onChange="attachmentTitle(' +
                 count + ')" class="custom-file-input" id="customFile' + count +
                 '" /><label class="custom-file-label custom-input' + count + '" for="customFile' + count +
-                '">ফাইল নির্বাচন করুন</label></div></td>';
+                '" required>ফাইল নির্বাচন করুন</label></div></td>';
             items += '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#fileDiv tr:last').after(items);
