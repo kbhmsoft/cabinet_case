@@ -6,7 +6,7 @@
 #signUpForm {
     /*max-width: 500px;*/
     background-color: #ffffff;
-    margin: 40px auto;
+    /*margin: 40px auto;*/
     padding: 40px;
     box-shadow: 0px 6px 18px rgb(0 0 0 / 9%);
     border-radius: 12px;
@@ -20,6 +20,7 @@
     position: relative;
     flex: 1;
     padding-bottom: 30px;
+    font-size: 18px;
 }
 #signUpForm .form-header .stepIndicator.active {
     font-weight: 600;
@@ -35,11 +36,24 @@
     bottom: 0;
     transform: translateX(-50%);
     z-index: 9;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background-color: #d5efed;
     border-radius: 50%;
     border: 3px solid #ecf5f4;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#signUpForm .form-header .one::before {
+    content: "1";
+}
+#signUpForm .form-header .two::before {
+    content: "2";
+}
+#signUpForm .form-header .three::before {
+    content: "3";
 }
 #signUpForm .form-header .stepIndicator.active::before {
     background-color: #a7ede8;
@@ -53,7 +67,7 @@
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 8px;
+    bottom: 14px;
     width: 100%;
     height: 3px;
     background-color: #f3f3f3;
