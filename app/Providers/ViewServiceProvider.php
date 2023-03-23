@@ -69,9 +69,7 @@ class ViewServiceProvider extends AppServiceProvider
             $rm_case_status = [];
             $officeInfo = user_office_info();
             $roleID = Auth::user()->role_id;
-            $districtID = DB::table('office')
-            ->select('district_id')->where('id',Auth::user()->office_id)
-            ->first()->district_id;
+            
 
             if( $roleID == 29 || $roleID == 31){
                 // ===============Ministry Admin===============//
@@ -172,7 +170,7 @@ class ViewServiceProvider extends AppServiceProvider
                 // dd($rm_case_status);
             }
 
-           if( $roleID != 1 && $roleID != 2 && $roleID != 28 && $roleID != 27){
+           if( $roleID != 1 && $roleID != 2 && $roleID != 14 && $roleID != 28 && $roleID != 27){
                 foreach ($case_status as $row){
                      $notification_count += $row->total_case;
                 }

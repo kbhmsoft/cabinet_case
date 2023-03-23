@@ -88,7 +88,7 @@
                         <fieldset class="mb-8">
                             <legend> মামলার সাধারণ তথ্য</legend>
                             <div class="form-group row">
-                                
+                                <input type="hidden" name="formType" id="formType" value="edit">
                                 <div class="col-lg-4 mb-5">
                                     <label>মামলার ধরন <span class="text-danger">*</span></label>
                                     <select name="case_type" id="case_type" class="form-control form-control-sm">

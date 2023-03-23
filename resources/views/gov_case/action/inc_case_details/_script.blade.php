@@ -540,7 +540,7 @@
             var roleID =$('input[type=radio][name=group]:checked').val();
              $.ajax({
 
-                url: '{{ url("/")}}/action/getDependentCaseStatus/' + roleID,
+                url: '{{ url("/")}}/cabinet/case/action/getDependentCaseStatus/' + roleID,
                 type : "GET",
                 dataType : "json",
                   success: function(result) {
@@ -598,7 +598,7 @@
         if(roleID)
         {
           jQuery.ajax({
-            url: '{{ url("/")}}/action/getDependentCaseStatus/' + roleID,
+            url: '{{ url("/")}}/cabinet/case/action/getDependentCaseStatus/' + roleID,
             type : "GET",
             dataType : "json",
             success:function(data)

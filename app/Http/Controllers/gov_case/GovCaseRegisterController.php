@@ -8,10 +8,12 @@ use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseLog;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivisionCategory;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Models\gov_case\GovCaseHearing;
+use App\Models\gov_case\GovCaseActivityLog;
 use App\Models\Office;
 use App\Models\User;
 use App\Repositories\gov_case\AttachmentRepository;
@@ -67,20 +69,7 @@ class GovCaseRegisterController extends Controller
         if(!empty($_GET['case_no'])) {
             $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
         }
-        if(!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id','=',$_GET['division']);
-        }
-        if(!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id','=',$_GET['district']);
-        }
-        if(!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id','=',$_GET['upazila']);
-        }
-        if($roleID == 5 || $roleID == 7){
-            $query->where('district_id',$officeInfo->district_id)->orderby('id','DESC');
-        }elseif($roleID == 9 || $roleID == 21){
-            $query->where('upazila_id',$officeInfo->upazila_id)->orderby('id','DESC');
-        }
+       
 
         $data['cases'] = $query->paginate(10);
 
@@ -828,25 +817,44 @@ class GovCaseRegisterController extends Controller
     {
         // return $request;
         $caseId = $request->caseId;
-        // 'email' => 'unique:users,email_address,'.$user->id
-
         $request->validate([
             'case_no' => 'required|unique:gov_case_registers,case_no,'.$caseId,
             ],
             [
             'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-
         ]);
         try{
             $caseId =GovCaseRegisterRepository::storeGovCase($request);
-            
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
-            // dd($caseId);
             GovCaseLogRepository::storeGovCaseLog($caseId);
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
             }
+
+            //========= Gov Case Activity Log -  start ============
+                $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+                $caseRegisterData = array_merge( $caseRegister, [
+                    'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                    'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+                ]);
+                // return $caseRegisterData;
+                $cs_activity_data['case_register_id'] = $caseId;
+                if($request->formType != 'edit'){
+                    $cs_activity_data['activity_type'] = 'create';
+                    $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                }else{
+                    $cs_activity_data['activity_type'] = 'update';
+                    $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                }
+                $cs_activity_data['old_data'] = null;
+                $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+                gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+
         } catch (\Exception $e){
                dd($e);
                $flag='false';
@@ -953,7 +961,7 @@ class GovCaseRegisterController extends Controller
     public function show($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        // return $data;
+        
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
         }else{

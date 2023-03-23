@@ -28,46 +28,13 @@ class DashboardController extends Controller
      */
    public function index()
    {
-      // $num = CommonController::en2bn(55);
-      // $conv = new CommonController;
-      // dd($conv->en2bn(56));
-      // dd($num);
-      // Retrieve the currently authenticated user...
+      
       $officeInfo = user_office_info();
       $user = Auth::user();
       // dd($user);
       $roleID = Auth::user()->role_id;
       $officeID = Auth::user()->office_id;
-      $districtID = DB::table('office')
-      ->select('district_id')->where('id',$user->office_id)
-      ->first()->district_id;
-      $upazilaID = DB::table('office')
-      ->select('upazila_id')->where('id',$user->office_id)
-                        ->first()->upazila_id;/*
-      $moujaID = DB::table('office')
-                     ->select('upazila_id')->where('id',$user->office_id)
-                     ->first()->upazila_id;*/
-      // dd($upazilaID);
-      // Retrieve the currently authenticated user's ID...
-      // $id = Auth::id();
-      // Determining If The Current User Is Authenticated
-      /*if (Auth::check()) {
-         // The user is logged in...
-         dd('logged in!');
-      }*/
-      // dd($user->role_id);
-
-      // $data['user'] = DB::table('users')
-      //     ->join('roles', 'users.role_id', '=', 'roles.id')
-      //     ->select('users.id', 'users.name', 'users.username', 'roles.name')
-      //     ->where('users.id', '=', $id)
-      //     ->first();
-      // dd($roleID);
-
-      // $user = auth()->user();
-      // echo $role = $user->role->name; exit; // Name of relation function in user model and gather all role data
-      // echo $user = auth()->user()->role->name; exit;
-      // echo $user = auth()->user()->office->office_name_bn; exit;
+      
       $data = [];
       $data['rm_case_status'] = [];
 
@@ -180,24 +147,24 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
          $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
 
          // count ministry wise case status
          $ministry_wise = DB::table('office')
-                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
-                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-                              )
-                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
-                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                              ->where('office.level', 9)
-                              ->groupBy('office.id')
-                              ->groupBy('gcb.respondent_id')
-                              ->orderBy('office.id', 'asc')
-                              ->paginate(10);
+                           ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                              \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+                              \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+                              \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+                              \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                           )
+                           ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
+                           ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                           ->where('office.level', 9)
+                           ->groupBy('office.id')
+                           ->groupBy('gcb.respondent_id')
+                           ->orderBy('office.id', 'asc')
+                           ->paginate(10);
 
          $data['ministry_wise'] = $ministry_wise;
          // Drildown Statistics
@@ -231,10 +198,15 @@ class DashboardController extends Controller
 
 
          
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
-
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
          
+
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
+         // return $data;
 
          // View
          $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
@@ -262,11 +234,6 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         
-
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
 
 
          // count ministry wise case status
@@ -318,8 +285,13 @@ class DashboardController extends Controller
          }
 
 
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
+         // return $data;
          // View
          $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের সহকারীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.cabinet_admin')->with($data);
@@ -352,7 +324,10 @@ class DashboardController extends Controller
          // dd($data['case_status']);
 
          $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         
          // dd($data['gov_case_status']);
          $data['page_title'] = 'আইনজীবীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.solicitor')->with($data);
@@ -420,7 +395,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
 
          $data['notice'] = GovCaseNotice::where('notice_for',$roleID)->where('expiry_date','>=', date(now()))->get();
 
@@ -471,15 +446,17 @@ class DashboardController extends Controller
          
 
         
-        $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
+        
 
-        $rm_caseHearingCalender = RM_CaseHearing::select('id','rm_case_id as case_id', 'comments', 'hearing_date' ,DB::raw('count(*) as total'))
-        ->orderby('id', 'DESC')
-        ->groupBy('hearing_date');
-        $data['rm_caseHearingCalender'] = RM_CaseHearingCollection::collection($rm_caseHearingCalender->get());
+        
 
          // View
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
          $data['page_title'] = 'মিনিস্ট্রি এডমিনের ড্যাশবোর্ড';
          // return $data;
          return view('dashboard.cabinet.min_admin')->with($data);
@@ -500,7 +477,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -555,12 +532,17 @@ class DashboardController extends Controller
          // dd($data['division_arr']);
 
          
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
+         
 
          
 
          // View
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
          $data['page_title'] = 'মন্ত্রণালয়ের সচিবের সহকারীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.admin')->with($data);
 
@@ -628,7 +610,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -687,12 +669,17 @@ class DashboardController extends Controller
          // dd($data['division_arr']);
 
          
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
+         
 
          
 
          // View
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
          $data['page_title'] = 'মিনিস্ট্রি এডমিনের সহকারীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.min_admin')->with($data);
 
@@ -735,7 +722,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -790,11 +777,14 @@ class DashboardController extends Controller
          // dd($data['division_arr']);
 
          
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
-
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
          
 
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
          // View
          $data['page_title'] = 'অধিদপ্তর এডমিনের ড্যাশবোর্ড';
          return view('dashboard.cabinet.dept_admin')->with($data);
@@ -832,7 +822,7 @@ class DashboardController extends Controller
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
-         $data['total_sf_count'] = CaseRegister::orderby('id', 'desc')->where('is_sf', 1)->where('status', 1)->get()->count();
+        
 
          $data['cases'] = DB::table('case_register')
          ->select('case_register.*')
@@ -886,13 +876,14 @@ class DashboardController extends Controller
          // $data['divisiondata'] = $divisiondata;
          // dd($data['division_arr']);
 
-         
-         $data['hearingCalender'] = CaseHearingCollection::collection($hearingCalender->get());
-
-         
 
          // View
-         $data['case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
          $data['page_title'] = 'অধিদপ্তর এডমিনের সহকারীর ড্যাশবোর্ড';
          return view('dashboard.cabinet.dept_admin')->with($data);
 

@@ -28,7 +28,7 @@
          @endif
       </div>
 
-      <form action="{{ route('user-management.update', $userManagement->id) }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('cabinet.user-management.update', $userManagement->id) }}" method="POST" enctype="multipart/form-data">
          @csrf
          @method('PUT')
          <div class="card-body">
@@ -138,7 +138,17 @@
    </div>
 </div>
 <!--end::Card-->
-
+    <style>
+        .select2-container .select2-selection--single {
+            height: 37px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 5px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 25px !important;
+        }
+    </style>
 @endsection
 
 {{-- Includable CSS Related Page --}}
@@ -151,6 +161,9 @@
 @section('scripts')
 <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+<script type="text/javascript">
+  $('#office_id').select2();
+</script>
 <!--end::Page Scripts-->
 @endsection
 

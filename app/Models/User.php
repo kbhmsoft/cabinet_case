@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Models\gov_case\GovCaseOffice;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -48,6 +49,9 @@ class User extends Authenticatable
     }
     public function office() {
         return $this->belongsTo(Office::class, 'office_id');
+    }
+    public function govOffice() {
+        return $this->belongsTo(GovCaseOffice::class, 'office_id');
     }
 
     public function caseSF(){

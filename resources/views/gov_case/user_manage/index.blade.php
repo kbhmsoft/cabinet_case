@@ -41,7 +41,7 @@
                <td>{{ $row->name }}</td>
                <td>{{ $row->username }}</td>
                <td>{{ $row->name }}</td>
-               <td>{{ $row->office_name_bn }}, {{ $row->upazila_name_bn }} {{ $row->district_name_bn }}</td>
+               <td>{{ $row->office_name_bn }}</td>
                <td>{{ $row->email }}</td>
                <!-- <td>
                   <span class="label label-inline label-light-primary font-weight-bold">Pending</span>

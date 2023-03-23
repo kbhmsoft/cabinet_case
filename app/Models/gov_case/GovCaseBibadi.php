@@ -25,6 +25,6 @@ class GovCaseBibadi extends Model
         return $this->hasOne(GovCaseOffice::class, 'id', 'respondent_id');
     }
     public function department(){
-        return $this->hasOne(Office::class, 'id', 'department_id');
+        return $this->hasOne(GovCaseOffice::class, 'id', 'department_id');
     }
 }

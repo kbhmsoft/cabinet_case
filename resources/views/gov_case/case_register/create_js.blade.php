@@ -25,7 +25,10 @@
         $('form').submit(function () { $('[disabled]').removeAttr('disabled'); })
         $(document).ready(function() {
             // addBadiRowFunc();
-            addMainBibadiRowFunc();
+            var formType = $('#formType').val();
+            if (formType != 'edit') {
+                addMainBibadiRowFunc();
+            }
             addFileRowFunc();
             /*$('.main_respondent').select2();
             $('#ministry_id').select2();*/
@@ -526,14 +529,20 @@
         //add row function
         function addFileRowFunc() {
             var count = parseInt($('#other_attachment_count').val());
+            var formType = $('#formType').val();
             $('#other_attachment_count').val(count + 1);
             var items = '';
             items += '<tr>';
-            items += '<td><input type="text" name="file_type[]" class="form-control form-control-sm" placeholder=""required ></td>';
+            items += '<td><input type="text" name="file_type[]" id="customFileName'+count+'" class="form-control form-control-sm" placeholder=""required ></td>';
             items+= '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle('+count+',this)" class="custom-file-input" id="customFile'+count+'" /><label id="file_error'+count+'" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input'+count+'" for="customFile'+count+'">ফাইল নির্বাচন করুন</label></div></td>';
             items += '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#fileDiv tr:last').after(items);
+
+            if(formType=='edit'){
+                $(`#customFile${count}`).attr('required', false);
+                $(`#customFileName${count}`).attr('required', false);
+            }
         }
         //Attachment Title Change
         function attachmentTitle(id) {

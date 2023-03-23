@@ -102,15 +102,12 @@
                 @php
                     $officeInfo = user_office_info();
                     $roleID = Auth::user()->role_id;
-                    $districtID = DB::table('office')
-                    ->select('district_id')->where('id',Auth::user()->office_id)
-                    ->first()->district_id;
+                   
 
                     $case_status = DB::table('case_register')
                         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
                         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
                         ->groupBy('case_register.cs_id')
-                        ->where('case_register.district_id','=', $officeInfo->district_id)
                         ->where('case_register.action_user_group_id', $roleID)
                         ->get();
                     // dd($case_status);

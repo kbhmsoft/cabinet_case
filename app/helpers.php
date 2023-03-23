@@ -6,6 +6,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 // use App\Http\Controllers\CommonController;
+use App\Models\gov_case\GovCaseActivityLog;
 use App\Models\User;
 
 
@@ -88,6 +89,31 @@ if (!function_exists('case_status')) {
 			$result = "<span class='label label-warning'>Disable</span>";
 		}
 		return $result;
+	}
+}
+
+
+if (!function_exists('gov_case_activity_logs')) {
+	function gov_case_activity_logs($data) {
+
+        $user = Auth::user();
+        $userOffice = user_office_info();
+
+
+
+        $log = new GovCaseActivityLog;
+        $log->user_id = $user->id;
+        $log->gov_case_id = $data['case_register_id'];
+        $log->user_roll_id = $user->role_id;
+        $log->activity_type = $data['activity_type'];
+        $log->message = $data['message'];
+        $log->office_id = $user->office_id;
+        $log->old_data = $data['old_data'];
+        $log->new_data = $data['new_data'];
+        $log->ip_address = request()->ip();
+        $log->user_agent = request()->userAgent();
+        $log->save();
+        return $log;
 	}
 }
 

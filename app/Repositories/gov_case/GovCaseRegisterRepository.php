@@ -298,6 +298,58 @@ class GovCaseRegisterRepository
             // dd($case_status);
         return $case_status;
     }
+    public static function againestGovCases(){
+        $roleID = userInfo()->role_id;
+        $office = userInfo()->office_id;
+        $query = GovCaseRegister::where('in_favour_govt', 0)->whereNull('result_copy_asking_date');
+        if($roleID == 29 || $roleID == 31){
+            $query->where('selected_main_min_id', $office);
+        }elseif($roleID == 32 || $roleID == 33){
+            $query->where('selected_main_dept_id', $office);
+        }
+
+        $case_status = $query->count();
+        return $case_status;
+    }
+    public static function sendToSolicotorCases(){
+        $roleID = userInfo()->role_id;
+        $office = userInfo()->office_id;
+        $query = GovCaseRegister::whereNull('result_sending_date');
+        if($roleID == 29 || $roleID == 31){
+            $query->where('selected_main_min_id', $office);
+        }elseif($roleID == 32 || $roleID == 33){
+            $query->where('selected_main_dept_id', $office);
+        }
+
+        $case_status = $query->count();
+        return $case_status;
+    }
+    public static function sendToAgFromSolCases(){
+        $roleID = userInfo()->role_id;
+        $office = userInfo()->office_id;
+        $query = GovCaseRegister::whereNull('result_sending_date_solisitor_to_ag');
+        if($roleID == 29 || $roleID == 31){
+            $query->where('selected_main_min_id', $office);
+        }elseif($roleID == 32 || $roleID == 33){
+            $query->where('selected_main_dept_id', $office);
+        }
+
+        $case_status = $query->count();
+        return $case_status;
+    }
+    public static function stepNotTakenAgainstPostpondOrderCases(){
+        $roleID = userInfo()->role_id;
+        $office = userInfo()->office_id;
+        $query = GovCaseRegister::whereNull('appeal_against_postpond_interim_order');
+        if($roleID == 29 || $roleID == 31){
+            $query->where('selected_main_min_id', $office);
+        }elseif($roleID == 32 || $roleID == 33){
+            $query->where('selected_main_dept_id', $office);
+        }
+
+        $case_status = $query->count();
+        return $case_status;
+    }
     public static function caseStatusByRoleIds($roleID=[]){
         // dd($roleID);
         $office = userInfo()->office_id;

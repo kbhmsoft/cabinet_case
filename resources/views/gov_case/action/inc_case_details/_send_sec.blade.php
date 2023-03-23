@@ -42,7 +42,7 @@
                     <div class="modal-body">
                         <div class="alert alert-danger" style="display:none"></div>
 
-                        <form class="form" method="post" action="{{ url('action.forward') }}"
+                        <form class="form" method="post" action="{{ url('cabinet.case.action.forward') }}"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row mb-0">
@@ -104,7 +104,7 @@
                                         <fieldset>
                                             <legend>রেস্পন্ডেন্ট মন্ত্রণালয় নির্বাচন করুণ</legend>
                                             @foreach($caseMainBibadi as $key=>$bibadi)
-                                                    <input type="radio" name="main_min_id" id="main_min_id" value="{{ $bibadi->ministry_id }}"/>
+                                                    <input type="radio" name="main_min_id" id="main_min_id" value="{{ $bibadi->respondent_id }}"/>
                                                     <span></span><b>{{ $bibadi->ministry->office_name_bn ?? '-' }}</b><br>
                                             @endforeach
                                         </fieldset>  

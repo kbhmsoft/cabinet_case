@@ -99,6 +99,7 @@
                     <div class="card-body">
                             <form id="signUpForm" action="{{ route('cabinet.case.store') }}" class="form" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="formType" id="formType" value="create">
                                 <!-- start step indicators -->
                                 <div class="form-header d-flex mb-4">
                                     <span class="stepIndicator one">মামলার সাধারণ তথ্য</span> 
@@ -333,8 +334,7 @@
                                                     <label class="form-group font-weight-bolder font-size-h5">ফলাফল </label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
-                                                            <input type="radio" name="result" id="result" value="1"
-                                                                checked="checke" />
+                                                            <input type="radio" name="result" id="result" value="1" />
                                                             <span></span>সরকারের পক্ষে</label>
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result" value="2" />

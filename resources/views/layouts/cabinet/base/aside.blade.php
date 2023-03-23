@@ -56,6 +56,11 @@
                </a>
             </li>
             @if(userInfo()->role_id == 1 || userInfo()->role_id == 2 || userInfo()->role_id == 27 || userInfo()->role_id == 28)
+            <li class="menu-item {{ request()->is('cabinet/case_audit') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+               <a href="{{ url('cabinet/case_audit') }}" class="menu-link">
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-history"></i> মামলা নিরীক্ষা</span>
+               </a>
+            </li>
             <li class="menu-item {{ request()->is('govcase/report/caselist') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                <a href="javascript:;" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-file-contract"></i> রিপোর্ট</span>
@@ -186,7 +191,7 @@
             @endif
 
             {{-- // ========== Notification start =================== --}}
-            @if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2)
+            @if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 14)
               <li class="menu-item {{ request()->is(['cabinet.hearing_date', 'results_completed', 'new_sf_list']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                   <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="menu-text font-weight-bolder"><i class="fas fa-bell"></i> নোটিফিকেশন</span>

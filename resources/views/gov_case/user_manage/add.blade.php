@@ -10,7 +10,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card card-custom gutter-b example example-compact">
-			<form method="POST" action="{{route('user-management.store')}}">	
+			<form method="POST" action="{{route('cabinet.user-management.store')}}">	
 				@csrf
 				<div class="card">
 				        <div class="card-header">
@@ -158,7 +158,17 @@
 		</div>
 	</div>	
 </div>
-
+<style>
+	.select2-container .select2-selection--single {
+	    height: 37px !important;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__arrow {
+	    top: 5px !important;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__rendered {
+	    line-height: 25px !important;
+	}
+</style>
 @endsection
 @section('scripts')
 <script>
@@ -184,5 +194,8 @@ $('document').ready(function(){
 });
 
 
+</script>
+<script type="text/javascript">
+  $('#office_id').select2();
 </script>
 @endsection

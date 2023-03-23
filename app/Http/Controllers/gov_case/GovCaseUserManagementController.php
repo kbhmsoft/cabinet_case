@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use \Auth;
 use App\Models\UserManagement;
+use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -70,12 +71,7 @@ class GovCaseUserManagementController extends Controller
         ->orderBy('sort_order', 'ASC')
         ->get(); 
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
-            $data['offices'] = DB::table('office')
-            ->leftJoin('district', 'office.district_id', '=', 'district.id')
-            ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-            ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-            ->where('office.is_gov', 1)
-            ->get();                                
+            $data['offices'] = $data['offices'] = GovCaseOffice::get();  
         }else{
         $data['offices'] = DB::table('office')
         ->leftJoin('district', 'office.district_id', '=', 'district.id')
@@ -180,12 +176,7 @@ class GovCaseUserManagementController extends Controller
         ->select('id', 'name')
         ->get(); 
 
-        $data['offices'] = DB::table('office')
-        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-        ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')/*
-        ->where('office.district_id', 38)*/
-        ->get();
+        $data['offices'] = GovCaseOffice::get();
         $data['page_title'] = 'ইউজার ইনফর্মেশন সংশোধন ফরম';
         return view('gov_case.user_manage.edit')->with($data);
         // return view('gov_case.user_manage.edit', compact('userManagement'));
@@ -242,7 +233,7 @@ class GovCaseUserManagementController extends Controller
             'role_id' =>$request->role_id,
             'office_id' =>$request->office_id,
             ]);
-        return redirect()->route('user-management.index')
+        return redirect()->route('cabinet.user-management.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');
     }
 

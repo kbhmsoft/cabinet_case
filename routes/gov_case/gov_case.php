@@ -10,6 +10,8 @@ use App\Http\Controllers\gov_case\GovCaseOfficeController;
 use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
 use App\Http\Controllers\gov_case\AclController;
 
 
@@ -114,12 +116,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/office_type/store', [GovCaseSettingsController::class, 'office_type_store'])->name('office_type.store');
             Route::get('/office_type/edit/{id}', [GovCaseSettingsController::class, 'office_type_edit'])->name('office_type.edit');
             Route::post('/office_type/update', [GovCaseSettingsController::class, 'office_type_update'])->name('office_type.update');
-
-
-
-
-
-
         });
         // Route::get('/new_sf_list', [GovCaseMessageController::class, 'newSFlist'])->name('newSFlist');
         // Route::get('/new_sf_details/{id}', [GovCaseMessageController::class, 'newSFdetails'])->name('newSFdetails');
@@ -175,6 +171,42 @@ Route::middleware('auth')->group(function () {
                 Route::post('file_save', [GovCaseActionController::class, 'file_save']);
                 Route::get('getDependentCaseStatus/{id}', [GovCaseActionController::class, 'getDependentCaseStatus']);
             });
+
+
+            Route::group(['prefix' => 'othersaction/', 'as' => 'othersaction.'], function () {  
+                Route::get('againstgov', [GovCaseOtherActionController::class, 'againstGovCaseIndex'])->name('againstgov');
+                Route::get('againstgovedit/{id}', [GovCaseOtherActionController::class, 'againstGovCaseEdit'])->name('againstgovedit');
+                Route::post('againstgovstore', [GovCaseOtherActionController::class, 'againstGovCaseStore'])->name('againstgovstore');
+                    //===========================//
+                Route::get('senttosol', [GovCaseOtherActionController::class, 'sentToSolCaseIndex'])->name('senttosol');
+                Route::get('senttosoledit/{id}', [GovCaseOtherActionController::class, 'sentToSolCaseEdit'])->name('senttosoledit');
+                Route::post('senttosolstore', [GovCaseOtherActionController::class, 'sentToSolCaseStore'])->name('sentToSolCaseStore');
+                    //===========================//
+                Route::get('senttoagfromsol', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseIndex'])->name('senttoagfromsol');
+                Route::get('senttoagfromsoledit/{id}', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseEdit'])->name('senttoagfromsoledit');
+                Route::post('senttoagfromsolstore', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseStore'])->name('senttoagfromsolstore');
+                    //===========================//
+                Route::get('stepnottakenAgainstpostpondorder', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseIndex'])->name('stepnottakenAgainstpostpondorder');
+                Route::get('stepnottakenAgainstpostpondorderedit/{id}', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseEdit'])->name('stepnottakenAgainstpostpondorderedit');
+                Route::post('stepnottakenAgainstpostpondorderstore', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseStore'])->name('stepnottakenAgainstpostpondorderstore');
+            });  
+
+
+
         });
+
+        
+
+            //============ Case Activity Log Start ==============//
+        Route::get('/case_audit', [GovCaseActivityLogController::class, 'index'])->name('case_audit.index');
+        Route::get('/case_audit/details/{id}', [GovCaseActivityLogController::class, 'show'])->name('case_audit.show');
+        Route::get('/case_audit/case_details/{id}', [GovCaseActivityLogController::class, 'reg_case_details'])->name('case_audit.reg_case_details');
+        Route::get('/case_audit/against_gov_case_log_details/{id}', [GovCaseActivityLogController::class, 'against_gov_case_log_details'])->name('case_audit.against_gov_case_log_details');
+        Route::get('/case_audit/sent_to_solcase_log_details/{id}', [GovCaseActivityLogController::class, 'sent_to_solcase_log_details'])->name('case_audit.sent_to_solcase_log_details');
+        Route::get('/case_audit/sent_to_ag_from_solcase_log_details/{id}', [GovCaseActivityLogController::class, 'sent_to_ag_from_solcase_log_details'])->name('case_audit.sent_to_ag_from_solcase_log_details');
+        Route::get('/case_audit/appeal_against_postpond_order_case_log_details/{id}', [GovCaseActivityLogController::class, 'appeal_against_postpond_order_case_log_details'])->name('case_audit.appeal_against_postpond_order_case_log_details');
+            //============ Case Activity Log End ==============//
     });
+        Route::get('/case_audit/pdf-Log/{id}', [GovCaseActivityLogController::class, 'caseActivityPDFlog'])->name('case_audit.caseActivityPDFlog');
+        Route::get('/case_audit/sf/details/{id}', [GovCaseActivityLogController::class, 'sflog_details'])->name('case_audit.sf.details');
 });
