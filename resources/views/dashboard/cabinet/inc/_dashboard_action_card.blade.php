@@ -10,28 +10,30 @@
                  <ul class="navi navi-border navi-hover navi-active">
                     @forelse ($gov_case_status as $row)
                        {{-- @dd($row) --}}
-                    <li class="navi-item">
-                       <a class="navi-link" href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}">
-                       {{-- <a class="navi-link" href=""> --}}
-                          <span class="navi-icon"><i class="fas fa-folder-open icon-lg text-danger mr-3"></i></span>
-                          <div class="navi-text">
-                             <span class="d-block font-weight-bold h4 pt-2">{{ $row->case_status->status_name }}</span>
-                          </div>
-                          <span class="navi-label">
-                             <span class="label label-xl label-danger h5">{{ en2bn($row->total_case) }}</span>
-                          </span>
-                       </a>
-                    </li>
-
+                      <li class="navi-item">
+                         <a class="navi-link" href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}">
+                         {{-- <a class="navi-link" href=""> --}}
+                            <span class="navi-icon"><i class="fas fa-folder-open icon-lg text-danger mr-3"></i></span>
+                            <div class="navi-text">
+                               <span class="d-block font-weight-bold h4 pt-2">{{ $row->case_status->status_name }}</span>
+                            </div>
+                            <span class="navi-label">
+                               <span class="label label-xl label-danger h5">{{ en2bn($row->total_case) }}</span>
+                            </span>
+                         </a>
+                      </li>
                     @empty
-                    <!-- <li class="navi-item">
-                       <div class="alert alert-custom alert-light-success fade show m-5" role="alert">
-                          <div class="alert-icon">
-                             <i class="flaticon-list"></i>
-                          </div>
-                          <div class="alert-text font-size-h4">পদক্ষেপ নিতে হবে এমন কোন মামলা পাওয়া যায়নি</div>
-                       </div>
-                    </li> -->
+                      @if(empty($against_gov_case) && empty($sent_to_solicitor_case) && empty($sent_to_ag_from_sol_case) && empty($against_postpond_order))
+                        <li class="navi-item">
+                           <div class="alert alert-custom alert-light-success fade show m-5" role="alert">
+                              <div class="alert-icon">
+                                 <i class="flaticon-list"></i>
+                              </div>
+                              <div class="alert-text font-size-h4">পদক্ষেপ নিতে হবে এমন কোন মামলা পাওয়া যায়নি</div>
+                           </div>
+                        </li>
+                      
+                      @endif
                     @endforelse
                     @if(!empty($against_gov_case))
                       <li class="navi-item">

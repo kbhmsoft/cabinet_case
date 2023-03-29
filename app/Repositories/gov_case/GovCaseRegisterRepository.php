@@ -123,6 +123,29 @@ class GovCaseRegisterRepository
         } else {
             $result_copy_reciving_date = null;
         }
+        if ($caseInfo->proposal_date_civil_revision != NULL && $caseInfo->proposal_date_civil_revision != '') {
+            $proposal_date_civil_revision = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_civil_revision)));        
+        } else {
+            $proposal_date_civil_revision = null;
+        }
+
+        if ($caseInfo->proposal_date_civil_suit != NULL && $caseInfo->proposal_date_civil_suit != '') {
+            $proposal_date_civil_suit = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_civil_suit)));        
+        } else {
+            $proposal_date_civil_suit = null;
+        }
+        
+        if ($caseInfo->proposal_date_writ != NULL && $caseInfo->proposal_date_writ != '') {
+            $proposal_date_writ = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_writ)));        
+        } else {
+            $proposal_date_writ = null;
+        }
+        
+        if ($caseInfo->proposal_date_leave_to_appeal != NULL && $caseInfo->proposal_date_leave_to_appeal != '') {
+            $proposal_date_leave_to_appeal = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_leave_to_appeal)));        
+        } else {
+            $proposal_date_leave_to_appeal = null;
+        }
         // dd($ref_case_num);
 
         try {
@@ -185,6 +208,41 @@ class GovCaseRegisterRepository
             $case->result_copy_asking_date= $result_copy_asking_date;
             $case->result_copy_reciving_date= $result_copy_reciving_date;
             $case->others_action_detials= $caseInfo->others_action_detials;
+
+            $case->contents_of_proposal_civil_revision = $caseInfo->contents_of_proposal_civil_revision;
+            $case->sending_motions_in_view_of_that_litigation_civil_revision = $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision;
+            $case->proposal_date_civil_revision = $proposal_date_civil_revision;
+            $case->proposal_memorial_civil_revision = $caseInfo->proposal_memorial_civil_revision;
+            $case->contact_email_civil_revision = $caseInfo->contact_email_civil_revision;
+            $case->focal_person_name_civil_revision = $caseInfo->focal_person_name_civil_revision;
+            $case->focal_person_designation_civil_revision = $caseInfo->focal_person_designation_civil_revision;
+            $case->focal_person_mobile_civil_revision = $caseInfo->focal_person_mobile_civil_revision;
+            $case->contents_of_proposal_civil_suit = $caseInfo->contents_of_proposal_civil_suit;
+            $case->case_type_civil_suit = $caseInfo->case_type_civil_suit;
+            $case->case_number_civil_suit = $caseInfo->case_number_civil_suit;
+            $case->proposal_date_civil_suit = $proposal_date_civil_suit;
+            $case->proposal_memorial_civil_suit = $caseInfo->proposal_memorial_civil_suit;
+            $case->contact_email_civil_suit = $caseInfo->contact_email_civil_suit;
+            $case->focal_person_name_civil_suit = $caseInfo->focal_person_name_civil_suit;
+            $case->focal_person_designation_civil_suit = $caseInfo->focal_person_designation_civil_suit;
+            $case->focal_person_mobile_civil_suit = $caseInfo->focal_person_mobile_civil_suit;
+            $case->contents_of_proposal_writ = $caseInfo->contents_of_proposal_writ;
+            $case->case_number_writ = $caseInfo->case_number_writ;
+            $case->proposal_date_writ = $proposal_date_writ;
+            $case->proposal_memorial_writ = $caseInfo->proposal_memorial_writ;
+            $case->contact_email_writ = $caseInfo->contact_email_writ;
+            $case->focal_person_name_writ = $caseInfo->focal_person_name_writ;
+            $case->focal_person_designation_writ = $caseInfo->focal_person_designation_writ;
+            $case->focal_person_mobile_writ = $caseInfo->focal_person_mobile_writ;
+            $case->contents_of_proposal_leave_to_appeal = $caseInfo->contents_of_proposal_leave_to_appeal;
+            $case->sending_motions_in_view_of_that_litigation_leave_to_appeal = $caseInfo->sending_motions_in_view_of_that_litigation_leave_to_appeal;
+            $case->proposal_date_leave_to_appeal = $proposal_date_leave_to_appeal;
+            $case->proposal_memorial_leave_to_appeal = $caseInfo->proposal_memorial_leave_to_appeal;
+            $case->contact_email_leave_to_appeal = $caseInfo->contact_email_leave_to_appeal;
+            $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
+            $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
+            $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
+
             if($case->save()){
                 $caseId=$case->id;
                 if ($caseInfo->appeal_case_id != NULL && $caseInfo->appeal_case_id != '') {
@@ -302,10 +360,10 @@ class GovCaseRegisterRepository
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
         $query = GovCaseRegister::where('in_favour_govt', 0)->whereNull('result_copy_asking_date');
-        if($roleID == 29 || $roleID == 31){
-            $query->where('selected_main_min_id', $office);
-        }elseif($roleID == 32 || $roleID == 33){
-            $query->where('selected_main_dept_id', $office);
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($office) {
+                    $q->where('respondent_id', $office);
+                });
         }
 
         $case_status = $query->count();
@@ -315,10 +373,10 @@ class GovCaseRegisterRepository
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
         $query = GovCaseRegister::whereNull('result_sending_date');
-        if($roleID == 29 || $roleID == 31){
-            $query->where('selected_main_min_id', $office);
-        }elseif($roleID == 32 || $roleID == 33){
-            $query->where('selected_main_dept_id', $office);
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($office) {
+                    $q->where('respondent_id', $office);
+                });
         }
 
         $case_status = $query->count();
@@ -328,10 +386,10 @@ class GovCaseRegisterRepository
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
         $query = GovCaseRegister::whereNull('result_sending_date_solisitor_to_ag');
-        if($roleID == 29 || $roleID == 31){
-            $query->where('selected_main_min_id', $office);
-        }elseif($roleID == 32 || $roleID == 33){
-            $query->where('selected_main_dept_id', $office);
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($office) {
+                    $q->where('respondent_id', $office);
+                });
         }
 
         $case_status = $query->count();
@@ -341,10 +399,10 @@ class GovCaseRegisterRepository
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
         $query = GovCaseRegister::whereNull('appeal_against_postpond_interim_order');
-        if($roleID == 29 || $roleID == 31){
-            $query->where('selected_main_min_id', $office);
-        }elseif($roleID == 32 || $roleID == 33){
-            $query->where('selected_main_dept_id', $office);
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($office) {
+                    $q->where('respondent_id', $office);
+                });
         }
 
         $case_status = $query->count();

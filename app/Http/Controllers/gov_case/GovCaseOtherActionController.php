@@ -32,11 +32,11 @@ class GovCaseOtherActionController extends Controller
     {
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
-        $officeID = userInfo()->office_id;
+        $office = userInfo()->office_id;
 
-        $query =  GovCaseRegister::where('in_favour_govt', 0)->whereNull('result_copy_asking_date')->orderby('id','DESC');
+        $query =  GovCaseRegister::with('bibadis')->where('in_favour_govt', 0)->whereNull('result_copy_asking_date')->orderby('id','DESC');
 
-        if ($roleID == 32 || $roleID == 33) {
+        /*if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
                 $query->where('selected_main_dept_id', $officeID);
@@ -49,7 +49,15 @@ class GovCaseOtherActionController extends Controller
                     $query->where('selected_main_min_id', $officeID);
                }
             );
+        }*/
+
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($office) {
+                    $q->where('respondent_id', $office);
+                });
         }
+
+
         $data['cases'] = $query->paginate(10);
         $data['page_title'] =   'সরকারের বিপক্ষে রায় হওয়া মামলার তালিকা';
 
@@ -167,7 +175,7 @@ class GovCaseOtherActionController extends Controller
 
         $query =  GovCaseRegister::whereNull('result_sending_date')->orderby('id','DESC');
 
-        if ($roleID == 32 || $roleID == 33) {
+        /*if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
                 $query->where('selected_main_dept_id', $officeID);
@@ -180,6 +188,11 @@ class GovCaseOtherActionController extends Controller
             $query->where('selected_main_min_id', $officeID);
                }
             );
+        }*/
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($officeID) {
+                    $q->where('respondent_id', $officeID);
+                });
         }
         $data['cases'] = $query->paginate(10);
         $data['page_title'] =   'সলিসিটর অনুবিভাগে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তালিকা';
@@ -283,7 +296,7 @@ class GovCaseOtherActionController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
         $query =  GovCaseRegister::whereNull('result_sending_date_solisitor_to_ag')->orderby('id','DESC');
-        if ($roleID == 32 || $roleID == 33) {
+        /*if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
                 $query->where('selected_main_dept_id', $officeID);
@@ -296,6 +309,11 @@ class GovCaseOtherActionController extends Controller
             $query->where('selected_main_min_id', $officeID);
                }
             );
+        }*/
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($officeID) {
+                    $q->where('respondent_id', $officeID);
+                });
         }
         $data['cases'] = $query->paginate(10);
         $data['page_title'] =   'সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তালিকা';
@@ -403,7 +421,7 @@ class GovCaseOtherActionController extends Controller
 
         $query =  GovCaseRegister::whereNull('appeal_against_postpond_interim_order')->orderby('id','DESC');
 
-        if ($roleID == 32 || $roleID == 33) {
+        /*if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
                     $query->where('selected_main_dept_id', $officeID);
@@ -416,6 +434,11 @@ class GovCaseOtherActionController extends Controller
                     $query->where('selected_main_min_id', $officeID);
                }
             );
+        }*/
+        if($roleID != 27 && $roleID != 28){
+            $query->orWhereHas('bibadis', function ($q) use ($officeID) {
+                    $q->where('respondent_id', $officeID);
+                });
         }
         $data['cases'] = $query->paginate(10);
         $data['page_title'] =   'স্থগিতাদেশের বিপরীতে ব্যাবস্থা গ্রহণের জন্য অপেক্ষমান মামলার তালিকা';

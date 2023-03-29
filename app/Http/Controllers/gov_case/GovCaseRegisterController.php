@@ -939,7 +939,7 @@ class GovCaseRegisterController extends Controller
 
     public function getDependentCaseCategoryType($id)
     {
-        $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_en","id");
+        $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn","id");
         return json_encode($categories);
 
     }

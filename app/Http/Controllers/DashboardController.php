@@ -150,7 +150,7 @@ class DashboardController extends Controller
         
          $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
 
-         // count ministry wise case status
+        /* // count ministry wise case status
          $ministry_wise = DB::table('office')
                            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
                               \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
@@ -194,7 +194,7 @@ class DashboardController extends Controller
 
             $data['department_data'] = array_merge( $departmentdata);
 
-         }
+         }*/
 
 
          
@@ -237,7 +237,7 @@ class DashboardController extends Controller
 
 
          // count ministry wise case status
-         $ministry_wise = DB::table('office')
+         /*$ministry_wise = DB::table('office')
                               ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
                                  \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
                                  \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
@@ -282,7 +282,7 @@ class DashboardController extends Controller
 
             $data['department_data'] = array_merge( $departmentdata);
 
-         }
+         }*/
 
 
          $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);

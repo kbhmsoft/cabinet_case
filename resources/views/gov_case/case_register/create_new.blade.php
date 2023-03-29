@@ -386,6 +386,162 @@
                                                     </textarea>
                                                     
                                                 </div>
+                                            </div> 
+                                            <div class="form-group row" id="civilRevisionDiv">
+                                                <div class="col-lg-4">
+                                                    <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="contents_of_proposal_civil_revision" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>যে মোকদ্দমার পরিপ্রেক্ষিতে প্রস্তাব প্রেরণ (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="sending_motions_in_view_of_that_litigation_civil_revision" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>প্রস্তাব তারিখ(বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_date_civil_revision" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>প্রস্তাব স্মারক নম্বর <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_memorial_civil_revision" id="proposal_memorial_civil_revision" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="email" name="contact_email_civil_revision" id="contact_email_civil_revision" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের নাম (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_name_civil_revision" id="focal_person_name_civil_revision" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের পদবী (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_designation_civil_revision" id="focal_person_designation_civil_revision" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_mobile_civil_revision" id="focal_person_mobile_civil_revision" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                            </div> 
+                                            <div class="form-group row" id="civilSuitDiv">
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>যে শ্রেণীর মামলা<span class="text-danger"></span></label>
+                                                    <input type="text" name="case_type_civil_suit" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>মামলা নম্বর<span class="text-danger"></span></label>
+                                                    <input type="text" name="case_number_civil_suit" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="contents_of_proposal_civil_revision" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>প্রস্তাব তারিখ(বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_date_civil_suit" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>প্রস্তাব স্মারক নম্বর <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_memorial_civil_suit" id="proposal_memorial_civil_suit" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="email" name="contact_email_civil_suit" id="contact_email_civil_suit" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের নাম (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_name_civil_suit" id="focal_person_name_civil_suit" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের পদবী (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_designation_civil_suit" id="focal_person_designation_civil_suit" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_mobile_civil_suit" id="focal_person_mobile_civil_suit" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                            </div> 
+                                            <div class="form-group row" id="writDiv">
+                                                <div class="col-lg-4">
+                                                    <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="contents_of_proposal_writ" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>রিট মোকাদ্দমা নং<span class="text-danger"></span></label>
+                                                    <input type="text" name="case_number_writ" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>প্রস্তাব তারিখ(বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_date_writ" class="form-control form-control-sm common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>প্রস্তাব স্মারক নম্বর <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_memorial_writ" id="proposal_memorial_writ" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="email" name="contact_email_writ" id="contact_email_writ" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের নাম (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_name_writ" id="focal_person_name_writ" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের পদবী (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_designation_writ" id="focal_person_designation_writ" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_mobile_writ" id="focal_person_mobile_writ" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="leaveToAppealDiv">
+                                                <div class="col-lg-4">
+                                                    <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="contents_of_proposal_leave_to_appeal" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>যে মামলার পরিপ্রেক্ষিতে (বাংলায়)<span class="text-danger"></span></label>
+                                                    <input type="text" name="sending_motions_in_view_of_that_litigation_leave_to_appeal" class="form-control form-control-sm" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>প্রস্তাব তারিখ(বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_date_leave_to_appeal" class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>প্রস্তাব স্মারক নম্বর <span class="text-danger"></span></label>
+                                                    <input type="text" name="proposal_memorial_leave_to_appeal" id="proposal_memorial_leave_to_appeal" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="email" name="contact_email_leave_to_appeal" id="contact_email_leave_to_appeal" class="form-control form-control-sm"autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের নাম (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_name_leave_to_appeal" id="focal_person_name_leave_to_appeal" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের পদবী (বাংলায়) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_designation_leave_to_appeal" id="focal_person_designation_leave_to_appeal" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
+                                                
+                                                <div class="col-lg-4 mb-5" >
+                                                    <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span class="text-danger"></span></label>
+                                                    <input type="text" name="focal_person_mobile_leave_to_appeal" id="focal_person_mobile_leave_to_appeal" class="form-control form-control-sm "autocomplete="off">
+                                                </div>
                                             </div>
                                     </fieldset>
                                 </div>
@@ -585,6 +741,11 @@
         // dynamically change high court / appeal court
         $(document).ready(function() {
             $('#appeal_hide_show_3').hide();
+            $('#civilRevisionDiv').hide();
+            $('#civilSuitDiv').hide();
+            $('#writDiv').hide();
+            $('#leaveToAppealDiv').hide();
+
             $("#court").change(function(){
                 var getCourt = $('#court').find(":selected").val();
                 if (getCourt == 1) {
@@ -599,6 +760,35 @@
                     $('#appeal_hide_show').hide();
                 }
             });
+
+            $("#CaseCategory").change(function(){
+                var getCatType = $('#CaseCategory').find(":selected").val();
+                // alert(getCatType);
+                if (getCatType == 4) {
+                    $('#civilRevisionDiv').show();
+                    $('#civilSuitDiv').hide();
+                    $('#writDiv').hide();
+                    $('#leaveToAppealDiv').hide();
+                } else if(getCatType == 8){
+                    $('#civilSuitDiv').show();
+                    $('#civilRevisionDiv').hide();
+                    $('#writDiv').hide();
+                    $('#leaveToAppealDiv').hide();
+                }else if(getCatType == 2){
+                    $('#writDiv').show();
+                    $('#civilRevisionDiv').hide();
+                    $('#civilSuitDiv').hide();
+                    $('#leaveToAppealDiv').hide();
+                }else if(getCatType == 10){
+                    $('#leaveToAppealDiv').show();
+                    $('#civilRevisionDiv').hide();
+                    $('#civilSuitDiv').hide();
+                    $('#writDiv').hide();
+                }
+            });
+
+
+
             $("#postponed_order_details").hide();
             $("#interim_order_details_div").hide();
             $("#postponed_order_have").click(function() {

@@ -67,31 +67,6 @@
                   $('select[name="case_category_type"]').empty();
               }
             });
-
-
-
-
-
-            /*if("{{ userInfo()->role_id }}" != 28 && "{{ request('red') }}" == ''){
-                $(function(){
-                    id = "{{ userInfo()->office->parent != null ? userInfo()->office->Parent->id : userInfo()->office_id }}"
-                    // console.log("{{ userInfo()->id}}");
-                    // return
-                    $('#MainBibadiDiv #ministry_id').val(id).attr("selected","selected");
-                    $('#MainBibadiDiv #ministry_id').val(id);
-                    $('#MainBibadiDiv #ministry_id').prop('disabled', true);
-                    if("" == "{{ userInfo()->id }}"){
-                        $('#MainBibadiDiv #doptor_id ').after('<div id="doptora" style="top: -19px;"></div>');
-                        $('#MainBibadiDiv #doptora ').addClass('spinner spinner-primary spinner-left');
-                        getDoptor(this, 'bibadi_3', id);
-                        getDoptor(this, 'bibadi_100', id);
-                        $( document ).ajaxComplete(function() {
-                            $('#MainBibadiDiv #doptor_id').val('{{ $department ?? '' }}').attr("selected","selected");
-                            $('#MainBibadiDiv #doptora').removeClass('spinner spinner-primary spinner-left');
-                        });
-                    }
-                });
-            }*/
         });
 
         /*********************** Add multiple badi *************************/
@@ -453,7 +428,7 @@
           y = x[currentTab].querySelectorAll("[required]");
           console.log(y.name);
           // A loop that checks every input field in the current tab:
-          for (i = 0; i < y.length; i++) {
+         /* for (i = 0; i < y.length; i++) {
             // If a field is empty...
             if (y[i].value == "") {
               // add an "invalid" class to the field:
@@ -471,7 +446,7 @@
           // If the valid status is true, mark the step as finished and valid:
           if (valid) {
             document.getElementsByClassName("stepIndicator")[currentTab].className += " finish";
-          }
+          }*/
           return valid; // return the valid status
         }
         
