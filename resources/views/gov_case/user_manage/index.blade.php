@@ -35,9 +35,9 @@
             </tr>
          </thead>
          <tbody>
-            @foreach ($users as $row)
+            @foreach ($users as $key => $row)
             <tr>
-               <th scope="row" class="tg-bn">{{ en2bn(++$i) }}</th>
+               <th scope="row" class="tg-bn">{{ en2bn($key+ $users->firstItem()) }}</th>
                <td>{{ $row->name }}</td>
                <td>{{ $row->username }}</td>
                <td>{{ $row->name }}</td>
