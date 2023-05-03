@@ -115,45 +115,14 @@
                 <!--begin::Section-->
                 <div class="mb-5">
                     <h5 class="font-weight-bold mb-5">নোটিফিকেশন</h5>
-                    @forelse ($case_status as $row)
-                        <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
-                            <span class="svg-icon svg-icon-success mr-5">
-                                <i class="far fa-folder-open text-success"></i>
-                            </span>
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="{{ route('action.receive', $row->cs_id) }}" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">{{ $row->status_name }}</a>
-                            </div>
-                            <span class="font-weight-bolder py-1 bg-danger text-white label">{{ $row->total_case }}</span>
-                        </div>
-                    @empty
-                        <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
-                            <span>কোন নোটিফিকেশন পাওয়া যায়নি</span>
-                        </div>
-                    @endforelse
+                    
 
-                    {{-- <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
-                        <span class="svg-icon svg-icon-success mr-5">
-                            <i class="fas fa-paper-plane text-success"></i>
-                        </span>
-                        <div class="d-flex flex-column flex-grow-1 mr-2">
-                            <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">কারণ দর্শানোর নোটিশ রেজিষ্টার এন্ট্রি</a>
-                        </div>
-                        <span class="font-weight-bolder py-1 bg-danger text-white label">50</span>
-                    </div> --}}
-
+                    
                     <!--begin: Item-->
-                    {{-- <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
-                        <span class="svg-icon svg-icon-warning mr-5">
-                            <i class="fas fa-paper-plane"></i>
-                        </span>
-                        <div class="d-flex flex-column flex-grow-1 mr-2">
-                            <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">কারণ দর্শানোর নোটিশ রেজিষ্টার এন্ট্রি</a>
-                        </div>
-                        <span class="font-weight-bolder py-1 font-size-lg notification_count_bar">28</span>
-                    </div> --}}
+                    
                     <!--end: Item-->
                     <!--begin: Item-->
-                    {{-- <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
+                    <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
                         <span class="svg-icon svg-icon-warning mr-5">
                             <span class="svg-icon svg-icon-lg">
                                 <!--begin::Svg Icon | path:media/svg/icons/Home/Library.svg-->
