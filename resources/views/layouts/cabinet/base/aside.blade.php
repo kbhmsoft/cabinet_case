@@ -96,7 +96,7 @@
                         </a>
                      </li>
                   </ul>
-                  @can('create223')
+                  
                   <ul class="menu-subnav">
                      <li class="menu-item" aria-haspopup="true">
                         <a href="{{ route('cabinet.roleManagement') }}" class="menu-link">
@@ -113,6 +113,7 @@
                         </a>
                      </li>
                   </ul>
+                  @can('create')
                   <ul class="menu-subnav">
                      <li class="menu-item" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
@@ -190,7 +191,7 @@
             </li>
             @endif
 
-            {{-- // ========== Notification start =================== --}}
+            <!-- {{-- // ========== Notification start =================== --}} -->
             @if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 14)
               <li class="menu-item {{ request()->is(['cabinet.hearing_date', 'results_completed', 'new_sf_list']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                   <a href="javascript:;" class="menu-link menu-toggle">

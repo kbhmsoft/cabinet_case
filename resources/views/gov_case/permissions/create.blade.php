@@ -89,6 +89,7 @@
 
 
 
+            <!-- <form action="{{ route('cabinet.updatePermission') }}" method="POST"> -->
 
 
       <!-- update Modal -->
@@ -101,7 +102,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('cabinet.updatePermission') }}" method="POST">
+            <form action="" method="POST">
                @csrf
                <input type="hidden" name="permission_id" id="roleID">
                <div class="modal-body">
@@ -178,6 +179,7 @@
 </div>
 
 
+      <!-- <form action="{{ route('cabinet.storePatentPermissionName') }}" method="POST"> -->
 
 <!-- parent permission name Modal -->
 <div class="modal fade" id="parentPermissionNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -189,7 +191,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('cabinet.storePatentPermissionName') }}" method="POST">
+      <form action="" method="POST">
          @csrf
          <div class="modal-body">
              <div class="card-body card-block">
@@ -212,7 +214,6 @@
 
 
 
-
 @endsection
 
 <!-- {{-- Includable CSS Related Page --}} -->
@@ -230,23 +231,23 @@
 
 <script>
    
-   function updatePermissionModal(id, name, status){
-       $('#updateRoleItem').modal().show();
+   // function updatePermissionModal5435(id, name, status){
+   //     $('#updateRoleItem').modal().show();
 
-       $('#roleID').val(id);
-       $('#update_name').val(name);
+   //     $('#roleID').val(id);
+   //     $('#update_name').val(name);
 
-       var checkstatus = status;
+   //     var checkstatus = status;
 
-        $('.status2').attr('selected', false);
-        $('.status2').attr('selected', false);
-       if(checkstatus == '0'){
-            $('.status2').attr('selected','selected');
-       }else{
-          $('.status1').attr('selected','selected');
-       }
+   //      $('.status2').attr('selected', false);
+   //      $('.status2').attr('selected', false);
+   //     if(checkstatus == '0'){
+   //          $('.status2').attr('selected','selected');
+   //     }else{
+   //        $('.status1').attr('selected','selected');
+   //     }
 
-   }
+   // }
 </script>
 
 

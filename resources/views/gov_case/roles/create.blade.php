@@ -124,6 +124,7 @@
 <!-- update Modal -->
 
 
+      <!-- <form action="{{ route('cabinet.storeRole') }}" method="POST"> -->
  
 
 <!-- create Modal -->
@@ -136,7 +137,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('cabinet.storeRole') }}" method="POST">
+      <form action="" method="POST">
          @csrf
          <div class="modal-body">
              <div class="card-body card-block">

@@ -29,6 +29,7 @@ class DashboardController extends Controller
    public function index()
    {
       
+
       $officeInfo = user_office_info();
       $user = Auth::user();
       // dd($user);
