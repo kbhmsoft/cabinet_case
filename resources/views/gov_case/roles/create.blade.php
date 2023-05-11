@@ -73,7 +73,7 @@
            
          </tbody>
       </table>      
-         {{ $roles->links() }}
+         {{ $roles->appends($_GET)->links() }}
     
    </div>
 </div>
@@ -137,7 +137,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="POST">
+      <form action="{{ route('cabinet.storeRole') }}" method="POST">
          @csrf
          <div class="modal-body">
              <div class="card-body card-block">

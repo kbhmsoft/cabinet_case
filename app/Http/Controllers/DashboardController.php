@@ -12,7 +12,9 @@ use App\Http\Resources\calendar\CaseHearingCollection;
 use App\Http\Resources\calendar\RM_CaseHearingCollection;
 use App\Models\gov_case\GovCaseNotice;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\RoleHasPermission;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
+
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 // use App\Http\Controllers\CommonController;
@@ -28,8 +30,10 @@ class DashboardController extends Controller
      */
    public function index()
    {
-      
+ 
+     
 
+    
       $officeInfo = user_office_info();
       $user = Auth::user();
       // dd($user);

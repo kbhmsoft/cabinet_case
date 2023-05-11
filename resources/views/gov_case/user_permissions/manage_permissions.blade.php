@@ -1,36 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
- 
-<!-- 
-   <form action="{{ route('cabinet.storeUpdateUserPermissionAll') }}" method="POST">
-
-   
-   @foreach($parentPermissions as $parentPermission )
-      <div class="col-lg-4 col-md-4 mb-5 grid-item">
-            <div class="card-bodys cardbody">
-               <div class="cardheader">
-                     {{ $parentPermission->name }}
-                </div>
-               <div class="listPermission">
-                  <ul>
-                     @foreach($parentPermission->permissions as $permission)
-                     <?php
-                        $rolePermission = App\Models\RolePermission::where(['permission_id' => $permission->id, 'user_id' => $user_id])->first();
-                     ?>
-                     <li>
-                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> 
-                         <span>{{$permission->name}}</span>
-                     </li>
-                     @endforeach
-                  </ul>
-               </div>
-            </div>
-      </div>
-   @endforeach -->
-
-
-
+   <!-- <form action="{{ route('cabinet.storeUpdateUserPermissionAll') }}"  -->
 
 
 
@@ -54,11 +25,37 @@
        
       </div>
    </div>
-   <div class="card-body">
-      
+   <div class="card-body">    
    <div class="row grid">
+   @foreach($parentPermissions as $parentPermission )
+      <div class="col-lg-4 col-md-4 mb-5 grid-item">
+            <div class="card-bodys cardbody">
+               <div class="cardheader">
+                     {{ $parentPermission->name }}
+                </div>
+               <div class="listPermission">
+                  <ul>
+                     @foreach($parentPermission->permissions as $permission)
+                     <?php
+                        $rolePermission = App\Models\RolePermission::where(['permission_id' => $permission->id, 'user_id' => $user_id])->first();
+                     ?>
+                     <li>
+                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> 
+                         <span>{{$permission->name}}</span>
+                     </li>
+                     @endforeach
+                  </ul>
+               </div>
+            </div>
+      </div>
+   @endforeach 
 
-      
+
+
+
+
+      <!-- 
+
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
                <div class="cardheader">
@@ -86,7 +83,7 @@
             </div>
       </div>
     
-      
+
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
                <div class="cardheader">
@@ -173,7 +170,7 @@
                   </ul>
                </div>
             </div>
-      </div>
+      </div> -->
     
 
    </div>

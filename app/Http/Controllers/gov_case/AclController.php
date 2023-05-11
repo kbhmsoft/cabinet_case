@@ -87,28 +87,31 @@ class AclController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:permissions'
         ]);
-        $nameLower = str_replace('_', ' ', $request->name);
+         
+        $nameLower = str_replace(' ', '_', $request->name);
+        $permissionName = strtolower($nameLower);
 
         Permission::create([
-            'name' => $request->name,
-            'display_name' => ucwords($nameLower),
+            'name' => $permissionName,
+            'display_name' => ucwords($request->name),
             'user_id' => Auth::user()->id,
             'parent_permission_name_id' => $request->parent_permission_id,
             'status' => 1,
         ]);
 
-         return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
+        return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
     }
 
     public function updatePermission(Request $request){
         $this->validate($request, [
             'name' => 'required'
         ]);
-        $nameLower = str_replace('_', ' ', $request->name);
+        $nameLower = str_replace(' ', '_', $request->name);
+        $permissionName = strtolower($nameLower);
 
         Permission::where('id', $request->permission_id)->update([
-            'name' => $request->name,
-            'display_name' => ucwords($nameLower),
+            'name' => $permissionName,
+            'display_name' => ucwords($request->name),
             'status' => $request->status,
         ]);
 
@@ -145,7 +148,7 @@ class AclController extends Controller
     // for give user permissions 
 
     public function permissionToUserManagement(Request $request){
-
+        
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
         $users = User::where('is_gov', 1)->get();
 
@@ -165,7 +168,7 @@ class AclController extends Controller
     public function storeUpdateUserPermissionAll(Request $request){
        RolePermission::where('user_id', $request->user_id)->delete();
        ModelHasPermission::where('model_id', $request->user_id)->delete();
- 
+
        $user = User::find($request->user_id);
         foreach($request->permissionId as $index => $permission_id){
             RolePermission::create([
@@ -174,8 +177,10 @@ class AclController extends Controller
                 'permission_id' => $permission_id,
                 'created_by' => Auth::user()->id,
             ]);
-
+            
+            // find permission for user
             $permission = Permission::find($permission_id);
+
             // Adding permissions to a user
             $user->givePermissionTo($permission->name);
         }

@@ -12,9 +12,9 @@
       <div class="card-toolbar">        
        
 
-         <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
+   <!--       <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>অনুমতি তৈরি করুন
-         </button>                
+         </button> -->                
       </div>
    </div>
    <div class="card-body">

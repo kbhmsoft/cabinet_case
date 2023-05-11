@@ -102,7 +102,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="" method="POST">
+            <form action="{{ route('cabinet.updatePermission') }}" method="POST">
                @csrf
                <input type="hidden" name="permission_id" id="roleID">
                <div class="modal-body">
@@ -191,7 +191,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="POST">
+      <form action="{{ route('cabinet.storePatentPermissionName') }}" method="POST">
          @csrf
          <div class="modal-body">
              <div class="card-body card-block">
@@ -231,23 +231,23 @@
 
 <script>
    
-   // function updatePermissionModal5435(id, name, status){
-   //     $('#updateRoleItem').modal().show();
+   function updatePermissionModal(id, name, status){
+       $('#updateRoleItem').modal().show();
 
-   //     $('#roleID').val(id);
-   //     $('#update_name').val(name);
+       $('#roleID').val(id);
+       $('#update_name').val(name);
 
-   //     var checkstatus = status;
+       var checkstatus = status;
 
-   //      $('.status2').attr('selected', false);
-   //      $('.status2').attr('selected', false);
-   //     if(checkstatus == '0'){
-   //          $('.status2').attr('selected','selected');
-   //     }else{
-   //        $('.status1').attr('selected','selected');
-   //     }
+        $('.status2').attr('selected', false);
+        $('.status2').attr('selected', false);
+       if(checkstatus == '0'){
+            $('.status2').attr('selected','selected');
+       }else{
+          $('.status1').attr('selected','selected');
+       }
 
-   // }
+   }
 </script>
 
 
