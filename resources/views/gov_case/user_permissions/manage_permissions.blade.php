@@ -1,14 +1,12 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
-   <!-- <form action="{{ route('cabinet.storeUpdateUserPermissionAll') }}"  -->
-
-
+ 
 
 <!--begin::Card-->
 <div class="card card-custom">
 
-   <form action="" method="POST">
+   <form action="{{ route('cabinet.storeUpdateUserPermissionAll') }}" method="POST">
       @csrf
 
    <input type="hidden" name="user_id" value="{{ $user_id }}">
@@ -16,6 +14,7 @@
    <div class="card-header flex-wrap py-5 mt-5">
       <div class="card-title mb-0 mt-2" >
          <h2 style="display: contents">অনুমতি প্রদান পরিচালনা করুন </h2>
+         <h3 style="display: contents">(ব্যাবহারকারী: <strong>{{ App\Models\User::find($user_id)->name}}</strong>)</h3>
 
          <button type="submit" class="btn btn-sm btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
             <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
@@ -49,8 +48,7 @@
             </div>
       </div>
    @endforeach 
-
-
+  
 
 
 

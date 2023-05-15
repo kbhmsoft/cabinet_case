@@ -30,9 +30,6 @@ class DashboardController extends Controller
      */
    public function index()
    {
- 
-     
-
     
       $officeInfo = user_office_info();
       $user = Auth::user();
@@ -201,9 +198,7 @@ class DashboardController extends Controller
 
          }*/
 
-
-         
-         
+ 
 
          $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
          $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();

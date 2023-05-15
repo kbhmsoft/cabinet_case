@@ -166,6 +166,7 @@ class AclController extends Controller
 
 
     public function storeUpdateUserPermissionAll(Request $request){
+  
        RolePermission::where('user_id', $request->user_id)->delete();
        ModelHasPermission::where('model_id', $request->user_id)->delete();
 

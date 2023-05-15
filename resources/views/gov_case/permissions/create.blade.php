@@ -87,10 +87,7 @@
 </div>
 <!--end::Card-->
 
-
-
-            <!-- <form action="{{ route('cabinet.updatePermission') }}" method="POST"> -->
-
+ 
 
       <!-- update Modal -->
       <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -178,9 +175,7 @@
   </div>
 </div>
 
-
-      <!-- <form action="{{ route('cabinet.storePatentPermissionName') }}" method="POST"> -->
-
+ 
 <!-- parent permission name Modal -->
 <div class="modal fade" id="parentPermissionNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
