@@ -31,6 +31,10 @@ class AclController extends Controller
      
     // for roles 
     public function roleManagement(){
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
         $data['page_title'] = 'ভুমিকা পরিচালনা';
 
         $roles = Role::paginate(25);
@@ -76,6 +80,11 @@ class AclController extends Controller
 
     // for permissions 
     public function permissionManagement(){
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         $data['page_title'] = 'অনুমতি পরিচালনা';
         $permissions = Permission::paginate(25);
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
@@ -149,6 +158,9 @@ class AclController extends Controller
 
     public function permissionToUserManagement(Request $request){
         
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
         $users = User::where('is_gov', 1)->get();
 

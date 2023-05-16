@@ -138,6 +138,11 @@ class GovCaseActionController extends Controller
 
     public function receive($statusID)
     {
+
+ 
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
         // return userInfo();
         $roleID = userInfo()->role_id;
         $officeInfo = user_office_info();

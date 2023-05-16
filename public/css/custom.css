@@ -316,12 +316,13 @@ legend{ font-size:14px; font-weight:bold; width: 45%; border: 1px solid #ddd; bo
 
 /*// row gap*/
 
-  
+.hilightMenu {
+    background: #e9f5d8;
+}
 
-/*// row gap*/
-
-
-
+.hilightMenu>a>span {
+    color: #3699ff !important;
+}
 
 
 

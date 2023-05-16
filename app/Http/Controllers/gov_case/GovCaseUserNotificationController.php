@@ -22,6 +22,11 @@ class GovCaseUserNotificationController extends Controller
 {
     public function results_completed()
     {
+ 
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -149,6 +154,11 @@ class GovCaseUserNotificationController extends Controller
 
     public function hearing_date(Request $request)
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
 

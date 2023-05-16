@@ -19,6 +19,7 @@ class Gov_ReportController extends Controller
 {
     public function caselist()
     {
+
           // Dropdown List
         $data['courts'] = DB::table('court')->select('id', 'court_name')->get();
         $data['roles'] = DB::table('roles')->select('id', 'name')->where('in_action', 1)->get();

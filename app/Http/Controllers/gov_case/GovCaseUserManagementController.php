@@ -24,6 +24,10 @@ class GovCaseUserManagementController extends Controller
      */
     public function index()
     {   
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+         
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){

@@ -19,6 +19,11 @@ class GovCaseOfficeController extends Controller
      */
     public function index()
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         //
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -161,6 +166,11 @@ class GovCaseOfficeController extends Controller
      */
     public function create()
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         //
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
