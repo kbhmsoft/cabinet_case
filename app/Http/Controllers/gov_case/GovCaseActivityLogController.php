@@ -33,6 +33,8 @@ class GovCaseActivityLogController extends Controller
      */
     public function index()
     {
+        session()->forget('currentUrlPath');
+        
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;

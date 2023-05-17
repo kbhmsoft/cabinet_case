@@ -30,7 +30,8 @@ class DashboardController extends Controller
      */
    public function index()
    {
-    
+     session()->forget('currentUrlPath');
+
       $officeInfo = user_office_info();
       $user = Auth::user();
       // dd($user);

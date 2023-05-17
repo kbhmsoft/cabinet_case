@@ -90,6 +90,8 @@ class GovCaseRegisterController extends Controller
 
     public function high_court_case()
     {
+        session()->forget('currentUrlPath');
+        
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -155,6 +157,9 @@ class GovCaseRegisterController extends Controller
 
     public function appellate_division_case()
     {
+
+        session()->forget('currentUrlPath');
+
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -773,6 +778,9 @@ class GovCaseRegisterController extends Controller
 
     public function create()
     {
+
+        session()->forget('currentUrlPath');
+
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
         // $data['ministrys'] = Office::whereIn('level', [8,9])->get();

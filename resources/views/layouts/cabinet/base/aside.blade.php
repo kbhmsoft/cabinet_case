@@ -113,7 +113,7 @@
                         </a>
                      </li>
                   </ul>
-                  @can('create')
+                  @can('case_edit')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
@@ -225,7 +225,7 @@
                                </span>
                                </a>
                            </li>
-                           @forelse ($case_status as $row)
+                           @forelse($case_status as $row)
                           
                                <li class="menu-item {{ request()->is('cabinet/case/action/receive/'.$row->case_status_id) ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                    <a href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}" class="menu-link">
@@ -239,7 +239,7 @@
                               @empty
                            @endforelse
                        @else
-                           @forelse ($case_status as $row)
+                           @forelse($case_status as $row)
                                <li class="menu-item {{ request()->is('cabinet/case/action/receive/'.$row->case_status_id) ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                    <a href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}" class="menu-link">
                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
@@ -273,7 +273,7 @@
               </li>
             @endif
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
-               <li class="menu-item {{ request()->is('cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent','cabinet/messages_request') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+               <li class="menu-item {{ request()->is('cabinet/notice/list', 'cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent','cabinet/messages_request') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                    <a href="javascript:;" class="menu-link menu-toggle">
                       <span class="menu-text font-weight-bolder"><i class="fas fa-envelope" aria-hidden="true"></i> বার্তা</span>
                        @if($Ncount !=0)
@@ -286,7 +286,7 @@
                    <div class="menu-submenu">
                       <i class="menu-arrow"></i>
                       <ul class="menu-subnav">
-                       <li class="menu-item" aria-haspopup="true">
+                       <li class="menu-item {{ request()->is('cabinet/messages_recent') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                            <a href="{{ route('cabinet.messages_recent') }}" class="menu-link">
                               <i class="menu-bullet menu-bullet-dot"><span></span></i>
                               <span class="menu-text font-weight-bolder">সাম্প্রতিক বার্তা</span>
@@ -298,7 +298,7 @@
                            </a>
                         </li>
                         @if ($msg_request_count != 0)
-                       <li class="menu-item" aria-haspopup="true">
+                       <li class="menu-item {{ request()->is('cabinet/messages_request') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                            <a href="{{ route('cabinet.messages_request') }}" class="menu-link">
                               <i class="menu-bullet menu-bullet-dot"><span></span></i>
                               <span class="menu-text font-weight-bolder">নতুন বার্তা অনুরোধ</span>
@@ -309,14 +309,14 @@
                         </li>
                         @endif
                         @if (Auth::user()->role_id != 17 || Auth::user()->role_id != 18)
-                       <li class="menu-item" aria-haspopup="true">
+                       <li class="menu-item {{ request()->is('cabinet/notice/list') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                            <a href="{{ route('cabinet.notice.list') }}" class="menu-link">
                               <i class="menu-bullet menu-bullet-dot"><span></span></i>
                               <span class="menu-text font-weight-bolder">নোটিশ</span>
                            </a>
                         </li>
                         @endif
-                         <li class="menu-item" aria-haspopup="true">
+                         <li class="menu-item {{ request()->is('cabinet/messages') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                             <a href="{{ route('cabinet.messages') }}" class="menu-link">
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
@@ -333,7 +333,7 @@
            
            @endphp
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
-            <li class="menu-item {{ request()->is('search/supremecourt/causelist', 'show/notification/supremecourt', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+            <li class="menu-item {{ request()->is('search/supremecourt/case', 'search/supremecourt/causelist', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle">
                    <span class="menu-text font-weight-bolder"><i class="fas fa-search"></i> মামলার তথ্য যাচাই</span>
                     
@@ -342,21 +342,21 @@
                 <div class="menu-submenu">
                    <i class="menu-arrow"></i>
                    <ul class="menu-subnav">
-                    <li class="menu-item" aria-haspopup="true">
+                    <li class="menu-item {{ request()->is('search/supremecourt/case') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                         <a href="{{ url('search/supremecourt/case') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">মামলা অনুসন্ধান</span>
                         </a>
                      </li>
                     
-                    <li class="menu-item" aria-haspopup="true">
+                    <li class="menu-item {{ request()->is('search/supremecourt/causelist') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                         <a href="{{ url('search/supremecourt/causelist') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">কজলিস্ট</span>
                         </a>
                      </li>
                      @if ($supremeCourtCaseCout != 0)
-                      <li class="menu-item" aria-haspopup="true">
+                      <li class="menu-item {{ request()->is('show/notification/supremecourt') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                          <a href="{{ url('show/notification/supremecourt') }}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                             <span class="menu-text font-weight-bolder">আজকের শুনানির তালিকা</span>

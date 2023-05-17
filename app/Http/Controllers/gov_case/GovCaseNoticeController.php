@@ -13,6 +13,11 @@ class GovCaseNoticeController extends Controller
 {
      public function index()
     {   
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         $data['notices']= GovCaseNotice::orderBy('id','DESC')->paginate(10);
         $data['page_title'] = 'নোটিশের তালিকা';
 

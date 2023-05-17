@@ -12,6 +12,7 @@ use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
 use App\Http\Controllers\gov_case\GovCaseOtherActionController;
 use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
 use App\Http\Controllers\gov_case\AclController;
 
 

@@ -20,6 +20,11 @@ class MessageController extends Controller
 {
     public function messages()
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
 
@@ -66,6 +71,10 @@ class MessageController extends Controller
     }
     public function messages_recent()
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
         $user = Auth::user();
 
         $msgs = Message::select(DB::raw('id, user_sender, user_receiver, max(id) as mid'))
@@ -140,6 +149,10 @@ class MessageController extends Controller
 
     public function messages_request()
     {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
         $data['msg_request'] = Message::orderby('id', 'DESC')
             // ->select('user_sender', 'user_receiver', 'msg_reqest')
             ->Where('user_receiver', [Auth::user()->id])
