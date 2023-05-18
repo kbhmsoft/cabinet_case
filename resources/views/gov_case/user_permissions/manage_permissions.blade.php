@@ -40,7 +40,7 @@
                      ?>
                      <li>
                         <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> 
-                         <span>{{$permission->name}}</span>
+                         <span>{{$permission->display_name}}</span>
                      </li>
                      @endforeach
                   </ul>

@@ -18,7 +18,7 @@ class ParentPermissionName extends Model
     }
 
     public function permissions() {
-        return $this->hasMany(Permission::class, 'parent_permission_name_id');
+        return $this->hasMany(Permission::class, 'parent_permission_name_id')->orderBy('created_at', 'ASC');
     }
 
 

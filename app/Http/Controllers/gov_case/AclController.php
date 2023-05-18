@@ -23,7 +23,7 @@ class AclController extends Controller
     function __construct()
     {
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:create', ['only' => ['roleManagement']]);
+         // $this->middleware('permission:create', ['only' => ['roleManagement']]);
   
     }
 
@@ -89,7 +89,7 @@ class AclController extends Controller
         $permissions = Permission::paginate(25);
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
-        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions')) ;
+        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data) ;
     }
 
     public function storePermission(Request $request){
@@ -102,7 +102,7 @@ class AclController extends Controller
 
         Permission::create([
             'name' => $permissionName,
-            'display_name' => ucwords($request->name),
+            'display_name' => $request->display_name,
             'user_id' => Auth::user()->id,
             'parent_permission_name_id' => $request->parent_permission_id,
             'status' => 1,
@@ -113,14 +113,15 @@ class AclController extends Controller
 
     public function updatePermission(Request $request){
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'display_name' => 'required'
         ]);
         $nameLower = str_replace(' ', '_', $request->name);
         $permissionName = strtolower($nameLower);
 
         Permission::where('id', $request->permission_id)->update([
             'name' => $permissionName,
-            'display_name' => ucwords($request->name),
+            'display_name' => $request->display_name,
             'status' => $request->status,
         ]);
 

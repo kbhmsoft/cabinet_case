@@ -38,11 +38,11 @@
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">প্রদর্শনী নাম</th>
-               <th scope="col">অনুমতি নাম</th>
-               <th scope="col">প্যারেন্ট অনুমতি নাম</th>
-               <th scope="col">প্রস্তুতকারক</th>
-               <th scope="col">অবস্থা</th>
-               <th scope="col" width="150">অ্যাকশন</th>
+               <th class="text-center" scope="col">অনুমতি নাম</th>
+               <th class="text-center" scope="col">প্যারেন্ট অনুমতি নাম</th>
+               <th class="text-center" scope="col">প্রস্তুতকারক</th>
+               <th class="text-center" scope="col">অবস্থা</th>
+               <th class="text-center" scope="col" width="150">অ্যাকশন</th>
             </tr>
          </thead>
          <tbody>
@@ -61,10 +61,10 @@
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
                <td>{{ $permission->display_name }}</td>
-               <td>{{ $permission->name }}</td>
-               <td>{{ $parentName? $parentName->name: '' }}</td>
-               <td>{{ $user? $user->name: '' }}</td>
-               <td>
+               <td class="text-center"><span class="badge bg-success" style="font-size: 16px" >{{ $permission->name }}</span></td>
+               <td class="text-center">{{ $parentName? $parentName->name: '' }}</td>
+               <td class="text-center">{{ $user? $user->name: '' }}</td>
+               <td class="text-center">
                   @if($permission->status == 1)
                      <span class="badge badge-primary">সক্রিয়</span>
                   @else
@@ -73,8 +73,8 @@
 
                </td>
                
-               <td>
-                  <button type="button" onclick="updatePermissionModal({{$permission->id}}, '{{$permission->name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+               <td class="text-center">
+                  <button type="button" onclick="updatePermissionModal({{$permission->id}}, '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                   <a href="{{ route('cabinet.permissionItemDelete', $permission->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
@@ -104,11 +104,21 @@
                <input type="hidden" name="permission_id" id="roleID">
                <div class="modal-body">
                    <div class="card-body card-block">
+
                         <div class="form-group">
-                            <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
+                            <label for="name" class=" form-control-label">অনুমতি নাম (ইংরেজি)<span class="text-danger">*</span></label>
                             <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
                              
                         </div>
+                  <div class="form-group">
+                      <label for="update_displayname" class=" form-control-label">পদর্শনী নাম (বাংলা)<span class="text-danger">*</span></label>
+                      <input type="text" id="update_displayname" name="display_name" placeholder="অনুমতির পদর্শনী নাম লিখুন" class="form-control form-control-sm" required>
+                     
+                  </div>
+                
+                   
+
+
                         <div class="form-group">
                             <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
                              <select name="status" class="form-control">
@@ -151,7 +161,8 @@
 
                 <div class="form-group">
                     <label for="name" class=" form-control-label">প্যারেন্ট অনুমতি নাম<span class="text-danger">*</span></label>
-                     <select name="parent_permission_id" class="form-control">
+                     <select name="parent_permission_id" class="form-control" required>
+                        <option value="">--সিলেক্ট প্যারেন্ট অনুমতি--</option>
                         @foreach($parentPermissions as $parent)
                         <option value="{{$parent->id}}">{{$parent->name}}</option>
                         @endforeach
@@ -159,11 +170,16 @@
                 </div>
 
                   <div class="form-group">
-                      <label for="name" class=" form-control-label">অনুমতি নাম <span class="text-danger">*</span></label>
-                      <input type="text" id="name" name="name" placeholder="অনুমতির নাম লিখুন" class="form-control form-control-sm" required>
+                      <label for="name" class=" form-control-label">পদর্শনী নাম (বাংলা)<span class="text-danger">*</span></label>
+                      <input type="text" id="display_name" name="display_name" placeholder="অনুমতির পদর্শনী নাম লিখুন" class="form-control form-control-sm" required>
                      
                   </div>
                 
+                  <div class="form-group">
+                      <label for="name" class=" form-control-label">অনুমতি নাম (ইংরেজি)<span class="text-danger">*</span></label>
+                      <input type="text" id="name" name="name" placeholder="Enter permission name" class="form-control form-control-sm" required>
+                     
+                  </div>
             </div>
          </div>
       <div class="modal-footer">
@@ -226,11 +242,12 @@
 
 <script>
    
-   function updatePermissionModal(id, name, status){
+   function updatePermissionModal(id, name,display_name, status){
        $('#updateRoleItem').modal().show();
 
        $('#roleID').val(id);
        $('#update_name').val(name);
+       $('#update_displayname').val(display_name);
 
        var checkstatus = status;
 

@@ -91,6 +91,7 @@ class GovCaseRegisterController extends Controller
     public function high_court_case()
     {
         session()->forget('currentUrlPath');
+         
         
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;

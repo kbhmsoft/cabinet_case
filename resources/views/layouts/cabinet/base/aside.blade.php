@@ -45,7 +45,7 @@
             </li>
 
             @endif
-            <li class="menu-item {{ request()->is('cabinet/case/highcourt') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+            <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/action/details/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট বিভাগ</span>
                </a>
@@ -113,12 +113,22 @@
                         </a>
                      </li>
                   </ul>
-                  @can('case_edit')
+                  
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">অনুমতি প্রদান পরিচালনা করুন</span>
+                        </a>
+                     </li>
+                  </ul>
+                  
+                  @can('appeal_case_create')
+                  <ul class="menu-subnav">
+                     <li class="menu-item  " aria-haspopup="true">
+                        <a href=" " class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">Test menu For ACL</span>
                         </a>
                      </li>
                   </ul>
