@@ -9,10 +9,8 @@ class ParentPermissionName extends Model
 {
     use HasFactory;
 
-
     protected $fillable = ['name', 'user_id', 'status'];
 
- 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }

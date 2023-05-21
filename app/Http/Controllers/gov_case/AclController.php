@@ -86,7 +86,7 @@ class AclController extends Controller
 
 
         $data['page_title'] = 'অনুমতি পরিচালনা';
-        $permissions = Permission::paginate(25);
+        $permissions = Permission::orderBy('created_at', 'ASC')->paginate(25);
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
         return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data) ;

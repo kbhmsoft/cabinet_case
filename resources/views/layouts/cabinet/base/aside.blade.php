@@ -203,7 +203,7 @@
 
             <!-- {{-- // ========== Notification start =================== --}} -->
             @if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 14)
-              <li class="menu-item {{ request()->is(['cabinet/hearing_date', 'cabinet/results_completed', 'cabinet/case/action/receive/*']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+              <li class="menu-item {{ request()->is(['cabinet/hearing_date', 'cabinet/results_completed', 'cabinet/case/action/receive/*', 'cabinet/case/action/details/*']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                   <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="menu-text font-weight-bolder"><i class="fas fa-bell"></i> নোটিফিকেশন</span>
                        @if ($notification_count != 0)
@@ -235,9 +235,10 @@
                                </span>
                                </a>
                            </li>
+                           
                            @forelse($case_status as $row)
-                          
-                               <li class="menu-item {{ request()->is('cabinet/case/action/receive/'.$row->case_status_id) ? 'hilightMenu' : '' }}" aria-haspopup="true">
+                              
+                               <li class="menu-item {{ request()->is(['cabinet/case/action/receive/'.$row->case_status_id, 'cabinet/case/action/details/*']) ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                    <a href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}" class="menu-link">
                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                    <span class="menu-text font-weight-bolder">{{ $row->status_name }}</span>

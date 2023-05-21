@@ -26,6 +26,21 @@ use App\Repositories\gov_case\GovCaseRegisterRepository;
 
 class GovCaseActivityLogController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+         $this->middleware('permission:case_audit_menu', ['only' => ['index']]);
+         // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
+         // $this->middleware('permission:create', ['only' => ['roleManagement']]);
+  
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +49,8 @@ class GovCaseActivityLogController extends Controller
     public function index()
     {
         session()->forget('currentUrlPath');
-        
+         
+
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
