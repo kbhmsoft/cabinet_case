@@ -35,3 +35,11 @@ AG Oparetor (36)
 Email: mdmasudr196@gmail.com
 Pass: 12345678
 
+
+
+
+@if(auth()->user()->can('show_details_info'))
+
+
+
+

@@ -29,41 +29,36 @@
                     <ul class="nav nav-tabs nav-success nav-tabs-space-lg nav-tabs-line nav-bolder nav-tabs-line-3x"
                         role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tab_case_details">
+                            <a class="nav-link active" data-toggle="tab" @if(auth()->user()->can('full_case_of_send_answer')) href="#tab_case_details" @else href="#" @endif >
                                 <span class="nav-icon"><i class="fa fas fa-balance-scale mr-5"></i></span>
                                 <span class="nav-text font-size-h3">পূর্ণাঙ্গ মামলা</span>
                             </a>
                         </li>
-                        {{-- <li class="nav-item mr-3">
-                            <a class="nav-link" data-toggle="tab" href="#tab_sf">
-                                <span class="nav-icon"><i class="fa fas fa-layer-group mr-5"></i></span>
-                                <span class="nav-text font-size-h3">এসএফ প্রতিবেদন</span>
-                            </a>
-                        </li> --}}
-                        @if(Auth::user()->role_id == 33 || Auth::user()->role_id == 31 || Auth::user()->role_id == 28)
+                        
+                         
                         <li class="nav-item mr-3">
-                            <a class="nav-link" data-toggle="tab" href="#tab_sf_report">
+                            <a class="nav-link" data-toggle="tab" @if(auth()->user()->can('sf_report_of_send_answer')) href="#tab_sf_report" @else href="#" @endif>
                                 <span class="nav-icon"><i class="fa fas fa-layer-group mr-5"></i></span>
                                 <span class="nav-text font-size-h3"> এসএফ প্রতিবেদন</span>
                             </a>
                         </li>
-                        @endif
+                        
                         <li class="nav-item mr-3">
-                            <a class="nav-link" data-toggle="tab" href="#tab_notice">
+                            <a class="nav-link" data-toggle="tab" @if(auth()->user()->can('continuous_activities_of_send_answer')) href="#tab_notice" @else href="#" @endif >
                                 <span class="nav-icon"><i class="fa far fa-bell mr-5"></i></span>
                                 <span class="nav-text font-size-h3">ধারাবাহিক কার্যক্রম</span>
                             </a>
                         </li>
                         <li class="nav-item mr-3">
-                            <a class="nav-link" data-toggle="tab" href="#tab_result">
+                            <a class="nav-link" data-toggle="tab" @if(auth()->user()->can('result_of_send_answer')) href="#tab_result" @else href="#" @endif >
                                 <span class="nav-icon"><i class="fa fas fa-receipt mr-5"></i></span>
                                 <span class="nav-text font-size-h3">ফলাফল</span>
                             </a>
                         </li>
                         <li class="nav-item mr-3">
-                            <a class="nav-link" data-toggle="tab" href="#tab_history">
+                            <a class="nav-link" data-toggle="tab" @if(auth()->user()->can('timeline_of_send_answer')) href="#tab_history" @else href="#" @endif >
                                 <span class="nav-icon"><i class="fa fas fa-history mr-5"></i></span>
-                                {{-- <span class="nav-text font-size-h3">হিস্টোরি</span> --}}
+                                
                                 <span class="nav-text font-size-h3">টাইমলাইন</span>
                             </a>
                         </li>

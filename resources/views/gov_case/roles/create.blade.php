@@ -9,10 +9,16 @@
       <div class="card-title">
          <h2>ভুমিকা পরিচালনা </h2>
       </div>
-      <div class="card-toolbar">        
+      <div class="card-toolbar">
+      @if(auth()->user()->can('create_role'))        
          <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>ভূমিকা তৈরি করুন
-         </button>                
+         </button> 
+         @else        
+         <button type="button" class="btn btn-sm btn-secondary font-weight-bolder">
+            <i class="la la-plus"></i>ভূমিকা তৈরি করুন
+         </button>   
+         @endif             
       </div>
    </div>
    <div class="card-body">
@@ -64,8 +70,17 @@
                
                 
                <td>
+                @if(auth()->user()->can('role_update'))
                   <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                @else 
+                 <button type="button" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                @endif
+
+                @if(auth()->user()->can('role_delete'))
                   <a href="{{ route('cabinet.roleItemDelete', $role->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
+                @else 
+                 <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
+                @endif
                </td>
             </tr>
 

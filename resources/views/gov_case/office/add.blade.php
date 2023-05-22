@@ -31,10 +31,16 @@
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
                 <div class="card-toolbar">
-                    <div class="card-toolbar">        
+                    <div class="card-toolbar">     
+                @if(auth()->user()->can('all_office_list'))   
                         <a href="{{ route('cabinet.office') }}" class="btn btn-sm btn-primary font-weight-bolder">
                            <i class="la la-arrow-left"></i>অফিস তালিকা
-                        </a>                
+                        </a>
+                @else 
+                <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">
+                           <i class="la la-arrow-left"></i>অফিস তালিকা
+                        </a>
+                @endif                
                      </div>
                     <!-- <div class="example-tools justify-content-center">
                         <span class="example-toggle" data-toggle="tooltip" title="View code"></span>

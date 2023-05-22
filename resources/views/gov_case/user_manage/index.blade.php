@@ -9,10 +9,16 @@
       <div class="card-title">
          <h2 > ইউজার ম্যানেজমেন্ট </h2>
       </div>
-      <div class="card-toolbar">        
+      <div class="card-toolbar">
+      @if(auth()->user()->can('create_new_user'))       
          <a href="{{ route('cabinet.user-management.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
-         </a>                
+         </a> 
+      @else      
+         <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">
+            <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
+         </a> 
+      @endif               
       </div>
    </div>
    <div class="card-body">
@@ -47,8 +53,20 @@
                   <span class="label label-inline label-light-primary font-weight-bold">Pending</span>
                </td> -->
                <td>
-                  <a href="{{ route('cabinet.user-management.show', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                  <a href="{{ route('cabinet.user-management.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                  @if(auth()->user()->can('show_user_details'))
+                     <a href="{{ route('cabinet.user-management.show', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                  @else      
+                     <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                         বিস্তারিত
+                     </a> 
+                  @endif 
+                  @if(auth()->user()->can('update_user_info'))
+                     <a href="{{ route('cabinet.user-management.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                  @else      
+                     <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                         সংশোধন
+                     </a> 
+                  @endif 
                </td>
             </tr>
             @endforeach

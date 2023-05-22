@@ -49,7 +49,12 @@
                 </td>
                <td>{{ $row->gov_case_register->court->court_name ?? '' }}</td>
                <td>
+
+                  @if(auth()->user()->can('show_details_info'))
                    <a class="btn btn-primary btn-sm" href="{{ route('cabinet.case.details', $row->gov_case_register->id) }}">বিস্তারিত</a>
+                  @else
+                   <a class="btn btn-secondary btn-sm" href="#">বিস্তারিত</a>
+                  @endif
                </td>
             </tr>
             @endforeach

@@ -11,10 +11,7 @@
       </div>
       <div class="card-toolbar">        
        
-
-   <!--       <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-plus"></i>অনুমতি তৈরি করুন
-         </button> -->                
+               
       </div>
    </div>
    <div class="card-body">
@@ -48,14 +45,16 @@
                <td>{{ $user->office? $user->office->office_name_bn: '' }}</td>
                 
                <td>
-                  
                     <span class="badge badge-primary">সক্রিয়</span>
-                 
                </td>
                
                <td>
+                @if(auth()->user()->can('manage_permission_details'))
                   <a href="{{ route('cabinet.userPermissionManage', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                   
+                @else 
+                 <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                @endif
+
                </td>
             </tr>
             @endforeach

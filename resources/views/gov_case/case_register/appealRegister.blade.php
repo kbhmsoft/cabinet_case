@@ -58,7 +58,17 @@
                     </td>
                     <td>{{ $case->subject_matter }}</td>
                     @if($case->ref_gov_case_no)
-                      <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
+                      <td>
+
+                        <a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a>
+
+                        @if(auth()->user()->can('show_details_info'))
+                         <a class="" target="_blank" href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}">{{ $case->ref_gov_case_no }}</a>
+                        @else
+                         <a class="" href="#">{{ $case->ref_gov_case_no }}</a>
+                        @endif
+
+                     </td>
                     @else
                       <td>-</td>
                     @endif

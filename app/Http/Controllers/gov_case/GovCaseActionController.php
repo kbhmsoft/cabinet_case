@@ -112,6 +112,7 @@ class GovCaseActionController extends Controller
 
     public function details($id)
     {
+      
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['roles'] = Role::whereIn('id', [14, 27, 28, 29, 31, 32, 33, 36, 14])->orderby('sort_order')->get();
         $data['forward_map'] = DB::table('case_forward_map')

@@ -37,30 +37,36 @@
                   <span class="menu-text font-weight-bolder"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</span>
                </a>
             </li>
-            @if(userInfo()->role_id == 28 || userInfo()->role_id == 31 || userInfo()->role_id == 33)
+            @can('create_new_case')
             <li class="menu-item {{ request()->is('cabinet/case/create') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.create') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-plus-circle"></i> নতুন মামলা এন্ট্রি</span>
                </a>
             </li>
 
-            @endif
+            @endcan
+            @can('highcourt_division')
             <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/action/details/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট বিভাগ</span>
                </a>
             </li>
+            @endcan
+            @can('appeal_division')
             <li class="menu-item {{ request()->is('cabinet/case/appellateDivision') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i> আপিল বিভাগ</span>
                </a>
             </li>
-            @if(userInfo()->role_id == 1 || userInfo()->role_id == 2 || userInfo()->role_id == 27 || userInfo()->role_id == 28)
+            @endcan
+            @can('case_audit_menu')
             <li class="menu-item {{ request()->is('cabinet/case_audit') ? 'menu-item-active' : '' }}" aria-haspopup="true">
                <a href="{{ url('cabinet/case_audit') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-history"></i> মামলা নিরীক্ষা</span>
                </a>
             </li>
+            @endcan
+            @can('report_menu')
             <li class="menu-item {{ request()->is('govcase/report/caselist') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                <a href="javascript:;" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-file-contract"></i> রিপোর্ট</span>
@@ -70,17 +76,21 @@
                   <i class="menu-arrow"></i>
                   
                   <ul class="menu-subnav">
+           
+            @can('govt_case_report')
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['govcase/report/caselist'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('report.govcaselist') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">সরকারি মামলার রিপোর্ট</span>
                         </a>
                      </li>
+            @endcan 
                   </ul>
                  
                </div>
             </li>
-            
+            @endcan
+            @can('manage_users_menu')
             <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management']) ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী পরিচালনা</span>
@@ -88,6 +98,8 @@
                </a>
                <div class="menu-submenu">
                   <i class="menu-arrow"></i>
+           
+            @can('users_list_menu')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link">
@@ -96,7 +108,8 @@
                         </a>
                      </li>
                   </ul>
-                  
+            @endcan
+            @can('manage_role_menu')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-role-management'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.roleManagement') }}" class="menu-link">
@@ -105,6 +118,8 @@
                         </a>
                      </li>
                   </ul>
+            @endcan
+            
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
@@ -113,7 +128,8 @@
                         </a>
                      </li>
                   </ul>
-                  
+           
+            @can('manage_permission_menu')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
@@ -122,20 +138,13 @@
                         </a>
                      </li>
                   </ul>
-                  
-                  @can('appeal_case_create')
-                  <ul class="menu-subnav">
-                     <li class="menu-item  " aria-haspopup="true">
-                        <a href=" " class="menu-link">
-                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                           <span class="menu-text font-weight-bolder">Test menu For ACL</span>
-                        </a>
-                     </li>
-                  </ul>
-                  @endcan
+            @endcan 
+                   
                </div>
             </li>
+            @endcan
 
+            @can('manage_office_menu')
             <li class="menu-item {{ request()->is('cabinet/office' ,'cabinet/office/create') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                <a href="javascript:;" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="la la-briefcase"></i> অফিস ব্যবস্থাপনা</span>
@@ -143,6 +152,7 @@
                </a>
                <div class="menu-submenu">
                   <i class="menu-arrow"></i>
+            @can('create_new_office')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/office/create'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.office.create') }}" class="menu-link">
@@ -151,6 +161,8 @@
                         </a>
                      </li>
                   </ul>
+            @endcan
+            @can('all_office_list')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/office'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.office') }}" class="menu-link">
@@ -159,9 +171,12 @@
                         </a>
                      </li>
                   </ul>
+            @endcan
                </div>
             </li>
+            @endcan
 
+            @can('general_settings_menu')
             <li class="menu-item {{ request()->is('cabinet/settings/*','cabinet/settings/category_type/*','cabinet/settings/office_type/*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                <a href="javascript:;" class="menu-link menu-toggle">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-cogs"></i> জেনারেল সেটিংস</span>
@@ -170,39 +185,39 @@
                <div class="menu-submenu">
                   <i class="menu-arrow"></i>
                   <ul class="menu-subnav">
+            
+               @can('case_categories_menu')
                      <li class="menu-item {{ request()->is('cabinet/settings/category/*') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.settings.category.list') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">মামলার ক্যাটেগরি</span>
                         </a>
                      </li>
+               @endcan
+               @can('case_types_menu')
                      <li class="menu-item {{ request()->is('cabinet/settings/category_type/*') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.settings.category_type.list') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">মামলার শ্রেণী</span>
                         </a>
                      </li>
+                  @endcan
+                  @can('office_types_menu')
                      <li class="menu-item {{ request()->is('cabinet/settings/office_type/*') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.settings.office_type.list') }}" class="menu-link">
                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                            <span class="menu-text font-weight-bolder">অফিসের শ্রেণী</span>
                         </a>
                      </li>
+              @endcan
                   </ul>
-                  <!-- <ul class="menu-subnav">
-                     <li class="menu-item" aria-haspopup="true">
-                        <a href="{{ route('cabinet.office') }}" class="menu-link">
-                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                           <span class="menu-text font-weight-bolder">অফিসের তালিকা</span>
-                        </a>
-                     </li>
-                  </ul> -->
+                 
                </div>
             </li>
-            @endif
+            @endcan
 
             <!-- {{-- // ========== Notification start =================== --}} -->
-            @if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 14)
+            @can('office_types_menu')
               <li class="menu-item {{ request()->is(['cabinet/hearing_date', 'cabinet/results_completed', 'cabinet/case/action/receive/*', 'cabinet/case/action/details/*']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                   <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="menu-text font-weight-bolder"><i class="fas fa-bell"></i> নোটিফিকেশন</span>
@@ -216,7 +231,8 @@
                   <div class="menu-submenu">
                      <i class="menu-arrow"></i>
                      <ul class="menu-subnav">
-                       @if (Auth::user()->role_id == 27 || Auth::user()->role_id == 28)
+ 
+                  @can('office_types_menu')
                            <li class="menu-item {{ request()->is('cabinet/hearing_date') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
@@ -226,6 +242,8 @@
                                </span>
                                </a>
                            </li>
+                  @endcan
+                  @can('office_types_menu')
                            <li class="menu-item {{ request()->is('cabinet/results_completed') ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                <a href="{{ route('cabinet.results_completed') }}" class="menu-link">
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
@@ -236,6 +254,8 @@
                                </a>
                            </li>
                            
+                  @endcan
+              
                            @forelse($case_status as $row)
                               
                                <li class="menu-item {{ request()->is(['cabinet/case/action/receive/'.$row->case_status_id, 'cabinet/case/action/details/*']) ? 'hilightMenu' : '' }}" aria-haspopup="true">
@@ -263,26 +283,30 @@
                               @empty
                            @endforelse
 
+                
+                  @can('office_types_menu')
                            <li class="menu-item {{ request()->is('cabinet/case/action/receive/'.$row->case_status_id) ? 'hilightMenu' : '' }}" aria-haspopup="true">
                                <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                               <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা হয়েছে</span>
+                               <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা হয়েছে 32</span>
                                <span class="menu-label">
                                    <span class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
                                </span>
                                </a>
                            </li>
+                  @endcan
+                   
                           
                            @if(count($case_status) == 0)
                                <div class="d-flex align-items-center rounded p-5 mb-5">
                                    <span>কোন নোটিফিকেশন পাওয়া যায়নি</span>
                                </div>
                            @endif
-                       @endif
+                        
                      </ul>
                   </div>
               </li>
-            @endif
+            @endcan
             @if(Auth::user()->role_id != 17 && Auth::user()->role_id != 18 && Auth::user()->role_id != 19 && Auth::user()->role_id != 20)
                <li class="menu-item {{ request()->is('cabinet/notice/list', 'cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent','cabinet/messages_request') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                    <a href="javascript:;" class="menu-link menu-toggle">

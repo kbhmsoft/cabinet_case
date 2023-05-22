@@ -10,11 +10,11 @@
       </div>
 
       <div class="card-toolbar">
-         @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
+         @can('create_new_case')
          <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder mr-2">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
-         @endif
+         @endcan
          
       </div>
       
@@ -79,11 +79,18 @@
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                         <div class="dropdown-menu">
+                             
+                           @can('show_details_info')
                             <a class="dropdown-item" href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
+                           @endcan
+                           @can('highcourt_case_update')
                             <a class="dropdown-item" href="{{ route('cabinet.case.edit', $row->id) }}">সংশোধন</a>
+                            @endcan
+                            @can('highcoutr_send_answer')
                             @if($row->action_user_role_id == userInfo()->role_id)
                             <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>
                             @endif
+                            @endcan
                         </div>
                     </div>
                </td>

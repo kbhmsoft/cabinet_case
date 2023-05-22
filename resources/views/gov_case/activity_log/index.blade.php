@@ -39,7 +39,11 @@
                <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
                <td>{{ $row->date_issuing_rule_nishi ?? '-'}}</td>
                <td>
+                  @if(auth()->user()->can('case_audit_details_show'))
                   <a href="{{ route('cabinet.case_audit.show', $row->id) }}" type="button" class="btn btn-primary">বিস্তারিত </a>
+                  @else
+                  <a href="#" type="button" class="btn btn-secondary">বিস্তারিত </a>
+                  @endif
                </td>
             </tr>
             @endforeach

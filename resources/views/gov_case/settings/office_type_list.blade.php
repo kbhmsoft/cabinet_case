@@ -10,9 +10,15 @@
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
       <div class="card-toolbar">        
-         <a href="{{ route('cabinet.settings.office_type.add') }}" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-plus"></i>নতুন ক্যাটেগরি এন্ট্রি
-         </a>                
+          @if(auth()->user()->can('create_new_case_category'))
+            <a href="{{ route('cabinet.settings.category.add') }}" class="btn btn-sm btn-primary font-weight-bolder">
+               <i class="la la-plus"></i>নতুন ক্যাটেগরি এন্ট্রি
+            </a> 
+          @else 
+            <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">
+               <i class="la la-plus"></i>নতুন ক্যাটেগরি এন্ট্রি
+            </a> 
+          @endif               
       </div>
    </div>
    <div class="card-body">
@@ -37,7 +43,14 @@
                <td>{{ $row->type_name_bn }}</td>             
                <td>{{ $row->type_name }}</td>
                <td>
-                  <a href="{{ route('cabinet.settings.office_type.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                  
+          @if(auth()->user()->can('office_type_update'))
+            <a href="{{ route('cabinet.settings.office_type.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a> 
+          @else 
+            <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a> 
+          @endif
+
+
                </td>
             </tr>
             @endforeach

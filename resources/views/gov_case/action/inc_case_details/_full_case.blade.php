@@ -19,9 +19,11 @@
                     </div>
                     <div class="alert-text h4">
                         {{-- <a target="_blank" href="{{ route('cabinet.case.edit', $case->id) }}"> --}}
+                           @can('highcourt_case_update')
                         <a href="{{ route('cabinet.case.edit', $case->id) }}?red={{  url()->current() }}">
                         <u>মামলার নিবন্ধন সম্পূর্ণ করুন</u>
                         </a>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -50,7 +52,14 @@
                     @if($case->gov_case_ref_id)
                         <tr>
                            <th scope="row">পূর্বের মামলা নং </th>
-                           <td><a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a></td>
+                           <td>
+                             
+                              @if(auth()->user()->can('show_details_info'))
+                              <a href="{{ route('cabinet.case.details', $case->gov_case_ref_id) }}" target="_blank">{{ $case->ref_gov_case_no }}</a>
+                              @else
+                              <a href="#">{{ $case->ref_gov_case_no }}</a>
+                              @endif
+                        </td>
                         </tr>
                      @endif
                     <tr>

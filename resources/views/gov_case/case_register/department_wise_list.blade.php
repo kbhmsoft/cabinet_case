@@ -8,13 +8,13 @@
       <div class="card-title">
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
-      <!-- @if(userInfo()->role_id == 28 ||userInfo()->role_id == 31 ||userInfo()->role_id == 33)
+      <!-- @can('create_new_case')
       <div class="card-toolbar">
          <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
       </div>
-      @endif -->
+      @endcan -->
 
       <div class="card-toolbar">
          @if($roleID == 27 || $roleID == 28)
@@ -83,11 +83,18 @@
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                         <div class="dropdown-menu">
+
+                           @can('show_details_info')
                             <a class="dropdown-item" href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
+                           @endcan
+                           @can('highcourt_case_update')
                             <a class="dropdown-item" href="{{ route('cabinet.case.edit', $row->id) }}">সংশোধন</a>
+                            @endcan
+                            @can('highcoutr_send_answer')
                             @if($row->action_user_role_id == userInfo()->role_id)
                             <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>
                             @endif
+                            @endcan
                         </div>
                     </div>
                </td>

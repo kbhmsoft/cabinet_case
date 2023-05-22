@@ -60,25 +60,32 @@
                            @if($row->is_appeal == '')
                                  <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                                  <div class="dropdown-menu">
+                                    @can('highcoutr_send_answer')
                                      <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">বিস্তারিত তথ্য</a>
+                                     @endcan
+                                     @can('create_new_case')
                                      <a class="dropdown-item" href="{{ route('cabinet.case.create_appeal', $row->id) }}">আপিল মামলা এন্ট্রি করুন</a>
+                                     @endcan
                                  </div>
                            @else
+                                 @can('highcoutr_send_answer')
                                  <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
+                                 @endcan
                            @endif
                         @else
+                        @can('highcoutr_send_answer')
                            <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
+                        @endcan
                         @endif
                      @else
+                     @can('highcoutr_send_answer')
                         <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
                            
+                     @endcan
                      @endif
                      
                      
-
-
-                  <!-- <a href="{{ route('cabinet.case.action.details', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত </a> -->
-                  <!-- <a href="#" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a> -->
+ 
                </td>
             </tr>
             @endforeach

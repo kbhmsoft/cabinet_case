@@ -19,11 +19,17 @@
     </div>
     <div class="col-xl-3">
         @if ($case->status != 3)
-            @if ($case->action_user_role_id == userInfo()->role_id)
+            @if ($case->action_user_role_id == userInfo()->role_id && auth()->user()->can('send_of_send_answer'))
+
                 <a href="javascript:void(0)" class="btn btn-primary btn-shadow font-weight-bolder font-size-h1 px-12 py-4"
                     data-toggle="modal" data-target="#caseForwardModal" id="forwardButton">
                     প্রেরণ করুন <i class="fa fas fa-paper-plane icon-3x"></i>
                 </a>
+                @else
+                <a href="javascript:void(0)" class="btn btn-secondary btn-shadow font-weight-bolder font-size-h1 px-12 py-4">
+                    প্রেরণ করুন <i class="fa fas fa-paper-plane icon-3x"></i>
+                </a>
+            
             @endif
         @endif
 

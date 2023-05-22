@@ -15,10 +15,15 @@
       <div class="card-title mb-0 mt-2" >
          <h2 style="display: contents">অনুমতি প্রদান পরিচালনা করুন </h2>
          <h3 style="display: contents">(ব্যাবহারকারী: <strong>{{ App\Models\User::find($user_id)->name}}</strong>)</h3>
-
-         <button type="submit" class="btn btn-sm btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
-            <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-         </button>  
+                @if(auth()->user()->can('permission_give_and_update'))
+                  <button type="submit" class="btn btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
+                     <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
+                  </button>  
+                @else 
+                  <button type="button" class="btn btn-secondary font-weight-bolder float-right">
+                     <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
+                  </button>  
+                @endif
       </div>
       <div class="card-toolbar">        
        
