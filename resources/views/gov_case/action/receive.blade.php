@@ -55,34 +55,23 @@
                <td>{{ $row->case_category->name_bn ?? ''}}</td>
                <td><?=$caseStatus?></td>
                <td>
-                     @if($row->case_status_id == 42 && $row->status == 2)
-                        @if (Auth::user()->role_id == 27 || Auth::user()->role_id == 31 || Auth::user()->role_id == 33 )
-                           @if($row->is_appeal == '')
-                                 <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
-                                 <div class="dropdown-menu">
-                                    @can('highcoutr_send_answer')
-                                     <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">বিস্তারিত তথ্য</a>
-                                     @endcan
-                                     @can('create_new_case')
-                                     <a class="dropdown-item" href="{{ route('cabinet.case.create_appeal', $row->id) }}">আপিল মামলা এন্ট্রি করুন</a>
-                                     @endcan
-                                 </div>
-                           @else
-                                 @can('highcoutr_send_answer')
-                                 <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
-                                 @endcan
-                           @endif
-                        @else
-                        @can('highcoutr_send_answer')
-                           <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
-                        @endcan
-                        @endif
+               
+                     @if($row->is_appeal == '')
+                           <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
+                           <div class="dropdown-menu">
+                              @can('case_application_reg_details')
+                               <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">বিস্তারিত তথ্য</a>
+                               @endcan
+                               @can('create_new_case')
+                               <a class="dropdown-item" href="{{ route('cabinet.case.create_appeal', $row->id) }}">আপিল মামলা এন্ট্রি করুন</a>
+                               @endcan
+                           </div>
                      @else
-                     @can('highcoutr_send_answer')
-                        <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
-                           
-                     @endcan
+                           @can('case_application_reg_details')
+                           <a href="{{ route('cabinet.case.action.details', $row->id) }}"><button class="btn btn-primary font-weight-bold" type="button"aria-haspopup="true" aria-expanded="false">বিস্তারিত তথ্য</button></a>
+                           @endcan
                      @endif
+                  
                      
                      
  

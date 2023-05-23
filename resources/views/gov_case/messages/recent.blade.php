@@ -79,7 +79,14 @@
                     <td>{{ $user->office->office_name_bn ?? '' }}, {{ $user->office->upazila->upazila_name_bn ?? '' }} {{ $user->office->district->district_name_bn ?? '' }}</td>
                     <td>{{ $user->email ?? '' }}</td>
                     <td>
+
+                     @if(auth()->user()->can('recent_message_send'))
+
                     <a href="{{ route('cabinet.messages_single', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+                    @else
+                     <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+                    @endif
+
                     </td>
                 </tr>
             @empty

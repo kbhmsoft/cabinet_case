@@ -8,13 +8,13 @@
       <div class="card-title">
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
-      <!-- @can('create_new_case')
+      <!-- 
       <div class="card-toolbar">
          <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
       </div>
-      @endcan -->
+       -->
 
       <div class="card-toolbar">
          @can('create_new_case')

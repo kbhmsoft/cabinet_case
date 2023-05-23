@@ -7,7 +7,7 @@
 
 
    <!--begin::Dashboard-->
-    <!-- Dashboard Counter -->
+    <!-- Dashboard Counter test -->
     @include('dashboard.cabinet.inc._dashboard_counter_card')
     <!-- //Dashboard Counter -->
 
@@ -131,7 +131,7 @@
    <!-- <figure class="highcharts-figure" style="width: 100%">
       <div id="container"></div>
    </figure> -->
-
+ 
    <!--end::Dashboard-->
 @endsection
 

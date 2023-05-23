@@ -18,6 +18,15 @@ use Illuminate\Support\Arr;
 
 class GovCaseMessageController extends Controller
 {
+
+
+    public function __construct(){
+        $this->middleware('permission:recent_messages', ['only' => ['messages_recent']]);
+         
+    }
+
+
+
     public function messages()
     {
         $roleID = Auth::user()->role_id;
@@ -62,7 +71,8 @@ class GovCaseMessageController extends Controller
 
     }
     public function messages_recent()
-    {
+    { 
+
         $user = Auth::user();
 
         $msgs = Message::select(DB::raw('id, user_sender, user_receiver, max(id) as mid'))

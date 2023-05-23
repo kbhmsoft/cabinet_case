@@ -13,7 +13,19 @@ use Illuminate\Http\Request;
 
 class GovCaseSettingsController extends Controller
 {
+
+
+    public function __construct(){
+        $this->middleware('permission:case_categories_menu', ['only' => ['div_category_index']]);
+         
+    }
+
+
+
+
+
    public function div_category_index(){
+
    		$data['categories'] = GovCaseDivisionCategory::orderby('id','DESC')->paginate(10);
         $data['page_title'] =   'মামলার ক্যাটেগরির তালিকা';
         return view('gov_case.settings.category_list')->with($data);

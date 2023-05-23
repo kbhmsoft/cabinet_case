@@ -10,9 +10,21 @@
          <h2 > {{ $page_title }} </h2>
       </div>
       <div class="card-toolbar">        
-         <a href="{{ route('cabinet.notice.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-plus"></i>নতুন নোটিশ জারি
-         </a>                
+          
+
+         @if(auth()->user()->can('create_new_notice'))
+           <a href="{{ route('cabinet.notice.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
+               <i class="la la-plus"></i>নতুন নোটিশ জারি
+            </a> 
+         @else
+            <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">
+               <i class="la la-plus"></i>নতুন নোটিশ জারি
+            </a> 
+         @endif
+
+
+
+
       </div>
    </div>
    <div class="card-body">
@@ -42,8 +54,19 @@
                <td>{{ en2bn($row->expiry_date) }}</td>
                
                <td>
-                  <a href="{{ route('cabinet.notice.show', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                  <a href="{{ route('cabinet.notice.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+               @if(auth()->user()->can('notice_details_show'))
+                 <a href="{{ route('cabinet.notice.show', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+               @else
+                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+               @endif
+
+               @if(auth()->user()->can('notice_update'))
+                 <a href="{{ route('cabinet.notice.edit', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+               @else
+                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+               @endif
+ 
+
                </td>
             </tr>
             @empty

@@ -12,6 +12,15 @@ use Validator,Redirect,Response;
 
 class GovCaseOfficeController extends Controller
 {
+
+
+    public function __construct(){
+        $this->middleware('permission:create_new_office', ['only' => ['create']]);
+        $this->middleware('permission:create_new_office', ['only' => ['create']]);
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *

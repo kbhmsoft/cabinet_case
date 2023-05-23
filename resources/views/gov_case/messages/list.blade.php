@@ -65,7 +65,13 @@
                         <td>{{ $row->office_name_bn }}</td>
                         <td>{{ $row->email }}</td>
                         <td>
-                            <a href="{{ route('messages_single', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+
+               @if(auth()->user()->can('send_message_to_user'))
+                 <a href="{{ route('messages_single', $row->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+               @else
+                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
+               @endif
+                            
                         </td>
                     </tr>
                 @endif

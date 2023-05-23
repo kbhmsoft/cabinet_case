@@ -17,6 +17,13 @@ use Validator,Redirect,Response;
 
 class GovCaseUserManagementController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('permission:create_new_user', ['only' => ['create']]);
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -63,6 +70,8 @@ class GovCaseUserManagementController extends Controller
      */
     public function create()
     {   
+ 
+
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $role = array('1','27');

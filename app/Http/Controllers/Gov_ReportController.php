@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\DB;
 
 class Gov_ReportController extends Controller
 {
+
+
+    public function __construct(){
+        $this->middleware('permission:govt_case_report', ['only' => ['caselist']]);
+    }
+
+
     public function caselist()
     {
 

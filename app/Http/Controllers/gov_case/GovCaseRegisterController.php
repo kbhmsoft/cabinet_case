@@ -27,6 +27,14 @@ class GovCaseRegisterController extends Controller
 {
     //
 
+    public function __construct(){
+        $this->middleware('permission:create_new_case', ['only' => ['create']]);
+        $this->middleware('permission:appeal_division', ['only' => ['appellate_division_case']]);
+        $this->middleware('permission:highcourt_case_update', ['only' => ['edit']]);
+    }
+
+
+
     public function index()
     {
         $officeInfo = user_office_info();
@@ -779,7 +787,7 @@ class GovCaseRegisterController extends Controller
 
     public function create()
     {
-
+ 
         session()->forget('currentUrlPath');
 
         $roleID = userInfo()->role_id;

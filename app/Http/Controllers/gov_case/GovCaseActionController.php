@@ -120,7 +120,7 @@ class GovCaseActionController extends Controller
             ->first();
         $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
         // return $data;
-        return view('gov_case.action.case_details')->with($data);
+        return view('gov_case.action.notification_case_details')->with($data);
 
         // $data['info'] = GovCaseRegister::findOrFail($id);
         // $data['roles'] = Role::all();

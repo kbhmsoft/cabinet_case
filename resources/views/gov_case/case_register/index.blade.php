@@ -80,13 +80,13 @@
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                         <div class="dropdown-menu">
                              
-                           @can('show_details_info')
+                           @can('result_done_show_details')
                             <a class="dropdown-item" href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
                            @endcan
-                           @can('highcourt_case_update')
+                           @can('result_done_update')
                             <a class="dropdown-item" href="{{ route('cabinet.case.edit', $row->id) }}">সংশোধন</a>
                             @endcan
-                            @can('highcoutr_send_answer')
+                            @can('result_done_send_answer')
                             @if($row->action_user_role_id == userInfo()->role_id)
                             <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>
                             @endif

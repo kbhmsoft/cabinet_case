@@ -64,8 +64,12 @@
 
 						<!--begin::Entry-->
 						<div class="d-flex flex-column-fluid">
-							<!--begin::Container-->
-							@include('layouts.cabinet.base.content')
+							<!--begin::Container2-->
+
+							<div class="container">
+							    @yield('content')
+
+							</div>
 							<!--end::Container-->
 						</div>
 						<!--end::Entry-->

@@ -8,13 +8,13 @@
       <div class="card-title">
          <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
       </div>
-      @if(Auth::user()->role_id == 5)
+      @can('create_new_case')
       <div class="card-toolbar">
          <a href="{{ url('case/add') }}" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
       </div>
-      @endif
+      @endcan
    </div>
    <div class="card-body">
       @if ($message = Session::get('success'))
@@ -50,7 +50,7 @@
                <td>{{ $row->gov_case_register->court->court_name ?? '' }}</td>
                <td>
 
-                  @if(auth()->user()->can('show_details_info'))
+                  @if(auth()->user()->can('show_details_info') && auth()->user()->can('hearing_date_show_details'))
                    <a class="btn btn-primary btn-sm" href="{{ route('cabinet.case.details', $row->gov_case_register->id) }}">বিস্তারিত</a>
                   @else
                    <a class="btn btn-secondary btn-sm" href="#">বিস্তারিত</a>

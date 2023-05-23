@@ -1,8 +1,6 @@
 @extends('layouts.cabinet.cab_default')
 
-
 @section('content')
-
 <!--begin::Card-->
 <div class="card card-custom col-12">
    <div class="card-header flex-wrap py-5">

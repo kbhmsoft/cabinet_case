@@ -23,7 +23,7 @@ class AclController extends Controller
     function __construct()
     {
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-         // $this->middleware('permission:create', ['only' => ['roleManagement']]);
+         $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
   
     }
 
