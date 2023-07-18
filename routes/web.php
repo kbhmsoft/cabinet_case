@@ -17,6 +17,8 @@ use App\Http\Controllers\FrontHomeController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\Gov_ReportController;
 
+
+
 Auth::routes([
     'login'    => true,
     'logout'   => true,

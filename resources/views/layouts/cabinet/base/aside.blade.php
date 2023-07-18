@@ -120,6 +120,7 @@
                   </ul>
             @endcan
             
+               @if(Auth::user()->role_id == 1 && Auth::user()->role->name == 'ডেভলপার')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions'])? 'hilightMenu': '' }}" aria-haspopup="true">
                         <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
@@ -128,7 +129,7 @@
                         </a>
                      </li>
                   </ul>
-           
+               @endif
             @can('manage_permission_menu')
                   <ul class="menu-subnav">
                      <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management'])? 'hilightMenu': '' }}" aria-haspopup="true">

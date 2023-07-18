@@ -89,7 +89,12 @@ class AclController extends Controller
         $permissions = Permission::orderBy('created_at', 'ASC')->paginate(25);
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
-        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data) ;
+        if(Auth::user()->role_id == 1 && Auth::user()->role->name == 'ডেভলপার'){
+            return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data);
+        }else{
+            abort(403);
+        }
+        
     }
 
     public function storePermission(Request $request){

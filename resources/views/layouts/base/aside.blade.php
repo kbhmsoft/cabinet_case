@@ -4,7 +4,7 @@
       <!--begin::Logo-->
       <a href="{{ url('dashboard') }}" class="brand-logo">
          <!-- <img alt="Logo" src="media/logos/logo-light.png" /> -->
-         {{-- <img alt="Logo" src="{{ asset('media/logos/civil-suit-logo.png') }}" height="45" class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" /> --}}
+         {{-- <img alt="Logo" src="{{ asset('media/logos/cabCase.svg') }}" height="45" class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" /> --}}
          <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45" class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" />
          <!-- <span style="font-weight: bold; font-size: 25px; color: white;">Civil Suit</span> -->
       </a>

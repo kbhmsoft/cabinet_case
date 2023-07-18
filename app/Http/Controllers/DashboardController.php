@@ -43,88 +43,93 @@ class DashboardController extends Controller
 
 
       if($roleID == 1){
-         // Superadmi dashboard
+         // Superadmin dashboard
 
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['total_at_case'] = '';
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+         $data['total_case'] = GovCaseRegister::count();
+         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+         $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
+         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
+         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status',1)->count();
+         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
          $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
+         $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
          $data['total_user'] = DB::table('users')->count();
          $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
 
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
 
-            // Get case status by group
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
-         ->get();
+         // count ministry wise case status
+         /*$ministry_wise = DB::table('office')
+                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                              )
+                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
+                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                              ->where('office.level', 9)
+                              ->groupBy('office.id')
+                              ->groupBy('gcb.respondent_id')
+                              ->orderBy('office.id', 'asc')
+                              ->paginate(10);
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
-         ->get();
+         $data['ministry_wise'] = $ministry_wise;
+
 
          // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+         $ministry_list = DB::table('office')
+         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
+         ->where('office.level', 9)
          ->get();
 
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
+         $ministrydata=array();
+         $departmentdata=array();
 
-         // Division List
-         foreach ($division_list as $division) {
-            // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
-            // Division Data
-            $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
 
-            // District List
-            $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
-            foreach ($district_list as $district) {
-               // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
-               // $number2 = (int) $dis_count['count']; //exit;
+         // Ministry List
+         foreach ($ministry_list as $ministry) {
+            // Ministry Data
+            $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
 
-               $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
+            // Department List
+            $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
+            foreach ($department_list as $department) {
 
-               // Upazila Data
-               // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
-               $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
-               foreach ($upazila_list as $upazila) {
-                  // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
-                  // $number3 = (int) $upa_count['count']; //exit;
-
-                  $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
-               }
-
-               $upadata = $upa_data[$district->id];
-               $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+               $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
             }
 
-            $disdata = $dis_data[$division->id];
-            $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+            $deptdata = $dept_data[$ministry->id];
+            $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
 
-            $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+            $data['department_data'] = array_merge( $departmentdata);
 
-         }
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
+         }*/
+
+
+         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+         
+         // return $data;
+         // View
 
 
 
          // View
          $data['page_title'] = 'সুপার অ্যাডমিন ড্যাশবোর্ড';
-         return view('dashboard.superadmin')->with($data);
+         return view('dashboard.cabinet.super_admin')->with($data);
+         // return view('dashboard.superadmin')->with($data);
 
       }elseif($roleID == 27){
          // Superadmin dashboard
