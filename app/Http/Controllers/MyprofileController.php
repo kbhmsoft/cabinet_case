@@ -24,17 +24,18 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $userManagement = DB::table('users')
-                        ->join('roles', 'users.role_id', '=', 'roles.id')
-                        ->join('office', 'users.office_id', '=', 'office.id')
+                        ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+                        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+                        ->leftJoin('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn', 
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$user_id)
                         ->get()->first();
         $page_title = "মাই প্রোফাইল";
                   // dd($userManagement);     
-
+        
         return view('myprofile.show', compact('userManagement','page_title'));
     }
 
