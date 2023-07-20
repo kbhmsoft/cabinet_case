@@ -50,7 +50,7 @@ class GovCaseRegisterController extends Controller
                }
             );
         }
-        
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
@@ -77,7 +77,7 @@ class GovCaseRegisterController extends Controller
         if(!empty($_GET['case_no'])) {
             $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
         }
-       
+
 
         $data['cases'] = $query->paginate(10);
 
@@ -99,8 +99,8 @@ class GovCaseRegisterController extends Controller
     public function high_court_case()
     {
         session()->forget('currentUrlPath');
-         
-        
+
+
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -114,7 +114,7 @@ class GovCaseRegisterController extends Controller
                }
             );
         }
-        
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
@@ -160,7 +160,7 @@ class GovCaseRegisterController extends Controller
 
 
         $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
-        
+
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
@@ -182,7 +182,7 @@ class GovCaseRegisterController extends Controller
                }
             );
         }
-        
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
@@ -448,7 +448,7 @@ class GovCaseRegisterController extends Controller
         $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
 
         return view('gov_case.case_register.index')->with($data);
-    }    
+    }
 
 
     //============Not Against Govt Case list============/
@@ -706,7 +706,7 @@ class GovCaseRegisterController extends Controller
         // $data['ministry_wise'] = $query;
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get(); 
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['ministry'] = DB::table('office')->select('id', 'office_name_bn')->where('id',$id)->first();
         $data['page_title'] =   $data['ministry']->office_name_bn.' এর মামলার তালিকা';
 
@@ -787,7 +787,7 @@ class GovCaseRegisterController extends Controller
 
     public function create()
     {
- 
+
         session()->forget('currentUrlPath');
 
         $roleID = userInfo()->role_id;
@@ -826,7 +826,7 @@ class GovCaseRegisterController extends Controller
         //$query =  DB::table('gov_case_registers')->where('id',$request->case_id)->first();
        $query =  GovCaseRegister::where('id',$request->case_id)->first();
         return $query;
-        
+
     }
 
 
@@ -883,7 +883,7 @@ class GovCaseRegisterController extends Controller
     {
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        
+
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
         $data['ministrys'] = GovCaseOffice::get();
@@ -892,6 +892,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['courts'] = Court::select('id', 'court_name')->get();
+      
         if($roleID != 33){
             $data['depatments'] = Office::where('parent', $officeID)->get();
         }else{
@@ -978,7 +979,7 @@ class GovCaseRegisterController extends Controller
     public function show($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        
+
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
         }else{
