@@ -10,7 +10,9 @@
 <style type="text/css">
     #appRowDiv td{padding: 5px; border-color: #ccc;}
     #appRowDiv th{padding: 5px;text-align:center;border-color: #ccc; color: black;}
-
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        width: 250px;
+    }
     .select2-container .select2-selection--single {
         box-sizing: border-box;
         /*cursor: pointer;
@@ -72,6 +74,27 @@
                                           @endforeach
                                        </select>
                                 </div>
+                                <div class="col-lg-6 mb-5" id="parentMinDiv" style="display: none;">
+                                    <label>মন্ত্রণালয় / বিভাগ</label><br>
+                                    
+                                    <select name="parentMinID" id="parentMinID"  class="form-control w-100">
+                                          <option value="">-- নির্বাচন করুন --</option>
+                                          @foreach ($ministries as $value)
+                                          <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
+                                          @endforeach
+                                       </select>
+                                </div>
+
+                                <div class="col-lg-4 mb-5" id="DivisionalParentDiv" style="display: none;">
+                                    <label>বিভাগীয় প্রশাসন</label>
+                                    
+                                    <select name="parentDivID" id="parentDivID"  class="form-control w-100">
+                                          <option value="">-- নির্বাচন করুন --</option>
+                                          @foreach ($divisions as $value)
+                                          <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
+                                          @endforeach
+                                       </select>
+                                </div>
                                 <div class="form-group col-lg-8">
                                     <label for="office_name" class=" form-control-label">অফিসের নাম <span class="text-danger">*</span></label>
                                     <input type="text" id="office_name" name="office_name" placeholder="অফিসের নাম লিখুন" class="form-control form-control-sm">
@@ -79,23 +102,7 @@
                                         {{ $errors->first('office_name') }}
                                     </span>
                                 </div>
-                                <div class="col-lg-5 mb-5">
-                                    <label>অফিসের ধরণ <span class="text-danger">*</span></label>
-                                    
-                                    <select name="type" id="type"  class="form-control w-100">
-                                          <option value="">-- নির্বাচন করুন --</option>
-                                          <option value="1"> সরকারি </option>
-                                          <option value="2"> সংবিধিবদ্ধ/স্বশাসিত </option>
-                                          <option value="3"> আধা-সরকারি </option>
-                                       </select>
-                                </div>
-                                <div class="form-group col-lg-5">
-                                    <label for="office_head_desig" class=" form-control-label">অফিস প্রধানের পদবি<span class="text-danger">*</span></label>
-                                    <input type="text" id="office_head_desig" name="office_head_desig" placeholder="অফিসের নাম লিখুন" class="form-control form-control-sm">
-                                    <span style="color: red">
-                                        {{ $errors->first('office_head_desig') }}
-                                    </span>
-                                </div>
+                                
                                 <div class="col-lg-2">
                                   <label>স্ট্যাটাস <span class="text-danger">*</span></label>
                                   <div class="radio-inline">
@@ -121,50 +128,6 @@
                         </div>
                     </div>
                 </div>
-                    <div class="modal fade" id="myModal">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                      
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <h4 class="modal-title">আদালত এন্ট্রি প্রিভিউ</h4>
-                          <button type="button" class="close" data-dismiss="modal">×</button>
-                        </div>
-                        
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                           <table class="tg">
-                                <tr>
-                                    <th class="tg-19u4 text-center">বিভাগের নাম</th>
-                                    <td class="tg-nluh" id="previewDivision_id"></td>
-                                </tr>
-                                <tr>
-                                    <th class="tg-19u4 text-center">জেলা</th>
-                                    <td class="tg-nluh" id="previewDistrict_id"></td>
-                                </tr>
-                                <tr>
-                                    <th class="tg-19u4 text-center">উপজেলা</th>
-                                    <td class="tg-nluh" id="previewUpazila_id"></td>
-                                </tr>
-                                <tr>
-                                    <th class="tg-19u4 text-center">অফিসের ধরণ </th>
-                                    <td class="tg-nluh" id="previewCt_id"></td>
-                                </tr>
-                                <tr>
-                                    <th class="tg-19u4 text-center">অফিসের নাম</th>
-                                    <td class="tg-nluh" id="previewOffice_name"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        </div>
-                        
-                      </div>
-                    </div>
-                </div>
             </form>
             <!--end::Form-->
         </div>
@@ -176,218 +139,144 @@
 
 @endsection
 
-{{-- Includable CSS Related Page --}}
-@section('styles')
-
-<!--end::Page Vendors Styles-->
-@endsection     
-
 {{-- Scripts Section Related Page--}}
 @section('scripts')
 
-<!-- <script type="text/javascript">
-        jQuery(document).ready(function ()
-        {
-            //Load First row
-
-            // Dynamic Dropdown
-            var load_url = "{{ asset('media/custom/preload.gif') }}";
-
-            jQuery('select[name="division"]').on('change',function(){
-                var dataID = jQuery(this).val(); 
-
-                // var category_id = jQuery('#category_id option:selected').val();
-                jQuery("#district_id").after('<div class="loadersmall"></div>');
-                // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-                // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-                // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-                // jQuery('.loadersmall').remove();
-
-                if(dataID)
-                {
-                  jQuery.ajax({
-                    url : '/court-setting/dropdownlist/getdependentdistrict/' +dataID,
-                    type : "GET",
-                    dataType : "json",
-                    success:function(data)
-                    {
-                        jQuery('select[name="district"]').html('<div class="loadersmall"></div>');
-                        //console.log(data);
-                        // jQuery('#mouja_id').removeAttr('disabled');
-                        // jQuery('#mouja_id option').remove();
-                        
-                        jQuery('select[name="district"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key,value){
-                            jQuery('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                        // $('select[name="mouja"] .overlay').remove();
-                        // $("#loading").hide();
-                    }
-                });
-              }
-              else
-              {
-                  $('select[name="district"]').empty();
-              }
-          });
-
-        });
-</script>  -->     
+ 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
   <script type="text/javascript">
       jQuery(document).ready(function ()
       {
 
-          $('#parent_id').select2();
-          // $('#district_id').select2();
-         // District Dropdown
-         jQuery('select[name="division"]').on('change',function(){
+        $('#parentMinID').select2();
+        $('#parentDivID').select2();
+        // $('#district_id').select2();
+        // District Dropdown
+        jQuery('select[name="division"]').on('change',function(){
+        var dataID = jQuery(this).val();
+        // var category_id = jQuery('#category_id option:selected').val();
+        jQuery("#district_id").after('<div class="loadersmall"></div>');
+        // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
+        // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
+        // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
+        // jQuery('.loadersmall').remove();
+        if(dataID)
+        {
+            jQuery.ajax({
+                url : '{{url("/")}}/case/dropdownlist/getdependentdistrict/' +dataID,
+                type : "GET",
+                dataType : "json",
+                success:function(data)
+                {
+                    jQuery('select[name="district"]').html('<div class="loadersmall"></div>');
+                    //console.log(data);
+                    // jQuery('#mouja_id').removeAttr('disabled');
+                    // jQuery('#mouja_id option').remove();
+
+                    jQuery('select[name="district"]').html('<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key,value){
+                    jQuery('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                    // $('select[name="mouja"] .overlay').remove();
+                    // $("#loading").hide();
+                }
+            });
+        }
+        else
+        {
+            $('select[name="district"]').empty();
+        }
+        });
+
+        // Upazila Dropdown
+        jQuery('select[name="district"]').on('change',function(){
             var dataID = jQuery(this).val();
             // var category_id = jQuery('#category_id option:selected').val();
-            jQuery("#district_id").after('<div class="loadersmall"></div>');
+            jQuery("#upazila_id").after('<div class="loadersmall"></div>');
             // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
             // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
             // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
             // jQuery('.loadersmall').remove();
-            if(dataID)
+            /*if(dataID)
+            {*/
+                jQuery.ajax({
+                url : '{{url("/")}}/case/dropdownlist/getdependentupazila/' +dataID,
+                type : "GET",
+                dataType : "json",
+                success:function(data)
+                {
+                jQuery('select[name="upazila"]').html('<div class="loadersmall"></div>');
+                    //console.log(data);
+                    // jQuery('#mouja_id').removeAttr('disabled');
+                    // jQuery('#mouja_id option').remove();
+
+                    jQuery('select[name="upazila"]').html('<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key,value){
+                        jQuery('select[name="upazila"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                    // $('select[name="mouja"] .overlay').remove();
+                    // $("#loading").hide();
+                }
+                });
+            //}
+
+            // Load Court
+            var courtID = jQuery(this).val();
+            // var category_id = jQuery('#category_id option:selected').val();
+            jQuery("#court_id").after('<div class="loadersmall"></div>');
+            // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
+            // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
+            // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
+            // jQuery('.loadersmall').remove();
+            // if(courtID)
+            // {
+                jQuery.ajax({
+                url : '{{url("/")}}/court/dropdownlist/getdependentcourt/' +courtID,
+                type : "GET",
+                dataType : "json",
+                success:function(data)
+                {
+                    jQuery('select[name="court"]').html('<div class="loadersmall"></div>');
+                    //console.log(data);
+                    // jQuery('#mouja_id').removeAttr('disabled');
+                    // jQuery('#mouja_id option').remove();
+
+                    jQuery('select[name="court"]').html('<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key,value){
+                        jQuery('select[name="court"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                    // $('select[name="mouja"] .overlay').remove();
+                    // $("#loading").hide();
+                }
+                });
+            //}
+            /*else
             {
-               jQuery.ajax({
-                  url : '{{url("/")}}/case/dropdownlist/getdependentdistrict/' +dataID,
-                  type : "GET",
-                  dataType : "json",
-                  success:function(data)
-                  {
-                     jQuery('select[name="district"]').html('<div class="loadersmall"></div>');
-                     //console.log(data);
-                     // jQuery('#mouja_id').removeAttr('disabled');
-                     // jQuery('#mouja_id option').remove();
+                $('select[name="upazila"]').empty();
+                $('select[name="court"]').empty();
+            }*/
+        });
 
-                     jQuery('select[name="district"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                     jQuery.each(data, function(key,value){
-                        jQuery('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');
-                     });
-                     jQuery('.loadersmall').remove();
-                     // $('select[name="mouja"] .overlay').remove();
-                     // $("#loading").hide();
-                  }
-               });
+
+
+        jQuery('select[name="level"]').on('change',function(){
+            var levelID = jQuery(this).val();
+            // alert(levelID);
+            if (levelID == 2) {
+                $('#parentMinDiv').show();
+                $('#DivisionalParentDiv').hide();
+            }else if (levelID == 4) {
+                $('#DivisionalParentDiv').show();
+                $('#parentMinDiv').hide();
+            }else{
+                $('#DivisionalParentDiv').hide();
+                $('#parentMinDiv').hide();
             }
-            else
-            {
-               $('select[name="district"]').empty();
-            }
-         });
-
-      // Upazila Dropdown
-      jQuery('select[name="district"]').on('change',function(){
-         var dataID = jQuery(this).val();
-         // var category_id = jQuery('#category_id option:selected').val();
-         jQuery("#upazila_id").after('<div class="loadersmall"></div>');
-          // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-          // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-          // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-          // jQuery('.loadersmall').remove();
-          /*if(dataID)
-          {*/
-            jQuery.ajax({
-             url : '{{url("/")}}/case/dropdownlist/getdependentupazila/' +dataID,
-             type : "GET",
-             dataType : "json",
-             success:function(data)
-             {
-               jQuery('select[name="upazila"]').html('<div class="loadersmall"></div>');
-                  //console.log(data);
-                  // jQuery('#mouja_id').removeAttr('disabled');
-                  // jQuery('#mouja_id option').remove();
-
-                  jQuery('select[name="upazila"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                  jQuery.each(data, function(key,value){
-                    jQuery('select[name="upazila"]').append('<option value="'+ key +'">'+ value +'</option>');
-                 });
-                  jQuery('.loadersmall').remove();
-                  // $('select[name="mouja"] .overlay').remove();
-                  // $("#loading").hide();
-               }
-            });
-         //}
-
-         // Load Court
-         var courtID = jQuery(this).val();
-         // var category_id = jQuery('#category_id option:selected').val();
-         jQuery("#court_id").after('<div class="loadersmall"></div>');
-         // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-         // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-         // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-         // jQuery('.loadersmall').remove();
-         // if(courtID)
-         // {
-            jQuery.ajax({
-               url : '{{url("/")}}/court/dropdownlist/getdependentcourt/' +courtID,
-               type : "GET",
-               dataType : "json",
-               success:function(data)
-               {
-                  jQuery('select[name="court"]').html('<div class="loadersmall"></div>');
-                  //console.log(data);
-                  // jQuery('#mouja_id').removeAttr('disabled');
-                  // jQuery('#mouja_id option').remove();
-
-                  jQuery('select[name="court"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                  jQuery.each(data, function(key,value){
-                     jQuery('select[name="court"]').append('<option value="'+ key +'">'+ value +'</option>');
-                  });
-                  jQuery('.loadersmall').remove();
-                  // $('select[name="mouja"] .overlay').remove();
-                  // $("#loading").hide();
-               }
-            });
-         //}
-         /*else
-         {
-            $('select[name="upazila"]').empty();
-            $('select[name="court"]').empty();
-         }*/
-      });
-
-            // Court Dropdown
-      /*jQuery('select[name="district"]').on('change',function(){
-         var dataID = jQuery(this).val();
-         // var category_id = jQuery('#category_id option:selected').val();
-         jQuery("#court_id").after('<div class="loadersmall"></div>');
-         // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-         // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-         // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-         // jQuery('.loadersmall').remove();
-         if(dataID)
-         {
-            jQuery.ajax({
-               url : '{{url("/")}}/court/dropdownlist/getdependentcourt/' +dataID,
-               type : "GET",
-               dataType : "json",
-               success:function(data)
-               {
-                  jQuery('select[name="upazila"]').html('<div class="loadersmall"></div>');
-                  //console.log(data);
-                  // jQuery('#mouja_id').removeAttr('disabled');
-                  // jQuery('#mouja_id option').remove();
-
-                  jQuery('select[name="court"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                  jQuery.each(data, function(key,value){
-                     jQuery('select[name="court"]').append('<option value="'+ key +'">'+ value +'</option>');
-                  });
-                  jQuery('.loadersmall').remove();
-                  // $('select[name="mouja"] .overlay').remove();
-                  // $("#loading").hide();
-               }
-            });
-         }
-         else
-         {
-            $('select[name="court"]').empty();
-         }
-      });*/
+        });
 
    });
 </script>
@@ -403,25 +292,6 @@
     </script>
 
 
-
-
-    <script>
-        $('document').ready(function(){
-            $('#preview').on('click',function(){
-                var division_id = $('#division_id option:selected').text();
-                var district_id = $('#district_id option:selected').text();
-                var ct_id = $('#ct_id option:selected').text();
-                var court_name = $('#court_name').val();
-                $('#previewDivision_id').html(division);
-                $('#previewDistrict_id').html(district);
-                $('#previewUpazila_id').html(upazila);
-                $('#previewCt_id').html(ct_id);
-                $('#previewOffice_name').html(court_name);
-                
-            });
-        }); 
-
-    </script>
     @endsection     
 
    

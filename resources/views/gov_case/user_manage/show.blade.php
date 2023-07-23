@@ -4,7 +4,6 @@
 
 @php //echo $userManagement->name;
 //exit(); @endphp
-
 <!--begin::Card-->
 <div class="card card-custom col-7">
    <div class="card-header flex-wrap py-5">
@@ -17,7 +16,6 @@
          </a>
       </div>
    </div>
-   {{-- @foreach($userManagement as $userManagement) --}}
    <div class="card-body">
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">নামঃ</span>
@@ -37,7 +35,7 @@
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">অফিসের নামঃ</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $userManagement->office_name_bn}}, {{ $userManagement->upazila_name_bn }} {{ $userManagement->district_name_bn }}</span>
+         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $userManagement->office_name_bn}}</span>
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">ইমেইল এড্রেসঃ</span>
@@ -71,7 +69,6 @@
          <span class="text-dark flex-root font-weight-bolder font-size-h6"></span>
       </div> -->
    </div>
-   {{-- @endforeach --}}
 </div>
 <!--end::Card-->
 

@@ -43,7 +43,7 @@ class GovCaseUserManagementController extends Controller
                             ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
                             
-                            ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn')
+                            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                             ->where('users.is_gov', 1)
                             ->paginate(10);
         }else{                    
@@ -52,7 +52,7 @@ class GovCaseUserManagementController extends Controller
                             ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
                             
-                            ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn')
+                            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                             ->where('gov_case_office.id', $officeInfo->office_id)
                             ->orWhere('gov_case_office.parent', $officeInfo->office_id)
                             ->paginate(10);
@@ -110,8 +110,9 @@ class GovCaseUserManagementController extends Controller
         // dd($request->all());
        $request->validate([
             'name' => 'required',
-            'username' => 'required', 'max:100',
-            'role_id' => 'required', 'unique:users',
+            // 'username' => 'required', 'max:100',
+            'role_id' => 'required',
+            'email' => 'required|unique:users,email',
             'office_id' => 'required',            
             /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',            
             'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */           
@@ -119,7 +120,8 @@ class GovCaseUserManagementController extends Controller
             ],
             [
             'name.required' => 'পুরো নাম লিখুন',
-            'username.required' => 'ইউজার নাম লিখুন',
+            'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
+            'email.required' => 'ইমেইল লিখুন',
             'role_id.required' => 'ভূমিকা নির্বাচন করুন',
             'office_id.required' => 'অফিস নির্বাচন করুন',
             'password.required' => 'পাসওয়ার্ড লিখুন',
@@ -137,7 +139,7 @@ class GovCaseUserManagementController extends Controller
             
        ]);
 
-         return redirect()->route('user-management.index')->with('success','সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
+         return redirect()->route('cabinet.user-management.index')->with('success','সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
     }
 
     /**
@@ -172,7 +174,7 @@ class GovCaseUserManagementController extends Controller
          $data['userManagement'] = DB::table('users')
                         ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-                        ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn')
+                        ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
                   // dd($userManagement);     

@@ -46,7 +46,7 @@
                <th scope="row" class="tg-bn">{{ en2bn($key+ $users->firstItem()) }}</th>
                <td>{{ $row->name }}</td>
                <td>{{ $row->username }}</td>
-               <td>{{ $row->name }}</td>
+               <td>{{ $row->roleName }}</td>
                <td>{{ $row->office_name_bn }}</td>
                <td>{{ $row->email }}</td>
                <!-- <td>

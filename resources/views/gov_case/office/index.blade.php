@@ -10,7 +10,7 @@
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
-         <h3 class="card-title h2 font-weight-bolder"> অফিস সেটিং </h3>
+         <h3 class="card-title h2 font-weight-bolder"> {{$page_title}} </h3>
       </div>
       @if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 )
          <div class="card-toolbar">        
