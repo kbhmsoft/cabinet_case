@@ -71,7 +71,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -131,7 +131,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -199,7 +199,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -269,7 +269,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -342,7 +342,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -415,7 +415,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -488,7 +488,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -561,7 +561,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {
@@ -634,7 +634,7 @@ class GovCaseRegisterController extends Controller
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('.case_date', [$dateFrom, $dateTo]);
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
         }
 
         if(!empty($_GET['case_no'])) {

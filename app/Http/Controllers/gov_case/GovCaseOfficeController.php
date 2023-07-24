@@ -50,12 +50,21 @@ class GovCaseOfficeController extends Controller
         if (!empty($_GET['office_type'])) {
             $query->where('gov_case_office.level', '=', $_GET['office_type']);
         }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['office_type']);
+        }
         if (!empty($_GET['office_name'])) {
             $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
         }
 
 
         $data['offices'] = $query->paginate(10)->withQueryString();
+        $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+        ;
         // dd($data['offices']);
         // Dorpdown
         // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
@@ -72,101 +81,101 @@ class GovCaseOfficeController extends Controller
     }
 
 
-    public function level_wise($level)
-    {
-        //
-        $roleID = Auth::user()->role_id;
-        $officeInfo = user_office_info();
-        // dd($officeInfo);
-        $data['page_title'] = 'অফিস সেটিং তালিকা';
-        $query = DB::table('office')
-            ->leftjoin('division', 'office.division_id', '=', 'division.id')
-            ->leftjoin('district', 'office.district_id', '=', 'district.id')
-            ->leftjoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-            // ->where('office.is_gov', 1)
-            ->where('office.level', $level)
-            ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
-        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
-            $query->where('office.district_id', '=', $officeInfo->district_id);
-        } elseif ($roleID == 9 || $roleID == 10 || $roleID == 11) {
-            $query->where('office.upazila_id', '=', $officeInfo->upazila_id);
-        }/*elseif($roleID == 12){
-            $moujaIDs = $this->get_mouja_by_ulo_office_id(Auth::user()->office_id);
-            // dd($moujaIDs);
-            // print_r($moujaIDs); exit;
-            $query->where('office.mouja_id', $moujaIDs);    
-        }   */
+    // public function level_wise($level)
+    // {
+    //     //
+    //     $roleID = Auth::user()->role_id;
+    //     $officeInfo = user_office_info();
+    //     // dd($officeInfo);
+    //     $data['page_title'] = 'অফিস সেটিং তালিকা';
+    //     $query = DB::table('office')
+    //         ->leftjoin('division', 'office.division_id', '=', 'division.id')
+    //         ->leftjoin('district', 'office.district_id', '=', 'district.id')
+    //         ->leftjoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+    //         // ->where('office.is_gov', 1)
+    //         ->where('office.level', $level)
+    //         ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
+    //     if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+    //         $query->where('office.district_id', '=', $officeInfo->district_id);
+    //     } elseif ($roleID == 9 || $roleID == 10 || $roleID == 11) {
+    //         $query->where('office.upazila_id', '=', $officeInfo->upazila_id);
+    //     }/*elseif($roleID == 12){
+    //         $moujaIDs = $this->get_mouja_by_ulo_office_id(Auth::user()->office_id);
+    //         // dd($moujaIDs);
+    //         // print_r($moujaIDs); exit;
+    //         $query->where('office.mouja_id', $moujaIDs);    
+    //     }   */
 
-        //Add Conditions 
+    //     //Add Conditions 
 
-        if (!empty($_GET['division'])) {
-            $query->where('office.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('office.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('office.upazila_id', '=', $_GET['upazila']);
-        }
-
-
-        $data['offices'] = $query->paginate(10)->withQueryString();
-        // dd($data['offices']);
-        // Dorpdown
-        // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['upazilas'] = NULL;
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-
-        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
-            // dd(1);
-            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
-        }
-
-        return view('gov_case.office.cabinet.index')
-            ->with($data)
-            ->with('i', (request()->input('page', 1) - 1) * 10);
-    }
+    //     if (!empty($_GET['division'])) {
+    //         $query->where('office.division_id', '=', $_GET['division']);
+    //     }
+    //     if (!empty($_GET['district'])) {
+    //         $query->where('office.district_id', '=', $_GET['district']);
+    //     }
+    //     if (!empty($_GET['upazila'])) {
+    //         $query->where('office.upazila_id', '=', $_GET['upazila']);
+    //     }
 
 
-    public function parent_wise($parent)
-    {
-        //
-        $roleID = Auth::user()->role_id;
-        $officeInfo = user_office_info();
-        // dd($officeInfo);
-        $data['page_title'] = 'অফিস সেটিং তালিকা';
-        $query = DB::table('office')
-            ->leftjoin('division', 'office.division_id', '=', 'division.id')
-            ->leftjoin('district', 'office.district_id', '=', 'district.id')
-            ->leftjoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-            // ->where('office.is_gov', 1)
-            ->where('office.parent', $parent)
-            ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
+    //     $data['offices'] = $query->paginate(10)->withQueryString();
+    //     // dd($data['offices']);
+    //     // Dorpdown
+    //     // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+    //     $data['upazilas'] = NULL;
+    //     $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
 
-        //Add Conditions 
+    //     if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+    //         // dd(1);
+    //         $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+    //     }
 
-        if (!empty($_GET['division'])) {
-            $query->where('office.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('office.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('office.upazila_id', '=', $_GET['upazila']);
-        }
+    //     return view('gov_case.office.cabinet.index')
+    //         ->with($data)
+    //         ->with('i', (request()->input('page', 1) - 1) * 10);
+    // }
 
 
-        $data['offices'] = $query->paginate(10)->withQueryString();
-        // dd($data['offices']);
-        // Dorpdown
-        // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        $data['upazilas'] = NULL;
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+    // public function parent_wise($parent)
+    // {
+    //     //
+    //     $roleID = Auth::user()->role_id;
+    //     $officeInfo = user_office_info();
+    //     // dd($officeInfo);
+    //     $data['page_title'] = 'অফিস সেটিং তালিকা';
+    //     $query = DB::table('office')
+    //         ->leftjoin('division', 'office.division_id', '=', 'division.id')
+    //         ->leftjoin('district', 'office.district_id', '=', 'district.id')
+    //         ->leftjoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+    //         // ->where('office.is_gov', 1)
+    //         ->where('office.parent', $parent)
+    //         ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
 
-        return view('gov_case.office.index')
-            ->with($data)
-            ->with('i', (request()->input('page', 1) - 1) * 10);
-    }
+    //     //Add Conditions 
+
+    //     if (!empty($_GET['division'])) {
+    //         $query->where('office.division_id', '=', $_GET['division']);
+    //     }
+    //     if (!empty($_GET['district'])) {
+    //         $query->where('office.district_id', '=', $_GET['district']);
+    //     }
+    //     if (!empty($_GET['upazila'])) {
+    //         $query->where('office.upazila_id', '=', $_GET['upazila']);
+    //     }
+
+
+    //     $data['offices'] = $query->paginate(10)->withQueryString();
+    //     // dd($data['offices']);
+    //     // Dorpdown
+    //     // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+    //     $data['upazilas'] = NULL;
+    //     $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+    //     return view('gov_case.office.index')
+    //         ->with($data)
+    //         ->with('i', (request()->input('page', 1) - 1) * 10);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -275,6 +284,16 @@ class GovCaseOfficeController extends Controller
             ->where('gov_case_office.id', $id)
             ->first();
 
+
+        $data['ministries'] = DB::table('gov_case_office')
+            ->select('gov_case_office.*')
+            ->where('level', 1)
+            ->get();
+    
+        $data['divisions'] = DB::table('gov_case_office')
+            ->select('gov_case_office.*')
+            ->where('level', 3)
+            ->get();
         $data['office_type'] = DB::table('gov_case_office_type')
             ->select('gov_case_office_type.*')
             ->get();
@@ -299,10 +318,18 @@ class GovCaseOfficeController extends Controller
             'office_name' => 'required',
             'status' => 'required'
         ]);
+        if($request->level == 2){
+            $parentID = $request->parentMinID;
+        }elseif($request->level == 4){
+            $parentID = $request->parentDivID;
+        }else{
+            $parentID = '';
+        }
         $data = [
             'level' => $request->office_lavel,
             'office_name_bn' => $request->office_name,
             'status' => $request->status,
+            'parent' => $parentID,
             'level' => $request->level,
         ];
 

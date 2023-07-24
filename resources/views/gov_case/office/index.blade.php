@@ -1,6 +1,23 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
+<style type="text/css">
+   #appRowDiv td{padding: 5px; border-color: #ccc;}
+   #appRowDiv th{padding: 5px;text-align:center;border-color: #ccc; color: black;}
+   .select2-container--default .select2-selection--single .select2-selection__rendered {
+       width: 250px;
+   }
+   .select2-container .select2-selection--single {
+       box-sizing: border-box;
+       /*cursor: pointer;
+       display: block;*/
+       height: 41px;
+       /*user-select: none;
+       -webkit-user-select: none;
+       padding-top: 6px;*/ 
+       font-size:1.2rem
+   }
+</style> 
  
 @php
     $roleID = Auth::user()->role_id;
@@ -29,15 +46,31 @@
 
       <form class="form-inline" method="GET">
             <div class="form-group mb-2 mr-2">
-              <select name="office_type" class="form-control">
+              <select name="office_type" id="office_type" class="form-control">
                  <option value="">-বিভাগ নির্বাচন করুন-</option>3
                  @foreach ($office_types as $value)
                  <option value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}> {{ $value->type_name_bn }} </option>
                  @endforeach
               </select>
            </div>
+           <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
+             <select name="ministry" id="ministry" class="form-control">
+                <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
+                @foreach ($ministries as $value)
+                <option value="{{ $value->id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>
+                @endforeach
+             </select>
+          </div>
+           <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
+             <select name="divOffice" id="divOffice" class="form-control">
+                <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
+                @foreach ($divOffices as $value)
+                <option value="{{ $value->id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>
+                @endforeach
+             </select>
+          </div>
             <div class="form-group mb-2 mr-2">
-              <input type="text" name="office_name" value="{{ (isset($_GET['office_name']) ? $_GET['office_name']:'')}}" class="form-control w-100" >
+              <input type="text" name="office_name" placeholder="অফিসের নাম লিখুন" value="{{ (isset($_GET['office_name']) ? $_GET['office_name']:'')}}" class="form-control w-100" >
               
            </div>            
            <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
@@ -94,6 +127,59 @@
 <script type="text/javascript">
      jQuery(document).ready(function ()
       {
+
+        $('#ministry').select2();
+        $('#divOffice').select2();
+         
+         
+         jQuery('select[name="office_type"]').on('change',function(){
+            var officeType = jQuery(this).val();
+            // alert(officeType);
+            if (officeType == 2) {
+                  $('#selectMinDiv').show();
+                  $('#selectDivisionDiv').hide();
+                  $('#divOffice').val('');
+               }else if (officeType == 4) {
+                  $('#selectDivisionDiv').show();
+                  $('#selectMinDiv').hide();
+                  $('#ministry').val('');
+               }else{
+                  $('#selectDivisionDiv').hide();
+                  $('#selectMinDiv').hide();
+                  $('#ministry').val('');
+                  $('#divOffice').val('');
+            }
+        });
+        
+
+        const searchParams = new URLSearchParams(window.location.search);
+         var officeType = searchParams.get('office_type')
+         if (officeType == 2) {
+                $('#selectMinDiv').show();
+                $('#selectDivisionDiv').hide();
+                  $('#divOffice').val('');
+               }else if (officeType == 4) {
+                  $('#selectDivisionDiv').show();
+                  $('#selectMinDiv').hide();
+                  $('#ministry').val('');
+                  
+               }else{
+                  $('#ministry').val('');
+                  $('#divOffice').val('');
+                  $('#selectDivisionDiv').hide();
+                  $('#selectMinDiv').hide();
+               }
+      //   console.log(searchParams.get('office_type')); // true
+        
+        
+        
+
+
+
+
+
+
+
       // District Dropdown
       jQuery('select[name="division"]').on('change',function(){
        var dataID = jQuery(this).val(); 
