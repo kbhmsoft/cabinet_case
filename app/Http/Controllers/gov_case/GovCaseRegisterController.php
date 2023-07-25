@@ -892,7 +892,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['courts'] = Court::select('id', 'court_name')->get();
-      
+
         if($roleID != 33){
             $data['depatments'] = Office::where('parent', $officeID)->get();
         }else{

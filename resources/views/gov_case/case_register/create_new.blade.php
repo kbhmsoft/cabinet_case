@@ -108,7 +108,7 @@
                                 </div>
                                 <!-- end step indicators -->
                                 <!-- step one -->
-                                <div class="step">
+                                <div class="step" id="step1">
                                     <fieldset class="mb-8">
                                         <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                         <div class="form-group row">
@@ -120,6 +120,8 @@
                                                     <option value="2">চলমান মামলা</option>
                                                     <option value="3">নিষ্পত্তি মামলা</option>
                                                 </select>
+
+                                                <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                             </div>
 
                                             <div class="col-lg-4 mb-5">
@@ -135,11 +137,12 @@
                                                             {{ $value->court_name }} </option>
                                                     @endforeach
                                                 </select>
+                                                <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                             </div>
 
                                             <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
                                                 <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
-                                                <select name="appeal_case_id" id="appeal_case_id" class="form-control form-control-sm">
+                                                <select name="appeal_case_id" id="appeal_case_id" class="form-control form-control-sm" required="required">
                                                     <option value=""> -- নির্বাচন করুন --</option>
                                                     @foreach ($appealCase as $value)
                                                         <option value="{{ $value->id }}"
@@ -147,28 +150,30 @@
                                                             {{ $value->case_no }} </option>
                                                     @endforeach
                                                 </select>
+                                                <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                             </div>
 
                                             <div class="col-lg-4 mb-5">
                                                 <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
                                                 <div class="" id="CaseCategorDiv">
-                                                    <select name="case_category" id="CaseCategory" class="form-control form-control-sm" required="">
+                                                    <select name="case_category" id="CaseCategory" class="form-control form-control-sm" required="required">
                                                         <option value="">-- নির্বাচন করুন --</option>
                                                         @foreach ($GovCaseDivisionCategory as $value)
                                                             <option value="{{ $value->id }}" {{ old('case_category') == $value->id ? 'selected' : '' }}> {{ $value->name_bn }} </option>
                                                     @endforeach
                                                     </select>
+                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-4 mb-5">
                                                 <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                 <div class="" id="CaseCategorDiv">
-                                                    <select name="case_category_type" id="case_category_type" class="form-control form-control-sm" required="">
+                                                    <select name="case_category_type" id="case_category_type" class="form-control form-control-sm" required="required">
                                                         <option value="">-- নির্বাচন করুন --</option>
-
                                                     </select>
+                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                                 </div>
                                             </div>
 
@@ -176,20 +181,22 @@
                                                 <label>মামলা নং <span class="text-danger">*</span></label>
                                                 <input type="text" name="case_no" id="case_no" class="form-control form-control-sm" placeholder="মামলা নং/সাল(০০১/২০২৩) " required="required">
                                                     <input type="hidden" name="caseId" value="" >
-                                            </div>
+                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
+                                                </div>
 
                                             <div class="col-lg-4 mb-5">
                                                 <label>বছর <span class="text-danger">*</span></label>
                                                 <input type="text" name="case_year" id="case_year"
                                                     class="form-control form-control-sm common_yearpicker" placeholder="বছর"
                                                     autocomplete="off" required="required">
+                                             <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                             </div>
                                             <div class="col-lg-12 mb-5">
                                                 <table width="100%" border="1" id="badiDiv" style="border:1px solid #dcd8d8;">
                                                     <tr>
-                                                        <th>পিটিশনারের নাম <span class="text-danger">*</span></th>
-                                                        <th>পিতা/স্বামীর নাম</th>
-                                                        <th>ঠিকানা</th>
+                                                        <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
+                                                        <th>পিতা/স্বামীর নাম <span class="text-danger">*</span></th>
+                                                        <th>ঠিকানা <span class="text-danger">*</span></th>
                                                         <th width="50">
                                                             <a href="javascript:void();" id="addBadiRow"
                                                                 class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
@@ -202,7 +209,7 @@
                                             <div class="col-lg-6 mb-5">
                                                 <table width="100%" border="1" id="MainBibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                     <tr>
-                                                        <th class="bg-white text-left ml-2" colspan="3">মূল রেসপন্ডেন্ট <span class="text-danger">*</span></th>
+                                                        <th class="bg-white text-left ml-2" colspan="3">মূল রেসপন্ডেন্ট </th>
                                                     </tr>
                                                     <tr>
                                                         <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span></th>
@@ -219,10 +226,10 @@
                                             <div class="col-lg-6 mb-5">
                                                 <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                     <tr>
-                                                        <th class="bg-white text-left ml-2" colspan="3">অন্যান্য রেসপন্ডেন্ট <span class="text-danger">*</span></th>
+                                                        <th class="bg-white text-left ml-2" colspan="3">অন্যান্য রেসপন্ডেন্ট ></th>
                                                     </tr>
                                                     <tr>
-                                                        <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span></th>
+                                                        <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span> </th>
                                                         <th width="50">
                                                             <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                 <i class="fas fa-plus-circle"></i>
@@ -237,7 +244,10 @@
                                                 <input type="text" name="case_date" id="case_date"
                                                     class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর"
                                                     autocomplete="off" required="required">
+
+                                             <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                             </div>
+
                                             <div class="col-lg-8 mb-5">
                                                 <label>বিষয়বস্তু(সংক্ষিপ্ত)</label>
                                                 <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3"
@@ -301,19 +311,23 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)</h3>
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন) <span class="text-danger">*</span></h3>
+                                                            {{-- <span class="tet-danger d-none vallidation-message">This field can not be empty</span> --}}
                                                         </div>
+
                                                         <!--end::Info-->
                                                         <!--begin::Users-->
                                                         <div class="symbol-group symbol-hover py-2">
                                                             <div class="symbol symbol-30 symbol-light-primary" data-toggle="tooltip"
                                                                 data-placement="top" title="" role="button" data-original-title="ফাইল যুক্ত করুণ">
+
                                                                 <div id="addFileRow">
                                                                     <span class="symbol-label font-weight-bold bg-success">
                                                                         <i class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                     </span>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                         <!--end::Users-->
                                                     </div>
@@ -326,6 +340,12 @@
                                                 </fieldset>
                                             </div>
                                         </div>
+
+                                        {{-- <button type="button" id="prevBtn" onclick="nextPrev(-1)">পূর্ববর্তী</button> --}}
+                                        {{-- <div class="form-footer">
+                                        <button type="button" id="nextBtn" onclick="nextPrev(1)">পরবর্তী </button>
+                                    </div> --}}
+
                                     </fieldset>
                                 </div>
                                 <!-- step two -->
@@ -739,6 +759,26 @@
             addBibadiRowFunc();
         });
     </script>
+
+  {{-- <script src="{{ asset('form/assets/js/tether.min.js') }}"></script>
+  <script src="{{ asset('form/assets/js/script.js') }}"></script>
+  <script src="{{ asset('form/assets/js/jquery.validate.min.js') }}"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/additional-methods.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js'></script>
+  <!-- jQuery Easing JS -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'></script>
+  <!-- Telephone Input JS -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css"> --}}
 
     <script type="text/javascript">
         // dynamically change high court / appeal court
