@@ -421,10 +421,66 @@
     }
 
 
+    // function nextPrev(n) {
+    //     let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
+    //     let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
+    //     // console.log(elmts.length);
+    //     let validation = true;
+    //     for (let i = 0; i < elmts.length; i++) {
+    //         console.log(elmts[i].value);
+    //         if (!elmts[i].value) {
+    //             console.log(i,'false');
+    //             validation = false
+    //             removeMessage[i].classList.remove("d-none");
+    //         } else {
+    //             console.log(i, 'else');
+    //             validation = true
+    //             removeMessage[i].classList.add("d-none");
+    //         }
+    //     }
+
+    //     if (validation) {
+    //         // This function will figure out which tab to display
+    //         var x = document.getElementsByClassName("step");
+    //         // Exit the function if any field in the current tab is invalid:
+    //         if (n == 1 && !validateForm()) return false;
+    //         // Hide the current tab:
+    //         x[currentTab].style.display = "none";
+    //         // Increase or decrease the current tab by 1:
+    //         currentTab = currentTab + n;
+    //         // if you have reached the end of the form...
+    //         if (currentTab >= x.length) {
+    //             // ... the form gets submitted:
+    //             document.getElementById("signUpForm").submit();
+    //             return false;
+    //         }
+    //         // Otherwise, display the correct tab:
+    //         showTab(currentTab);
+    //     }
+
+    // }
+
+
+    // function nextPrev(n) {
+    //     let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
+    //     let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
+    //     // console.log(elmts.length);
+    //     let validation = true;
+    //     for (let i = 0; i < elmts.length; i++) {
+    //         console.log(elmts[i].value);
+    //         if (!elmts[i].value) {
+    //             console.log(i,'if');
+    //             validation = false
+    //             removeMessage[i].classList.remove("d-none");
+    //         } else {
+    //             console.log(i, 'else');
+    //             removeMessage[i].classList.add("d-none");
+    //         }
+    //     }
+
     function nextPrev(n) {
         let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
         let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
-        // console.log(elmts.length);
         let validation = true;
         for (let i = 0; i < elmts.length; i++) {
             console.log(elmts[i].value);
@@ -438,6 +494,9 @@
                 removeMessage[i].classList.add("d-none");
             }
         }
+
+
+
 
         if (validation) {
             // This function will figure out which tab to display
