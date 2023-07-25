@@ -10,7 +10,7 @@ $officeInfo = user_office_info();
             @foreach ($division_categories as $value)
                <option value="{{ $value->id }}"
                   {{ old('division_categories') == $value->id ? 'selected' : '' }}>
-                  {{ $value->name_bn }} 
+                  {{ $value->name_bn }}
                </option>
              @endforeach
          </select>
@@ -46,6 +46,7 @@ $officeInfo = user_office_info();
       });
    </script>
    <script type="text/javascript">
+
       jQuery(document).ready(function () {
          // District Dropdown
          jQuery('select[name="division"]').on('change',function(){
