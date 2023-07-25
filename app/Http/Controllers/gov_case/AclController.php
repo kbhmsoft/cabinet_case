@@ -50,6 +50,8 @@ class AclController extends Controller
             'name' => $request->name,
             'created_by' => Auth::user()->id,
             'status' => 1,
+            'in_action' => 1,
+            'is_gov' => 1,
         ]);
 
          return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');

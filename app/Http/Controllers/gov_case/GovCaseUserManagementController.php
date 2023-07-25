@@ -94,7 +94,7 @@ class GovCaseUserManagementController extends Controller
         // dd($case_type);
         // $data['subcategories'] = DB::table("mouja")->where("upazila_id",38)->pluck("mouja_name_bn","id");
 
-        $data['page_title'] = 'নতুন ইউজার এন্ট্রি ফরম';
+        $data['page_title'] = 'নতুন ব্যাবহারকারী এন্ট্রি ফরম';
 
         return view('gov_case.user_manage.add')->with($data);
     }

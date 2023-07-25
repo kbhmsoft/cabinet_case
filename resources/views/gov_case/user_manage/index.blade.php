@@ -7,7 +7,7 @@
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
-         <h2 > ইউজার ম্যানেজমেন্ট </h2>
+         <h2 > {{$page_title}} </h2>
       </div>
       <div class="card-toolbar">
       @if(auth()->user()->can('create_new_user'))       
