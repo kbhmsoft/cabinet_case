@@ -24,18 +24,18 @@ class AclController extends Controller
     {
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
          $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
-  
+
     }
 
 
-     
-    // for roles 
+
+    // for roles
     public function roleManagement(){
 
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-        $data['page_title'] = 'ভুমিকা পরিচালনা';
+        $data['page_title'] = 'ভূমিকা পরিচালনা';
 
         $roles = Role::paginate(25);
         return view('gov_case.roles.create', compact('roles'))->with($data);
@@ -75,12 +75,12 @@ class AclController extends Controller
 
          return back()->with('success','ভুমিকাটি মুছে ফেলা হয়েছে');
     }
-     
-    // end for roles 
+
+    // end for roles
 
 
 
-    // for permissions 
+    // for permissions
     public function permissionManagement(){
 
         session()->forget('currentUrlPath');
@@ -96,14 +96,14 @@ class AclController extends Controller
         }else{
             abort(403);
         }
-        
+
     }
 
     public function storePermission(Request $request){
         $this->validate($request, [
             'name' => 'required|unique:permissions'
         ]);
-         
+
         $nameLower = str_replace(' ', '_', $request->name);
         $permissionName = strtolower($nameLower);
 
@@ -140,11 +140,11 @@ class AclController extends Controller
 
          return back()->with('success','ভুমিকাটি মুছে ফেলা হয়েছে');
     }
-    // end for permissions 
+    // end for permissions
 
 
 
-    // for parent permission name 
+    // for parent permission name
 
     public function storePatentPermissionName(Request $request){
         ParentPermissionName::create([
@@ -158,14 +158,14 @@ class AclController extends Controller
 
 
 
-    // end parent permission name 
+    // end parent permission name
 
 
 
-    // for give user permissions 
+    // for give user permissions
 
     public function permissionToUserManagement(Request $request){
-        
+
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
@@ -186,7 +186,7 @@ class AclController extends Controller
 
 
     public function storeUpdateUserPermissionAll(Request $request){
-  
+
        RolePermission::where('user_id', $request->user_id)->delete();
        ModelHasPermission::where('model_id', $request->user_id)->delete();
 
@@ -198,7 +198,7 @@ class AclController extends Controller
                 'permission_id' => $permission_id,
                 'created_by' => Auth::user()->id,
             ]);
-            
+
             // find permission for user
             $permission = Permission::find($permission_id);
 
@@ -215,7 +215,7 @@ class AclController extends Controller
 
 
 
-    // end user permissions 
+    // end user permissions
 
 
 

@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\gov_case;
-use App\Http\Controllers\Controller;
-
-use \Auth;
-use App\Models\UserManagement;
-use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Foundation\Auth\User as Authenticatable;
+
+use App\Models\UserManagement;
 use Validator,Redirect,Response;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\gov_case\GovCaseOffice;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\gov_case\GovCaseOfficeType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 
@@ -30,28 +31,51 @@ class GovCaseUserManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
 
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
-         
+
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+
+          //Add Conditions
+          $query = GovCaseOffice::orderby('id', 'ASC');
+          if (!empty($_GET['office_type'])) {
+              $query->where('gov_case_office.level', '=', $_GET['office_type']);
+          }
+          if (!empty($_GET['ministry'])) {
+              $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+          }
+          if (!empty($_GET['office_type'])) {
+              $query->where('gov_case_office.parent', '=', $_GET['office_type']);
+          }
+          if (!empty($_GET['office_name'])) {
+              $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+          }
+
+          $data['users'] = $query->paginate(10)->withQueryString();
+
+          $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+          $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
             $data['users']= DB::table('users')
                             ->orderBy('id','DESC')
                             ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-                            
+
                             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                             ->where('users.is_gov', 1)
                             ->paginate(10);
-        }else{                    
+        }
+        else{
             $data['users']= DB::table('users')
                             ->orderBy('id','DESC')
                             ->join('roles', 'users.role_id', '=', 'roles.id')
                             ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-                            
+
                             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                             ->where('gov_case_office.id', $officeInfo->office_id)
                             ->orWhere('gov_case_office.parent', $officeInfo->office_id)
@@ -60,7 +84,7 @@ class GovCaseUserManagementController extends Controller
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
         // return $users;
         return view('gov_case.user_manage.index')
-        ->with($data); 
+        ->with($data);
     }
 
     /**
@@ -69,8 +93,7 @@ class GovCaseUserManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
- 
+    {
 
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -80,15 +103,15 @@ class GovCaseUserManagementController extends Controller
         ->whereNotIn('id', $role)
         ->where('is_gov', 1)
         ->orderBy('sort_order', 'ASC')
-        ->get(); 
+        ->get();
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
-            $data['offices'] = $data['offices'] = GovCaseOffice::get();  
+            $data['offices'] = $data['offices'] = GovCaseOffice::get();
         }else{
         $data['offices'] = DB::table('gov_case_office')
-        
+
         ->select('gov_case_office.id', 'gov_case_office.office_name_bn')
         ->where('gov_case_office.district_id', $officeInfo->district_id)
-        ->get();   
+        ->get();
         }
 
         // dd($case_type);
@@ -113,10 +136,10 @@ class GovCaseUserManagementController extends Controller
             // 'username' => 'required', 'max:100',
             'role_id' => 'required',
             'email' => 'required|unique:users,email',
-            'office_id' => 'required',            
-            /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',            
-            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */           
-            'password' => 'required',            
+            'office_id' => 'required',
+            /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
+            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */
+            'password' => 'required',
             ],
             [
             'name.required' => 'পুরো নাম লিখুন',
@@ -129,14 +152,14 @@ class GovCaseUserManagementController extends Controller
 
         DB::table('users')->insert([
             'name'=>$request->name,
-            'username' =>$request->username,
+            // 'username' =>$request->username,
             'mobile_no' =>$request->mobile_no,
             'email' =>$request->email,
             'role_id' =>$request->role_id,
             'office_id' =>$request->office_id,
             'is_gov' =>1,
             'password' =>Hash::make($request->password)
-            
+
        ]);
 
          return redirect()->route('cabinet.user-management.index')->with('success','সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
@@ -150,14 +173,14 @@ class GovCaseUserManagementController extends Controller
      */
     // public function show(UserManagement $userManagement)
     public function show($id = '')
-    {        
+    {
         $data['userManagement'] = DB::table('users')
                         ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
                         ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
-                  // dd($userManagement);     
+                  // dd($userManagement);
 
         $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
         return view('gov_case.user_manage.show')->with($data);
@@ -177,10 +200,10 @@ class GovCaseUserManagementController extends Controller
                         ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
-                  // dd($userManagement);     
+                  // dd($userManagement);
         $data['roles'] = DB::table('roles')
         ->select('id', 'name')
-        ->get(); 
+        ->get();
 
         $data['offices'] = GovCaseOffice::get();
         $data['page_title'] = 'ইউজার ইনফর্মেশন সংশোধন ফরম';
@@ -199,19 +222,19 @@ class GovCaseUserManagementController extends Controller
     {
          $request->validate([
             'name' => 'required',
-            'username' => 'required', 'unique:users', 'max:100',
+           // 'username' => 'required', 'unique:users', 'max:100',
             'role_id' => 'required',
-            'office_id' => 'required',            
-            // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',            
-            // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',            
-            'signature' => 'max:10240',             
+            'office_id' => 'required',
+            // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
+            // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
+            'signature' => 'max:10240',
             ],
             [
             'name.required' => 'পুরো নাম লিখুন',
-            'username.required' => 'ইউজার নাম লিখুন',
+            // 'username.required' => 'ইউজার নাম লিখুন',
             'role_id.required' => 'ভূমিকা নির্বাচন করুন',
             'office_id.required' => 'অফিস নির্বাচন করুন',
-            
+
             ]);
 
         // File upload

@@ -249,7 +249,8 @@
                                             </div>
 
                                             <div class="col-lg-8 mb-5">
-                                                <label>বিষয়বস্তু(সংক্ষিপ্ত)</label>
+                                                <label>বিষয়বস্তু(সংক্ষিপ্ত)<small class="text-danger">(১০০ অক্ষরের বেশি নয়)
+                                                </small> </label>
                                                 <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3"
                                                     spellcheck="false"></textarea>
                                             </div>

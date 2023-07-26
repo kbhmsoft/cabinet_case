@@ -1,24 +1,24 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
- 
+
 
 <!--begin::Card-->
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
-         <h2>ভুমিকা পরিচালনা </h2>
+         <h2>ভূমিকা পরিচালনা </h2>
       </div>
       <div class="card-toolbar">
-      @if(auth()->user()->can('create_role'))        
+      @if(auth()->user()->can('create_role'))
          <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>ভূমিকা তৈরি করুন
-         </button> 
-         @else        
+         </button>
+         @else
          <button type="button" class="btn btn-sm btn-secondary font-weight-bolder">
             <i class="la la-plus"></i>ভূমিকা তৈরি করুন
-         </button>   
-         @endif             
+         </button>
+         @endif
       </div>
    </div>
    <div class="card-body">
@@ -41,7 +41,7 @@
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">ভূমিকা নাম</th>
-               <th scope="col">প্রস্তুতকারক</th>
+               {{-- <th scope="col">প্রস্তুতকারক</th> --}}
                <th scope="col">অবস্থা</th>
                <th scope="col" width="150">অ্যাকশন</th>
             </tr>
@@ -58,7 +58,7 @@
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
                <td>{{ $role->name }}</td>
-               <td>{{ $user? $user->name: '' }}</td>
+               {{-- <td>{{ $user? $user->name: '' }}</td> --}}
                <td>
                   @if($role->status == 1)
                      <span class="badge badge-primary">সক্রিয়</span>
@@ -67,29 +67,29 @@
                   @endif
 
                </td>
-               
-                
+
+
                <td>
                 @if(auth()->user()->can('role_update'))
                   <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
-                @else 
+                @else
                  <button type="button" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                 @endif
 
                 @if(auth()->user()->can('role_delete'))
                   <a href="{{ route('cabinet.roleItemDelete', $role->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
-                @else 
+                @else
                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                 @endif
                </td>
             </tr>
 
             @endforeach
-           
+
          </tbody>
-      </table>      
+      </table>
          {{ $roles->appends($_GET)->links() }}
-    
+
    </div>
 </div>
 <!--end::Card-->
@@ -114,7 +114,7 @@
                         <div class="form-group">
                             <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
                             <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
-                             
+
                         </div>
                         <div class="form-group">
                             <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
@@ -123,7 +123,7 @@
                                 <option class="status2" value="0">নিশক্রিয়</option>
                              </select>
                         </div>
-                      
+
                   </div>
                </div>
             <div class="modal-footer">
@@ -140,7 +140,7 @@
 
 
       <!-- <form action="{{ route('cabinet.storeRole') }}" method="POST"> -->
- 
+
 
 <!-- create Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -163,7 +163,7 @@
                         {{ $errors->first('name') }}
                      </span>
                   </div>
-                
+
             </div>
          </div>
       <div class="modal-footer">
@@ -184,7 +184,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 <!-- {{-- Scripts Section Related Page--}} -->
 @section('scripts')
@@ -194,7 +194,7 @@
 
 
 <script>
-   
+
    function updateRoleModal(id, name, status){
        $('#updateRoleItem').modal().show();
 
@@ -203,7 +203,7 @@
 
         $('.status2').attr('selected', false);
         $('.status2').attr('selected', false);
-   
+
        var checkstatus = status;
        if(checkstatus == '0'){
             $('.status2').attr('selected','selected');

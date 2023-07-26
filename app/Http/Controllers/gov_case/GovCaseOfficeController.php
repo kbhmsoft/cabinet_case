@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-
-use \Auth;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use Validator, Redirect, Response;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseOfficeType;
-use Validator, Redirect, Response;
 
 class GovCaseOfficeController extends Controller
 {
@@ -34,8 +34,6 @@ class GovCaseOfficeController extends Controller
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-
-        //
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         // dd($officeInfo);
@@ -44,8 +42,7 @@ class GovCaseOfficeController extends Controller
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
 
-        //Add Conditions 
-
+        //Add Conditions
         $query = GovCaseOffice::orderby('id', 'ASC');
         if (!empty($_GET['office_type'])) {
             $query->where('gov_case_office.level', '=', $_GET['office_type']);
@@ -60,14 +57,10 @@ class GovCaseOfficeController extends Controller
             $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
         }
 
-
         $data['offices'] = $query->paginate(10)->withQueryString();
         $data['ministries'] =GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
-        ;
-        // dd($data['offices']);
-        // Dorpdown
-        // $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
         $data['upazilas'] = NULL;
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
 
@@ -103,10 +96,10 @@ class GovCaseOfficeController extends Controller
     //         $moujaIDs = $this->get_mouja_by_ulo_office_id(Auth::user()->office_id);
     //         // dd($moujaIDs);
     //         // print_r($moujaIDs); exit;
-    //         $query->where('office.mouja_id', $moujaIDs);    
+    //         $query->where('office.mouja_id', $moujaIDs);
     //     }   */
 
-    //     //Add Conditions 
+    //     //Add Conditions
 
     //     if (!empty($_GET['division'])) {
     //         $query->where('office.division_id', '=', $_GET['division']);
@@ -152,7 +145,7 @@ class GovCaseOfficeController extends Controller
     //         ->where('office.parent', $parent)
     //         ->select('office.*', 'upazila.upazila_name_bn', 'district.district_name_bn', 'division.division_name_bn');
 
-    //     //Add Conditions 
+    //     //Add Conditions
 
     //     if (!empty($_GET['division'])) {
     //         $query->where('office.division_id', '=', $_GET['division']);
@@ -202,7 +195,7 @@ class GovCaseOfficeController extends Controller
                 ->select('gov_case_office.*')
                 ->where('level', 1)
                 ->get();
-        
+
             $data['divisions'] = DB::table('gov_case_office')
                 ->select('gov_case_office.*')
                 ->where('level', 3)
@@ -218,7 +211,7 @@ class GovCaseOfficeController extends Controller
                 ->select('gov_case_office_type.*')
                 ->get();
             $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
-        // dd($data); 
+        // dd($data);
 
         return view('gov_case.office.add')->with($data);
     }
@@ -234,7 +227,7 @@ class GovCaseOfficeController extends Controller
     {
         //
         // dd($request->all());
-        // return $request; 
+        // return $request;
         $roleID = Auth::user()->role_id;
 
         $validator = $request->validate([
@@ -289,7 +282,7 @@ class GovCaseOfficeController extends Controller
             ->select('gov_case_office.*')
             ->where('level', 1)
             ->get();
-    
+
         $data['divisions'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
             ->where('level', 3)

@@ -10,10 +10,10 @@
             <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
          </div>
          @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 6)
-         <div class="card-toolbar">        
+         <div class="card-toolbar">
             <a href="{{ url('user-management') }}" class="btn btn-sm btn-primary font-weight-bolder">
                <i class="la la-list"></i> ব্যাবহারকারীর তালিকা
-            </a>                
+            </a>
          </div>
          @endif
          @if ($errors->any())
@@ -33,7 +33,7 @@
          @method('PUT')
          <div class="card-body">
             <fieldset>
-               <legend>ব্যাবহারকারীর তথ্য</legend> 
+               <legend>ব্যাবহারকারীর তথ্য</legend>
                <div class=" col-12 row">
                   <div class="col-4">
                      <div class="form-group">
@@ -43,8 +43,8 @@
                            {{ $errors->first('name') }}
                         </span>
                      </div>
-                  </div>   
-                  <div class="col-4">
+                  </div>
+                  {{-- <div class="col-4">
                      <div class="form-group">
                          <label for="username" class=" form-control-label">ইউজারনেম <span class="text-danger">*</span></label>
                          <input type="text" id="username" name="username" placeholder="ব্যবহারকারীর নাম লিখুন" class="form-control form-control-sm" value="{{ $userManagement->username}}" readonly="readonly">
@@ -52,8 +52,8 @@
                            {{ $errors->first('username') }}
                         </span>
                      </div>
-                  </div>
-               
+                  </div> --}}
+
                      <div class="col-4">
                            <div class="form-group">
                              <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার </label>
@@ -68,7 +68,7 @@
                               <input type="text" name="email" class="form-control" placeholder="" value="{{ $userManagement->email}}" />
                         </div>
                      </div>
-                  
+
                      <div class="col-4">
                         <div class="form-group">
                             <label for="role_id" class=" form-control-label">ইউজার রোল <span class="text-danger">*</span></label>
@@ -98,7 +98,7 @@
                         </div>
                      </div>
                </div>
-           
+
                <div class="col-lg-12 mb-5">
                   <div class="form-group row">
                        <div class="col-lg-6 mb-5">
@@ -155,7 +155,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 {{-- Scripts Section Related Page--}}
 @section('scripts')

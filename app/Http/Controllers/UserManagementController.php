@@ -21,7 +21,7 @@ class UserManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
 
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -36,7 +36,7 @@ class UserManagementController extends Controller
                             ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
                             ->select('users.*', 'roles.name', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
                             ->paginate(10);
-        }else{                    
+        }else{
             $users= DB::table('users')
                             ->orderBy('id','DESC')
                             ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -50,7 +50,7 @@ class UserManagementController extends Controller
         $page_title = 'ইউজার ম্যানেজমেন্ট তালিকা';
 
         return view('user_manage.index', compact('page_title','users'))
-        ->with('i', (request()->input('page',1) - 1) * 10); 
+        ->with('i', (request()->input('page',1) - 1) * 10);
     }
 
     /**
@@ -59,27 +59,27 @@ class UserManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $role = array('1','27');
         $data['roles'] = DB::table('roles')
         ->select('id', 'name')
         ->whereNotIn('id', $role)
-        ->get(); 
+        ->get();
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
             $data['offices'] = DB::table('office')
             ->leftJoin('district', 'office.district_id', '=', 'district.id')
             ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
             ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-            ->get();                                
+            ->get();
         }else{
         $data['offices'] = DB::table('office')
         ->leftJoin('district', 'office.district_id', '=', 'district.id')
         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
         ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
         ->where('office.district_id', $officeInfo->district_id)
-        ->get();   
+        ->get();
         }
 
         // dd($case_type);
@@ -101,16 +101,15 @@ class UserManagementController extends Controller
         // dd($request->all());
        $request->validate([
             'name' => 'required',
-            'username' => 'required', 'max:100',
             'role_id' => 'required', 'unique:users',
-            'office_id' => 'required',            
-            /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',            
-            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */           
-            'password' => 'required',            
+            'office_id' => 'required',
+            /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
+            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */
+            'password' => 'required',
             ],
             [
             'name.required' => 'পুরো নাম লিখুন',
-            'username.required' => 'ইউজার নাম লিখুন',
+            // 'username.required' => 'ইউজার নাম লিখুন',
             'role_id.required' => 'ভূমিকা নির্বাচন করুন',
             'office_id.required' => 'অফিস নির্বাচন করুন',
             'password.required' => 'পাসওয়ার্ড লিখুন',
@@ -118,14 +117,13 @@ class UserManagementController extends Controller
 
         DB::table('users')->insert([
             'name'=>$request->name,
-            'username' =>$request->username,
             'mobile_no' =>$request->mobile_no,
             'email' =>$request->email,
             'role_id' =>$request->role_id,
             'office_id' =>$request->office_id,
             'is_gov' =>1,
             'password' =>Hash::make($request->password)
-            
+
        ]);
 
          return redirect()->route('user-management.index')->with('success','সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
@@ -139,17 +137,17 @@ class UserManagementController extends Controller
      */
     // public function show(UserManagement $userManagement)
     public function show($id = '')
-    {        
+    {
         $data['userManagement'] = DB::table('users')
                         ->join('roles', 'users.role_id', '=', 'roles.id')
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.name', 'office.office_name_bn',
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
-                  // dd($userManagement);     
+                  // dd($userManagement);
 
         $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
         return view('user_manage.show')->with($data);
@@ -168,14 +166,14 @@ class UserManagementController extends Controller
                         ->join('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'office.office_name_bn', 
+                        ->select('users.*', 'roles.name', 'office.office_name_bn',
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$id)
                         ->get()->first();
-                  // dd($userManagement);     
+                  // dd($userManagement);
         $data['roles'] = DB::table('roles')
         ->select('id', 'name')
-        ->get(); 
+        ->get();
 
         $data['offices'] = DB::table('office')
         ->leftJoin('district', 'office.district_id', '=', 'district.id')
@@ -199,19 +197,18 @@ class UserManagementController extends Controller
     {
          $request->validate([
             'name' => 'required',
-            'username' => 'required', 'unique:users', 'max:100',
             'role_id' => 'required',
-            'office_id' => 'required',            
-            // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',            
-            // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',            
-            'signature' => 'max:10240',             
+            'office_id' => 'required',
+            // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
+            // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
+            'signature' => 'max:10240',
             ],
             [
             'name.required' => 'পুরো নাম লিখুন',
-            'username.required' => 'ইউজার নাম লিখুন',
+            // 'username.required' => 'ইউজার নাম লিখুন',
             'role_id.required' => 'ভূমিকা নির্বাচন করুন',
             'office_id.required' => 'অফিস নির্বাচন করুন',
-            
+
             ]);
 
         // File upload
@@ -231,7 +228,6 @@ class UserManagementController extends Controller
          DB::table('users')
             ->where('id', $id)
             ->update(['name'=>$request->name,
-            'username' =>$request->username,
             'mobile_no' =>$request->mobile_no,
             'signature' =>$fileName,
             'profile_pic' =>$profilePic,
