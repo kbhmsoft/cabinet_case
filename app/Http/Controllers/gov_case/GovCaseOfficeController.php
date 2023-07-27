@@ -44,6 +44,7 @@ class GovCaseOfficeController extends Controller
 
         //Add Conditions
         $query = GovCaseOffice::orderby('id', 'ASC');
+    //    dd($query);
         if (!empty($_GET['office_type'])) {
             $query->where('gov_case_office.level', '=', $_GET['office_type']);
         }
