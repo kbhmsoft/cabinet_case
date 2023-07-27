@@ -50,8 +50,8 @@ class GovCaseOfficeController extends Controller
         if (!empty($_GET['ministry'])) {
             $query->where('gov_case_office.parent', '=', $_GET['ministry']);
         }
-        if (!empty($_GET['office_type'])) {
-            $query->where('gov_case_office.parent', '=', $_GET['office_type']);
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
         }
         if (!empty($_GET['office_name'])) {
             $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
