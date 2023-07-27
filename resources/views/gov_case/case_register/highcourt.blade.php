@@ -55,7 +55,7 @@
             
             <tr>
                <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
-               <td style="width: 10px;">{{ $row->case_no }}</td>
+               <td style="width: 10px;">{{ $row->case_no }}/{{ $row->year }}</td>
                <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
                <td>{{ $row->subject_matter ?? '-'}}</td>
                <td>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi):'-'}}</td>

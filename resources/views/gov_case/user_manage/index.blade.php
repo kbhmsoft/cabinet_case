@@ -18,6 +18,7 @@
             width: 250px;
         }
 
+
         .select2-container .select2-selection--single {
             box-sizing: border-box;
             height: 41px;
@@ -83,9 +84,20 @@
                     </select>
                 </div>
                 <div class="form-group mb-2 mr-2">
-                    <input type="text" name="office_name" placeholder="অফিসের নাম লিখুন"
-                        value="{{ isset($_GET['office_name']) ? $_GET['office_name'] : '' }}" class="form-control w-100">
+                    <select name="office_id" id="office_id" class="form-control">
+                        <option value="">- অফিস নির্বাচন করুন-</option>3
 
+                    </select>
+                </div>
+                <div class="form-group mb-2">
+                    <select name="role" class="form-control w-100">
+                        <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
+                        @foreach ($user_role as $value)
+                            <option value="{{ $value->id }}"
+                                {{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
+                                {{ $value->name }} </option>
+                        @endforeach
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
             </form>
@@ -112,8 +124,8 @@
                             <td>{{ $row->office_name_bn }}</td>
                             <td>{{ $row->email }}</td>
                             <!-- <td>
-                      <span class="label label-inline label-light-primary font-weight-bold">Pending</span>
-                   </td> -->
+                          <span class="label label-inline label-light-primary font-weight-bold">Pending</span>
+                       </td> -->
                             <td>
                                 @if (auth()->user()->can('show_user_details'))
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"
@@ -154,11 +166,49 @@
     <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
     <!--end::Page Scripts-->
 
+    @if (request()->get('office_type'))
+        <script>
+            var officeTypeID = {{ request()->get('office_type') }};
+        </script>
+    @else
+        <script>
+            var officeTypeID = 0;
+        </script>
+    @endif
+
+    @if (request()->get('ministry'))
+        <script>
+            var minId = {{ request()->get('ministry') }};
+        </script>
+    @else
+        <script>
+            var minId = 0;
+        </script>
+    @endif
+    @if (request()->get('divOffice'))
+        <script>
+            var dicOfficeID = {{ request()->get('divOffice') }};
+        </script>
+    @else
+        <script>
+            var dicOfficeID = 0;
+        </script>
+    @endif
+    @if (request()->get('office_id'))
+        <script>
+            var officeID = {{ request()->get('office_id') }};
+        </script>
+    @else
+        <script>
+            var officeID = 0;
+        </script>
+    @endif
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
             $('#ministry').select2();
             $('#divOffice').select2();
+            // $('#office_id').select2();
 
 
             jQuery('select[name="office_type"]').on('change', function() {
@@ -206,58 +256,178 @@
             //   console.log(searchParams.get('office_type')); // true
 
 
-            // District Dropdown
-            // jQuery('select[name="division"]').on('change', function() {
-            //     var dataID = jQuery(this).val();
-            //     jQuery("#district_id").after('<div class="loadersmall"></div>');
-            //     if (dataID) {
-            //         jQuery.ajax({
-            //             url: '/office/dropdownlist/getdependentdistrict/' + dataID,
-            //             type: "GET",
-            //             dataType: "json",
-            //             success: function(data) {
-            //                 jQuery('select[name="district"]').html(
-            //                     '<div class="loadersmall"></div>');
-            //                 jQuery('select[name="district"]').html(
-            //                     '<option value="">-- নির্বাচন করুন --</option>');
-            //                 jQuery.each(data, function(key, value) {
-            //                     jQuery('select[name="district"]').append(
-            //                         '<option value="' + key + '">' + value +
-            //                         '</option>');
-            //                 });
-            //                 jQuery('.loadersmall').remove();
-            //             }
-            //         });
-            //     } else {
-            //         $('select[name="district"]').empty();
-            //     }
-            // });
-            // Upazila Dropdown
-            // jQuery('select[name="district"]').on('change', function() {
-            //     var dataID = jQuery(this).val();
-            //     jQuery("#upazila_id").after('<div class="loadersmall"></div>');
-            //     if (dataID) {
-            //         jQuery.ajax({
-            //             url: '/office/dropdownlist/getdependentupazila/' + dataID,
-            //             type: "GET",
-            //             dataType: "json",
-            //             success: function(data) {
-            //                 jQuery('select[name="upazila"]').html(
-            //                     '<div class="loadersmall"></div>');
-            //                 jQuery('select[name="upazila"]').html(
-            //                     '<option value="">-- নির্বাচন করুন --</option>');
-            //                 jQuery.each(data, function(key, value) {
-            //                     jQuery('select[name="upazila"]').append(
-            //                         '<option value="' + key + '">' + value +
-            //                         '</option>');
-            //                 });
-            //                 jQuery('.loadersmall').remove();
-            //             }
-            //         });
-            //     } else {
-            //         $('select[name="upazila"]').empty();
-            //     }
-            // });
+            // Level Wise Office
+            jQuery('select[name="office_type"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                jQuery("#office_id").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id"]').html(
+                                '<option value="">-- নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id"]').empty();
+                }
+            });
+
+            // Ministry Wise Office
+            jQuery('select[name="ministry"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                jQuery("#office_id").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id"]').html(
+                                '<option value="">-- নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id"]').empty();
+                }
+            });
+
+
+            // DivisionOffice Wise Office
+            jQuery('select[name="divOffice"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                jQuery("#office_id").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id"]').html(
+                                '<option value="">-- নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                //  
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id"]').empty();
+                }
+            });
+
+
+
+            var officeTypeID = $('#office_type').find(":selected").val();
+
+            if (officeTypeID !== "undefined") {
+                jQuery.ajax({
+                    url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="office_id"]').html(
+                            '<div class="loadersmall"></div>');
+                        jQuery('select[name="office_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            if (officeID == key) {
+                                var selected = 'selected';
+                            } else {
+                                var selected = ' ';
+                            }
+                            jQuery('select[name="office_id"]').append(
+                                '<option value="' + key +
+                                '"' + selected + '>' + value + '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $('select[name="office_id"]').empty();
+            }
+            console.log(minId);
+            if (minId !== 0) {
+                jQuery.ajax({
+                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + minId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="office_id"]').html(
+                            '<div class="loadersmall"></div>');
+                        jQuery('select[name="office_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            if (officeID == key) {
+                                var selected = 'selected';
+                            } else {
+                                var selected = ' ';
+                            }
+                            jQuery('select[name="office_id"]').append(
+                                '<option value="' + key +
+                                '"' + selected + '>' + value + '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $('select[name="office_id"]').empty();
+            }
+
+            if (dicOfficeID !== 0) {
+                jQuery.ajax({
+                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dicOfficeID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="office_id"]').html(
+                            '<div class="loadersmall"></div>');
+                        jQuery('select[name="office_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            if (officeID == key) {
+                                var selected = 'selected';
+                            } else {
+                                var selected = ' ';
+                            }
+                            jQuery('select[name="office_id"]').append(
+                                '<option value="' + key +
+                                '"' + selected + '>' + value + '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $('select[name="office_id"]').empty();
+            }
+
+
+
+
+
         });
     </script>
 @endsection

@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
         route::post('/office/update', [GovCaseOfficeController::class, 'update'])->name('office.update');
         route::get('/office/dropdownlist/getdependentdistrict/{id}', [GovCaseOfficeController::class , 'getDependentDistrict']);
         route::get('/office/dropdownlist/getdependentupazila/{id}', [GovCaseOfficeController::class , 'getDependentUpazila']);
+        route::get('/office/dropdownlist/getdependentoffice/{id}', [GovCaseOfficeController::class , 'getDependentOffice']);
+        route::get('/office/dropdownlist/getdependentchildoffice/{id}', [GovCaseOfficeController::class , 'getDependentChildOffice']);
             /////************** //Office Setting **************/////
             //=================== Message Start ================
         Route::get('/messages', [GovCaseMessageController::class, 'messages'])->name('messages');

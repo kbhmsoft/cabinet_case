@@ -355,6 +355,16 @@ class GovCaseOfficeController extends Controller
         $subcategories = DB::table("upazila")->where("district_id", $id)->pluck("upazila_name_bn", "id");
         return json_encode($subcategories);
     }
+    public function getDependentOffice($id)
+    {
+        $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", "id");
+        return json_encode($subcategories);
+    }
+    public function getDependentChildOffice($id)
+    {
+        $subcategories = GovCaseOffice::where("parent", $id)->pluck("office_name_bn", "id");
+        return json_encode($subcategories);
+    }
     public function getDependentMouja($id)
     {
         $subcategories = DB::table("mouja")->where("upazila_id", $id)->pluck("mouja_name_bn", "id");

@@ -36,51 +36,27 @@ class GovCaseUserManagementController extends Controller
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
+        $role = array('1','27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
           //Add Conditions
-          $query = GovCaseOffice::orderby('id', 'ASC');
-          if (!empty($_GET['office_type'])) {
-              $query->where('gov_case_office.level', '=', $_GET['office_type']);
+          $query = DB::table('users')->orderBy('id','DESC')->join('roles', 'users.role_id', '=', 'roles.id')->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')->where('users.is_gov', 1);
+          if (!empty($_GET['office_id'])) {
+              $query->where('users.office_id', '=', $_GET['office_id']);
           }
-          if (!empty($_GET['ministry'])) {
-              $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+          if (!empty($_GET['role'])) {
+              $query->where('users.role_id', '=', $_GET['role']);
           }
-          if (!empty($_GET['office_type'])) {
-              $query->where('gov_case_office.parent', '=', $_GET['office_type']);
-          }
-          if (!empty($_GET['office_name'])) {
-              $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
-          }
+        
 
           $data['users'] = $query->paginate(10)->withQueryString();
-
+          $data['user_role'] = DB::table('roles')->select('id', 'name')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
           $data['ministries'] =GovCaseOffice::where('level', 1)->get();
           $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
 
-        if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 || $roleID == 28 ){
-            $data['users']= DB::table('users')
-                            ->orderBy('id','DESC')
-                            ->join('roles', 'users.role_id', '=', 'roles.id')
-                            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-
-                            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-                            ->where('users.is_gov', 1)
-                            ->paginate(10);
-        }
-        else{
-            $data['users']= DB::table('users')
-                            ->orderBy('id','DESC')
-                            ->join('roles', 'users.role_id', '=', 'roles.id')
-                            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-
-                            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-                            ->where('gov_case_office.id', $officeInfo->office_id)
-                            ->orWhere('gov_case_office.parent', $officeInfo->office_id)
-                            ->paginate(10);
-        }
+       
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
         // return $users;
         return view('gov_case.user_manage.index')
