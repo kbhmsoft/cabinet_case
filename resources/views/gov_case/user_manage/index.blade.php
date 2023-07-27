@@ -269,7 +269,7 @@
                             jQuery('select[name="office_id"]').html(
                                 '<div class="loadersmall"></div>');
                             jQuery('select[name="office_id"]').html(
-                                '<option value="">-- নির্বাচন করুন --</option>');
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
                                         '<option value="' + key +
@@ -296,7 +296,7 @@
                             jQuery('select[name="office_id"]').html(
                                 '<div class="loadersmall"></div>');
                             jQuery('select[name="office_id"]').html(
-                                '<option value="">-- নির্বাচন করুন --</option>');
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
                                         '<option value="' + key +
@@ -324,7 +324,7 @@
                             jQuery('select[name="office_id"]').html(
                                 '<div class="loadersmall"></div>');
                             jQuery('select[name="office_id"]').html(
-                                '<option value="">-- নির্বাচন করুন --</option>');
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
                                         '<option value="' + key +
@@ -352,7 +352,7 @@
                         jQuery('select[name="office_id"]').html(
                             '<div class="loadersmall"></div>');
                         jQuery('select[name="office_id"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
+                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
                         jQuery.each(data, function(key, value) {
                             if (officeID == key) {
                                 var selected = 'selected';
@@ -368,6 +368,7 @@
                 });
             } else {
                 $('select[name="office_id"]').empty();
+                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
             console.log(minId);
             if (minId !== 0) {
@@ -379,7 +380,7 @@
                         jQuery('select[name="office_id"]').html(
                             '<div class="loadersmall"></div>');
                         jQuery('select[name="office_id"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
+                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
                         jQuery.each(data, function(key, value) {
                             if (officeID == key) {
                                 var selected = 'selected';
@@ -395,6 +396,7 @@
                 });
             } else {
                 $('select[name="office_id"]').empty();
+                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
 
             if (dicOfficeID !== 0) {
@@ -406,7 +408,7 @@
                         jQuery('select[name="office_id"]').html(
                             '<div class="loadersmall"></div>');
                         jQuery('select[name="office_id"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
+                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
                         jQuery.each(data, function(key, value) {
                             if (officeID == key) {
                                 var selected = 'selected';
@@ -422,6 +424,7 @@
                 });
             } else {
                 $('select[name="office_id"]').empty();
+                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
 
 
