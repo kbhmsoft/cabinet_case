@@ -125,4 +125,34 @@
     color: #009688;
 }
 
+
+.submit-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #009688;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+
+.submit-button:active {
+  background-color: #003c80;
+}
+
+.submit-button:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
+}
+
+
+
 </style>
