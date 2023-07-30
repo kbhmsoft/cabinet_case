@@ -28,50 +28,50 @@
 
     <style type="text/css">
         /* #badiDiv td {
-                                            padding: 5px;
-                                            border-color: #ccc;
-                                        }
+                                                padding: 5px;
+                                                border-color: #ccc;
+                                            }
 
-                                        #badiDiv th {
-                                            padding: 5px;
-                                            text-align: center;
-                                            border-color: #ccc;
-                                            color: black;
-                                        }
+                                            #badiDiv th {
+                                                padding: 5px;
+                                                text-align: center;
+                                                border-color: #ccc;
+                                                color: black;
+                                            }
 
-                                        #bibadiDiv td {
-                                            padding: 5px;
-                                            border-color: #ccc;
-                                        }
-                                        #bibadiDiv th {
-                                            padding: 5px;
-                                            text-align: center;
-                                            border-color: #ccc;
-                                            color: black;
-                                        }
-                                        #MainBibadiDiv th {
-                                            padding: 5px;
-                                            text-align: center;
-                                            border-color: #ccc;
-                                            color: black;
-                                        }
-                                        #MainBibadiDiv td {
-                                            padding: 5px;
-                                            border-color: #ccc;
-                                        }
+                                            #bibadiDiv td {
+                                                padding: 5px;
+                                                border-color: #ccc;
+                                            }
+                                            #bibadiDiv th {
+                                                padding: 5px;
+                                                text-align: center;
+                                                border-color: #ccc;
+                                                color: black;
+                                            }
+                                            #MainBibadiDiv th {
+                                                padding: 5px;
+                                                text-align: center;
+                                                border-color: #ccc;
+                                                color: black;
+                                            }
+                                            #MainBibadiDiv td {
+                                                padding: 5px;
+                                                border-color: #ccc;
+                                            }
 
 
-                                        #surveyDiv td {
-                                            padding: 5px;
-                                            border-color: #ccc;
-                                        }
+                                            #surveyDiv td {
+                                                padding: 5px;
+                                                border-color: #ccc;
+                                            }
 
-                                        #surveyDiv th {
-                                            padding: 5px;
-                                            text-align: center;
-                                            border-color: #ccc;
-                                            color: black;
-                                        } */
+                                            #surveyDiv th {
+                                                padding: 5px;
+                                                text-align: center;
+                                                border-color: #ccc;
+                                                color: black;
+                                            } */
         .tabs {
             max-width: 600px;
             margin: 0 auto;
@@ -270,8 +270,8 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm"
-                                                        placeholder="মামলা নং " required="required">
+                                                        class="form-control form-control-sm" placeholder="মামলা নং "
+                                                        required="required">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -290,7 +290,7 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
-                                                            
+
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
@@ -624,10 +624,10 @@
                                         <!--begin::Card-->
 
                                         <fieldset>
-                                           <h3 class="form-group font-weight-bolder font-size-h4">স্থগিতাদেশের
-                                                </h3>
+                                            <h3 class="form-group font-weight-bolder font-size-h4">স্থগিতাদেশের
+                                            </h3>
                                             <div class="form-group row">
-                                                
+
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
                                                     </label>
@@ -635,7 +635,7 @@
                                                         id="appeal_against_postpond_interim_order"
                                                         class="form-control form-control-sm" placeholder=""
                                                         autocomplete="off">
-                                                    </div>
+                                                </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের
                                                         তারিখ <span class="text-danger"></span></label>
@@ -654,7 +654,7 @@
                                                             class="text-danger"></span></label>
                                                     <textarea type="text" name="appeal_against_postpond_interim_order_details"
                                                         id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
-                                                </div>  
+                                                </div>
                                                 <div class="col-md-6 mb-5" id="">
                                                     <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
                                                     <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
@@ -1205,6 +1205,20 @@
                     }
                 });
             });
+        });
+        $(document).ready(function() {
+            $('#tabs a[href="#sending_reply"], #tabs a[href="#suspension_order"] ,#tabs a[href="#final_order"] ,#tabs a[href="#contempt_case"]').click(function(event) {
+
+                if (!$('#case_general_information').is(":checked")) {
+                    Swal.fire({
+                        icon: "warning",
+                        text: 'Please checked the checkbox first before viewing this page. '
+                    });
+                    return false; //  add this line
+                }
+
+            });
+
         });
     </script>
 @endsection
