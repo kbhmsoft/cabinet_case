@@ -159,7 +159,7 @@ class GovCaseRegisterController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
-        $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+        $data['page_title'] =   'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -225,7 +225,7 @@ class GovCaseRegisterController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
-        $data['page_title'] =   'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+        $data['page_title'] =   'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
          // return $data;
         return view('gov_case.case_register.appealcourt')->with($data);
     }
