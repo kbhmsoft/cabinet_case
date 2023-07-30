@@ -14,115 +14,7 @@
     $case = [];
     $case['create_by'] = '';
     
-    // print_r($surveys); exit;
-    $survey_data = '<option value="">-- নির্বাচন করুন --</option>';
-    for ($i = 0; $i < sizeof($surveys); $i++) {
-        $survey_data .= '<option value="' . $surveys[$i]->id . '">' . $surveys[$i]->st_name . '</option>';
-    }
-    
-    $land_type_data = '<option value="">-- নির্বাচন করুন --</option>';
-    for ($i = 0; $i < sizeof($land_types); $i++) {
-        $land_type_data .= '<option value="' . $land_types[$i]->id . '">' . $land_types[$i]->lt_name . '</option>';
-    }
     ?>
-
-    <style type="text/css">
-        /* #badiDiv td {
-                                                padding: 5px;
-                                                border-color: #ccc;
-                                            }
-
-                                            #badiDiv th {
-                                                padding: 5px;
-                                                text-align: center;
-                                                border-color: #ccc;
-                                                color: black;
-                                            }
-
-                                            #bibadiDiv td {
-                                                padding: 5px;
-                                                border-color: #ccc;
-                                            }
-                                            #bibadiDiv th {
-                                                padding: 5px;
-                                                text-align: center;
-                                                border-color: #ccc;
-                                                color: black;
-                                            }
-                                            #MainBibadiDiv th {
-                                                padding: 5px;
-                                                text-align: center;
-                                                border-color: #ccc;
-                                                color: black;
-                                            }
-                                            #MainBibadiDiv td {
-                                                padding: 5px;
-                                                border-color: #ccc;
-                                            }
-
-
-                                            #surveyDiv td {
-                                                padding: 5px;
-                                                border-color: #ccc;
-                                            }
-
-                                            #surveyDiv th {
-                                                padding: 5px;
-                                                text-align: center;
-                                                border-color: #ccc;
-                                                color: black;
-                                            } */
-        .tabs {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .tab-navigation {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            background-color: #f0f0f0;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .tab-navigation li {
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .tab-navigation li a {
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .tab-navigation li:hover {
-            background-color: #ddd;
-        }
-
-        .tab-content .tab-pane {
-            display: none;
-            padding: 20px;
-            background-color: #f0f0f0;
-            border-radius: 0 0 10px 10px;
-        }
-
-        .tab-content .tab-pane.active {
-            display: block;
-        }
-
-        ul.nav.details_trainee_tab.nav-tabs.myTab {
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.2s ease;
-            font-size: 16px;
-            font-weight: 600;
-            background-color: #f0f0f0;
-        }
-    </style>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
     <div class="row">
@@ -150,22 +42,22 @@
                             role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="trainee_tab_item" data-toggle="tab" href="#sending_reply" role="tab"
+                        <a class="nav-link" id="sending_reply_tab" data-toggle="tab" href="#sending_reply" role="tab"
                             aria-controls="profile" aria-selected="false">জবাব প্রেরণ</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="trainee_tab_item" href="#suspension_order" data-toggle="tab" role="tab"
+                        <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
                             আদেশ সম্পর্কিত</a>
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="trainee_tab_item" href="#final_order" data-toggle="tab" role="tab"
+                        <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="trainee_tab_item" href="#contempt_case" data-toggle="tab" role="tab"
+                        <a class="nav-link" id="contempt_case_tab" href="#contempt_case" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">কনটেম্প্ট মামলা/<br>অন্যান্য</a>
                     </li>
                 </ul>
@@ -180,7 +72,7 @@
 
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
                             aria-labelledby="home-tab">
-                            <form id="signUpForm" action="{{ route('cabinet.case.store') }}" class="form" method="POST"
+                            <form id="caseGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
@@ -190,19 +82,7 @@
                                         <fieldset class="mb-8">
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
-                                                {{-- <div class="col-lg-4">
-                                                    <label>মামলার ধরন <span class="text-danger">*</span></label>
-                                                    <select name="case_type" id="case_type"
-                                                        class="form-control form-control-sm" required="required">
-                                                        <option value="">-- নির্বাচন করুন --</option>
-                                                        <option value="1">নতুন মামলা</option>
-                                                        <option value="2">চলমান মামলা</option>
-                                                        <option value="3">নিষ্পত্তি মামলা</option>
-                                                    </select>
-
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div> --}}
+                                                
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
@@ -224,7 +104,7 @@
                                                 <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
                                                     <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
                                                     <select name="appeal_case_id" id="appeal_case_id"
-                                                        class="form-control form-control-sm" required="required">
+                                                        class="form-control form-control-sm">
                                                         <option value=""> -- নির্বাচন করুন --</option>
                                                         @foreach ($appealCase as $value)
                                                             <option value="{{ $value->id }}"
@@ -270,8 +150,8 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required">
+                                                        class="form-control form-control-sm"
+                                                        placeholder="মামলা নং " required="required">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -290,7 +170,7 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
-
+                                                            
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
@@ -416,7 +296,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="action-button submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="caseGeneralInfoSaveBtn" class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -426,14 +306,14 @@
 
                         {{-- ------------- start জবাব প্রেরণ ------------- --}}
                         <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="signUpForm" action="{{ route('cabinet.case.store') }}" class="form"
+                            <form id="sendingReplyForm" action="javascript:void(0)" class="form"
                                 method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
-
-                                        <div class="step">
+                                        <input type="hidden" id="caseIDForAnswer" name="case_id">
+                                        
                                             <fieldset class="mb-8">
                                                 {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
                                                 <div class="form-group row">
@@ -599,16 +479,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        {{-- <fieldset id="case-general-information"> --}}
-
-                                        {{-- </fieldset> --}}
+                                        
                                         <!--end::Card-->
                                     </div>
                                 </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="action-button submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="sendingReplySaveBtn" class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -616,18 +492,19 @@
 
                         {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                         <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="signUpForm" action="{{ route('cabinet.case.store') }}" class="form"
+                            <form id="suspensionOrderForm" action="javascript:void(0)" class="form"
                                 method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
+                                        <input type="hidden" id="caseIDForSuspention" name="case_id">
 
                                         <fieldset>
-                                            <h3 class="form-group font-weight-bolder font-size-h4">স্থগিতাদেশের
-                                            </h3>
+                                           <h3 class="form-group font-weight-bolder font-size-h4">স্থগিতাদেশের
+                                                </h3>
                                             <div class="form-group row">
-
+                                                
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
                                                     </label>
@@ -635,7 +512,7 @@
                                                         id="appeal_against_postpond_interim_order"
                                                         class="form-control form-control-sm" placeholder=""
                                                         autocomplete="off">
-                                                </div>
+                                                    </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের
                                                         তারিখ <span class="text-danger"></span></label>
@@ -654,7 +531,7 @@
                                                             class="text-danger"></span></label>
                                                     <textarea type="text" name="appeal_against_postpond_interim_order_details"
                                                         id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
-                                                </div>
+                                                </div>  
                                                 <div class="col-md-6 mb-5" id="">
                                                     <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
                                                     <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
@@ -665,7 +542,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="action-button submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="suspensionOrderSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -673,13 +550,14 @@
 
 
                         <div class="tab-pane" id="final_order" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="signUpForm" action="{{ route('cabinet.case.store') }}" class="form"
+                            <form id="finalOrderForm" action="javascript:void(0)" class="form"
                                 method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         {{-- <div class="step"> --}}
+                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
                                             <div class="form-group row">
@@ -1005,7 +883,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="action-button submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="finalOrderSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -1020,6 +898,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
 
+                                        <input type="hidden" id="caseIDForContempt" name="case_id">
                                         <fieldset>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">
@@ -1081,7 +960,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
     <script>
         $(document).ready(function() {
@@ -1205,20 +1084,6 @@
                     }
                 });
             });
-        });
-        $(document).ready(function() {
-            $('#tabs a[href="#sending_reply"], #tabs a[href="#suspension_order"] ,#tabs a[href="#final_order"] ,#tabs a[href="#contempt_case"]').click(function(event) {
-
-                if (!$('#case_general_information').is(":checked")) {
-                    Swal.fire({
-                        icon: "warning",
-                        text: 'Please checked the checkbox first before viewing this page. '
-                    });
-                    return false; //  add this line
-                }
-
-            });
-
         });
     </script>
 @endsection

@@ -832,7 +832,7 @@ class GovCaseRegisterController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
+        // dd($request);
         $caseId = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:gov_case_registers,case_no,'.$caseId,
@@ -877,7 +877,9 @@ class GovCaseRegisterController extends Controller
                $flag='false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
            }
-        return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+        return response()->json(['success'=>'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId ]);
+
+        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
     public function edit($id)
     {
