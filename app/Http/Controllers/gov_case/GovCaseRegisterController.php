@@ -16,6 +16,7 @@ use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseActivityLog;
 use App\Models\Office;
 use App\Models\User;
+use App\Models\Role;
 use App\Repositories\gov_case\AttachmentRepository;
 use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Repositories\gov_case\GovCaseLogRepository;
@@ -796,7 +797,7 @@ class GovCaseRegisterController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         // $data['ministrys'] = DB::table('gov_case_office')->get();
 
-        $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14,15,33,36])->get();
         $data['courts'] = DB::table('court')
                 ->select('id', 'court_name')
                 ->whereIn('id',[1,2])
@@ -818,6 +819,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'নতুন মামলা রেজিষ্টার এন্ট্রি ফরম'; //exit;
         // dd($data);
+        // return $data;
         return view('gov_case.case_register.create_new')->with($data);
     }
 
@@ -848,6 +850,54 @@ class GovCaseRegisterController extends Controller
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
             }
+
+            //========= Gov Case Activity Log -  start ============
+                $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+                $caseRegisterData = array_merge( $caseRegister, [
+                    'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                    'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+                ]);
+                // return $caseRegisterData;
+                $cs_activity_data['case_register_id'] = $caseId;
+                if($request->formType != 'edit'){
+                    $cs_activity_data['activity_type'] = 'create';
+                    $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                }else{
+                    $cs_activity_data['activity_type'] = 'update';
+                    $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                }
+                $cs_activity_data['old_data'] = null;
+                $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+                gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+
+        } catch (\Exception $e){
+               dd($e);
+               $flag='false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+           }
+        return response()->json(['success'=>'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId ]);
+
+        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+    }
+
+
+    public function sendingReplyStore(Request $request)
+    {
+        dd($request);
+        $caseId = $request->caseId;
+        $request->validate([
+            'case_no' => 'required|unique:gov_case_registers,case_no,'.$caseId,
+            ],
+            [
+            'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
+        ]);
+        try{
+            $caseId =GovCaseRegisterRepository::storeSendingReply($request);
+           
 
             //========= Gov Case Activity Log -  start ============
                 $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -1015,5 +1065,10 @@ class GovCaseRegisterController extends Controller
     {
         $getdependentDoptor = GovCaseOffice::where('level', $id)->pluck("office_name_bn","id");
         return json_encode($getdependentDoptor);
+    }
+    public function getDependentConcernPerson($id)
+    {
+        $getdependentUser = User::where('role_id', $id)->pluck("name","id");
+        return json_encode($getdependentUser);
     }
 }

@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
             route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class , 'getdependentMinDept']);
+            route::get('/dropdownlist/getdependentconcernperson/{id}', [GovCaseRegisterController::class , 'getDependentConcernPerson']);
             Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
@@ -149,6 +150,7 @@ Route::middleware('auth')->group(function () {
             Route::get('create', [GovCaseRegisterController::class, 'create'])->name('create');
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
+            Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('store_appeal');
             Route::get('edit/{id}', [GovCaseRegisterController::class, 'edit'])->name('edit');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');

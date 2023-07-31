@@ -35,6 +35,7 @@
             addMainBibadiRowFunc();
         }
         addFileRowFunc();
+        addReplyFileRowFunc();
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
@@ -71,6 +72,42 @@
                 });
             } else {
                 $('select[name="case_category_type"]').empty();
+            }
+        });
+
+
+
+        //===========GetConsernPersonByDesignation================//
+
+
+        jQuery('select[name="concern_person_designation"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
+
+            if (dataID) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                        dataID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="concern_user_id"]').html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery('select[name="concern_user_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="concern_user_id"]').append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                        // $('select[name="mouja"] .overlay').remove();
+                        // $("#loading").hide();
+                    }
+                });
+            } else {
+                $('select[name="concern_user_id"]').empty();
             }
         });
     });
@@ -397,8 +434,36 @@
     });
 </script>
 <script>
+    // ===========================Button Disable=========================//
+    var caseIDForAnswer = $('#caseIDForAnswer').val();
+    if (!(caseIDForAnswer)) {
+        $('#sendingReplySaveBtn').prop('disabled', true);
+        $('#sendingReplySaveBtn').addClass("disable-button");
+    }
+
+    var caseIDForSuspention = $('#caseIDForSuspention').val();
+    if (!(caseIDForSuspention)) {
+        $('#suspensionOrderSaveBtn').prop('disabled', true);
+        $('#suspensionOrderSaveBtn').addClass("disable-button");
+    }
+
+    var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
+    if (!(caseIDForFinalOrder)) {
+        $('#finalOrderSaveBtn').prop('disabled', true);
+        $('#finalOrderSaveBtn').addClass("disable-button");
+    }
+
+    var caseIDForContempt = $('#caseIDForContempt').val();
+    if (!(caseIDForContempt)) {
+        $('#contemptCaseSaveBtn').prop('disabled', true);
+        $('#contemptCaseSaveBtn').addClass("disable-button");
+    }
+    // ===========================Button Disable=========================//
+
+
+
     // ================================Case General Info save==================================
-   
+
     $('#caseGeneralInfoForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
@@ -413,7 +478,7 @@
             confirmButtonText: 'Yes!'
         }).then((result) => {
             if (result.isConfirmed) {
-                
+
                 var formData = new FormData(this);
                 $.ajax({
 
@@ -436,7 +501,7 @@
                         console.log(data);
                         // console.log(data.caseId);
                         $("#sending_reply_tab").click();
-                        
+
                         $("#caseIDForAnswer").val(data.caseId);
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
@@ -456,18 +521,15 @@
     });
     // ================================Case General Info save==================================
 
-    // ================================Case General Info save==================================
-    var caseIDForAnswer = $('#caseIDForAnswer').val();
-    if(!(caseIDForAnswer)){
-        $('#sendingReplySaveBtn').prop('disabled', true);
-        $('#sendingReplySaveBtn').addClass("disable-button");
-        alert(caseIDForAnswer);
-    }
+    // ================================Sending Replay Save==================================//
+
+
+
     $('#sendingReplyForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
         $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        
+
         Swal.fire({
             title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
             // text: "You won't be able to revert this!",
@@ -478,12 +540,12 @@
             confirmButtonText: 'Yes!'
         }).then((result) => {
             if (result.isConfirmed) {
-                
+
                 var formData = new FormData(this);
                 $.ajax({
 
                     type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
+                    url: "{{ route('cabinet.case.sendingReplyStore') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -500,12 +562,11 @@
                         )
                         console.log(data);
                         // console.log(data.caseId);
-                        $("#sending_reply_tab").click();
-                        
-                        $("#caseIDForAnswer").val(data.caseId);
-                        // $("#order_data").append(data.html);
-                        // $("#caseHearingList").append(data.hearing);
-                        // $("#createOrderDiv").hide();
+                        $("#suspension_order").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+
 
                     },
                     error: function(data) {
@@ -519,7 +580,7 @@
         })
 
     });
-    // ================================Case General Info save==================================
+    // ================================Sending Replay Save==================================//
 </script>
 <!--end::Page Scripts-->
 @include('components.Ajax')
@@ -584,6 +645,47 @@
             $(`#customFileName${count}`).attr('required', false);
         }
     }
+
+
+
+
+    // ============= Add Reply Attachment Row ========= start =========
+    $("#addReplyFileRow").click(function(e) {
+        addReplyFileRowFunc();
+    });
+    //add row function
+    function addReplyFileRowFunc() {
+        var count = parseInt($('#reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#replyFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+
+
+
+
+
+
+
+
     //Attachment Title Change
     function attachmentTitle(id) {
         // var value = $('#customFile' + id).val();

@@ -41,6 +41,31 @@ class AttachmentRepository
             }
         }
     }
+
+    public static function storeReplyAttachment($appName, $caseId, $request)
+    {
+        if($request->file_name != NULL){
+            foreach($request->file_type as $key => $val)
+            {
+                $filePath = "uploads/" . $appName ."/reply_attachment/";
+                if($request->file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
+                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                }
+                $attachment = new Attachment();
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_name = $filePath.$otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
+
     public static function storeSingleAttachment($path, $file, $caseId)
     {
         if($file != NULL){

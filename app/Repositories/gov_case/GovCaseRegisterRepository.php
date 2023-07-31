@@ -173,12 +173,12 @@ class GovCaseRegisterRepository
             $case->result_sending_memorial= $caseInfo->result_sending_memorial;
             $case->result_sending_date_solisitor_to_ag= $result_sending_date_solisitor_to_ag;
             $case->result_sending_memorial_solisitor_to_ag= $caseInfo->result_sending_memorial_solisitor_to_ag;
-            $case->result_sending_memorial= $caseInfo->result_sending_memorial;
             $case->reply_submission_date = $reply_submission_date;  
             $case->result_short_dtails= $caseInfo->result_short_dtails;
             $case->result= $caseInfo->result;
             $case->is_appeal= $caseInfo->is_appeal;
             $case->comments= $caseInfo->comments;
+            $case->is_final_order= $caseInfo->is_final_order;
             $case->arji_file= null;
             $case->status= 1;
             $case->case_status_id= 33;
@@ -281,7 +281,8 @@ class GovCaseRegisterRepository
             $case->date_issuing_rule_nishi =date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->case_date)));
             $case->case_division_id= $caseInfo->case_department;
             $case->case_category_id= $caseInfo->case_category;
-            $case->concern_user_id= $caseInfo->concern_person;
+            $case->concern_person_designation= $caseInfo->concern_person_designation;
+            $case->concern_user_id= $caseInfo->concern_user_id;
             $case->subject_matter= $caseInfo->subject_matter;
             $case->postponed_details= $caseInfo->postponed_details;
             $case->interim_order= $caseInfo->interim_order;
@@ -425,4 +426,48 @@ class GovCaseRegisterRepository
             // dd($case_status);
         return $case_status;
     }
+
+    public static function storeSendingReply($caseInfo){
+        $case = self::checkGovCaseExist($caseInfo['caseId']);
+        if ($caseInfo->result_sending_date != NULL && $caseInfo->result_sending_date != '') {
+            $result_sending_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date)));        
+        } else {
+            $result_sending_date = null;
+        }
+        if ($caseInfo->result_sending_date_solisitor_to_ag != NULL && $caseInfo->result_sending_date_solisitor_to_ag != '') {
+            $result_sending_date_solisitor_to_ag = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date_solisitor_to_ag)));        
+        } else {
+            $result_sending_date_solisitor_to_ag = null;
+        }   
+        if ($caseInfo->reply_submission_date != NULL && $caseInfo->reply_submission_date != '') {
+            $reply_submission_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));        
+        } else {
+            $reply_submission_date = null;
+        }
+        if ($caseInfo->tamil_requesting_date != NULL && $caseInfo->tamil_requesting_date != '') {
+            $tamil_requesting_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->tamil_requesting_date)));        
+        } else {
+            $tamil_requesting_date = null;
+        }
+
+
+        try{
+            $case->result_sending_memorial= $caseInfo->result_sending_memorial;
+            $case->result_sending_memorial_solisitor_to_ag= $caseInfo->result_sending_memorial_solisitor_to_ag;
+            $case->tamil_requesting_memorial= $caseInfo->tamil_requesting_memorial;
+            $case->tamil_requesting_date= $tamil_requesting_date;
+            
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId=null;
+        }
+        return $caseId;
+    }
+
+
+
+
+
+
+
 }

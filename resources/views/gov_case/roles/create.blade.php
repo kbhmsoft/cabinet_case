@@ -76,11 +76,11 @@
                  <button type="button" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                 @endif
 
-                @if(auth()->user()->can('role_delete'))
+                {{-- @if(auth()->user()->can('role_delete'))
                   <a href="{{ route('cabinet.roleItemDelete', $role->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                 @else
                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
-                @endif
+                @endif --}}
                </td>
             </tr>
 
