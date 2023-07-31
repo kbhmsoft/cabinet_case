@@ -211,6 +211,8 @@ class GovCaseOfficeController extends Controller
             $data['office_type'] = DB::table('gov_case_office_type')
                 ->select('gov_case_office_type.*')
                 ->get();
+
+
             $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
         // dd($data);
 
@@ -292,6 +294,7 @@ class GovCaseOfficeController extends Controller
             ->select('gov_case_office_type.*')
             ->get();
 
+            // dd($data);
         $data['page_title'] = 'অফিসের তথ্য হালনাগাদ ফরম';
         // return $data;
         return view('gov_case.office.edit')->with($data);
@@ -330,6 +333,8 @@ class GovCaseOfficeController extends Controller
         DB::table('gov_case_office')
             ->where('id', $id)
             ->update($data);
+
+            // dd($data);
 
         return redirect()->route('cabinet.office')
             ->with('success', 'অফিস সফলভাবে সংশোধন করা হয়েছে');
