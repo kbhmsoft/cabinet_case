@@ -7,13 +7,13 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -82,7 +82,7 @@
                                         <fieldset class="mb-8">
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
-                                                
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
@@ -170,7 +170,7 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
-                                                            
+
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
@@ -184,7 +184,7 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="MainBibadiDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
-                                                        
+
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
@@ -202,7 +202,7 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
-                                                        
+
                                                         <tr>
                                                             <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
@@ -251,7 +251,7 @@
                                                         <select name="concern_user_id" id="concern_user_id"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            
+
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -440,7 +440,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         <input type="hidden" id="caseIDForAnswer" name="case_id">
-                                        
+
                                             <fieldset class="mb-8">
                                                 {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
                                                 <div class="form-group row">
@@ -487,7 +487,7 @@
                                                         <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
                                                                 </textarea>
                                                     </div>
-                                                    
+
                                                 </div>
 
                                                 <div class="form-group row" id="highCourt_hide_show">
@@ -642,7 +642,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+
                                         <!--end::Card-->
                                     </div>
                                 </div>
@@ -664,9 +664,9 @@
                                         <input type="hidden" id="caseIDForSuspention" name="case_id">
 
                                         <fieldset>
-                                           
+
                                             <div class="form-group row">
-                                                
+
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
                                                     </label>
@@ -693,7 +693,7 @@
                                                             class="text-danger"></span></label>
                                                     <textarea type="text" name="appeal_against_postpond_interim_order_details"
                                                         id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
-                                                </div>  
+                                                </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>প্রযোজ্য ক্ষেত্রে তামিল প্রতিবেদন প্রেরণের স্মারক <span
                                                             class="text-danger"></span></label>
