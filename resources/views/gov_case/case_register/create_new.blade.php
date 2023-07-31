@@ -35,6 +35,7 @@
                     </ul>
                 </div>
             @endif
+
             <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
                 <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -270,8 +271,8 @@
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
- 
-                                                    
+
+
                                                 {{-- starting সংযুক্তি  --}}
 
 

@@ -499,9 +499,8 @@
                             'success'
                         )
                         console.log(data);
-                        // console.log(data.caseId);
-                        $("#sending_reply_tab").click();
 
+                        $("#sending_reply_tab").click();
                         $("#caseIDForAnswer").val(data.caseId);
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
