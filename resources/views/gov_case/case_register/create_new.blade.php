@@ -270,7 +270,7 @@
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
-=======
+ 
                                                     <div class="col-lg-4 mb-5">
                                                         <label>মামলা নং <span class="text-danger">*</span></label>
                                                         <input type="text" name="case_no" id="case_no"
