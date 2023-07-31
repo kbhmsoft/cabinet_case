@@ -83,7 +83,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-lg-4 mb-5" id="DivisionalParentDiv">
+                                        <div class="col-lg-4 mb-5" id="DivisionalParentDiv" style="">
                                             <label>বিভাগীয় প্রশাসন</label>
 
                                             <select name="parentDivID" id="parentDivID" class="form-control w-100">
@@ -292,9 +292,10 @@
             }else{
                 $('#DivisionalParentDiv').hide();
                 $('#parentMinDiv').hide();
+                $('#parentMinID').val('');
+                $('#parentDivID').val('');
             }
         });
-
    });
 </script>
 

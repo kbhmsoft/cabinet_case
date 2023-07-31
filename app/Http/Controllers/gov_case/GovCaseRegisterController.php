@@ -897,7 +897,7 @@ class GovCaseRegisterController extends Controller
         ]);
         try{
             $caseId =GovCaseRegisterRepository::storeSendingReply($request);
-           
+
 
             //========= Gov Case Activity Log -  start ============
                 $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -935,7 +935,7 @@ class GovCaseRegisterController extends Controller
     {
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-
+        $data['concern_person_desig'] = Role::whereIn('id', [14,15,33,36])->get();
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
         $data['ministrys'] = GovCaseOffice::get();
@@ -943,8 +943,11 @@ class GovCaseRegisterController extends Controller
         $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['courts'] = Court::select('id', 'court_name')->get();
-
+        $data['courts'] = DB::table('court')
+                ->select('id', 'court_name')
+                ->whereIn('id',[1,2])
+                ->get();
+        // dd($data['courts']);
         if($roleID != 33){
             $data['depatments'] = Office::where('parent', $officeID)->get();
         }else{

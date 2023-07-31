@@ -185,8 +185,6 @@
                         <div class="row">
                             <div class="col-lg-4"></div>
                             <div class="col-lg-4">
-                                <button type="button" data-toggle="modal" data-target="#myModal"
-                                    class="btn btn-primary mr-3" id="preview">প্রিভিউ</button>
                                 <button type="submit" class="btn btn-success mr-2"
                                     onclick="return confirm('আপনি কি সংরক্ষণ করতে চান?')">সংরক্ষণ করুন</button>
                             </div>
