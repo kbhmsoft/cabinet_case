@@ -265,7 +265,6 @@
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
 
-<<<<<<< HEAD
                                                 <div class="col-lg-8 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order" value="1">
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
@@ -365,7 +364,7 @@
                                                             </small> </label>
                                                         <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                     </div>
->>>>>>> acf5a6150429e3e26938ffb31f8cf687f7674dc3
+
 
 
                                                 {{-- starting সংযুক্তি  --}}
