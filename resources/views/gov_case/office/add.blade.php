@@ -20,10 +20,10 @@
         height: 41px;
         /*user-select: none;
         -webkit-user-select: none;
-        padding-top: 6px;*/ 
+        padding-top: 6px;*/
         font-size:1.2rem
     }
-</style> 
+</style>
 <!--begin::Row-->
 <div class="row">
 
@@ -33,16 +33,16 @@
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
                 <div class="card-toolbar">
-                    <div class="card-toolbar">     
-                @if(auth()->user()->can('all_office_list'))   
+                    <div class="card-toolbar">
+                @if(auth()->user()->can('all_office_list'))
                         <a href="{{ route('cabinet.office') }}" class="btn btn-sm btn-primary font-weight-bolder">
                            <i class="la la-arrow-left"></i>অফিস তালিকা
                         </a>
-                @else 
+                @else
                 <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">
                            <i class="la la-arrow-left"></i>অফিস তালিকা
                         </a>
-                @endif                
+                @endif
                      </div>
                     <!-- <div class="example-tools justify-content-center">
                         <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
@@ -51,11 +51,11 @@
                 </div>
             </div>
             	@if ($errors->any())
-            	 	
+
 				     @foreach ($errors->all() as $error)
 				    	<li class="alert alert-danger">{{ $error }}</li>
 				     @endforeach
- 					
+
  				@endif
             <!--begin::Form-->
             <form action="{{ route('cabinet.office.save') }}" class="form" method="POST">
@@ -64,9 +64,10 @@
                     <div class="form-group row">
                         <div class="container">
                             <div class="row">
+
                                 <div class="col-lg-4 mb-5">
                                     <label>অফিস লেভেল</label>
-                                    
+
                                     <select name="level" id="level"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($office_type as $value)
@@ -74,9 +75,10 @@
                                           @endforeach
                                        </select>
                                 </div>
+
                                 <div class="col-lg-6 mb-5" id="parentMinDiv" style="display: none;">
                                     <label>মন্ত্রণালয় / বিভাগ</label><br>
-                                    
+
                                     <select name="parentMinID" id="parentMinID"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($ministries as $value)
@@ -87,7 +89,7 @@
 
                                 <div class="col-lg-4 mb-5" id="DivisionalParentDiv" style="display: none;">
                                     <label>বিভাগীয় প্রশাসন</label>
-                                    
+
                                     <select name="parentDivID" id="parentDivID"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($divisions as $value)
@@ -95,6 +97,7 @@
                                           @endforeach
                                        </select>
                                 </div>
+
                                 <div class="form-group col-lg-8">
                                     <label for="office_name" class=" form-control-label">অফিসের নাম <span class="text-danger">*</span></label>
                                     <input type="text" id="office_name" name="office_name" placeholder="অফিসের নাম লিখুন" class="form-control form-control-sm">
@@ -102,7 +105,7 @@
                                         {{ $errors->first('office_name') }}
                                     </span>
                                 </div>
-                                
+
                                 <div class="col-lg-2">
                                   <label>স্ট্যাটাস <span class="text-danger">*</span></label>
                                   <div class="radio-inline">
@@ -142,25 +145,17 @@
 {{-- Scripts Section Related Page--}}
 @section('scripts')
 
- 
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript">
       jQuery(document).ready(function ()
       {
-
         $('#parentMinID').select2();
         $('#parentDivID').select2();
-        // $('#district_id').select2();
-        // District Dropdown
         jQuery('select[name="division"]').on('change',function(){
         var dataID = jQuery(this).val();
-        // var category_id = jQuery('#category_id option:selected').val();
         jQuery("#district_id").after('<div class="loadersmall"></div>');
-        // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-        // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-        // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-        // jQuery('.loadersmall').remove();
         if(dataID)
         {
             jQuery.ajax({
@@ -170,17 +165,11 @@
                 success:function(data)
                 {
                     jQuery('select[name="district"]').html('<div class="loadersmall"></div>');
-                    //console.log(data);
-                    // jQuery('#mouja_id').removeAttr('disabled');
-                    // jQuery('#mouja_id option').remove();
-
                     jQuery('select[name="district"]').html('<option value="">-- নির্বাচন করুন --</option>');
                     jQuery.each(data, function(key,value){
                     jQuery('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
                     jQuery('.loadersmall').remove();
-                    // $('select[name="mouja"] .overlay').remove();
-                    // $("#loading").hide();
                 }
             });
         }
@@ -190,17 +179,11 @@
         }
         });
 
-        // Upazila Dropdown
         jQuery('select[name="district"]').on('change',function(){
             var dataID = jQuery(this).val();
-            // var category_id = jQuery('#category_id option:selected').val();
+
             jQuery("#upazila_id").after('<div class="loadersmall"></div>');
-            // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-            // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-            // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-            // jQuery('.loadersmall').remove();
-            /*if(dataID)
-            {*/
+
                 jQuery.ajax({
                 url : '{{url("/")}}/case/dropdownlist/getdependentupazila/' +dataID,
                 type : "GET",
@@ -208,31 +191,18 @@
                 success:function(data)
                 {
                 jQuery('select[name="upazila"]').html('<div class="loadersmall"></div>');
-                    //console.log(data);
-                    // jQuery('#mouja_id').removeAttr('disabled');
-                    // jQuery('#mouja_id option').remove();
 
                     jQuery('select[name="upazila"]').html('<option value="">-- নির্বাচন করুন --</option>');
                     jQuery.each(data, function(key,value){
                         jQuery('select[name="upazila"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
                     jQuery('.loadersmall').remove();
-                    // $('select[name="mouja"] .overlay').remove();
-                    // $("#loading").hide();
                 }
                 });
-            //}
 
-            // Load Court
             var courtID = jQuery(this).val();
-            // var category_id = jQuery('#category_id option:selected').val();
             jQuery("#court_id").after('<div class="loadersmall"></div>');
-            // $("#loading").html("<img src='{{ asset('media/preload.gif') }}' />");
-            // jQuery('select[name="mouja"]').html('<option><div class="loadersmall"></div></option');
-            // jQuery('select[name="mouja"]').attr('disabled', 'disabled');
-            // jQuery('.loadersmall').remove();
-            // if(courtID)
-            // {
+
                 jQuery.ajax({
                 url : '{{url("/")}}/court/dropdownlist/getdependentcourt/' +courtID,
                 type : "GET",
@@ -240,25 +210,15 @@
                 success:function(data)
                 {
                     jQuery('select[name="court"]').html('<div class="loadersmall"></div>');
-                    //console.log(data);
-                    // jQuery('#mouja_id').removeAttr('disabled');
-                    // jQuery('#mouja_id option').remove();
 
                     jQuery('select[name="court"]').html('<option value="">-- নির্বাচন করুন --</option>');
                     jQuery.each(data, function(key,value){
                         jQuery('select[name="court"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
                     jQuery('.loadersmall').remove();
-                    // $('select[name="mouja"] .overlay').remove();
-                    // $("#loading").hide();
                 }
                 });
-            //}
-            /*else
-            {
-                $('select[name="upazila"]').empty();
-                $('select[name="court"]').empty();
-            }*/
+
         });
 
 
@@ -284,17 +244,17 @@
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script>
         // common datepicker
-        $('.common_datepicker').datepicker({  
-            format: "dd/mm/yyyy",         
+        $('.common_datepicker').datepicker({
+            format: "dd/mm/yyyy",
             todayHighlight: true,
             orientation: "bottom left"
         });
     </script>
 
 
-    @endsection     
+    @endsection
 
-   
+
     <!--end::Page Scripts-->
 
 

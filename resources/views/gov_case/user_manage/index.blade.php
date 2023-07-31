@@ -83,6 +83,7 @@
                         @endforeach
                     </select>
                 </div>
+                
                 <div class="form-group mb-2 mr-2">
                     <select name="office_id" id="office_id" class="form-control">
                         <option value="">- অফিস নির্বাচন করুন-</option>3
@@ -329,7 +330,7 @@
                                 jQuery('select[name="office_id"]').append(
                                         '<option value="' + key +
                                         '">' + value + '</option>');
-                                //  
+                                //
                             });
                             jQuery('.loadersmall').remove();
                         }

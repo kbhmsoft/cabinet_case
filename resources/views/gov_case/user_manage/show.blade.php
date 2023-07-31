@@ -2,8 +2,7 @@
 
 @section('content')
 
-@php //echo $userManagement->name;
-//exit(); @endphp
+
 <!--begin::Card-->
 <div class="card card-custom col-7">
    <div class="card-header flex-wrap py-5">
@@ -24,7 +23,15 @@
 
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">ইউজার রোলঃ</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6">{{ $userManagement->name}}</span>
+         <span class="text-dark flex-root font-weight-bolder font-size-h6">
+
+            @foreach ($roles as $value)
+            @if($value->id == $userManagement->role_id )
+             {{ $value->name }}
+             @endif
+            @endforeach
+
+        </span>
       </div>
       <div class="d-flex mb-3">
          <span class="text-dark-100 flex-root font-weight-bold font-size-h6">মোবাইল নাম্বারঃ</span>
