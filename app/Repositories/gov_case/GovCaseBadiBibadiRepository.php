@@ -24,7 +24,6 @@ class GovCaseBadiBibadiRepository
                     $badi = self::checkBadiExist($caseInfo->badi_id[$key]);
                     $badi->gov_case_id = $govCaseId;
                     $badi->name = $caseInfo->badi_name[$key];
-                    $badi->spouse_name = $caseInfo->badi_spouse_name[$key];
                     $badi->address = $caseInfo->badi_address[$key];
                     $badi->save();
                 }

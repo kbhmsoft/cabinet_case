@@ -2,6 +2,8 @@
     $department = '';
 @endphp --}}
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -22,16 +24,18 @@
 </script>
 
 <script type="text/javascript">
-    $('form').submit(function() {
-        $('[disabled]').removeAttr('disabled');
-    })
+    // $('form').submit(function() {
+    //     $('[disabled]').removeAttr('disabled');
+    // })
     $(document).ready(function() {
         // addBadiRowFunc();
+
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
         }
         addFileRowFunc();
+        addReplyFileRowFunc();
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
@@ -70,6 +74,42 @@
                 $('select[name="case_category_type"]').empty();
             }
         });
+
+
+
+        //===========GetConsernPersonByDesignation================//
+
+
+        jQuery('select[name="concern_person_designation"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
+
+            if (dataID) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                        dataID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="concern_user_id"]').html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery('select[name="concern_user_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="concern_user_id"]').append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                        // $('select[name="mouja"] .overlay').remove();
+                        // $("#loading").hide();
+                    }
+                });
+            } else {
+                $('select[name="concern_user_id"]').empty();
+            }
+        });
     });
 
     /*********************** Add multiple badi *************************/
@@ -84,8 +124,7 @@
         items +=
             '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items += '<input type="hidden" name="badi_id[]" value="">';
-        items +=
-            '<td><input type="text" name="badi_spouse_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+
         items +=
             '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
@@ -394,175 +433,155 @@
         });
     });
 </script>
-
-<!-- ==================Tab Form JS===================== -->
-<script type="text/javascript">
-    //your javascript goes here
-    var currentTab = 0; // Current tab is set to be the first tab (0)
-    showTab(currentTab); // Display the current tab
-
-    function showTab(n) {
-        // This function will display the specified tab of the form...
-        var x = document.getElementsByClassName("step");
-        x[n].style.display = "block";
-        //... and fix the Previous/Next buttons:
-        if (n == 0) {
-            document.getElementById("prevBtn").style.display = "none";
-        } else {
-            document.getElementById("prevBtn").style.display = "inline";
-        }
-        if (n == (x.length - 1)) {
-            document.getElementById("nextBtn").innerHTML = "সংরক্ষণ";
-        } else {
-            document.getElementById("nextBtn").innerHTML = "পরবর্তী";
-        }
-        //... and run a function that will display the correct step indicator:
-        fixStepIndicator(n)
+<script>
+    // ===========================Button Disable=========================//
+    var caseIDForAnswer = $('#caseIDForAnswer').val();
+    if (!(caseIDForAnswer)) {
+        $('#sendingReplySaveBtn').prop('disabled', true);
+        $('#sendingReplySaveBtn').addClass("disable-button");
     }
 
+    var caseIDForSuspention = $('#caseIDForSuspention').val();
+    if (!(caseIDForSuspention)) {
+        $('#suspensionOrderSaveBtn').prop('disabled', true);
+        $('#suspensionOrderSaveBtn').addClass("disable-button");
+    }
 
-    // function nextPrev(n) {
-    //     let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
-    //     let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
-    //     // console.log(elmts.length);
-    //     let validation = true;
-    //     for (let i = 0; i < elmts.length; i++) {
-    //         console.log(elmts[i].value);
-    //         if (!elmts[i].value) {
-    //             console.log(i,'false');
-    //             validation = false
-    //             removeMessage[i].classList.remove("d-none");
-    //         } else {
-    //             console.log(i, 'else');
-    //             validation = true
-    //             removeMessage[i].classList.add("d-none");
-    //         }
-    //     }
+    var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
+    if (!(caseIDForFinalOrder)) {
+        $('#finalOrderSaveBtn').prop('disabled', true);
+        $('#finalOrderSaveBtn').addClass("disable-button");
+    }
 
-    //     if (validation) {
-    //         // This function will figure out which tab to display
-    //         var x = document.getElementsByClassName("step");
-    //         // Exit the function if any field in the current tab is invalid:
-    //         if (n == 1 && !validateForm()) return false;
-    //         // Hide the current tab:
-    //         x[currentTab].style.display = "none";
-    //         // Increase or decrease the current tab by 1:
-    //         currentTab = currentTab + n;
-    //         // if you have reached the end of the form...
-    //         if (currentTab >= x.length) {
-    //             // ... the form gets submitted:
-    //             document.getElementById("signUpForm").submit();
-    //             return false;
-    //         }
-    //         // Otherwise, display the correct tab:
-    //         showTab(currentTab);
-    //     }
-
-    // }
+    var caseIDForContempt = $('#caseIDForContempt').val();
+    if (!(caseIDForContempt)) {
+        $('#contemptCaseSaveBtn').prop('disabled', true);
+        $('#contemptCaseSaveBtn').addClass("disable-button");
+    }
+    // ===========================Button Disable=========================//
 
 
-    // function nextPrev(n) {
-    //     let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
-    //     let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
-    //     // console.log(elmts.length);
-    //     let validation = true;
-    //     for (let i = 0; i < elmts.length; i++) {
-    //         console.log(elmts[i].value);
-    //         if (!elmts[i].value) {
-    //             console.log(i,'if');
-    //             validation = false
-    //             removeMessage[i].classList.remove("d-none");
-    //         } else {
-    //             console.log(i, 'else');
-    //             removeMessage[i].classList.add("d-none");
-    //         }
-    //     }
 
-    function nextPrev(n) {
-        let elmts = document.getElementById("signUpForm").querySelectorAll("[required]")
-        let removeMessage = document.getElementById("signUpForm").querySelectorAll(".vallidation-message")
-        let validation = true;
-        for (let i = 0; i < elmts.length; i++) {
-            console.log(elmts[i].value);
-            if (!elmts[i].value) {
-                console.log(i,'if');
-                validation = false
-                removeMessage[i].classList.remove("d-none");
-            } else {
-                console.log(i, 'else');
-                // validation = true
-                removeMessage[i].classList.add("d-none");
+    // ================================Case General Info save==================================
+
+    $('#caseGeneralInfoForm').submit(function(e) {
+        // alert(1);
+        e.preventDefault();
+        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        Swal.fire({
+            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var formData = new FormData(this);
+                $.ajax({
+
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.store') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        $("#sending_reply_tab").click();
+
+                        $("#caseIDForAnswer").val(data.caseId);
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+
+                    }
+                });
             }
-        }
+        })
+
+    });
+    // ================================Case General Info save==================================
+
+    // ================================Sending Replay Save==================================//
 
 
 
+    $('#sendingReplyForm').submit(function(e) {
+        // alert(1);
+        e.preventDefault();
+        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
-        if (validation) {
-            // This function will figure out which tab to display
-            var x = document.getElementsByClassName("step");
-            // Exit the function if any field in the current tab is invalid:
-            if (n == 1 && !validateForm()) return false;
-            // Hide the current tab:
-            x[currentTab].style.display = "none";
-            // Increase or decrease the current tab by 1:
-            currentTab = currentTab + n;
-            // if you have reached the end of the form...
-            if (currentTab >= x.length) {
-                // ... the form gets submitted:
-                document.getElementById("signUpForm").submit();
-                return false;
+        Swal.fire({
+            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var formData = new FormData(this);
+                $.ajax({
+
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.sendingReplyStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        $("#suspension_order").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+
+                    }
+                });
             }
-            // Otherwise, display the correct tab:
-            showTab(currentTab);
-        }
+        })
 
-    }
-
-    function validateForm() {
-        // This function deals with validation of the form fields
-        var x, y, i, valid = true;
-        x = document.getElementsByClassName("step");
-        // y = x[currentTab].getElementsByTagName("input");
-        y = x[currentTab].querySelectorAll("[required]");
-        console.log(y.name);
-        // A loop that checks every input field in the current tab:
-        /* for (i = 0; i < y.length; i++) {
-           // If a field is empty...
-           if (y[i].value == "") {
-             // add an "invalid" class to the field:
-             y[i].className += " invalid";
-             // and set the current valid status to false
-             valid = false;
-           }
-           if( document.getElementById("customFile1").files.length == 0 ){
-               console.log("no files selected");
-               $('.custom-file-label').css("border-color","#FF0000");
-
-           }
-
-         }
-         // If the valid status is true, mark the step as finished and valid:
-         if (valid) {
-           document.getElementsByClassName("stepIndicator")[currentTab].className += " finish";
-         }*/
-        return valid; // return the valid status
-    }
-
-    function fixStepIndicator(n) {
-        // This function removes the "active" class of all steps...
-        var i, x = document.getElementsByClassName("stepIndicator");
-        for (i = 0; i < x.length; i++) {
-            x[i].className = x[i].className.replace(" active", "");
-        }
-        //... and adds the "active" class on the current step:
-        x[n].className += " active";
-    }
+    });
+    // ================================Sending Replay Save==================================//
 </script>
-<!-- ==================//Tab Form JS===================== -->
-
-
-
 <!--end::Page Scripts-->
 @include('components.Ajax')
 <script>
@@ -626,6 +645,47 @@
             $(`#customFileName${count}`).attr('required', false);
         }
     }
+
+
+
+
+    // ============= Add Reply Attachment Row ========= start =========
+    $("#addReplyFileRow").click(function(e) {
+        addReplyFileRowFunc();
+    });
+    //add row function
+    function addReplyFileRowFunc() {
+        var count = parseInt($('#reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#replyFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+
+
+
+
+
+
+
+
     //Attachment Title Change
     function attachmentTitle(id) {
         // var value = $('#customFile' + id).val();

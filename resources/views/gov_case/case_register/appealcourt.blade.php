@@ -34,7 +34,7 @@
             <tr>
                <th scope="col" width="30">ক্রমিক</th>
                <th scope="col">লিভ টু আপিল নম্বর ও দায়েরের তারিখ</th>
-               <th scope="col">আপিলকারীর নাম/ঠিকানা</th>
+               <th scope="col">আপিলকারীর নাম</th>
                <th scope="row">মুল প্রতিবাদি দপ্তর-সংস্থা</th>
                <th scope="col">মামলার বিষয়বস্তু</th>
                <th scope="col" width="70">অ্যাকশন</th>
@@ -45,13 +45,13 @@
             <tr>
                <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                <td style="width: 10px;">{{ $row->case_no }},<br>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi):''}}</td>
-               <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
+               <td>{{ $row->badis->first()->name ?? '-' }} </td>
                <td>
                   @foreach ($row->mainBibadis as $key=>$bibadi)
                      {{en2bn($key+1)}}.{{ $bibadi->ministry->office_name_bn ?? '-' }},{{ $bibadi->department->office_name_bn ?? '-' }}<br>
                   @endforeach
                </td>
-               <td>{{ $row->subject_matter ?? '-'}}</td>
+               <td>{{ Str::limit($row->subject_matter, 100) ?? '-'}}</td>
                <td>
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
