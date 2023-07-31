@@ -46,8 +46,8 @@
                             aria-controls="profile" aria-selected="false">জবাব প্রেরণ</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab" role="tab"
-                            aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
+                        <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
+                            role="tab" aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
                             আদেশ সম্পর্কিত</a>
                     </li>
 
@@ -82,7 +82,7 @@
                                         <fieldset class="mb-8">
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
-                                                
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
@@ -150,8 +150,8 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm"
-                                                        placeholder="মামলা নং " required="required">
+                                                        class="form-control form-control-sm" placeholder="মামলা নং "
+                                                        required="required">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -170,7 +170,7 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
-                                                            
+
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
@@ -184,7 +184,7 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="MainBibadiDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
-                                                        
+
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
@@ -202,7 +202,7 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
-                                                        
+
                                                         <tr>
                                                             <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
@@ -227,10 +227,12 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span class="text-danger">*</span></label>
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                            class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation" id="concern_person_designation"
+                                                        <select name="concern_person_designation"
+                                                            id="concern_person_designation"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($concern_person_desig as $value)
@@ -245,13 +247,14 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span class="text-danger">*</span></label>
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                            class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonNameDiv">
                                                         <select name="concern_user_id" id="concern_user_id"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            
+
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -266,12 +269,13 @@
                                                 </div>
 
                                                 <div class="col-lg-8 mb-5">
-                                                    <input type="checkbox" id="is_final_order" name="is_final_order" value="1">
+                                                    <input type="checkbox" id="is_final_order" name="is_final_order"
+                                                        value="1">
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
- 
-                                                    
+
+
                                                 {{-- starting সংযুক্তি  --}}
 
 
@@ -327,8 +331,9 @@
                                         <!--end::Card-->
                                     </div>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="submit" id="caseGeneralInfoSaveBtn" class="submit-button">সংরক্ষণ</button>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="caseGeneralInfoSaveBtn"
+                                        class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -338,71 +343,68 @@
 
                         {{-- ------------- start জবাব প্রেরণ ------------- --}}
                         <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="sendingReplyForm" action="javascript:void(0)" class="form"
-                                method="POST" enctype="multipart/form-data">
+                            <form id="sendingReplyForm" action="javascript:void(0)" class="form" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         <input type="hidden" id="caseIDForAnswer" name="case_id">
-                                        
-                                            <fieldset class="mb-8">
-                                                {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
-                                                <div class="form-group row">
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
-                                                        <input type="text" name="result_sending_date"
-                                                            id="result_sending_date"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
-                                                        <input type="text" name="result_sending_memorial"
-                                                            id="result_sending_memorial"
-                                                            class="form-control form-control-sm" placeholder=""
-                                                            autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
-                                                        </label>
-                                                        <input type="text" name="result_sending_date_solisitor_to_ag"
-                                                            id="result_sending_date_solisitor_to_ag"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
-                                                            স্মারক </label>
-                                                        <input type="text"
-                                                            name="result_sending_memorial_solisitor_to_ag"
-                                                            id="result_sending_memorial_solisitor_to_ag"
-                                                            class="form-control form-control-sm" placeholder=""
-                                                            autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
-                                                        <input type="text" name="reply_submission_date"
-                                                            id="reply_submission_date"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-md-6 mb-5">
-                                                        <label>মন্তব্য</label>
-                                                        <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
+
+                                        <fieldset class="mb-8">
+                                            {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
+                                            <div class="form-group row">
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
+                                                    <input type="text" name="result_sending_date"
+                                                        id="result_sending_date"
+                                                        class="form-control form-control-sm  common_datepicker"
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
+                                                    <input type="text" name="result_sending_memorial"
+                                                        id="result_sending_memorial" class="form-control form-control-sm"
+                                                        placeholder="" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
+                                                    </label>
+                                                    <input type="text" name="result_sending_date_solisitor_to_ag"
+                                                        id="result_sending_date_solisitor_to_ag"
+                                                        class="form-control form-control-sm  common_datepicker"
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
+                                                        স্মারক </label>
+                                                    <input type="text" name="result_sending_memorial_solisitor_to_ag"
+                                                        id="result_sending_memorial_solisitor_to_ag"
+                                                        class="form-control form-control-sm" placeholder=""
+                                                        autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
+                                                    <input type="text" name="reply_submission_date"
+                                                        id="reply_submission_date"
+                                                        class="form-control form-control-sm  common_datepicker"
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                </div>
+                                                <div class="col-md-6 mb-5">
+                                                    <label>মন্তব্য</label>
+                                                    <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
                                                                 </textarea>
-                                                    </div>
-                                                    
                                                 </div>
 
-                                                <div class="form-group row" id="highCourt_hide_show">
-                                                    {{-- <div class="col-md-6 mb-5">
+                                            </div>
+
+                                            <div class="form-group row" id="highCourt_hide_show">
+                                                {{-- <div class="col-md-6 mb-5">
                                                         <label>মন্তব্য</label>
                                                         <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
                                                                 </textarea>
                                                     </div> --}}
-                                                </div>
-                                            </fieldset>
+                                            </div>
 
 
 
@@ -421,13 +423,11 @@
 
                                                         <div class="symbol-group symbol-hover py-2">
                                                             <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="" role="button"
-                                                                data-original-title="ফাইল যুক্ত করুণ">
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
 
                                                                 <div id="addReplyFileRow">
-                                                                    <span
-                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                    <span class="symbol-label font-weight-bold bg-success">
                                                                         <i
                                                                             class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                     </span>
@@ -442,117 +442,118 @@
                                                             style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
                                                         </table>
-                                                        <input type="hidden" id="reply_attachment_count"
-                                                            value="1">
+                                                        <input type="hidden" id="reply_attachment_count" value="1">
                                                     </div>
                                                 </fieldset>
                                             </div>
 
                                             {{-- end সংযুক্তি --}}
-                                            <div class="row">
-                                                <div class="col-md-12" id="appeal_hide_show_3">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <fieldset class="mb-6">
-                                                                <legend>লিভ টু আপিল </legend>
-                                                                <div class="form-group row">
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>লিভ টু আপিল নম্বর <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text" name="leave_to_appeal_no"
-                                                                            id="leave_to_appeal_no"
-                                                                            class="form-control form-control-sm"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>লিভ টু আপিল দায়েরের তারিখ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text" name="leave_to_appeal_date"
-                                                                            id="leave_to_appeal_date"
-                                                                            class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>লিভ টু আপিল আদেশের তারিখ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text"
-                                                                            name="leave_to_appeal_order_date"
-                                                                            id="leave_to_appeal_order_date"
-                                                                            class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>লিভ টু আপিল আদেশের বিবরণ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <textarea name="leave_to_appeal_order_details" class="form-control" id="leave_to_appeal_order_details"
-                                                                            rows="3" spellcheck="false"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <fieldset class="mb-6">
-                                                                <legend>সিভিল আপিল </legend>
-                                                                <div class="form-group row">
 
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>সিভিল আদেশের তারিখ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text"
-                                                                            name="civil_appeal_order_date"
-                                                                            id="civil_appeal_order_date"
-                                                                            class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>সিভিল আপিল আদেশের বিবরণ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <textarea name="civil_appeal_order_details" class="form-control" id="civil_appeal_order_details" rows="3"
-                                                                            spellcheck="false"></textarea>
-                                                                    </div>
+                                        </fieldset>
+
+                                        <div class="row">
+                                            <div class="col-md-12" id="appeal_hide_show_3">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <fieldset class="mb-6">
+                                                            <legend>লিভ টু আপিল </legend>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>লিভ টু আপিল নম্বর <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="leave_to_appeal_no"
+                                                                        id="leave_to_appeal_no"
+                                                                        class="form-control form-control-sm"autocomplete="off">
                                                                 </div>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <fieldset class="mb-6">
-                                                                <legend>রিভিউ মামলা </legend>
-                                                                <div class="form-group row">
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>রিভিউ নম্বর <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text" name="review_case_no"
-                                                                            id="review_case_no"
-                                                                            class="form-control form-control-sm"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>রিভিউ দায়েরের তারিখ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text" name="review_case_date"
-                                                                            id="review_case_date"
-                                                                            class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>রিভিউ আদেশের তারিখ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <input type="text"
-                                                                            name="review_case_order_date"
-                                                                            id="review_case_order_date"
-                                                                            class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mb-5">
-                                                                        <label>রিভিউ আদেশের বিবরণ <span
-                                                                                class="text-danger"></span></label>
-                                                                        <textarea name="review_case_order_details" class="form-control" id="review_case_order_details" rows="3"
-                                                                            spellcheck="false"></textarea>
-                                                                    </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>লিভ টু আপিল দায়েরের তারিখ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="leave_to_appeal_date"
+                                                                        id="leave_to_appeal_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
                                                                 </div>
-                                                            </fieldset>
-                                                        </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>লিভ টু আপিল আদেশের তারিখ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text"
+                                                                        name="leave_to_appeal_order_date"
+                                                                        id="leave_to_appeal_order_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>লিভ টু আপিল আদেশের বিবরণ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <textarea name="leave_to_appeal_order_details" class="form-control" id="leave_to_appeal_order_details"
+                                                                        rows="3" spellcheck="false"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <fieldset class="mb-6">
+                                                            <legend>সিভিল আপিল </legend>
+                                                            <div class="form-group row">
+
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>সিভিল আদেশের তারিখ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="civil_appeal_order_date"
+                                                                        id="civil_appeal_order_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>সিভিল আপিল আদেশের বিবরণ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <textarea name="civil_appeal_order_details" class="form-control" id="civil_appeal_order_details" rows="3"
+                                                                        spellcheck="false"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <fieldset class="mb-6">
+                                                            <legend>রিভিউ মামলা </legend>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>রিভিউ নম্বর <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="review_case_no"
+                                                                        id="review_case_no"
+                                                                        class="form-control form-control-sm"autocomplete="off">
+                                                                </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>রিভিউ দায়েরের তারিখ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="review_case_date"
+                                                                        id="review_case_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>রিভিউ আদেশের তারিখ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <input type="text" name="review_case_order_date"
+                                                                        id="review_case_order_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                </div>
+                                                                <div class="col-lg-6 mb-5">
+                                                                    <label>রিভিউ আদেশের বিবরণ <span
+                                                                            class="text-danger"></span></label>
+                                                                    <textarea name="review_case_order_details" class="form-control" id="review_case_order_details" rows="3"
+                                                                        spellcheck="false"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+                                        </div>
+
                                         <!--end::Card-->
                                     </div>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="submit" id="sendingReplySaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="sendingReplySaveBtn"
+                                        class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -560,8 +561,8 @@
 
                         {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                         <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="suspensionOrderForm" action="javascript:void(0)" class="form"
-                                method="POST" enctype="multipart/form-data">
+                            <form id="suspensionOrderForm" action="javascript:void(0)" class="form" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -569,9 +570,9 @@
                                         <input type="hidden" id="caseIDForSuspention" name="case_id">
 
                                         <fieldset>
-                                           
+
                                             <div class="form-group row">
-                                                
+
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
                                                     </label>
@@ -579,7 +580,7 @@
                                                         id="appeal_against_postpond_interim_order"
                                                         class="form-control form-control-sm" placeholder=""
                                                         autocomplete="off">
-                                                    </div>
+                                                </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের
                                                         তারিখ <span class="text-danger"></span></label>
@@ -598,7 +599,7 @@
                                                             class="text-danger"></span></label>
                                                     <textarea type="text" name="appeal_against_postpond_interim_order_details"
                                                         id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
-                                                </div>  
+                                                </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>প্রযোজ্য ক্ষেত্রে তামিল প্রতিবেদন প্রেরণের স্মারক <span
                                                             class="text-danger"></span></label>
@@ -623,8 +624,9 @@
 
                                     </div>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="submit" id="suspensionOrderSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="suspensionOrderSaveBtn"
+                                        class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -632,8 +634,8 @@
 
 
                         <div class="tab-pane" id="final_order" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="finalOrderForm" action="javascript:void(0)" class="form"
-                                method="POST" enctype="multipart/form-data">
+                            <form id="finalOrderForm" action="javascript:void(0)" class="form" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -964,8 +966,9 @@
 
                                     </div>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="submit" id="finalOrderSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="finalOrderSaveBtn"
+                                        class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
@@ -1018,8 +1021,9 @@
 
                                     </div>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="submit" id="contemptCaseSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="contemptCaseSaveBtn"
+                                        class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
