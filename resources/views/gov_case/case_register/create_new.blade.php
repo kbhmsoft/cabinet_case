@@ -102,7 +102,7 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
+                                                {{-- <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
                                                     <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
                                                     <select name="appeal_case_id" id="appeal_case_id"
                                                         class="form-control form-control-sm">
@@ -115,7 +115,7 @@
                                                     </select>
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
@@ -269,12 +269,7 @@
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
 
-                                                <div class="col-lg-8 mb-5">
-                                                    <input type="checkbox" id="is_final_order" name="is_final_order"
-                                                        value="1">
-                                                    <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
-                                                        হয়ে থাকলে সিলেক্ট করুন</label><br>
-                                                </div>
+                                                
 
 
                                                 {{-- starting সংযুক্তি  --}}
@@ -646,7 +641,13 @@
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
                                             <div class="form-group row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-8 mb-5">
+                                                    <input type="checkbox" id="is_final_order" name="is_final_order"
+                                                        value="1">
+                                                    <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
+                                                        হয়ে থাকলে সিলেক্ট করুন</label><br>
+                                                </div>
+                                                <div class="col-md-4">
                                                     <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                     </label>
                                                     <div class="radio-inline">
@@ -665,7 +666,7 @@
                                                     <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
                                                         spellcheck="false"></textarea>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <label class="form-group font-weight-bolder font-size-h5">সরকারের
                                                         বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
                                                     <div class="radio-inline">

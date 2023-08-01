@@ -187,7 +187,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/cache/data',
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -358,7 +358,7 @@
     array (
       'enabled' => true,
       'driver' => 'file',
-      'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\debugbar',
+      'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\debugbar',
       'connection' => NULL,
       'provider' => '',
       'hostname' => '127.0.0.1',
@@ -460,12 +460,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app',
+        'root' => 'D:\\laragon\\www\\cabinet_case\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+        'root' => 'D:\\laragon\\www\\cabinet_case\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -482,7 +482,7 @@
     ),
     'links' => 
     array (
-      'C:\\laragon\\www\\cabinet_case\\public\\storage' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+      'D:\\laragon\\www\\cabinet_case\\public\\storage' => 'D:\\laragon\\www\\cabinet_case\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -516,13 +516,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -573,7 +573,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -630,7 +630,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views/vendor/mail',
+        0 => 'D:\\laragon\\www\\cabinet_case\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -765,7 +765,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/sessions',
+    'files' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -785,9 +785,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views',
+      0 => 'D:\\laragon\\www\\cabinet_case\\resources\\views',
     ),
-    'compiled' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework\\views',
+    'compiled' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework\\views',
   ),
   'flare' => 
   array (

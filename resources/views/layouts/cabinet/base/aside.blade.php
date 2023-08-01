@@ -45,13 +45,49 @@
             </li>
 
             @endcan
-            @can('highcourt_division')
+            @can('report_menu')
+            <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt/*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+               <a href="javascript:;" class="menu-link menu-toggle">
+                  <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট বিভাগ</span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="menu-submenu">
+                  <i class="menu-arrow"></i>
+                  
+                  <ul class="menu-subnav">
+           
+            @can('govt_case_report')
+                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                        </a>
+                     </li>
+                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt/   ']) ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.case.highcourt.running') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                        </a>
+                     </li>
+                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt/complete']) ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                        <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
+                           <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                           <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                        </a>
+                     </li>
+                     @endcan 
+                  </ul>
+                 
+               </div>
+            </li>
+            @endcan
+            {{-- @can('highcourt_division')
             <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/action/details/*') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
                   <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট বিভাগ</span>
                </a>
             </li>
-            @endcan
+            @endcan --}}
             @can('appeal_division')
             <li class="menu-item {{ request()->is('cabinet/case/appellateDivision') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">

@@ -133,6 +133,8 @@ Route::middleware('auth')->group(function () {
             Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
+            Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
             Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('running_case', [GovCaseRegisterController::class, 'running_case'])->name('running');
             Route::get('appeal_case', [GovCaseRegisterController::class, 'appeal_case'])->name('appeal');
