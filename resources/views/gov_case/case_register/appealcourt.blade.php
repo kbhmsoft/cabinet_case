@@ -11,7 +11,7 @@
 
       <div class="card-toolbar">
          @can('create_new_case')
-         <a href="{{ route('cabinet.case.create') }}" class="btn btn-sm btn-primary font-weight-bolder mr-2">
+         <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="btn btn-sm btn-primary font-weight-bolder mr-2">
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
          @endcan
