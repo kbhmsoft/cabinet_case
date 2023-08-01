@@ -127,7 +127,7 @@ class GovCaseRegisterController extends Controller
         if(!empty($_GET['case_category_id'])) {
             $query->where('gov_case_registers.case_category_id','=',$_GET['case_category_id']);
         }
-
+        // return $_GET['case_category_id'];
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
             // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
@@ -167,7 +167,13 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
+    public function appellate_division_case()
+    {
 
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()
     public function high_court_running_case()
     {
         session()->forget('currentUrlPath');
@@ -303,13 +309,7 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
-    public function appellate_division_case()
-    {
-
-        session()->forget('currentUrlPath');
-
-        $officeInfo = user_office_info();
-        $roleID = userInfo()->role_id;
+->role_id;
         $officeID = userInfo()->office_id;
 
         $query =  GovCaseRegister::with('mainBibadis')->orderby('id','DESC')->where('case_division_id',1);
@@ -335,7 +335,9 @@ class GovCaseRegisterController extends Controller
         }
 
         if(!empty($_GET['date_start'])  && !empty($_GET['date_end'])){
-            // dd(1);
+            // dd($_GET['date_start']);
+            // dd($_GET['date_end']);
+
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo =  date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
             $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
