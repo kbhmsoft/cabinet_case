@@ -7,7 +7,7 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-
+        // @dd($concern_person_desig)
     @endphp
 
 
@@ -256,9 +256,18 @@
                                                                 <tr id="bibadi_10{{ $key }}">
                                                                     <td>
                                                                         <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]"
-                                                                                        id="ministry_id" class="form-control form-control-sm">
+                                                                                                                                                                                                        id="ministry_id" class="form-control form-control-sm">
 
-                                                                            @foreach ($ministrys as $item)
+
+
+
+
+
+
+
+
+
+                                                                                 @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->id }}"
                                                                                 {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }} </option>
@@ -341,23 +350,28 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                {{-- <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span class="text-danger">*</span></label>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                            class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation" id="concern_person_designation"
+                                                        <select name="concern_person_designation"
+                                                            id="concern_person_designation"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($concern_person_desig as $value)
+
+                                                           @foreach ($concern_person_desig as $value)
                                                                 <option value="{{ $value->id }}"
-                                                                    {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
+                                                                    {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name }} </option>
+
                                                             @endforeach
                                                         </select>
+
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
-                                                </div> --}}
+                                                </div>
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
@@ -367,7 +381,11 @@
                                                         <select name="concern_user_id" id="concern_user_id"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-
+                                                            @foreach ($usersInfo as $value)
+                                                            <option value="{{ $value->id }}"
+                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
+                                                                {{ $value->name }} </option>
+                                                              @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -497,15 +515,19 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
                                                         স্মারক </label>
-                                                        <input type="text" name="result_sending_memorial_solisitor_to_ag" id="result_sending_memorial_solisitor_to_ag"
+                                                    <input type="text" name="result_sending_memorial_solisitor_to_ag"
+                                                        id="result_sending_memorial_solisitor_to_ag"
                                                         class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off" value="{{ $case->result_sending_memorial_solisitor_to_ag ?? '' }}">
+                                                        autocomplete="off"
+                                                        value="{{ $case->result_sending_memorial_solisitor_to_ag ?? '' }}">
                                                 </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
-                                                    <input type="text" name="reply_submission_date" id="reply_submission_date"
-                                            class="form-control form-control-sm  common_datepicker" placeholder="দিন/মাস/বছর"
-                                            autocomplete="off" value="{{ $case->reply_submission_date ?? '' }}">
+                                                    <input type="text" name="reply_submission_date"
+                                                        id="reply_submission_date"
+                                                        class="form-control form-control-sm  common_datepicker"
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                        value="{{ $case->reply_submission_date ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6 mb-5">
                                                     <label>মন্তব্য</label>
@@ -527,7 +549,7 @@
                                         {{-- @dd($case); --}}
 
                                         {{-- starting সংযুক্তি  --}}
-                                        <div class="col-md-12 mb-5">
+                                        {{-- <div class="col-md-12 mb-5">
                                             <fieldset class="">
                                                 <div
                                                     class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -558,7 +580,50 @@
                                                     <input type="hidden" id="other_attachment_count" value="1">
                                                 </div>
                                             </fieldset>
+                                        </div> --}}
+
+
+
+                                        {{-- starting সংযুক্তি  --}}
+
+
+                                        <div class="col-md-12">
+                                            <fieldset class="">
+                                                <div
+                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                        <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                            <span class="text-danger">*</span>
+                                                        </h3>
+                                                    </div>
+
+                                                    <div class="symbol-group symbol-hover py-2">
+                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            role="button" data-original-title="ফাইল যুক্ত করুণ">
+
+                                                            <div id="addReplyFileRow">
+                                                                <span class="symbol-label font-weight-bold bg-success">
+                                                                    <i
+                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="mt-3 px-5">
+                                                    <table width="100%" class="border-0 px-5" id="replyFileDiv"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr></tr>
+                                                    </table>
+                                                    <input type="hidden" id="reply_attachment_count" value="1">
+                                                </div>
+                                            </fieldset>
                                         </div>
+
+                                        {{-- end সংযুক্তি --}}
 
                                         {{-- end সংযুক্তি --}}
                                         <div class="row">
@@ -573,14 +638,18 @@
                                                                             class="text-danger"></span></label>
                                                                     <input type="text" name="leave_to_appeal_no"
                                                                         id="leave_to_appeal_no"
-                                                                        class="form-control form-control-sm"autocomplete="off">
+                                                                        class="form-control form-control-sm"autocomplete="off"
+                                                                        value="{{ $case->leave_to_appeal_no ?? '' }}">
+
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>লিভ টু আপিল দায়েরের তারিখ <span
                                                                             class="text-danger"></span></label>
                                                                     <input type="text" name="leave_to_appeal_date"
                                                                         id="leave_to_appeal_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off"
+                                                                        value="{{ $case->leave_to_appeal_date ?? '' }}">
+
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>লিভ টু আপিল আদেশের তারিখ <span
@@ -588,13 +657,15 @@
                                                                     <input type="text"
                                                                         name="leave_to_appeal_order_date"
                                                                         id="leave_to_appeal_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off"
+                                                                        value="{{ $case->leave_to_appeal_order_date ?? '' }}">
+
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>লিভ টু আপিল আদেশের বিবরণ <span
                                                                             class="text-danger"></span></label>
                                                                     <textarea name="leave_to_appeal_order_details" class="form-control" id="leave_to_appeal_order_details"
-                                                                        rows="3" spellcheck="false"></textarea>
+                                                                        rows="3" spellcheck="false">{{ $case->leave_to_appeal_order_details ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -609,13 +680,14 @@
                                                                             class="text-danger"></span></label>
                                                                     <input type="text" name="civil_appeal_order_date"
                                                                         id="civil_appeal_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off"
+                                                                        value="{{ $case->civil_appeal_order_date ?? '' }}">
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>সিভিল আপিল আদেশের বিবরণ <span
                                                                             class="text-danger"></span></label>
                                                                     <textarea name="civil_appeal_order_details" class="form-control" id="civil_appeal_order_details" rows="3"
-                                                                        spellcheck="false"></textarea>
+                                                                        spellcheck="false">{{ $case->civil_appeal_order_details ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -629,27 +701,30 @@
                                                                             class="text-danger"></span></label>
                                                                     <input type="text" name="review_case_no"
                                                                         id="review_case_no"
-                                                                        class="form-control form-control-sm"autocomplete="off">
+                                                                        class="form-control form-control-sm"autocomplete="off"
+                                                                        value="{{ $case->review_case_no ?? '' }}">
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>রিভিউ দায়েরের তারিখ <span
                                                                             class="text-danger"></span></label>
                                                                     <input type="text" name="review_case_date"
                                                                         id="review_case_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off"
+                                                                        value="{{ $case->review_case_date ?? '' }}">
+
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>রিভিউ আদেশের তারিখ <span
                                                                             class="text-danger"></span></label>
-                                                                    <input type="text" name="review_case_order_date"
-                                                                        id="review_case_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                            <input type="text" name="review_case_order_date" id="review_case_order_date" class="form-control form-control-sm common_datepicker"autocomplete="off" value="{{ $case->review_case_order_date ?? '' }}">
+
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>রিভিউ আদেশের বিবরণ <span
                                                                             class="text-danger"></span></label>
-                                                                    <textarea name="review_case_order_details" class="form-control" id="review_case_order_details" rows="3"
-                                                                        spellcheck="false"></textarea>
+                                                                    <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
+                                                                        spellcheck="false">{{ $case->others_action_detials ?? '' }}
+                                                                            </textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -689,7 +764,8 @@
                                                     <input type="text" name="appeal_against_postpond_interim_order"
                                                         id="appeal_against_postpond_interim_order"
                                                         class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off">
+                                                        autocomplete="off"
+                                                        value="{{ $case->appeal_against_postpond_interim_order ?? '' }}">
                                                 </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের
@@ -697,25 +773,33 @@
                                                     <input type="text"
                                                         name="appeal_against_postpond_interim_order_date"
                                                         id="appeal_against_postpond_interim_order_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $case->appeal_against_postpond_interim_order_date ?? '' }}">
                                                 </div>
-                                                <div class="col-md-6 mb-5">
+
+                                                <div class="{{ $case->postponed_order == 1 ? 'col-md-4 mb-5' : 'col-md-4 mb-5 d-none' }}"
+                                                    id="postponed_order_details">
 
                                                     <label>স্থগিতাদেশের বিবরণ</label>
-                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false"></textarea>
+                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false">{{ $case->postponed_details ?? '' }}</textarea>
                                                 </div>
+
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের আদেশের বিরুদ্ধে আপিলের বিবরণ <span
                                                             class="text-danger"></span></label>
                                                     <textarea type="text" name="appeal_against_postpond_interim_order_details"
-                                                        id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
+                                                        id="appeal_against_postpond_interim_order_details" class="form-control form-control-sm"autocomplete="off">{{ $case->appeal_against_postpond_interim_order_details ?? '' }}</textarea>
                                                 </div>
+
+
                                                 <div class="col-lg-6 mb-5">
                                                     <label>প্রযোজ্য ক্ষেত্রে তামিল প্রতিবেদন প্রেরণের স্মারক <span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="tamil_requesting_memorial"
                                                         id="tamil_requesting_memorial"
-                                                        class="form-control form-control-sm"autocomplete="off">
+                                                        class="form-control form-control-sm"autocomplete="off"
+                                                        value="{{ $case->tamil_requesting_memorial ?? '' }}">
+
                                                 </div>
 
                                                 <div class="col-lg-6 mb-5">
@@ -723,11 +807,13 @@
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="tamil_requesting_date"
                                                         id="tamil_requesting_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $case->tamil_requesting_date ?? '' }}">
+
                                                 </div>
                                                 <div class="col-md-6 mb-5" id="">
                                                     <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
+                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false">{{ $case->interim_order_details ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -761,18 +847,19 @@
                                                     <div class="radio-inline">
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="1" />
+                                                                value="1"{{ $case->result == '1' ? 'checked' : '' }} />
                                                             <span></span>সরকারের পক্ষে</label>
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="2" />
+                                                                value="2"
+                                                                {{ $case->result == '2' ? 'checked' : '' }} />
                                                             <span></span>সরকারের বিপক্ষে</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
                                                     <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
-                                                        spellcheck="false"></textarea>
+                                                        spellcheck="false">{{ $case->result_short_dtails ?? '' }}</textarea>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="form-group font-weight-bolder font-size-h5">সরকারের
@@ -780,11 +867,12 @@
                                                     <div class="radio-inline">
                                                         <label class="radio">
                                                             <input type="radio" name="is_appeal" id="is_appeal"
-                                                                value="1" />
+                                                                value="1"{{ $case->is_appeal == '1' ? 'checked' : '' }} />
                                                             <span></span>হ্যাঁ </label>
                                                         <label class="radio">
                                                             <input type="radio" name="is_appeal" id="is_appeal"
-                                                                value="2" checked="checke" />
+                                                                value="2"
+                                                                {{ $case->is_appeal == '2' ? 'checked' : '' }}" />
                                                             <span></span>না</label>
                                                     </div>
                                                 </div>
@@ -794,28 +882,36 @@
                                                     <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
                                                     <input type="text" name="result_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                        value="{{ $case->result_date ?? '' }}">
+
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="result_copy_asking_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                        value="{{ $case->result_copy_asking_date ?? '' }}">
+
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রায়ের নকল প্রাপ্তির তারিখ<span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="result_copy_reciving_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                        value="{{ $case->result_copy_reciving_date ?? '' }}">
+
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের স্মারক <span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="appeal_requesting_memorial"
                                                         id="appeal_requesting_memorial"
-                                                        class="form-control form-control-sm"autocomplete="off">
+                                                        class="form-control form-control-sm"autocomplete="off"
+                                                        value="{{ $case->appeal_requesting_memorial ?? '' }}">
+
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
@@ -823,14 +919,16 @@
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="appeal_requesting_date"
                                                         id="appeal_requesting_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $case->appeal_requesting_date ?? '' }}">
+
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আপিল/রিভিউ দায়ের না করার সিদ্বান্ত হলে তার কারণ <span
                                                             class="text-danger"></span></label>
                                                     <textarea name="reason_of_not_appealing" class="form-control" id="reason_of_not_appealing" rows="3"
-                                                        spellcheck="false">
-                                                                </textarea>
+                                                        spellcheck="false">{{ $case->reason_of_not_appealing ?? '' }}
+                                                            </textarea>
 
                                                 </div>
                                             </div>
@@ -1100,7 +1198,9 @@
                                                     <label>প্রযোজ্য ক্ষেত্রে কন্টেম্পট মামলা নম্বর <span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="contempt_case_no" id="contempt_case_no"
-                                                        class="form-control form-control-sm"autocomplete="off">
+                                                        class="form-control form-control-sm"autocomplete="off"
+                                                        value="{{ $case->contempt_case_no ?? '' }}">
+
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
@@ -1108,7 +1208,9 @@
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="contempt_case_isuue_date"
                                                         id="contempt_case_isuue_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $case->contempt_case_isuue_date ?? '' }}">
+
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
@@ -1116,14 +1218,17 @@
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="contempt_case_answer_sending_date"
                                                         id="contempt_case_answer_sending_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $case->contempt_case_answer_sending_date ?? '' }}">
+
                                                 </div>
 
                                                 <div class="col-lg-6 mb-5">
                                                     <label>অন্যান্য পদক্ষেপের বিবরণ<br>(যদি থাকে) <span
                                                             class="text-danger"></span></label>
                                                     <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
-                                                        spellcheck="false">
+                                                        spellcheck="false">{{ $case->others_action_detials ?? '' }}
+                                                            </textarea>
                                                     </textarea>
                                                 </div>
                                             </div>

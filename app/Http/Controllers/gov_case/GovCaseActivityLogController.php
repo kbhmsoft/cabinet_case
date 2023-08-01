@@ -37,7 +37,7 @@ class GovCaseActivityLogController extends Controller
          $this->middleware('permission:case_audit_menu', ['only' => ['index']]);
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
          // $this->middleware('permission:create', ['only' => ['roleManagement']]);
-  
+
     }
 
 
@@ -49,7 +49,7 @@ class GovCaseActivityLogController extends Controller
     public function index()
     {
         session()->forget('currentUrlPath');
-         
+
 
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
@@ -64,7 +64,7 @@ class GovCaseActivityLogController extends Controller
                }
             );
         }
-        
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query)use($officeID) {
@@ -91,7 +91,7 @@ class GovCaseActivityLogController extends Controller
         if(!empty($_GET['case_no'])) {
             $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
         }
-       
+
 
         $data['cases'] = $query->paginate(10);
 
@@ -103,7 +103,7 @@ class GovCaseActivityLogController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
 
-        $data['page_title'] =   'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
+        $data['page_title'] =   'মামলা নিরীক্ষা';
         // return $atcases;
         // return $data;
         // dd($data['cases']);

@@ -162,6 +162,8 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] =   'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
+        // return $data;
+
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
@@ -934,6 +936,7 @@ class GovCaseRegisterController extends Controller
         // $data['ministrys'] = DB::table('gov_case_office')->get();
 
         $data['concern_person_desig'] = Role::whereIn('id', [14,15,33,36])->get();
+        // return $data['concern_person_desig'];
         $data['courts'] = DB::table('court')
                 ->select('id', 'court_name')
                 ->whereIn('id',[1,2])
@@ -1023,7 +1026,7 @@ class GovCaseRegisterController extends Controller
 
     public function sendingReplyStore(Request $request)
     {
-        dd($request);
+        // dd($request);
         $caseId = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:gov_case_registers,case_no,'.$caseId,
@@ -1070,12 +1073,14 @@ class GovCaseRegisterController extends Controller
     public function edit($id)
     {
         $roleID = userInfo()->role_id;
+
+
         $officeID = userInfo()->office_id;
-        $data['concern_person_desig'] = Role::whereIn('id', [14,15,33,36])->get();
+
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
         $data['ministrys'] = GovCaseOffice::get();
-        $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
+        // $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
         $data['appealCase'] =  DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id',2)->where('status',3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
@@ -1083,14 +1088,19 @@ class GovCaseRegisterController extends Controller
                 ->select('id', 'court_name')
                 ->whereIn('id',[1,2])
                 ->get();
-        // dd($data['courts']);
+        // dd($data['concern_person_desig']);
         if($roleID != 33){
             $data['depatments'] = Office::where('parent', $officeID)->get();
         }else{
             $data['depatments'] = Office::where('level', 12)->get();
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
+        $data['usersInfo'] = User::all();
+        // return $data['usersInfo'];
+        $data['concern_person_desig'] = Role::whereIn('id', [14,15,33,36])->get();
+        // return $data['concern_person_desig'];
         $data['page_title'] =   'মামলা সংশোধন';
+        // return $data['concern_person_desig'] ;
         // return $data;
         return view('gov_case.case_register.edit')->with($data);
     }

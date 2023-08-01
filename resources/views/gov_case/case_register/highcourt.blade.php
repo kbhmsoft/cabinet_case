@@ -15,9 +15,9 @@
             <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
          </a>
          @endcan
-         
+
       </div>
-      
+
 
    </div>
    <div class="card-body">
@@ -28,7 +28,7 @@
       @endif
 
       @include('gov_case.search')
-     
+
       <table class="table table-hover mb-6 font-size-h5">
          <thead class="thead-light font-size-h6">
             <tr>
@@ -43,16 +43,6 @@
          </thead>
          <tbody>
             @foreach ($cases as $key => $row)
-            <?php
-               // if($row->status == 1){
-               //    $caseStatus = '<span class="label label-inline label-light-primary font-weight-bold">নতুন মামলা</span>';
-               // }
-            ?>
-
-            
-            
-
-            
             <tr>
                <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
