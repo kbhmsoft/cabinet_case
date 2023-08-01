@@ -136,6 +136,8 @@ Route::middleware('auth')->group(function () {
             Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
             Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
             Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
+            Route::get('appellateDivision/running', [GovCaseRegisterController::class, 'appellate_division_running_case'])->name('appellateDivision.running');
+            Route::get('appellateDivision/complete', [GovCaseRegisterController::class, 'appellate_division_complete_case'])->name('appellateDivision.complete');
             Route::get('running_case', [GovCaseRegisterController::class, 'running_case'])->name('running');
             Route::get('appeal_case', [GovCaseRegisterController::class, 'appeal_case'])->name('appeal');
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
@@ -149,7 +151,8 @@ Route::middleware('auth')->group(function () {
             // Route::get('ministry_wise_gov_list/{id}/{id2}', [GovCaseRegisterController::class, 'ministry_wise_gov_list'])->name('ministry_wise_gov_list');
            
 
-            Route::get('create', [GovCaseRegisterController::class, 'create'])->name('create');
+            Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
+            Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
