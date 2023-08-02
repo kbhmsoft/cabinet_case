@@ -134,6 +134,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/dropdownlist/getdependentorigincasenumber/{id}', [GovCaseRegisterController::class , 'getDependentCaseOriginNumber']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
+            Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
             Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('appellateDivision/running', [GovCaseRegisterController::class, 'appellate_division_running_case'])->name('appellateDivision.running');
             Route::get('appellateDivision/complete', [GovCaseRegisterController::class, 'appellate_division_complete_case'])->name('appellateDivision.complete');
@@ -155,6 +157,7 @@ Route::middleware('auth')->group(function () {
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
+            Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('store_appeal');
             Route::get('edit/{id}', [GovCaseRegisterController::class, 'edit'])->name('edit');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');

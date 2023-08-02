@@ -187,7 +187,11 @@
       'file' => 
       array (
         'driver' => 'file',
+<<<<<<< HEAD
         'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/cache/data',
+=======
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework/cache/data',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
       ),
       'memcached' => 
       array (
@@ -358,7 +362,11 @@
     array (
       'enabled' => true,
       'driver' => 'file',
+<<<<<<< HEAD
       'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\debugbar',
+=======
+      'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\debugbar',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
       'connection' => NULL,
       'provider' => '',
       'hostname' => '127.0.0.1',
@@ -460,12 +468,20 @@
       'local' => 
       array (
         'driver' => 'local',
+<<<<<<< HEAD
         'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app',
+=======
+        'root' => 'D:\\laragon\\www\\cabinet_case\\storage\\app',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
       ),
       'public' => 
       array (
         'driver' => 'local',
+<<<<<<< HEAD
         'root' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+=======
+        'root' => 'D:\\laragon\\www\\cabinet_case\\storage\\app/public',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -482,7 +498,11 @@
     ),
     'links' => 
     array (
+<<<<<<< HEAD
       'C:\\laragon\\www\\cabinet_case\\public\\storage' => 'C:\\laragon\\www\\cabinet_case\\storage\\app/public',
+=======
+      'D:\\laragon\\www\\cabinet_case\\public\\storage' => 'D:\\laragon\\www\\cabinet_case\\storage\\app/public',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
     ),
   ),
   'hashing' => 
@@ -516,13 +536,21 @@
       'single' => 
       array (
         'driver' => 'single',
+<<<<<<< HEAD
         'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+=======
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
+<<<<<<< HEAD
         'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+=======
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
         'level' => 'debug',
         'days' => 14,
       ),
@@ -573,7 +601,11 @@
       ),
       'emergency' => 
       array (
+<<<<<<< HEAD
         'path' => 'C:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+=======
+        'path' => 'D:\\laragon\\www\\cabinet_case\\storage\\logs/laravel.log',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
       ),
     ),
   ),
@@ -630,7 +662,11 @@
       'theme' => 'default',
       'paths' => 
       array (
+<<<<<<< HEAD
         0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views/vendor/mail',
+=======
+        0 => 'D:\\laragon\\www\\cabinet_case\\resources\\views/vendor/mail',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
       ),
     ),
   ),
@@ -765,7 +801,11 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
+<<<<<<< HEAD
     'files' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework/sessions',
+=======
+    'files' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework/sessions',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -785,9 +825,15 @@
   array (
     'paths' => 
     array (
+<<<<<<< HEAD
       0 => 'C:\\laragon\\www\\cabinet_case\\resources\\views',
     ),
     'compiled' => 'C:\\laragon\\www\\cabinet_case\\storage\\framework\\views',
+=======
+      0 => 'D:\\laragon\\www\\cabinet_case\\resources\\views',
+    ),
+    'compiled' => 'D:\\laragon\\www\\cabinet_case\\storage\\framework\\views',
+>>>>>>> fc2c374b9452313a9e35994dfeb42f30812b63fd
   ),
   'flare' => 
   array (
