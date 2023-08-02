@@ -567,33 +567,44 @@
                                         <fieldset>
 
                                             <div class="form-group row">
+                                                <div class="col-md-6">
+                                                    <label class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশের </label>
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" name="postponed_order" id="postponed_order_have" value="1"
+                                                                 />
+                                                            <span></span>আছে</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="postponed_order" id="postponed_order_not" value="0" checked/>
+                                                            <span></span>নেই</label>
+                                                    </div>
+                                                </div>
+    
+                                                
+
+                                            <div class="row p-5" id="postponed_order_details">
+
+
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
-                                                    </label>
-                                                    <input type="text" name="appeal_against_postpond_interim_order"
-                                                        id="appeal_against_postpond_interim_order"
-                                                        class="form-control form-control-sm" placeholder=""
+                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল </label>
+                                                    <input type="text" name="appeal_against_postpond_interim_order" id="appeal_against_postpond_interim_order" class="form-control form-control-sm" placeholder=""
                                                         autocomplete="off">
                                                 </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের
-                                                        তারিখ <span class="text-danger"></span></label>
-                                                    <input type="text"
-                                                        name="appeal_against_postpond_interim_order_date"
-                                                        id="appeal_against_postpond_interim_order_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+
+                                                <div class="col-lg-6 mb-5" >
+                                                    <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিলের তারিখ <span class="text-danger"></span></label>
+                                                    <input type="text" name="appeal_against_postpond_interim_order_date" id="appeal_against_postpond_interim_order_date" class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                 </div>
                                                 <div class="col-md-6 mb-5">
 
                                                     <label>স্থগিতাদেশের বিবরণ</label>
-                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false"></textarea>
+                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3"
+                                                        spellcheck="false"></textarea>
                                                 </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>স্থগিতাদেশের আদেশের বিরুদ্ধে আপিলের বিবরণ <span
-                                                            class="text-danger"></span></label>
-                                                    <textarea type="text" name="appeal_against_postpond_interim_order_details"
-                                                        id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
+                                                <div class="col-lg-6 mb-5" >
+                                                    <label>স্থগিতাদেশের আদেশের বিরুদ্ধে আপিলের বিবরণ <span class="text-danger"></span></label>
+                                                    <textarea type="text" name="appeal_against_postpond_interim_order_details" id="appeal_against_postpond_interim_order_details" rows="3" class="form-control"autocomplete="off"></textarea>
                                                 </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <label>প্রযোজ্য ক্ষেত্রে তামিল প্রতিবেদন প্রেরণের স্মারক <span
@@ -610,11 +621,71 @@
                                                         id="tamil_requesting_date"
                                                         class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                 </div>
-                                                <div class="col-md-6 mb-5" id="">
-                                                    <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-group font-weight-bolder font-size-h5">অন্তর্বর্তীকালীন আদেশ </label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" name="interim_order" id="interim_order_have" value="1"/>
+                                                        <span></span>আছে</label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="interim_order" id="interim_order_not" value="0" checked />
+                                                        <span></span>নেই</label>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6 mb-5" id="interim_order_details_div">
+                                                <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
+                                                <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3"
+                                                    spellcheck="false"></textarea>
+                                            </div>
+                                                
+                                                
+                                            </div>
+
+
+
+                                            {{-- starting সংযুক্তি  --}}
+
+
+                                            <div class="col-md-12">
+                                                <fieldset class="">
+                                                    <div
+                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                        <div class="d-flex align-items-center mr-2 py-2">
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের কপি সংযুক্ত করুন)
+                                                                <span class="text-danger">*</span>
+                                                            </h3>
+                                                        </div>
+
+                                                        <div class="symbol-group symbol-hover py-2">
+                                                            <div class="symbol symbol-30 symbol-light-primary"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                <div id="addSuspensionOrderFileRow">
+                                                                    <span class="symbol-label font-weight-bold bg-success">
+                                                                        <i
+                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="mt-3 px-5">
+                                                        <table width="100%" class="border-0 px-5" id="suspensionOrderFileDiv"
+                                                            style="border:1px solid #dcd8d8;">
+                                                            <tr></tr>
+                                                        </table>
+                                                        <input type="hidden" id="suspension_order_attachment_count" value="1">
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+
+                                            {{-- end সংযুক্তি --}}
                                         </fieldset>
 
                                     </div>
