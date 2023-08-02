@@ -507,6 +507,16 @@
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
 
+
+                        $('#sendingReplySaveBtn').prop('disabled', false);
+                        $('#sendingReplySaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
+
                     },
                     error: function(data) {
                         console.log(data);
@@ -581,6 +591,67 @@
 
     });
     // ================================Sending Replay Save==================================//
+
+    // ================================Suspention Order Save==================================//
+
+
+
+    $('#suspensionOrderForm').submit(function(e) {
+        // alert(1);
+        e.preventDefault();
+        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+        Swal.fire({
+            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var formData = new FormData(this);
+                $.ajax({
+
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.suspensionOrderStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        $("#suspension_order").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+
+                    }
+                });
+            }
+        })
+
+    });
+    // ================================Suspention Order Save==================================//
 </script>
 <!--end::Page Scripts-->
 @include('components.Ajax')

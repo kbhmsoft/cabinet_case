@@ -1169,12 +1169,60 @@ class GovCaseRegisterController extends Controller
     public function sendingReplyStore(Request $request)
     {
         // dd($request);
-        $caseId = $request->caseId;
+        $caseId = $request->case_id;
         $request->validate([
-            'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
+            'case_id' => 'required' ,
         ],
             [
-                'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
+                'case_id' => 'জবাব প্রেরণের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
+            ]);
+        try {
+            $caseInfo = GovCaseRegisterRepository::storeSendingReply($request);
+
+            //========= Gov Case Activity Log -  start ============
+            $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+            if ($request->file_type && $_FILES["file_name"]['name']) {
+                AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
+            }
+            $caseRegisterData = array_merge($caseRegister, [
+                'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+            ]);
+            // return $caseRegisterData;
+            $cs_activity_data['case_register_id'] = $caseId;
+            if ($request->formType != 'edit') {
+                $cs_activity_data['activity_type'] = 'create';
+                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+            } else {
+                $cs_activity_data['activity_type'] = 'update';
+                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+            }
+            $cs_activity_data['old_data'] = null;
+            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+            gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+        } catch (\Exception $e) {
+            dd($e);
+            $flag = 'false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        }
+        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+    }
+
+    public function suspensionOrderStore(Request $request)
+    {
+        // dd($request);
+        $caseId = $request->caseId;
+        $request->validate([
+            'caseId' => 'required',
+        ],
+            [
+                'caseId.unique' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
             ]);
         try {
             $caseId = GovCaseRegisterRepository::storeSendingReply($request);
