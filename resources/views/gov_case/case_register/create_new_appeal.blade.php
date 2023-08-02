@@ -84,39 +84,6 @@
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
 
-
-                                                {{-- <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম <span class="text-danger">*</span></label>
-                                                    <select name="court" id="court"
-                                                        class="form-control form-control-sm" required="required">
-                                                        <option value=""> -- নির্বাচন করুন --</option>
-
-
-                                                        @foreach ($courts as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                {{ old('court') == $value->id ? 'selected' : '' }}>
-                                                                {{ $value->court_name }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div> --}}
-
-                                                {{-- <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
-                                                    <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
-                                                    <select name="appeal_case_id" id="appeal_case_id"
-                                                        class="form-control form-control-sm">
-                                                        <option value=""> -- নির্বাচন করুন --</option>
-                                                        @foreach ($appealCase as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                {{ old('appeal_case_id') == $value->id ? 'selected' : '' }}>
-                                                                {{ $value->case_no }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div> --}}
-
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
@@ -209,6 +176,21 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                            class="text-danger">*</span></label>
+
+                                                    <div class="" id="concernPersonNameDiv">
+                                                        <select name="concern_user_id" id="concern_user_id"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="col-lg-6 mb-5">
                                                     <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span class="text-danger"></span></label>
@@ -270,13 +252,13 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>ধরনর মামলা উদ্ভূত <span class="text-danger">*</span></label>
 
-                                                    <div class="" id="CaseCategorDiv">
-                                                        <select name="case_origin" id="CaseCategory"
+                                                    <div class="" id="CaseCategorOriginDiv">
+                                                        <select name="case_category_origin" id="CaseCategory"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategory as $value)
+                                                            @foreach ($GovCaseDivisionCategoryHighcourt as $value)
                                                                 <option value="{{ $value->id }}"
-                                                                    {{ old('case_origin') == $value->id ? 'selected' : '' }}>
+                                                                    {{ old('case_category_origin') == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name_bn }} </option>
                                                             @endforeach
                                                         </select>
@@ -289,15 +271,11 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
 
-                                                    <div class="" id="CaseCategorDiv">
-                                                        <select name="case_number_origin" id="CaseCategory"
+                                                    <div class="" id="CaseCategorOriginDiv">
+                                                        <select name="case_number_origin" id="case_number_origin"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategory as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('case_number_origin') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
-                                                            @endforeach
+
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -565,7 +543,7 @@
         });
     </script>
 
-    @include('gov_case.case_register.create_js')
+    @include('gov_case.case_register.create_new_appeal_js')
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
@@ -598,31 +576,31 @@
                 }
             });
 
-            $("#CaseCategory").change(function() {
-                var getCatType = $('#CaseCategory').find(":selected").val();
-                alert(getCatType);
-                if (getCatType == 4) {
-                    $('#civilRevisionDiv').show();
-                    $('#civilSuitDiv').hide();
-                    $('#writDiv').hide();
-                    $('#leaveToAppealDiv').hide();
-                } else if (getCatType == 8) {
-                    $('#civilSuitDiv').show();
-                    $('#civilRevisionDiv').hide();
-                    $('#writDiv').hide();
-                    $('#leaveToAppealDiv').hide();
-                } else if (getCatType == 2) {
-                    $('#writDiv').show();
-                    $('#civilRevisionDiv').hide();
-                    $('#civilSuitDiv').hide();
-                    $('#leaveToAppealDiv').hide();
-                } else if (getCatType == 10) {
-                    $('#leaveToAppealDiv').show();
-                    $('#civilRevisionDiv').hide();
-                    $('#civilSuitDiv').hide();
-                    $('#writDiv').hide();
-                }
-            });
+            // $("#CaseCategory").change(function() {
+            //     var getCatType = $('#CaseCategory').find(":selected").val();
+            //     // alert(getCatType);
+            //     if (getCatType == 4) {
+            //         $('#civilRevisionDiv').show();
+            //         $('#civilSuitDiv').hide();
+            //         $('#writDiv').hide();
+            //         $('#leaveToAppealDiv').hide();
+            //     } else if (getCatType == 8) {
+            //         $('#civilSuitDiv').show();
+            //         $('#civilRevisionDiv').hide();
+            //         $('#writDiv').hide();
+            //         $('#leaveToAppealDiv').hide();
+            //     } else if (getCatType == 2) {
+            //         $('#writDiv').show();
+            //         $('#civilRevisionDiv').hide();
+            //         $('#civilSuitDiv').hide();
+            //         $('#leaveToAppealDiv').hide();
+            //     } else if (getCatType == 10) {
+            //         $('#leaveToAppealDiv').show();
+            //         $('#civilRevisionDiv').hide();
+            //         $('#civilSuitDiv').hide();
+            //         $('#writDiv').hide();
+            //     }
+            // });
 
 
 
@@ -663,6 +641,8 @@
 
                             $("select[name='concern_person']").find('option[value="' + response
                                 .concern_user_id + '"]').attr('selected', 'selected');
+
+
 
                             $('#subject_matter').val(response.subject_matter);
                             $('#postponed_details').val(response.postponed_details);

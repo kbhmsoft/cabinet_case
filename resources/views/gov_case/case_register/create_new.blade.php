@@ -210,6 +210,7 @@
                                                             can not be empty</span>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -261,7 +262,7 @@
                                                         <tr></tr>
                                                     </table>
                                                 </div>
-                                                
+
 
                                                 <div class="col-lg-12 mb-5">
                                                     <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
@@ -579,8 +580,8 @@
                                                             <span></span>নেই</label>
                                                     </div>
                                                 </div>
-    
-                                                
+
+
 
                                             <div class="row p-5" id="postponed_order_details">
 
@@ -640,8 +641,8 @@
                                                 <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3"
                                                     spellcheck="false"></textarea>
                                             </div>
-                                                
-                                                
+
+
                                             </div>
 
 

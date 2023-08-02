@@ -1053,7 +1053,7 @@ class GovCaseRegisterController extends Controller
             $data['depatments'] = Office::where('level', 12)->get();
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
-        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id',2)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
@@ -1094,7 +1094,8 @@ class GovCaseRegisterController extends Controller
         }
 
         $data['GovCaseDivision'] = GovCaseDivision::all();
-        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id',1)->get();
+        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
@@ -1103,7 +1104,7 @@ class GovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
-        // return $data;
+
         return view('gov_case.case_register.create_new_appeal')->with($data);
     }
 
@@ -1300,6 +1301,16 @@ class GovCaseRegisterController extends Controller
         $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
 
+    }
+
+    // for appeal origin case number
+    public function getDependentCaseOriginNumber($id)
+    {
+        $originCaseNumber = GovCaseRegister::orderby('id', 'desc')->where('case_category_id', $id)->pluck("case_no", "id");
+
+        // dd($originCaseNumber);
+        return json_encode($originCaseNumber);
+        // $case = GovCaseRegister::findOrFail($caseId);
     }
 
     public function register($id)

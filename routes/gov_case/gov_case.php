@@ -131,6 +131,7 @@ Route::middleware('auth')->group(function () {
             route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class , 'getdependentMinDept']);
             route::get('/dropdownlist/getdependentconcernperson/{id}', [GovCaseRegisterController::class , 'getDependentConcernPerson']);
             Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
+            Route::get('/dropdownlist/getdependentorigincasenumber/{id}', [GovCaseRegisterController::class , 'getDependentCaseOriginNumber']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
