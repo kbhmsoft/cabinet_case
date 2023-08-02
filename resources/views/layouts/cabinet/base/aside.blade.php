@@ -64,8 +64,9 @@
                                 @can('create_new_case')
                                     <li class="menu-item {{ request()->is('cabinet/case/highcourt/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link">
-                                            <span class="menu-text font-weight-bolder"><i class="menu-bullet menu-bullet-dot"><span></span></i> নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি</span>
+                                        <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link"> 
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -114,8 +115,8 @@
                                     <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="menu-link">
-                                            <span class="menu-text font-weight-bolder"><i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                             নতুন/চলমান আপিল মামলা এন্ট্রি</span>
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder"> নতুন/চলমান আপিল মামলা এন্ট্রি</span>
                                         </a>
                                     </li>
                                 @endcan

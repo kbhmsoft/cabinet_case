@@ -85,7 +85,7 @@
                                             <div class="form-group row">
 
 
-                                                <div class="col-lg-4 mb-5">
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম <span class="text-danger">*</span></label>
                                                     <select name="court" id="court"
                                                         class="form-control form-control-sm" required="required">
@@ -100,7 +100,7 @@
                                                     </select>
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- <div class="col-lg-4 mb-5" style="display:none;" id="appeal_hide_show">
                                                     <label>মামলা নির্বাচন করুন <span class="text-danger">*</span></label>
@@ -166,6 +166,50 @@
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
+                                                    <input type="text" name="case_date" id="case_date"
+                                                        class="form-control form-control-sm  common_datepicker"
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off" required="required">
+
+                                                    <span class="text-danger d-none vallidation-message">This field can
+                                                        not be empty</span>
+                                                </div>
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                            class="text-danger">*</span></label>
+
+                                                    <div class="" id="concernPersonDesignationDiv">
+                                                        <select name="concern_person_designation"
+                                                            id="concern_person_designation"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($concern_person_desig as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                            class="text-danger">*</span></label>
+
+                                                    <div class="" id="concernPersonNameDiv">
+                                                        <select name="concern_user_id" id="concern_user_id"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -217,55 +261,10 @@
                                                         <tr></tr>
                                                     </table>
                                                 </div>
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_date" id="case_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off" required="required">
+                                                
 
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation"
-                                                            id="concern_person_designation"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-8 mb-5">
-                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত)<small class="text-danger">(১০০ অক্ষরের
-                                                            বেশি নয়)
-                                                        </small> </label>
+                                                <div class="col-lg-12 mb-5">
+                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
 
