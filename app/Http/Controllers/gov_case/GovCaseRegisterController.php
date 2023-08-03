@@ -1172,7 +1172,7 @@ class GovCaseRegisterController extends Controller
         // dd($request);
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
+            'case_id' => 'required',
         ],
             [
                 'case_id' => 'জবাব প্রেরণের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
@@ -1354,11 +1354,26 @@ class GovCaseRegisterController extends Controller
     // for appeal origin case number
     public function getDependentCaseOriginNumber($id)
     {
-        $originCaseNumber = GovCaseRegister::orderby('id', 'desc')->where('case_category_id', $id)->pluck("case_no", "id");
+        $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
+            ->where('case_category_id', $id)
+            ->where('is_final_order', 1)
+            ->pluck("case_no", "id");
 
-        // dd($originCaseNumber);
         return json_encode($originCaseNumber);
-        // $case = GovCaseRegister::findOrFail($caseId);
+
+    }
+
+    public function getOriginCaseDetails($id)
+    {
+        // $originCaseDetails = GovCaseRegister::orderby('id', 'desc')
+        //     ->where('case_category_id', $id)
+        //     ->where('is_final_order', 1)
+        //     ->pluck("case_no", "id");
+         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+
+        // $data = GovCaseRegister::where('id', $id)->first();
+        return json_encode($data);
+
     }
 
     public function register($id)

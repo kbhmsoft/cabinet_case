@@ -166,10 +166,11 @@
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
+                                                                <option value="{{ $value->id }}">
+                                                                    {{-- {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}> --}}
                                                                     {{ $value->name }} </option>
                                                             @endforeach
+
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -305,26 +306,39 @@
                                                         not be empty</span>
                                                 </div>
 
+                                                {{-- <div class="col-lg-12 mb-5">
+                                                    <table width="100%" border="1" id="badiDiv" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th>রিট পিটিশনারের নাম <span class="text-danger">*</span> </th>
+                                                            <th>ঠিকানা <span class="text-danger">*</span></th>
+                                                            <th width="50">
+                                                                <a href="javascript:void();" id="addBadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <!-- Placeholder for rows to be added dynamically -->
+                                                        <tbody id="badiRowsContainer"></tbody>
+                                                    </table>
+                                                </div> --}}
 
 
 
                                                 <div class="col-lg-12 mb-5">
-                                                    <table width="100%" border="1" id="badiDiv"
-                                                        style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="badiDiv" style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>রিট পিটিশনারের নাম <span class="text-danger">*</span> </th>
-
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
-                                                            {{-- <th width="50">
-                                                                <a href="javascript:void();" id="addBadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
-                                                                        class="fas fa-plus-circle"></i></a>
-                                                            </th> --}}
+                                                            <th width="50">
+                                                                <a href="javascript:void();" id="" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
                                                         </tr>
+                                                        <tbody id="badiRowsContainer"></tbody>
 
                                                     </table>
                                                 </div>
-
 
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="MainBibadiDiv"
@@ -404,12 +418,33 @@
                                                             can not be empty</span>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম (ধরনর মামলা উদ্ভূত)<span
+                                                            class="text-danger">*</span></label>
+
+                                                    <div class="" id="concernPersonNameDiv">
+                                                        <select name="concern_user_id" id="concern_user_id"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            {{-- @foreach ($usersInfo as $value)
+                                                            <option value="{{ $value->id }}"
+                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
+                                                                {{ $value->name }} </option>
+                                                              @endforeach --}}
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
+
+
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-lg-4">
                                                     <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
-                                                    <input type="text" name="result_date"
+                                                    <input type="text" name="result_date" id="result_date"
                                                         class="form-control form-control-sm  common_datepicker"
                                                         placeholder="দিন/মাস/বছর" autocomplete="off">
                                                 </div>
@@ -421,11 +456,11 @@
                                                     <div class="radio-inline">
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="1" />
+                                                                value="1"/>
                                                             <span></span>সরকারের পক্ষে</label>
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="2" />
+                                                                value="2"/>
                                                             <span></span>সরকারের বিপক্ষে</label>
                                                     </div>
                                                 </div>
@@ -443,8 +478,9 @@
                                                     <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="result_copy_asking_date"
+                                                        id="result_copy_asking_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="" autocomplete="off">
                                                 </div>
 
 
@@ -452,6 +488,7 @@
                                                     <label>রায়ের নকল প্রাপ্তির তারিখ<span
                                                             class="text-danger"></span></label>
                                                     <input type="text" name="result_copy_reciving_date"
+                                                        id="result_copy_reciving_date"
                                                         class="form-control form-control-sm  common_datepicker"
                                                         placeholder="দিন/মাস/বছর" autocomplete="off">
                                                 </div>

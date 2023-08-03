@@ -78,10 +78,10 @@
 
 
 
-             //=========== start CASE Origin case No   ================//
+        //=========== start CASE Origin case No   ================//
 
 
-            jQuery('select[name="case_category_origin"]').on('change', function() {
+        jQuery('select[name="case_category_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
             // alert(dataID);
             jQuery("#case_number_origin").after('<div class="loadersmall"></div>');
@@ -90,7 +90,7 @@
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
                         dataID,
-                        // alert(url);
+                    // alert(url);
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
@@ -112,6 +112,84 @@
                 });
             } else {
                 $('select[name="case_number_origin"]').empty();
+            }
+        });
+
+
+        //========== start based on case origin number filled input field
+
+
+        jQuery('select[name="case_number_origin"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            //  alert(dataID);
+            if (dataID) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/origincasedetails/' +
+                        dataID,
+                    // alert(url);
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        console.log(response.caseBadi);
+                        if (response.case) {
+                            $('#subject_matter').val(response.case.subject_matter);
+                            $('#result_date').val(response.case.result_date);
+                            var selectedValue = response.case.result;
+
+                            if (selectedValue === 1) {
+                                $('#result').prop('checked', true);
+                            } else if (selectedValue === 2) {
+                                $('#result').prop('checked', true);
+                            }
+
+                            $('#concern_person_designation').val(response.case
+                                .concern_person_designation);
+                            $('#result_short_dtails').val(response.case
+                                .result_short_dtails);
+                            $('#result_copy_asking_date').val(response.case
+                                .result_copy_asking_date);
+                            $('#result_copy_reciving_date').val(response.case
+                                .result_copy_reciving_date);
+                        }
+
+                        var badiRowsContainer = $('#badiRowsContainer');
+                        console.log(badiRowsContainer);
+
+                        $.each(response.caseBadi, function(index, item) {
+                            var row = '<tr>' +
+                                '<td><input type="text" name="badi_name[]" value="' +
+                                item.name + '" /></td>' +
+                                '<td><input type="text" name="badi_address[]" value="' +
+                                item.address + '" /></td>' +
+                                '<td></td>' +
+                                '</tr>';
+                            badiRowsContainer.append(row);
+                        });
+
+
+                        // if (response != null) {
+                        //     $('#subject_matter').val(response.subject_matter);
+                        //     $('#result_date').val(response.result_date);
+                        //     // $('#result').val(response.result);
+                        //     var selectedValue = response.result;
+                        //     // console.log(selectedValue);
+                        //     if (selectedValue === 1) {
+                        //         $('#result').prop('checked', true);
+                        //     } else if (selectedValue === 2) {
+                        //         $('#result').prop('checked', true);
+                        //     }
+
+                        //     $('#concern_person_designation').val(response
+                        //         .concern_person_designation);
+                        //     $('#result_short_dtails').val(response.result_short_dtails);
+                        //     $('#result_copy_asking_date').val(response
+                        //         .result_copy_asking_date);
+                        //     $('#result_copy_reciving_date').val(response
+                        //         .result_copy_reciving_date);
+                        // }
+                    }
+
+                });
             }
         });
 
@@ -157,20 +235,20 @@
     });
 
     //add row function
-    function addBadiRowFunc() {
-        var items = '';
-        items += '<tr>';
-        items +=
-            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        items += '<input type="hidden" name="badi_id[]" value="">';
+    // function addBadiRowFunc() {
+    //     var items = '';
+    //     items += '<tr>';
+    //     items +=
+    //         '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+    //     items += '<input type="hidden" name="badi_id[]" value="">';
 
-        items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        // items +=
-        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-        items += '</tr>';
-        $('#badiDiv tr:last').after(items);
-    }
+    //     items +=
+    //         '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+    //     // items +=
+    //     //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //     items += '</tr>';
+    //     $('#badiDiv tr:last').after(items);
+    // }
 
     function removeRowBadiBibadiFunc(id, url) {
         var dataId = $(id).attr("data-id");
