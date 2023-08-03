@@ -156,26 +156,28 @@
                                                 </div>
 
 
+
                                                 <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                             class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation"
-                                                            id="concern_person_designation"
+                                                        <select name="concern_new_appeal_person_designation"
+                                                            id="concern_new_appeal_person_designation"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}">
-                                                                    {{-- {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}> --}}
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('concern_new_appeal_person_designation') == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name }} </option>
                                                             @endforeach
-
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
                                                 </div>
+
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
@@ -194,7 +196,8 @@
 
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span class="text-danger"></span></label>
+                                                    <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span
+                                                            class="text-danger"></span></label>
                                                     <input type="text" name="postpond_date" id="postpond_date"
                                                         class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                 </div>
@@ -288,7 +291,7 @@
                                                     <label>সিএমপি নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="cmp_no" id="cmp_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required">
+                                                        required="required" disabled>
                                                     {{-- <input type="hidden" name="caseId" value=""> --}}
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -300,7 +303,7 @@
                                                     <label>লিভ টু আপীল নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="cmp_no" id="cmp_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required">
+                                                        required="required" disabled>
                                                     {{-- <input type="hidden" name="caseId" value=""> --}}
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -325,12 +328,14 @@
 
 
                                                 <div class="col-lg-12 mb-5">
-                                                    <table width="100%" border="1" id="badiDiv" style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="badiDiv"
+                                                        style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>রিট পিটিশনারের নাম <span class="text-danger">*</span> </th>
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
-                                                                <a href="javascript:void();" id="" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                <a href="javascript:void();" id="addBadiRow"
+                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
                                                             </th>
@@ -347,14 +352,14 @@
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
-                                                            {{-- <th width="50">
+                                                            <th width="50">
                                                                 <a href="javascript:void();" id="addMainBibadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
-                                                            </th> --}}
+                                                            </th>
                                                         </tr>
-                                                        <tr></tr>
+                                                        <tbody id="mainBibadiContainer"></tbody>
                                                         {{-- <input type="hidden" id="mainBibadi_count" value="1"> --}}
                                                     </table>
                                                 </div>
@@ -380,10 +385,9 @@
 
 
                                                 <div class="col-lg-8 mb-5">
-                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত)<small class="text-danger">(১০০ অক্ষরের
-                                                            বেশি নয়)
+                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত)<small class="text-danger">
                                                         </small> </label>
-                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
+                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false" disabled></textarea>
                                                 </div>
 
 
@@ -392,14 +396,14 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="cmp_no" id="cmp_no"
                                                         class="form-control form-control-sm" placeholder=""
-                                                        required="required">
+                                                        required="required" disabled>
                                                     {{-- <input type="hidden" name="caseId" value=""> --}}
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
 
 
-                                                <div class="col-lg-4 mb-5">
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তা <br>(ধরনর মামলা উদ্ভূত)<span
                                                             class="text-danger">*</span></label>
 
@@ -417,25 +421,23 @@
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
+                                                </div> --}}
+
+                                                <div class="col-lg-4">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <br> (ধরনর মামলা উদ্ভূত)<span
+                                                            class="text-danger"></span></label>
+                                                    <input type="text" name="concern_person_designation"
+                                                        id="concern_person_designation"
+                                                        class="form-control form-control-sm" placeholder=""
+                                                        autocomplete="off" disabled>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম (ধরনর মামলা উদ্ভূত)<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            {{-- @foreach ($usersInfo as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
-                                                                {{ $value->name }} </option>
-                                                              @endforeach --}}
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
+                                                <div class="col-lg-4">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)<span
+                                                            class="text-danger"></span></label>
+                                                    <input type="text" name="appeal_concern_user_id"
+                                                        id="appeal_concern_user_id" class="form-control form-control-sm"
+                                                        placeholder="" autocomplete="off" disabled>
                                                 </div>
 
 
@@ -446,7 +448,7 @@
                                                     <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
                                                     <input type="text" name="result_date" id="result_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="দিন/মাস/বছর" autocomplete="off" disabled>
                                                 </div>
 
 
@@ -456,11 +458,11 @@
                                                     <div class="radio-inline">
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="1"/>
+                                                                value="1" disabled/>
                                                             <span></span>সরকারের পক্ষে</label>
                                                         <label class="radio">
                                                             <input type="radio" name="result" id="result"
-                                                                value="2"/>
+                                                                value="2" disabled/>
                                                             <span></span>সরকারের বিপক্ষে</label>
                                                     </div>
                                                 </div>
@@ -470,7 +472,7 @@
                                             <div class="col-md-8">
                                                 <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
                                                 <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
-                                                    spellcheck="false"></textarea>
+                                                    spellcheck="false" disabled></textarea>
                                             </div>
 
                                             <div class="form-group row">
@@ -480,7 +482,7 @@
                                                     <input type="text" name="result_copy_asking_date"
                                                         id="result_copy_asking_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="" autocomplete="off">
+                                                        placeholder="" autocomplete="off" disabled>
                                                 </div>
 
 
@@ -490,7 +492,7 @@
                                                     <input type="text" name="result_copy_reciving_date"
                                                         id="result_copy_reciving_date"
                                                         class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        placeholder="" autocomplete="off" disabled>
                                                 </div>
                                             </div>
 
@@ -506,13 +508,11 @@
 
                                                         <div class="symbol-group symbol-hover py-2">
                                                             <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="" role="button"
-                                                                data-original-title="ফাইল যুক্ত করুণ">
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
 
                                                                 <div id="addFileRow">
-                                                                    <span
-                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                    <span class="symbol-label font-weight-bold bg-success">
                                                                         <i
                                                                             class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                     </span>
@@ -527,8 +527,7 @@
                                                             style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
                                                         </table>
-                                                        <input type="hidden" id="other_attachment_count"
-                                                            value="1">
+                                                        <input type="hidden" id="other_attachment_count" value="1">
                                                     </div>
                                                 </fieldset>
                                             </div>

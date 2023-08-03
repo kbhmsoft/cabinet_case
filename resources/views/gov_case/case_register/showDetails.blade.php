@@ -133,7 +133,7 @@
                               @endif
                            </td>
                         {{-- @dd($case->result) --}}
-                     </tr> 
+                     </tr>
 
                      @if (!empty($case->lost_reason))
                      <tr>

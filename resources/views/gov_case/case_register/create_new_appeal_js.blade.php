@@ -1,6 +1,11 @@
 {{-- @php
     $department = '';
 @endphp --}}
+<style>
+    .readonly-field {
+    background-color: #e7b00b;
+}
+</style>
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -130,10 +135,12 @@
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
-                        console.log(response.caseBadi);
+                        console.log(response);
                         if (response.case) {
                             $('#subject_matter').val(response.case.subject_matter);
+
                             $('#result_date').val(response.case.result_date);
+
                             var selectedValue = response.case.result;
 
                             if (selectedValue === 1) {
@@ -141,19 +148,17 @@
                             } else if (selectedValue === 2) {
                                 $('#result').prop('checked', true);
                             }
-
-                            $('#concern_person_designation').val(response.case
-                                .concern_person_designation);
                             $('#result_short_dtails').val(response.case
                                 .result_short_dtails);
+
                             $('#result_copy_asking_date').val(response.case
                                 .result_copy_asking_date);
+
                             $('#result_copy_reciving_date').val(response.case
                                 .result_copy_reciving_date);
                         }
 
                         var badiRowsContainer = $('#badiRowsContainer');
-                        console.log(badiRowsContainer);
 
                         $.each(response.caseBadi, function(index, item) {
                             var row = '<tr>' +
@@ -164,29 +169,25 @@
                                 '<td></td>' +
                                 '</tr>';
                             badiRowsContainer.append(row);
+
                         });
 
 
-                        // if (response != null) {
-                        //     $('#subject_matter').val(response.subject_matter);
-                        //     $('#result_date').val(response.result_date);
-                        //     // $('#result').val(response.result);
-                        //     var selectedValue = response.result;
-                        //     // console.log(selectedValue);
-                        //     if (selectedValue === 1) {
-                        //         $('#result').prop('checked', true);
-                        //     } else if (selectedValue === 2) {
-                        //         $('#result').prop('checked', true);
-                        //     }
+                        if (response.concernpersondesig) {
+                            $('#concern_person_designation').val(response.concernpersondesig
+                                .name);
 
-                        //     $('#concern_person_designation').val(response
-                        //         .concern_person_designation);
-                        //     $('#result_short_dtails').val(response.result_short_dtails);
-                        //     $('#result_copy_asking_date').val(response
-                        //         .result_copy_asking_date);
-                        //     $('#result_copy_reciving_date').val(response
-                        //         .result_copy_reciving_date);
-                        // }
+                       }
+
+                       if (response.concernPersonName) {
+                            $('#appeal_concern_user_id').val(response.concernPersonName
+                                .name);
+
+                       }
+
+
+
+
                     }
 
                 });
@@ -197,7 +198,7 @@
         //===========GetConsernPersonByDesignation================//
 
 
-        jQuery('select[name="concern_person_designation"]').on('change', function() {
+        jQuery('select[name="concern_new_appeal_person_designation"]').on('change', function() {
             var dataID = jQuery(this).val();
             jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
 
@@ -235,20 +236,20 @@
     });
 
     //add row function
-    // function addBadiRowFunc() {
-    //     var items = '';
-    //     items += '<tr>';
-    //     items +=
-    //         '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-    //     items += '<input type="hidden" name="badi_id[]" value="">';
+    function addBadiRowFunc() {
+        var items = '';
+        items += '<tr>';
+        items +=
+            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items += '<input type="hidden" name="badi_id[]" value="">';
 
-    //     items +=
-    //         '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-    //     // items +=
-    //     //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-    //     items += '</tr>';
-    //     $('#badiDiv tr:last').after(items);
-    // }
+        items +=
+            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        // items +=
+        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#badiDiv tr:last').after(items);
+    }
 
     function removeRowBadiBibadiFunc(id, url) {
         var dataId = $(id).attr("data-id");

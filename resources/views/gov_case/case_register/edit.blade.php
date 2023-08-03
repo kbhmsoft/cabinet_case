@@ -256,7 +256,7 @@
                                                                 <tr id="bibadi_10{{ $key }}">
                                                                     <td>
                                                                         <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]"
-                                                                                                                                                                                                        id="ministry_id" class="form-control form-control-sm">
+                                                                                                                                                                                                            id="ministry_id" class="form-control form-control-sm">
 
 
 
@@ -267,7 +267,7 @@
 
 
 
-                                                                                 @foreach ($ministrys as $item)
+                                                                                      @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->id }}"
                                                                                 {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }} </option>
@@ -360,11 +360,10 @@
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
 
-                                                           @foreach ($concern_person_desig as $value)
+                                                            @foreach ($concern_person_desig as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name }} </option>
-
                                                             @endforeach
                                                         </select>
 
@@ -382,10 +381,10 @@
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($usersInfo as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
-                                                                {{ $value->name }} </option>
-                                                              @endforeach
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name }} </option>
+                                                            @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -716,7 +715,10 @@
                                                                 <div class="col-lg-6 mb-5">
                                                                     <label>রিভিউ আদেশের তারিখ <span
                                                                             class="text-danger"></span></label>
-                                                                            <input type="text" name="review_case_order_date" id="review_case_order_date" class="form-control form-control-sm common_datepicker"autocomplete="off" value="{{ $case->review_case_order_date ?? '' }}">
+                                                                    <input type="text" name="review_case_order_date"
+                                                                        id="review_case_order_date"
+                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off"
+                                                                        value="{{ $case->review_case_order_date ?? '' }}">
 
                                                                 </div>
                                                                 <div class="col-lg-6 mb-5">
