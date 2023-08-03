@@ -167,7 +167,8 @@ class GovCaseRegisterRepository
             $case->case_division_id= $caseInfo->court;
             $case->case_category_id= $caseInfo->case_category;
             $case->case_type_id= $caseInfo->case_category_type;
-            $case->concern_user_id= $caseInfo->concern_person;
+            $case->concern_person_designation= $caseInfo->concern_person_designation;
+            $case->concern_user_id= $caseInfo->concern_user_id;
             $case->subject_matter= $caseInfo->subject_matter;
             $case->postponed_order= $caseInfo->postponed_order;
             $case->postponed_details= $caseInfo->postponed_details;
@@ -480,20 +481,11 @@ class GovCaseRegisterRepository
     public static function storeSuspensionOrder($caseInfo){
         // dd($caseInfo['case_id']);
         $case = self::checkGovCaseExist($caseInfo['case_id']);
-        if ($caseInfo->result_sending_date != NULL && $caseInfo->result_sending_date != '') {
-            $result_sending_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date)));        
+        
+        if ($caseInfo->appeal_against_postpond_interim_order_date != NULL && $caseInfo->appeal_against_postpond_interim_order_date != '') {
+            $appeal_against_postpond_interim_order_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->appeal_against_postpond_interim_order_date)));        
         } else {
-            $result_sending_date = null;
-        }
-        if ($caseInfo->result_sending_date_solisitor_to_ag != NULL && $caseInfo->result_sending_date_solisitor_to_ag != '') {
-            $result_sending_date_solisitor_to_ag = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_sending_date_solisitor_to_ag)));        
-        } else {
-            $result_sending_date_solisitor_to_ag = null;
-        }   
-        if ($caseInfo->reply_submission_date != NULL && $caseInfo->reply_submission_date != '') {
-            $reply_submission_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->reply_submission_date)));        
-        } else {
-            $reply_submission_date = null;
+            $appeal_against_postpond_interim_order_date = null;
         }
         if ($caseInfo->tamil_requesting_date != NULL && $caseInfo->tamil_requesting_date != '') {
             $tamil_requesting_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->tamil_requesting_date)));        
@@ -503,13 +495,120 @@ class GovCaseRegisterRepository
 
 
         try{
-            $case->result_sending_date = $result_sending_date;
-            $case->result_sending_date_solisitor_to_ag= $result_sending_date_solisitor_to_ag;
-            $case->reply_submission_date= $reply_submission_date;
-            $case->result_sending_memorial= $caseInfo->result_sending_memorial;
-            $case->result_sending_memorial_solisitor_to_ag= $caseInfo->result_sending_memorial_solisitor_to_ag;
+            $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
+            $case->postponed_order= $caseInfo->postponed_order;
+            $case->appeal_against_postpond_interim_order= $caseInfo->appeal_against_postpond_interim_order;
+            $case->postponed_details= $caseInfo->postponed_details;
+            $case->appeal_against_postpond_interim_order_details= $caseInfo->appeal_against_postpond_interim_order_details;
             $case->tamil_requesting_memorial= $caseInfo->tamil_requesting_memorial;
             $case->tamil_requesting_date= $tamil_requesting_date;
+            $case->interim_order= $caseInfo->interim_order;
+            $case->interim_order_details= $caseInfo->interim_order_details;
+            if($case->save()){
+                $caseId=$case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId=null;
+        }
+        return $caseId;
+    }
+
+    public static function storeFinalOrder($caseInfo){
+        // dd($caseInfo['case_id']);
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        
+        if ($caseInfo->result_date != NULL && $caseInfo->result_date != '') {
+            $result_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_date)));        
+        } else {
+            $result_date = null;
+        }
+        if ($caseInfo->result_copy_asking_date != NULL && $caseInfo->result_copy_asking_date != '') {
+            $result_copy_asking_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_copy_asking_date)));        
+        } else {
+            $result_copy_asking_date = null;
+        }
+        if ($caseInfo->result_copy_reciving_date != NULL && $caseInfo->result_copy_reciving_date != '') {
+            $result_copy_reciving_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->result_copy_reciving_date)));        
+        } else {
+            $result_copy_reciving_date = null;
+        }
+        if ($caseInfo->appeal_requesting_date != NULL && $caseInfo->appeal_requesting_date != '') {
+            $appeal_requesting_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->appeal_requesting_date)));        
+        } else {
+            $appeal_requesting_date = null;
+        }
+        if ($caseInfo->proposal_date_civil_revision != NULL && $caseInfo->proposal_date_civil_revision != '') {
+            $proposal_date_civil_revision = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_civil_revision)));        
+        } else {
+            $proposal_date_civil_revision = null;
+        }
+        if ($caseInfo->proposal_date_writ != NULL && $caseInfo->proposal_date_writ != '') {
+            $proposal_date_writ = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->proposal_date_writ)));        
+        } else {
+            $proposal_date_writ = null;
+        }
+
+
+        try{
+            $case->is_final_order= $caseInfo->is_final_order;
+            $case->result= $caseInfo->result;
+            $case->result_short_dtails= $caseInfo->result_short_dtails;
+            $case->is_appeal= $caseInfo->is_appeal;
+            $case->result_date = $result_date;
+            $case->result_copy_asking_date = $result_copy_asking_date;
+            $case->result_copy_reciving_date = $result_copy_reciving_date;
+            $case->appeal_requesting_memorial= $caseInfo->appeal_requesting_memorial;
+            $case->appeal_requesting_date= $appeal_requesting_date;
+            $case->reason_of_not_appealing= $caseInfo->reason_of_not_appealing;
+            $case->contents_of_proposal_civil_revision= $caseInfo->contents_of_proposal_civil_revision;
+            $case->sending_motions_in_view_of_that_litigation_civil_revision= $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision;
+            $case->proposal_date_civil_revision= $proposal_date_civil_revision;
+            $case->proposal_memorial_civil_revision= $caseInfo->proposal_memorial_civil_revision;
+            $case->contact_email_civil_revision= $caseInfo->contact_email_civil_revision;
+            $case->focal_person_name_civil_revision= $caseInfo->focal_person_name_civil_revision;
+            $case->focal_person_designation_civil_revision= $caseInfo->focal_person_designation_civil_revision;
+            $case->focal_person_mobile_civil_revision= $caseInfo->focal_person_mobile_civil_revision;
+            $case->contents_of_proposal_writ= $caseInfo->contents_of_proposal_writ;
+            $case->case_number_writ= $caseInfo->case_number_writ;
+            $case->proposal_date_writ= $proposal_date_writ;
+            $case->proposal_memorial_writ= $caseInfo->proposal_memorial_writ;
+            $case->contact_email_writ= $caseInfo->contact_email_writ;
+            $case->focal_person_name_writ= $caseInfo->focal_person_name_writ;
+            $case->focal_person_designation_writ= $caseInfo->focal_person_designation_writ;
+            $case->focal_person_mobile_writ= $caseInfo->focal_person_mobile_writ;
+            if($case->save()){
+                $caseId=$case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId=null;
+        }
+        return $caseId;
+    }
+
+    public static function storeContemptCase($caseInfo){
+        // dd($caseInfo['case_id']);
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        
+        if ($caseInfo->contempt_case_isuue_date != NULL && $caseInfo->contempt_case_isuue_date != '') {
+            $contempt_case_isuue_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->contempt_case_isuue_date)));        
+        } else {
+            $contempt_case_isuue_date = null;
+        }
+        if ($caseInfo->contempt_case_answer_sending_date != NULL && $caseInfo->contempt_case_answer_sending_date != '') {
+            $contempt_case_answer_sending_date = date('Y-m-d',strtotime(str_replace('/', '-', $caseInfo->contempt_case_answer_sending_date)));        
+        } else {
+            $contempt_case_answer_sending_date = null;
+        }
+
+
+        try{
+            $case->contempt_case_no= $caseInfo->contempt_case_no;
+            $case->others_action_detials= $caseInfo->others_action_detials;
+            $case->contempt_case_isuue_date = $contempt_case_isuue_date;
+            $case->contempt_case_answer_sending_date = $contempt_case_answer_sending_date;
+            
             if($case->save()){
                 $caseId=$case->id;
             }

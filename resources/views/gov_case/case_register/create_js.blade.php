@@ -37,10 +37,12 @@
         addFileRowFunc();
         addReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
+        addFinalOrderFileRowFunc();
+        addContemptFileRowFunc();
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
-
+       
 
         //===========caseType================//
 
@@ -538,7 +540,7 @@
     $('#sendingReplyForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
-        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        $('#sendingReplySaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
         Swal.fire({
             title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
@@ -562,7 +564,7 @@
                     processData: false,
 
                     success: (data) => {
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#sendingReplySaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
                         Swal.fire(
@@ -576,12 +578,19 @@
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
-
+                        $('#sendingReplySaveBtn').prop('disabled', false);
+                        $('#sendingReplySaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
 
                     },
                     error: function(data) {
                         console.log(data);
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#sendingReplySaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
                     }
@@ -599,7 +608,7 @@
     $('#suspensionOrderForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
-        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        $('#suspensionOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
         Swal.fire({
             title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
@@ -623,7 +632,7 @@
                     processData: false,
 
                     success: (data) => {
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#suspensionOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
                         Swal.fire(
@@ -633,16 +642,23 @@
                         )
                         console.log(data);
                         // console.log(data.caseId);
-                        $("#suspension_order").click();
+                        $("#final_order").click();
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
-
+                        $('#sendingReplySaveBtn').prop('disabled', false);
+                        $('#sendingReplySaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
 
                     },
                     error: function(data) {
                         console.log(data);
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#suspensionOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
                     }
@@ -652,6 +668,134 @@
 
     });
     // ================================Suspention Order Save==================================//
+
+    // ================================Final Order Save==================================//
+
+
+
+    $('#finalOrderForm').submit(function(e) {
+        // alert(1);
+        e.preventDefault();
+        $('#finalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+        Swal.fire({
+            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var formData = new FormData(this);
+                $.ajax({
+
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.finalOrderStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#finalOrderSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        $("#contempt_case").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+                        $('#sendingReplySaveBtn').prop('disabled', false);
+                        $('#sendingReplySaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#finalOrderSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+
+                    }
+                });
+            }
+        })
+
+    });
+    // ================================Final Order Save==================================//
+
+    // ================================Final Order Save==================================//
+
+
+
+    $('#contemptCaseForm').submit(function(e) {
+        // alert(1);
+        e.preventDefault();
+        $('#contemptCaseSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+        Swal.fire({
+            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var formData = new FormData(this);
+                $.ajax({
+
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.contemptCaseStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#contemptCaseSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        // $("#contempt_case").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#contemptCaseSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+
+                    }
+                });
+            }
+        })
+
+    });
+    // ================================Final Order Save==================================//
 </script>
 <!--end::Page Scripts-->
 @include('components.Ajax')
@@ -734,9 +878,10 @@
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
-            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="replyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
@@ -768,14 +913,84 @@
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
-            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="suspensionAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customSuspensionFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#suspensionOrderFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+
+
+
+
+
+    // ============= Add Final Order Attachment Row ========= start =========
+    $("#addFinalOrderFileRow").click(function(e) {
+        addFinalOrderFileRowFunc();
+    });
+    //add row function
+    function addFinalOrderFileRowFunc() {
+        var count = parseInt($('#final_order_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#final_order_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="finalAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#finalOrderFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+
+
+
+
+    // ============= Add Contempt Case Attachment Row ========= start =========
+    $("#addContemptFileRow").click(function(e) {
+        addContemptFileRowFunc();
+    });
+    //add row function
+    function addContemptFileRowFunc() {
+        var count = parseInt($('#contempt_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#contempt_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="contemptAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customContemptFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-contempt-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#contemptFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
             $(`#customFile${count}`).attr('required', false);
@@ -796,6 +1011,30 @@
         // var value = $('#customFile' + id).val();
         var value = $('#customFile' + id)[0].files[0];
         $('.custom-input' + id).text(value['name']);
+    }
+    //Attachment Title Change
+    function replyAttachmentTitle(id) {
+        // var value = $('#customFile' + id).val();
+        var value = $('#customReplyFile' + id)[0].files[0];
+        $('.custom-reply-input' + id).text(value['name']);
+    }
+    //Attachment Title Change
+    function suspensionAttachmentTitle(id) {
+        // var value = $('#customFile' + id).val();
+        var value = $('#customSuspensionFile' + id)[0].files[0];
+        $('.custom-suspension-input' + id).text(value['name']);
+    }
+    //Attachment Title Change
+    function finalAttachmentTitle(id) {
+        // var value = $('#customFile' + id).val();
+        var value = $('#customFinalFile' + id)[0].files[0];
+        $('.custom-final-input' + id).text(value['name']);
+    }
+    //Attachment Title Change
+    function contemptAttachmentTitle(id) {
+        // var value = $('#customFile' + id).val();
+        var value = $('#customContemptFile' + id)[0].files[0];
+        $('.custom-contempt-input' + id).text(value['name']);
     }
     //remove Attachment
     function removeBibadiRow(id) {
