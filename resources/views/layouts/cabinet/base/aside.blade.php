@@ -122,7 +122,7 @@
                                     <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <i class="fas fa-plus"><span></span></i>
                                             <span class="menu-text font-weight-bolder"> নতুন/চলমান আপিল মামলা এন্ট্রি</span>
                                         </a>
                                     </li>
