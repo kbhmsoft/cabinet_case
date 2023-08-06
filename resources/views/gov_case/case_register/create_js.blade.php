@@ -42,7 +42,7 @@
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
-       
+
 
         //===========caseType================//
 
@@ -997,14 +997,6 @@
             $(`#customFileName${count}`).attr('required', false);
         }
     }
-
-
-
-
-
-
-
-
 
     //Attachment Title Change
     function attachmentTitle(id) {

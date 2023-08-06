@@ -153,7 +153,6 @@ Route::middleware('auth')->group(function () {
             Route::get('department_wise_list/{id}', [GovCaseRegisterController::class, 'department_wise_list'])->name('department_wise_list');
             // Route::get('ministry_wise_gov_list/{id}/{id2}', [GovCaseRegisterController::class, 'ministry_wise_gov_list'])->name('ministry_wise_gov_list');
 
-
             Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
             Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
             Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');

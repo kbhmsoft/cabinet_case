@@ -42,7 +42,7 @@
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
-       
+
 
         //===========caseType================//
 
@@ -308,6 +308,55 @@
     });
 </script>
 
+
+{{-- for form validation error in modal show --}}
+<script>
+    $(document).ready(function() {
+        $(".save-button").click(function(e) {
+            e.preventDefault();
+
+            var formValid = true;
+            var emptyFields = [];
+
+            $("#caseGeneralInfoForm [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                if (fieldValue === '') {
+                    formValid = false;
+                    // emptyFields.push($(this).attr("name"));
+                    // emptyFields.push($(this).closest("label").text().trim());
+                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // var labelText = labelForField.text().trim().replace('*', '');
+                    emptyFields.push(labelForField.text().trim().replace('*', ''));
+                }
+            });
+
+            if (formValid) {
+                console.log("Form is valid.");
+            } else {
+
+                $("#emptyFieldsList").empty();
+                emptyFields.forEach(function(fieldName) {
+                    $("#emptyFieldsList").append("<li>Please fill out this field " + fieldName +
+                        "</li>");
+                });
+                $("#myModal").css("display", "block");
+            }
+        });
+
+
+        $(".close-button").click(function() {
+            $("#myModal").css("display", "none");
+        });
+
+
+        $(".save-button").click(function(event) {
+            if (event.target.id === "myModal") {
+                $("#myModal").css("display", "none");
+            }
+        });
+    });
+</script>
+
 <script>
     var numbers = {
         0: '০',
@@ -336,6 +385,18 @@
 
     // document.getElementById('r').textContent = replaceNumbers('count'); // comment on 07/11/2022 shahajahan
 </script>
+
+{{-- start HighCourt Old Form Vallidation --}}
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+
+// {{-- end HighCourt Old Form Vallidation --}}
+
+
+
+
+
+
 
 <script>
     function myFunction() {
@@ -467,70 +528,69 @@
 
     // ================================Case General Info save==================================
 
-    $('#caseGeneralInfoForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        Swal.fire({
-            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         // text: "You won't be able to revert this!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes!'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
 
-                var formData = new FormData(this);
-                $.ajax({
+    //             var formData = new FormData(this);
+    //             $.ajax({
 
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.store') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
 
-                    success: (data) => {
-                        $('#caseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     $orderData = data;
+    //                     Swal.fire(
+    //                         'Saved!',
+    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success'
+    //                     )
+    //                     console.log(data);
 
-                        $("#sending_reply_tab").click();
-                        $("#caseIDForAnswer").val(data.caseId);
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
+    //                     $("#sending_reply_tab").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
 
 
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
+    //                     $('#sendingReplySaveBtn').prop('disabled', false);
+    //                     $('#sendingReplySaveBtn').removeClass("disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false);
+    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
 
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#caseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
+    //                 },
+    //                 error: function(data) {
+    //                     console.log(data);
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
 
-                    }
-                });
-            }
-        })
+    //                 }
+    //             });
+    //         }
+    //     })
 
-    });
+    // });
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//

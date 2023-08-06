@@ -160,6 +160,7 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
     }
+
     .disable-button {
         display: inline-block;
         padding: 10px 20px;
@@ -228,9 +229,11 @@
     .tab-content .tab-pane.active {
         display: block;
     }
-    .swal2-icon-show{
+
+    .swal2-icon-show {
         margin: 0 auto !important;
     }
+
     ul.nav.details_trainee_tab.nav-tabs.myTab {
         cursor: pointer;
         text-align: center;
@@ -239,4 +242,57 @@
         font-weight: 600;
         background-color: #f0f0f0;
     }
+
+    /* for form validation error in modal  */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+        background-color: aliceblue;
+        margin: 6% auto;
+        padding: 10px;
+        border: 4px solid mediumpurple;
+        border-radius: 5px;
+        max-width: 500px;
+    }
+
+    .close-button {
+        background-color: #f44336;
+        color: #fff;
+        /* padding: 8px 16px; */
+        border: none;
+        border-radius: 3px;
+        font-size: 15px;
+        cursor: pointer;
+        width: 90px;
+    }
+
+    .close-button:hover {
+        background-color: #d32f2f;
+    }
+
+    #emptyFieldsList {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #emptyFieldsList li {
+        margin: 25px 25px 5px 10px;
+        color: red;
+        font-size: 15px;
+    }
+
+    /* .modal-content li {
+        color: red;
+        font-size: 18px;
+    } */
 </style>
