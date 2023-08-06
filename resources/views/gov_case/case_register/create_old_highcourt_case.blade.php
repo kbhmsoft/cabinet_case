@@ -7,13 +7,13 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -87,7 +87,7 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
+                                                    <label for="CaseCategory">মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category" id="CaseCategory"
@@ -105,7 +105,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
+                                                    <label for="case_category_type">মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category_type" id="case_category_type"
                                                             class="form-control form-control-sm" required="required">
@@ -117,7 +117,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলা নং <span class="text-danger">*</span></label>
+                                                    <label for="case_no">মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
                                                         required="required">
@@ -127,7 +127,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বছর <span class="text-danger">*</span></label>
+                                                    <label for="case_year">বছর <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_year" id="case_year"
                                                         class="form-control form-control-sm common_yearpicker"
                                                         placeholder="বছর" autocomplete="off" required="required">
@@ -135,7 +135,7 @@
                                                         not be empty</span>
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
+                                                    <label for="case_date">রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_date" id="case_date"
                                                         class="form-control form-control-sm  common_datepicker"
                                                         placeholder="দিন/মাস/বছর" autocomplete="off" required="required">
@@ -145,7 +145,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                    <label for="concern_person_designation">সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                             class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonDesignationDiv">
@@ -165,7 +165,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                    <label for="concern_user_id">সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
                                                             class="text-danger">*</span></label>
 
                                                     <div class="" id="concernPersonNameDiv">
@@ -523,8 +523,8 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="seendingReplyPrevtBtn"
-                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="seendingReplyPrevtBtn" class="submit-button"><i
+                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="button" id="seendingReplyNextBtn"
@@ -688,8 +688,8 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="suspensionOrderPrevtBtn"
-                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="suspensionOrderPrevtBtn" class="submit-button"><i
+                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="button" id="suspensionOrderNextBtn"
@@ -971,12 +971,12 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="finalOrderPrevtBtn"
-                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="finalOrderPrevtBtn" class="submit-button"><i
+                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
-                                            <button type="button" id="finalOrderNextBtn"
-                                                class="submit-button">পরবর্তী <i class="fas fa-arrow-right"></i></button>
+                                            <button type="button" id="finalOrderNextBtn" class="submit-button">পরবর্তী
+                                                <i class="fas fa-arrow-right"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -1071,16 +1071,16 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="contemptCasePrevtBtn"
-                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="contemptCasePrevtBtn" class="submit-button"><i
+                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="submit"
-                                        class="action-button submit-button">সংরক্ষণ</button>
+                                                class="action-button submit-button save-button">সংরক্ষণ</button>
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
                             </div>
                             {{-- ------------- end কনটেম্প্ট মামলা------------- --}}
@@ -1094,6 +1094,16 @@
         {{-- </div> --}}
 
     </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button">Close X</button>
+            <h2>Please fill out the following required fields:</h2>
+            <ul id="emptyFieldsList"></ul>
+        </div>
+    </div>
+
+
     <!--end::Row-->
 
 @endsection
@@ -1116,9 +1126,6 @@
         });
     </script>
 
-
-
-
     @include('gov_case.case_register.create_old_highcourt_case_js')
     <script type="text/javascript">
         $(document).ready(function() {
@@ -1126,6 +1133,7 @@
             addBibadiRowFunc();
         });
     </script>
+
     <script type="text/javascript">
         // dynamically change high court / appeal court
         $(document).ready(function() {
@@ -1170,7 +1178,7 @@
             $('#finalOrderPrevtBtn').on("click", function() {
                 $("#suspension_order_tab").trigger('click');
             });
-            
+
             $('#finalOrderNextBtn').on("click", function() {
                 $("#contempt_case_tab").trigger('click');
             });
@@ -1178,7 +1186,7 @@
             $('#contemptCasePrevtBtn').on("click", function() {
                 $("#final_order_tab").trigger('click');
             });
-            
+
             // ==========//JS For Next & Prev Btn==============//
 
 
