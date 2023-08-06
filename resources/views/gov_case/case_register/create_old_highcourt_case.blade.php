@@ -183,9 +183,9 @@
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
+                                                            <th class="petisioner_name">পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
-                                                            <th>ঠিকানা <span class="text-danger">*</span></th>
+                                                            <th class="petisioner_address">ঠিকানা <span class="text-danger">*</span></th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
@@ -200,7 +200,8 @@
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
 
                                                         <tr>
-                                                            <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            {{-- <label for="case_year">বছর <span class="text-danger">*</span></label> --}}
+                                                            <th class="main_babadi_name">মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addMainBibadiRow"
@@ -218,7 +219,7 @@
                                                         style="border:1px solid #dcd8d8;">
 
                                                         <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            <th class="other_bibadi_name">অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBibadiRow"
@@ -248,9 +249,9 @@
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                                <th class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
-                                                                </h3>
+                                                                </th>
                                                             </div>
 
                                                             <div class="symbol-group symbol-hover py-2">
@@ -928,7 +929,7 @@
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                    (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
+                                                                    (চূড়ান্ত আদেশ/রায় সম্পর্কিত)
                                                                     <span class="text-danger">*</span>
                                                                 </h3>
                                                             </div>
@@ -1097,9 +1098,9 @@
 
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <button class="close-button">Close X</button>
             <h2>Please fill out the following required fields:</h2>
             <ul id="emptyFieldsList"></ul>
+            <button class="close-button">Close X</button>
         </div>
     </div>
 
