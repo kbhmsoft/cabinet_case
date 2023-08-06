@@ -125,11 +125,11 @@
         var items = '';
         items += '<tr>';
         items +=
-            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" id="petisioner_name" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items += '<input type="hidden" name="badi_id[]" value="">';
 
         items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" id="petisioner_address" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         // items +=
         //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -245,7 +245,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select  name="main_respondent[]" id="main_babadi_name" class="form-control form-control-sm main_respondent"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -283,7 +283,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="other_respondent[]" id="other_bibadi_name" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -317,44 +317,113 @@
 
             var formValid = true;
             var emptyFields = [];
+            // var index = 1;
 
             $("#caseGeneralInfoForm [required]").each(function() {
                 var fieldValue = $(this).val().trim();
+                console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
-                    // emptyFields.push($(this).attr("name"));
-                    // emptyFields.push($(this).closest("label").text().trim());
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
-                    // var labelText = labelForField.text().trim().replace('*', '');
                     emptyFields.push(labelForField.text().trim().replace('*', ''));
                 }
             });
+
+
+            $("#caseGeneralInfoForm th[class]").each(function() {
+                var tdClass = $(this).attr("class");
+                console.log(tdClass);
+                var tdForField = $("td." + tdClass);
+                var tdText = tdForField.text().trim();
+                if (tdText === '') {
+                    formValid = false;
+                    var thText = $(this).text().trim().replace('*', '');
+                    emptyFields.push(thText);
+                }
+            });
+
 
             if (formValid) {
                 console.log("Form is valid.");
             } else {
 
                 $("#emptyFieldsList").empty();
-                emptyFields.forEach(function(fieldName) {
-                    $("#emptyFieldsList").append("<li>Please fill out this field " + fieldName +
+                emptyFields.forEach(function(fieldLabel, index) {
+                    $("#emptyFieldsList").append("<li> " + (index + 1) + ". " +
+                        "Please fill out this field " + fieldLabel +
                         "</li>");
                 });
                 $("#myModal").css("display", "block");
             }
         });
 
-
         $(".close-button").click(function() {
             $("#myModal").css("display", "none");
         });
-
 
         $(".save-button").click(function(event) {
             if (event.target.id === "myModal") {
                 $("#myModal").css("display", "none");
             }
         });
+
     });
+//     $(document).ready(function() {
+//   $(".submit-button").click(function(e) {
+//     e.preventDefault();
+
+//     var formValid = true;
+//     var emptyFields = [];
+//     var index = 1;
+
+//     $("#caseGeneralInfoForm [required]").each(function() {
+//       var fieldValue = $(this).val().trim();
+//       if (fieldValue === '') {
+//         formValid = false;
+//         var labelForField = $("label[for='" + $(this).attr("id") + "']");
+//         var labelText = labelForField.text().trim().replace('*', '');
+//         emptyFields.push(index + ". " + labelText);
+//         index++;
+//       }
+//     });
+
+//     $("#caseGeneralInfoForm th[class]").each(function() {
+//       var tdClass = $(this).attr("class");
+//       var tdForField = $("td." + tdClass);
+//       var tdText = tdForField.text().trim();
+//       if (tdText === '') {
+//         formValid = false;
+//         var thText = $(this).text().trim();
+//         emptyFields.push(index + ". " + thText);
+//         index++;
+//       }
+//     });
+
+//     if (formValid) {
+
+//       console.log("Form is valid. Submitting...");
+//     } else {
+//       $("#emptyFieldsList").empty();
+//       emptyFields.forEach(function(fieldLabel) {
+//         $("#emptyFieldsList").append("<li>" + fieldLabel + "</li>");
+//       });
+//       $("#myModal").css("display", "block");
+//     }
+//   });
+
+
+//   $(".close-button").click(function() {
+//     $("#myModal").css("display", "none");
+//   });
+
+
+//   $(".submit-button").click(function(event) {
+//     if (event.target.id === "myModal") {
+//       $("#myModal").css("display", "none");
+//     }
+//   });
+// });
+
 </script>
 
 <script>
@@ -904,7 +973,7 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
@@ -935,22 +1004,22 @@
         $('#reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items += '<td><input type="text" name="reply_file_type[]" id="customreplyFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="replyAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customReplyFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#replyFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
-            $(`#customFile${count}`).attr('required', false);
-            $(`#customFileName${count}`).attr('required', false);
+            $(`#customReplyFile${count}`).attr('required', false);
+            $(`#customreplyFileName${count}`).attr('required', false);
         }
     }
 
@@ -970,22 +1039,22 @@
         $('#suspension_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items += '<td><input type="text" name="suspension_file_type[]" id="customSuspensionFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="suspensionAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customSuspensionFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customSuspensionFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#suspensionOrderFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
-            $(`#customFile${count}`).attr('required', false);
-            $(`#customFileName${count}`).attr('required', false);
+            $(`#customSuspensionFile${count}`).attr('required', false);
+            $(`#customSuspensionFileName${count}`).attr('required', false);
         }
     }
 
@@ -1005,22 +1074,22 @@
         $('#final_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customFinalFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#finalOrderFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
-            $(`#customFile${count}`).attr('required', false);
-            $(`#customFileName${count}`).attr('required', false);
+            $(`#customFinalFile${count}`).attr('required', false);
+            $(`#customFinalOrderFileName${count}`).attr('required', false);
         }
     }
 
@@ -1039,22 +1108,22 @@
         $('#contempt_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items += '<td><input type="text" name="contempt_file_type[]" id="customContemptFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="contemptAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customContemptFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-contempt-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customContemptFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#contemptFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
-            $(`#customFile${count}`).attr('required', false);
-            $(`#customFileName${count}`).attr('required', false);
+            $(`#customContemptFile${count}`).attr('required', false);
+            $(`#customContemptFileName${count}`).attr('required', false);
         }
     }
 

@@ -256,6 +256,7 @@
         background-color: rgba(0, 0, 0, 0.6);
     }
 
+
     .modal-content {
         background-color: aliceblue;
         margin: 6% auto;
@@ -268,12 +269,13 @@
     .close-button {
         background-color: #f44336;
         color: #fff;
-        /* padding: 8px 16px; */
+        padding: 8px 16px;
         border: none;
         border-radius: 3px;
         font-size: 15px;
         cursor: pointer;
         width: 90px;
+        margin-left: 350px;
     }
 
     .close-button:hover {
