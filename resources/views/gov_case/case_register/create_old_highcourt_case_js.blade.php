@@ -309,83 +309,7 @@
 </script>
 
 
-{{-- for form validation error in modal show --}}
-<script>
-    $(document).ready(function() {
-        $(".save-button").click(function(e) {
-            e.preventDefault();
 
-            var formValid = true;
-            var emptyFields = [];
-            // var index = 1;
-
-            $("#firstrequriedfields [required]").each(function() {
-                var fieldValue = $(this).val().trim();
-                console.log(fieldValue);
-                if (fieldValue === '') {
-                    formValid = false;
-                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
-                    // console.log(labelForField);
-                    emptyFields.push(labelForField.text().trim().replace('*', ''));
-                }
-            });
-
-            $("#secondrequriedfields [required]").each(function() {
-                var fieldValue = $(this).val().trim();
-                var fieldName = $(this).attr("name").replace('[]', '');
-
-                console.log(fieldName);
-
-                console.log(fieldValue);
-                if (fieldValue === '') {
-                    formValid = false;
-                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
-                    // console.log(labelForField);
-                    emptyFields.push($("."+fieldName).text().trim().replace('*', ''));
-                }
-            });
-
-
-            $("#thirdrequriedfields [required]").each(function() {
-                var fieldValue = $(this).val().trim();
-                var fieldName = $(this).attr("name").replace('[]', '');
-
-                console.log(fieldName);
-
-                if (fieldValue === '') {
-                    formValid = false;
-                    // var labelForField = $("label[for='" + $(this).attr("id") + "']");
-                    // console.log(labelForField);
-                    emptyFields.push($("."+fieldName).text().trim().replace('*', ''));
-                }
-            })
-
-            if (formValid) {
-                console.log("Form is valid.");
-            } else {
-
-                $("#emptyFieldsList").empty();
-                emptyFields.forEach(function(fieldLabel, index) {
-                    $("#emptyFieldsList").append("<li> " + (index + 1) + ". " +
-                        "Please fill out this field " + fieldLabel +
-                        "</li>");
-                });
-                $("#myModal").css("display", "block");
-            }
-        });
-
-        $(".close-button").click(function() {
-            $("#myModal").css("display", "none");
-        });
-
-        $(".save-button").click(function(event) {
-            if (event.target.id === "myModal") {
-                $("#myModal").css("display", "none");
-            }
-        });
-
-    });
-</script>
 
 <script>
     var numbers = {
@@ -558,69 +482,69 @@
 
     // ================================Case General Info save==================================
 
-    // $('#caseGeneralInfoForm').submit(function(e) {
-    //     e.preventDefault();
-    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-    //     Swal.fire({
-    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-    //         // text: "You won't be able to revert this!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes!'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
+    $('#caseGeneralInfoForm').submit(function(e) {
+        e.preventDefault();
+        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        Swal.fire({
+            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-    //             var formData = new FormData(this);
-    //             $.ajax({
+                var formData = new FormData(this);
+                $.ajax({
 
-    //                 type: 'POST',
-    //                 url: "{{ route('cabinet.case.store') }}",
-    //                 data: formData,
-    //                 cache: false,
-    //                 contentType: false,
-    //                 processData: false,
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.store') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
 
-    //                 success: (data) => {
-    //                     $('#caseGeneralInfoSaveBtn').removeClass(
-    //                         'spinner spinner-white spinner-right disabled');
-    //                     $orderData = data;
-    //                     Swal.fire(
-    //                         'Saved!',
-    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-    //                         'success'
-    //                     )
-    //                     console.log(data);
+                    success: (data) => {
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
 
-    //                     $("#sending_reply_tab").click();
-    //                     $("#caseIDForAnswer").val(data.caseId);
-    //                     $("#caseIDForSuspention").val(data.caseId);
-    //                     $("#caseIDForFinalOrder").val(data.caseId);
-    //                     $("#caseIDForContempt").val(data.caseId);
+                        $("#sending_reply_tab").click();
+                        $("#caseIDForAnswer").val(data.caseId);
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
 
 
-    //                     $('#sendingReplySaveBtn').prop('disabled', false);
-    //                     $('#sendingReplySaveBtn').removeClass("disable-button");
-    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
-    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
-    //                     $('#finalOrderSaveBtn').prop('disabled', false);
-    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
-    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
-    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+                        $('#sendingReplySaveBtn').prop('disabled', false);
+                        $('#sendingReplySaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
 
-    //                 },
-    //                 error: function(data) {
-    //                     console.log(data);
-    //                     $('#caseGeneralInfoSaveBtn').removeClass(
-    //                         'spinner spinner-white spinner-right disabled');
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#caseGeneralInfoSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
 
-    //                 }
-    //             });
-    //         }
-    //     })
+                    }
+                });
+            }
+        })
 
-    // });
+    });
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//
@@ -968,7 +892,7 @@
         items += '<td><input type="text" name="reply_file_type[]" id="customreplyFileName' + count +
             '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="replyAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="replyAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
@@ -1003,7 +927,7 @@
         items += '<td><input type="text" name="suspension_file_type[]" id="customSuspensionFileName' + count +
             '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="suspensionAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="suspensionAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customSuspensionFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
@@ -1038,7 +962,7 @@
         items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="finalAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
@@ -1072,7 +996,7 @@
         items += '<td><input type="text" name="contempt_file_type[]" id="customContemptFileName' + count +
             '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="contemptAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="contempt_file_name[]" onChange="contemptAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customContemptFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-contempt-input' +
@@ -1130,4 +1054,92 @@
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+</script>
+{{-- for form validation error in modal show --}}
+<script>
+    $(document).ready(function() {
+        $(".save-button").click(function(e) {
+            e.preventDefault();
+
+            var formValid = true;
+            var emptyFields = [];
+            // var index = 1;
+
+            $("#firstrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                console.log(fieldValue);
+                if (fieldValue === '') {
+                    formValid = false;
+                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
+                    emptyFields.push(labelForField.text().trim().replace('*', ''));
+                }
+            });
+
+            $("#secondrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                var fieldName = $(this).attr("name").replace('[]', '');
+
+                console.log(fieldName);
+
+                console.log(fieldValue);
+                if (fieldValue === '') {
+                    formValid = false;
+                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
+                    emptyFields.push($("." + fieldName).text().trim().replace('*', ''));
+                }
+            });
+
+
+            $("#thirdrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                var fieldName = $(this).attr("name").replace('[]', '');
+
+                console.log(fieldName);
+
+                if (fieldValue === '') {
+                    formValid = false;
+                    // var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
+                    emptyFields.push($("." + fieldName).text().trim().replace('*', ''));
+                }
+            })
+
+            if (formValid) {
+                console.log("Form is valid.");
+                // var formData = new FormData(this);
+                var formData = $("#caseGeneralInfoForm").serialize();
+                console.log(formData.file_type);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.store') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                });
+            } else {
+
+                $("#emptyFieldsList").empty();
+                emptyFields.forEach(function(fieldLabel, index) {
+                    $("#emptyFieldsList").append("<li> " + (index + 1) + ". " +
+                        "Please fill out this field " + fieldLabel +
+                        "</li>");
+                });
+                $("#myModal").css("display", "block");
+            }
+        });
+
+        $(".close-button").click(function() {
+            $("#myModal").css("display", "none");
+        });
+
+        $(".save-button").click(function(event) {
+            if (event.target.id === "myModal") {
+                $("#myModal").css("display", "none");
+            }
+        });
+
+    });
 </script>
