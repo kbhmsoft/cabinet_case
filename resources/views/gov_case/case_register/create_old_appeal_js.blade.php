@@ -129,66 +129,19 @@
             //  alert(dataID);
             if (dataID) {
                 jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/  /' +
-                        dataID,
+                    // url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
+                    url: 'http://127.0.0.1:8000/cabinet/case/highcourtcasedetails/' + dataID,
                     // alert(url);
                     type: "GET",
-                    dataType: "json",
                     success: function(response) {
+                        // alert('test');
                         console.log(response);
-                        if (response.case) {
-                            $('#subject_matter').val(response.case.subject_matter);
-
-                            $('#result_date').val(response.case.result_date);
-
-                            var selectedValue = response.case.result;
-
-                            if (selectedValue === 1) {
-                                $('#result').prop('checked', true);
-                            } else if (selectedValue === 2) {
-                                $('#result').prop('checked', true);
-                            }
-                            $('#result_short_dtails').val(response.case
-                                .result_short_dtails);
-
-                            $('#result_copy_asking_date').val(response.case
-                                .result_copy_asking_date);
-
-                            $('#result_copy_reciving_date').val(response.case
-                                .result_copy_reciving_date);
-                        }
-
-                        var badiRowsContainer = $('#badiRowsContainer');
-
-                        $.each(response.caseBadi, function(index, item) {
-                            var row = '<tr>' +
-                                '<td><input type="text" name="badi_name[]" value="' +
-                                item.name + '" /></td>' +
-                                '<td><input type="text" name="badi_address[]" value="' +
-                                item.address + '" /></td>' +
-                                '<td></td>' +
-                                '</tr>';
-                            badiRowsContainer.append(row);
-
-                        });
-
-
-                        if (response.concernpersondesig) {
-                            $('#concern_person_designation').val(response.concernpersondesig
-                                .name);
-
-                       }
-
-                       if (response.concernPersonName) {
-                            $('#appeal_concern_user_id').val(response.concernPersonName
-                                .name);
-
-                       }
-
-
-
-
+                        $('#showHighCourtCaseDiv').append(response);;
+                    },
+                    error:function(){
+                        console.log('failed');
                     }
+
 
                 });
             }

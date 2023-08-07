@@ -16,6 +16,8 @@ class GovCaseRegisterRepository
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
+        $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
@@ -28,6 +30,8 @@ class GovCaseRegisterRepository
             'caseBadi' => $caseBadi,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
+            'mainBibadi' => $mainBibadi,
+            'otherBibadi' => $otherBibadi,
             'caseLogs' => $caseLog,
             'hearings' => $hearings,
             'files' => $files,

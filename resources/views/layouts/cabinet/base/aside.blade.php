@@ -47,7 +47,7 @@
                             ড্যাশবোর্ড</span>
                     </a>
                 </li>
-                
+
                 @can('highcourt_division')
                     <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
@@ -64,16 +64,17 @@
                                 @can('create_new_case')
                                     <li class="menu-item {{ request()->is('cabinet/case/highcourt/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link"> 
+                                        <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি</span>
                                         </a>
                                     </li>
                                     <li class="menu-item {{ request()->is('cabinet/case/highcourt/create/old') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link"> 
+                                        <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি</span>
+                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
+                                                এন্ট্রি</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -105,7 +106,7 @@
                         </div>
                     </li>
                 @endcan
-                
+
                 @can('appeal_division')
                     <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
@@ -122,34 +123,41 @@
                                     <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="menu-link">
-                                            <i class="fas fa-plus"><span></span></i>
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder"> নতুন/চলমান আপিল মামলা এন্ট্রি</span>
                                         </a>
                                     </li>
+
+                                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create/old') ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appellateDivision.create.old') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা এন্ট্রি</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/running']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appellateDivision.running') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appellateDivision.complete') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                        </a>
+                                    </li>
                                 @endcan
-
-                                <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/running']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.appellateDivision.running') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.appellateDivision.complete') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
-                                    </a>
-                                </li>
-
                             </ul>
 
                         </div>

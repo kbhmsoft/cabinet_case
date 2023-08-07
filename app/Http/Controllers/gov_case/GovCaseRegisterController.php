@@ -1104,8 +1104,49 @@ class GovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
-
+        // return $data;
         return view('gov_case.case_register.create_new_appeal')->with($data);
+    }
+
+    public function appellateDivision_old_case_create()
+    {
+        session()->forget('currentUrlPath');
+
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+        $data['ministrys'] = GovCaseOffice::get();
+        // $data['ministrys'] = DB::table('gov_case_office')->get();
+        $data['caseRegister'] = GovCaseRegister::all();
+        // return $data['caseRegister'];
+
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+
+        $data['courts'] = DB::table('court')
+            ->select('id', 'court_name')
+            ->whereIn('id', [1, 2])
+            ->get();
+
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+        if ($roleID != 33) {
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        } else {
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
+
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+
+        $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
+        $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
+        $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
+
+        $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
+        // return $data;
+        return view('gov_case.case_register.create_old_appeal_case')->with($data);
     }
 
     public function get_details(Request $request)
@@ -1501,23 +1542,6 @@ class GovCaseRegisterController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function create_appeal($id)
     {
 
@@ -1598,6 +1622,16 @@ class GovCaseRegisterController extends Controller
 
         // $data = GovCaseRegister::where('id', $id)->first();
         return json_encode($data);
+
+    }
+
+    public function getHighCourtCaseDetails($id)
+    {
+    
+         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        // return $data;
+        // $data = GovCaseRegister::where('id', $id)->first();
+        return view('gov_case.case_register._inc.get_highcourt_case_for_appeal',$data);
 
     }
 
