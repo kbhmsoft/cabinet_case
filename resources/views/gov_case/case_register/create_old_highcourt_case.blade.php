@@ -85,205 +85,235 @@
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
 
+                                                <div class="col-sm-12">
+                                                    <div id="firstrequriedfields" class="form-group row">
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="CaseCategory">মামলার ক্যাটেগরি <span
+                                                                    class="text-danger">*</span></label>
 
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="CaseCategory">মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
-
-                                                    <div class="" id="CaseCategorDiv">
-                                                        <select name="case_category" id="CaseCategory"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategory as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('case_category') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="case_category_type">মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
-                                                    <div class="" id="CaseCategorDiv">
-                                                        <select name="case_category_type" id="case_category_type"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="case_no">মামলা নং <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required">
-                                                    <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="case_year">বছর <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_year" id="case_year"
-                                                        class="form-control form-control-sm common_yearpicker"
-                                                        placeholder="বছর" autocomplete="off" required="required">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="case_date">রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_date" id="case_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off" required="required">
-
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="concern_person_designation">সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation"
-                                                            id="concern_person_designation"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label for="concern_user_id">সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-12 mb-5">
-                                                    <table width="100%" border="1" id="badiDiv"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th class="petisioner_name">পিটিশনারের নাম <span class="text-danger">*</span> </th>
-
-                                                            <th class="petisioner_address">ঠিকানা <span class="text-danger">*</span></th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
-                                                                        class="fas fa-plus-circle"></i></a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                    </table>
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="MainBibadiDiv"
-                                                        class="mb-5" style="border:1px solid #dcd8d8;">
-
-                                                        <tr>
-                                                            {{-- <label for="case_year">বছর <span class="text-danger">*</span></label> --}}
-                                                            <th class="main_babadi_name">মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                            </th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addMainBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                        <input type="hidden" id="mainBibadi_count" value="1">
-                                                    </table>
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
-
-                                                        <tr>
-                                                            <th class="other_bibadi_name">অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                            </th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                    </table>
-                                                </div>
-
-
-                                                <div class="col-lg-12 mb-5">
-                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
-                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
-                                                </div>
-
-
-
-
-                                                {{-- starting সংযুক্তি  --}}
-
-
-                                                <div class="col-md-12">
-                                                    <fieldset class="">
-                                                        <div
-                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                            <div class="d-flex align-items-center mr-2 py-2">
-                                                                <th class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
-                                                                    <span class="text-danger">*</span>
-                                                                </th>
+                                                            <div class="" id="CaseCategorDiv">
+                                                                <select name="case_category" id="CaseCategory"
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                                    <option value="">-- নির্বাচন করুন --</option>
+                                                                    @foreach ($GovCaseDivisionCategory as $value)
+                                                                        <option value="{{ $value->id }}"
+                                                                            {{ old('case_category') == $value->id ? 'selected' : '' }}>
+                                                                            {{ $value->name_bn }} </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <span class="text-danger d-none vallidation-message">This
+                                                                    field
+                                                                    can not be empty</span>
                                                             </div>
-
-                                                            <div class="symbol-group symbol-hover py-2">
-                                                                <div class="symbol symbol-30 symbol-light-primary"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="" role="button"
-                                                                    data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                    <div id="addFileRow">
-                                                                        <span
-                                                                            class="symbol-label font-weight-bold bg-success">
-                                                                            <i
-                                                                                class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
                                                         </div>
-                                                        <div class="mt-3 px-5">
-                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="case_category_type">মামলার শ্রেণী/কেস-টাইপ <span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="" id="CaseCategorDiv">
+                                                                <select name="case_category_type" id="case_category_type"
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                                    <option value="">-- নির্বাচন করুন --</option>
+                                                                </select>
+                                                                <span class="text-danger d-none vallidation-message">This
+                                                                    field
+                                                                    can not be empty</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="case_no">মামলা নং <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" name="case_no" id="case_no"
+                                                                class="form-control form-control-sm"
+                                                                placeholder="মামলা নং " required="required">
+                                                            <input type="hidden" name="caseId" value="">
+                                                            <span class="text-danger d-none vallidation-message">This field
+                                                                can
+                                                                not be empty</span>
+                                                        </div>
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="case_year">বছর <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" name="case_year" id="case_year"
+                                                                class="form-control form-control-sm common_yearpicker"
+                                                                placeholder="বছর" autocomplete="off" required="required">
+                                                            <span class="text-danger d-none vallidation-message">This field
+                                                                can
+                                                                not be empty</span>
+                                                        </div>
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="case_date">রুল ইস্যুর তারিখ <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" name="case_date" id="case_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                                required="required">
+
+                                                            <span class="text-danger d-none vallidation-message">This field
+                                                                can
+                                                                not be empty</span>
+                                                        </div>
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="concern_person_designation">সংশ্লিষ্ট আইন কর্মকর্তা
+                                                                <span class="text-danger">*</span></label>
+
+                                                            <div class="" id="concernPersonDesignationDiv">
+                                                                <select name="concern_person_designation"
+                                                                    id="concern_person_designation"
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                                    <option value="">-- নির্বাচন করুন --</option>
+                                                                    @foreach ($concern_person_desig as $value)
+                                                                        <option value="{{ $value->id }}"
+                                                                            {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
+                                                                            {{ $value->name }} </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <span class="text-danger d-none vallidation-message">This
+                                                                    field
+                                                                    can not be empty</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label for="concern_user_id">সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                                    class="text-danger">*</span></label>
+
+                                                            <div class="" id="concernPersonNameDiv">
+                                                                <select name="concern_user_id" id="concern_user_id"
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                                    <option value="">-- নির্বাচন করুন --</option>
+
+                                                                </select>
+                                                                <span class="text-danger d-none vallidation-message">This
+                                                                    field
+                                                                    can not be empty</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="secondrequriedfields" class="form-group row">
+                                                        <div class="col-lg-12 mb-5">
+                                                            <table width="100%" border="1" id="badiDiv"
                                                                 style="border:1px solid #dcd8d8;">
+                                                                <tr>
+                                                                    <th class="petisioner_name badi_name">পিটিশনারের নাম
+                                                                        <span class="text-danger">*</span> </th>
+
+                                                                    <th class="petisioner_address badi_address">ঠিকানা
+                                                                        <span class="text-danger">*</span></th>
+                                                                    <th width="50">
+                                                                        <a href="javascript:void();" id="addBadiRow"
+                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
+                                                                                class="fas fa-plus-circle"></i></a>
+                                                                    </th>
+                                                                </tr>
                                                                 <tr></tr>
                                                             </table>
-                                                            <input type="hidden" id="other_attachment_count"
-                                                                value="1">
                                                         </div>
-                                                    </fieldset>
+                                                        <div class="col-lg-6 mb-5">
+                                                            <table width="100%" border="1" id="MainBibadiDiv"
+                                                                class="mb-5" style="border:1px solid #dcd8d8;">
+
+                                                                <tr>
+                                                                    <th class="main_babadi_name main_respondent">মূল
+                                                                        রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th width="50">
+                                                                        <a href="javascript:void();" id="addMainBibadiRow"
+                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                            <i class="fas fa-plus-circle"></i>
+                                                                        </a>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr></tr>
+                                                                <input type="hidden" id="mainBibadi_count"
+                                                                    value="1">
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-lg-6 mb-5">
+                                                            <table width="100%" border="1" id="bibadiDiv"
+                                                                class="mb-5" style="border:1px solid #dcd8d8;">
+
+                                                                <tr>
+                                                                    <th class="other_bibadi_name other_respondent">অন্যান্য
+                                                                        রেসপন্ডেন্ট নাম
+                                                                        <span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th width="50">
+                                                                        <a href="javascript:void();" id="addBibadiRow"
+                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                            <i class="fas fa-plus-circle"></i>
+                                                                        </a>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr></tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <div class="col-lg-12 mb-5">
+                                                        <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
+                                                        <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
+                                                    </div>
+
+
+                                                    {{-- starting সংযুক্তি  --}}
+
+                                                    <div id="thirdrequriedfields" class="form-group row">
+
+                                                        <div class="col-md-12">
+                                                            <fieldset class="">
+                                                                <div
+                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2 file_type">
+                                                                        <th class="mb-0 mr-8 ">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                                            <span class="text-danger">*</span>
+                                                                        </th>
+                                                                    </div>
+
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="" role="button"
+                                                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                            <div id="addFileRow">
+                                                                                <span
+                                                                                    class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="fileDiv" style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="other_attachment_count"
+                                                                        value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- end সংযুক্তি --}}
                                                 </div>
 
-                                                {{-- end সংযুক্তি --}}
 
 
 
@@ -386,7 +416,7 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব প্রেরণ)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>
@@ -1033,7 +1063,7 @@
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
                                                             <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
+                                                                (কনটেম্প্ট মামলা)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>

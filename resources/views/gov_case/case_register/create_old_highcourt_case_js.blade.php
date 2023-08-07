@@ -125,11 +125,11 @@
         var items = '';
         items += '<tr>';
         items +=
-            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" id="petisioner_name" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" required="required" name="badi_name[]" class="form-control form-control-sm" id="petisioner_name" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items += '<input type="hidden" name="badi_id[]" value="">';
 
         items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" id="petisioner_address" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" required="required" name="badi_address[]" class="form-control form-control-sm" id="petisioner_address" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         // items +=
         //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -245,7 +245,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select  name="main_respondent[]" id="main_babadi_name" class="form-control form-control-sm main_respondent"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select  required="required"  name="main_respondent[]" id="main_babadi_name" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -283,7 +283,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]" id="other_bibadi_name" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select required="required" name="other_respondent[]" id="other_bibadi_name" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -319,29 +319,46 @@
             var emptyFields = [];
             // var index = 1;
 
-            $("#caseGeneralInfoForm [required]").each(function() {
+            $("#firstrequriedfields [required]").each(function() {
                 var fieldValue = $(this).val().trim();
                 console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
                     emptyFields.push(labelForField.text().trim().replace('*', ''));
                 }
             });
 
+            $("#secondrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                var fieldName = $(this).attr("name").replace('[]', '');
 
-            $("#caseGeneralInfoForm th[class]").each(function() {
-                var tdClass = $(this).attr("class");
-                console.log(tdClass);
-                var tdForField = $("td." + tdClass);
-                var tdText = tdForField.text().trim();
-                if (tdText === '') {
+                console.log(fieldName);
+
+                console.log(fieldValue);
+                if (fieldValue === '') {
                     formValid = false;
-                    var thText = $(this).text().trim().replace('*', '');
-                    emptyFields.push(thText);
+                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
+                    emptyFields.push($("."+fieldName).text().trim().replace('*', ''));
                 }
             });
 
+
+            $("#thirdrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                var fieldName = $(this).attr("name").replace('[]', '');
+
+                console.log(fieldName);
+
+                if (fieldValue === '') {
+                    formValid = false;
+                    // var labelForField = $("label[for='" + $(this).attr("id") + "']");
+                    // console.log(labelForField);
+                    emptyFields.push($("."+fieldName).text().trim().replace('*', ''));
+                }
+            })
 
             if (formValid) {
                 console.log("Form is valid.");
@@ -368,62 +385,6 @@
         });
 
     });
-//     $(document).ready(function() {
-//   $(".submit-button").click(function(e) {
-//     e.preventDefault();
-
-//     var formValid = true;
-//     var emptyFields = [];
-//     var index = 1;
-
-//     $("#caseGeneralInfoForm [required]").each(function() {
-//       var fieldValue = $(this).val().trim();
-//       if (fieldValue === '') {
-//         formValid = false;
-//         var labelForField = $("label[for='" + $(this).attr("id") + "']");
-//         var labelText = labelForField.text().trim().replace('*', '');
-//         emptyFields.push(index + ". " + labelText);
-//         index++;
-//       }
-//     });
-
-//     $("#caseGeneralInfoForm th[class]").each(function() {
-//       var tdClass = $(this).attr("class");
-//       var tdForField = $("td." + tdClass);
-//       var tdText = tdForField.text().trim();
-//       if (tdText === '') {
-//         formValid = false;
-//         var thText = $(this).text().trim();
-//         emptyFields.push(index + ". " + thText);
-//         index++;
-//       }
-//     });
-
-//     if (formValid) {
-
-//       console.log("Form is valid. Submitting...");
-//     } else {
-//       $("#emptyFieldsList").empty();
-//       emptyFields.forEach(function(fieldLabel) {
-//         $("#emptyFieldsList").append("<li>" + fieldLabel + "</li>");
-//       });
-//       $("#myModal").css("display", "block");
-//     }
-//   });
-
-
-//   $(".close-button").click(function() {
-//     $("#myModal").css("display", "none");
-//   });
-
-
-//   $(".submit-button").click(function(event) {
-//     if (event.target.id === "myModal") {
-//       $("#myModal").css("display", "none");
-//     }
-//   });
-// });
-
 </script>
 
 <script>
@@ -972,7 +933,7 @@
         $('#other_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" required="required" name="file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
