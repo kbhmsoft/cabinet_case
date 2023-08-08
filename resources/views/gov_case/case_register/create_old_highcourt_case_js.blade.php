@@ -1058,7 +1058,8 @@
 {{-- for form validation error in modal show --}}
 <script>
     $(document).ready(function() {
-        $("#oldCaseGeneralInfoFrom").submit(function(e) {
+        // $("#oldCaseGeneralInfoFrom").submit(function(e) {
+        $(".save-button").click(function(e) {
             e.preventDefault();
 
             var formValid = true;
@@ -1121,7 +1122,9 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         alert('okay')
-                        var formData = new FormData(this);
+                        // var formData = new FormData(this);
+                        var formData = new FormData(document.getElementById("oldCaseGeneralInfoFrom"));
+
                         console.log(formData);
                         $.ajax({
                             type: 'POST',
