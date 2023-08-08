@@ -1108,7 +1108,6 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.create_new_appeal')->with($data);
     }
 
-<<<<<<< HEAD
     public function appellateDivision_old_case_create()
     {
         session()->forget('currentUrlPath');
@@ -1150,8 +1149,6 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.create_old_appeal_case')->with($data);
     }
 
-=======
->>>>>>> 08f554512358ac9dc7ab358987eb3b2f9baad2c6
     public function get_details(Request $request)
     {
         //$query =  DB::table('gov_case_registers')->where('id',$request->case_id)->first();
