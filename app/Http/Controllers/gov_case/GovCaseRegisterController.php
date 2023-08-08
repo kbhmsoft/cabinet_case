@@ -1641,7 +1641,14 @@ class GovCaseRegisterController extends Controller
         return json_encode($data);
 
     }
-
+    public function getHighCourtCaseDetails($id)
+    {
+    
+         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        // return $data;
+        // $data = GovCaseRegister::where('id', $id)->first();
+        return view('gov_case.case_register._inc.get_highcourt_case_for_appeal',$data);
+    }
     public function register($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
