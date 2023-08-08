@@ -255,18 +255,7 @@
                                                             @if ($val->is_main_bibadi == 1)
                                                                 <tr id="bibadi_10{{ $key }}">
                                                                     <td>
-                                                                        <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]"
-                                                                                                                                                                                                            id="ministry_id" class="form-control form-control-sm">
-
-
-
-
-
-
-
-
-
-
+                                                                        <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
                                                                                       @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->id }}"
                                                                                 {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
@@ -874,7 +863,7 @@
                                                         <label class="radio">
                                                             <input type="radio" name="is_appeal" id="is_appeal"
                                                                 value="2"
-                                                                {{ $case->is_appeal == '2' ? 'checked' : '' }}" />
+                                                                {{ $case->is_appeal == '2' ? 'checked' : '' }}/>
                                                             <span></span>না</label>
                                                     </div>
                                                 </div>
@@ -1231,7 +1220,7 @@
                                                     <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
                                                         spellcheck="false">{{ $case->others_action_detials ?? '' }}
                                                             </textarea>
-                                                    </textarea>
+                                                    
                                                 </div>
                                             </div>
                                         </fieldset>
