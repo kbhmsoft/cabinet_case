@@ -9,11 +9,11 @@
     $officeInfo = user_office_info();
     $roleID = Auth::user()->role_id;
 
-    $case_status = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
+    $case_status = DB::table('gov_case_registers')
+         ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
+         ->leftJoin('case_status', 'gov_case_registers.case_status_id', '=', 'case_status.id')
+         ->groupBy('gov_case_registers.case_status_id')
+         ->where('gov_case_registers.action_user_role_id', $roleID)
          ->get();
     // dd($case_status);
     $notification_count = 0;

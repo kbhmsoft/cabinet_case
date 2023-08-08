@@ -1144,7 +1144,7 @@ class GovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
-        $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
+        $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
         // return $data;
         return view('gov_case.case_register.create_old_appeal_case')->with($data);
     }

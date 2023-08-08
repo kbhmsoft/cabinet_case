@@ -68,7 +68,7 @@
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
 
-                        <form id="caseGeneralInfoForm" action="{{ route('cabinet.case.store') }}" class="form"
+                        <form id="oldCaseGeneralInfoFrom" action="{{ route('cabinet.case.store') }}" class="form"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             {{-- start মামলার সাধারণ তথ্য --}}
@@ -1107,7 +1107,7 @@
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="submit"
-                                                class="action-button submit-button save-button">সংরক্ষণ</button>
+                                                class="action-button submit-button save-button" id="saveOldHighCourtCaseBtn">সংরক্ষণ</button>
                                         </div>
                                     </div>
                                 </div>

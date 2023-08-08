@@ -156,7 +156,7 @@ class DashboardController extends Controller
          $data['total_mouja'] = DB::table('mouja')->count();
          $data['total_ct'] = DB::table('case_type')->count();
 
-         $data['cases'] = DB::table('case_register')->select('case_register.*')->get();
+         $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
 
         /* // count ministry wise case status
          $ministry_wise = DB::table('office')
@@ -317,15 +317,15 @@ class DashboardController extends Controller
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
+         $data['case_status'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+         ->groupBy('gov_case_registers.cs_id')
+         ->where('gov_case_registers.action_user_group_id', $roleID)
          ->get();
          // dd($data['case_status']);
 
@@ -471,12 +471,12 @@ class DashboardController extends Controller
          // Superadmin dashboard
 
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
+         $data['total_case'] = DB::table('gov_case_registers')->count();
          $data['total_at_case'] = AtCaseRegister::count();
          $data['total_rm_case'] = RM_CaseRgister::count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
 
          $data['total_office'] = DB::table('office')->whereIn('id', [10,12,11])->count();
          $data['total_user'] = DB::table('users')->count();
@@ -485,8 +485,8 @@ class DashboardController extends Controller
          $data['total_ct'] = DB::table('case_type')->count();
 
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
          // Drildown Statistics
@@ -618,8 +618,8 @@ class DashboardController extends Controller
          $data['total_ct'] = DB::table('case_type')->count();
 
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
          // count ministry wise case status
@@ -730,8 +730,8 @@ class DashboardController extends Controller
          $data['total_ct'] = DB::table('case_type')->count();
 
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
          // Drildown Statistics
@@ -830,8 +830,8 @@ class DashboardController extends Controller
          $data['total_ct'] = DB::table('case_type')->count();
 
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
          // Drildown Statistics
@@ -897,20 +897,20 @@ class DashboardController extends Controller
          // Attorney General
          // Get case status by group
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+         $data['total_case'] = DB::table('gov_case_registers')->count();
+         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
+         $data['case_status'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+         ->groupBy('gov_case_registers.cs_id')
+         ->where('gov_case_registers.action_user_group_id', $roleID)
          ->get();
          // dd($data['case_status']);
 
@@ -920,20 +920,20 @@ class DashboardController extends Controller
          // Attorney General
          // Get case status by group
          // Counter
-         $data['total_case'] = DB::table('case_register')->count();
-         $data['running_case'] = DB::table('case_register')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('case_register')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('case_register')->where('status', 3)->count();
+         $data['total_case'] = DB::table('gov_case_registers')->count();
+         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
+         $data['case_status'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+         ->groupBy('gov_case_registers.cs_id')
+         ->where('gov_case_registers.action_user_group_id', $roleID)
          ->get();
          // dd($data['case_status']);
 
@@ -956,15 +956,15 @@ class DashboardController extends Controller
          $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
          $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
-         $data['cases'] = DB::table('case_register')
-         ->select('case_register.*')
+         $data['cases'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.*')
          ->get();
 
-         $data['case_status'] = DB::table('case_register')
-         ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-         ->groupBy('case_register.cs_id')
-         ->where('case_register.action_user_group_id', $roleID)
+         $data['case_status'] = DB::table('gov_case_registers')
+         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+         ->groupBy('gov_case_registers.cs_id')
+         ->where('gov_case_registers.action_user_group_id', $roleID)
          ->get();
          // dd($data['case_status']);
 
@@ -983,11 +983,11 @@ class DashboardController extends Controller
      public function hearing_date_today()
      {
        $data['hearing'] = DB::table('case_hearing')
-       ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
-       ->join('court', 'case_register.court_id', '=', 'court.id')
-       ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'case_register.id', 'case_register.court_id', 'case_register.case_number', 'case_register.status', 'court.court_name')
+       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
        ->where('case_hearing.hearing_date', '=', date('Y-m-d'))
        ->get();
 
@@ -1002,11 +1002,11 @@ class DashboardController extends Controller
     {
        $d = date('Y-m-d',strtotime('+1 day')) ;
        $data['hearing'] = DB::table('case_hearing')
-       ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
-       ->join('court', 'case_register.court_id', '=', 'court.id')
-       ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'case_register.id', 'case_register.court_id', 'case_register.case_number', 'case_register.status', 'court.court_name')
+       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
        ->where('case_hearing.hearing_date', '=', $d)
        ->get();
 
@@ -1022,11 +1022,11 @@ class DashboardController extends Controller
 
        $d = date('Y-m-d',strtotime('+7 day')) ;
        $data['hearing'] = DB::table('case_hearing')
-       ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
-       ->join('court', 'case_register.court_id', '=', 'court.id')
-       ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'case_register.id', 'case_register.court_id', 'case_register.case_number', 'case_register.status', 'court.court_name')
+       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
        ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
        ->where('case_hearing.hearing_date', '<=', $d)
        ->get();
@@ -1044,11 +1044,11 @@ class DashboardController extends Controller
        /* $m = date('m',strtotime($d));
        dd($d);*/
        $data['hearing'] = DB::table('case_hearing')
-       ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
-       ->join('court', 'case_register.court_id', '=', 'court.id')
-       ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'case_register.id', 'case_register.court_id', 'case_register.case_number', 'case_register.status', 'court.court_name')
+       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
        ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
        ->where('case_hearing.hearing_date', '<=', $d)
        ->get();
@@ -1062,34 +1062,34 @@ class DashboardController extends Controller
     public function hearing_case_details($id)
     {
 
-     $data['info'] = DB::table('case_register')
-     ->join('court', 'case_register.court_id', '=', 'court.id')
-     ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-     ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-     // ->join('case_type', 'case_register.ct_id', '=', 'case_type.id')
-     ->join('case_status', 'case_register.cs_id', '=', 'case_status.id')
-     // ->join('case_badi', 'case_register.id', '=', 'case_badi.case_id')
-     // ->join('case_bibadi', 'case_register.id', '=', 'case_bibadi.case_id')
-     ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn',  'case_status.status_name')
-     ->where('case_register.id', '=', $id)
+     $data['info'] = DB::table('gov_case_registers')
+     ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+     ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+     ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+     // ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
+     ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+     // ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
+     // ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
+     ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn',  'case_status.status_name')
+     ->where('gov_case_registers.id', '=', $id)
      ->first();
 		// dd($data['info']);
      	// dd($data['info']);
 
      $data['badis'] = DB::table('case_badi')
-     ->join('case_register', 'case_badi.case_id', '=', 'case_register.id')
+     ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
      ->select('case_badi.*')
      ->where('case_badi.case_id', '=', $id)
      ->get();
 
      $data['bibadis'] = DB::table('case_bibadi')
-     ->join('case_register', 'case_bibadi.case_id', '=', 'case_register.id')
+     ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
      ->select('case_bibadi.*')
      ->where('case_bibadi.case_id', '=', $id)
      ->get();
 
      $data['surveys'] = DB::table('case_survey')
-     ->join('case_register', 'case_survey.case_id', '=', 'case_register.id')
+     ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
      ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
      ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
      ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
@@ -1135,7 +1135,7 @@ class DashboardController extends Controller
   }
 
   public function get_drildown_case_count($division=NULL, $district=NULL, $upazila=NULL, $status=NULL) {
-     $query = DB::table('case_register');
+     $query = DB::table('gov_case_registers');
 
      if($division != NULL){
        $query->where('division_id', $division);
@@ -1184,32 +1184,32 @@ class DashboardController extends Controller
      */
     /*public function case_details($id)
     {
-        $data['info'] = DB::table('case_register')
-        ->join('court', 'case_register.court_id', '=', 'court.id')
-        ->join('upazila', 'case_register.upazila_id', '=', 'upazila.id')
-        ->join('mouja', 'case_register.mouja_id', '=', 'mouja.id')
-        ->join('case_type', 'case_register.ct_id', '=', 'case_type.id')
-        ->join('case_status', 'case_register.cs_id', '=', 'case_status.id')
-        ->join('case_badi', 'case_register.id', '=', 'case_badi.case_id')
-        ->join('case_bibadi', 'case_register.id', '=', 'case_bibadi.case_id')
-        ->select('case_register.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_type.ct_name', 'case_status.status_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
-        ->where('case_register.id', '=', $id)
+        $data['info'] = DB::table('gov_case_registers')
+        ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+        ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+        ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+        ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
+        ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+        ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
+        ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
+        ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_type.ct_name', 'case_status.status_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
+        ->where('gov_case_registers.id', '=', $id)
         ->first();
 
         $data['badis'] = DB::table('case_badi')
-        ->join('case_register', 'case_badi.case_id', '=', 'case_register.id')
+        ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
         ->select('case_badi.*')
         ->where('case_badi.case_id', '=', $id)
         ->get();
 
         $data['bibadis'] = DB::table('case_bibadi')
-        ->join('case_register', 'case_bibadi.case_id', '=', 'case_register.id')
+        ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
         ->select('case_bibadi.*')
         ->where('case_bibadi.case_id', '=', $id)
         ->get();
 
         $data['surveys'] = DB::table('case_survey')
-        ->join('case_register', 'case_survey.case_id', '=', 'case_register.id')
+        ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
         ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
         ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
         ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
@@ -1330,7 +1330,7 @@ class DashboardController extends Controller
 
 
         // Get Case Data
-        $case = DB::table('case_register')
+        $case = DB::table('gov_case_registers')
         ->select('id', 'cs_id', 'court_id', 'case_number', 'case_date', 'ct_id', 'mouja_id', 'upazila_id', 'district_id', 'tafsil', 'chowhaddi', 'show_cause_file', 'created_at')
         ->where('id', $caseID)
         ->first();
@@ -1357,7 +1357,7 @@ class DashboardController extends Controller
         'status'       => 2,
         'updated_at'    => date('Y-m-d H:i:s'),
         ];
-        DB::table('case_register')->where('id', $caseID)->update($case_data);
+        DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
 
         return response()->json(['success'=>'Data is successfully added']);*/
      }
@@ -1404,7 +1404,7 @@ class DashboardController extends Controller
         //'status'       => 2,
         //'updated_at'    => date('Y-m-d H:i:s'),
         ];
-        DB::table('case_register')->where('id', $caseID)->update($case_data);
+        DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
 
         return response()->json(['success'=>'Data is successfully added','sfdata'=>'Data is successfully added']);
      } */

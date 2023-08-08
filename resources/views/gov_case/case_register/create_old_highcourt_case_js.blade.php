@@ -482,334 +482,73 @@
 
     // ================================Case General Info save==================================
 
-    $('#caseGeneralInfoForm').submit(function(e) {
-        e.preventDefault();
-        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        Swal.fire({
-            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         // text: "You won't be able to revert this!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes!'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
 
-                var formData = new FormData(this);
-                $.ajax({
+    //             var formData = new FormData(this);
+    //             $.ajax({
 
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.store') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
 
-                    success: (data) => {
-                        $('#caseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     $orderData = data;
+    //                     Swal.fire(
+    //                         'Saved!',
+    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success'
+    //                     )
+    //                     console.log(data);
 
-                        $("#sending_reply_tab").click();
-                        $("#caseIDForAnswer").val(data.caseId);
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
+    //                     $("#sending_reply_tab").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
 
 
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
+    //                     $('#sendingReplySaveBtn').prop('disabled', false);
+    //                     $('#sendingReplySaveBtn').removeClass("disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false);
+    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
 
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#caseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
+    //                 },
+    //                 error: function(data) {
+    //                     console.log(data);
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
 
-                    }
-                });
-            }
-        })
+    //                 }
+    //             });
+    //         }
+    //     })
 
-    });
+    // });
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//
 
-
-
-    $('#sendingReplyForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#sendingReplySaveBtn').addClass('spinner spinner-white spinner-right disabled');
-
-        Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                var formData = new FormData(this);
-                $.ajax({
-
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.sendingReplyStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-
-                    success: (data) => {
-                        $('#sendingReplySaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
-                        // console.log(data.caseId);
-                        $("#suspension_order").click();
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
-
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#sendingReplySaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-
-                    }
-                });
-            }
-        })
-
-    });
-    // ================================Sending Replay Save==================================//
-
-    // ================================Suspention Order Save==================================//
-
-
-
-    $('#suspensionOrderForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#suspensionOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-
-        Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                var formData = new FormData(this);
-                $.ajax({
-
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.suspensionOrderStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-
-                    success: (data) => {
-                        $('#suspensionOrderSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
-                        // console.log(data.caseId);
-                        $("#final_order").click();
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
-
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#suspensionOrderSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-
-                    }
-                });
-            }
-        })
-
-    });
-    // ================================Suspention Order Save==================================//
-
-    // ================================Final Order Save==================================//
-
-
-
-    $('#finalOrderForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#finalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-
-        Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                var formData = new FormData(this);
-                $.ajax({
-
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.finalOrderStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-
-                    success: (data) => {
-                        $('#finalOrderSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
-                        // console.log(data.caseId);
-                        $("#contempt_case").click();
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
-
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#finalOrderSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-
-                    }
-                });
-            }
-        })
-
-    });
-    // ================================Final Order Save==================================//
-
-    // ================================Final Order Save==================================//
-
-
-
-    $('#contemptCaseForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#contemptCaseSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-
-        Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                var formData = new FormData(this);
-                $.ajax({
-
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.contemptCaseStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-
-                    success: (data) => {
-                        $('#contemptCaseSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
-                        console.log(data);
-                        // console.log(data.caseId);
-                        // $("#contempt_case").click();
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
-
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        $('#contemptCaseSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-
-                    }
-                });
-            }
-        })
-
-    });
-    // ================================Final Order Save==================================//
 </script>
 <!--end::Page Scripts-->
 @include('components.Ajax')
@@ -960,7 +699,7 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
@@ -1058,7 +797,7 @@
 {{-- for form validation error in modal show --}}
 <script>
     $(document).ready(function() {
-        $(".save-button").click(function(e) {
+        $("#oldCaseGeneralInfoFrom").submit(function(e) {
             e.preventDefault();
 
             var formValid = true;
@@ -1067,7 +806,7 @@
 
             $("#firstrequriedfields [required]").each(function() {
                 var fieldValue = $(this).val().trim();
-                console.log(fieldValue);
+                // console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
@@ -1080,9 +819,9 @@
                 var fieldValue = $(this).val().trim();
                 var fieldName = $(this).attr("name").replace('[]', '');
 
-                console.log(fieldName);
+                // console.log(fieldName);
 
-                console.log(fieldValue);
+                // console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
@@ -1096,7 +835,7 @@
                 var fieldValue = $(this).val().trim();
                 var fieldName = $(this).attr("name").replace('[]', '');
 
-                console.log(fieldName);
+                // console.log(fieldName);
 
                 if (fieldValue === '') {
                     formValid = false;
@@ -1107,18 +846,75 @@
             })
 
             if (formValid) {
-                console.log("Form is valid.");
+                // console.log("Form is valid.");
                 // var formData = new FormData(this);
-                var formData = $("#caseGeneralInfoForm").serialize();
-                console.log(formData.file_type);
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                });
+                $('#saveOldHighCourtCaseBtn').addClass('spinner spinner-white spinner-right disabled');
+                Swal.fire({
+                    title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                    // text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alert('okay')
+                        var formData = new FormData(this);
+                        console.log(formData);
+                        $.ajax({
+
+                            type: 'POST',
+                            url: "{{ route('cabinet.case.store') }}",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: (data) => {
+                                console.log(data);
+                                $('#saveOldHighCourtCaseBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled'
+                                    );
+                                $orderData = data;
+                                Swal.fire(
+                                    'Saved!',
+                                    'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                    'success'
+                                )
+                                console.log(data);
+
+                                $("#sending_reply_tab").click();
+                                $("#caseIDForAnswer").val(data.caseId);
+                                $("#caseIDForSuspention").val(data.caseId);
+                                $("#caseIDForFinalOrder").val(data.caseId);
+                                $("#caseIDForContempt").val(data.caseId);
+
+
+                                $('#sendingReplySaveBtn').prop('disabled', false);
+                                $('#sendingReplySaveBtn').removeClass(
+                                    "disable-button");
+                                $('#suspensionOrderSaveBtn').prop('disabled',
+                                false);
+                                $('#suspensionOrderSaveBtn').removeClass(
+                                    "disable-button");
+                                $('#finalOrderSaveBtn').prop('disabled', false);
+                                $('#finalOrderSaveBtn').removeClass(
+                                    "disable-button");
+                                $('#contemptCaseSaveBtn').prop('disabled', false);
+                                $('#contemptCaseSaveBtn').removeClass(
+                                    "disable-button");
+
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $('#caseGeneralInfoSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled'
+                                    );
+
+                            }
+                        });
+                    }
+                })
             } else {
 
                 $("#emptyFieldsList").empty();
