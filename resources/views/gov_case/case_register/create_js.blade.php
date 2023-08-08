@@ -130,10 +130,12 @@
 
         items +=
             '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        // items +=
-        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items +=
+            '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#badiDiv tr:last').after(items);
+
+
     }
 
     function removeRowBadiBibadiFunc(id, url) {
@@ -249,10 +251,10 @@
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
-            // if (countVal != 1) {
-            //     items +=
-            //         '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            // }
+            if (countVal != 1) {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
             items += '</tr>';
             // console.log(items);
             return items;
@@ -287,10 +289,10 @@
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
-            // if (type == 'other') {
-            //     items +=
-            //         '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            // }
+            if (type == 'other') {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
             items += '</tr>';
             // console.log(items);
             return items;
@@ -438,29 +440,29 @@
 </script>
 <script>
     // ===========================Button Disable=========================//
-    var caseIDForAnswer = $('#caseIDForAnswer').val();
-    if (!(caseIDForAnswer)) {
-        $('#sendingReplySaveBtn').prop('disabled', true);
-        $('#sendingReplySaveBtn').addClass("disable-button");
-    }
+    // var caseIDForAnswer = $('#caseIDForAnswer').val();
+    // if (!(caseIDForAnswer)) {
+    //     $('#sendingReplySaveBtn').prop('disabled', true);
+    //     $('#sendingReplySaveBtn').addClass("disable-button");
+    // }
 
-    var caseIDForSuspention = $('#caseIDForSuspention').val();
-    if (!(caseIDForSuspention)) {
-        $('#suspensionOrderSaveBtn').prop('disabled', true);
-        $('#suspensionOrderSaveBtn').addClass("disable-button");
-    }
+    // var caseIDForSuspention = $('#caseIDForSuspention').val();
+    // if (!(caseIDForSuspention)) {
+    //     $('#suspensionOrderSaveBtn').prop('disabled', true);
+    //     $('#suspensionOrderSaveBtn').addClass("disable-button");
+    // }
 
-    var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
-    if (!(caseIDForFinalOrder)) {
-        $('#finalOrderSaveBtn').prop('disabled', true);
-        $('#finalOrderSaveBtn').addClass("disable-button");
-    }
+    // var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
+    // if (!(caseIDForFinalOrder)) {
+    //     $('#finalOrderSaveBtn').prop('disabled', true);
+    //     $('#finalOrderSaveBtn').addClass("disable-button");
+    // }
 
-    var caseIDForContempt = $('#caseIDForContempt').val();
-    if (!(caseIDForContempt)) {
-        $('#contemptCaseSaveBtn').prop('disabled', true);
-        $('#contemptCaseSaveBtn').addClass("disable-button");
-    }
+    // var caseIDForContempt = $('#caseIDForContempt').val();
+    // if (!(caseIDForContempt)) {
+    //     $('#contemptCaseSaveBtn').prop('disabled', true);
+    //     $('#contemptCaseSaveBtn').addClass("disable-button");
+    // }
     // ===========================Button Disable=========================//
 
 

@@ -1104,10 +1104,11 @@ class GovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
-        // return $data;
+
         return view('gov_case.case_register.create_new_appeal')->with($data);
     }
 
+<<<<<<< HEAD
     public function appellateDivision_old_case_create()
     {
         session()->forget('currentUrlPath');
@@ -1149,6 +1150,8 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.create_old_appeal_case')->with($data);
     }
 
+=======
+>>>>>>> 08f554512358ac9dc7ab358987eb3b2f9baad2c6
     public function get_details(Request $request)
     {
         //$query =  DB::table('gov_case_registers')->where('id',$request->case_id)->first();
@@ -1466,7 +1469,7 @@ class GovCaseRegisterController extends Controller
 
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
-    public function edit($id)
+    public function highcourt_edit($id)
     {
         $roleID = userInfo()->role_id;
 
@@ -1497,7 +1500,7 @@ class GovCaseRegisterController extends Controller
         $data['page_title'] = 'মামলা সংশোধন';
         // return $data['concern_person_desig'] ;
         // return $data;
-        return view('gov_case.case_register.edit')->with($data);
+        return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
 
@@ -1539,6 +1542,23 @@ class GovCaseRegisterController extends Controller
         // return $data;
         return view('gov_case.case_register.create_old_highcourt_case')->with($data);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1622,16 +1642,6 @@ class GovCaseRegisterController extends Controller
 
         // $data = GovCaseRegister::where('id', $id)->first();
         return json_encode($data);
-
-    }
-
-    public function getHighCourtCaseDetails($id)
-    {
-    
-         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        // return $data;
-        // $data = GovCaseRegister::where('id', $id)->first();
-        return view('gov_case.case_register._inc.get_highcourt_case_for_appeal',$data);
 
     }
 

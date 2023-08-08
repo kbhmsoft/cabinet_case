@@ -64,7 +64,7 @@
                                         @endcan --}}
                                         @can('highcourt_case_update')
                                             <a class="dropdown-item"
-                                                href="{{ route('cabinet.case.edit', $row->id) }}">সংশোধন</a>
+                                                href="{{ route('cabinet.case.highcourt_edit', $row->id) }}">সংশোধন</a>
                                         @endcan
                                         @can('highcoutr_send_answer')
                                             @if (empty($row->result_sending_date))

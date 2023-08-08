@@ -165,7 +165,7 @@ Route::middleware('auth')->group(function () {
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
             Route::post('contemptCaseStore', [GovCaseRegisterController::class, 'contemptCaseStore'])->name('contemptCaseStore');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('store_appeal');
-            Route::get('edit/{id}', [GovCaseRegisterController::class, 'edit'])->name('edit');
+            Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
