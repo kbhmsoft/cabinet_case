@@ -877,10 +877,10 @@
         $('#reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="reply_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="replyAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="replyAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
@@ -912,10 +912,10 @@
         $('#suspension_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="suspension_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="suspensionAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="suspensionAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customSuspensionFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
@@ -947,10 +947,10 @@
         $('#final_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="final_order_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="finalAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
@@ -981,10 +981,10 @@
         $('#contempt_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="contempt_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="contemptAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="contempt_file_name[]" onChange="contemptAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customContemptFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-contempt-input' +

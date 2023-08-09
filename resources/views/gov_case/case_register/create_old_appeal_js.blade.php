@@ -730,10 +730,10 @@
         $('#reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="reply_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
@@ -764,10 +764,10 @@
         $('#suspension_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="suspension_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';

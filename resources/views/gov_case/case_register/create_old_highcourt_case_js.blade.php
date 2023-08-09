@@ -960,7 +960,7 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
@@ -1058,6 +1058,7 @@
 {{-- for form validation error in modal show --}}
 <script>
     $(document).ready(function() {
+        // $("#oldCaseGeneralInfoFrom").submit(function(e) {
         $(".save-button").click(function(e) {
             e.preventDefault();
 
@@ -1067,7 +1068,7 @@
 
             $("#firstrequriedfields [required]").each(function() {
                 var fieldValue = $(this).val().trim();
-                console.log(fieldValue);
+                // console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
@@ -1080,9 +1081,9 @@
                 var fieldValue = $(this).val().trim();
                 var fieldName = $(this).attr("name").replace('[]', '');
 
-                console.log(fieldName);
+                // console.log(fieldName);
 
-                console.log(fieldValue);
+                // console.log(fieldValue);
                 if (fieldValue === '') {
                     formValid = false;
                     var labelForField = $("label[for='" + $(this).attr("id") + "']");
@@ -1096,7 +1097,7 @@
                 var fieldValue = $(this).val().trim();
                 var fieldName = $(this).attr("name").replace('[]', '');
 
-                console.log(fieldName);
+                // console.log(fieldName);
 
                 if (fieldValue === '') {
                     formValid = false;
@@ -1108,16 +1109,72 @@
 
             if (formValid) {
                 console.log("Form is valid.");
-                var formData = $("#caseGeneralInfoForm").serialize();
-                console.log(formData.file_type);
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                });
+
+                // var formData = new FormData(this);
+                $('#saveOldHighCourtCaseBtn').addClass('spinner spinner-white spinner-right disabled');
+                Swal.fire({
+                    title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                    // text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alert('okay')
+                        // var formData = new FormData(this);
+                        var formData = new FormData(document.getElementById("oldCaseGeneralInfoFrom"));
+
+                        console.log(formData);
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('cabinet.case.store') }}",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: (data) => {
+                                console.log(data);
+                                $('#saveOldHighCourtCaseBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled'
+                                    );
+                                $orderData = data;
+                                Swal.fire(
+                                    'Saved!',
+                                    'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                    'success'
+                                )
+                                console.log(data);
+                                $("#sending_reply_tab").click();
+                                $("#caseIDForAnswer").val(data.caseId);
+                                $("#caseIDForSuspention").val(data.caseId);
+                                $("#caseIDForFinalOrder").val(data.caseId);
+                                $("#caseIDForContempt").val(data.caseId);
+                                $('#sendingReplySaveBtn').prop('disabled', false);
+                                $('#sendingReplySaveBtn').removeClass(
+                                    "disable-button");
+                                $('#suspensionOrderSaveBtn').prop('disabled',
+                                false);
+                                $('#suspensionOrderSaveBtn').removeClass(
+                                    "disable-button");
+                                $('#finalOrderSaveBtn').prop('disabled', false);
+                                $('#finalOrderSaveBtn').removeClass(
+                                    "disable-button");
+                                $('#contemptCaseSaveBtn').prop('disabled', false);
+                                $('#contemptCaseSaveBtn').removeClass(
+                                    "disable-button");
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $('#caseGeneralInfoSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled'
+                                    );
+                            }
+                        });
+                    }
+                })
+
             } else {
 
                 $("#emptyFieldsList").empty();
