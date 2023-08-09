@@ -7,13 +7,13 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -21,7 +21,7 @@
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div class="card card-custom gutter-b example example-compact">
+        <div style="width:100%" class="card card-custom gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -38,26 +38,26 @@
 
             <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
                 <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
+                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br> তথ্য</a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="sending_reply_tab" data-toggle="tab" href="#sending_reply" role="tab"
-                            aria-controls="profile" aria-selected="false">জবাব প্রেরণ</a>
+                            aria-controls="profile" aria-selected="false">জবাব <br>প্রেরণ</a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
                             role="tab" aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
                             আদেশ সম্পর্কিত</a>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="contempt_case_tab" href="#contempt_case" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">কনটেম্প্ট মামলা/<br>অন্যান্য</a>
                     </li>

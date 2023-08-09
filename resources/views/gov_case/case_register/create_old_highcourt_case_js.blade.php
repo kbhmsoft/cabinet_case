@@ -1108,7 +1108,6 @@
 
             if (formValid) {
                 console.log("Form is valid.");
-                // var formData = new FormData(this);
                 var formData = $("#caseGeneralInfoForm").serialize();
                 console.log(formData.file_type);
                 $.ajax({

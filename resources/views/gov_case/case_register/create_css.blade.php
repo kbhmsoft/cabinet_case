@@ -188,6 +188,10 @@
         cursor: not-allowed;
     }
 
+    .nav-li-padding{
+        padding-right: 50px !important;
+    }
+
     .tabs {
         max-width: 600px;
         margin: 0 auto;
@@ -217,6 +221,7 @@
 
     .tab-navigation li:hover {
         background-color: #ddd;
+        /* padding: 20px; */
     }
 
     .tab-content .tab-pane {
