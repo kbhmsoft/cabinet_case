@@ -187,7 +187,10 @@
         background-color: #c0c0c0;
         cursor: not-allowed;
     }
-
+    .disabled {
+        background-color: #c0c0c0;
+        cursor: not-allowed;
+    }
     .tabs {
         max-width: 600px;
         margin: 0 auto;

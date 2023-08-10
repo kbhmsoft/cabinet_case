@@ -1123,7 +1123,8 @@
                     if (result.isConfirmed) {
                         alert('okay')
                         // var formData = new FormData(this);
-                        var formData = new FormData(document.getElementById("oldCaseGeneralInfoFrom"));
+                        var formData = new FormData(document.getElementById(
+                            "oldCaseGeneralInfoFrom"));
 
                         console.log(formData);
                         $.ajax({
@@ -1137,7 +1138,7 @@
                                 console.log(data);
                                 $('#saveOldHighCourtCaseBtn').removeClass(
                                     'spinner spinner-white spinner-right disabled'
-                                    );
+                                );
                                 $orderData = data;
                                 Swal.fire(
                                     'Saved!',
@@ -1154,7 +1155,7 @@
                                 $('#sendingReplySaveBtn').removeClass(
                                     "disable-button");
                                 $('#suspensionOrderSaveBtn').prop('disabled',
-                                false);
+                                    false);
                                 $('#suspensionOrderSaveBtn').removeClass(
                                     "disable-button");
                                 $('#finalOrderSaveBtn').prop('disabled', false);
@@ -1166,9 +1167,14 @@
                             },
                             error: function(data) {
                                 console.log(data);
-                                $('#caseGeneralInfoSaveBtn').removeClass(
+                                Swal.fire(
+                                    'Oops...!',
+                                    data['responseJSON']['errors']['case_no'][0],
+                                    'error'
+                                )
+                                $('#saveOldHighCourtCaseBtn').removeClass(
                                     'spinner spinner-white spinner-right disabled'
-                                    );
+                                );
                             }
                         });
                     }

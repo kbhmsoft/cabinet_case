@@ -742,14 +742,15 @@
                                         <input type="hidden" id="caseIDForFinalOrder" name="case_id">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
-                                            <div class="form-group row">
+                                            {{-- <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
                                                         value="1">
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
-                                            </div>
+                                            </div> --}}
+                                            <input type="hidden" id="is_final_order" name="is_final_order" value="1">
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
                                                     <div class="col-md-6 mb-5">
@@ -879,7 +880,8 @@
                                                         <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
                                                                 class="text-danger"></span></label>
                                                         <input type="text"
-                                                            name="focal_person_designation_civil_revision"
+                                                            name="
+                                                            "
                                                             id="focal_person_designation_civil_revision"
                                                             class="form-control form-control-sm "autocomplete="off">
                                                     </div>
@@ -1173,17 +1175,17 @@
             $('#civilSuitDiv').hide();
             $('#writDiv').hide();
             $('#leaveToAppealDiv').hide();
-            $('#finalOrderDiv').hide();
+            // $('#finalOrderDiv').hide();
 
-            $('input[id="is_final_order"]').click(function() {
-                if ($(this).prop("checked") == true) {
-                    $('#finalOrderDiv').show();
-                    console.log("Checkbox is checked.");
-                } else if ($(this).prop("checked") == false) {
-                    $('#finalOrderDiv').hide();
-                    console.log("Checkbox is unchecked.");
-                }
-            });
+            // $('input[id="is_final_order"]').click(function() {
+            //     if ($(this).prop("checked") == true) {
+            //         $('#finalOrderDiv').show();
+            //         console.log("Checkbox is checked.");
+            //     } else if ($(this).prop("checked") == false) {
+            //         $('#finalOrderDiv').hide();
+            //         console.log("Checkbox is unchecked.");
+            //     }
+            // });
 
             // ============JS For Next & Prev Btn==============//
             $('#caseGeneralInfoNextBtn').on("click", function() {

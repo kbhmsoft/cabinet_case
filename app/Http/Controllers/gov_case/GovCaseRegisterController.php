@@ -1175,6 +1175,18 @@ class GovCaseRegisterController extends Controller
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
             }
+            if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
+                AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
+            }
+            if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
+                AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
+            }
+            if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
+                AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
+            }
+            if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
+                AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
+            }
 
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -1541,6 +1553,133 @@ class GovCaseRegisterController extends Controller
     }
 
 
+    public function leaveToAppealCreate($id)
+    {
+        $roleID = userInfo()->role_id;
+
+        $officeID = userInfo()->office_id;
+
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        
+        $data['page_title'] = 'লিভ টু আপিল আবেদন';
+        // return $data['concern_person_desig'] ;
+        // return $data;
+        return view('gov_case.case_register._inc.leave_to_appeal_create')->with($data);
+    }
+
+
+
+    public function leaveToAppealStore(Request $request)
+    {
+        // return $request;
+        $caseId = $request->case_id;
+        $request->validate([
+            'case_id' => 'required' ,
+            'leave_to_appeal_no' => 'required' ,
+        ],
+            [
+                'leave_to_appeal_no' => 'লিভ টু আপিল নম্বর পূরণ করুণ',
+            ]);
+        try {
+            $caseId = GovCaseRegisterRepository::storeLeaveToAppealInfo($request);
+            if ($request->leave_to_appeal_file_type && $_FILES["leave_to_appeal_file_name"]['name']) {
+                AttachmentRepository::storeLeaveToAppealAttachment('gov_case', $caseId, $request);
+            }
+            //========= Gov Case Activity Log -  start ============
+            $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+            $caseRegisterData = array_merge($caseRegister, [
+                'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+            ]);
+            // return $caseRegisterData;
+            $cs_activity_data['case_register_id'] = $caseId;
+            if ($request->formType != 'edit') {
+                $cs_activity_data['activity_type'] = 'create';
+                $cs_activity_data['message'] = 'লিভ টু আপিল করা হয়েছে';
+            } else {
+                $cs_activity_data['activity_type'] = 'update';
+                $cs_activity_data['message'] = 'লিভ টু আপিল করা হয়েছে';
+            }
+            $cs_activity_data['old_data'] = null;
+            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+            gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+        } catch (\Exception $e) {
+            dd($e);
+            $flag = 'false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        }
+        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+    }
+
+    public function leaveToAppealAnswerCreate($id)
+    {
+        $roleID = userInfo()->role_id;
+
+        $officeID = userInfo()->office_id;
+
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        
+        $data['page_title'] = 'লিভ টু আপিল আবেদন';
+        // return $data['concern_person_desig'] ;
+        // return $data;
+        return view('gov_case.case_register._inc.leave_to_appeal_answer_create')->with($data);
+    }
+
+
+
+    public function leaveToAppealAnswerStore(Request $request)
+    {
+        // dd($request);
+        $caseId = $request->case_id;
+        $request->validate([
+            'case_id' => 'required' ,
+            'leave_to_appeal_order_date' => 'required' ,
+        ],
+            [
+                'leave_to_appeal_order_date' => 'লিভ টু আপিলের রায় প্রদানের তারিখ পূরণ করুণ',
+            ]);
+        try {
+            $caseId = GovCaseRegisterRepository::storeLeaveToAppealAnswerInfo($request);
+            if ($request->leave_to_appeal_file_type && $_FILES["leave_to_appeal_file_name"]['name']) {
+                AttachmentRepository::storeLeaveToAppealAttachment('gov_case', $caseId, $request);
+            }
+            //========= Gov Case Activity Log -  start ============
+            $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+            $caseRegisterData = array_merge($caseRegister, [
+                'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+            ]);
+            // return $caseRegisterData;
+            $cs_activity_data['case_register_id'] = $caseId;
+            if ($request->formType != 'edit') {
+                $cs_activity_data['activity_type'] = 'create';
+                $cs_activity_data['message'] = 'লিভ টু আপিল করা হয়েছে';
+            } else {
+                $cs_activity_data['activity_type'] = 'update';
+                $cs_activity_data['message'] = 'লিভ টু আপিল করা হয়েছে';
+            }
+            $cs_activity_data['old_data'] = null;
+            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+            gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+        } catch (\Exception $e) {
+            dd($e);
+            $flag = 'false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        }
+        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+    }
 
 
 

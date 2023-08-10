@@ -523,7 +523,14 @@
 
                     },
                     error: function(data) {
-                        console.log(data);
+                        console.log(JSON.stringify(data['responseJSON']['errors']['case_no'][0]));
+                       
+                        Swal.fire(
+                            'Oops...!',
+                            data['responseJSON']['errors']['case_no'][0],
+                            'error'
+                        )
+                        // swal("Oops...", data.responseJSON.message, "error");
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 

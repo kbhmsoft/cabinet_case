@@ -633,4 +633,71 @@ class GovCaseRegisterRepository
         return $caseId;
     }
 
+    public static function storeLeaveToAppealInfo($caseInfo)
+    {
+        // dd($caseInfo['case_id']);
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+
+        if ($caseInfo->leave_to_appeal_date != null && $caseInfo->leave_to_appeal_date != '') {
+            $leave_to_appeal_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->leave_to_appeal_date)));
+        } else {
+            $leave_to_appeal_date = null;
+        }
+        
+        if ($caseInfo->proposal_date_leave_to_appeal != null && $caseInfo->proposal_date_leave_to_appeal != '') {
+            $proposal_date_leave_to_appeal = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->proposal_date_leave_to_appeal)));
+        } else {
+            $proposal_date_leave_to_appeal = null;
+        }
+        
+        try {
+            $case->leave_to_appeal_no = $caseInfo->leave_to_appeal_no;
+            $case->leave_to_appeal_date = $leave_to_appeal_date;
+            $case->contents_of_proposal_leave_to_appeal = $caseInfo->contents_of_proposal_leave_to_appeal;
+            $case->sending_motions_in_view_of_that_litigation_leave_to_appeal = $caseInfo->sending_motions_in_view_of_that_litigation_leave_to_appeal;
+            $case->proposal_date_leave_to_appeal = $proposal_date_leave_to_appeal;
+            $case->proposal_memorial_leave_to_appeal = $caseInfo->proposal_memorial_leave_to_appeal;
+            $case->contact_email_leave_to_appeal = $caseInfo->contact_email_leave_to_appeal;
+            $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
+            $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
+            $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
+            
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
+    public static function storeLeaveToAppealAnswerInfo($caseInfo)
+    {
+        // dd($caseInfo['case_id']);
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+
+        if ($caseInfo->leave_to_appeal_order_date != null && $caseInfo->leave_to_appeal_order_date != '') {
+            $leave_to_appeal_order_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->leave_to_appeal_order_date)));
+        } else {
+            $leave_to_appeal_order_date = null;
+        }
+        
+       
+        
+        try {
+            $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;
+            $case->leave_to_appeal_is_favour_of_gov = $caseInfo->leave_to_appeal_is_favour_of_gov;
+            $case->leave_to_appeal_order_details = $caseInfo->leave_to_appeal_order_details;
+            
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
 }

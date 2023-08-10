@@ -12,6 +12,7 @@ use App\Models\Attachment;
 use App\Models\ReplyAttachment;
 use App\Models\SuspensionAttachment;
 use App\Models\FinalAttachment;
+use App\Models\LeaveToAppealAttachment;
 use App\Models\ContemptAttachment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,17 +71,17 @@ class AttachmentRepository
 
     public static function storeSuspentionOrderAttachment($appName, $caseId, $request)
     {
-        if($request->file_name != NULL){
-            foreach($request->file_type as $key => $val)
+        if($request->suspension_file_name != NULL){
+            foreach($request->suspension_file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/suspension_attachment/";
-                if($request->file_name[$key] != NULL){
-                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
-                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                if($request->suspension_file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->suspension_file_name[$key]->extension();
+                    $request->suspension_file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new SuspensionAttachment();
                 $attachment->gov_case_id = $caseId;
-                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_type = $request->suspension_file_type[$key];
                 $attachment->file_name = $filePath.$otherfileName;
                 $attachment->file_submission_date = date('Y-m-d H:i:s');
                 $attachment->created_at = date('Y-m-d H:i:s');
@@ -94,17 +95,17 @@ class AttachmentRepository
 
     public static function storeFinalOrderAttachment($appName, $caseId, $request)
     {
-        if($request->file_name != NULL){
-            foreach($request->file_type as $key => $val)
+        if($request->final_order_file_name != NULL){
+            foreach($request->final_order_file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/final_order_attachment/";
-                if($request->file_name[$key] != NULL){
-                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
-                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                if($request->final_order_file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->final_order_file_name[$key]->extension();
+                    $request->final_order_file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new FinalAttachment();
                 $attachment->gov_case_id = $caseId;
-                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_type = $request->final_order_file_type[$key];
                 $attachment->file_name = $filePath.$otherfileName;
                 $attachment->file_submission_date = date('Y-m-d H:i:s');
                 $attachment->created_at = date('Y-m-d H:i:s');
@@ -118,17 +119,17 @@ class AttachmentRepository
 
     public static function storeContemptAttachment($appName, $caseId, $request)
     {
-        if($request->file_name != NULL){
-            foreach($request->file_type as $key => $val)
+        if($request->contempt_file_name != NULL){
+            foreach($request->contempt_file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/contempt_attachment/";
-                if($request->file_name[$key] != NULL){
-                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
-                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                if($request->contempt_file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->contempt_file_name[$key]->extension();
+                    $request->contempt_file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new ContemptAttachment();
                 $attachment->gov_case_id = $caseId;
-                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_type = $request->contempt_file_type[$key];
                 $attachment->file_name = $filePath.$otherfileName;
                 $attachment->file_submission_date = date('Y-m-d H:i:s');
                 $attachment->created_at = date('Y-m-d H:i:s');
@@ -139,7 +140,29 @@ class AttachmentRepository
             }
         }
     }
-
+    public static function storeLeaveToAppealAttachment($appName, $caseId, $request)
+    {
+        if($request->leave_to_appeal_file_name != NULL){
+            foreach($request->leave_to_appeal_file_type as $key => $val)
+            {
+                $filePath = "uploads/" . $appName ."/leave_to_appeal_attachment/";
+                if($request->leave_to_appeal_file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->leave_to_appeal_file_name[$key]->extension();
+                    $request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName);
+                }
+                $attachment = new LeaveToAppealAttachment();
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->leave_to_appeal_file_type[$key];
+                $attachment->file_name = $filePath.$otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
     public static function storeSingleAttachment($path, $file, $caseId)
     {
         if($file != NULL){
@@ -149,6 +172,7 @@ class AttachmentRepository
         }
         return null;
     }
+  
     public static function storeSF_SingleAttachment($pathFileName, $caseID)
     {
         $attachment = new Attachment();
