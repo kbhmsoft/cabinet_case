@@ -1,0 +1,261 @@
+@extends('layouts.cabinet.cab_default')
+
+@section('content')
+
+    @php
+        $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
+        for ($i = 1995; $i <= date('Y'); $i++) {
+            $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
+        }
+        
+    @endphp
+
+
+    @include('gov_case.case_register.create_css')
+    {{-- @dd($case) --}}
+    <!--begin::Row-->
+    <div class="row">
+
+        {{-- <div class="col-md-12"> --}}
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b example example-compact">
+            <div class="card-header">
+                <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
+            </div>
+            <!-- <div class="loadersmall"></div> -->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
+            <form id="leaveToAppealForm" action="javascript:void(0)" class="form" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="card-body">
+                    {{-- <div class="table-responsive ajax-data-container pt-3"> --}}
+
+                    <div class="form-group row">
+                        <input type="hidden" id="caseIDForAnswer" name="case_id" value="{{ $case->id }}">
+                        <div class="col-lg-6 mb-5" >
+                            <label>লিভ টু আপিল আদেশের তারিখ <span class="text-danger"></span></label>
+                            <input type="text" name="leave_to_appeal_order_date" id="leave_to_appeal_order_date" class="form-control form-control-sm common_datepicker"autocomplete="off" required>
+                        </div>
+                        <div class="col-md-6 mb-5">
+                            <label class="form-group font-weight-bolder font-size-h5">ফলাফল </label>
+                            <div class="radio-inline">
+                                <label class="radio">
+                                    <input type="radio" name="leave_to_appeal_is_favour_of_gov" id="leave_to_appeal_is_favour_of_gov" value="1" />
+                                    <span></span>সরকারের পক্ষে</label>
+                                <label class="radio">
+                                    <input type="radio" name="leave_to_appeal_is_favour_of_gov" id="leave_to_appeal_is_favour_of_gov" value="0" />
+                                    <span></span>সরকারের বিপক্ষে</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mb-5" >
+                            <label>লিভ টু আপিল আদেশের বিবরণ <span class="text-danger"></span></label>
+                            <textarea name="leave_to_appeal_order_details" class="form-control" id="leave_to_appeal_order_details" rows="3"
+                                spellcheck="false"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <fieldset class="">
+                                <div
+                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                    <div class="d-flex align-items-center mr-2 py-2">
+                                        <h3 class="mb-0 mr-8">সংযুক্তি (লিভ টু আপিলের কপি সংযুক্ত করুন)
+                                            <span class="text-danger">*</span>
+                                        </h3>
+                                    </div>
+
+                                    <div class="symbol-group symbol-hover py-2">
+                                        <div class="symbol symbol-30 symbol-light-primary" data-toggle="tooltip"
+                                            data-placement="top" title="" role="button"
+                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                            <div id="addLeaveToAppealFileRow">
+                                                <span class="symbol-label font-weight-bold bg-success">
+                                                    <i class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="mt-3 px-5">
+                                    <table width="100%" class="border-0 px-5" id="leaveToAppealFileDiv"
+                                        style="border:1px solid #dcd8d8;">
+                                        <tr></tr>
+                                    </table>
+                                    <input type="hidden" id="leaveToAppeal_attachment_count" value="1">
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    {{-- </div> --}}
+                </div>
+                <div class="form-footer mb-5" style="display: flex;justify-content: center;">
+                    <button type="submit" id="leaveToAppealSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                </div>
+
+            </form>
+
+        </div>
+        <!--end::Card-->
+        {{-- </div> --}}
+
+    </div>
+    <!--end::Row-->
+
+@endsection
+
+@section('styles')
+@endsection
+
+@section('scripts')
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+    <script>
+        $(document).ready(function() {
+            $('.tab-content .tab-pane:first-child').addClass('active');
+            $('.myTab a').click(function(e) {
+                e.preventDefault();
+                var targetTab = $(this).attr('href');
+                $('.tab-content .tab-pane').removeClass('active');
+                $(targetTab).addClass('active');
+            });
+
+            $('.common_datepicker').datepicker({
+                orientation: "bottom left",
+                format: "dd/mm/yyyy",
+                todayHighlight: true,
+                viewMode: 'years',
+            });
+        });
+    </script>
+
+
+
+
+    {{-- @include('gov_case.case_register._inc.action_js') --}}
+    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        // dynamically change high court / appeal court
+        $(document).ready(function() {
+            addLeaveToAppealFileRowFunc();
+
+        });
+
+
+        // ============= Add leaveToAppeal Attachment Row ========= start =========
+        $("#addLeaveToAppealFileRow").click(function(e) {
+            addLeaveToAppealFileRowFunc();
+        });
+        //add row function
+        function addLeaveToAppealFileRowFunc() {
+            var count = parseInt($('#leaveToAppeal_attachment_count').val());
+            var formType = $('#formType').val();
+            $('#leaveToAppeal_attachment_count').val(count + 1);
+            var items = '';
+            items += '<tr>';
+            items += '<td><input type="text" name="leave_to_appeal_file_type[]" id="customFileName' + count +
+                '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            items +=
+                '<td><div class="custom-file"><input type="file" accept="application/pdf" name="leave_to_appeal_file_name[]" onChange="leaveToAppealAttachmentTitle(' +
+                count + ',this)" class="custom-file-input" id="customLeaveToAppealFile' + count +
+                '" /><label id="file_error' +
+                count +
+                '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-leaveToAppeal-input' +
+                count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            items +=
+                '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            items += '</tr>';
+            $('#leaveToAppealFileDiv tr:last').after(items);
+
+            if (formType == 'edit') {
+                $(`#customFile${count}`).attr('required', false);
+                $(`#customFileName${count}`).attr('required', false);
+            }
+        }
+
+
+        //remove row function
+        function removeBibadiRow(id) {
+            $(id).closest("tr").remove();
+        }
+        //Attachment Title Change
+        function leaveToAppealAttachmentTitle(id) {
+            // var value = $('#customFile' + id).val();
+            var value = $('#customLeaveToAppealFile' + id)[0].files[0];
+            $('.custom-leaveToAppeal-input' + id).text(value['name']);
+        }
+
+
+
+        $('#leaveToAppealForm').submit(function(e) {
+            // alert(1);
+            e.preventDefault();
+            $('#leaveToAppealSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+            Swal.fire({
+                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                // text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.leaveToAppealAnswerStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#leaveToAppealSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'লিভ টু আপিলের রায়ের তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            ).then((result) => {
+                                window.location.href = "{{ route('cabinet.case.highcourt') }}";
+                            })
+                            console.log(data);
+
+                        },
+                        error: function(data) {
+                            console.log(JSON.stringify(data['responseJSON']['errors'][
+                                    'leave_to_appeal_no'
+                                ]
+                                [0]));
+
+                            Swal.fire(
+                                'Oops...!',
+                                data['responseJSON']['errors']['leave_to_appeal_no'][0],
+                                'error'
+                            )
+                            // swal("Oops...", data.responseJSON.message, "error");
+                            $('#leaveToAppealSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                }
+            })
+
+        });
+    </script>
+@endsection

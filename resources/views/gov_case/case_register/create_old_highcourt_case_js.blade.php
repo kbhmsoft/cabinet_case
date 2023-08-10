@@ -1109,8 +1109,11 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        alert('okay')
+                        // var formData = new FormData(this);
                         var formData = new FormData(document.getElementById(
                             "oldCaseGeneralInfoFrom"));
+
                         console.log(formData);
                         $.ajax({
                             type: 'POST',
@@ -1152,7 +1155,12 @@
                             },
                             error: function(data) {
                                 console.log(data);
-                                $('#caseGeneralInfoSaveBtn').removeClass(
+                                Swal.fire(
+                                    'Oops...!',
+                                    data['responseJSON']['errors']['case_no'][0],
+                                    'error'
+                                )
+                                $('#saveOldHighCourtCaseBtn').removeClass(
                                     'spinner spinner-white spinner-right disabled'
                                 );
                             }

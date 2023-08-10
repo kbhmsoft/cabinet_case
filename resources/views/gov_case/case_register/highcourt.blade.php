@@ -54,10 +54,7 @@
                                     <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                                     <div class="dropdown-menu">
-                                        @can('register')
-                                            <a class="dropdown-item"
-                                                href="{{ route('cabinet.case.register', $row->id) }}">রেজিস্টার</a>
-                                        @endcan
+
                                         {{-- @can('show_details_info')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
@@ -67,21 +64,37 @@
                                                 href="{{ route('cabinet.case.highcourt_edit', $row->id) }}">সংশোধন</a>
                                         @endcan
                                         @can('highcoutr_send_answer')
-                                            @if (empty($row->result_sending_date))
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
-                                                    জবাব প্রেরণ</a>
-                                            @endif
-                                            @if ($row->postponed_order != 1)
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
-                                                    স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিষয়ে ব্যাবস্থা</a>
+                                            @if ($row->is_final_order == 0)
+                                                @if (empty($row->result_sending_date))
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
+                                                        জবাব প্রেরণ</a>
+                                                @endif
+                                                @if ($row->postponed_order != 1)
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
+                                                        স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
+                                                @endif
+                                            @elseif ($row->is_final_order == 1)
+                                                @if (empty($row->leave_to_appeal_no))
+                                                    <a class="dropdown-item" href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
+                                                        সিএমপি/লিভ টু আপিল<br>দায়ের করুণ
+                                                    </a>
+                                                @elseif (empty($row->leave_to_appeal_order_date))
+                                                    <a class="dropdown-item" href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
+                                                        সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
+                                                    </a>
+                                                @endif
                                             @endif
 
                                             {{-- @if ($row->action_user_role_id == userInfo()->role_id)
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>
                                             @endif --}}
+                                        @endcan
+                                        @can('register')
+                                            <a class="dropdown-item"
+                                                href="{{ route('cabinet.case.register', $row->id) }}">রেজিস্টার</a>
                                         @endcan
                                     </div>
                                 </div>
@@ -107,8 +120,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                     -->
+                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                 -->
 
 
         <!--end::Page Scripts-->

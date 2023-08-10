@@ -411,23 +411,26 @@
                                                 </span>
                                             </a>
                                         </li>
+                                        @can('hearing_date_fixed')
+                                            <li class="menu-item {{ request()->is('cabinet/case/action/receive/' . $row->case_status_id) ? 'hilightMenu' : '' }}"
+                                                aria-haspopup="true">
+                                                <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                    <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা
+                                                        হয়েছে</span>
+                                                    <span class="menu-label">
+                                                        <span
+                                                            class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                     @empty
                                     @endforelse
                                 @endcan
 
 
-                                @can('hearing_date_fixed')
-                                    <li class="menu-item {{ request()->is('cabinet/case/action/receive/' . $row->case_status_id) ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা হয়েছে</span>
-                                            <span class="menu-label">
-                                                <span class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                @endcan
+
 
 
                                 @if (count($case_status) == 0)

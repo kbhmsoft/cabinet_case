@@ -35,7 +35,7 @@
                <td>{{ $row->case_category->name_bn ?? '-' }}</td>
                <td>{{ $row->badis->first()->name ?? '-' }},<br>{{ $row->badis->first()->address ?? '-' }} </td>
 
-               <td>{{ $row->subject_matter ?? '-'}}</td>
+               <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
                <td>
                     <div class="btn-group float-right">
                         <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>

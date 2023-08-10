@@ -192,6 +192,10 @@
         padding-right: 50px !important;
     }
 
+    .disabled {
+        background-color: #c0c0c0;
+        cursor: not-allowed;
+    }
     .tabs {
         max-width: 600px;
         margin: 0 auto;
