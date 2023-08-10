@@ -1,24 +1,22 @@
 <?php
 
+use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
-use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RM_CaseActionController;
-use App\Http\Controllers\gov_case\GovCaseRegisterController;
-use App\Http\Controllers\gov_case\GovCaseUserManagementController;
-use App\Http\Controllers\gov_case\GovCaseOfficeController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
 use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
-use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseOfficeController;
 use App\Http\Controllers\gov_case\GovCaseOtherActionController;
-use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\GovCaseRegisterController;
+use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseUserManagementController;
+use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
-use App\Http\Controllers\gov_case\AclController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
 
-   /////************** Supream Court **************/////
+    /////************** Supream Court **************/////
 
     Route::get('/search/supremecourt/case', [SumpremCourtController::class, 'search_case']);
     Route::post('/search/supremecourt/case/post/value', [SumpremCourtController::class, 'search_case_post_function'])->name('supremecourt.case.search.post.value');
@@ -33,8 +31,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/modal/case/details/view', [SumpremCourtController::class, 'modal_case_details_view'])->name('modal.case.details.view');
 
-
-
     Route::group(['prefix' => 'cabinet/', 'as' => 'cabinet.'], function () {
 
         Route::resource('user-management', GovCaseUserManagementController::class);
@@ -46,12 +42,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/office/save', [GovCaseOfficeController::class, 'store'])->name('office.save');
         route::get('/office/edit/{id}', [GovCaseOfficeController::class, 'edit'])->name('office.edit');
         route::post('/office/update', [GovCaseOfficeController::class, 'update'])->name('office.update');
-        route::get('/office/dropdownlist/getdependentdistrict/{id}', [GovCaseOfficeController::class , 'getDependentDistrict']);
-        route::get('/office/dropdownlist/getdependentupazila/{id}', [GovCaseOfficeController::class , 'getDependentUpazila']);
-        route::get('/office/dropdownlist/getdependentoffice/{id}', [GovCaseOfficeController::class , 'getDependentOffice']);
-        route::get('/office/dropdownlist/getdependentchildoffice/{id}', [GovCaseOfficeController::class , 'getDependentChildOffice']);
-            /////************** //Office Setting **************/////
-            //=================== Message Start ================
+        route::get('/office/dropdownlist/getdependentdistrict/{id}', [GovCaseOfficeController::class, 'getDependentDistrict']);
+        route::get('/office/dropdownlist/getdependentupazila/{id}', [GovCaseOfficeController::class, 'getDependentUpazila']);
+        route::get('/office/dropdownlist/getdependentoffice/{id}', [GovCaseOfficeController::class, 'getDependentOffice']);
+        route::get('/office/dropdownlist/getdependentchildoffice/{id}', [GovCaseOfficeController::class, 'getDependentChildOffice']);
+        /////************** //Office Setting **************/////
+        //=================== Message Start ================
         Route::get('/messages', [GovCaseMessageController::class, 'messages'])->name('messages');
         Route::get('/messages_recent', [GovCaseMessageController::class, 'messages_recent'])->name('messages_recent');
         Route::get('/messages_request', [GovCaseMessageController::class, 'messages_request'])->name('messages_request');
@@ -80,10 +76,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-permission', [AclController::class, 'updatePermission'])->name('updatePermission');
         Route::get('/delete-user-permission/{id}', [AclController::class, 'permissionItemDelete'])->name('permissionItemDelete');
 
-
         // parent permission name
         Route::post('/parent-permission-name', [AclController::class, 'storePatentPermissionName'])->name('storePatentPermissionName');
-
 
         // give permission to users
         Route::get('/user-permission-management', [AclController::class, 'permissionToUserManagement'])->name('permissionToUserManagement');
@@ -92,16 +86,7 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/update-user-permission', [AclController::class, 'storeUpdateUserPermissionAll'])->name('storeUpdateUserPermissionAll');
 
-
-
-
         // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
-
-
-
-
-
-
 
         Route::group(['prefix' => 'settings/', 'as' => 'settings.'], function () {
             Route::get('/category/list', [GovCaseSettingsController::class, 'div_category_index'])->name('category.list');
@@ -128,12 +113,12 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
-            route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class , 'getdependentMinDept']);
-            route::get('/dropdownlist/getdependentconcernperson/{id}', [GovCaseRegisterController::class , 'getDependentConcernPerson']);
-            Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class , 'getDependentCaseCategoryType']);
-            Route::get('/dropdownlist/getdependentorigincasenumber/{id}', [GovCaseRegisterController::class , 'getDependentCaseOriginNumber']);
-            Route::get('/origincasedetails/{id}',[GovCaseRegisterController::class , 'getOriginCaseDetails']);
-            Route::get('/highcourtcasedetails/{id}',[GovCaseRegisterController::class , 'getHighCourtCaseDetails']);
+            route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class, 'getdependentMinDept']);
+            route::get('/dropdownlist/getdependentconcernperson/{id}', [GovCaseRegisterController::class, 'getDependentConcernPerson']);
+            Route::get('dropdownlist/getdependentcasecategorytype/{id}', [GovCaseRegisterController::class, 'getDependentCaseCategoryType']);
+            Route::get('/dropdownlist/getdependentorigincasenumber/{id}', [GovCaseRegisterController::class, 'getDependentCaseOriginNumber']);
+            Route::get('/origincasedetails/{id}', [GovCaseRegisterController::class, 'getOriginCaseDetails']);
+            Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
@@ -168,7 +153,7 @@ Route::middleware('auth')->group(function () {
             Route::post('leaveToAppealStore', [GovCaseRegisterController::class, 'leaveToAppealStore'])->name('leaveToAppealStore');
             Route::post('leaveToAppealAnswerStore', [GovCaseRegisterController::class, 'leaveToAppealAnswerStore'])->name('leaveToAppealAnswerStore');
             Route::post('contemptCaseStore', [GovCaseRegisterController::class, 'contemptCaseStore'])->name('contemptCaseStore');
-            Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('store_appeal');
+            Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
@@ -177,9 +162,9 @@ Route::middleware('auth')->group(function () {
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
             Route::get('register/{id}', [GovCaseRegisterController::class, 'register'])->name('register');
             Route::post('getCaseCategory/{id}', [GovCaseRegisterController::class, 'getCaseCategory'])->name('getCaseCategory');
-            route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class , 'ajax_badi_del']);
-            route::post('ajax_bibadi_del/{id}', [GovCaseRegisterController::class , 'ajax_bibadi_del']);
-            route::post('ajax_case_file_del/{id}', [GovCaseRegisterController::class , 'ajax_case_file_del']);
+            route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class, 'ajax_badi_del']);
+            route::post('ajax_bibadi_del/{id}', [GovCaseRegisterController::class, 'ajax_bibadi_del']);
+            route::post('ajax_case_file_del/{id}', [GovCaseRegisterController::class, 'ajax_case_file_del']);
 
             Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                 Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');
@@ -198,32 +183,27 @@ Route::middleware('auth')->group(function () {
                 Route::get('getDependentCaseStatus/{id}', [GovCaseActionController::class, 'getDependentCaseStatus']);
             });
 
-
             Route::group(['prefix' => 'othersaction/', 'as' => 'othersaction.'], function () {
                 Route::get('againstgov', [GovCaseOtherActionController::class, 'againstGovCaseIndex'])->name('againstgov');
                 Route::get('againstgovedit/{id}', [GovCaseOtherActionController::class, 'againstGovCaseEdit'])->name('againstgovedit');
                 Route::post('againstgovstore', [GovCaseOtherActionController::class, 'againstGovCaseStore'])->name('againstgovstore');
-                    //===========================//
+                //===========================//
                 Route::get('senttosol', [GovCaseOtherActionController::class, 'sentToSolCaseIndex'])->name('senttosol');
                 Route::get('senttosoledit/{id}', [GovCaseOtherActionController::class, 'sentToSolCaseEdit'])->name('senttosoledit');
                 Route::post('senttosolstore', [GovCaseOtherActionController::class, 'sentToSolCaseStore'])->name('sentToSolCaseStore');
-                    //===========================//
+                //===========================//
                 Route::get('senttoagfromsol', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseIndex'])->name('senttoagfromsol');
                 Route::get('senttoagfromsoledit/{id}', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseEdit'])->name('senttoagfromsoledit');
                 Route::post('senttoagfromsolstore', [GovCaseOtherActionController::class, 'sentToAgFromSolCaseStore'])->name('senttoagfromsolstore');
-                    //===========================//
+                //===========================//
                 Route::get('stepnottakenAgainstpostpondorder', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseIndex'])->name('stepnottakenAgainstpostpondorder');
                 Route::get('stepnottakenAgainstpostpondorderedit/{id}', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseEdit'])->name('stepnottakenAgainstpostpondorderedit');
                 Route::post('stepnottakenAgainstpostpondorderstore', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseStore'])->name('stepnottakenAgainstpostpondorderstore');
             });
 
-
-
         });
 
-
-
-            //============ Case Activity Log Start ==============//
+        //============ Case Activity Log Start ==============//
         Route::get('/case_audit', [GovCaseActivityLogController::class, 'index'])->name('case_audit.index');
         Route::get('/case_audit/details/{id}', [GovCaseActivityLogController::class, 'show'])->name('case_audit.show');
         Route::get('/case_audit/case_details/{id}', [GovCaseActivityLogController::class, 'reg_case_details'])->name('case_audit.reg_case_details');
@@ -231,8 +211,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/case_audit/sent_to_solcase_log_details/{id}', [GovCaseActivityLogController::class, 'sent_to_solcase_log_details'])->name('case_audit.sent_to_solcase_log_details');
         Route::get('/case_audit/sent_to_ag_from_solcase_log_details/{id}', [GovCaseActivityLogController::class, 'sent_to_ag_from_solcase_log_details'])->name('case_audit.sent_to_ag_from_solcase_log_details');
         Route::get('/case_audit/appeal_against_postpond_order_case_log_details/{id}', [GovCaseActivityLogController::class, 'appeal_against_postpond_order_case_log_details'])->name('case_audit.appeal_against_postpond_order_case_log_details');
-            //============ Case Activity Log End ==============//
+        //============ Case Activity Log End ==============//
     });
-        Route::get('/case_audit/pdf-Log/{id}', [GovCaseActivityLogController::class, 'caseActivityPDFlog'])->name('case_audit.caseActivityPDFlog');
-        Route::get('/case_audit/sf/details/{id}', [GovCaseActivityLogController::class, 'sflog_details'])->name('case_audit.sf.details');
+    Route::get('/case_audit/pdf-Log/{id}', [GovCaseActivityLogController::class, 'caseActivityPDFlog'])->name('case_audit.caseActivityPDFlog');
+    Route::get('/case_audit/sf/details/{id}', [GovCaseActivityLogController::class, 'sflog_details'])->name('case_audit.sf.details');
 });

@@ -8,8 +8,9 @@ use App\Models\Attachment;
 use Illuminate\Support\Facades\DB;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
 
-class GovCaseRegisterRepository
+class AppealGovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
@@ -41,7 +42,7 @@ class GovCaseRegisterRepository
 
         return $data;
     }
-    public static function storeGovCase($caseInfo)
+    public static function storeAppeal($caseInfo)
     {
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
@@ -279,44 +280,44 @@ class GovCaseRegisterRepository
         return $updatedVal;
     }
 
-    public static function storeAppealGovCase($caseInfo, $id)
-    {
-        $case = self::checkGovCaseExist($caseInfo['caseId']);
-        $oldcase = self::checkGovCaseExist($id);
-        // dd($oldcase->case_no);
+    // public static function storeAppealGovCase($caseInfo, $id)
+    // {
+    //     $case = self::checkGovCaseExist($caseInfo['caseId']);
+    //     $oldcase = self::checkGovCaseExist($id);
+    //     // dd($oldcase->case_no);
 
-        try {
-            $case->case_no = $caseInfo->case_no;
-            $case->court_id = $caseInfo->court;
-            $case->action_user_id = userInfo()->id;
-            $case->action_user_role_id = userInfo()->role_id;
-            $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
-            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->case_department;
-            $case->case_category_id = $caseInfo->case_category;
-            $case->concern_person_designation = $caseInfo->concern_person_designation;
-            $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->subject_matter = $caseInfo->subject_matter;
-            $case->postponed_details = $caseInfo->postponed_details;
-            $case->interim_order = $caseInfo->interim_order;
-            $case->important_cause = $caseInfo->important_cause;
-            $case->arji_file = null;
-            $case->status = 1;
-            $case->gov_case_ref_id = $id;
-            $case->ref_gov_case_no = $oldcase->case_no;
-            $case->case_status_id = 43;
-            if ($case->save()) {
-                $caseId = $case->id;
-                $oldcase->is_appeal = 1;
-                $oldcase->save();
-            }
-        } catch (\Exception $e) {
-            dd($e);
-            $caseId = null;
-        }
-        return $caseId;
-    }
+    //     try {
+    //         $case->case_no = $caseInfo->case_no;
+    //         $case->court_id = $caseInfo->court;
+    //         $case->action_user_id = userInfo()->id;
+    //         $case->action_user_role_id = userInfo()->role_id;
+    //         $case->create_by = userInfo()->id;
+    //         $case->year = $caseInfo->case_year;
+    //         $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+    //         $case->case_division_id = $caseInfo->case_department;
+    //         $case->case_category_id = $caseInfo->case_category;
+    //         $case->concern_person_designation = $caseInfo->concern_person_designation;
+    //         $case->concern_user_id = $caseInfo->concern_user_id;
+    //         $case->subject_matter = $caseInfo->subject_matter;
+    //         $case->postponed_details = $caseInfo->postponed_details;
+    //         $case->interim_order = $caseInfo->interim_order;
+    //         $case->important_cause = $caseInfo->important_cause;
+    //         $case->arji_file = null;
+    //         $case->status = 1;
+    //         $case->gov_case_ref_id = $id;
+    //         $case->ref_gov_case_no = $oldcase->case_no;
+    //         $case->case_status_id = 43;
+    //         if ($case->save()) {
+    //             $caseId = $case->id;
+    //             $oldcase->is_appeal = 1;
+    //             $oldcase->save();
+    //         }
+    //     } catch (\Exception $e) {
+    //         dd($e);
+    //         $caseId = null;
+    //     }
+    //     return $caseId;
+    // }
 
     public static function checkGovCaseExist($caseId)
     {
@@ -682,6 +683,8 @@ class GovCaseRegisterRepository
         } else {
             $leave_to_appeal_order_date = null;
         }
+
+
 
         try {
             $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;

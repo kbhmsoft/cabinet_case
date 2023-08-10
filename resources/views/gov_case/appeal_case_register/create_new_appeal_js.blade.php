@@ -557,10 +557,10 @@
 
     // ================================Case General Info save==================================
 
-    $('#caseGeneralInfoForm').submit(function(e) {
+    $('#appealCaseGeneralInfoForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
-        $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        $('#appealCaseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
         Swal.fire({
             title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
             // text: "You won't be able to revert this!",
@@ -576,14 +576,14 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: "{{ route('cabinet.case.appeal_store') }}",
+                    url: "{{ route('cabinet.case.appealStore') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
                     processData: false,
 
                     success: (data) => {
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
                         Swal.fire(
@@ -602,7 +602,7 @@
                     },
                     error: function(data) {
                         console.log(data);
-                        $('#caseGeneralInfoSaveBtn').removeClass(
+                        $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
                     }
