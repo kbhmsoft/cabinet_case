@@ -35,7 +35,7 @@
                     </ul>
                 </div>
             @endif
-           
+
 
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
@@ -227,7 +227,7 @@
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>ধরনর মামলা উদ্ভূত <span class="text-danger">*</span></label>
+                                                    <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
@@ -243,7 +243,6 @@
                                                             can not be empty</span>
                                                     </div>
                                                 </div>
-
 
                                                 <div class="col-lg-6 mt-5 mb-5">
                                                     <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
@@ -292,7 +291,7 @@
 @endsection
 
 @section('scripts')
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
 
     <script>
         $(document).ready(function() {
@@ -306,7 +305,7 @@
         });
     </script>
 
-    @include('gov_case.case_register.create_old_appeal_js')
+    @include('gov_case.appeal_case_register.create_old_appeal_js')
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
@@ -338,33 +337,6 @@
                     $('#appeal_hide_show').hide();
                 }
             });
-
-            // $("#CaseCategory").change(function() {
-            //     var getCatType = $('#CaseCategory').find(":selected").val();
-            //     // alert(getCatType);
-            //     if (getCatType == 4) {
-            //         $('#civilRevisionDiv').show();
-            //         $('#civilSuitDiv').hide();
-            //         $('#writDiv').hide();
-            //         $('#leaveToAppealDiv').hide();
-            //     } else if (getCatType == 8) {
-            //         $('#civilSuitDiv').show();
-            //         $('#civilRevisionDiv').hide();
-            //         $('#writDiv').hide();
-            //         $('#leaveToAppealDiv').hide();
-            //     } else if (getCatType == 2) {
-            //         $('#writDiv').show();
-            //         $('#civilRevisionDiv').hide();
-            //         $('#civilSuitDiv').hide();
-            //         $('#leaveToAppealDiv').hide();
-            //     } else if (getCatType == 10) {
-            //         $('#leaveToAppealDiv').show();
-            //         $('#civilRevisionDiv').hide();
-            //         $('#civilSuitDiv').hide();
-            //         $('#writDiv').hide();
-            //     }
-            // });
-
 
 
             $("#postponed_order_details").hide();

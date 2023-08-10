@@ -3,8 +3,8 @@
 @endphp --}}
 <style>
     .readonly-field {
-    background-color: #e7b00b;
-}
+        background-color: #e7b00b;
+    }
 </style>
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -86,117 +86,143 @@
         //=========== start CASE Origin case No   ================//
 
 
+        // jQuery('select[name="case_category_origin"]').on('change', function() {
+        //     var dataID = jQuery(this).val();
+        //     // alert(dataID);
+        //     jQuery("#case_number_origin").after('<div class="loadersmall"></div>');
+
+        //     if (dataID) {
+        //         jQuery.ajax({
+        //             url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
+        //                 dataID,
+        //             // alert(url);
+        //             type: "GET",
+        //             dataType: "json",
+        //             success: function(data) {
+        //                 jQuery('select[name="case_number_origin"]').html(
+        //                     '<div class="loadersmall"></div>');
+
+        //                 jQuery('select[name="case_number_origin"]').html(
+        //                     '<option value="">-- নির্বাচন করুন --</option>');
+        //                 jQuery.each(data, function(key, value) {
+        //                     jQuery('select[name="case_number_origin"]').append(
+        //                         '<option value="' + key + '">' + value +
+        //                         '</option>');
+        //                 });
+        //                 jQuery('.loadersmall').remove();
+        //             }
+        //         });
+        //     } else {
+        //         $('select[name="case_number_origin"]').empty();
+        //     }
+        // });
+        // jQuery('select[name="case_category_origin"]').on('change', function() {
+        //     var dataID = jQuery(this).val();
+        //     var caseNumberSelect = jQuery('select[name="case_number_origin"]');
+
+        //     // Clear the previous options and reset the select field
+        //     caseNumberSelect.empty().append('<option value="">-- নির্বাচন করুন --</option>');
+
+        //     if (dataID) {
+        //         jQuery("#case_number_origin").after('<div class="loadersmall"></div>');
+        //         jQuery.ajax({
+        //             url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
+        //                 dataID,
+        //             type: "GET",
+        //             dataType: "json",
+        //             success: function(data) {
+        //                 caseNumberSelect.find('.loadersmall').remove();
+
+        //                 jQuery.each(data, function(key, value) {
+        //                     caseNumberSelect.append('<option value="' + key + '">' +
+        //                         value + '</option>');
+        //                 });
+        //             }
+        //         });
+        //     }
+        // });
         jQuery('select[name="case_category_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
-            // alert(dataID);
-            jQuery("#case_number_origin").after('<div class="loadersmall"></div>');
+            var caseNumberDropdown = jQuery('select[name="case_number_origin"]');
+            var loadersmall = '<div class="loadersmall"></div>';
+
+            caseNumberDropdown.after(loadersmall);
 
             if (dataID) {
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
                         dataID,
-                    // alert(url);
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        jQuery('select[name="case_number_origin"]').html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery('select[name="case_number_origin"]').html(
+                        caseNumberDropdown.empty();
+                        caseNumberDropdown.append(
                             '<option value="">-- নির্বাচন করুন --</option>');
+
                         jQuery.each(data, function(key, value) {
-                            jQuery('select[name="case_number_origin"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
+                            caseNumberDropdown.append('<option value="' + key +
+                                '">' + value + '</option>');
                         });
+
                         jQuery('.loadersmall').remove();
-                        // $('select[name="mouja"] .overlay').remove();
-                        // $("#loading").hide();
                     }
-                    // console.log(data);
                 });
             } else {
-                $('select[name="case_number_origin"]').empty();
+                caseNumberDropdown.empty();
+                jQuery('.loadersmall').remove();
             }
         });
-
 
         //========== start based on case origin number filled input field
 
-
         jQuery('select[name="case_number_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
-            //  alert(dataID);
+            var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
+
             if (dataID) {
                 jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/  /' +
-                        dataID,
-                    // alert(url);
+                    url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
                     type: "GET",
-                    dataType: "json",
                     success: function(response) {
-                        console.log(response);
-                        if (response.case) {
-                            $('#subject_matter').val(response.case.subject_matter);
-
-                            $('#result_date').val(response.case.result_date);
-
-                            var selectedValue = response.case.result;
-
-                            if (selectedValue === 1) {
-                                $('#result').prop('checked', true);
-                            } else if (selectedValue === 2) {
-                                $('#result').prop('checked', true);
-                            }
-                            $('#result_short_dtails').val(response.case
-                                .result_short_dtails);
-
-                            $('#result_copy_asking_date').val(response.case
-                                .result_copy_asking_date);
-
-                            $('#result_copy_reciving_date').val(response.case
-                                .result_copy_reciving_date);
-                        }
-
-                        var badiRowsContainer = $('#badiRowsContainer');
-
-                        $.each(response.caseBadi, function(index, item) {
-                            var row = '<tr>' +
-                                '<td><input type="text" name="badi_name[]" value="' +
-                                item.name + '" /></td>' +
-                                '<td><input type="text" name="badi_address[]" value="' +
-                                item.address + '" /></td>' +
-                                '<td></td>' +
-                                '</tr>';
-                            badiRowsContainer.append(row);
-
-                        });
-
-
-                        if (response.concernpersondesig) {
-                            $('#concern_person_designation').val(response.concernpersondesig
-                                .name);
-
-                       }
-
-                       if (response.concernPersonName) {
-                            $('#appeal_concern_user_id').val(response.concernPersonName
-                                .name);
-
-                       }
-
-
-
-
+                        showHighCourtCaseDiv.html(
+                            response);
+                    },
+                    error: function() {
+                        showHighCourtCaseDiv.empty();
                     }
-
                 });
+            } else {
+                showHighCourtCaseDiv.empty();
             }
         });
 
 
-        //===========GetConsernPersonByDesignation================//
 
+        // jQuery('select[name="case_number_origin"]').on('change', function() {
+        //     var dataID = jQuery(this).val();
+        //     //  alert(dataID);
+        //     if (dataID) {
+        //         jQuery.ajax({
+        //             url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
+        //             // url: 'http://127.0.0.1:8000/cabinet/case/highcourtcasedetails/' + dataID,
+        //             // alert(url);
+        //             type: "GET",
+        //             success: function(response) {
+        //                 // alert('test');
+        //                 console.log(response);
+        //                 $('#showHighCourtCaseDiv').append(response);;
+        //             },
+        //             error: function() {
+        //                 console.log('failed');
+        //             }
+
+
+        //         });
+        //     }
+        // });
+
+
+        //===========GetConsernPersonByDesignation================//
 
         jQuery('select[name="concern_new_appeal_person_designation"]').on('change', function() {
             var dataID = jQuery(this).val();
@@ -777,10 +803,10 @@
         $('#reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="reply_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
@@ -811,10 +837,10 @@
         $('#suspension_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="suspension_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';

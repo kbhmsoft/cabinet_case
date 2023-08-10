@@ -1105,7 +1105,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
 
-        return view('gov_case.case_register.create_new_appeal')->with($data);
+        return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 
     public function appellateDivision_old_case_create()
@@ -1146,7 +1146,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
         // return $data;
-        return view('gov_case.case_register.create_old_appeal_case')->with($data);
+        return view('gov_case.appeal_case_register.create_old_appeal_case')->with($data);
     }
 
     public function get_details(Request $request)
@@ -1159,7 +1159,6 @@ class GovCaseRegisterController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         $caseId = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
@@ -1184,7 +1183,7 @@ class GovCaseRegisterController extends Controller
                 'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
                 'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
             ]);
-            // return $caseRegisterData;
+
             $cs_activity_data['case_register_id'] = $caseId;
             if ($request->formType != 'edit') {
                 $cs_activity_data['activity_type'] = 'create';
@@ -1199,7 +1198,7 @@ class GovCaseRegisterController extends Controller
             // ========= Gov Case Activity Log  End ==========
 
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             $flag = 'false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }
@@ -1643,11 +1642,12 @@ class GovCaseRegisterController extends Controller
     }
     public function getHighCourtCaseDetails($id)
     {
-    
+
          $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        
         // return $data;
         // $data = GovCaseRegister::where('id', $id)->first();
-        return view('gov_case.case_register._inc.get_highcourt_case_for_appeal',$data);
+        return view('gov_case.appeal_case_register._inc.get_highcourt_case_for_appeal',$data);
     }
     public function register($id)
     {
