@@ -196,7 +196,7 @@
 
                                                 {{-- starting সংযুক্তি  --}}
 
-                                                <div class="col-md-12">
+                                                {{-- <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -233,7 +233,7 @@
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- end সংযুক্তি --}}
 
@@ -280,7 +280,7 @@
                                     <div class="col-md-12" id="showHighCourtCaseDiv"></div>
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="caseGeneralInfoSaveBtn"
+                                    <button type="submit" id="appealCaseGeneralInfoSaveBtn"
                                         class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>

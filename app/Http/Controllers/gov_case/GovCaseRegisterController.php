@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\Attachment;
-use App\Models\Court;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseLog;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\Court;
+use App\Models\Office;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseLog;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
 
 class GovCaseRegisterController extends Controller
 {
@@ -1230,7 +1231,7 @@ class GovCaseRegisterController extends Controller
                 'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
             ]);
         try {
-            $caseId = GovCaseRegisterRepository::storeGovCase($request);
+            $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
             // GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             // GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
             GovCaseLogRepository::storeGovCaseLog($caseId);
@@ -1853,7 +1854,7 @@ class GovCaseRegisterController extends Controller
 
             ]);
         try {
-            $caseId = GovCaseRegisterRepository::storeAppealGovCase($request, $id);
+            $caseId = AppealGovCaseRegisterRepository::storeAppeal($request, $id);
             // dd($caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
