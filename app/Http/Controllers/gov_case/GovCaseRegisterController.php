@@ -174,7 +174,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -182,7 +182,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -239,7 +239,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -247,7 +247,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
