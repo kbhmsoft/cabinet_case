@@ -157,6 +157,11 @@ class GovCaseRegisterRepository
         } else {
             $is_final_order = 0;
         }
+        if ($caseInfo->result == 1) {
+            $in_favour_govt = 1;
+        } else {
+            $in_favour_govt = 0;
+        }
 
         // dd($ref_case_num);
 
@@ -189,6 +194,7 @@ class GovCaseRegisterRepository
             $case->reply_submission_date = $reply_submission_date;
             $case->result_short_dtails = $caseInfo->result_short_dtails;
             $case->result = $caseInfo->result;
+            $case->in_favour_govt = $in_favour_govt;
             $case->is_appeal = $caseInfo->is_appeal;
             $case->comments = $caseInfo->comments;
             $case->is_final_order = $is_final_order;
@@ -449,6 +455,35 @@ class GovCaseRegisterRepository
         return $case_status;
     }
 
+    public static function storeGeneralInfo($caseInfo)
+    {
+        // dd($caseInfo['case_id']);
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        try {
+            $case->case_no = $caseInfo->case_no;
+            $case->case_type = $caseInfo->case_type;
+            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+            $case->action_user_id = userInfo()->id;
+            $case->action_user_role_id = userInfo()->role_id;
+            $case->create_by = userInfo()->id;
+            $case->year = $caseInfo->case_year;
+            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+            $case->case_division_id = $caseInfo->court;
+            $case->case_category_id = $caseInfo->case_category;
+            $case->case_type_id = $caseInfo->case_category_type;
+            $case->concern_person_designation = $caseInfo->concern_person_designation;
+            $case->concern_user_id = $caseInfo->concern_user_id;
+            $case->subject_matter = $caseInfo->subject_matter;
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
     public static function storeSendingReply($caseInfo)
     {
         // dd($caseInfo['case_id']);
@@ -563,10 +598,17 @@ class GovCaseRegisterRepository
         } else {
             $proposal_date_writ = null;
         }
+        if ($caseInfo->result == 1) {
+            $in_favour_govt = 1;
+        } else {
+            $in_favour_govt = 0;
+        }
+
 
         try {
             $case->is_final_order = $caseInfo->is_final_order;
             $case->result = $caseInfo->result;
+            $case->in_favour_govt = $in_favour_govt;
             $case->result_short_dtails = $caseInfo->result_short_dtails;
             $case->is_appeal = $caseInfo->is_appeal;
             $case->result_date = $result_date;

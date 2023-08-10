@@ -488,7 +488,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
+                    url: "{{ route('cabinet.case.storeGeneralInfo') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
