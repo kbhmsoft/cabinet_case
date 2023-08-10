@@ -524,7 +524,7 @@
                     },
                     error: function(data) {
                         console.log(JSON.stringify(data['responseJSON']['errors']['case_no'][0]));
-                       
+
                         Swal.fire(
                             'Oops...!',
                             data['responseJSON']['errors']['case_no'][0],
@@ -751,7 +751,6 @@
 
 
     $('#contemptCaseForm').submit(function(e) {
-        // alert(1);
         e.preventDefault();
         $('#contemptCaseSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 

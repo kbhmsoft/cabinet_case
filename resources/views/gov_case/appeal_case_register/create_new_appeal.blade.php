@@ -129,10 +129,10 @@
                                                         <select name="appeal_office" id="appeallateOffice"
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategory as $value)
+                                                            @foreach ($ministrys as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('appeal_office') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
+                                                                    {{ $value->office_name_bn	 }} </option>
                                                             @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field

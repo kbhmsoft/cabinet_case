@@ -151,7 +151,7 @@
         jQuery('select[name="case_number_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
             var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
-            
+
             if (dataID) {
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
