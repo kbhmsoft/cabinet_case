@@ -576,7 +576,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: "{{ route('cabinet.case.store') }}",
+                    url: "{{ route('cabinet.case.appeal_store') }}",
                     data: formData,
                     cache: false,
                     contentType: false,

@@ -161,6 +161,7 @@ Route::middleware('auth')->group(function () {
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('storeGeneralInfo', [GovCaseRegisterController::class, 'storeGeneralInfo'])->name('storeGeneralInfo');
+            Route::post('appeal_store', [GovCaseRegisterController::class, 'appealStore'])->name('appealStore');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
