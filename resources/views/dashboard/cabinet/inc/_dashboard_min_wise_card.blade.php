@@ -13,10 +13,11 @@
                </tr>
             </thead>
             <tbody> 
+               {{-- @dd($ministry_wise) --}}
                @foreach ($ministry_wise as $key => $row)
                <tr>
                   <td>{{ en2bn($key + $ministry_wise->firstItem()) }}</td>
-                  <td><a href="{{ route('cabinet.case.ministry_wise_list', $row->id) }}">{{ $row->office_name_bn }}</a></td>
+                  <td><h4>{{ $row->office_name_bn }}</h4></td>
                   <td align="center">{{ en2bn($row->running_case) }}</td>
                   <td align="center">{{ en2bn($row->completed_case) }}</td>
                   <td align="center">{{ en2bn($row->against_gov) }}</td>

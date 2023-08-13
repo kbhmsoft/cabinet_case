@@ -46,7 +46,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -107,7 +107,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -115,7 +115,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -307,7 +307,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -372,7 +372,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -437,7 +437,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -501,7 +501,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -572,7 +572,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -643,7 +643,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -714,7 +714,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -785,7 +785,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -856,7 +856,7 @@ class GovCaseRegisterController extends Controller
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
                 function ($query) use ($officeID) {
-                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
                 }
             );
         }
@@ -921,40 +921,30 @@ class GovCaseRegisterController extends Controller
     {
         // dd($id);
 
-        $query = DB::table('office')
-            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+        $query = DB::table('gov_case_office')
+            ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
                 \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
                 \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
             )
-            ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+            ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
             ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-            ->where('office.parent', $id);
+            ->where('gov_case_office.parent', $id);
 
-        /*if($status == 0) {
-        $query->where('gcr.in_favour_govt',$is_fav);
-        }
-        if($status != 0) {
-        if ($status == 3) {
-        $query->where('gcr.status',$status);
-        } else {
-        $query->whereIn('gcr.status',[1,2]);
-        }
-        }*/
 
-        $data['ministry_wise'] = $query->groupBy('office.id')
-            ->groupBy('gcb.department_id')
-            ->orderBy('office.id', 'asc')
+        $data['ministry_wise'] = $query->groupBy('gov_case_office.id')
+            ->groupBy('gcb.respondent_id')
+            ->orderBy('gov_case_office.id', 'asc')
             ->paginate(10);
 
         // $data['ministry_wise'] = $query;
         // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['ministry'] = DB::table('office')->select('id', 'office_name_bn')->where('id', $id)->first();
+        $data['ministry'] = DB::table('gov_case_office')->select('id', 'office_name_bn')->where('id', $id)->first();
         $data['page_title'] = $data['ministry']->office_name_bn . ' এর মামলার তালিকা';
-
+        // return $data;
         return view('gov_case.case_register.ministry_wise_list')->with($data);
     }
 
@@ -969,9 +959,9 @@ class GovCaseRegisterController extends Controller
         \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
         \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
         )
-        ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+        ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
         ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-        ->where('office.id', $id)->groupBy('office.id')->groupBy('gcb.department_id')
+        ->where('office.id', $id)->groupBy('office.id')->groupBy('gcb.respondent_id')
         ->orderBy('office.id', 'asc')->paginate(10);*/
 
         $officeInfo = user_office_info();
@@ -979,7 +969,7 @@ class GovCaseRegisterController extends Controller
 
         $query = GovCaseRegister::select('gov_case_registers.*')->orderby('gov_case_registers.id', 'DESC');
         $query->leftJoin('gov_case_bibadis as gcb', 'gov_case_registers.id', '=', 'gcb.gov_case_id');
-        $query->where('gcb.department_id', $id);
+        $query->where('gcb.respondent_id', $id);
 
         if (!empty($_GET['case_division_id'])) {
             $query->where('gov_case_registers.case_division_id', '=', $_GET['case_division_id']);

@@ -406,22 +406,22 @@ class DashboardController extends Controller
          $data['notice'] = GovCaseNotice::where('notice_for',$roleID)->where('expiry_date','>=', date(now()))->get();
 
          // count ministry wise case status
-         $ministry = DB::table('office')
-                ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+         $ministry = DB::table('gov_case_office')
+                ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
                     \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
                     \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
                     \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
                     \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
                 )
-                ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+                ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.department_id')
                 ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                ->where('office.parent', $officeID);
+                ->where('gov_case_office.parent', $officeID);
 
-        $data['ministry_wise'] = $ministry->groupBy('office.id')
+        $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
                                         ->groupBy('gcb.department_id')
-                                        ->orderBy('office.id', 'asc')
+                                        ->orderBy('gov_case_office.id', 'asc')
                                         ->paginate(10);
-
+         
          // Drildown Statistics
          $division_list = DB::table('division')
          ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
@@ -472,8 +472,6 @@ class DashboardController extends Controller
 
          // Counter
          $data['total_case'] = DB::table('gov_case_registers')->count();
-         $data['total_at_case'] = AtCaseRegister::count();
-         $data['total_rm_case'] = RM_CaseRgister::count();
          $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
          $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
          $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
@@ -623,20 +621,20 @@ class DashboardController extends Controller
          ->get();
 
          // count ministry wise case status
-         $ministry = DB::table('office')
-                ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+         $ministry = DB::table('gov_case_office')
+                ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
                     \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
                     \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
                     \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
                     \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
                 )
-                ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.department_id')
+                ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
                 ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                ->where('office.parent', $officeID);
+                ->where('gov_case_office.parent', $officeID);
 
-         $data['ministry_wise'] = $ministry->groupBy('office.id')
-                                        ->groupBy('gcb.department_id')
-                                        ->orderBy('office.id', 'asc')
+         $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
+                                        ->groupBy('gcb.respondent_id')
+                                        ->orderBy('gov_case_office.id', 'asc')
                                         ->paginate(10);
 
          // Drildown Statistics

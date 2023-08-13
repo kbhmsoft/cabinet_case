@@ -9,6 +9,7 @@
 <!--begin::Dashboard-->
 <!-- Dashboard Counter -->
 @include('dashboard.cabinet.inc._dashboard_counter_card')
+@include('dashboard.cabinet.inc._dashboard_min_wise_card')
 <!-- //Dashboard Counter -->
 @if(!empty($notice))
   <marquee width="100%" direction="left" height="100px" class="text-danger font-weight-bolder font-size-h3">
@@ -17,7 +18,7 @@
     @endforeach
   </marquee>
 @endif
-    @include('dashboard.cabinet.inc._dashboard_action_card')
+    {{-- @include('dashboard.cabinet.inc._dashboard_action_card') --}}
 
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
