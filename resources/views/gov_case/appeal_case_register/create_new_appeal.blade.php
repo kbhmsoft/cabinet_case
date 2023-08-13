@@ -196,12 +196,12 @@
 
                                                 {{-- starting সংযুক্তি  --}}
 
-                                                {{-- <div class="col-md-12">
+                                                <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">স্থগিতাদেশের সংযুক্তি
+                                                                <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     <span class="text-danger">*</span>
                                                                 </h3>
                                                             </div>
@@ -212,7 +212,7 @@
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
 
-                                                                    <div id="addFileRow">
+                                                                    <div id="addAppealFinalOrderFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
                                                                             <i
@@ -233,7 +233,7 @@
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
-                                                </div> --}}
+                                                </div>
 
                                                 {{-- end সংযুক্তি --}}
 
@@ -288,16 +288,15 @@
                         {{-- ---------- end মামলার সাধারণ তথ্য----------- --}}
 
 
-                        {{-- start রায় সম্পর্কিত --}}
                         <div class="tab-pane" id="final_order" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="finalOrderForm" action="javascript:void(0)" class="form" method="POST"
+                            <form id="appealFinalOrderForm" action="javascript:void(0)" class="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         {{-- <div class="step"> --}}
-                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id">
+                                        <input type="hidden" id="caseIDForAppealFinalOrder" name="case_id">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
                                             <div class="form-group row">
@@ -511,7 +510,6 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
@@ -543,10 +541,10 @@
                                                         </div>
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5"
-                                                                id="finalOrderFileDiv" style="border:1px solid #dcd8d8;">
+                                                                id="appealFinalOrderFileDiv" style="border:1px solid #dcd8d8;">
                                                                 <tr></tr>
                                                             </table>
-                                                            <input type="hidden" id="final_order_attachment_count"
+                                                            <input type="hidden" id="appeal_final_order_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
@@ -559,12 +557,11 @@
                                     </div>
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="finalOrderSaveBtn"
+                                    <button type="submit" id="appealFinalOrderSaveBtn"
                                         class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
-                        {{-- ---------- end রায় সম্পর্কিত----------- --}}
                     </div>
                 </div>
             </div>

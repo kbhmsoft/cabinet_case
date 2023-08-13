@@ -19,6 +19,7 @@ class AppealGovCaseRegister extends Model
 	use HasFactory;
 
 	public $timestamps = true;
+    protected $table = 'appeal_gov_case_register';
     protected $fillable = [
 		'id',
         'case_no',
@@ -28,9 +29,10 @@ class AppealGovCaseRegister extends Model
         'appeal_office_id',
         'concern_new_appeal_person_designation',
         'concern_user_id',
-        'postponed_date',
+        'postpond_date',
         'postponed_details',
         'case_number_origin',
+        'case_category_origin',
 	];
 
 }
