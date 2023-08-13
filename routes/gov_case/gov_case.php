@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\gov_case\AclController;
+use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
 use App\Http\Controllers\gov_case\GovCaseActivityLogController;
 use App\Http\Controllers\gov_case\GovCaseMessageController;
@@ -146,7 +147,6 @@ Route::middleware('auth')->group(function () {
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('storeGeneralInfo', [GovCaseRegisterController::class, 'storeGeneralInfo'])->name('storeGeneralInfo');
-            Route::post('appeal_store', [GovCaseRegisterController::class, 'appealStore'])->name('appealStore');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
@@ -165,6 +165,11 @@ Route::middleware('auth')->group(function () {
             route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class, 'ajax_badi_del']);
             route::post('ajax_bibadi_del/{id}', [GovCaseRegisterController::class, 'ajax_bibadi_del']);
             route::post('ajax_case_file_del/{id}', [GovCaseRegisterController::class, 'ajax_case_file_del']);
+
+            // for appeal controller route
+
+            Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
+            Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
 
             Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                 Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');
