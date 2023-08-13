@@ -33,6 +33,17 @@ class AppealGovCaseRegister extends Model
         'postponed_details',
         'case_number_origin',
         'case_category_origin',
+        'is_final_order',
+        'result',
+        'in_favour_govt',
+        'result_short_details',
+        'is_appeal',
+        'result_date',
+        'result_copy_asking_date',
+        'result_copy_receiving_date',
+        'appeal_requesting_memorial',
+        'appeal_requesting_date',
+        'reason_of_not_appealing',
 	];
 
 }

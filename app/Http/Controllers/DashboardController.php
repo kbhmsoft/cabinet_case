@@ -421,7 +421,7 @@ class DashboardController extends Controller
                                         ->groupBy('gcb.department_id')
                                         ->orderBy('gov_case_office.id', 'asc')
                                         ->paginate(10);
-         
+
          // Drildown Statistics
          $division_list = DB::table('division')
          ->select('division.id', 'division.division_name_bn', 'division.division_name_en')

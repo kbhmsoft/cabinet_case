@@ -1275,14 +1275,13 @@ class AppealGovCaseRegisterController extends Controller
             ]);
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppealFinalOrder($request);
-            if ($request->file_type && $_FILES["file_name"]['name']) {
-                AttachmentRepository::storeAppealFinalOrderAttachment('gov_case', $caseId, $request);
+
+            if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
+                AttachmentRepository::storeAppealFinalOrderAttachment('appeal_gov_case', $caseId, $request);
             }
             //========= Gov Case Activity Log -  start ============
             $caseRegister = AppealGovCaseRegister::findOrFail($caseId)->toArray();
             $caseRegisterData = array_merge($caseRegister, [
-                // 'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
-                // 'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
                 'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
                 'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
             ]);
@@ -1307,7 +1306,6 @@ class AppealGovCaseRegisterController extends Controller
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
 
-        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
     public function storeGeneralInfo(Request $request)

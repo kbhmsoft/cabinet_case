@@ -1799,23 +1799,6 @@ class GovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function create_appeal($id)
     {
 

@@ -29,15 +29,15 @@
 </script>
 
 <script type="text/javascript">
+
     $(document).ready(function() {
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
         }
         addFileRowFunc();
-        addReplyFileRowFunc();
         addFinalOrderFileRowFunc();
-        addSuspensionOrderFileRowFunc();
+        // addAppealFinalOrderFileRowFunc();
 
         //===========caseType================//
 
@@ -159,7 +159,7 @@
                     success: function(response) {
                         showHighCourtCaseDiv.html(
                             response);
-                        console.log(response);
+                    console.log(response);
                     },
                     error: function() {
                         showHighCourtCaseDiv.empty();
@@ -562,7 +562,6 @@
             if (result.isConfirmed) {
 
                 var formData = new FormData(this);
-                console.log(formData);
                 $.ajax({
 
                     type: 'POST',
@@ -583,15 +582,11 @@
                         )
                         console.log(data.caseId);
 
-                        // $("#sending_reply_tab").click();
-                        // $("#caseIDForAnswer").val(data.caseId);
-                        // $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForAppealFinalOrder").val(data.caseId);
+                        $("#final_order").click();
+                        $("#caseIDForFinalOrder").val(data.caseId);
 
-
-                        $('#appealFinalOrderSaveBtn').prop('disabled', false);
-                        $('#appealFinalOrderSaveBtn').removeClass("disable-button");
-
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
                     },
                     error: function(data) {
                         console.log(data);
@@ -609,10 +604,9 @@
 
 
 
-    $('#appealFinalOrderForm').submit(function(e) {
-        // alert(1);
+    $('#finalOrderForm').submit(function(e) {
         e.preventDefault();
-        $('#appealFinalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        $('#finalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
         Swal.fire({
             title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
@@ -636,7 +630,7 @@
                     processData: false,
 
                     success: (data) => {
-                        $('#appealFinalOrderSaveBtn').removeClass(
+                        $('#finalOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
                         Swal.fire(
@@ -644,25 +638,21 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         )
-                        console.log(data);
+
                         // console.log(data.caseId);
-                        $("#contempt_case").click();
-                        $("#caseIDForSuspention").val(data.caseId);
+                        // $("#contempt_case").click();
+                        // $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
-                        $('#sendingReplySaveBtn').prop('disabled', false);
-                        $('#sendingReplySaveBtn').removeClass("disable-button");
-                        $('#suspensionOrderSaveBtn').prop('disabled', false);
-                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
-                        $('#appealFinalOrderSaveBtn').prop('disabled', false);
-                        $('#appealFinalOrderSaveBtn').removeClass("disable-button");
-                        $('#contemptCaseSaveBtn').prop('disabled', false);
-                        $('#contemptCaseSaveBtn').removeClass("disable-button");
+                        console.log(data);
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+
 
                     },
                     error: function(data) {
                         console.log(data);
-                        $('#appealFinalOrderSaveBtn').removeClass(
+                        $('#finalOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
                     }
@@ -831,20 +821,20 @@
 
 
 
-    /// appeal final order
+/// appeal final
 
 
-    $("#addAppealFinalOrderFileRow").click(function(e) {
-        addAppealFinalOrderFileRowFunc();
+   $("#addFinalOrderFileRow").click(function(e) {
+        addFinalOrderFileRowFunc();
     });
     //add row function
-    function addAppealFinalOrderFileRowFunc() {
+    function addFinalOrderFileRowFunc() {
         var count = parseInt($('#final_order_attachment_count').val());
         var formType = $('#formType').val();
-        $('#appeal_final_order_attachment_count').val(count + 1);
+        $('#final_order_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="appeal_final_order_file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="final_order_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
@@ -855,7 +845,7 @@
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
-        $('#appealFinalOrderFileDiv tr:last').after(items);
+        $('#finalOrderFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
             $(`#customFile${count}`).attr('required', false);
@@ -870,12 +860,15 @@
 
 
 
-
     //Attachment Title Change
     function attachmentTitle(id) {
         // var value = $('#customFile' + id).val();
         var value = $('#customFile' + id)[0].files[0];
         $('.custom-input' + id).text(value['name']);
+    }
+    function finalAttachmentTitle(id) {
+        var value = $('#customFinalFile' + id)[0].files[0];
+        $('.custom-final-input' + id).text(value['name']);
     }
     //remove Attachment
     function removeBibadiRow(id) {
