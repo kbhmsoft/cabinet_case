@@ -4,7 +4,7 @@ $officeInfo = user_office_info();
 ?>
 <form class="form-inline" method="GET">
    <div class="row">
-      <div class="col-lg-2 mb-5 px-2">
+      <div class="col-lg-6 mb-5 px-2">
          <select name="case_category_id" class="w-100 form-control">
             <option value=""> মামলা ক্যাটেগরি </option>
             @foreach ($division_categories as $value)
@@ -17,14 +17,14 @@ $officeInfo = user_office_info();
          <!-- <input type="text" name="case_category_id"  class="w-100 form-control" placeholder="মামলার ক্যাটেগরি" autocomplete="off"> -->
       </div>
 
-      <div class="col-lg-2 mb-5 px-2">
+      {{-- <div class="col-lg-2 mb-5 px-2">
          <input type="text" name="date_start"  class="w-100 form-control common_datepicker" placeholder="তারিখ হতে" autocomplete="off">
       </div>
       <div class="col-lg-2 mb-5 px-2">
          <input type="text" name="date_end" class="w-100 form-control common_datepicker" placeholder="তারিখ পর্যন্ত" autocomplete="off">
-      </div>
+      </div> --}}
 
-      <div class="col-lg-4 px-2">
+      <div class="col-lg-6 px-2">
          <div class="input-group mb-3">
             <input type="text" class="form-control" name="case_no" placeholder="মামলা নং" value="">
            <div class="input-group-append">

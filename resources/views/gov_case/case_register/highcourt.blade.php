@@ -54,7 +54,6 @@
                                     <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                                     <div class="dropdown-menu">
-
                                         {{-- @can('show_details_info')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
@@ -63,6 +62,12 @@
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.highcourt_edit', $row->id) }}">সংশোধন</a>
                                         @endcan
+                                        <?php
+                                        $roleID = Auth()->user()->role_id;
+                                        ?>
+
+
+
                                         @can('highcoutr_send_answer')
                                             @if ($row->is_final_order == 0)
                                                 @if (empty($row->result_sending_date))
@@ -77,11 +82,13 @@
                                                 @endif
                                             @elseif ($row->is_final_order == 1)
                                                 @if (empty($row->leave_to_appeal_no))
-                                                    <a class="dropdown-item" href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
                                                         সিএমপি/লিভ টু আপিল<br>দায়ের করুণ
                                                     </a>
                                                 @elseif (empty($row->leave_to_appeal_order_date))
-                                                    <a class="dropdown-item" href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
                                                         সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
                                                     </a>
                                                 @endif
@@ -97,6 +104,11 @@
                                                 href="{{ route('cabinet.case.register', $row->id) }}">রেজিস্টার</a>
                                         @endcan
                                     </div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    @if ($roleID == 27)
+                                    <a class="btn btn-bg-danger btn-sm" href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে ফেলুন</a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -120,9 +132,31 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                 -->
+                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                     -->
 
 
         <!--end::Page Scripts-->
-    @endsection
+
+
+    <script>
+        $(document).ready(function() {
+            $(".delete-button").click(function(e) {
+                e.preventDefault();
+                var caseId = $(this).data('case-id');
+                console.log(caseId);
+                if (confirm('Are you sure you want to delete this record?')) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/cabinet.case.highcourt_case_delete/' + caseId,
+
+                        success: function(data) {
+                            alert(data.message);
+
+                        },
+                    });
+                }
+            });
+        });
+    </script>
+

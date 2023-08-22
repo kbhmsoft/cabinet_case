@@ -74,6 +74,179 @@ class GovCaseOfficeController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
+    public function totalMinistryOffice()
+    {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        // dd($officeInfo);
+        $data['page_title'] = 'ব্যাবহারকারী মন্ত্রণালয়ের তালিকা';
+        // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+
+
+        //Add Conditions
+        $query = GovCaseOffice::orderby('id', 'ASC')->where('level',1);
+    //    dd($query);
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.level', '=', $_GET['office_type']);
+        }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
+        }
+        if (!empty($_GET['office_name'])) {
+            $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+        }
+
+        $data['offices'] = $query->paginate(10)->withQueryString();
+        $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+
+        $data['upazilas'] = NULL;
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+            // dd(1);
+            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+        }
+        return view('gov_case.office.index')
+            ->with($data)
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+
+    public function totalDoptor()
+    {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        // dd($officeInfo);
+        $data['page_title'] = 'ব্যাবহারকারী দপ্তর তালিকা';
+        // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+
+
+        //Add Conditions
+        $query = GovCaseOffice::orderby('id', 'ASC')->where('level',2);
+    //    dd($query);
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.level', '=', $_GET['office_type']);
+        }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
+        }
+        if (!empty($_GET['office_name'])) {
+            $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+        }
+
+        $data['offices'] = $query->paginate(10)->withQueryString();
+        $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+
+        $data['upazilas'] = NULL;
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+            // dd(1);
+            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+        }
+        return view('gov_case.office.index')
+            ->with($data)
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function totalDivisionOffice()
+    {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        $data['page_title'] = 'ব্যাবহারকারী বিভাগীয় প্রশাসন তালিকা';
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        $query = GovCaseOffice::orderby('id', 'ASC')->where('level',3);
+
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.level', '=', $_GET['office_type']);
+        }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
+        }
+        if (!empty($_GET['office_name'])) {
+            $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+        }
+
+        $data['offices'] = $query->paginate(10)->withQueryString();
+        $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+
+        $data['upazilas'] = NULL;
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+        }
+        return view('gov_case.office.index')
+            ->with($data)
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function totalDistrictOffice()
+    {
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        $data['page_title'] = 'ব্যাবহারকারী জেলা প্রশাসন তালিকা';
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+
+        $query = GovCaseOffice::orderby('id', 'ASC')->where('level',4);
+
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.level', '=', $_GET['office_type']);
+        }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
+        }
+        if (!empty($_GET['office_name'])) {
+            $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+        }
+
+        $data['offices'] = $query->paginate(10)->withQueryString();
+        $data['ministries'] =GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] =GovCaseOffice::where('level', 3)->get();
+
+        $data['upazilas'] = NULL;
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+        }
+        return view('gov_case.office.index')
+            ->with($data)
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
 
     // public function level_wise($level)
     // {

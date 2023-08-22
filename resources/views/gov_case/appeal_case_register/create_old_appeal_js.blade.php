@@ -40,6 +40,7 @@
             addMainBibadiRowFunc();
         }
         addFileRowFunc();
+        addFinalOrderFileRowFunc();
         addReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
         /*$('.main_respondent').select2();
@@ -789,7 +790,37 @@
         }
     }
 
+    /// appeal final
 
+
+    $("#addFinalOrderFileRow").click(function(e) {
+        addFinalOrderFileRowFunc();
+    });
+    //add row function
+    function addFinalOrderFileRowFunc() {
+        var count = parseInt($('#final_order_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#final_order_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="final_order_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#finalOrderFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
 
 
     // ============= Add Reply Attachment Row ========= start =========
@@ -873,4 +904,132 @@
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+</script>
+
+
+
+<script>
+    $(document).ready(function() {
+        $(".save-button").click(function(e) {
+            e.preventDefault();
+
+            var formValid = true;
+            var emptyFields = [];
+
+            $("#firstrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                if (fieldValue === '') {
+                    formValid = false;
+                    var labelForField = $("label[for='" + $(this).attr("id") + "']");
+
+                    emptyFields.push(labelForField.text().trim().replace('*', ''));
+                }
+            });
+
+            // $("#secondrequriedfields [required]").each(function() {
+            //     var fieldValue = $(this).val().trim();
+            //     var fieldName = $(this).attr("name").replace('[]', '');
+
+            //     if (fieldValue === '') {
+            //         formValid = false;
+            //         // var labelForField = $("label[for='" + $(this).attr("id") + "']");
+            //         emptyFields.push($("." + fieldName).text().trim().replace('*', ''));
+            //     }
+            // });
+
+
+            $("#thirdrequriedfields [required]").each(function() {
+                var fieldValue = $(this).val().trim();
+                var fieldName = $(this).attr("name").replace('[]', '');
+
+                if (fieldValue === '') {
+                    formValid = false;
+                    emptyFields.push($("." + fieldName).text().trim().replace('*', ''));
+                }
+            })
+
+            if (formValid) {
+                console.log("Form is valid.");
+                $('#saveOldAppealCaseBtn').addClass('spinner spinner-white spinner-right disabled');
+                Swal.fire({
+                    title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alert('okay')
+                        // var formData = new FormData(this);
+                        var formData = new FormData(document.getElementById(
+                            "oldAppealCaseGeneralInfoFrom"));
+
+                        console.log(formData);
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('cabinet.case.completeAppealCaseStore') }}",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: (data) => {
+                                console.log(data);
+                                $('#saveOldAppealCaseBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled'
+                                );
+                                $orderData = data;
+                                Swal.fire(
+                                    'Saved!',
+                                    'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                    'success'
+                                )
+                                console.log(data);
+                                $("#final_order").click();
+                                $("#caseIDForFinalOrder").val(data.caseId);
+                                $('#finalOrderSaveBtn').prop('disabled', false);
+                                $('#finalOrderSaveBtn').removeClass(
+                                    "disable-button");
+                            },
+                            // error: function(data) {
+                            //     console.log(data);
+                            //     Swal.fire(
+                            //         'Oops...!',
+                            //         data['responseJSON']['errors']['case_no'][
+                            //             0
+                            //         ],
+                            //         'error'
+                            //     )
+                            //     $('#saveOldAppealCaseBtn').removeClass(
+                            //         'spinner spinner-white spinner-right disabled'
+                            //     );
+                            // }
+                        });
+                    }
+                })
+
+            } else {
+
+                $("#emptyFieldsList").empty();
+                emptyFields.forEach(function(fieldLabel, index) {
+                    $("#emptyFieldsList").append("<li> " + (index + 1) + ". " +
+                        "Please fill out this field " + fieldLabel +
+                        "</li>");
+                });
+                $("#myModal").css("display", "block");
+            }
+        });
+
+        $(".close-button").click(function() {
+            $("#myModal").css("display", "none");
+        });
+
+        $(".save-button").click(function(event) {
+            if (event.target.id === "myModal") {
+                $("#myModal").css("display", "none");
+            }
+        });
+
+    });
 </script>

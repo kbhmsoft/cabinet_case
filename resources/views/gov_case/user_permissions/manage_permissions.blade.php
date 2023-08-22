@@ -1,7 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
- 
+
 
 <!--begin::Card-->
 <div class="card card-custom">
@@ -10,7 +10,7 @@
       @csrf
 
    <input type="hidden" name="user_id" value="{{ $user_id }}">
-    
+
    <div class="card-header flex-wrap py-5 mt-5">
       <div class="card-title mb-0 mt-2" >
          <h2 style="display: contents">অনুমতি প্রদান পরিচালনা করুন </h2>
@@ -18,25 +18,27 @@
                 @if(auth()->user()->can('permission_give_and_update'))
                   <button type="submit" class="btn btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
                      <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-                  </button>  
-                @else 
+                  </button>
+                @else
                   <button type="button" class="btn btn-secondary font-weight-bolder float-right">
                      <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-                  </button>  
+                  </button>
                 @endif
       </div>
-      <div class="card-toolbar">        
-       
+      <div class="card-toolbar">
+
       </div>
    </div>
-   <div class="card-body">    
+   <div class="card-body">
    <div class="row grid">
-   @foreach($parentPermissions as $parentPermission )
+
+   @foreach($parentPermissions as $parentPermission)
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
                <div class="cardheader">
                      {{ $parentPermission->name }}
                 </div>
+                {{-- @dd($parentPermission->name) --}}
                <div class="listPermission">
                   <ul>
                      @foreach($parentPermission->permissions as $permission)
@@ -44,7 +46,8 @@
                         $rolePermission = App\Models\RolePermission::where(['permission_id' => $permission->id, 'user_id' => $user_id])->first();
                      ?>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif> 
+
+                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if($rolePermission != null) checked @endif>
                          <span>{{$permission->display_name}}</span>
                      </li>
                      @endforeach
@@ -52,12 +55,12 @@
                </div>
             </div>
       </div>
-   @endforeach 
-  
+   @endforeach
 
 
 
-      <!-- 
+
+      <!--
 
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
@@ -66,26 +69,26 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                     
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>create</span>
                      </li>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>all_report</span>
                      </li>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>delete_report</span>
                      </li>
-                      
-                     
+
+
                   </ul>
                </div>
             </div>
       </div>
-    
+
 
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
@@ -94,24 +97,24 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                     
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>add_case</span>
                      </li>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>case_delete_test</span>
                      </li>
-                   
-                      
-                     
+
+
+
                   </ul>
                </div>
             </div>
       </div>
-    
-      
+
+
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
             <div class="card-bodys cardbody">
                <div class="cardheader">
@@ -119,21 +122,21 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                     
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>create_appeal</span>
                      </li>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>approved</span>
                      </li>
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>reject</span>
                      </li>
-                    
-                     
+
+
                   </ul>
                </div>
             </div>
@@ -145,13 +148,13 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                     
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>test_permission</span>
                      </li>
-                    
-                     
+
+
                   </ul>
                </div>
             </div>
@@ -163,22 +166,22 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                     
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" > 
+                        <input type="checkbox" name="permissionId[]" value="" class="mr-1" >
                          <span>test_permission_one</span>
                      </li>
-                    
-                     
+
+
                   </ul>
                </div>
             </div>
       </div> -->
-    
+
 
    </div>
 
-    
+
    </div>
 </form>
 
@@ -186,9 +189,9 @@
 <!--end::Card-->
 
 
- 
 
- 
+
+
 
 
 
@@ -198,7 +201,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 <!-- {{-- Scripts Section Related Page--}} -->
 @section('scripts')
@@ -208,13 +211,13 @@
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 <script>
- 
+
    // jQuery
 $('.grid').masonry({
-  
+
   itemSelector: '.grid-item'
 });
-    
+
 </script>
 
 

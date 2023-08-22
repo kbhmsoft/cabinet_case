@@ -18,12 +18,12 @@
                 @php
                 $index=1;
                 @endphp
-                @foreach ($ministry as $key=>$val)
+                @foreach ($ministry_wise as $key=>$val)
                 {{-- @dd($val->id) --}}
 
               <tr>
-                  <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
-                  <td><h4><a href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a></h4></td>
+                  <td>{{ en2bn($key + $ministry_wise->firstItem()) }}</td>
+                  <td><h4>{{ $val->office_name_bn }}</h4></td>
                   <td align="center">{{ en2bn($val->highcourt_running_case) }}</td>
                   <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
                   <td align="center">{{ en2bn($val->against_gov) }}</td>
@@ -41,7 +41,7 @@
          </table>
 
          <div class="d-flex justify-content-center">
-            {!! $ministry->links() !!}
+            {!! $ministry_wise->links() !!}
          </div>
       </div>
    </div>

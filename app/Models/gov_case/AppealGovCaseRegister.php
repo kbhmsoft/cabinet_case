@@ -2,26 +2,21 @@
 
 namespace App\Models\gov_case;
 
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Court;
-use App\Models\Division;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\CaseStatus;
-use App\Models\Role;
-use App\Models\Upazila;
-use App\Models\Mouja;
-use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AppealGovCaseRegister extends Model
 {
-	use HasFactory;
+    use HasFactory, SoftDeletes;
 
-	public $timestamps = true;
+    public $timestamps = true;
     protected $table = 'appeal_gov_case_register';
     protected $fillable = [
-		'id',
+        'id',
         'case_no',
         'case_category_id',
         'case_type_id',
@@ -44,6 +39,20 @@ class AppealGovCaseRegister extends Model
         'appeal_requesting_memorial',
         'appeal_requesting_date',
         'reason_of_not_appealing',
-	];
+    ];
+
+    public function bibadis()
+    {
+        return $this->hasMany(GovCaseBibadi::class, 'appeal_gov_case_id', 'id');
+    }
+
+    public function highcourtCaseDetail()
+    {
+        return $this->hasOne(GovCaseRegister::class, 'case_no', 'case_number_origin');
+    }
+    public function office()
+    {
+        return $this->hasOne(GovCaseOffice::class, 'id', 'appeal_office_id');
+    }
 
 }

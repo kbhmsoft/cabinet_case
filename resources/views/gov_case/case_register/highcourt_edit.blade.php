@@ -7,7 +7,7 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
     @include('gov_case.case_register.create_css')
@@ -92,6 +92,7 @@
                                                                     {{ old('case_category') == $value->id || $case->case_category_id == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name_bn }} </option>
                                                             @endforeach
+
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
@@ -249,8 +250,8 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
-                                                                                                        
-                                                                                             
+
+
                                                                              @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
@@ -294,7 +295,7 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
-                                                                                                    
+
                                                                              @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>

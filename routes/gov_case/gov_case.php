@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('user-management', GovCaseUserManagementController::class);
         /////************** Office Setting **************/////
         Route::get('/office', [GovCaseOfficeController::class, 'index'])->name('office');
+        Route::get('/office/ministry', [GovCaseOfficeController::class, 'totalMinistryOffice'])->name('totalMinistryOffice');
+        Route::get('/office/doptor', [GovCaseOfficeController::class, 'totalDoptor'])->name('totalDoptor');
+        Route::get('/office/division', [GovCaseOfficeController::class, 'totalDivisionOffice'])->name('totalDivisionOffice');
+        Route::get('/office/district', [GovCaseOfficeController::class, 'totalDistrictOffice'])->name('totalDistrictOffice');
         Route::get('/office/level/{level}', [GovCaseOfficeController::class, 'level_wise'])->name('office.level');
         Route::get('/office/parent/{parent}', [GovCaseOfficeController::class, 'parent_wise'])->name('office.parent');
         route::get('/office/create', [GovCaseOfficeController::class, 'create'])->name('office.create');
@@ -110,7 +115,7 @@ Route::middleware('auth')->group(function () {
         // Route::get('/new_sf_details/{id}', [GovCaseMessageController::class, 'newSFdetails'])->name('newSFdetails');
         Route::get('/script', [GovCaseMessageController::class, 'script']);
 
-        //=================== Message End ==================//
+        //=================== Message End ==================//highcourt/running
 
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
 
@@ -123,11 +128,14 @@ Route::middleware('auth')->group(function () {
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
             Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
             Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
-            Route::get('appellateDivision', [GovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
-            Route::get('appellateDivision/running', [GovCaseRegisterController::class, 'appellate_division_running_case'])->name('appellateDivision.running');
-            Route::get('appellateDivision/complete', [GovCaseRegisterController::class, 'appellate_division_complete_case'])->name('appellateDivision.complete');
+            Route::get('highcourt/sentToSolicitor', [GovCaseRegisterController::class, 'sentToSolicitor'])->name('sentToSolicitor');
+            Route::get('highcourt/appealAgainstGovt', [GovCaseRegisterController::class, 'appealAgainstGovt'])->name('appealAgainstGovt');
+            Route::get('highcourt/againstPostponedOrder', [GovCaseRegisterController::class, 'againstPostponedOrder'])->name('againstPostponedOrder');
+            Route::get('appellateDivision/running', [AppealGovCaseRegisterController::class, 'appellate_division_running_case'])->name('appellateDivision.running');
+            Route::get('appellateDivision/complete', [AppealGovCaseRegisterController::class, 'appellate_division_complete_case'])->name('appellateDivision.complete');
             Route::get('running_case', [GovCaseRegisterController::class, 'running_case'])->name('running');
             Route::get('appeal_case', [GovCaseRegisterController::class, 'appeal_case'])->name('appeal');
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
@@ -155,6 +163,8 @@ Route::middleware('auth')->group(function () {
             Route::post('contemptCaseStore', [GovCaseRegisterController::class, 'contemptCaseStore'])->name('contemptCaseStore');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
+            Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
+            Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
             Route::get('leave-to-appeal/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealCreate'])->name('leaveToAppealCreate');
@@ -170,6 +180,12 @@ Route::middleware('auth')->group(function () {
 
             Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
             Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
+            Route::post('completeAppealCaseStore', [AppealGovCaseRegisterController::class, 'completeAppealCaseStore'])->name('completeAppealCaseStore');
+            Route::get('editAppealCaseForm/{id}', [AppealGovCaseRegisterController::class, 'editAppealCaseForm'])->name('editAppealCaseForm');
+            Route::get('ministryWiseData/{ministry_id}', [DashboardController::class, 'ministryWiseData'])->name('ministryWiseData');
+            // Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
+            Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
+            Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
 
             Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                 Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

@@ -391,20 +391,41 @@ class GovCaseRegisterRepository
             });
         }
 
+
         $case_status = $query->count();
         return $case_status;
     }
     public static function sendToSolicotorCases()
     {
         $roleID = userInfo()->role_id;
-        $office = userInfo()->office_id;
-        $query = GovCaseRegister::whereNull('result_sending_date');
-        if ($roleID != 27 && $roleID != 28) {
-            $query->orWhereHas('bibadis', function ($q) use ($office) {
-                $q->where('respondent_id', $office);
-            });
+        $officeID = userInfo()->office_id;
+        $childOfficeIds = [];
+
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
         }
 
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        // return $finalOfficeIds;
+        $query = GovCaseRegister::whereNull('result_sending_date');
+        // return $query;
+
+        if ($roleID != 27 && $roleID != 28) {
+            $query->orWhereHas('mainBibadis', function ($q) use ($finalOfficeIds) {
+                $q->whereIn('respondent_id', $finalOfficeIds);
+            });
+        }
         $case_status = $query->count();
         return $case_status;
     }
@@ -425,11 +446,31 @@ class GovCaseRegisterRepository
     public static function stepNotTakenAgainstPostpondOrderCases()
     {
         $roleID = userInfo()->role_id;
-        $office = userInfo()->office_id;
+        $officeID = userInfo()->office_id;
+        // return $officeID;
+        $childOfficeIds = [];
+
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+
         $query = GovCaseRegister::whereNull('appeal_against_postpond_interim_order');
         if ($roleID != 27 && $roleID != 28) {
-            $query->orWhereHas('bibadis', function ($q) use ($office) {
-                $q->where('respondent_id', $office);
+            $query->orWhereHas('bibadis', function ($q) use ($finalOfficeIds) {
+                $q->where('respondent_id', $finalOfficeIds);
             });
         }
 
@@ -685,13 +726,13 @@ class GovCaseRegisterRepository
         } else {
             $leave_to_appeal_date = null;
         }
-        
+
         if ($caseInfo->proposal_date_leave_to_appeal != null && $caseInfo->proposal_date_leave_to_appeal != '') {
             $proposal_date_leave_to_appeal = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->proposal_date_leave_to_appeal)));
         } else {
             $proposal_date_leave_to_appeal = null;
         }
-        
+
         try {
             $case->leave_to_appeal_no = $caseInfo->leave_to_appeal_no;
             $case->leave_to_appeal_date = $leave_to_appeal_date;
@@ -703,7 +744,7 @@ class GovCaseRegisterRepository
             $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
             $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
             $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
-            
+
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -724,14 +765,14 @@ class GovCaseRegisterRepository
         } else {
             $leave_to_appeal_order_date = null;
         }
-        
-       
-        
+
+
+
         try {
             $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;
             $case->leave_to_appeal_is_favour_of_gov = $caseInfo->leave_to_appeal_is_favour_of_gov;
             $case->leave_to_appeal_order_details = $caseInfo->leave_to_appeal_order_details;
-            
+
             if ($case->save()) {
                 $caseId = $case->id;
             }

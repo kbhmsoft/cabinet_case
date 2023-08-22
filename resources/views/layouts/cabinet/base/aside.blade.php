@@ -260,7 +260,7 @@
                 @endcan
 
                 @can('manage_office_menu')
-                    <li class="menu-item {{ request()->is('cabinet/office', 'cabinet/office/create') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/office','cabinet/office/*', 'cabinet/office/create') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="la la-briefcase"></i> অফিস
@@ -514,9 +514,9 @@
                     </li>
                 @endcan
                 @php
-                    
+
                     $supremeCourtCaseCout = DB::select(DB::raw("SELECT count(id) as total_hearing FROM gov_case_notify_supre_court WHERE date = '27/02/2023'"))[0]->total_hearing;
-                    
+
                 @endphp
                 @can('verify_case_information_menu')
                     <li class="menu-item {{ request()->is('search/supremecourt/case', 'search/supremecourt/causelist', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}"

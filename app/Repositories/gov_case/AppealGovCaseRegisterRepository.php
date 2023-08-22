@@ -2,13 +2,13 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Attachment;
-use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AppealGovCaseRegisterRepository
 {
@@ -42,6 +42,38 @@ class AppealGovCaseRegisterRepository
 
         return $data;
     }
+
+    public static function AppealCaseAllDetails($caseId)
+    {
+        $case = AppealGovCaseRegister::findOrFail($caseId);
+        // $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        // $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
+        // $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        // $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
+        // $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
+        $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
+        $files = Attachment::where('gov_case_id', $caseId)->get();
+        $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
+        $concernPersonName = User::where('id', $case->concern_user_id)->first();
+
+        $data = [
+            'case' => $case,
+            // 'caseBadi' => $caseBadi,
+            // 'caseMainBibadi' => $caseMainBibadi,
+            // 'caseBibadi' => $caseBibadi,
+            // 'mainBibadi' => $mainBibadi,
+            // 'otherBibadi' => $otherBibadi,
+            // 'caseLogs' => $caseLog,
+            // 'hearings' => $hearings,
+            'files' => $files,
+            'concernpersondesig' => $concernpersondesig,
+            'concernPersonName' => $concernPersonName,
+        ];
+
+        return $data;
+    }
+
     public static function storeAppeal($caseInfo)
     {
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
@@ -61,12 +93,13 @@ class AppealGovCaseRegisterRepository
             $case->postponed_details = $caseInfo->postponed_details;
             $case->case_category_origin = $caseInfo->case_category_origin;
             $case->case_number_origin = $caseInfo->case_number_origin;
+            $case->is_appeal = 1;
 
             if ($case->save()) {
                 $caseId = $case->id;
-                // if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
-                //     self::prevCaseStatusUpdate($caseInfo->appeal_case_id);
-                // }
+                if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {
+                    self::prevCaseStatusUpdate($caseInfo->case_number_origin);
+                }
             }
         } catch (\Exception $e) {
             dd($e);
@@ -75,10 +108,10 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
-     //store appeal final order
+    //store appeal final order
 
-     public static function storeAppealFinalOrder($caseInfo)
-     {
+    public static function storeAppealFinalOrder($caseInfo)
+    {
         // dd($caseInfo['case_id']);
         $case = self::checkAppealGovCaseExist($caseInfo['case_id']);
 
@@ -118,19 +151,18 @@ class AppealGovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
-
         try {
-            $case->is_final_order = $caseInfo->is_final_order;
-            $case->result = $caseInfo->result;
-            $case->in_favour_govt = $in_favour_govt;
-            $case->result_short_details = $caseInfo->result_short_details;
-            $case->is_appeal = $caseInfo->is_appeal;
+            $case->is_final_order = $caseInfo->is_final_order ?? '';
+            $case->result = $caseInfo->result ?? '';
+            $case->in_favour_govt = $in_favour_govt ?? '';
+            $case->result_short_details = $caseInfo->result_short_details ?? '';
+            // $case->is_appeal = $caseInfo->is_appeal;
             $case->result_date = $result_date;
-            $case->result_copy_asking_date = $result_copy_asking_date;
-            $case->result_copy_receiving_date = $result_copy_receiving_date;
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial;
-            $case->appeal_requesting_date = $appeal_requesting_date;
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing;
+            $case->result_copy_asking_date = $result_copy_asking_date ?? '';
+            $case->result_copy_receiving_date = $result_copy_receiving_date ?? '';
+            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
+            $case->appeal_requesting_date = $appeal_requesting_date ?? '';
+            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -142,14 +174,94 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
+    public static function storeCompleteAppeal($caseInfo)
+    {
+        $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
 
-    public function prevCaseStatusUpdate($prevCaseId)
+        if ($caseInfo->result_date != null && $caseInfo->result_date != '') {
+            $result_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->result_date)));
+        } else {
+            $result_date = null;
+        }
+        if ($caseInfo->result_copy_asking_date != null && $caseInfo->result_copy_asking_date != '') {
+            $result_copy_asking_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->result_copy_asking_date)));
+        } else {
+            $result_copy_asking_date = null;
+        }
+        if ($caseInfo->result_copy_receiving_date != null && $caseInfo->result_copy_receiving_date != '') {
+            $result_copy_receiving_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->result_copy_receiving_date)));
+        } else {
+            $result_copy_receiving_date = null;
+        }
+        if ($caseInfo->appeal_requesting_date != null && $caseInfo->appeal_requesting_date != '') {
+            $appeal_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_requesting_date)));
+        } else {
+            $appeal_requesting_date = null;
+        }
+        if ($caseInfo->proposal_date_civil_revision != null && $caseInfo->proposal_date_civil_revision != '') {
+            $proposal_date_civil_revision = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->proposal_date_civil_revision)));
+        } else {
+            $proposal_date_civil_revision = null;
+        }
+        if ($caseInfo->proposal_date_writ != null && $caseInfo->proposal_date_writ != '') {
+            $proposal_date_writ = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->proposal_date_writ)));
+        } else {
+            $proposal_date_writ = null;
+        }
+        if ($caseInfo->result == 1) {
+            $in_favour_govt = 1;
+        } else {
+            $in_favour_govt = 0;
+        }
+
+        try {
+            $case->case_no = $caseInfo->case_no;
+            $case->case_category_id = $caseInfo->case_category;
+            $case->case_type_id = $caseInfo->case_category_type;
+            // $case->action_user_id = userInfo()->id;
+            // $case->action_user_role_id = userInfo()->role_id;
+            // $case->create_by = userInfo()->id;
+            $case->year = $caseInfo->case_year;
+            $case->appeal_office_id = $caseInfo->appeal_office;
+            $case->concern_new_appeal_person_designation = $caseInfo->concern_new_appeal_person_designation;
+            $case->concern_user_id = $caseInfo->concern_user_id;
+            $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date))) ?? '';
+            $case->postponed_details = $caseInfo->postponed_details ?? '';
+            $case->case_category_origin = $caseInfo->case_category_origin;
+            $case->case_number_origin = $caseInfo->case_number_origin;
+            // $case->is_appeal = 1;
+            $case->is_final_order = $caseInfo->is_final_order ?? '';
+            $case->result = $caseInfo->result ?? '';
+            $case->in_favour_govt = $in_favour_govt;
+            $case->result_short_details = $caseInfo->result_short_details ?? '';
+            // $case->is_appeal = $caseInfo->is_appeal;
+            $case->result_date = $result_date;
+            $case->result_copy_asking_date = $result_copy_asking_date;
+            $case->result_copy_receiving_date = $result_copy_receiving_date;
+            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
+            $case->appeal_requesting_date = $appeal_requesting_date;
+            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
+
+            if ($case->save()) {
+                $caseId = $case->id;
+                if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {
+                    self::prevCaseStatusUpdate($caseInfo->case_number_origin);
+                }
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
+    public function prevCaseStatusUpdate($prevCaseNumber)
     {
         $data = [
             'is_appeal' => 1,
         ];
-        $updatedVal = DB::table('appeal_gov_case_register')
-            ->where('id', $prevCaseId)
+        $updatedVal = DB::table('gov_case_registers')
+            ->where('case_no', $prevCaseNumber)
             ->update($data);
         return $updatedVal;
     }
@@ -403,8 +515,6 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
-
-
     public static function storeContemptCase($caseInfo)
     {
         // dd($caseInfo['case_id']);
@@ -486,8 +596,6 @@ class AppealGovCaseRegisterRepository
         } else {
             $leave_to_appeal_order_date = null;
         }
-
-
 
         try {
             $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;

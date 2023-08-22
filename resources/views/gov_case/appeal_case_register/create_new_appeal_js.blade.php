@@ -584,7 +584,6 @@
 
                         $("#final_order").click();
                         $("#caseIDForFinalOrder").val(data.caseId);
-
                         $('#finalOrderSaveBtn').prop('disabled', false);
                         $('#finalOrderSaveBtn').removeClass("disable-button");
                     },
@@ -875,3 +874,8 @@
         $(id).closest("tr").remove();
     }
 </script>
+
+
+   {{-- Complete Appeal Case Entry --}}
+
+ 

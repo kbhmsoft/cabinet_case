@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Court;
-use App\Models\Office;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\gov_case\GovCaseLog;
 use App\Http\Controllers\Controller;
+use App\Models\Attachment;
+use App\Models\Court;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Models\gov_case\GovCaseLog;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\Office;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterController extends Controller
 {
@@ -102,7 +102,7 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2);
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
@@ -162,6 +162,280 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
+    public function appealAgainstGovt()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $query = GovCaseRegister::where('deleted_at', '=', null)
+            ->where('in_favour_govt', 2)->where('is_appeal', 0);
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'সরকারের বিপক্ষে আপিলের জন্য
+        পেন্ডিং মামলার তালিকা';
+
+        return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+    public function againstPostponedOrder()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $query = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order');
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'স্থগিতাদেশ অন্তর্বর্তীকালীন
+        পেন্ডিং মামলার তালিকা';
+
+        return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+    public function sentToSolicitor()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $query = GovCaseRegister::where('deleted_at', '=', null)->whereNull('result_sending_date');
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'জবাব পেন্ডিং মামলার তালিকা';
+
+        // return $data;
+
+        return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+    public function fiveYearsRunningHighCourt()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('deleted_at', '=', null)
+            ->where('is_final_order', 0)
+            ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString());
+        // $data['five_years_running_highcourt_case'] = GovCaseRegister::where('deleted_at', '=', null)->where('is_final_order', 0)
+        // ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+        // ->orderBy('id', 'DESC')
+        // ->count();
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'হাইকোর্ট বিভাগে ৫ বছরের অধিককাল চলমান মামলার তালিকা';
+
+        return view('gov_case.case_register.highcourt')->with($data);
+    }
+
     public function high_court_running_case()
     {
         session()->forget('currentUrlPath');
@@ -170,7 +444,8 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('is_final_order', 0);
+        $query = GovCaseRegister::orderby('id', 'DESC')
+            ->where('is_final_order', 0)->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
@@ -235,7 +510,8 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('is_final_order', 1);
+        $query = GovCaseRegister::orderby('id', 'DESC')
+            ->where('is_final_order', 1)->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
@@ -293,200 +569,74 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
-    public function appellate_division_running_case()
-    {
+//     public function appellate_division_complete_case()
+//     {
 
-        session()->forget('currentUrlPath');
+//         session()->forget('currentUrlPath');
 
-        $officeInfo = user_office_info();
-        $roleID = userInfo()->role_id;
-        $officeID = userInfo()->office_id;
+//         $officeInfo = user_office_info();
+//         $roleID = userInfo()->role_id;
+//         $officeID = userInfo()->office_id;
 
-        $query = GovCaseRegister::with('mainBibadis')->orderby('id', 'DESC')->where('case_division_id', 1)->where('is_final_order', 0);
+//         $query = GovCaseRegister::with('mainBibadis')->orderby('id', 'DESC')->where('case_division_id', 1)->where('is_final_order', 1);
 
-        if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
+//         if ($roleID == 32 || $roleID == 33) {
+//             $query->whereHas('bibadis',
+//                 function ($query) use ($officeID) {
+//                     $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+//                 }
+//             );
+//         }
 
-        if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
+//         if ($roleID == 29 || $roleID == 31) {
+//             $query->whereHas('bibadis',
+//                 function ($query) use ($officeID) {
+//                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
+//                 }
+//             );
+//         }
 
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
-        }
+//         if (!empty($_GET['case_category_id'])) {
+//             $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+//         }
 
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
-        }
+//         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+//             // dd(1);
+//             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+//             $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+//             $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
+//         }
 
-        if (!empty($_GET['case_no'])) {
-            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
-        }
-        if (!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
-        }
-        if ($roleID == 5 || $roleID == 7) {
-            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
-        $data['cases'] = $query->paginate(10);
-        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+//         if (!empty($_GET['case_no'])) {
+//             $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+//         }
+//         if (!empty($_GET['division'])) {
+//             $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+//         }
+//         if (!empty($_GET['district'])) {
+//             $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+//         }
+//         if (!empty($_GET['upazila'])) {
+//             $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+//         }
+//         if ($roleID == 5 || $roleID == 7) {
+//             $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+//         } elseif ($roleID == 9 || $roleID == 21) {
+//             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+//         }
+//         $data['cases'] = $query->paginate(10);
+//         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+//         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
+//         ->where('gov_case_division_id', 2)->get();
+// // return $data['division_categories'];
+//         // $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
 
-        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
-        return view('gov_case.case_register.appealcourt')->with($data);
-    }
+//         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-    public function appellate_division_complete_case()
-    {
-
-        session()->forget('currentUrlPath');
-
-        $officeInfo = user_office_info();
-        $roleID = userInfo()->role_id;
-        $officeID = userInfo()->office_id;
-
-        $query = GovCaseRegister::with('mainBibadis')->orderby('id', 'DESC')->where('case_division_id', 1)->where('is_final_order', 1);
-
-        if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
-
-        if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
-
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
-        }
-
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
-        }
-
-        if (!empty($_GET['case_no'])) {
-            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
-        }
-        if (!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
-        }
-        if ($roleID == 5 || $roleID == 7) {
-            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
-        $data['cases'] = $query->paginate(10);
-        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
-
-        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
-        return view('gov_case.case_register.appealcourt')->with($data);
-    }
-
-    public function appellate_division_case()
-    {
-
-        session()->forget('currentUrlPath');
-
-        $officeInfo = user_office_info();
-        $roleID = userInfo()->role_id;
-        $officeID = userInfo()->office_id;
-
-        $query = GovCaseRegister::with('mainBibadis')->orderby('id', 'DESC')->where('case_division_id', 1);
-
-        if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
-
-        if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
-
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
-        }
-
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
-        }
-
-        if (!empty($_GET['case_no'])) {
-            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
-        }
-        if (!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
-        }
-        if ($roleID == 5 || $roleID == 7) {
-            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
-        $data['cases'] = $query->paginate(10);
-        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
-        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
-
-        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
-        return view('gov_case.case_register.appealcourt')->with($data);
-    }
+//         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+//         // return $data;
+//         return view('gov_case.case_register.appealcourt')->with($data);
+//     }
 
     //============Running Case list============//
     public function running_case()
@@ -780,20 +930,42 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $query = GovCaseRegister::orderby('id', 'DESC')->where('status', 3)->where('gov_case_registers.in_favour_govt', 0);
+        $childOfficeIds = [];
+
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        // return $finalOfficeIds;
+
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('in_favour_govt', 2)->where('is_appeal', 0);
+
+        // $query = GovCaseRegister::orderby('id', 'DESC')->where('status', 3)->where('gov_case_registers.in_favour_govt', 0);
 
         if ($roleID == 32 || $roleID == 33) {
             $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds)->where('is_main_bibadi', 1);
                 }
             );
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
+            $query->whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
                 }
             );
         }
@@ -931,7 +1103,6 @@ class GovCaseRegisterController extends Controller
             ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
             ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
             ->where('gov_case_office.parent', $id);
-
 
         $data['ministry_wise'] = $query->groupBy('gov_case_office.id')
             ->groupBy('gcb.respondent_id')
@@ -1134,7 +1305,6 @@ class GovCaseRegisterController extends Controller
         $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
-
         $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
         // return $data;
         return view('gov_case.appeal_case_register.create_old_appeal_case')->with($data);
@@ -1210,7 +1380,6 @@ class GovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
-
     // public function appealStore(Request $request)
     // {
     //     $caseId = $request->caseId;
@@ -1272,8 +1441,6 @@ class GovCaseRegisterController extends Controller
 
     //     // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     // }
-
-
 
     public function storeGeneralInfo(Request $request)
     {
@@ -1372,7 +1539,6 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.sending_reply_edit')->with($data);
     }
 
-
     public function sendingReplyStore(Request $request)
     {
         // dd($request);
@@ -1455,13 +1621,12 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.suspension_order_edit')->with($data);
     }
 
-
     public function suspensionOrderStore(Request $request)
     {
         // dd($_FILES["file_name"]['name']);
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
+            'case_id' => 'required',
         ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
@@ -1508,7 +1673,7 @@ class GovCaseRegisterController extends Controller
         // dd($request);
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
+            'case_id' => 'required',
         ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
@@ -1555,7 +1720,7 @@ class GovCaseRegisterController extends Controller
         // dd($request);
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
+            'case_id' => 'required',
         ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
@@ -1630,7 +1795,20 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
+    public function highcourt_case_delete($id)
+    {
 
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $data = GovCaseRegister::findOrFail($id);
+        $data->delete();
+
+        // $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('deleted_at', '=', null);
+        return redirect()->back()->with('message', 'IT WORKS!');
+
+    }
 
     public function highcourt_old_case_create()
     {
@@ -1670,7 +1848,6 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.create_old_highcourt_case')->with($data);
     }
 
-
     public function leaveToAppealCreate($id)
     {
         $roleID = userInfo()->role_id;
@@ -1685,15 +1862,13 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.leave_to_appeal_create')->with($data);
     }
 
-
-
     public function leaveToAppealStore(Request $request)
     {
         // return $request;
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
-            'leave_to_appeal_no' => 'required' ,
+            'case_id' => 'required',
+            'leave_to_appeal_no' => 'required',
         ],
             [
                 'leave_to_appeal_no' => 'লিভ টু আপিল নম্বর পূরণ করুণ',
@@ -1749,15 +1924,13 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.leave_to_appeal_answer_create')->with($data);
     }
 
-
-
     public function leaveToAppealAnswerStore(Request $request)
     {
         // dd($request);
         $caseId = $request->case_id;
         $request->validate([
-            'case_id' => 'required' ,
-            'leave_to_appeal_order_date' => 'required' ,
+            'case_id' => 'required',
+            'leave_to_appeal_order_date' => 'required',
         ],
             [
                 'leave_to_appeal_order_date' => 'লিভ টু আপিলের রায় প্রদানের তারিখ পূরণ করুণ',
@@ -1875,7 +2048,7 @@ class GovCaseRegisterController extends Controller
         //     ->where('case_category_id', $id)
         //     ->where('is_final_order', 1)
         //     ->pluck("case_no", "id");
-         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         // $data = GovCaseRegister::where('id', $id)->first();
         return json_encode($data);
@@ -1884,11 +2057,11 @@ class GovCaseRegisterController extends Controller
     public function getHighCourtCaseDetails($id)
     {
 
-         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         // return $data;
         // $data = GovCaseRegister::where('id', $id)->first();
-        return view('gov_case.appeal_case_register._inc.get_highcourt_case_for_appeal',$data);
+        return view('gov_case.appeal_case_register._inc.get_highcourt_case_for_appeal', $data);
     }
     public function register($id)
     {

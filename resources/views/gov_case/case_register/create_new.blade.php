@@ -67,10 +67,7 @@
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
-
-
                         {{-- start মামলার সাধারণ তথ্য --}}
-
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
                             aria-labelledby="home-tab">
                             <form id="caseGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"

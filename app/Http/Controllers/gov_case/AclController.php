@@ -179,6 +179,7 @@ class AclController extends Controller
     public function userPermissionManage(Request $request, $user_id){
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা করুন';
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
+        // return $parentPermissions;
         $rolePermissions = RolePermission::where('user_id', $user_id)->get();
 
         return view('gov_case.user_permissions.manage_permissions', compact('user_id', 'parentPermissions', 'rolePermissions'))->with($data);

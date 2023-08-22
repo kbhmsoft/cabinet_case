@@ -35,6 +35,7 @@ class CreateGovCaseRegisterTable extends Migration
             $table->integer('concern_user_id')->nullable();
             $table->text('subject_matter')->nullable();
             $table->text('postponed_details')->nullable();
+            $table->softDeletes();
         });
     }
 

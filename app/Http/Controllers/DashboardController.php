@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 // use Auth;
 use App\Models\Dashboard;
-
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Resources\calendar\CaseHearingCollection;
-use App\Http\Resources\calendar\RM_CaseHearingCollection;
-use App\Models\gov_case\GovCaseNotice;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\RoleHasPermission;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 // use App\Http\Controllers\CommonController;
@@ -22,81 +18,77 @@ use App\Repositories\gov_case\GovCaseRegisterRepository;
 class DashboardController extends Controller
 {
 
-   // use AuthenticatesUsers;
-   /**
+    // use AuthenticatesUsers;
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-   public function index()
-   {
-     session()->forget('currentUrlPath');
+    public function index()
+    {
+        session()->forget('currentUrlPath');
 
-      $officeInfo = user_office_info();
-      $user = Auth::user();
-      // dd($user);
-      $roleID = Auth::user()->role_id;
-      $officeID = Auth::user()->office_id;
+        $officeInfo = user_office_info();
+        $user = Auth::user();
+        // dd($user);
+        $roleID = Auth::user()->role_id;
+        $officeID = Auth::user()->office_id;
+        //   return $officeID;
+        $data = [];
+        $data['rm_case_status'] = [];
 
-      $data = [];
-      $data['rm_case_status'] = [];
+        if ($roleID == 1) {
+            // Superadmin dashboard
 
+            // Counter
+            $data['total_case'] = GovCaseRegister::count();
+            $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+            $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+            $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+            $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
+            // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+            $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
+            // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+            $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', 1)->count();
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+            $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
 
-      if($roleID == 1){
-         // Superadmin dashboard
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
+            $data['total_user'] = DB::table('users')->count();
+            $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            $data['total_mouja'] = DB::table('mouja')->count();
+            $data['total_ct'] = DB::table('case_type')->count();
 
-         // Counter
-         $data['total_case'] = GovCaseRegister::count();
-         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-         $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
-         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
-         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status',1)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
+            // count ministry wise case status
+            /*$ministry_wise = DB::table('office')
+            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+            \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+            \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+            )
+            ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
+            ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+            ->where('office.level', 9)
+            ->groupBy('office.id')
+            ->groupBy('gcb.respondent_id')
+            ->orderBy('office.id', 'asc')
+            ->paginate(10);
 
-         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
-         $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
+            $data['ministry_wise'] = $ministry_wise;
 
+            // Drildown Statistics
+            $ministry_list = DB::table('office')
+            ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
+            ->where('office.level', 9)
+            ->get();
 
-         // count ministry wise case status
-         /*$ministry_wise = DB::table('office')
-                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
-                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-                              )
-                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
-                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                              ->where('office.level', 9)
-                              ->groupBy('office.id')
-                              ->groupBy('gcb.respondent_id')
-                              ->orderBy('office.id', 'asc')
-                              ->paginate(10);
+            $ministrydata=array();
+            $departmentdata=array();
 
-         $data['ministry_wise'] = $ministry_wise;
-
-
-         // Drildown Statistics
-         $ministry_list = DB::table('office')
-         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-         ->where('office.level', 9)
-         ->get();
-
-         $ministrydata=array();
-         $departmentdata=array();
-
-
-         // Ministry List
-         foreach ($ministry_list as $ministry) {
+            // Ministry List
+            foreach ($ministry_list as $ministry) {
             // Ministry Data
             $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
 
@@ -104,7 +96,7 @@ class DashboardController extends Controller
             $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
             foreach ($department_list as $department) {
 
-               $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
+            $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
             }
 
             $deptdata = $dept_data[$ministry->id];
@@ -112,1063 +104,1289 @@ class DashboardController extends Controller
 
             $data['department_data'] = array_merge( $departmentdata);
 
-         }*/
+            }*/
 
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            // return $data;
+            // View
 
-         // return $data;
-         // View
+            // View
+            $data['page_title'] = 'সুপার অ্যাডমিন ড্যাশবোর্ড';
+            return view('dashboard.cabinet.super_admin')->with($data);
+            // return view('dashboard.superadmin')->with($data);
 
+        } elseif ($roleID == 27) {
 
-
-         // View
-         $data['page_title'] = 'সুপার অ্যাডমিন ড্যাশবোর্ড';
-         return view('dashboard.cabinet.super_admin')->with($data);
-         // return view('dashboard.superadmin')->with($data);
-
-      }elseif($roleID == 27){
-         // Superadmin dashboard
-
-         // Counter
-         $data['total_case'] = GovCaseRegister::count();
-         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-
-         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1])->count();
-         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
-         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', 1)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
-
-
-         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
-         $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-         $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
-
-        /* // count ministry wise case status
-         $ministry_wise = DB::table('office')
-                           ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
-                              \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
-                              \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
-                              \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
-                              \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-                           )
-                           ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
-                           ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                           ->where('office.level', 9)
-                           ->groupBy('office.id')
-                           ->groupBy('gcb.respondent_id')
-                           ->orderBy('office.id', 'asc')
-                           ->paginate(10);
-
-         $data['ministry_wise'] = $ministry_wise;
-         // Drildown Statistics
-         $ministry_list = DB::table('office')
-         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-         ->where('office.level', 9)
-         ->get();
-
-         $ministrydata=array();
-         $departmentdata=array();
-
-
-         // Ministry List
-         foreach ($ministry_list as $ministry) {
-            // Ministry Data
-            $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
-
-            // Department List
-            $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
-            foreach ($department_list as $department) {
-
-               $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
-            }
-
-            $deptdata = $dept_data[$ministry->id];
-            $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
-
-            $data['department_data'] = array_merge( $departmentdata);
-
-         }*/
-
-
-
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
-         // return $data;
-
-         // View
-         $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
-         return view('dashboard.cabinet.cabinet_admin')->with($data);
-
-      }elseif($roleID == 28){
-         // Superadmin dashboard
-
-         // Counter
-         $data['total_case'] = GovCaseRegister::count();
-         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-         $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
-         // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
-         // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status',1)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->whereNotIn('id', [1,2,7])->count();
-         $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-
-         // count ministry wise case status
-         /*$ministry_wise = DB::table('office')
-                              ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
-                                 \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
-                                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-                              )
-                              ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
-                              ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                              ->where('office.level', 9)
-                              ->groupBy('office.id')
-                              ->groupBy('gcb.respondent_id')
-                              ->orderBy('office.id', 'asc')
-                              ->paginate(10);
-
-         $data['ministry_wise'] = $ministry_wise;
-
-
-         // Drildown Statistics
-         $ministry_list = DB::table('office')
-         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-         ->where('office.level', 9)
-         ->get();
-
-         $ministrydata=array();
-         $departmentdata=array();
-
-
-         // Ministry List
-         foreach ($ministry_list as $ministry) {
-            // Ministry Data
-            $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
-
-            // Department List
-            $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
-            foreach ($department_list as $department) {
-
-               $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
-            }
-
-            $deptdata = $dept_data[$ministry->id];
-            $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
-
-            $data['department_data'] = array_merge( $departmentdata);
-
-         }*/
-
-
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
-         // return $data;
-         // View
-         $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের সহকারীর ড্যাশবোর্ড';
-         return view('dashboard.cabinet.cabinet_admin')->with($data);
-
-      }elseif($roleID == 14){
-         // Solicitor
-         // Get case status by group
-         // Counter
-         $data['total_case'] = GovCaseRegister::count();
-         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-
-         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
-
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
-
-         $data['case_status'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-         ->groupBy('gov_case_registers.cs_id')
-         ->where('gov_case_registers.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
-
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-
-         // dd($data['gov_case_status']);
-         $data['page_title'] = 'আইনজীবীর ড্যাশবোর্ড';
-         return view('dashboard.cabinet.solicitor')->with($data);
-      }elseif($roleID == 29){
-         // Ministry dashboard
-
-         // Counter
-         $data['total_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->count();
-
-         $data['running_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 1)->count();
-
-         $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 2)->count();
-
-         $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 3)->count();
-
-         $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->whereIn('status', [1,2])->count();
-
-         $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
-
-         $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
-
-         $data['not_against_gov'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('in_favour_govt', 1)->count();
-
-         $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('in_favour_govt', 0)->count();
-
-
-         $data['total_office'] = DB::table('office')->whereIn('level', [10,11,12])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-
-         $data['notice'] = GovCaseNotice::where('notice_for',$roleID)->where('expiry_date','>=', date(now()))->get();
-
-         // count ministry wise case status
-         $ministry = DB::table('gov_case_office')
+            $ministry = DB::table('gov_case_office')
                 ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
-                    \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
-                    \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
-                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
-                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-                )
-                ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.department_id')
-                ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                ->where('gov_case_office.parent', $officeID);
-
-        $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
-                                        ->groupBy('gcb.department_id')
-                                        ->orderBy('gov_case_office.id', 'asc')
-                                        ->paginate(10);
-
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
-
-
-
-          // Drildown Statistics
-         $department_list = DB::table('office')
-         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-         ->where('office.parent', $officeID)
-         ->get();
-
-         $ministrydata=array();
-         $departmentdata=array();
-
-
-         // Ministry List
-
-         foreach ($department_list as $department) {
-            // Department List
-            $data['departmentdata'][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);;
-
-
-            $data['department_data'] = array_merge( $departmentdata);
-
-         }
-
-
-
-
-
-
-
-         // View
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
-         $data['page_title'] = 'মিনিস্ট্রি এডমিনের ড্যাশবোর্ড';
-         // return $data;
-         return view('dashboard.cabinet.min_admin')->with($data);
-
-      }elseif($roleID == 30){
-         // Superadmin dashboard
-
-         // Counter
-         $data['total_case'] = DB::table('gov_case_registers')->count();
-         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
-
-         $data['total_office'] = DB::table('office')->whereIn('id', [10,12,11])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
-
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
-
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
-
-         // Division List
-         foreach ($division_list as $division) {
-            // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
-            // Division Data
-            $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
-
-            // District List
-            $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
-            foreach ($district_list as $district) {
-               // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
-               // $number2 = (int) $dis_count['count']; //exit;
-
-               $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
-
-               // Upazila Data
-               // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
-               $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
-               foreach ($upazila_list as $upazila) {
-                  // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
-                  // $number3 = (int) $upa_count['count']; //exit;
-
-                  $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
-               }
-
-               $upadata = $upa_data[$district->id];
-               $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
-            }
-
-            $disdata = $dis_data[$division->id];
-            $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
-
-            $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
-
-         }
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
-
-
-
-
-
-
-         // View
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
-         $data['page_title'] = 'মন্ত্রণালয়ের সচিবের সহকারীর ড্যাশবোর্ড';
-         return view('dashboard.cabinet.admin')->with($data);
-
-      }elseif($roleID == 31){
-         // Asst. Ministry dashboard
-
-         // Counter
-         $data['total_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->count();
-
-         $data['running_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 1)->count();
-
-         $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 2)->count();
-
-         $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('status', 3)->count();
-
-         $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->whereIn('status', [1,2])->count();
-
-         $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
-
-         $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
-
-         $data['not_against_gov'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('in_favour_govt', 1)->count();
-
-         $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('respondent_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('in_favour_govt', 0)->count();
-
-
-         $data['total_office'] = DB::table('office')->whereIn('id', [10,12,11])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
-
-
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
-
-         // count ministry wise case status
-         $ministry = DB::table('gov_case_office')
-                ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
-                    \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
-                    \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
-                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
-                    \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+                    DB::raw('SUM(CASE WHEN gcb.is_main_bibadi = "1" AND gcr.is_final_order = "0" THEN 1 ELSE 0 END) AS highcourt_running_case'),
+                    DB::raw('SUM(CASE WHEN agcr.is_final_order = "0" THEN 1 ELSE 0 END) AS appeal_running_case'),
+                    DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" AND gcr.is_appeal = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+                    DB::raw('SUM(CASE WHEN gcr.result_sending_date IS NULL AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS result_sending_count'),
+                    DB::raw('SUM(CASE WHEN gcr.appeal_against_postpond_interim_order IS NULL AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_postponed_count'),
                 )
                 ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
                 ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-                ->where('gov_case_office.parent', $officeID);
+                ->leftJoin('appeal_gov_case_register as agcr', 'gov_case_office.id', '=', 'agcr.appeal_office_id')
+                ->whereIn('gov_case_office.level', [1, 3]);
 
-         $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
-                                        ->groupBy('gcb.respondent_id')
-                                        ->orderBy('gov_case_office.id', 'asc')
-                                        ->paginate(10);
+            $data['ministry'] = $ministry->groupBy('gov_case_office.id')
+                ->paginate(10);
 
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
+            $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
+                ->where('is_final_order', 0)->count();
 
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
-          // Drildown Statistics
-         $department_list = DB::table('office')
-         ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-         ->where('office.parent', $officeID)
-         ->get();
+            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->
+                where('deleted_at', '=', null)->count();
 
-         $ministrydata=array();
-         $departmentdata=array();
+            $data['total_appeal_case'] = AppealGovCaseRegister::count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
 
+            $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('in_favour_govt', 2)
+                ->where('is_appeal', 0)->count();
 
-         // Ministry List
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
 
-         foreach ($department_list as $department) {
+            $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('result_sending_date')->count();
+
+            $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
+
+            $data['five_years_running_highcourt_case'] = GovCaseRegister::where('deleted_at', '=', null)->where('is_final_order', 0)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
+                where('is_final_order', null)
+                ->where('deleted_at', '=', null)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
+
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
+            $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
+            $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->where('level', 2)->count();
+
+            $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
+
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+            // return $data;
+
+            // View
+            $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
+            return view('dashboard.cabinet.cabinet_admin')->with($data);
+
+        } elseif ($roleID == 28) {
+            // Superadmin dashboard
+
+            // Counter
+            $data['total_case'] = GovCaseRegister::count();
+            $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+            $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+            $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+            $data['running_case_appeal'] = GovCaseRegister::where('status', 1)->count();
+            // $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
+            $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', 1)->count();
+            // $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
+            $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', 1)->count();
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+            $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
+
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
+            $data['total_user'] = DB::table('users')->count();
+            $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            $data['total_mouja'] = DB::table('mouja')->count();
+            $data['total_ct'] = DB::table('case_type')->count();
+
+            // count ministry wise case status
+            /*$ministry_wise = DB::table('office')
+            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+            \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
+            \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
+            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
+            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+            )
+            ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
+            ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+            ->where('office.level', 9)
+            ->groupBy('office.id')
+            ->groupBy('gcb.respondent_id')
+            ->orderBy('office.id', 'asc')
+            ->paginate(10);
+
+            $data['ministry_wise'] = $ministry_wise;
+
+            // Drildown Statistics
+            $ministry_list = DB::table('office')
+            ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
+            ->where('office.level', 9)
+            ->get();
+
+            $ministrydata=array();
+            $departmentdata=array();
+
+            // Ministry List
+            foreach ($ministry_list as $ministry) {
+            // Ministry Data
+            $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
+
             // Department List
-            $data['departmentdata'][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);;
+            $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
+            foreach ($department_list as $department) {
 
+            $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
+            }
+
+            $deptdata = $dept_data[$ministry->id];
+            $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
 
             $data['department_data'] = array_merge( $departmentdata);
 
-         }
+            }*/
 
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
+            // return $data;
+            // View
+            $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের সহকারীর ড্যাশবোর্ড';
+            return view('dashboard.cabinet.cabinet_admin')->with($data);
 
+        } elseif ($roleID == 14) {
 
+            $data['total_appeal'] = AppealGovCaseRegister::count();
+            $data['total_highcourt'] = GovCaseRegister::count();
+            $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
 
+            $data['total_high_court_case'] = GovCaseRegister::count();
+            $data['running_high_court_case'] = GovCaseRegister::where('is_final_order', 0)->count();
+            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->count();
 
+            $data['total_appeal_case'] = AppealGovCaseRegister::count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)->count();
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
 
+            $data['against_high_court_case_appeal_pending'] = GovCaseRegister::where('in_favour_govt', 2)->where('is_appeal', 0)->count();
+            $data['case_status'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+                ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+                ->groupBy('gov_case_registers.cs_id')
+                ->where('gov_case_registers.action_user_group_id', $roleID)
+                ->get();
+            // dd($data['case_status']);
 
-         // View
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
 
-         $data['page_title'] = 'মিনিস্ট্রি এডমিনের সহকারীর ড্যাশবোর্ড';
-         return view('dashboard.cabinet.min_admin')->with($data);
+            // dd($data['gov_case_status']);
+            $data['page_title'] = 'আইনজীবীর ড্যাশবোর্ড';
+            return view('dashboard.cabinet.solicitor')->with($data);
 
-      }elseif($roleID == 32){
-         // Department/Odhidhoptor dashboard
-          // Counter
-         $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->count();
-         $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 3)->count();
+        } elseif ($roleID == 29) {
 
-         $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->whereIn('status', [1,2])->count();
+            $childOfficeIds = [];
 
-         $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
+            $childOfficeQuery = DB::table('gov_case_office')
+                ->select('id')
+                ->where('parent', $officeID)->get();
 
-         $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
+            foreach ($childOfficeQuery as $childOffice) {
+                $childOfficeIds[] = $childOffice->id;
+            }
 
-         $data['not_against_gov'] = GovCaseRegister::whereHas('bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
+            $finalOfficeIds = [];
+
+            if (empty($childOfficeIds)) {
+                $finalOfficeIds[] = $officeID;
+            } else {
+                $finalOfficeIds[] = $officeID;
+                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            }
+
+            $data['total_highcourt'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->count();
+
+            $data['total_appeal'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)->count();
+
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
+
+            $data['running_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->where('respondent_id', $finalOfficeIds)->where('is_main_bibadi', 1);
+                }
+            )->where('status', 1)->count();
+
+            $data['total_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->count();
+
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', 0)->count();
+
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', 1)->count();
+
+            $data['total_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->count();
+
+            $data['running_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('is_final_order', 0)->count();
+
+            $data['final_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('is_final_order', 1)->count();
+
+            $data['against_high_court_case_appeal_pending'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('in_favour_govt', 2)->where('is_appeal', 0)->count();
+
+            $data['not_against_gov'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
             )->where('in_favour_govt', 1)->count();
 
-         $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('in_favour_govt', 0)->count();
+            $data['total_office_list'] = GovCaseOffice::select('gov_case_office.id', 'gov_case_office.office_name_bn')
+                ->whereIn('id', $finalOfficeIds)
+                ->get();
 
-         $data['total_office'] = DB::table('office')->whereIn('id', [11,12])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
+            $data['sent_to_solicitor_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->whereNull('result_sending_date')->count();
 
+            $data['against_postpond_order'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->whereNull('appeal_against_postpond_interim_order')->count();
 
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
+            $data['five_years_running_highcourt_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )
+                ->where('is_final_order', 0)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
 
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', null)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
 
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
+            // $data = LcsCase::where('status', 0)
+            // ->whereDate('updated_at', '<=', date('Y-m-d H:i:s', strtotime('-3 days')))
+            // ->with(['citizen:id,name,phone,profile_image', 'consultant:id,name,phone,profile_image', 'service:id,title'])
+            // ->orderBy('id', 'DESC')
+            // ->get();
 
-         // Division List
-         foreach ($division_list as $division) {
-            // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
-            // Division Data
-            $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
+            // $data['total_office'] = DB::table('office')->whereIn('level', [10, 11, 12])->count();
+            // $data['total_user'] = DB::table('users')->count();
+            // $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            // $data['total_mouja'] = DB::table('mouja')->count();
+            // $data['total_ct'] = DB::table('case_type')->count();
+            // $data['notice'] = GovCaseNotice::where('notice_for', $roleID)->where('expiry_date', '>=', date(now()))->get();
 
-            // District List
-            $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
-            foreach ($district_list as $district) {
-               // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
-               // $number2 = (int) $dis_count['count']; //exit;
+            // $ministry = DB::table('gov_case_office')
+            //     ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+            //         DB::raw('SUM(CASE WHEN gcr.is_final_order = "0" THEN 1 ELSE 0 END) AS running_case'),
+            //         DB::raw('SUM(CASE WHEN gcr.is_final_order = "1" THEN 1 ELSE 0 END) AS completed_case'),
+            //         DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" THEN 1
+            //         WHEN gcr.is_final_order = "0" THEN 1
+            //         ELSE 0 END) AS against_gov'),
+            //         DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+            //     )
+            //     ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.department_id')
+            //     ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+            //     ->whereIn('gov_case_office.parent', $officeId);
 
-               $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
+            // // where('in_favour_govt', 2)->where('is_appeal', 0)
+            // $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
+            //     ->orderBy('gov_case_office.id', 'asc')
+            //     ->paginate(10);
 
-               // Upazila Data
-               // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
-               $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
-               foreach ($upazila_list as $upazila) {
-                  // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
-                  // $number3 = (int) $upa_count['count']; //exit;
+            $ministryData = [];
+            foreach ($finalOfficeIds as $officeId) {
 
-                  $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
-               }
+                $ministry = DB::table('gov_case_office')
+                    ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+                        DB::raw('SUM(CASE
+                        WHEN gcb.is_main_bibadi = "1" AND gcr.is_final_order = "0" THEN 1
+                        ELSE 0
+                        END) AS highcourt_running_case'),
+                        DB::raw('SUM(CASE WHEN agcr.is_final_order = "0" THEN 1 ELSE 0 END) AS appeal_running_case'),
+                        DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" AND
+                        gcr.is_appeal = "0" AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0 END) AS against_gov'),
+                        DB::raw('SUM(CASE
+                        WHEN gcr.result_sending_date IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0
+                        END) AS result_sending_count'),
 
-               $upadata = $upa_data[$district->id];
-               $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+                        DB::raw('SUM(CASE
+                        WHEN gcr.appeal_against_postpond_interim_order IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0
+                        END) AS against_postponed_count'),
+                    )
+                    ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
+                    ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                    ->leftJoin('appeal_gov_case_register as agcr', 'gov_case_office.id', '=', 'agcr.appeal_office_id')
+                    ->where('gov_case_office.id', $officeId)
+                    ->orWhere('agcr.appeal_office_id', $officeId)
+                    ->groupBy('gov_case_office.id')
+                    ->first();
+
+                // $ministry = DB::table('gov_case_office')
+                //     ->where('gov_case_office.id', $officeId)
+                //     ->leftJoin('gov_case_bibadis as gcb', 'gcb.respondent_id', "=", 'gov_case_office.id')
+                //     ->where( 'gcb.is_main_bibadi', 1)
+                //     ->get();
+
+                // dd($officeId, $ministry);
+
+                if ($ministry) {
+                    $ministryData[] = $ministry;
+                }
             }
 
-            $disdata = $dis_data[$division->id];
-            $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+            $data['ministry_wise'] = $ministryData;
 
-            $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+            // return $data['ministry_wise'];
 
-         }
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
+            // Drildown Statistics
+            // $division_list = DB::table('division')
+            //     ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+            //     ->get();
 
+            // // Drildown Statistics
+            // $department_list = DB::table('office')
+            //     ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
+            //     ->where('office.parent', $officeID)
+            //     ->get();
 
+            $ministrydata = array();
+            $departmentdata = array();
 
+            // Ministry List
 
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            // foreach ($department_list as $department) {
+            //     // Department List
+            //     $data['departmentdata'][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
 
-         // View
-         $data['page_title'] = 'অধিদপ্তর এডমিনের ড্যাশবোর্ড';
-         return view('dashboard.cabinet.dept_admin')->with($data);
+            //     $data['department_data'] = array_merge($departmentdata);
 
-      }elseif($roleID == 33){
-         // Asst. Department/Odhidhoptor dashboard
-         // Counter
-         $data['total_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->count();
-         $data['running_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('status', 3)->count();
+            // }
 
-         $data['running_case_appeal'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->whereIn('status', [1,2])->count();
+            // View
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            // $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-         $data['high_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 2)->where('status', '!=' , 3)->count();
+            $data['page_title'] = 'মিনিস্ট্রি এডমিনের ড্যাশবোর্ড';
+            // return $data;
+            return view('dashboard.cabinet.min_admin')->with($data);
 
-         $data['appeal_court_case'] = GovCaseRegister::whereHas( 'bibadis',
-               function ($query)use($officeID) {
-                  $query->where('department_id', $officeID)->where('is_main_bibadi',1);
-               }
-            )->where('case_division_id', 1)->where('status', '!=' , 3)->count();
+        } elseif ($roleID == 30) {
+            // Superadmin dashboard
 
-         $data['not_against_gov'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('in_favour_govt', 1)->count();
-         $data['against_gov'] = GovCaseRegister::whereHas( 'bibadis', function ($query)use($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi',1);})->where('in_favour_govt', 0)->count();
-         $data['total_office'] = DB::table('office')->whereIn('id', [11,12])->count();
-         $data['total_user'] = DB::table('users')->count();
-         $data['total_court'] = DB::table('court')->whereNotIn('id', [1,2])->count();
-         $data['total_mouja'] = DB::table('mouja')->count();
-         $data['total_ct'] = DB::table('case_type')->count();
+            // Counter
+            $data['total_case'] = DB::table('gov_case_registers')->count();
+            $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+            $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+            $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
 
+            $data['total_office'] = DB::table('office')->whereIn('id', [10, 12, 11])->count();
+            $data['total_user'] = DB::table('users')->count();
+            $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            $data['total_mouja'] = DB::table('mouja')->count();
+            $data['total_ct'] = DB::table('case_type')->count();
 
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
 
-         // Drildown Statistics
-         $division_list = DB::table('division')
-         ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
-         ->get();
+            // Drildown Statistics
+            $division_list = DB::table('division')
+                ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+                ->get();
 
-         $divisiondata=array();
-         $districtdata=array();
-         // $dis_data=array();
-         $upazilatdata=array();
+            $divisiondata = array();
+            $districtdata = array();
+            // $dis_data=array();
+            $upazilatdata = array();
 
-         // Division List
-         foreach ($division_list as $division) {
-            // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
-            // Division Data
-            $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
+            // Division List
+            foreach ($division_list as $division) {
+                // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
+                // Division Data
+                $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
 
-            // District List
-            $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
-            foreach ($district_list as $district) {
-               // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
-               // $number2 = (int) $dis_count['count']; //exit;
+                // District List
+                $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
+                foreach ($district_list as $district) {
+                    // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
+                    // $number2 = (int) $dis_count['count']; //exit;
 
-               $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
+                    $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
 
-               // Upazila Data
-               // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
-               $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
-               foreach ($upazila_list as $upazila) {
-                  // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
-                  // $number3 = (int) $upa_count['count']; //exit;
+                    // Upazila Data
+                    // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
+                    $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
+                    foreach ($upazila_list as $upazila) {
+                        // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
+                        // $number3 = (int) $upa_count['count']; //exit;
 
-                  $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
-               }
+                        $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
+                    }
 
-               $upadata = $upa_data[$district->id];
-               $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+                    $upadata = $upa_data[$district->id];
+                    $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+                }
+
+                $disdata = $dis_data[$division->id];
+                $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+
+                $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+
+            }
+            // dd($result);
+            // $data['divisiondata'] = $divisiondata;
+            // dd($data['division_arr']);
+
+            // View
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+            $data['page_title'] = 'মন্ত্রণালয়ের সচিবের সহকারীর ড্যাশবোর্ড';
+            return view('dashboard.cabinet.admin')->with($data);
+
+        } elseif ($roleID == 31) {
+            $childOfficeIds = [];
+
+            $childOfficeQuery = DB::table('gov_case_office')
+                ->select('id')
+                ->where('parent', $officeID)->get();
+
+            foreach ($childOfficeQuery as $childOffice) {
+                $childOfficeIds[] = $childOffice->id;
             }
 
-            $disdata = $dis_data[$division->id];
-            $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+            $finalOfficeIds = [];
 
-            $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+            if (empty($childOfficeIds)) {
+                $finalOfficeIds[] = $officeID;
+            } else {
+                $finalOfficeIds[] = $officeID;
+                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            }
 
-         }
-         // dd($result);
-         // $data['divisiondata'] = $divisiondata;
-         // dd($data['division_arr']);
+            $data['total_highcourt'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->count();
 
+            $data['total_appeal'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)->count();
 
-         // View
-         $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
 
-         $data['page_title'] = 'অধিদপ্তর এডমিনের সহকারীর ড্যাশবোর্ড';
-         return view('dashboard.cabinet.dept_admin')->with($data);
+            $data['running_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->where('respondent_id', $finalOfficeIds)->where('is_main_bibadi', 1);
+                }
+            )->where('status', 1)->count();
 
-      }elseif($roleID == 34 ){
-         // Attorney General
-         // Get case status by group
-         // Counter
-         $data['total_case'] = DB::table('gov_case_registers')->count();
-         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
+            $data['total_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->count();
 
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', 0)->count();
 
-         $data['case_status'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-         ->groupBy('gov_case_registers.cs_id')
-         ->where('gov_case_registers.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', 1)->count();
 
-         $data['page_title'] = 'অতিরিক্ত-অ্যাটর্নি-জেনারেল';
-         return view('dashboard.cabinet.officer')->with($data);
-      }elseif($roleID == 35 ){
-         // Attorney General
-         // Get case status by group
-         // Counter
-         $data['total_case'] = DB::table('gov_case_registers')->count();
-         $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
-         $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
-         $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
+            $data['total_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->count();
 
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
+            $data['running_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('is_final_order', 0)->count();
 
-         $data['case_status'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-         ->groupBy('gov_case_registers.cs_id')
-         ->where('gov_case_registers.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
+            $data['final_high_court_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('is_final_order', 1)->count();
 
-         $data['page_title'] = '‎ডেপুটি-অ্যাটর্নি-জেনারেল';
-         return view('dashboard.cabinet.officer')->with($data);
-      }elseif($roleID == 36){
-         // Solicitor
-         // Get case status by group
-         // Counter
+            $data['against_high_court_case_appeal_pending'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->where('in_favour_govt', 2)->where('is_appeal', 0)->count();
 
+            $data['not_against_gov'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('in_favour_govt', 1)->count();
 
-         $data['total_case'] = GovCaseRegister::count();
-         $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-         $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-         $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+            $data['total_office_list'] = GovCaseOffice::select('gov_case_office.id', 'gov_case_office.office_name_bn')
+                ->whereIn('id', $finalOfficeIds)
+                ->get();
 
-         $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1,2])->count();
-         $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=' , 3)->count();
-         $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=' , 3)->count();
-         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-         $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
+            $data['sent_to_solicitor_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->whereNull('result_sending_date')->count();
 
-         $data['cases'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.*')
-         ->get();
+            $data['against_postpond_order'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )->whereNull('appeal_against_postpond_interim_order')->count();
 
-         $data['case_status'] = DB::table('gov_case_registers')
-         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-         ->groupBy('gov_case_registers.cs_id')
-         ->where('gov_case_registers.action_user_group_id', $roleID)
-         ->get();
-         // dd($data['case_status']);
+            $data['five_years_running_highcourt_case'] = GovCaseRegister::whereHas('mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            )
+                ->where('is_final_order', 0)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
 
-        $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleIds([$roleID, 14]);
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
+                ->where('is_final_order', null)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
 
-        // dd($data['gov_case_status']);
-         $data['page_title'] = 'অ্যাটর্নি জেনারেল অফিস অপারেটরের ড্যাশবোর্ড';
-         return view('dashboard.cabinet.officer')->with($data);
-      }
+            // $data = LcsCase::where('status', 0)
+            // ->whereDate('updated_at', '<=', date('Y-m-d H:i:s', strtotime('-3 days')))
+            // ->with(['citizen:id,name,phone,profile_image', 'consultant:id,name,phone,profile_image', 'service:id,title'])
+            // ->orderBy('id', 'DESC')
+            // ->get();
 
-   }
+            // $data['total_office'] = DB::table('office')->whereIn('level', [10, 11, 12])->count();
+            // $data['total_user'] = DB::table('users')->count();
+            // $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            // $data['total_mouja'] = DB::table('mouja')->count();
+            // $data['total_ct'] = DB::table('case_type')->count();
+            // $data['notice'] = GovCaseNotice::where('notice_for', $roleID)->where('expiry_date', '>=', date(now()))->get();
 
+            // $ministry = DB::table('gov_case_office')
+            //     ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+            //         DB::raw('SUM(CASE WHEN gcr.is_final_order = "0" THEN 1 ELSE 0 END) AS running_case'),
+            //         DB::raw('SUM(CASE WHEN gcr.is_final_order = "1" THEN 1 ELSE 0 END) AS completed_case'),
+            //         DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" THEN 1
+            //         WHEN gcr.is_final_order = "0" THEN 1
+            //         ELSE 0 END) AS against_gov'),
+            //         DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
+            //     )
+            //     ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.department_id')
+            //     ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+            //     ->whereIn('gov_case_office.parent', $officeId);
 
+            // // where('in_favour_govt', 2)->where('is_appeal', 0)
+            // $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
+            //     ->orderBy('gov_case_office.id', 'asc')
+            //     ->paginate(10);
 
+            $ministryData = [];
+            foreach ($finalOfficeIds as $officeId) {
 
-     public function hearing_date_today()
-     {
-       $data['hearing'] = DB::table('case_hearing')
-       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
-       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
-       ->where('case_hearing.hearing_date', '=', date('Y-m-d'))
-       ->get();
+                $ministry = DB::table('gov_case_office')
+                    ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+                        DB::raw('SUM(CASE
+                        WHEN gcb.is_main_bibadi = "1" AND gcr.is_final_order = "0" THEN 1
+                        ELSE 0
+                        END) AS highcourt_running_case'),
+                        DB::raw('SUM(CASE WHEN agcr.is_final_order = "0" THEN 1 ELSE 0 END) AS appeal_running_case'),
+                        DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" AND
+                        gcr.is_appeal = "0" AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0 END) AS against_gov'),
+                        DB::raw('SUM(CASE
+                        WHEN gcr.result_sending_date IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0
+                        END) AS result_sending_count'),
+
+                        DB::raw('SUM(CASE
+                        WHEN gcr.appeal_against_postpond_interim_order IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                        ELSE 0
+                        END) AS against_postponed_count'),
+                    )
+                    ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
+                    ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                    ->leftJoin('appeal_gov_case_register as agcr', 'gov_case_office.id', '=', 'agcr.appeal_office_id')
+                    ->where('gov_case_office.id', $officeId)
+                    ->orWhere('agcr.appeal_office_id', $officeId)
+                    ->groupBy('gov_case_office.id')
+                    ->first();
+
+                // $ministry = DB::table('gov_case_office')
+                //     ->where('gov_case_office.id', $officeId)
+                //     ->leftJoin('gov_case_bibadis as gcb', 'gcb.respondent_id', "=", 'gov_case_office.id')
+                //     ->where( 'gcb.is_main_bibadi', 1)
+                //     ->get();
+
+                // dd($officeId, $ministry);
+
+                if ($ministry) {
+                    $ministryData[] = $ministry;
+                }
+            }
+
+            $data['ministry_wise'] = $ministryData;
+
+            // return $data['ministry_wise'];
+
+            // Drildown Statistics
+            // $division_list = DB::table('division')
+            //     ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+            //     ->get();
+
+            // // Drildown Statistics
+            // $department_list = DB::table('office')
+            //     ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
+            //     ->where('office.parent', $officeID)
+            //     ->get();
+
+            $ministrydata = array();
+            $departmentdata = array();
+
+            // Ministry List
+
+            // foreach ($department_list as $department) {
+            //     // Department List
+            //     $data['departmentdata'][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
+
+            //     $data['department_data'] = array_merge($departmentdata);
+
+            // }
+
+            // View
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+
+            $data['page_title'] = 'মিনিস্ট্রি এডমিনের সহকারীর ড্যাশবোর্ড';
+            return view('dashboard.cabinet.min_admin')->with($data);
+
+        } elseif ($roleID == 32) {
+            // Department/Odhidhoptor dashboard
+            // Counter
+            $data['total_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->count();
+            $data['running_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 1)->count();
+            $data['appeal_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 2)->count();
+            $data['completed_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 3)->count();
+
+            $data['running_case_appeal'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->whereIn('status', [1, 2])->count();
+
+            $data['high_court_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('case_division_id', 2)->where('status', '!=', 3)->count();
+
+            $data['appeal_court_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('case_division_id', 1)->where('status', '!=', 3)->count();
+
+            $data['not_against_gov'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('in_favour_govt', 1)->count();
+
+            $data['against_gov'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('in_favour_govt', 0)->count();
+
+            $data['total_office'] = DB::table('office')->whereIn('id', [11, 12])->count();
+            $data['total_user'] = DB::table('users')->count();
+            $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            $data['total_mouja'] = DB::table('mouja')->count();
+            $data['total_ct'] = DB::table('case_type')->count();
+
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
+
+            // Drildown Statistics
+            $division_list = DB::table('division')
+                ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+                ->get();
+
+            $divisiondata = array();
+            $districtdata = array();
+            // $dis_data=array();
+            $upazilatdata = array();
+
+            // Division List
+            foreach ($division_list as $division) {
+                // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
+                // Division Data
+                $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
+
+                // District List
+                $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
+                foreach ($district_list as $district) {
+                    // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
+                    // $number2 = (int) $dis_count['count']; //exit;
+
+                    $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
+
+                    // Upazila Data
+                    // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
+                    $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
+                    foreach ($upazila_list as $upazila) {
+                        // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
+                        // $number3 = (int) $upa_count['count']; //exit;
+
+                        $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
+                    }
+
+                    $upadata = $upa_data[$district->id];
+                    $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+                }
+
+                $disdata = $dis_data[$division->id];
+                $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+
+                $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+
+            }
+            // dd($result);
+            // $data['divisiondata'] = $divisiondata;
+            // dd($data['division_arr']);
+
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+            // View
+            $data['page_title'] = 'অধিদপ্তর এডমিনের ড্যাশবোর্ড';
+            return view('dashboard.cabinet.dept_admin')->with($data);
+
+        } elseif ($roleID == 33) {
+            // Asst. Department/Odhidhoptor dashboard
+            // Counter
+            $data['total_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->count();
+            $data['running_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 1)->count();
+            $data['appeal_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 2)->count();
+            $data['completed_case'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('status', 3)->count();
+
+            $data['running_case_appeal'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->whereIn('status', [1, 2])->count();
+
+            $data['high_court_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('case_division_id', 2)->where('status', '!=', 3)->count();
+
+            $data['appeal_court_case'] = GovCaseRegister::whereHas('bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            )->where('case_division_id', 1)->where('status', '!=', 3)->count();
+
+            $data['not_against_gov'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('in_favour_govt', 1)->count();
+            $data['against_gov'] = GovCaseRegister::whereHas('bibadis', function ($query) use ($officeID) {$query->where('department_id', $officeID)->where('is_main_bibadi', 1);})->where('in_favour_govt', 0)->count();
+            $data['total_office'] = DB::table('office')->whereIn('id', [11, 12])->count();
+            $data['total_user'] = DB::table('users')->count();
+            $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
+            $data['total_mouja'] = DB::table('mouja')->count();
+            $data['total_ct'] = DB::table('case_type')->count();
+
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
+
+            // Drildown Statistics
+            $division_list = DB::table('division')
+                ->select('division.id', 'division.division_name_bn', 'division.division_name_en')
+                ->get();
+
+            $divisiondata = array();
+            $districtdata = array();
+            // $dis_data=array();
+            $upazilatdata = array();
+
+            // Division List
+            foreach ($division_list as $division) {
+                // $data_arr[$item->id] = $this->get_drildown_case_count($item->id);
+                // Division Data
+                $data['divisiondata'][] = array('name' => $division->division_name_bn, 'y' => $this->get_drildown_case_count($division->id), 'drilldown' => $division->id);
+
+                // District List
+                $district_list = DB::table('district')->select('district.id', 'district.district_name_bn')->where('division_id', $division->id)->get();
+                foreach ($district_list as $district) {
+                    // $dis_count = $this->Employee_model->get_count_employees('', '', '', $district->id);
+                    // $number2 = (int) $dis_count['count']; //exit;
+
+                    $dis_data[$division->id][] = array('name' => $district->district_name_bn, 'y' => $this->get_drildown_case_count('', $district->id), 'drilldown' => $district->id);
+
+                    // Upazila Data
+                    // $upazila_list = $this->Common_model->get_data_where('upazilas', 'district_id', $district->id);
+                    $upazila_list = DB::table('upazila')->select('upazila.id', 'upazila.upazila_name_bn')->where('district_id', $district->id)->get();
+                    foreach ($upazila_list as $upazila) {
+                        // $upa_count = $this->Employee_model->get_count_employees('', '', '', '', $upazila->id);
+                        // $number3 = (int) $upa_count['count']; //exit;
+
+                        $upa_data[$district->id][] = array($upazila->upazila_name_bn, $this->get_drildown_case_count('', '', $upazila->id));
+                    }
+
+                    $upadata = $upa_data[$district->id];
+                    $upazilatdata[] = array('name' => $district->district_name_bn, 'id' => $district->id, 'data' => $upadata);
+                }
+
+                $disdata = $dis_data[$division->id];
+                $districtdata[] = array('name' => $division->division_name_bn, 'id' => $division->id, 'data' => $disdata);
+
+                $data['dis_upa_data'] = array_merge($upazilatdata, $districtdata); //$districtdata;  $upazilatdata;
+
+            }
+            // dd($result);
+            // $data['divisiondata'] = $divisiondata;
+            // dd($data['division_arr']);
+
+            // View
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+            $data['page_title'] = 'অধিদপ্তর এডমিনের সহকারীর ড্যাশবোর্ড';
+            return view('dashboard.cabinet.dept_admin')->with($data);
+
+        } elseif ($roleID == 34) {
+            // Attorney General
+            // Get case status by group
+            // Counter
+            $data['total_case'] = DB::table('gov_case_registers')->count();
+            $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+            $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+            $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
+
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
+
+            $data['case_status'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+                ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+                ->groupBy('gov_case_registers.cs_id')
+                ->where('gov_case_registers.action_user_group_id', $roleID)
+                ->get();
+            // dd($data['case_status']);
+
+            $data['page_title'] = 'অতিরিক্ত-অ্যাটর্নি-জেনারেল';
+            return view('dashboard.cabinet.officer')->with($data);
+        } elseif ($roleID == 35) {
+            // Attorney General
+            // Get case status by group
+            // Counter
+            $data['total_case'] = DB::table('gov_case_registers')->count();
+            $data['running_case'] = DB::table('gov_case_registers')->where('status', 1)->count();
+            $data['appeal_case'] = DB::table('gov_case_registers')->where('status', 2)->count();
+            $data['completed_case'] = DB::table('gov_case_registers')->where('status', 3)->count();
+
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
+
+            $data['case_status'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+                ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+                ->groupBy('gov_case_registers.cs_id')
+                ->where('gov_case_registers.action_user_group_id', $roleID)
+                ->get();
+            // dd($data['case_status']);
+
+            $data['page_title'] = '‎ডেপুটি-অ্যাটর্নি-জেনারেল';
+            return view('dashboard.cabinet.officer')->with($data);
+        } elseif ($roleID == 36) {
+            // Solicitor
+            // Get case status by group
+            // Counter
+
+            $data['total_case'] = GovCaseRegister::count();
+            $data['running_case'] = GovCaseRegister::where('status', 1)->count();
+            $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
+            $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
+
+            $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1, 2])->count();
+            $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=', 3)->count();
+            $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=', 3)->count();
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
+            $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
+
+            $data['cases'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.*')
+                ->get();
+
+            $data['case_status'] = DB::table('gov_case_registers')
+                ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+                ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+                ->groupBy('gov_case_registers.cs_id')
+                ->where('gov_case_registers.action_user_group_id', $roleID)
+                ->get();
+            // dd($data['case_status']);
+
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleIds([$roleID, 14]);
+
+            // dd($data['gov_case_status']);
+            $data['page_title'] = 'অ্যাটর্নি জেনারেল অফিস অপারেটরের ড্যাশবোর্ড';
+            return view('dashboard.cabinet.officer')->with($data);
+        }
+
+    }
+
+    public function hearing_date_today()
+    {
+        $data['hearing'] = DB::table('case_hearing')
+            ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+            ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+            ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+            ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+            ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
+            ->where('case_hearing.hearing_date', '=', date('Y-m-d'))
+            ->get();
 
         // dd($data['hearing']);
 
-       $data['page_title'] = 'আজকের দিনে শুনানী/মামলার তারিখ';
-       return view('dashboard.hearing_date')->with($data);
+        $data['page_title'] = 'আজকের দিনে শুনানী/মামলার তারিখ';
+        return view('dashboard.hearing_date')->with($data);
     }
-
 
     public function hearing_date_tomorrow()
     {
-       $d = date('Y-m-d',strtotime('+1 day')) ;
-       $data['hearing'] = DB::table('case_hearing')
-       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
-       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
-       ->where('case_hearing.hearing_date', '=', $d)
-       ->get();
+        $d = date('Y-m-d', strtotime('+1 day'));
+        $data['hearing'] = DB::table('case_hearing')
+            ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+            ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+            ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+            ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+            ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
+            ->where('case_hearing.hearing_date', '=', $d)
+            ->get();
 
         // dd($data['hearing']);
 
-       $data['page_title'] = 'আগামী দিনে শুনানী/মামলার তারিখ';
-       return view('dashboard.hearing_date')->with($data);
+        $data['page_title'] = 'আগামী দিনে শুনানী/মামলার তারিখ';
+        return view('dashboard.hearing_date')->with($data);
     }
-
 
     public function hearing_date_nextWeek()
     {
 
-       $d = date('Y-m-d',strtotime('+7 day')) ;
-       $data['hearing'] = DB::table('case_hearing')
-       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
-       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
-       ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
-       ->where('case_hearing.hearing_date', '<=', $d)
-       ->get();
+        $d = date('Y-m-d', strtotime('+7 day'));
+        $data['hearing'] = DB::table('case_hearing')
+            ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+            ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+            ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+            ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+            ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
+            ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
+            ->where('case_hearing.hearing_date', '<=', $d)
+            ->get();
 
         // dd($data['hearing']);
 
-       $data['page_title'] = 'আগামী সপ্তাহের শুনানী/মামলার তারিখ';
-       return view('dashboard.hearing_date')->with($data);
+        $data['page_title'] = 'আগামী সপ্তাহের শুনানী/মামলার তারিখ';
+        return view('dashboard.hearing_date')->with($data);
     }
-
 
     public function hearing_date_nextMonth()
     {
-       $d = date('Y-m-d',strtotime('+1 month')) ;
-       /* $m = date('m',strtotime($d));
-       dd($d);*/
-       $data['hearing'] = DB::table('case_hearing')
-       ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
-       ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-       ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-       ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-       ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
-       ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
-       ->where('case_hearing.hearing_date', '<=', $d)
-       ->get();
+        $d = date('Y-m-d', strtotime('+1 month'));
+        /* $m = date('m',strtotime($d));
+        dd($d);*/
+        $data['hearing'] = DB::table('case_hearing')
+            ->join('gov_case_registers', 'case_hearing.case_id', '=', 'gov_case_registers.id')
+            ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+            ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+            ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+            ->select('case_hearing.*', 'gov_case_registers.id', 'gov_case_registers.court_id', 'gov_case_registers.case_number', 'gov_case_registers.status', 'court.court_name')
+            ->where('case_hearing.hearing_date', '>=', date('Y-m-d'))
+            ->where('case_hearing.hearing_date', '<=', $d)
+            ->get();
 
         // dd($data['hearing']);
 
-       $data['page_title'] = 'আগামী মাসের শুনানী/মামলার তারিখ';
-       return view('dashboard.hearing_date')->with($data);
+        $data['page_title'] = 'আগামী মাসের শুনানী/মামলার তারিখ';
+        return view('dashboard.hearing_date')->with($data);
     }
 
     public function hearing_case_details($id)
     {
 
-     $data['info'] = DB::table('gov_case_registers')
-     ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-     ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-     ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-     // ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
-     ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-     // ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
-     // ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
-     ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn',  'case_status.status_name')
-     ->where('gov_case_registers.id', '=', $id)
-     ->first();
-		// dd($data['info']);
-     	// dd($data['info']);
+        $data['info'] = DB::table('gov_case_registers')
+            ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+            ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+            ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+        // ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
+            ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+        // ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
+        // ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
+            ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_status.status_name')
+            ->where('gov_case_registers.id', '=', $id)
+            ->first();
+        // dd($data['info']);
+        // dd($data['info']);
 
-     $data['badis'] = DB::table('case_badi')
-     ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
-     ->select('case_badi.*')
-     ->where('case_badi.case_id', '=', $id)
-     ->get();
+        $data['badis'] = DB::table('case_badi')
+            ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
+            ->select('case_badi.*')
+            ->where('case_badi.case_id', '=', $id)
+            ->get();
 
-     $data['bibadis'] = DB::table('case_bibadi')
-     ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
-     ->select('case_bibadi.*')
-     ->where('case_bibadi.case_id', '=', $id)
-     ->get();
+        $data['bibadis'] = DB::table('case_bibadi')
+            ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
+            ->select('case_bibadi.*')
+            ->where('case_bibadi.case_id', '=', $id)
+            ->get();
 
-     $data['surveys'] = DB::table('case_survey')
-     ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
-     ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
-     ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
-     ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
-     ->where('case_survey.case_id', '=', $id)
-     ->get();
+        $data['surveys'] = DB::table('case_survey')
+            ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
+            ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
+            ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
+            ->select('case_survey.*', 'survey_type.st_name', 'land_type.lt_name')
+            ->where('case_survey.case_id', '=', $id)
+            ->get();
 
         // Get SF Details
-     $data['sf'] = DB::table('case_sf')
-     ->select('case_sf.*')
-     ->where('case_sf.case_id', '=', $id)
-     ->first();
+        $data['sf'] = DB::table('case_sf')
+            ->select('case_sf.*')
+            ->where('case_sf.case_id', '=', $id)
+            ->first();
         // dd($data['sf']);
 
         // Get SF Details
-     $data['logs'] = DB::table('case_log')
-     ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
-     ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
-     ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
-     ->join('users', 'case_log.user_id', '=', 'users.id')
-     ->where('case_log.case_id', '=', $id)
-     ->orderBy('case_log.id', 'desc')
-     ->get();
+        $data['logs'] = DB::table('case_log')
+            ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
+            ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
+            ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
+            ->join('users', 'case_log.user_id', '=', 'users.id')
+            ->where('case_log.case_id', '=', $id)
+            ->orderBy('case_log.id', 'desc')
+            ->get();
         // dd($data['sf']);
 
         // Get SF Details
-     $data['hearings'] = DB::table('case_hearing')
-     ->select('case_hearing.*')
-     ->where('case_hearing.case_id', '=', $id)
-     ->orderBy('case_hearing.id', 'desc')
-     ->get();
+        $data['hearings'] = DB::table('case_hearing')
+            ->select('case_hearing.*')
+            ->where('case_hearing.case_id', '=', $id)
+            ->orderBy('case_hearing.id', 'desc')
+            ->get();
 
         // Dropdown
-     $data['roles'] = DB::table('roles')
-     ->select('id', 'name')
-     ->where('in_action', '=', 1)
-     ->orderBy('sort_order', 'asc')
-     ->get();
+        $data['roles'] = DB::table('roles')
+            ->select('id', 'name')
+            ->where('in_action', '=', 1)
+            ->orderBy('sort_order', 'asc')
+            ->get();
 
-      // dd($data['bibadis']);
+        // dd($data['bibadis']);
 
-     $data['page_title'] = 'শুনানী মামলার বিস্তারিত তথ্য';
-     return view('dashboard.hearing_case_details')->with($data);
-  }
-
-  public function get_drildown_case_count($division=NULL, $district=NULL, $upazila=NULL, $status=NULL) {
-     $query = DB::table('gov_case_registers');
-
-     if($division != NULL){
-       $query->where('division_id', $division);
-    }
-    if($district != NULL){
-       $query->where('district_id', $district);
-    }
-    if($upazila != NULL){
-       $query->where('upazila_id', $upazila);
+        $data['page_title'] = 'শুনানী মামলার বিস্তারিত তথ্য';
+        return view('dashboard.hearing_case_details')->with($data);
     }
 
-    return $query->count();
- }
+    public function ministryWiseData($ministry_id)
+    {
 
-  public function get_drildown_gov_case_count($ministry=NULL, $department=NULL,  $status=NULL) {
-     $query = DB::table('gov_case_bibadis');
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        // $officeID = userInfo()->office_id;
 
-     if($ministry != NULL){
-       $query->where('respondent_id', $ministry);
-       $query->where('is_main_bibadi',1);
-       // $query->groupBy('gov_case_id');
+        $ministry = DB::table('gov_case_office')
+            ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+                DB::raw('SUM(CASE
+                WHEN gcb.is_main_bibadi = "1" AND gcr.is_final_order = "0" THEN 1
+                ELSE 0
+                END) AS highcourt_running_case'),
+                DB::raw('SUM(CASE WHEN agcr.is_final_order = "0" THEN 1 ELSE 0 END) AS appeal_running_case'),
+                DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "2" AND
+                gcr.is_appeal = "0" AND gcb.is_main_bibadi = "1" THEN 1
+                ELSE 0 END) AS against_gov'),
+                DB::raw('SUM(CASE
+                WHEN gcr.result_sending_date IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                ELSE 0
+                END) AS result_sending_count'),
+
+                DB::raw('SUM(CASE
+                WHEN gcr.appeal_against_postpond_interim_order IS NULL AND gcb.is_main_bibadi = "1" THEN 1
+                ELSE 0
+                END) AS against_postponed_count'),
+            )
+            ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
+            ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+            ->leftJoin('appeal_gov_case_register as agcr', 'gov_case_office.id', '=', 'agcr.appeal_office_id')
+
+            ->where('gov_case_office.parent', $ministry_id)
+            ->orWhere('gov_case_office.id', $ministry_id);
+
+        $data['ministry_wise'] = $ministry->groupBy('gov_case_office.id')
+            ->paginate(10);
+
+        $data['total_appeal'] = AppealGovCaseRegister::count();
+        $data['total_highcourt'] = GovCaseRegister::count();
+        $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
+
+        $data['total_high_court_case'] = GovCaseRegister::count();
+        $data['running_high_court_case'] = GovCaseRegister::where('is_final_order', 0)->count();
+        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->count();
+
+        $data['total_appeal_case'] = AppealGovCaseRegister::count();
+        $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
+        $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
+
+        $data['against_high_court_case_appeal_pending'] = GovCaseRegister::where('in_favour_govt', 2)->where('is_appeal', 0)->count();
+
+        $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
+
+        $data['sent_to_solicitor_case'] = GovCaseRegister::whereNull('result_sending_date')->count();
+
+        $data['against_postpond_order'] = GovCaseRegister::whereNull('appeal_against_postpond_interim_order')->count();
+
+        $data['five_years_running_highcourt_case'] = GovCaseRegister::where('is_final_order', 0)
+            ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+            ->orderBy('id', 'DESC')
+            ->count();
+
+        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
+            where('is_final_order', null)
+            ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+            ->orderBy('id', 'DESC')
+            ->count();
+
+        $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+        $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
+
+        $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
+
+        $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+        $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+        $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+        $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+        $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+        // return $data;
+
+        // View
+        $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
+        return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
+
     }
-    if($department != NULL){
-       $query->where('department_id', $department);
-       $query->where('is_main_bibadi', 1);
-       // $query->groupBy('gov_case_id');
+
+    public function get_drildown_case_count($division = null, $district = null, $upazila = null, $status = null)
+    {
+        $query = DB::table('gov_case_registers');
+
+        if ($division != null) {
+            $query->where('division_id', $division);
+        }
+        if ($district != null) {
+            $query->where('district_id', $district);
+        }
+        if ($upazila != null) {
+            $query->where('upazila_id', $upazila);
+        }
+
+        return $query->count();
     }
-    /*if($upazila != NULL){
-       $query->where('upazila_id', $upazila);
-    }*/
 
-    return $query->count();
- }
+    public function get_drildown_gov_case_count($ministry = null, $department = null, $status = null)
+    {
+        $query = DB::table('gov_case_bibadis');
 
-    public function get_mouja_by_ulo_office_id($officeID){
+        if ($ministry != null) {
+            $query->where('respondent_id', $ministry);
+            $query->where('is_main_bibadi', 1);
+            // $query->groupBy('gov_case_id');
+        }
+        if ($department != null) {
+            $query->where('department_id', $department);
+            $query->where('is_main_bibadi', 1);
+            // $query->groupBy('gov_case_id');
+        }
+        /*if($upazila != NULL){
+        $query->where('upazila_id', $upazila);
+        }*/
+
+        return $query->count();
+    }
+
+    public function get_mouja_by_ulo_office_id($officeID)
+    {
         return DB::table('mouja_ulo')->where('ulo_office_id', $officeID)->pluck('mouja_id');
         // return DB::table('mouja_ulo')->select('mouja_id')->where('ulo_office_id', $officeID)->get();
         // return DB::table('division')->select('id', 'division_name_bn')->get();
@@ -1182,77 +1400,75 @@ class DashboardController extends Controller
      */
     /*public function case_details($id)
     {
-        $data['info'] = DB::table('gov_case_registers')
-        ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-        ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-        ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-        ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
-        ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-        ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
-        ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
-        ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_type.ct_name', 'case_status.status_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
-        ->where('gov_case_registers.id', '=', $id)
-        ->first();
+    $data['info'] = DB::table('gov_case_registers')
+    ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
+    ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
+    ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
+    ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
+    ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
+    ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
+    ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
+    ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_type.ct_name', 'case_status.status_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
+    ->where('gov_case_registers.id', '=', $id)
+    ->first();
 
-        $data['badis'] = DB::table('case_badi')
-        ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
-        ->select('case_badi.*')
-        ->where('case_badi.case_id', '=', $id)
-        ->get();
+    $data['badis'] = DB::table('case_badi')
+    ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
+    ->select('case_badi.*')
+    ->where('case_badi.case_id', '=', $id)
+    ->get();
 
-        $data['bibadis'] = DB::table('case_bibadi')
-        ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
-        ->select('case_bibadi.*')
-        ->where('case_bibadi.case_id', '=', $id)
-        ->get();
+    $data['bibadis'] = DB::table('case_bibadi')
+    ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
+    ->select('case_bibadi.*')
+    ->where('case_bibadi.case_id', '=', $id)
+    ->get();
 
-        $data['surveys'] = DB::table('case_survey')
-        ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
-        ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
-        ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
-        ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
-        ->where('case_survey.case_id', '=', $id)
-        ->get();
+    $data['surveys'] = DB::table('case_survey')
+    ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
+    ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
+    ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
+    ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
+    ->where('case_survey.case_id', '=', $id)
+    ->get();
 
-        // Get SF Details
-        $data['sf'] = DB::table('case_sf')
-        ->select('case_sf.*')
-        ->where('case_sf.case_id', '=', $id)
-        ->first();
-        // dd($data['sf']);
+    // Get SF Details
+    $data['sf'] = DB::table('case_sf')
+    ->select('case_sf.*')
+    ->where('case_sf.case_id', '=', $id)
+    ->first();
+    // dd($data['sf']);
 
-        // Get SF Details
-        $data['logs'] = DB::table('case_log')
-        ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
-        ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
-        ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
-        ->join('users', 'case_log.user_id', '=', 'users.id')
-        ->where('case_log.case_id', '=', $id)
-        ->orderBy('case_log.id', 'desc')
-        ->get();
-        // dd($data['sf']);
+    // Get SF Details
+    $data['logs'] = DB::table('case_log')
+    ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
+    ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
+    ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
+    ->join('users', 'case_log.user_id', '=', 'users.id')
+    ->where('case_log.case_id', '=', $id)
+    ->orderBy('case_log.id', 'desc')
+    ->get();
+    // dd($data['sf']);
 
-        // Get SF Details
-        $data['hearings'] = DB::table('case_hearing')
-        ->select('case_hearing.*')
-        ->where('case_hearing.case_id', '=', $id)
-        ->orderBy('case_hearing.id', 'desc')
-        ->get();
+    // Get SF Details
+    $data['hearings'] = DB::table('case_hearing')
+    ->select('case_hearing.*')
+    ->where('case_hearing.case_id', '=', $id)
+    ->orderBy('case_hearing.id', 'desc')
+    ->get();
 
-        // Dropdown
-        $data['roles'] = DB::table('roles')
-        ->select('id', 'name')
-        ->where('in_action', '=', 1)
-        ->orderBy('sort_order', 'asc')
-        ->get();
+    // Dropdown
+    $data['roles'] = DB::table('roles')
+    ->select('id', 'name')
+    ->where('in_action', '=', 1)
+    ->orderBy('sort_order', 'asc')
+    ->get();
 
-        // dd($data['bibadis']);
+    // dd($data['bibadis']);
 
-        $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
-        return view('dashboard.case_details')->with($data);
-     }*/
-
-
+    $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
+    return view('dashboard.case_details')->with($data);
+    }*/
 
     /**
      * Show the form for creating a new resource.
@@ -1273,92 +1489,91 @@ class DashboardController extends Controller
     public function store(Request $request)
     {
         /*$validator = \Validator::make($request->all(), [
-            'group' => 'required',
-            'comment' => 'required',
-            ]);
+    'group' => 'required',
+    'comment' => 'required',
+    ]);
 
-        if ($validator->fails())
-        {
-            return response()->json(['errors'=>$validator->errors()->all()]);
-        }
+    if ($validator->fails())
+    {
+    return response()->json(['errors'=>$validator->errors()->all()]);
+    }
 
-        // User Info
-        $user = Auth::user();
+    // User Info
+    $user = Auth::user();
 
-        // Inputs
-        $roleGroup = $request->group;
-        $caseID = $request->case_id;
-        $input = $request->all();
+    // Inputs
+    $roleGroup = $request->group;
+    $caseID = $request->case_id;
+    $input = $request->all();
 
-        // Roles
-        if($roleGroup == 1){
-            // Superadmin
-            $caseStatus = '';
-        }elseif($roleGroup == 5){
-            // DC Assistant
-            $caseStatus = '';
-        }elseif($roleGroup == 6){
-            // DC
-            $caseStatus = 2;
-        }elseif($roleGroup == 7){
-            // ADC (Revenue)
-            $caseStatus = 3;
-        }elseif($roleGroup == 8){
-            // AC (RM)
-            $caseStatus = 4;
-        }elseif($roleGroup == 9){
-            // AC (Land)
-            $caseStatus = 5;
-        }elseif($roleGroup == 10){
-            // Survyor
-            $caseStatus = 6;
-        }elseif($roleGroup == 11){
-            // Kanongo
-            $caseStatus = 7;
-        }elseif($roleGroup == 12){
-            // ULAO
-            $caseStatus = 8;
-        }elseif($roleGroup == 13){
-            // GP
-            $caseStatus = 9;
-        }elseif($roleGroup == 14){
-            // ULAO
-            $caseStatus = 10;
-        }
+    // Roles
+    if($roleGroup == 1){
+    // Superadmin
+    $caseStatus = '';
+    }elseif($roleGroup == 5){
+    // DC Assistant
+    $caseStatus = '';
+    }elseif($roleGroup == 6){
+    // DC
+    $caseStatus = 2;
+    }elseif($roleGroup == 7){
+    // ADC (Revenue)
+    $caseStatus = 3;
+    }elseif($roleGroup == 8){
+    // AC (RM)
+    $caseStatus = 4;
+    }elseif($roleGroup == 9){
+    // AC (Land)
+    $caseStatus = 5;
+    }elseif($roleGroup == 10){
+    // Survyor
+    $caseStatus = 6;
+    }elseif($roleGroup == 11){
+    // Kanongo
+    $caseStatus = 7;
+    }elseif($roleGroup == 12){
+    // ULAO
+    $caseStatus = 8;
+    }elseif($roleGroup == 13){
+    // GP
+    $caseStatus = 9;
+    }elseif($roleGroup == 14){
+    // ULAO
+    $caseStatus = 10;
+    }
 
+    // Get Case Data
+    $case = DB::table('gov_case_registers')
+    ->select('id', 'cs_id', 'court_id', 'case_number', 'case_date', 'ct_id', 'mouja_id', 'upazila_id', 'district_id', 'tafsil', 'chowhaddi', 'show_cause_file', 'created_at')
+    ->where('id', $caseID)
+    ->first();
+    // dd($case);
 
-        // Get Case Data
-        $case = DB::table('gov_case_registers')
-        ->select('id', 'cs_id', 'court_id', 'case_number', 'case_date', 'ct_id', 'mouja_id', 'upazila_id', 'district_id', 'tafsil', 'chowhaddi', 'show_cause_file', 'created_at')
-        ->where('id', $caseID)
-        ->first();
-        // dd($case);
+    // Insert data into case_log table
+    $log_data = [
+    'case_id'       => $caseID,
+    'status_id'     => $caseStatus,
+    'user_id'       => $user->id,
+    'send_user_group_id' => $user->role_id,
+    'receive_user_group_id' => $roleGroup,
+    'comment'      => $request->comment,
+    'created_at'    => date('Y-m-d H:i:s'),
+    ];
+    DB::table('case_log')->insert($log_data);
+    // Book::create($input);
+    // dd($data_case_log);
 
-        // Insert data into case_log table
-        $log_data = [
-        'case_id'       => $caseID,
-        'status_id'     => $caseStatus,
-        'user_id'       => $user->id,
-        'send_user_group_id' => $user->role_id,
-        'receive_user_group_id' => $roleGroup,
-        'comment'      => $request->comment,
-        'created_at'    => date('Y-m-d H:i:s'),
-        ];
-        DB::table('case_log')->insert($log_data);
-        // Book::create($input);
-        // dd($data_case_log);
+    // Update Case Register (cs_id, action_user_group_id, status(2), updated_at) table
+    $case_data = [
+    'cs_id'     => $caseStatus,
+    'action_user_group_id' => $roleGroup,
+    'status'       => 2,
+    'updated_at'    => date('Y-m-d H:i:s'),
+    ];
+    DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
 
-        // Update Case Register (cs_id, action_user_group_id, status(2), updated_at) table
-        $case_data = [
-        'cs_id'     => $caseStatus,
-        'action_user_group_id' => $roleGroup,
-        'status'       => 2,
-        'updated_at'    => date('Y-m-d H:i:s'),
-        ];
-        DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
-
-        return response()->json(['success'=>'Data is successfully added']);*/
-     }
+    return response()->json(['success'=>'Data is successfully added']);*/
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -1368,45 +1583,44 @@ class DashboardController extends Controller
      */
     /*public function create_sf(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'sf_details' => 'required',
-            ]);
+    $validator = \Validator::make($request->all(), [
+    'sf_details' => 'required',
+    ]);
 
-        if ($validator->fails())
-        {
-            return response()->json(['errors'=>$validator->errors()->all()]);
-        }
+    if ($validator->fails())
+    {
+    return response()->json(['errors'=>$validator->errors()->all()]);
+    }
 
-        // User Info
-        $user = Auth::user();
+    // User Info
+    $user = Auth::user();
 
-        // Inputs
-        $caseID = $request->case_id;
-        $sfDetails = $request->sf_details;
-        // $input = $request->all();
-        // dd($input);
+    // Inputs
+    $caseID = $request->case_id;
+    $sfDetails = $request->sf_details;
+    // $input = $request->all();
+    // dd($input);
 
-        // Insert data into case_sf table
-        $sf_data = [
-        'case_id'       => $caseID,
-        'sf_details'    => $sfDetails,
-        'user_id'       => $user->id,
-        'created_at'    => date('Y-m-d H:i:s'),
-        ];
-        DB::table('case_sf')->insert($sf_data);
-        // dd($sf_data);
+    // Insert data into case_sf table
+    $sf_data = [
+    'case_id'       => $caseID,
+    'sf_details'    => $sfDetails,
+    'user_id'       => $user->id,
+    'created_at'    => date('Y-m-d H:i:s'),
+    ];
+    DB::table('case_sf')->insert($sf_data);
+    // dd($sf_data);
 
-        // Update Case Register (is_sf(1), status(2), updated_at) table
-        $case_data = [
-        'is_sf'     => 1,
-        //'status'       => 2,
-        //'updated_at'    => date('Y-m-d H:i:s'),
-        ];
-        DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
+    // Update Case Register (is_sf(1), status(2), updated_at) table
+    $case_data = [
+    'is_sf'     => 1,
+    //'status'       => 2,
+    //'updated_at'    => date('Y-m-d H:i:s'),
+    ];
+    DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
 
-        return response()->json(['success'=>'Data is successfully added','sfdata'=>'Data is successfully added']);
-     } */
-
+    return response()->json(['success'=>'Data is successfully added','sfdata'=>'Data is successfully added']);
+    } */
 
     /**
      * Show the form for editing the specified resource.
@@ -1416,31 +1630,31 @@ class DashboardController extends Controller
      */
     /*public function edit_sf(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'sf_details' => 'required',
-            ]);
+    $validator = \Validator::make($request->all(), [
+    'sf_details' => 'required',
+    ]);
 
-        if ($validator->fails())
-        {
-            return response()->json(['errors'=>$validator->errors()->all()]);
-        }
+    if ($validator->fails())
+    {
+    return response()->json(['errors'=>$validator->errors()->all()]);
+    }
 
-        // Inputs
-        $caseID = $request->case_id;
-        $sfID = $request->sf_id;
-        $sfDetails = $request->sf_details;
-        // $input = $request->all();
-        // dd($input);
+    // Inputs
+    $caseID = $request->case_id;
+    $sfID = $request->sf_id;
+    $sfDetails = $request->sf_details;
+    // $input = $request->all();
+    // dd($input);
 
-        // Update Case SF table
-        $sf_data = [
-        'sf_details'  => $sfDetails,
-        'updated_at'  => date('Y-m-d H:i:s'),
-        ];
-        DB::table('case_sf')->where('id', $sfID)->update($sf_data);
+    // Update Case SF table
+    $sf_data = [
+    'sf_details'  => $sfDetails,
+    'updated_at'  => date('Y-m-d H:i:s'),
+    ];
+    DB::table('case_sf')->where('id', $sfID)->update($sf_data);
 
-        return response()->json(['success'=>'Data is successfully updated','sfdata'=> 'SF Details']);
-     }*/
+    return response()->json(['success'=>'Data is successfully updated','sfdata'=> 'SF Details']);
+    }*/
 
     /**
      * Display the specified resource.
@@ -1487,21 +1701,23 @@ class DashboardController extends Controller
         //
     }
 
-    public function logincheck(){
-       if(Auth::check()){
+    public function logincheck()
+    {
+        if (Auth::check()) {
             // dd('checked');
-         return redirect('dashboard');
-      }else{
-         return redirect('login');
-      }
-   }
-    public function public_home(){
-       if(Auth::check()){
+            return redirect('dashboard');
+        } else {
+            return redirect('login');
+        }
+    }
+    public function public_home()
+    {
+        if (Auth::check()) {
             // dd('checked');
-         return redirect('dashboard');
-      }else{
-         return view('public_home');
-        //  return redirect('login');
-      }
-   }
+            return redirect('dashboard');
+        } else {
+            return view('public_home');
+            //  return redirect('login');
+        }
+    }
 }
