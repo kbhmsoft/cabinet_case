@@ -110,55 +110,51 @@
                 <a href="{{ route('cabinet.case.totalHighcourt') }}">হাইকোর্ট বিভাগে মোট মামলা</a></span>
         </div>
     </div>
-
-
 </div>
-
-
 
 <div class="row mb-5">
 
     <div class="col-md-3">
         <div class="card-counter danger">
-            <a href="{{ route('cabinet.case.highcourt.running') }}"><i
+            <a href="{{ route('cabinet.case.totalHighcourtRunning') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.highcourt.running') }}"><?= en2bn($running_high_court_case) ?></a></span>
+                    href="{{ route('cabinet.case.totalHighcourtRunning') }}"><?= en2bn($running_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.highcourt.running') }}">হাইকোর্ট বিভাগে চলমান মামলা</a></span>
+                <a href="{{ route('cabinet.case.totalHighcourtRunning') }}">হাইকোর্ট বিভাগে চলমান মামলা</a></span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="card-counter danger">
-            <a href="{{ route('cabinet.case.highcourt.complete') }}"><i
+            <a href="{{ route('cabinet.case.totalHighcourtComplete') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.highcourt.complete') }}"><?= en2bn($final_high_court_case) ?></a></span>
+                    href="{{ route('cabinet.case.totalHighcourtComplete') }}"><?= en2bn($final_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.highcourt.complete') }}">হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা</a></span>
+                <a href="{{ route('cabinet.case.totalHighcourtComplete') }}">হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা</a></span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="card-counter danger">
-            <a href="{{ route('cabinet.case.appellateDivision') }}"><i
+            <a href="{{ route('cabinet.case.totalAppellateDivision') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.appellateDivision') }}"><?= en2bn($total_appeal) ?></a></span>
+                    href="{{ route('cabinet.case.totalAppellateDivision') }}"><?= en2bn($total_appeal) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.appellateDivision') }}">আপিল বিভাগে মোট মামলা</a></span>
+                <a href="{{ route('cabinet.case.totalAppellateDivision') }}">আপিল বিভাগে মোট মামলা</a></span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="card-counter danger">
-            <a href="{{ route('cabinet.case.appellateDivision.running') }}"><i
+            <a href="{{ route('cabinet.case.appellateDivisionRunning') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.appellateDivision.running') }}"><?= en2bn($running_appeal_case) ?></a></span>
+                    href="{{ route('cabinet.case.appellateDivisionRunning') }}"><?= en2bn($running_appeal_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.appellateDivision.running') }}">আপিল বিভাগে চলমান মামলা</a></span>
+                <a href="{{ route('cabinet.case.appellateDivisionRunning') }}">আপিল বিভাগে চলমান মামলা</a></span>
         </div>
     </div>
 
@@ -180,12 +176,12 @@
 
     <div class="col-md-3">
         <div class="card-counter info">
-            <a href="{{ route('cabinet.case.appellateDivision.complete') }}"><i
+            <a href="{{ route('cabinet.case.appellateDivisionComplete') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.appellateDivision.complete') }}"><?= en2bn($final_appeal_case) ?></a></span>
+                    href="{{ route('cabinet.case.appellateDivisionComplete') }}"><?= en2bn($final_appeal_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.appellateDivision.complete') }}">আপিল বিভাগে নিস্পত্তিকৃত
+                <a href="{{ route('cabinet.case.appellateDivisionComplete') }}">আপিল বিভাগে নিস্পত্তিকৃত
                     মামলা</a></span>
         </div>
     </div>
@@ -201,12 +197,12 @@
 
     <div class="col-md-3">
         <div class="card-counter info">
-            <a href="{{ route('cabinet.case.appealAgainstGovt') }}"><i
+            <a href="{{ route('cabinet.case.appealCaseAgainstGovt') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.appealAgainstGovt') }}"><?= en2bn($appealAgainstGovt) ?></a></span>
+                    href="{{ route('cabinet.case.appealCaseAgainstGovt') }}"><?= en2bn($appealAgainstGovt) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.appealAgainstGovt') }}">সরকারের বিপক্ষে আপিলের <br>জন্য
+                <a href="{{ route('cabinet.case.appealCaseAgainstGovt') }}">সরকারের বিপক্ষে আপিলের <br>জন্য
                     পেন্ডিং</a></span>
         </div>
     </div>
@@ -214,24 +210,23 @@
 
     <div class="col-md-3">
         <div class="card-counter info">
-            <a href="{{ route('cabinet.case.sentToSolicitor') }}"><i
+            <a href="{{ route('cabinet.case.sentToSolicitorCase') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.sentToSolicitor') }}"><?= en2bn($sent_to_solicitor_case) ?></a></span>
+                    href="{{ route('cabinet.case.sentToSolicitorCase') }}"><?= en2bn($sent_to_solicitor_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.sentToSolicitor') }}">সরকারের বিপক্ষে আপিলের <br>জন্য
-                    পেন্ডিং</a></span>
+                <a href="{{ route('cabinet.case.sentToSolicitorCase') }}">জবাব পেন্ডিং</a></span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="card-counter info">
-            <a href="{{ route('cabinet.case.againstPostponedOrder') }}"><i
+            <a href="{{ route('cabinet.case.againstCasePostponedOrder') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.againstPostponedOrder') }}"><?= en2bn($against_postpond_order) ?></a></span>
+                    href="{{ route('cabinet.case.againstCasePostponedOrder') }}"><?= en2bn($against_postpond_order) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.againstPostponedOrder') }}">স্থগিতাদেশ অন্তর্বর্তীকালীন
+                <a href="{{ route('cabinet.case.againstCasePostponedOrder') }}">স্থগিতাদেশ অন্তর্বর্তীকালীন
                     <br>পেন্ডিং মামলা</a></span>
         </div>
     </div>
