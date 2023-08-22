@@ -29,7 +29,6 @@
 </script>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
         var formType = $('#formType').val();
         if (formType != 'edit') {
@@ -126,13 +125,17 @@
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
+                        // console.log(data);
                         caseNumberDropdown.empty();
                         caseNumberDropdown.append(
                             '<option value="">-- নির্বাচন করুন --</option>');
 
                         jQuery.each(data, function(key, value) {
-                            caseNumberDropdown.append('<option value="' + key +
-                                '">' + value + '</option>');
+                            // console.log(value.id);
+
+                            caseNumberDropdown.append(
+                                `<option value="${value.id}">${value.case_no}/${value.year}</option>`
+                                );
                         });
 
                         jQuery('.loadersmall').remove();
@@ -159,7 +162,7 @@
                     success: function(response) {
                         showHighCourtCaseDiv.html(
                             response);
-                    console.log(response);
+                        console.log(response);
                     },
                     error: function() {
                         showHighCourtCaseDiv.empty();
@@ -820,10 +823,10 @@
 
 
 
-/// appeal final
+    /// appeal final
 
 
-   $("#addFinalOrderFileRow").click(function(e) {
+    $("#addFinalOrderFileRow").click(function(e) {
         addFinalOrderFileRowFunc();
     });
     //add row function
@@ -865,6 +868,7 @@
         var value = $('#customFile' + id)[0].files[0];
         $('.custom-input' + id).text(value['name']);
     }
+
     function finalAttachmentTitle(id) {
         var value = $('#customFinalFile' + id)[0].files[0];
         $('.custom-final-input' + id).text(value['name']);
@@ -876,6 +880,4 @@
 </script>
 
 
-   {{-- Complete Appeal Case Entry --}}
-
- 
+{{-- Complete Appeal Case Entry --}}

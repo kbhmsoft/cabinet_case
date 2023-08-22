@@ -161,8 +161,10 @@
                             '<option value="">-- নির্বাচন করুন --</option>');
 
                         jQuery.each(data, function(key, value) {
-                            caseNumberDropdown.append('<option value="' + key +
-                                '">' + value + '</option>');
+                            // caseNumberDropdown.append('<option value="' + key +
+                            //     '">' + value + '</option>');
+                            caseNumberDropdown.append(`<option value="${value.id}">${value.case_no}/${value.year}</option>`);
+
                         });
 
                         jQuery('.loadersmall').remove();

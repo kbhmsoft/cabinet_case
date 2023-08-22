@@ -402,7 +402,7 @@
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
-                                        <input type="hidden" id="" name="case_id">
+                                        <input type="hidden" id="" name="case_id" value="{{ $case->id }}">
 
                                         <fieldset class="mb-8">
                                             {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
@@ -625,7 +625,7 @@
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
-                                        <input type="hidden" id="caseIDForSuspention" name="case_id">
+                                        <input type="hidden" id="caseIDForSuspention" name="case_id" value="{{ $case->id }}">
 
                                         <fieldset>
 
@@ -851,7 +851,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         {{-- <div class="step"> --}}
-                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id">
+                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id" value="{{ $case->id }}">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
                                             <div class="form-group row">
@@ -1404,7 +1404,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
 
-                                        <input type="hidden" id="caseIDForContempt" name="case_id">
+                                        <input type="hidden" id="caseIDForContempt" name="case_id" value="{{ $case->id }}">
                                         <fieldset>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">

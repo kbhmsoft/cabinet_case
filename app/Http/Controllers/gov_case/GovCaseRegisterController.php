@@ -2118,7 +2118,8 @@ class GovCaseRegisterController extends Controller
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
             ->where('is_final_order', 1)
-            ->pluck("case_no", "id");
+            // ->pluck("case_no", "id", "year");
+            ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
 
