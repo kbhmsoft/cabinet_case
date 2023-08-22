@@ -446,7 +446,7 @@ class DashboardController extends Controller
             //     }
             // }
             $officeId =Auth::user()->office_id;
-            $data['ministry'] =  DB::table('gov_case_office')->where('gov_case_office.parent', $officeId)->paginate(10);
+            $data['ministry'] =  DB::table('gov_case_office')->where('gov_case_office.parent', $officeId)->orwhere('id',$officeId)->paginate(10);
 
             $arrayd = [];
             foreach($data['ministry'] as $key=>$val){
