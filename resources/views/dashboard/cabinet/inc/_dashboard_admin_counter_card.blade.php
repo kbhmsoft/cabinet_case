@@ -99,14 +99,15 @@
                 মোট মামলা</a></span>
         </div>
     </div>
+
     <div class="col-md-3">
         <div class="card-counter lightgreen">
-            <a href="{{ route('cabinet.case.highcourt') }}"><i
+            <a href="{{ route('cabinet.case.totalHighcourt') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.highcourt') }}"><?= en2bn($total_high_court_case) ?></a></span>
+                    href="{{ route('cabinet.case.totalHighcourt') }}"><?= en2bn($total_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.highcourt') }}">হাইকোর্ট বিভাগে মোট মামলা</a></span>
+                <a href="{{ route('cabinet.case.totalHighcourt') }}">হাইকোর্ট বিভাগে মোট মামলা</a></span>
         </div>
     </div>
 

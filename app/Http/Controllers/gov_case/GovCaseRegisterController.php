@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\Attachment;
-use App\Models\Court;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseLog;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\Court;
+use App\Models\Office;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseLog;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
 
 class GovCaseRegisterController extends Controller
 {
@@ -160,6 +161,87 @@ class GovCaseRegisterController extends Controller
         // return $data;
 
         return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+
+
+    public function totalHighcourt()
+    {
+        session()->forget('currentUrlPath');
+
+        $ministry = DB::table('gov_case_office')
+                ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+                    DB::raw('SUM(CASE WHEN gcb.is_main_bibadi = "1" AND gcr.deleted_at IS NULL THEN 1 ELSE 0 END) AS highcourt_running_case'),
+                )
+                ->leftJoin('gov_case_bibadis as gcb', 'gov_case_office.id', '=', 'gcb.respondent_id')
+                ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
+                ->whereIn('gov_case_office.level', [1, 3]);
+
+            $data['ministry'] = $ministry->groupBy('gov_case_office.id')
+                ->paginate(10);
+
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
+            $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+
+
+            $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
+                ->where('is_final_order', 0)->count();
+
+            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->
+                where('deleted_at', '=', null)->count();
+
+            $data['total_appeal_case'] = AppealGovCaseRegister::count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
+
+            $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('in_favour_govt', 2)
+                ->where('is_appeal', 0)->count();
+
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
+
+            $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('result_sending_date')->count();
+
+            $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
+
+            $data['five_years_running_highcourt_case'] = GovCaseRegister::where('deleted_at', '=', null)->where('is_final_order', 0)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
+                where('is_final_order', null)
+                ->where('deleted_at', '=', null)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
+
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
+            $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
+            $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->where('level', 2)->count();
+
+            $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
+
+            // $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
+            // return $data;
+
+            // View
+            $data['page_title'] = 'হাইকোর্ট বিভাগে মোট মামলা';
+
+            return view('dashboard.cabinet.cabinet_admin_highcourt_total_case')->with($data);
     }
 
     public function appealAgainstGovt()

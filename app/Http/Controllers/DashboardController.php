@@ -38,9 +38,6 @@ class DashboardController extends Controller
         $data['rm_case_status'] = [];
 
         if ($roleID == 1) {
-            // Superadmin dashboard
-
-            // Counter
             $data['total_case'] = GovCaseRegister::count();
             $data['running_case'] = GovCaseRegister::where('status', 1)->count();
             $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
@@ -103,7 +100,6 @@ class DashboardController extends Controller
             $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
 
             $data['department_data'] = array_merge( $departmentdata);
-
             }*/
 
             $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
@@ -142,6 +138,8 @@ class DashboardController extends Controller
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
             $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+
+
             $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
                 ->where('is_final_order', 0)->count();
 
@@ -1339,13 +1337,14 @@ class DashboardController extends Controller
         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-        // return $data;
 
-        // View
         $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
         return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
 
     }
+
+
+
 
     public function get_drildown_case_count($division = null, $district = null, $upazila = null, $status = null)
     {

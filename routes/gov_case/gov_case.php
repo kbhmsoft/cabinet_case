@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('totalHighcourt', [GovCaseRegisterController::class, 'totalHighcourt'])->name('totalHighcourt');
             Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
             Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
             Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
@@ -184,6 +185,7 @@ Route::middleware('auth')->group(function () {
             Route::get('editAppealCaseForm/{id}', [AppealGovCaseRegisterController::class, 'editAppealCaseForm'])->name('editAppealCaseForm');
             Route::get('ministryWiseData/{ministry_id}', [DashboardController::class, 'ministryWiseData'])->name('ministryWiseData');
             // Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
+
             Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
 
