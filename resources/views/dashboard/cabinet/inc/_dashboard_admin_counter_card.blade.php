@@ -218,7 +218,7 @@
                 <a href="{{ route('cabinet.case.sentToSolicitorCase') }}">জবাব পেন্ডিং</a></span>
         </div>
     </div>
-
+    
     <div class="col-md-3">
         <div class="card-counter info">
             <a href="{{ route('cabinet.case.againstCasePostponedOrder') }}"><i
