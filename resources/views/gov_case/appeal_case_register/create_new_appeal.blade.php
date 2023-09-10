@@ -212,7 +212,7 @@
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
 
-                                                                    <div id="addAppealFinalOrderFileRow">
+                                                                    <div id="addFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
                                                                             <i

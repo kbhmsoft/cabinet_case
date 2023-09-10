@@ -47,15 +47,15 @@
                     $roleID = Auth()->user()->role_id;
                     ?>
                     @foreach ($cases as $key => $row)
+                    {{-- {{dd($cases['badis']['name'])}} --}}
                         <tr>
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
                             <td style="text-align:center;">
-
                                 {{ App\Models\gov_case\GovCaseOffice::find($row->appeal_office_id)->office_name_bn }}
                             </td>
-                            <td style="text-align:center;">{{ '-' }} </td>
-                            <td style="text-align:center;">{{ '-' }} </td>
+                            <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td>
+                            <td style="text-align:center;">{{ $row->highcourtCaseDetail['subject_matter'] ?? '' }}</td>
                             <td style="text-align:center;">{{ '-' }} </td>
                             <td style="text-align:center;">{{ '-' }} </td>
                             <td>
@@ -73,10 +73,10 @@
                                                 href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
                                         @endcan --}}
 
-                                        {{-- @can('appeal_update')
+                                        @can('appeal_update')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.editAppealCaseForm', $row->id) }}">সংশোধন</a>
-                                        @endcan --}}
+                                        @endcan
                                         {{-- @can('highcoutr_send_answer')
                             @if ($row->action_user_role_id == userInfo()->role_id)
                             <a class="dropdown-item" href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>

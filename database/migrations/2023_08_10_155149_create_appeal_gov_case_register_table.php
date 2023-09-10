@@ -25,6 +25,7 @@ class CreateAppealGovCaseRegisterTable extends Migration
             $table->text('postpond_date')->nullable();
             $table->text('postponed_details')->nullable();
             $table->integer('case_number_origin')->nullable();
+            $table->tinyInteger('case_origin_id')->nullable();
             $table->softDeletes();
         });
     }

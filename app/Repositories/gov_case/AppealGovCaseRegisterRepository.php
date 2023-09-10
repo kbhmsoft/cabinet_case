@@ -46,19 +46,15 @@ class AppealGovCaseRegisterRepository
     public static function AppealCaseAllDetails($caseId)
     {
         $case = AppealGovCaseRegister::findOrFail($caseId);
-        // $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
-        // $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
-        // $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-        // $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
-        // $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
         $files = Attachment::where('gov_case_id', $caseId)->get();
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
-
+        $caseNumberOrigin = GovCaseRegister::where('case_no', $case->case_number_origin)->first();
+        // return $caseNumberOrigin;
         $data = [
-            'case' => $case,
+            'appealCase' => $case,
             // 'caseBadi' => $caseBadi,
             // 'caseMainBibadi' => $caseMainBibadi,
             // 'caseBibadi' => $caseBibadi,
@@ -66,6 +62,7 @@ class AppealGovCaseRegisterRepository
             // 'otherBibadi' => $otherBibadi,
             // 'caseLogs' => $caseLog,
             // 'hearings' => $hearings,
+            'caseNumberOrigin' => $caseNumberOrigin,
             'files' => $files,
             'concernpersondesig' => $concernpersondesig,
             'concernPersonName' => $concernPersonName,
@@ -77,7 +74,7 @@ class AppealGovCaseRegisterRepository
     public static function storeAppeal($caseInfo)
     {
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-
+        $caseOriginId = GovCaseRegister::where('case_no', $caseInfo->case_number_origin)->get();
         try {
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;
@@ -93,6 +90,7 @@ class AppealGovCaseRegisterRepository
             $case->postponed_details = $caseInfo->postponed_details;
             $case->case_category_origin = $caseInfo->case_category_origin;
             $case->case_number_origin = $caseInfo->case_number_origin;
+            $case->case_origin_id = $caseOriginId->id;
             $case->is_appeal = 1;
 
             if ($case->save()) {
@@ -112,8 +110,8 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppealFinalOrder($caseInfo)
     {
-        // dd($caseInfo['case_id']);
         $case = self::checkAppealGovCaseExist($caseInfo['case_id']);
+
 
         if ($caseInfo->result_date != null && $caseInfo->result_date != '') {
             $result_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->result_date)));
@@ -214,6 +212,7 @@ class AppealGovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
+        $caseOriginId = GovCaseRegister::where('case_no', $caseInfo->case_number_origin)->get();
         try {
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;
@@ -229,6 +228,7 @@ class AppealGovCaseRegisterRepository
             $case->postponed_details = $caseInfo->postponed_details ?? '';
             $case->case_category_origin = $caseInfo->case_category_origin;
             $case->case_number_origin = $caseInfo->case_number_origin;
+            $case->case_origin_id = $caseOriginId->id;
             // $case->is_appeal = 1;
             $case->is_final_order = $caseInfo->is_final_order ?? '';
             $case->result = $caseInfo->result ?? '';

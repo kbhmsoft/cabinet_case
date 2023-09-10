@@ -111,6 +111,9 @@
         // });
 
 
+
+
+
         jQuery('select[name="case_category_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
             var caseNumberDropdown = jQuery('select[name="case_number_origin"]');
@@ -125,17 +128,15 @@
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        // console.log(data);
+
                         caseNumberDropdown.empty();
                         caseNumberDropdown.append(
                             '<option value="">-- নির্বাচন করুন --</option>');
 
                         jQuery.each(data, function(key, value) {
-                            // console.log(value.id);
-
                             caseNumberDropdown.append(
                                 `<option value="${value.id}">${value.case_no}/${value.year}</option>`
-                                );
+                            );
                         });
 
                         jQuery('.loadersmall').remove();
@@ -147,12 +148,10 @@
             }
         });
 
-        //========== start based on case origin number filled input field
-
-
 
         jQuery('select[name="case_number_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
+        //   console.log(dataID);
             var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
 
             if (dataID) {
@@ -162,7 +161,7 @@
                     success: function(response) {
                         showHighCourtCaseDiv.html(
                             response);
-                        console.log(response);
+                        // console.log(response);
                     },
                     error: function() {
                         showHighCourtCaseDiv.empty();
@@ -247,7 +246,7 @@
         }
 
         function error(data) {
-            console.log(data);
+            // console.log(data);
         }
 
     }
@@ -282,7 +281,7 @@
         }
 
         function error(data) {
-            console.log(data);
+            // console.log(data);
         }
 
     }
@@ -312,7 +311,7 @@
         }
 
         function error(data) {
-            console.log(data);
+            // console.log(data);
         }
 
     }
@@ -537,7 +536,7 @@
     //     $('#sendingReplySaveBtn').addClass("disable-button");
     // }
 
-    var caseIDForFinalOrder = $('#caseIDForAppealFinalOrder').val();
+    var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
     if (!(caseIDForFinalOrder)) {
         $('#appealFinalOrderSaveBtn').prop('disabled', true);
         $('#appealFinalOrderSaveBtn').addClass("disable-button");
@@ -565,6 +564,7 @@
             if (result.isConfirmed) {
 
                 var formData = new FormData(this);
+                console.log();
                 $.ajax({
 
                     type: 'POST',
@@ -575,6 +575,8 @@
                     processData: false,
 
                     success: (data) => {
+                        console.log('hi');
+                        console.log(data);
                         $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
@@ -583,7 +585,6 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         )
-                        console.log(data.caseId);
 
                         $("#final_order").click();
                         $("#caseIDForFinalOrder").val(data.caseId);
@@ -644,16 +645,17 @@
                         // console.log(data.caseId);
                         // $("#contempt_case").click();
                         // $("#caseIDForSuspention").val(data.caseId);
+                        // console.log(data);
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
-                        console.log(data);
+
                         $('#finalOrderSaveBtn').prop('disabled', false);
                         $('#finalOrderSaveBtn').removeClass("disable-button");
 
 
                     },
                     error: function(data) {
-                        console.log(data);
+                        // console.log(data);
                         $('#finalOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
@@ -703,7 +705,7 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         )
-                        console.log(data);
+                        // console.log(data);
                         // console.log(data.caseId);
                         $("#suspension_order").click();
                         $("#caseIDForSuspention").val(data.caseId);
@@ -713,7 +715,7 @@
 
                     },
                     error: function(data) {
-                        console.log(data);
+                        // console.log(data);
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
@@ -756,7 +758,7 @@
         }
 
         function error(data) {
-            console.log(data);
+            // console.log(data);
         }
     }
 

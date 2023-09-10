@@ -1,3 +1,4 @@
+
 <br>
     <div class="container card">
       <div class="card-body">
@@ -20,9 +21,8 @@
                 @endphp
                 @foreach ($ministry as $key=>$val)
                <tr>
-                {{-- {{dd($ministry)}} --}}
                   <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
-                  <td><h4><a href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a></h4></td>
+                  <td>{{ $val->office_name_bn }}</td>
                   <td align="center">{{ en2bn($val->highcourt_running_case) }}</td>
                   <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
                   <td align="center">{{ en2bn($val->against_gov) }}</td>

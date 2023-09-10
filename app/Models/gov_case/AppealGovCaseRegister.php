@@ -2,7 +2,7 @@
 
 namespace App\Models\gov_case;
 
-use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +27,7 @@ class AppealGovCaseRegister extends Model
         'postpond_date',
         'postponed_details',
         'case_number_origin',
+        'case_origin_id',
         'case_category_origin',
         'is_final_order',
         'result',
@@ -41,10 +42,10 @@ class AppealGovCaseRegister extends Model
         'reason_of_not_appealing',
     ];
 
-    public function bibadis()
-    {
-        return $this->hasMany(GovCaseBibadi::class, 'appeal_gov_case_id', 'id');
-    }
+    // public function bibadis()
+    // {
+    //     return $this->hasMany(GovCaseBibadi::class, 'appeal_gov_case_id', 'id');
+    // }
 
     public function highcourtCaseDetail()
     {
@@ -53,6 +54,10 @@ class AppealGovCaseRegister extends Model
     public function office()
     {
         return $this->hasOne(GovCaseOffice::class, 'id', 'appeal_office_id');
+    }
+
+    public function badis(){
+        return $this->hasOne(GovCaseBadi::class, 'gov_case_id', 'case_origin_id');
     }
 
 }

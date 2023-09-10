@@ -252,7 +252,7 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                             @foreach ($ministrys as $item)
+                                                                                       @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -296,7 +296,7 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                             @foreach ($ministrys as $item)
+                                                                                       @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -363,6 +363,41 @@
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
                                                                 style="border:1px solid #dcd8d8;">
+                                                                @foreach ($files as $key => $value)
+                                                                    {{-- {{dd($value->id)}} --}}
+                                                                    <tr>
+                                                                        {{-- <td><input type="text" name="file_type[]" id="customFileName"
+                                                         class="form-control form-control-sm"><span class="text-danger">{{ en2bn($value->file_type) }}</span></td> --}}
+                                                                        {{-- <td class="">{{ en2bn($value->file_type) }}</td> --}}
+                                                                        {{-- <td class="tg-nluh text-center">
+                                                                            <a target="_black" href="{{ asset($value->file_name) }}"
+                                                                                class="">সংযুক্তি</a>
+                                                                        </td> --}}
+                                                                        {{-- <td>
+                                                                            <input type="text" name="file_type[]" id="customFileName" class="form-control form-control-sm" value="{{ $value->file_type }}">
+                                                                        </td> --}}
+                                                                        <td>
+                                                                            <input type="text" name="file_type[]"
+                                                                                id="customFileName"
+                                                                                class="form-control form-control-sm"
+                                                                                value="{{ old('file_type', $value->file_type) }}">
+                                                                        </td>
+                                                                        {{-- <td>
+                                                                            <div class="custom-file">
+
+                                                                                    @if ($value->file_name)
+                                                                                        <a target="_blank" class="text-center font-weight-bolder mt-2 mb-2" href="{{ asset($value->file_name) }}">সংযুক্তি কপি</a><br>
+                                                                                    @else
+
+                                                                                <input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(this)" class="custom-file-input" id="customFile" />
+                                                                                <label id="file_error" class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                <label class="custom-file-label custom-input" for="customFile">
+                                                                                </label>
+                                                                                @endif
+                                                                            </div>
+                                                                        </td> --}}
+                                                                    </tr>
+                                                                @endforeach
                                                                 <tr></tr>
                                                             </table>
                                                             <input type="hidden" id="other_attachment_count"
@@ -372,11 +407,6 @@
                                                 </div>
 
                                                 {{-- end সংযুক্তি --}}
-
-
-
-
-
                                             </div>
                                         </fieldset>
                                         {{-- </div> --}}
@@ -402,7 +432,8 @@
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
-                                        <input type="hidden" id="" name="case_id" value="{{ $case->id }}">
+                                        <input type="hidden" id="" name="case_id"
+                                            value="{{ $case->id }}">
 
                                         <fieldset class="mb-8">
                                             {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
@@ -625,7 +656,8 @@
                                 <div class="row_int">
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
-                                        <input type="hidden" id="caseIDForSuspention" name="case_id" value="{{ $case->id }}">
+                                        <input type="hidden" id="caseIDForSuspention" name="case_id"
+                                            value="{{ $case->id }}">
 
                                         <fieldset>
 
@@ -851,7 +883,8 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         {{-- <div class="step"> --}}
-                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id" value="{{ $case->id }}">
+                                        <input type="hidden" id="caseIDForFinalOrder" name="case_id"
+                                            value="{{ $case->id }}">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
                                             <div class="form-group row">
@@ -1404,7 +1437,8 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
 
-                                        <input type="hidden" id="caseIDForContempt" name="case_id" value="{{ $case->id }}">
+                                        <input type="hidden" id="caseIDForContempt" name="case_id"
+                                            value="{{ $case->id }}">
                                         <fieldset>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">
@@ -1536,6 +1570,7 @@
         //     addBadiRowFunc();
         //     addBibadiRowFunc();
         // });
+        var count = parseInt($('#other_attachment_count').val());
     </script>
     <script type="text/javascript">
         // dynamically change high court / appeal court
