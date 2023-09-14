@@ -79,6 +79,14 @@
                                     </li>
                                 @endcan
 
+                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                    </a>
+                                </li>
+
                                 <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
@@ -133,6 +141,14 @@
                                         <a href="{{ route('cabinet.case.appellateDivision.create.old') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা এন্ট্রি</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
                                         </a>
                                     </li>
 

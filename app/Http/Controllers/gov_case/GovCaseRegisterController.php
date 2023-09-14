@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Court;
-use App\Models\Office;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\gov_case\GovCaseLog;
 use App\Http\Controllers\Controller;
+use App\Models\Attachment;
+use App\Models\Court;
+use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Models\gov_case\GovCaseLog;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\Office;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterController extends Controller
 {
@@ -197,7 +197,107 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
+    public function highcourtMostImportantCase()
+    {
+        session()->forget('currentUrlPath');
 
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
+            ->where('most_important', 1);
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas(
+                'bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            // dd(1);
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অধিক গুরুত্বপূর্ণ মামলার তালিকা';
+
+        // return $data;
+
+        return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+    public function highcourtMostImportantSave(Request $request)
+    {
+        $rowId = $request->input('rowId');
+        $mostImportant = $request->input('most_important');
+
+        try {
+            $appeal = GovCaseRegister::findOrFail($rowId);
+            $appeal->most_important = $mostImportant;
+            $appeal->save();
+
+            return response()->json(['message' => 'Data saved successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error saving data: ' . $e->getMessage()], 500);
+        }
+    }
 
     public function totalHighcourt()
     {
@@ -221,7 +321,6 @@ class GovCaseRegisterController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -279,7 +378,6 @@ class GovCaseRegisterController extends Controller
         return view('dashboard.cabinet.cabinet_admin_highcourt_total_case')->with($data);
     }
 
-
     public function totalHighcourtRunning()
     {
         session()->forget('currentUrlPath');
@@ -296,13 +394,12 @@ class GovCaseRegisterController extends Controller
             ->whereIn('gov_case_office.level', [1, 3]);
 
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
-            ->paginate(10);
-
+            ->paginate(1000);
+        // return $data['ministry'];
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -360,7 +457,6 @@ class GovCaseRegisterController extends Controller
         return view('dashboard.cabinet.cabinet_admin_highcourt_running_total_case')->with($data);
     }
 
-
     public function appealCaseAgainstGovt()
     {
         session()->forget('currentUrlPath');
@@ -376,7 +472,6 @@ class GovCaseRegisterController extends Controller
             ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
             ->whereIn('gov_case_office.level', [1, 3]);
 
-
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
             ->paginate(10);
 
@@ -384,7 +479,6 @@ class GovCaseRegisterController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -442,7 +536,6 @@ class GovCaseRegisterController extends Controller
         return view('dashboard.cabinet.cabinet_admin_appeal_against_govt_case')->with($data);
     }
 
-
     public function againstCasePostponedOrder()
     {
         session()->forget('currentUrlPath');
@@ -468,7 +561,6 @@ class GovCaseRegisterController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -526,7 +618,6 @@ class GovCaseRegisterController extends Controller
         return view('dashboard.cabinet.cabinet_admin_postponed_interim_order_govt_case')->with($data);
     }
 
-
     public function sentToSolicitorCase()
     {
         session()->forget('currentUrlPath');
@@ -549,7 +640,6 @@ class GovCaseRegisterController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -629,7 +719,6 @@ class GovCaseRegisterController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
 
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
@@ -2633,7 +2722,7 @@ class GovCaseRegisterController extends Controller
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
             ->where('is_final_order', 1)
-            // ->pluck("case_no", "id", "year");
+        // ->pluck("case_no", "id", "year");
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);

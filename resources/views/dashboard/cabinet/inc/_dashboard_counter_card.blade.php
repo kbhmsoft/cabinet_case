@@ -112,12 +112,12 @@
                     মামলা</a></span>
         </div>
     </div>
-<div class="col-md-3">
+    <div class="col-md-3">
         <div class="card-counter info">
             <a href="{{ route('cabinet.case.against') }}"><i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($against_high_court_case_appeal_pending) ?></a></span>
             <span class="count-name">সরকারের বিপক্ষে আপিলের <br>জন্য
-                    পেন্ডিং</a></span>
+                পেন্ডিং</a></span>
         </div>
     </div>
 
@@ -125,18 +125,19 @@
 
 <div class="row mb-5">
 
-    <div class="col-md-3">
+    {{-- <div class="col-md-3">
         <div class="card-counter primary">
             <a href="{{ route('cabinet.case.against') }}"><i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($against_high_court_case_appeal_pending) ?></a></span>
             <span class="count-name">সরকারের বিপক্ষে আপিলের <br>জন্য
                     পেন্ডিং</a></span>
         </div>
-    </div>
+    </div> --}}
+
 
     <div class="col-md-3">
         <div class="card-counter primary">
-           <i class="fa fas fa-layer-group text-white"></i></a>
+            <i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($sent_to_solicitor_case) ?></a></span>
             <span class="count-name">জবাব পেন্ডিং</a></span>
         </div>
@@ -147,7 +148,7 @@
             <i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($against_postpond_order) ?></a></span>
             <span class="count-name">স্থগিতাদেশ অন্তর্বর্তীকালীন
-                    <br>পেন্ডিং মামলা</a></span>
+                <br>পেন্ডিং মামলা</a></span>
         </div>
     </div>
 
@@ -156,22 +157,21 @@
             <i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($five_years_running_highcourt_case) ?></a></span>
             <span class="count-name">হাইকোর্ট বিভাগে ৫ বছরের <br> অধিককাল চলমান মামলা
-           </a></span>
+                </a></span>
         </div>
     </div>
-</div>
-
-
-<div class="row mb-5">
     <div class="col-md-3">
         <div class="card-counter primary">
             <i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($five_years_running_appeal_case) ?></a></span>
             <span class="count-name">আপিল বিভাগে ৫ বছরের <br> অধিককাল চলমান মামলা
-           </a></span>
+                </a></span>
         </div>
     </div>
 </div>
+
+
+
 
 <div class="row mb-5">
     @if (Auth::user()->role_id == 27 || Auth::user()->role_id == 28)

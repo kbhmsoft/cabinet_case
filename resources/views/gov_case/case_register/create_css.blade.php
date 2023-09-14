@@ -188,7 +188,7 @@
         cursor: not-allowed;
     }
 
-    .nav-li-padding{
+    .nav-li-padding {
         padding-right: 50px !important;
     }
 
@@ -196,6 +196,7 @@
         background-color: #c0c0c0;
         cursor: not-allowed;
     }
+
     .tabs {
         max-width: 600px;
         margin: 0 auto;
@@ -252,7 +253,7 @@
         background-color: #f0f0f0;
     }
 
-    /* for form validation error in modal  */
+
     .modal {
         display: none;
         position: fixed;
@@ -302,8 +303,14 @@
         font-size: 15px;
     }
 
-    /* .modal-content li {
-        color: red;
-        font-size: 18px;
-    } */
+    .btn-group {
+        margin-top: 10px;
+    }
+
+    .checkbox-name {
+        font-size: 20px;
+        padding-left: 10px;
+        vertical-align: middle;
+    }
+
 </style>

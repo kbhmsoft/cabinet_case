@@ -417,11 +417,9 @@ class GovCaseRegisterRepository
             $finalOfficeIds[] = $officeID;
             $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
         }
-        // return $finalOfficeIds;
-        $query = GovCaseRegister::whereNull('result_sending_date');
-        // return $query;
 
-        if ($roleID != 27 && $roleID != 28) {
+        $query = GovCaseRegister::where('deleted_at',null)->whereNull('result_sending_date');
+            if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('mainBibadis', function ($q) use ($finalOfficeIds) {
                 $q->whereIn('respondent_id', $finalOfficeIds);
             });
@@ -433,7 +431,7 @@ class GovCaseRegisterRepository
     {
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
-        $query = GovCaseRegister::whereNull('result_sending_date_solisitor_to_ag');
+        $query = GovCaseRegister::where('deleted_at',null)->whereNull('result_sending_date_solisitor_to_ag');
         if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('bibadis', function ($q) use ($office) {
                 $q->where('respondent_id', $office);

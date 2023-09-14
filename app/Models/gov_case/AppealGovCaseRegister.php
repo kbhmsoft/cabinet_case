@@ -40,6 +40,7 @@ class AppealGovCaseRegister extends Model
         'appeal_requesting_memorial',
         'appeal_requesting_date',
         'reason_of_not_appealing',
+        'most_important'
     ];
 
     // public function bibadis()

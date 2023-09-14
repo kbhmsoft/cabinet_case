@@ -1,5 +1,42 @@
 @extends('layouts.cabinet.cab_default')
+@include('gov_case.case_register.create_css')
+@section('content')
+    <script>
+        function updateDatabase(checkbox) {
 
+            const rowId = checkbox.getAttribute("data-row-id");
+            const isChecked = checkbox.checked;
+
+            const mostImportantValue = isChecked ? 1 : null;
+            const data = {
+                rowId: rowId,
+                most_important: mostImportantValue
+            };
+
+            const routeUrl = "{{ route('cabinet.case.highcourtMostImportantSave') }}";
+
+            fetch(routeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data saved successfully.');
+                    } else {
+
+                        console.error('Failed to save data.');
+                    }
+                })
+                .catch(error => {
+
+                    console.error('Error:', error);
+                });
+        }
+        </script>
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom">
@@ -37,7 +74,7 @@
                         <th scope="col">মামলার বিষয়বস্তু</th>
                         <th scope="col">রুল ইস্যুর তারিখ/প্রাপ্তির তারিখ</th>
                         <th scope="col">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
-                        <th scope="col" width="70">অ্যাকশন</th>
+                        <th scope="col" width="170px">অ্যাকশন</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,15 +86,15 @@
                             <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
                             <td>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi) : '-' }}</td>
                             <td>{{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
-                            <td>
-                                <div class="btn-group float-right">
+                            <td style="text-align:center;">
+                                <div class="btn-group">
                                     <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">অ্যাকশন</button>
                                     <div class="dropdown-menu">
-                                        {{-- @can('show_details_info')
+                                        @can('show_details_info')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
-                                        @endcan --}}
+                                        @endcan
                                         @can('highcourt_case_update')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.highcourt_edit', $row->id) }}">সংশোধন</a>
@@ -65,9 +102,6 @@
                                         <?php
                                         $roleID = Auth()->user()->role_id;
                                         ?>
-
-
-
                                         @can('highcoutr_send_answer')
                                             @if ($row->is_final_order == 0)
                                                 @if (empty($row->result_sending_date))
@@ -105,9 +139,18 @@
                                         @endcan
                                     </div>
                                 </div>
-                                <div class="btn-group float-right">
+                                <div class="btn-group">
                                     @if ($roleID == 27)
                                     <a class="btn btn-bg-danger btn-sm" href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে ফেলুন</a>
+                                    @endif
+                                </div>
+
+                                <div class="btn-group">
+                                    @if ($roleID == 27)
+                                        <input type="checkbox" id="most_important" name="most_important" value="1"
+                                            data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
+                                            {{ $row->most_important == 1 ? 'checked' : '' }}>
+                                        <label class="checkbox-name" for="most_important">অধিক গুরুত্বপূর্ণ</label>
                                     @endif
                                 </div>
                             </td>

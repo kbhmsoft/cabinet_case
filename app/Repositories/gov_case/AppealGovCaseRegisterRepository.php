@@ -2,13 +2,14 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Attachment;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Attachment;
+use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseHearing;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
 
 class AppealGovCaseRegisterRepository
 {
@@ -46,9 +47,9 @@ class AppealGovCaseRegisterRepository
     public static function AppealCaseAllDetails($caseId)
     {
         $case = AppealGovCaseRegister::findOrFail($caseId);
-        $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
-        $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->get();
+        // $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
+        // $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
+        $files = AppealAttachment::where('appeal_gov_case_id', $caseId)->get();
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
         $caseNumberOrigin = GovCaseRegister::where('case_no', $case->case_number_origin)->first();

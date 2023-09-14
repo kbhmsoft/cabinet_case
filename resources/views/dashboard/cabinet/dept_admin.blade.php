@@ -5,7 +5,7 @@
 @section('content')
 <!--begin::Dashboard-->
 
-@php
+{{-- @php
 $new=$running=$finished=$applied=0;
 foreach ($cases as $val)
 {
@@ -23,14 +23,14 @@ foreach ($cases as $val)
    }
 }
 
-@endphp
+@endphp --}}
 
 <!--begin::Dashboard-->
 <!-- Dashboard Counter -->
 @include('dashboard.cabinet.inc._dashboard_counter_card')
 <!-- //Dashboard Counter -->
 
-@include('dashboard.cabinet.inc._dashboard_action_card')
+{{-- @include('dashboard.cabinet.inc._dashboard_action_card') --}}
 
 <!--begin::Subheader-->
    @php
@@ -185,63 +185,7 @@ input[type="number"] {
 <script src="{{ asset('js/pages/widgets.js') }}"></script>
 <!--end::Page Scripts-->
 
-<!-- <script type="text/javascript">
-   // Create the chart
-   Highcharts.chart('container', {
-      chart: {
-         type: 'column'
-      },
-      title: {
-         text: 'বিভাগ ও জেলা ভিত্তিক মামলা'
-      },
-      subtitle: {
-         text: 'মামলা'
-      },
-      accessibility: {
-         announceNewData: {
-            enabled: true
-         }
-      },
-      xAxis: {
-         type: 'category'
-      },
-      yAxis: {
-         title: {
-            text: 'Number of Case'
-         }
 
-      },
-      legend: {
-         enabled: false
-      },
-      plotOptions: {
-         series: {
-            borderWidth: 0,
-            dataLabels: {
-               enabled: true,
-               format: '{point.y}'
-            }
-         }
-      },
-
-      tooltip: {
-         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
-      },
-
-      series: [
-      {
-        name: "Division",
-        colorByPoint: true,
-        data: <?=json_encode($divisiondata);?>
-      }
-      ],
-
-      drilldown: {
-         series: <?=json_encode($dis_upa_data);?>
-      }
- });
-</script> -->
 // {{-- -------------callender end---------- --}}
 @if (Auth::user()->role_id == 2)
 @include('dashboard.calendar.calender_need_js')
