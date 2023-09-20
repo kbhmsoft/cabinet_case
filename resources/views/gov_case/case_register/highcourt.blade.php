@@ -114,6 +114,9 @@
                                                         href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
                                                         স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
                                                 @endif
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
+                                                        চূড়ান্ত আদেশ</a>
                                             @elseif ($row->is_final_order == 1)
                                                 @if (empty($row->leave_to_appeal_no))
                                                     <a class="dropdown-item"
