@@ -117,8 +117,9 @@ class DashboardController extends Controller
             // return view('dashboard.superadmin')->with($data);
 
         } elseif ($roleID == 27) {
-
-            $data['ministry'] = DB::table('gov_case_office')->whereIn('gov_case_office.level', [1, 3])->paginate(10);
+            $data['ministry'] = DB::table('gov_case_office')
+            ->whereIn('gov_case_office.level', [1, 3])
+            ->paginate(10);
 
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
@@ -147,7 +148,7 @@ class DashboardController extends Controller
                 $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
                 array_push($arrayd, $val);
             }
-            // return $arrayd;
+
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -160,7 +161,7 @@ class DashboardController extends Controller
             $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
             $data['total_appeal_case'] = AppealGovCaseRegister::count();
-            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)->count();
             $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
 
             $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('result', 2)
@@ -168,7 +169,8 @@ class DashboardController extends Controller
 
             $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
 
-            $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('result_sending_date')->count();
+            $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)
+                           ->whereNull('result_sending_date')->count();
 
             $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
 
@@ -177,7 +179,7 @@ class DashboardController extends Controller
                 ->orderBy('id', 'DESC')
                 ->count();
 
-            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
                 ->where('deleted_at', '=', null)
                 ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
                 ->orderBy('id', 'DESC')
@@ -208,7 +210,7 @@ class DashboardController extends Controller
 
             $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
             $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            // $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
             // return $data['sent_to_solicitor_case'];
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
@@ -400,7 +402,7 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
-                ->where('is_final_order', null)
+                ->where('is_final_order', 0)
                 ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
                 ->orderBy('id', 'DESC')
                 ->where('deleted_at', null)->count();
@@ -619,7 +621,7 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
-                ->where('is_final_order', null)
+                ->where('is_final_order', 0)
                 ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
                 ->orderBy('id', 'DESC')
                 ->where('deleted_at', null)->count();
@@ -764,7 +766,7 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
-                ->where('is_final_order', null)
+                ->where('is_final_order', 0)
                 ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
                 ->orderBy('id', 'DESC')
                 ->where('deleted_at', null)->count();
@@ -905,7 +907,7 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('appeal_office_id', $finalOfficeIds)
-                ->where('is_final_order', null)
+                ->where('is_final_order', 0)
                 ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
                 ->orderBy('id', 'DESC')
                 ->where('deleted_at', null)->count();
@@ -1019,7 +1021,6 @@ class DashboardController extends Controller
 
     public function countHighCourtRunningCase($id)
     {
-
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
             ->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
             $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
@@ -1271,7 +1272,7 @@ class DashboardController extends Controller
         $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
         $data['total_appeal_case'] = AppealGovCaseRegister::count();
-        $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
+        $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)->count();
         $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
 
         $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('in_favour_govt', 2)
@@ -1288,7 +1289,7 @@ class DashboardController extends Controller
             ->orderBy('id', 'DESC')
             ->count();
 
-        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)
+        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
             ->where('deleted_at', '=', null)
             ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
             ->orderBy('id', 'DESC')

@@ -394,8 +394,8 @@ class GovCaseRegisterController extends Controller
             ->whereIn('gov_case_office.level', [1, 3]);
 
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
-            ->paginate(1000);
-        // return $data['ministry'];
+            ->paginate(10);
+
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -715,6 +715,7 @@ class GovCaseRegisterController extends Controller
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
             ->paginate(10);
 
+
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -768,7 +769,7 @@ class GovCaseRegisterController extends Controller
         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-        // return $data;
+    //   return $data['ministry'];
 
         // View
         $data['page_title'] = 'হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা';
