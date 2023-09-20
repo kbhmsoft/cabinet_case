@@ -147,6 +147,11 @@ Route::middleware('auth')->group(function () {
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
             Route::get('govt_not_against_case', [GovCaseRegisterController::class, 'govt_not_against_case'])->name('not_against');
             Route::get('govt_against_case', [GovCaseRegisterController::class, 'govt_against_case'])->name('against');
+            Route::get('mostImportantHighcourtCase', [GovCaseRegisterController::class, 'mostImportantHighcourtCase'])->name('mostImportantHighcourtCase');
+
+            Route::get('againstHighCourtCaseAppealPending', [GovCaseRegisterController::class, 'againstHighCourtCaseAppealPending'])->name('againstHighCourtCaseAppealPending');
+            Route::get('sentToSolicitorCaseList', [GovCaseRegisterController::class, 'sentToSolicitorCaseList'])->name('sentToSolicitorCaseList');
+            Route::get('postponedInterimOrderCaseList', [GovCaseRegisterController::class, 'postponedInterimOrderCaseList'])->name('postponedInterimOrderCaseList');
 
             Route::get('division_wise/{id}', [GovCaseRegisterController::class, 'division_wise'])->name('division_wise');
             Route::get('get_details', [GovCaseRegisterController::class, 'get_details'])->name('get_details');
@@ -197,7 +202,7 @@ Route::middleware('auth')->group(function () {
             Route::post('appealMostImportantSave',[AppealGovCaseRegisterController::class, 'appealMostImportantSave'])->name('appealMostImportantSave');
             Route::get('appealCaseDetails/{id}', [AppealGovCaseRegisterController::class, 'appealCaseShow'])->name('appealCaseDetails');
             Route::get('appellateDivision/mostImportantCase', [AppealGovCaseRegisterController::class, 'appellateDivisionMostImportantCase'])->name('appellateDivisionMostImportantCase');
-
+            Route::get('mostImportantAppealCase', [AppealGovCaseRegisterController::class, 'mostImportantAppealCase'])->name('mostImportantAppealCase');
             Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
 

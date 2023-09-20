@@ -79,6 +79,10 @@
                                     </li>
                                 @endcan
 
+                                <?php
+                                // $roleID = Auth()->user()->role_id;
+                                ?>
+                                {{-- @if ($roleID == 27) --}}
                                 <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
@@ -86,6 +90,9 @@
                                         <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
                                     </a>
                                 </li>
+                                {{-- @end
+                                    if --}}
+
 
                                 <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
@@ -144,13 +151,19 @@
                                         </a>
                                     </li>
 
+                                    {{-- <?php
+                                    // $roleID = Auth()->user()->role_id;
+                                    ?>
+                                    @if ($roleID == 27) --}}
                                     <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}" class="menu-link">
+                                        <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}"
+                                            class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
                                         </a>
                                     </li>
+                                    {{-- @endif --}}
 
                                     <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
@@ -276,7 +289,7 @@
                 @endcan
 
                 @can('manage_office_menu')
-                    <li class="menu-item {{ request()->is('cabinet/office','cabinet/office/*', 'cabinet/office/create') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/office', 'cabinet/office/*', 'cabinet/office/create') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="la la-briefcase"></i> অফিস

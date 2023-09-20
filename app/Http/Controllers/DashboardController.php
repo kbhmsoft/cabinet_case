@@ -183,6 +183,16 @@ class DashboardController extends Controller
                 ->orderBy('id', 'DESC')
                 ->count();
 
+            $data['most_important_appeal_case'] = AppealGovCaseRegister::orderby('id', 'DESC')
+                ->where('deleted_at', '=', null)
+                ->where('most_important', 1)
+                ->count();
+
+            $data['most_important_highcourt_case'] = GovCaseRegister::orderby('id', 'DESC')
+                ->where('deleted_at', '=', null)
+                ->where('most_important', 1)
+                ->count();
+
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
 
@@ -206,9 +216,7 @@ class DashboardController extends Controller
             $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
             return view('dashboard.cabinet.cabinet_admin')->with($data);
         } elseif ($roleID == 28) {
-            // Superadmin dashboard
 
-            // Counter
             $data['total_case'] = GovCaseRegister::count();
             $data['running_case'] = GovCaseRegister::where('status', 1)->count();
             $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
@@ -299,7 +307,7 @@ class DashboardController extends Controller
                 $finalOfficeIds[] = $officeID;
                 $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
             }
-            // return  $finalOfficeIds;
+
             $data['total_highcourt'] = GovCaseRegister::whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -408,11 +416,11 @@ class DashboardController extends Controller
                 $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
                 $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
                 $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseHighCourtAppealPendingCase($val->id)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
                 $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
                 array_push($arrayd, $val);
             }
-
+            // return $arrayd;
             $ministrydata = array();
             $departmentdata = array();
 
@@ -500,8 +508,9 @@ class DashboardController extends Controller
             $data['page_title'] = 'মন্ত্রণালয়ের সচিবের সহকারীর ড্যাশবোর্ড';
             return view('dashboard.cabinet.admin')->with($data);
         } elseif ($roleID == 31) {
-            $childOfficeIds = [];
 
+
+            $childOfficeIds = [];
             $childOfficeQuery = DB::table('gov_case_office')
                 ->select('id')
                 ->where('parent', $officeID)->get();
@@ -511,14 +520,13 @@ class DashboardController extends Controller
             }
 
             $finalOfficeIds = [];
-
             if (empty($childOfficeIds)) {
                 $finalOfficeIds[] = $officeID;
             } else {
                 $finalOfficeIds[] = $officeID;
                 $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
             }
-            // return  $finalOfficeIds;
+
             $data['total_highcourt'] = GovCaseRegister::whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -627,11 +635,11 @@ class DashboardController extends Controller
                 $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
                 $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
                 $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseHighCourtAppealPendingCase($val->id)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
                 $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
                 array_push($arrayd, $val);
             }
-
+            // return $arrayd;
             $ministrydata = array();
             $departmentdata = array();
 
@@ -640,6 +648,7 @@ class DashboardController extends Controller
             // $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+
 
             $data['page_title'] = 'মিনিস্ট্রি এডমিনের সহকারীর ড্যাশবোর্ড';
             return view('dashboard.cabinet.min_admin')->with($data);
@@ -662,7 +671,7 @@ class DashboardController extends Controller
                 $finalOfficeIds[] = $officeID;
                 $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
             }
-            // return  $finalOfficeIds;
+
             $data['total_highcourt'] = GovCaseRegister::whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -760,7 +769,7 @@ class DashboardController extends Controller
                 ->orderBy('id', 'DESC')
                 ->where('deleted_at', null)->count();
 
-            $officeId = Auth::user()->office_id;
+            // $officeId = Auth::user()->office_id;
             $data['ministry'] = DB::table('gov_case_office')
                 ->where('gov_case_office.parent', $finalOfficeIds)
                 ->orwhere('id', $finalOfficeIds)
@@ -771,7 +780,7 @@ class DashboardController extends Controller
                 $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
                 $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
                 $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseHighCourtAppealPendingCase($val->id)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
                 $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
                 array_push($arrayd, $val);
             }
@@ -912,7 +921,7 @@ class DashboardController extends Controller
                 $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
                 $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
                 $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseHighCourtAppealPendingCase($val->id)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
                 $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
                 array_push($arrayd, $val);
             }
@@ -1050,9 +1059,9 @@ class DashboardController extends Controller
         return $query;
     }
 
-    public function countMinistryWiseHighCourtAppealPendingCase($id)
+    public function countMinistryWiseSolicitorPendingCase($id)
     {
-        $query = GovCaseRegister::where('is_appeal', null)->where('deleted_at', null)->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
+        $query = GovCaseRegister::whereNull('result_sending_date')->where('deleted_at', null)->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
             $query->where('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
         })->get();
         return $query;
@@ -1080,7 +1089,7 @@ class DashboardController extends Controller
 
     public function countMinistryWiseAppealRunningCase($id)
     {
-        $query = AppealGovCaseRegister::where('is_final_order', null)->where('deleted_at', null)->orderby('id', 'DESC')->where('appeal_office_id', $id)->get();
+        $query = AppealGovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)->orderby('id', 'DESC')->where('appeal_office_id', $id)->get();
         return $query;
     }
     public function hearing_date_today()
@@ -1246,7 +1255,7 @@ class DashboardController extends Controller
             $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
             $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
             $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-            $val->result_sending_count = $this->countMinistryWiseHighCourtAppealPendingCase($val->id)->count();
+            $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
             $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
             array_push($arrayd, $val);
         }

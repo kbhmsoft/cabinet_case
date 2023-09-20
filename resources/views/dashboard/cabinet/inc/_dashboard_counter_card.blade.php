@@ -27,18 +27,8 @@
 </style>
 
 <div class="row mb-5">
-
-    {{-- <div class="col-md-3">
-        <div class="card-counter primary">
-           <a href="{{ route('cabinet.case.running') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-           <!-- <span class="count-numbers"><a href="{{ route('cabinet.case.running') }}"><?= en2bn($running_case) ?></a></span> -->
-           <span class="count-numbers"><a href="{{ route('cabinet.case.running') }}"><?= en2bn($running_case_appeal) ?></a></span>
-           <span class="count-name"><a href="{{ route('cabinet.case.running') }}">মোট মামলা</a></span>
-        </div>
-     </div> --}}
-
     <div class="col-md-3">
-        <div class="card-counter success">
+        <div class="card-counter danger">
             <a href="{{ route('cabinet.case.highcourt') }}"><i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($total_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
@@ -112,6 +102,20 @@
                     মামলা</a></span>
         </div>
     </div>
+
+
+    <div class="col-md-3">
+        <div class="card-counter info">
+            <a href="{{ route('cabinet.case.againstHighCourtCaseAppealPending') }}"><i
+                    class="fa fas fa-layer-group text-white"></i></a>
+            <span class="count-numbers"><a
+                    href="{{ route('cabinet.case.againstHighCourtCaseAppealPending') }}"><?= en2bn($against_high_court_case_appeal_pending) ?></a></span>
+            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                <a href="{{ route('cabinet.case.againstHighCourtCaseAppealPending') }}">সরকারের বিপক্ষে আপিলের <br>জন্য
+                    পেন্ডিং</a></span>
+        </div>
+    </div>
+    {{--
     <div class="col-md-3">
         <div class="card-counter info">
             <a href="{{ route('cabinet.case.against') }}"><i class="fa fas fa-layer-group text-white"></i></a>
@@ -119,8 +123,7 @@
             <span class="count-name">সরকারের বিপক্ষে আপিলের <br>জন্য
                 পেন্ডিং</a></span>
         </div>
-    </div>
-
+    </div> --}}
 </div>
 
 <div class="row mb-5">
@@ -133,24 +136,37 @@
                     পেন্ডিং</a></span>
         </div>
     </div> --}}
-
-
-    <div class="col-md-3">
+    {{-- <div class="col-md-3">
         <div class="card-counter primary">
             <i class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><?= en2bn($sent_to_solicitor_case) ?></a></span>
             <span class="count-name">জবাব পেন্ডিং</a></span>
         </div>
+    </div> --}}
+
+    <div class="col-md-3">
+        <div class="card-counter info">
+            <a href="{{ route('cabinet.case.sentToSolicitorCaseList') }}"><i
+                    class="fa fas fa-layer-group text-white"></i></a>
+            <span class="count-numbers"><a
+                    href="{{ route('cabinet.case.sentToSolicitorCaseList') }}"><?= en2bn($sent_to_solicitor_case) ?></a></span>
+            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                <a href="{{ route('cabinet.case.sentToSolicitorCaseList') }}">জবাব পেন্ডিং</a></span>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter primary">
-            <i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><?= en2bn($against_postpond_order) ?></a></span>
-            <span class="count-name">স্থগিতাদেশ অন্তর্বর্তীকালীন
-                <br>পেন্ডিং মামলা</a></span>
+        <div class="card-counter info">
+            <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"><i
+                    class="fa fas fa-layer-group text-white"></i></a>
+            <span class="count-numbers"><a
+                    href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"><?= en2bn($against_postpond_order) ?></a></span>
+            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}">স্থগিতাদেশ অন্তর্বর্তীকালীন
+                    <br>পেন্ডিং মামলা</a></span>
         </div>
     </div>
+
 
     <div class="col-md-3">
         <div class="card-counter primary">

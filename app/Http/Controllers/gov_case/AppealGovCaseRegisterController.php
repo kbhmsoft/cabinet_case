@@ -316,7 +316,7 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
-            ->where('is_final_order', null)
+            ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
         // return $query;
 
@@ -1736,7 +1736,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
             ->paginate(10);
-
+// return $data['ministry'];
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -1792,9 +1792,6 @@ class AppealGovCaseRegisterController extends Controller
         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-        // return $data;
-
-        // View
         $data['page_title'] = 'আপিল বিভাগে চলমান মামলা';
 
         return view('dashboard.cabinet.cabinet_admin_appeal_running_case')->with($data);
