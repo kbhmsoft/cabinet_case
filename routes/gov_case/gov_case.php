@@ -179,6 +179,7 @@ Route::middleware('auth')->group(function () {
             Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
+            Route::get('final/order/{id}', [GovCaseRegisterController::class, 'finalOrderEdit'])->name('finalOrderEdit');
             Route::get('leave-to-appeal/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealCreate'])->name('leaveToAppealCreate');
             Route::get('leave-to-appeal-answer/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealAnswerCreate'])->name('leaveToAppealAnswerCreate');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
