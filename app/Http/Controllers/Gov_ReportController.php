@@ -180,11 +180,17 @@ class Gov_ReportController extends Controller
                     $data['results'][$key]['petitioner']=$value->concern_user_id;
                     $data['results'][$key]['content']=$value->subject_matter;
                     $data['results'][$key]['importaceReason']=$value->important_cause;
+                    // $data['results'][$key]['mulBibadi']  = $this->imprtant_case_mul_bibadi($data['results'][$key]['caseID']);
+                    // $data['results'][$key]['otherBibadi']= $this->imprtant_case_other_bibadi($data['results'][$key]['caseID']);
+                    // $data['results'][$key]['lastStep']= $this->imprtant_case_last_taken_step($data['results'][$key]['caseID']);
+                    // $data['results'][$key]['courtName']= $this->imprtant_case_court_name($data['results'][$key]['courtID']);
+                    // $data['results'][$key]['petitionerName']= $this->imprtant_case_petitioner_name($data['results'][$key]['petitioner']);
+
                     $data['results'][$key]['mulBibadi']  = $this->imprtant_case_mul_bibadi($data['results'][$key]['caseID']);
                     $data['results'][$key]['otherBibadi']= $this->imprtant_case_other_bibadi($data['results'][$key]['caseID']);
-                    $data['results'][$key]['lastStep']= $this->imprtant_case_last_taken_step($data['results'][$key]['caseID']);
-                    $data['results'][$key]['courtName']= $this->imprtant_case_court_name($data['results'][$key]['courtID']);
-                    $data['results'][$key]['petitionerName']= $this->imprtant_case_petitioner_name($data['results'][$key]['petitioner']);
+                    $data['results'][$key]['lastStep']= ' ';
+                    $data['results'][$key]['courtName']= ' ';
+                    $data['results'][$key]['petitionerName']= ' ';
                 }
           
             // return $data;
@@ -302,7 +308,7 @@ class Gov_ReportController extends Controller
     public function imprtant_case_last_taken_step($caseID){
 
         // $query = GovCaseLog::where('gov_case_id', $caseID)->first()->case_status->status_name;
-        $query = GovCaseRegister::where('id', $caseID)->first()->case_status->status_name;
+        $query = GovCaseRegister::where('id', $caseID)->first();
         return $query;
     }
 
