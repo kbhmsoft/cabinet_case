@@ -162,66 +162,28 @@
                                     <td>{{ $case->result_short_dtails }}</td>
                                 </tr>
                             @endif
-
-
+                            {{-- $case->date_issuing_rule_nishi ?? '' --}}
+                              {{-- {{dd($case->date_issuing_rule_nishi)}} --}}
                             <tr>
                                 <th scope="row">ফলাফল</th>
                                 <td>
                                     @if ($case->result == '1')
-                                        জয়!
-                                    @elseif($case->result == '0')
-                                        পরাজয়!
+                                    সরকারের পক্ষে
+                                    @elseif($case->result == '2')
+                                    সরকারের বিপক্ষে
                                     @else
                                         চলমান
                                     @endif
                                 </td>
-                                {{-- @dd($case->result) --}}
                             </tr>
-
-                            @if (!empty($case->lost_reason))
-                                <tr>
-                                    <th scope="row">পরাজয়ের কারণ</th>
-                                    <td>{{ $case->lost_reason ?? '-' }}</td>
-                                </tr>
-                            @endif
                             <tr>
-                                <th scope="row">মামলায় হেরে গিয়ে কি আপিল করা হয়েছে</th>
-                                <td>
-                                    @if ($case->is_lost_appeal == 2)
-                                        হ্যা!
-                                    @else
-                                        না!
-                                    @endif
-                                </td>
+                                <th scope="row">রুল ইস্যুর তারিখ</th>
+                                <td>{{ $case->date_issuing_rule_nishi ?? '-' }}</td>
                             </tr>
-                            @if (!empty($case->status))
-                                <tr>
-                                    <th scope="row">মামলার বর্তমান অবস্থান</th>
-                                    @if ($case->status == 1)
-                                        <td>{{ $case->case_status->status_name ?? '-' }}</td>
-                                    @elseif ($case->status == 3)
-                                        <td> আর্কাইভ !</td>
-                                    @endif
-                                </tr>
-                            @endif
                             <tr>
                                 <th scope="row">মন্তব্য</th>
                                 <td>{{ $case->comments ?? '-' }}</td>
                             </tr>
-                            <tr>
-                                <th scope="row">বর্তমান ষ্ট্যাটাস</th>
-                                <td>
-                                    @if ($case->status == 1)
-                                        নতুন চলমান!
-                                    @elseif ($case->status == 2)
-                                        আপিল করা হয়েছে!
-                                    @elseif ($case->status == 3)
-                                        সম্পাদিত !
-                                    @endif
-
-                                </td>
-                            </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -303,6 +265,7 @@
                             </thead>
                             <tbody class="text-center">
                                 @forelse ($hearings as $key=> $row)
+
                                     <tr>
                                         <td class="tg-nluh text-center" scope="row">{{ en2bn($key + 1) }}.</td>
                                         <td class="tg-nluh text-center">{{ en2bn($row->hearing_date) }}</td>

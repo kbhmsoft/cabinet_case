@@ -228,18 +228,18 @@
                             <tr class="bg-light-primary">
                                 <th scope="row" width="10">ক্রম</th>
                                 <th scope="row" class="text-center" width="200">নাম</th>
-                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>
-                                <th scope="row" class="text-center">ঠিকানা</th> --}}
+                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th> --}}
+                                <th scope="row" class="text-center">ঠিকানা</th>
                             </tr>
                         </thead>
                         <tbody>
+
                             @php $k = 1; @endphp
                             @foreach ($govCaseRegister['caseBadi'] as $badi)
                                 <tr>
                                     <td>{{ en2bn($k) }}.</td>
-                                    <td>{{ $badi->name }}</td>
-                                    {{-- <td>{{ $badi->spouse_name }}</td>
-                                    <td>{{ $badi->address }}</td> --}}
+                                    <td class="text-center">{{ $badi->name }}</td>
+                                    <td class="text-center">{{ $badi->address }}</td>
                                 </tr>
                                 @php $k++; @endphp
                             @endforeach
@@ -256,8 +256,8 @@
                             <tr class="bg-light-primary">
                                 <th scope="row" width="10">ক্রম</th>
                                 <th scope="row" class="text-center" width="200">নাম</th>
-                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>
-                                <th scope="row" class="text-center">ধরন</th> --}}
+                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>--}}
+                                <th scope="row" class="text-center">ধরন</th>
                             </tr>
                         </thead>
                         {{-- <tbody>
@@ -277,11 +277,14 @@
                             @php $k = 1; @endphp
                             @foreach ($govCaseRegister['mainBibadi'] as $bibadi)
                                 <tr>
+                                    {{-- {{dd($bibadi)}} --}}
                                     <td>{{ en2bn($k) }}.</td>
-                                    <td class="tg-nluh">
+                                    <td class="tg-nluh text-center">
                                         {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
                                     {{-- <td>{{ $badi->spouse_name }}</td>
                                     <td>{{ $badi->address }}</td> --}}
+                                    <td class="tg-nluh text-center">
+                                        {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
                                 </tr>
                                 @php $k++; @endphp
                             @endforeach
