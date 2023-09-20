@@ -165,6 +165,11 @@ $roleID = Auth::user()->role_id;
                                             {{ $caseActivityLog->message ?? '-'}}
                                             <a href="{{ route('cabinet.case_audit.appeal_against_postpond_order_case_log_details', $caseActivityLog->id) }}" target="_blank" class="btn btn-primary btn-sm float-right">{{ 'বিস্তারিত দেখুন' }}</a>
                                         </h5>
+                                        @elseif ( $caseActivityLog->message == 'মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে হালনাগাদ করা হয়েছে')
+                                        <h5>
+                                            {{ $caseActivityLog->message ?? '-'}}
+                                            <a href="{{ route('cabinet.case_audit.appeal_against_postpond_order_case_log_details', $caseActivityLog->id) }}" target="_blank" class="btn btn-primary btn-sm float-right">{{ 'বিস্তারিত দেখুন' }}</a>
+                                        </h5>
                                     @endif
                                 </td>
                             </tr>

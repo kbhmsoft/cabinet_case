@@ -2323,10 +2323,10 @@ class GovCaseRegisterController extends Controller
             $cs_activity_data['case_register_id'] = $caseId;
             if ($request->formType != 'edit') {
                 $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                $cs_activity_data['message'] = 'সলিসিটর অনুবিভাগে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             } else {
                 $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                $cs_activity_data['message'] = 'সলিসিটর অনুবিভাগে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             }
             $cs_activity_data['old_data'] = null;
             $cs_activity_data['new_data'] = json_encode($caseRegisterData);
@@ -2406,10 +2406,10 @@ class GovCaseRegisterController extends Controller
             $cs_activity_data['case_register_id'] = $caseId;
             if ($request->formType != 'edit') {
                 $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                $cs_activity_data['message'] = 'স্থগিতাদেশের বিপরীতে ব্যাবস্থা গ্রহণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             } else {
                 $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                $cs_activity_data['message'] = 'স্থগিতাদেশের বিপরীতে ব্যাবস্থা গ্রহণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             }
             $cs_activity_data['old_data'] = null;
             $cs_activity_data['new_data'] = json_encode($caseRegisterData);
@@ -2466,9 +2466,7 @@ class GovCaseRegisterController extends Controller
             [
                 'case_id' => 'required',
             ],
-            [
-                'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
-            ]
+           
         );
         try {
             $caseId = GovCaseRegisterRepository::storeFinalOrder($request);
@@ -2487,10 +2485,10 @@ class GovCaseRegisterController extends Controller
             $cs_activity_data['case_register_id'] = $caseId;
             if ($request->formType != 'edit') {
                 $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                $cs_activity_data['message'] = 'মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             } else {
                 $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                $cs_activity_data['message'] = 'মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
             }
             $cs_activity_data['old_data'] = null;
             $cs_activity_data['new_data'] = json_encode($caseRegisterData);
