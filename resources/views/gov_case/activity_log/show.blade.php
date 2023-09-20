@@ -73,7 +73,7 @@ $roleID = Auth::user()->role_id;
                 <div class="col-md-2"></div>
                 <div class="col-md-4">
                     <h5><span class="font-weight-bolder">মামলা নং: </span>{{ en2bn($case->case_no) }}</h5>
-                    <h5><span class="font-weight-bolder">আদালতের নাম: </span> {{ $case->court->court_name }}</h5>
+                    {{-- <h5><span class="font-weight-bolder">আদালতের নাম: </span> {{ $case->court->court_name }}</h5> --}}
                     
                 </div>
                 <div class="col-md-4">

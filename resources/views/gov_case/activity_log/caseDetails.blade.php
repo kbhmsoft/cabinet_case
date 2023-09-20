@@ -35,12 +35,12 @@
             <h4 class="font-weight-bolder">সাধারণ তথ্য</h4>
             <table class="tg">
                 <thead>
-                    <tr>
+                    {{-- <tr>
                         <th class="tg-19u4" width="130">আদালতের নাম</th>
                         <td class="tg-nluh">
                             {{ App\Models\Court::where('id', $data['court_id'])->first()->court_name }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th class="tg-19u4" width="130">মামলার ক্যাটেগরি</th>
                         <td class="tg-nluh">
@@ -73,7 +73,7 @@
                         <td class="tg-nluh"><a href="{{ route('case.details', $data['ref_gov_case_no']) }}" target="_blank">{{ $data['ref_gov_case_no'] }}</a></td>
                     </tr>
                     @endif
-                    <tr>
+                    {{-- <tr>
                         <th class="tg-19u4">মামলার বর্তমান অবস্থান</th>
                         <td class="tg-nluh">
                             {{ DB::table('case_status')->select('status_name')->where('id', '=', $data['case_status_id'])->first()->status_name }} এর জন্য
@@ -82,7 +82,7 @@
                             </b>
                             এর কাছে
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th class="tg-19u4">বর্তমান ষ্ট্যাটাস</th>
                         <td class="tg-nluh">
