@@ -190,7 +190,7 @@ class GovCaseActivityLogController extends Controller
         $data['caseActivityLog'] = GovCaseActivityLog::where('id', $id)->orderby('id', 'DESC')->first();
 
         $data['page_title'] = 'নিরীক্ষা মামলার বিস্তারিত তথ্য ';
-        return $data;
+        // return $data;
         return view('gov_case.activity_log.caseDetails')->with($data);
     }
 
