@@ -165,7 +165,6 @@
 </div>
 
 <div class="row mb-5">
-
     <div class="col-md-3">
         <div class="card-counter info">
             <a href="{{ route('cabinet.case.appellateDivisionComplete') }}"><i

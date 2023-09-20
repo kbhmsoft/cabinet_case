@@ -9,7 +9,7 @@
                 <tr>
                     <th scope="col" width="30">#</th>
                     <th scope="col"></th>
-                    <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
+                    <th scope="col">আপিল বিভাগে মোট মামলা</th>
                 </tr>
             </thead>
             <tbody>
