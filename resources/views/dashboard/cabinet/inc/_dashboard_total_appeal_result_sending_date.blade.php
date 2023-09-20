@@ -9,7 +9,7 @@
                 <tr>
                     <th scope="col" width="30">#</th>
                     <th scope="col"></th>
-                    <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
+                    <th scope="col">জবাব পেন্ডিং</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                         <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
                         <td>
                             <h4><a
-                                    href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a>
+             href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a>
                             </h4>
                         </td>
                         <td align="center">{{ en2bn($val->result_sending_date) }}</td>

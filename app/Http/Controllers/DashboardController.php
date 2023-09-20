@@ -116,10 +116,11 @@ class DashboardController extends Controller
             return view('dashboard.cabinet.super_admin')->with($data);
             // return view('dashboard.superadmin')->with($data);
 
-        } elseif ($roleID == 27) {
+        }
+        elseif ($roleID == 27) {
             $data['ministry'] = DB::table('gov_case_office')
-            ->whereIn('gov_case_office.level', [1, 3])
-            ->paginate(10);
+                ->whereIn('gov_case_office.level', [1, 3])
+                ->paginate(10);
 
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
@@ -144,7 +145,7 @@ class DashboardController extends Controller
                 $val->highcourt_running_case = $this->countHighCourtRunningCase($finalOfficeIds)->count();
                 $val->appeal_running_case = $this->countAppealRunningCase($finalOfficeIds)->count();
                 $val->against_gov = $this->countHighCourtAgainstGovCase($finalOfficeIds)->count();
-                $val->result_sending_count = $this->countHighCourtAppealPendingCase($finalOfficeIds)->count();
+                $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($finalOfficeIds)->count();
                 $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
                 array_push($arrayd, $val);
             }
@@ -161,7 +162,9 @@ class DashboardController extends Controller
             $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
             $data['total_appeal_case'] = AppealGovCaseRegister::count();
-            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)->count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
+            ->where('deleted_at', '=', null)
+            ->count();
             $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
 
             $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('result', 2)
@@ -170,7 +173,9 @@ class DashboardController extends Controller
             $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
 
             $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)
-                           ->whereNull('result_sending_date')->count();
+                ->where('is_final_order', 0)
+                ->whereNull('result_sending_date')
+                ->count();
 
             $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
 
@@ -381,7 +386,7 @@ class DashboardController extends Controller
                 function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);
                 }
-            )->whereNull('result_sending_date')->where('deleted_at', null)->count();
+            )->whereNull('result_sending_date')->where('is_final_order', 0)->where('deleted_at', null)->count();
 
             $data['against_postpond_order'] = GovCaseRegister::whereHas(
                 'mainBibadis',
@@ -511,7 +516,6 @@ class DashboardController extends Controller
             return view('dashboard.cabinet.admin')->with($data);
         } elseif ($roleID == 31) {
 
-
             $childOfficeIds = [];
             $childOfficeQuery = DB::table('gov_case_office')
                 ->select('id')
@@ -600,7 +604,10 @@ class DashboardController extends Controller
                 function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);
                 }
-            )->whereNull('result_sending_date')->where('deleted_at', null)->count();
+            )->whereNull('result_sending_date')
+                ->where('is_final_order', 0)
+                ->where('deleted_at', null)
+                ->count();
 
             $data['against_postpond_order'] = GovCaseRegister::whereHas(
                 'mainBibadis',
@@ -650,7 +657,6 @@ class DashboardController extends Controller
             // $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
 
             $data['page_title'] = 'মিনিস্ট্রি এডমিনের সহকারীর ড্যাশবোর্ড';
             return view('dashboard.cabinet.min_admin')->with($data);
@@ -745,7 +751,11 @@ class DashboardController extends Controller
                 function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);
                 }
-            )->whereNull('result_sending_date')->where('deleted_at', null)->count();
+            )
+                ->whereNull('result_sending_date')
+                ->where('is_final_order', 0)
+                ->where('deleted_at', null)
+                ->count();
 
             $data['against_postpond_order'] = GovCaseRegister::whereHas(
                 'mainBibadis',
@@ -886,7 +896,9 @@ class DashboardController extends Controller
                 function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);
                 }
-            )->whereNull('result_sending_date')->where('deleted_at', null)->count();
+            )->whereNull('result_sending_date')
+                ->where('is_final_order', 0)
+                ->where('deleted_at', null)->count();
 
             $data['against_postpond_order'] = GovCaseRegister::whereHas(
                 'mainBibadis',
@@ -1052,19 +1064,27 @@ class DashboardController extends Controller
         })->get();
         return $query;
     }
-    public function countHighCourtAppealPendingCase($id)
+    public function countHighCourtSolicitorPendingCase($id)
     {
-        $query = GovCaseRegister::where('is_appeal', null)->where('deleted_at', null)->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-            $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-        })->get();
+        $query = GovCaseRegister::whereNull('result_sending_date')
+            ->where('is_final_order', 0)
+            ->where('deleted_at', null)
+            ->orderby('id', 'DESC')
+            ->whereHas('bibadis', function ($query) use ($id) {
+                $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+            })->get();
         return $query;
     }
 
     public function countMinistryWiseSolicitorPendingCase($id)
     {
-        $query = GovCaseRegister::whereNull('result_sending_date')->where('deleted_at', null)->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-            $query->where('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-        })->get();
+        $query = GovCaseRegister::whereNull('result_sending_date')
+            ->where('is_final_order', 0)
+            ->where('deleted_at', null)
+            ->orderby('id', 'DESC')
+            ->whereHas('bibadis', function ($query) use ($id) {
+                $query->where('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+            })->get();
         return $query;
     }
     public function countHighCourtAppealPospondOrderPendingCase($id)
@@ -1084,7 +1104,7 @@ class DashboardController extends Controller
     }
     public function countAppealRunningCase($id)
     {
-        $query = AppealGovCaseRegister::where('is_final_order', null)->where('deleted_at', null)->orderby('id', 'DESC')->whereIn('appeal_office_id', $id)->get();
+        $query = AppealGovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)->orderby('id', 'DESC')->whereIn('appeal_office_id', $id)->get();
         return $query;
     }
 

@@ -1730,7 +1730,7 @@ class AppealGovCaseRegisterController extends Controller
         $ministry = DB::table('gov_case_office')
             ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
                 DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.appeal_office_id = gov_case_office.id AND
-                agcr.is_final_order IS NULL AND agcr.deleted_at IS NULL) AS total_running_appeal_case')
+                agcr.is_final_order = 0 AND agcr.deleted_at IS NULL) AS total_running_appeal_case')
             )
             ->whereIn('gov_case_office.level', [1, 3]);
 
