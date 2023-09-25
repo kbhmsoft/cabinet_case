@@ -3,7 +3,7 @@
 @endphp --}}
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -37,8 +37,9 @@
         addFileRowFunc();
         addReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
-        addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
+        addFinalOrderFileRowFunc();
+        $('select').select2();
         /*$('.main_respondent').select2();
         $('#ministry_id').select2();*/
 
@@ -247,19 +248,22 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
-            // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
-            // console.log(count);
+
             if (countVal != 1) {
                 items +=
                     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             }
             items += '</tr>';
-            // console.log(items);
             return items;
         }
     }
+
+
+
+
+
 
     //remove row function
     function removeMainBibadiRow(id) {
@@ -269,6 +273,7 @@
 
     $("#addBibadiRow").click(function(e) {
         addBibadiRowFunc();
+
     });
 
     //add row function
@@ -285,18 +290,19 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
-            // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
-            // console.log(count);
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+
+                items += '<input type="hidden" name="bibadi_id[]" value="">';
             if (type == 'other') {
                 items +=
                     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             }
             items += '</tr>';
-            // console.log(items);
+
             return items;
         }
+
+        $('.other_respondentCls2').select2();
     }
 
     //remove row function
@@ -1006,6 +1012,17 @@
         }
     }
 
+
+    // main respondent and others respondent field i want to add select2
+    $(document).ready(function() {
+        // $('.main_respondent').select2();
+        $('select').select2();
+    });
+
+    // $(document).ready(function() {
+    //     // $('.main_respondent').select2();
+    //     $('#ministry_id').select2();
+    // });
     //Attachment Title Change
     function attachmentTitle(id) {
         // var value = $('#customFile' + id).val();

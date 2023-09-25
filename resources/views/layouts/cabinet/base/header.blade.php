@@ -1,8 +1,22 @@
 <style>
     .notification_count {
-    position: absolute;
-    top: 36px;
-}
+        position: absolute;
+        top: 36px;
+    }
+
+    .header-department-name {
+        line-height: 28px;
+    }
+    .custom-span {
+        font-weight: bold;
+        font-size: 1.05rem;
+        color: #fff;
+        background-color: #3498db;
+        padding: 0.25rem 1.25rem;
+        border-radius: 5px;
+        margin-right: 0.75rem;
+        margin-top: 10px;
+    }
 </style>
 
 @php
@@ -10,11 +24,11 @@
     $roleID = Auth::user()->role_id;
 
     $case_status = DB::table('gov_case_registers')
-         ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
-         ->leftJoin('case_status', 'gov_case_registers.case_status_id', '=', 'case_status.id')
-         ->groupBy('gov_case_registers.case_status_id')
-         ->where('gov_case_registers.action_user_role_id', $roleID)
-         ->get();
+        ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
+        ->leftJoin('case_status', 'gov_case_registers.case_status_id', '=', 'case_status.id')
+        ->groupBy('gov_case_registers.case_status_id')
+        ->where('gov_case_registers.action_user_role_id', $roleID)
+        ->get();
     // dd($case_status);
     $notification_count = 0;
 
@@ -69,12 +83,27 @@
 
             <!--begin::User-->
             <div class="topbar-item">
-                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                    <!-- <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span> -->
-                    <span class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->name }}</span>
-                    <span class="label label-lg label-danger label-pill label-inline"><?= auth()->user()->role->name?></span>
+                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
+                    id="kt_quick_user_toggle" style="width:320px !important; height: min-content;">
+                    <div class="row header-department-name">
+                        <div class="col-12">
+                            <span
+                                class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->name }}</span>
+                            <span
+                                class="label label-lg label-danger label-pill label-inline"><?= auth()->user()->role->name ?></span>
+                        </div>
+
+                        <div class="col-12 pb-2">
+                            {{-- <span class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->govOffice->office_name_bn }}</span> --}}
+                            <span
+                                class="custom-span d-none d-md-inline">{{ Auth::user()->govOffice->office_name_bn }}</span>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
             <!--end::User-->
         </div>
         <!--end::Topbar-->

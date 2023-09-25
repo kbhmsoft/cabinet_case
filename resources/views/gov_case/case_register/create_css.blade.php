@@ -312,5 +312,8 @@
         padding-left: 10px;
         vertical-align: middle;
     }
+    .select2-selection{
+        height: 40px !important;
+    }
 
 </style>

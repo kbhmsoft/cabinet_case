@@ -2466,7 +2466,7 @@ class GovCaseRegisterController extends Controller
             [
                 'case_id' => 'required',
             ],
-           
+
         );
         try {
             $caseId = GovCaseRegisterRepository::storeFinalOrder($request);

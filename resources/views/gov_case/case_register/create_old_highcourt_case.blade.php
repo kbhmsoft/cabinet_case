@@ -128,7 +128,8 @@
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" name="case_no" id="case_no"
                                                                 class="form-control form-control-sm"
-                                                                placeholder="মামলা নং " required="required">
+                                                                placeholder="মামলা নং " required="required"
+                                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                                             <input type="hidden" name="caseId" value="">
                                                             <span class="text-danger d-none vallidation-message">This field
                                                                 can

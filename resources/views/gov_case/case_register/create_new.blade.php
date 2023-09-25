@@ -148,7 +148,7 @@
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required">
+                                                        required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -228,23 +228,26 @@
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
 
                                                         <tr>
-                                                            <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            <th style="height: 35px !IMPORTANT;">মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
-                                                            <th width="50">
+                                                            {{-- <select id="select2Dropdown" class="form-control">
+
+                                                            </select> --}}
+                                                            {{-- <th width="50">
                                                                 <a href="javascript:void();" id="addMainBibadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
-                                                            </th>
+                                                            </th> --}}
                                                         </tr>
                                                         <tr></tr>
                                                         <input type="hidden" id="mainBibadi_count" value="1">
                                                     </table>
+
                                                 </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
-
                                                         <tr>
                                                             <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
@@ -278,6 +281,7 @@
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
+                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
                                                                 </h3>
                                                             </div>
 
@@ -403,8 +407,9 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
+                                                                <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
                                                             </h3>
                                                         </div>
 
@@ -582,6 +587,7 @@
 
                                                     <div class="col-lg-6 mb-5">
                                                         <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
+                                                            <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
                                                         </label>
                                                         <input type="text" name="appeal_against_postpond_interim_order"
                                                             id="appeal_against_postpond_interim_order"
@@ -1062,6 +1068,7 @@
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
+                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
                                                                 </h3>
                                                             </div>
 
@@ -1158,8 +1165,9 @@
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
                                                             <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
+                                                                (কনটেম্প্ট মামলা সম্পর্কিত কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
+                                                                <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
                                                             </h3>
                                                         </div>
 
@@ -1222,6 +1230,13 @@
 
 @section('scripts')
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script>
+        $(document).ready(function() {
+            $('#select2Dropdown').select2();
+        });
+    </script>
+
+
 
     <script>
         $(document).ready(function() {
