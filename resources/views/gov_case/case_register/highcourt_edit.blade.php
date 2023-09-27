@@ -235,12 +235,12 @@
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
-                                                            <th width="50">
+                                                            {{-- <th width="50">
                                                                 <a href="javascript:void();" id="addMainBibadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
-                                                            </th>
+                                                            </th> --}}
                                                         </tr>
                                                         <tr></tr>
                                                         @php
@@ -252,7 +252,8 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                                       @foreach ($ministrys as $item)
+
+                                                                        @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -296,7 +297,8 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                                       @foreach ($ministrys as $item)
+
+                                                                        @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -505,7 +507,7 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>
@@ -1562,7 +1564,11 @@
     </script>
 
 
-
+    <script>
+        $(document).ready(function() {
+            $('#select2Dropdown').select2();
+        });
+    </script>
 
     @include('gov_case.case_register.create_js')
     <script type="text/javascript">
@@ -1592,22 +1598,6 @@
                 }
             });
 
-
-
-
-
-            // checkBox = document.getElementById('is_final_order');
-            // // Check if the element is selected/checked
-            // if (checkBox.checked) {
-            //     // Respond to the result
-            //     alert("Checkbox checked!");
-            // }
-            // if ($("#is_final_order").prop('checked') == true) {
-            //     //do something
-            //     alert(1)
-            // } else {
-            //     $('#finalOrderDiv').hide();
-            // }
             $("#court").change(function() {
                 var getCourt = $('#court').find(":selected").val();
                 if (getCourt == 1) {

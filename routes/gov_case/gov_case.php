@@ -126,6 +126,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/origincasedetails/{id}', [GovCaseRegisterController::class, 'getOriginCaseDetails']);
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
+
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('totalHighcourt', [GovCaseRegisterController::class, 'totalHighcourt'])->name('totalHighcourt');
@@ -183,6 +184,7 @@ Route::middleware('auth')->group(function () {
             Route::get('leave-to-appeal/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealCreate'])->name('leaveToAppealCreate');
             Route::get('leave-to-appeal-answer/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealAnswerCreate'])->name('leaveToAppealAnswerCreate');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
+            Route::get('highcourtDetailsPdf/{id}', [GovCaseRegisterController::class, 'highcourtDetailsPdf'])->name('highcourtDetailsPdf');
             Route::get('register/{id}', [GovCaseRegisterController::class, 'register'])->name('register');
             Route::post('getCaseCategory/{id}', [GovCaseRegisterController::class, 'getCaseCategory'])->name('getCaseCategory');
             route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class, 'ajax_badi_del']);
@@ -202,6 +204,7 @@ Route::middleware('auth')->group(function () {
             Route::get('appellateDivisionComplete', [AppealGovCaseRegisterController::class, 'appellateDivisionComplete'])->name('appellateDivisionComplete');
             Route::post('appealMostImportantSave',[AppealGovCaseRegisterController::class, 'appealMostImportantSave'])->name('appealMostImportantSave');
             Route::get('appealCaseDetails/{id}', [AppealGovCaseRegisterController::class, 'appealCaseShow'])->name('appealCaseDetails');
+            Route::get('appealDetailsPdf/{id}', [AppealGovCaseRegisterController::class, 'appealDetailsPdf'])->name('appealDetailsPdf');
             Route::get('appellateDivision/mostImportantCase', [AppealGovCaseRegisterController::class, 'appellateDivisionMostImportantCase'])->name('appellateDivisionMostImportantCase');
             Route::get('mostImportantAppealCase', [AppealGovCaseRegisterController::class, 'mostImportantAppealCase'])->name('mostImportantAppealCase');
             Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');

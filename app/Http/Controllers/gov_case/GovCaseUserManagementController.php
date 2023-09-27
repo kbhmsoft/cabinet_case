@@ -65,7 +65,6 @@ class GovCaseUserManagementController extends Controller
      */
     public function create()
     {
-
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $role = array('1', '27');
@@ -78,7 +77,6 @@ class GovCaseUserManagementController extends Controller
 
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
-       //Add Conditions
         $query = DB::table('users')->orderBy('id', 'DESC')->join('roles', 'users.role_id', '=', 'roles.id')->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')->where('users.is_gov', 1);
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -91,8 +89,6 @@ class GovCaseUserManagementController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
-
-
 
         $data['offices'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
@@ -119,13 +115,11 @@ class GovCaseUserManagementController extends Controller
             ->select('gov_case_office_type.*')
             ->get();
 
-
         $data['page_title'] = 'নতুন ব্যাবহারকারী এন্ট্রি ফরম';
         // dd($data);
 
         return view('gov_case.user_manage.add')->with($data);
     }
-
 
     public function store(Request $request)
     {
@@ -133,15 +127,23 @@ class GovCaseUserManagementController extends Controller
         $request->validate([
             'name' => 'required',
             'office_type' => 'nullable',
-            'ministry'=>'nullable',
-            'div_office'=>'nullable',
+            'ministry' => 'nullable',
+            'div_office' => 'nullable',
             // 'username' => 'required', 'max:100',
             'role_id' => 'required',
             'email' => 'required|unique:users,email',
             'office_id' => 'required',
             /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
             'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */
-            'password' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                // 'regex:/[@$!%*#?&]/',
+            ],
         ],
             [
                 'name.required' => 'পুরো নাম লিখুন',
@@ -155,9 +157,9 @@ class GovCaseUserManagementController extends Controller
         DB::table('users')->insert([
             'name' => $request->name,
             // 'username' =>$request->username,
-            'ministry'=> $request->ministry,
-            'div_office'=> $request->divOffice,
-            'office_type'=> $request->office_type,
+            'ministry' => $request->ministry,
+            'div_office' => $request->divOffice,
+            'office_type' => $request->office_type,
             'mobile_no' => $request->mobile_no,
             'email' => $request->email,
             'role_id' => $request->role_id,
@@ -189,9 +191,8 @@ class GovCaseUserManagementController extends Controller
         // dd($data['userManagement']);
 
         $data['roles'] = DB::table('roles')
-        ->select('id', 'name')
-        ->get();
-
+            ->select('id', 'name')
+            ->get();
 
         // dd($data['roles']);
         $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
@@ -217,10 +218,10 @@ class GovCaseUserManagementController extends Controller
             ->select('id', 'name')
             ->get();
 
-       $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-       $data['ministries'] = GovCaseOffice::where('level', 1)->get();
-       $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
-            // dd($data['userManagement'] );
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        $data['ministries'] = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
+        // dd($data['userManagement'] );
 
         $data['offices'] = GovCaseOffice::get();
         $data['page_title'] = 'ইউজার ইনফর্মেশন সংশোধন ফরম';
@@ -242,8 +243,8 @@ class GovCaseUserManagementController extends Controller
             // 'username' => 'required', 'unique:users', 'max:100',
             'role_id' => 'required',
             'office_type' => 'nullable',
-            'ministry'=>'nullable',
-            'div_office'=>'nullable',
+            'ministry' => 'nullable',
+            'div_office' => 'nullable',
             'office_id' => 'required',
             // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
             // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
@@ -276,9 +277,9 @@ class GovCaseUserManagementController extends Controller
             ->update(['name' => $request->name,
                 'username' => $request->username,
                 'mobile_no' => $request->mobile_no,
-                'office_type' =>  $request->office_type,
-                'ministry' =>  $request->ministry,
-                'div_office' =>  $request->div_office,
+                'office_type' => $request->office_type,
+                'ministry' => $request->ministry,
+                'div_office' => $request->div_office,
                 'signature' => $fileName,
                 'profile_pic' => $profilePic,
                 'email' => $request->email,

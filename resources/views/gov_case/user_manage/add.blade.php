@@ -1,4 +1,5 @@
 @extends('layouts.cabinet.cab_default')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 @section('content')
     <style type="text/css">
@@ -23,6 +24,10 @@
             box-sizing: border-box;
             height: 41px;
             font-size: 1.2rem
+        }
+
+        .special-character {
+            top: 10px;
         }
     </style>
     <br>
@@ -150,15 +155,16 @@
                                     <label for="password" class=" form-control-label">পাসওয়ার্ড <span
                                             class="text-danger">*</span></label>
                                     <input type="text" name="password" id="password" placeholder="পাসওয়ার্ড লিখুন"
-                                        class="form-control">
+                                        class="form-control" onkeyup="CheckPassword(this)">
                                     <span style="color: red">
                                         {{ $errors->first('password') }}
                                     </span>
+                                    {{-- <sub class="text-danger special-character">(পাসওয়ার্ডে অবশ্যই ৮ অক্ষর থাকতে হবে <br> )</sub> --}}
+                                </div>
+                                <div id="passwordValidation" style="color:red">
+
                                 </div>
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -226,19 +232,58 @@
     </div>
     <style>
         /* .select2-container .select2-selection--single {
-                            height: 37px !important;
-                        }
+                                        height: 37px !important;
+                                    }
 
-                        .select2-container--default .select2-selection--single .select2-selection__arrow {
-                            top: 5px !important;
-                        }
+                                    .select2-container--default .select2-selection--single .select2-selection__arrow {
+                                        top: 5px !important;
+                                    }
 
-                        .select2-container--default .select2-selection--single .select2-selection__rendered {
-                            line-height: 25px !important;
-                        } */
+                                    .select2-container--default .select2-selection--single .select2-selection__rendered {
+                                        line-height: 25px !important;
+                                    } */
     </style>
 @endsection
 @section('scripts')
+
+
+    <script>
+        function CheckPassword(inputtxt) {
+            var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,15}$/;
+            var message = [];
+
+            if (!inputtxt.value.match(passw)) {
+                if (!inputtxt.value.match(/^(?=.*\d)/)) {
+                    message.push("কমপক্ষে একটি সংখ্যাসূচক থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[a-z])/)) {
+                    message.push("কমপক্ষে একটি ছোট হাতের অক্ষর থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[A-Z])/)) {
+                    message.push("কমপক্ষে একটি বড় হাতের অক্ষর থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[^a-zA-Z0-9])/)) {
+                    message.push("কমপক্ষে একটি বিশেষ ক্যারেক্টার থাকতে হবে");
+                }
+                if (inputtxt.value.length < 8 || inputtxt.value.length > 15) {
+                    message.push("পাসওয়ার্ডের দৈর্ঘ্য 8 থেকে 20 অক্ষরের মধ্যে হওয়া উচিত");
+                }
+
+                $("#passwordValidation").html(message.join(', <br>'));
+                return false;
+            } else {
+                $("#passwordValidation").html("");
+                return true;
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('officeName').select2();
+        });
+    </script>
+
     <script>
         function myFunction() {
             confirm("আপনি কি সংরক্ষণ করতে চান?");

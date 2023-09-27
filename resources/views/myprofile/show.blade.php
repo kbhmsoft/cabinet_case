@@ -9,7 +9,7 @@
 <div class="card card-custom col-7">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
-         <h3 class="card-label"> ব্যাবহারকারীর বিস্তারিত </h3>
+         <h2 class="card-title h2 font-weight-bolder"> ব্যাবহারকারীর বিস্তারিত </h2>
       </div>
    </div>
       @if ($message = Session::get('success'))
@@ -55,21 +55,6 @@
          </span>
          <!-- <img src="uploads/signature/{{ $userManagement->signature }}" width="300" height="300"> -->
       </div>
-      <div class="d-flex mb-3">
-         <span class="text-dark-100 flex-root font-weight-bold font-size-h6">স্বাক্ষরঃ</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6">
-            @if($userManagement->signature != NULL)
-               <img src="{{url('/')}}/uploads/signature/{{ $userManagement->signature }}" width="300" height="50">
-            @else
-               <span class="text-dark-100 flex-root font-weight-bold font-size-h6"></span>
-            @endif
-         </span>
-         <!-- <img src="uploads/signature/{{ $userManagement->signature }}" width="300" height="300"> -->
-      </div>
-     <!--  <div class="d-flex mb-3">
-         <span class="text-dark-100 flex-root font-weight-bold font-size-h6">স্ট্যাটাসঃ</span>
-         <span class="text-dark flex-root font-weight-bolder font-size-h6"></span>
-      </div> -->
    </div>
    {{-- @endforeach --}}
 </div>

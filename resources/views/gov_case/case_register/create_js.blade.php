@@ -40,10 +40,6 @@
         addContemptFileRowFunc();
         addFinalOrderFileRowFunc();
         $('select').select2();
-        /*$('.main_respondent').select2();
-        $('#ministry_id').select2();*/
-
-
 
         //===========caseType================//
 
@@ -258,6 +254,8 @@
             items += '</tr>';
             return items;
         }
+
+        // $('.main_respondent').select2();
     }
 
 

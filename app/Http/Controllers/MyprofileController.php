@@ -29,13 +29,13 @@ class MyprofileController extends Controller
                         ->leftJoin('office', 'users.office_id', '=', 'office.id')
                         ->leftJoin('district', 'office.district_id', '=', 'district.id')
                         ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn', 
+                        ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn',
                             'district.district_name_bn', 'upazila.upazila_name_bn')
                         ->where('users.id',$user_id)
                         ->get()->first();
         $page_title = "মাই প্রোফাইল";
-                  // dd($userManagement);     
-        
+                  // dd($userManagement);
+
         return view('myprofile.show', compact('userManagement','page_title'));
     }
 
@@ -45,29 +45,26 @@ class MyprofileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function basic_edit()
-    {   
+    {
         $user_id = Auth::user()->id;
 
         $data['userManagement'] = DB::table('users')
                         ->join('roles', 'users.role_id', '=', 'roles.id')
-                        ->join('office', 'users.office_id', '=', 'office.id')
-                        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-                        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'office.office_name_bn', 
-                            'district.district_name_bn', 'upazila.upazila_name_bn')
+                        ->select('users.*', 'roles.name')
                         ->where('users.id',$user_id)
                         ->get()->first();
-        $data['roles'] = DB::table('roles')
-        ->select('id', 'name')
-        ->get(); 
 
-        $data['offices'] = DB::table('office')
-        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-        ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-        ->get();
+        // $data['roles'] = DB::table('roles')
+        // ->select('id', 'name')
+        // ->get();
+
+        // $data['offices'] = DB::table('office')
+        // ->leftJoin('district', 'office.district_id', '=', 'district.id')
+        // ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+        // ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+        // ->get();
         $data['page_title'] = 'প্রোফাইল ইনফর্মেশন সংশোধন ফরম';
-                   
+    //    return $data;
         return view('myprofile.edit')->with($data);
     }
 
@@ -82,25 +79,28 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $request->validate([
-            'name' => 'required',           
-            'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',            
-            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',            
-            'signature' => 'max:10240',             
-            ],
-            [
-            'name.required' => 'পুরো নাম লিখুন',
-            /*'mobile_no' => 'পুরো নাম লিখুন',*/
+            'username' => 'required',
+            'email' => 'required|unique:users,email,' . $user_id,
+            'mobile_no' => 'required|unique:users,mobile_no,' . $user_id,
+        ],
+        [
+            'username.required' => 'পুরো নাম লিখুন',
+            'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
+            'email.required' => 'ইমেইল লিখুন',
+        ]);
+
+        DB::table('users')
+            ->where('id', $user_id)
+            ->update([
+                'username' => $request->username,
+                'mobile_no' => $request->mobile_no,
+                'email' => $request->email,
             ]);
 
-         DB::table('users')
-            ->where('id', $user_id)
-            ->update(['name'=>$request->name,
-            'mobile_no' =>$request->mobile_no,
-            'email' =>$request->email,
-            ]);
-        return redirect()->route('my-profile.index')
+        return redirect()->route('myprofile.index')
             ->with('success', 'প্রোফাইলের বেসিক ইনফরমেশন সফলভাবে আপডেট হয়েছে');
     }
+
 
 
 
@@ -116,12 +116,12 @@ class MyprofileController extends Controller
     }
 
      public function image_update(Request $request)
-    {  
+    {
         $user_id = Auth::user()->id;
         $request->validate([
             'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
+
         if($file = $request->file('image')){
             $profilePic = $user_id.'_'.time().'.'.$request->image->extension();
             $request->image->move(public_path('uploads/profile'), $profilePic);
@@ -137,10 +137,9 @@ class MyprofileController extends Controller
     }
 
 
-
-
     public function change_password()
     {
+
         return view('myprofile.changePassword');
     }
 
@@ -152,12 +151,12 @@ class MyprofileController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
 
          return redirect()->route('my-profile.index')
             ->with('success', 'পাসওয়ার্ড সফলভাবে হালনাগাদ করা হয়েছে');
-   
+
         // dd('Password change successfully.');
     }
 

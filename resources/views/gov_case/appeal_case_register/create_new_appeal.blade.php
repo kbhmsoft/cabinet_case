@@ -657,6 +657,8 @@
         });
     </script>
 
+
+
     @include('gov_case.appeal_case_register.create_new_appeal_js')
     <script type="text/javascript">
         $(document).ready(function() {

@@ -2875,13 +2875,41 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         if ($data['case']->case_division_id == 2) {
-            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         } else {
-            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         }
         return view('gov_case.case_register.showDetails')->with($data);
         // return $data;
     }
+
+    public function highcourtDetailsPdf($id)
+    {
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+
+        if ($data['case']->case_division_id == 2) {
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        } else {
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        }
+        // return view('gov_case.case_register.showDetails')->with($data);
+
+        $html = view('gov_case.case_register.showDetailsPdf')->with($data);
+
+        $this->generatePDF($html);
+    }
+
+    public function generatePDF($html){
+        if (ob_get_contents()) ob_end_clean();
+        $mpdf = new \Mpdf\Mpdf([
+         'default_font_size' => 12,
+         'default_font'      => 'kalpurush'
+         ]);
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+    }
+
+
 
     public function ajax_badi_del($id)
     {

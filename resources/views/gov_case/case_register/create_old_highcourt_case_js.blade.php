@@ -3,7 +3,7 @@
 @endphp --}}
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -39,8 +39,7 @@
         addSuspensionOrderFileRowFunc();
         addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
-        /*$('.main_respondent').select2();
-        $('#ministry_id').select2();*/
+        $('select').select2();
 
 
 
@@ -283,7 +282,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select required="required" name="other_respondent[]" id="other_bibadi_name" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select required="required" name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -295,6 +294,7 @@
             // console.log(items);
             return items;
         }
+        $('.other_respondentCls').select2();
     }
 
     //remove row function
@@ -1013,9 +1013,9 @@
     }
 
 
-
-
-
+    $(document).ready(function() {
+        $('select').select2();
+    });
 
 
 

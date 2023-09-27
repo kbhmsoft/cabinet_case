@@ -49,6 +49,10 @@
             text-align: right;
             vertical-align: top
         }
+        .details-pdf-button{
+            width: 95%;
+            text-align: right;
+        }
     </style>
 
     <!--begin::Card-->
@@ -69,32 +73,18 @@
                         </div> -->
                 </div>
             </div>
-            {{-- <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
+            <table class="details-pdf-button">
+                <tr align="right">
+                    <th>
+                        &nbsp;
+                        <a href="{{ route('cabinet.case.highcourtDetailsPdf', $case->id) }}"
+                            class="btn btn-sm btn-primary font-weight-bolder" target="_blank">
+                            <i class="la la-plus"></i>পিডিএফ দেখুন
+                        </a>
+                    </th>
+                </tr>
+            </table>
 
-         <table>
-             <tr align="right">
-                 <th>
-                     <a  href="" class="btn btn-primary float-right">Message</a>
-
-                 </th>
-             </tr>
-         </table> --}}
-            {{-- </div> --}}
-            @if (Auth::user()->role_id == 5 ||
-                    Auth::user()->role_id == 21 ||
-                    Auth::user()->role_id == 22 ||
-                    Auth::user()->role_id == 24)
-                @if ($case->action_user_role_id == Auth::user()->role_id)
-                    @if ($case->status == 1)
-                        <div class="card-toolbar">
-                            <a href="{{ route('rmcase.edit', $case->id) }}"
-                                class="btn btn-sm btn-primary font-weight-bolder">
-                                <i class="la la-edit"></i>মামলা সংশোধন করুন
-                            </a>
-                        </div>
-                    @endif
-                @endif
-            @endif
         </div>
         <div class="card-body">
             @if ($message = Session::get('success'))
@@ -176,10 +166,10 @@
                                     @endif
                                 </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th scope="row">রুল ইস্যুর তারিখ</th>
                                 <td>{{ $case->date_issuing_rule_nishi ?? '-' }}</td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th scope="row">মন্তব্য</th>
                                 <td>{{ $case->comments ?? '-' }}</td>

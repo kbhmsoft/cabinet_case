@@ -25,18 +25,18 @@
          @csrf
          <div class="card-body">
             <fieldset>
-               <legend>ব্যবহারকারীর তথ্য</legend> 
+               <legend>ব্যবহারকারীর তথ্য</legend>
                <div class=" col-12 row">
                   <div class="col-4">
                      <div class="form-group">
-                         <label for="name" class=" form-control-label">পুরো নাম <span class="text-danger">*</span></label>
-                         <input type="text" id="name" name="name" placeholder="পুরো নাম লিখুন" class="form-control form-control-sm"value="{{ $userManagement->name}}">
+                         <label for="username" class=" form-control-label">পুরো নাম <span class="text-danger">*</span></label>
+                         <input type="text" id="username" name="username" placeholder="পুরো নাম লিখুন" class="form-control form-control-sm"value="{{ $userManagement->username}}">
                          <span style="color: red">
                            {{ $errors->first('name') }}
                         </span>
                      </div>
                   </div>
-               
+
                      <div class="col-4">
                            <div class="form-group">
                              <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার </label>
@@ -52,8 +52,8 @@
                         </div>
                      </div>
                </div>
-           
-               
+
+
             </fieldset>
          <div class="card-footer">
             <div class="row">
@@ -74,7 +74,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 {{-- Scripts Section Related Page--}}
 @section('scripts')

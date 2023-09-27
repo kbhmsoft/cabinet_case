@@ -225,21 +225,46 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealCaseShow($id)
     {
-        // $data = AppealGovCaseRegisterRepository::AppealCaseAllDetails($id);
+
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
 
         $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']->case_number_origin);
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
-// return $data;
-        // if ($data['case']->case_division_id == 2) {
-        //     $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
-        // }
-        //  else {
-        $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
-        //      }
+
+        $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
+
         return view('gov_case.appeal_case_register.showAppealDetails')->with($data);
 
     }
+
+    public function appealDetailsPdf($id)
+    {
+
+        $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
+
+        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']->case_number_origin);
+        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
+
+        $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
+
+        // return view('gov_case.appeal_case_register.showAppealDetailsPdf')->with($data);
+        $html = view('gov_case.appeal_case_register.showAppealDetailsPdf')->with($data);
+
+        $this->generatePDF($html);
+
+    }
+
+    public function generatePDF($html){
+        if (ob_get_contents()) ob_end_clean();
+        $mpdf = new \Mpdf\Mpdf([
+         'default_font_size' => 12,
+         'default_font'      => 'kalpurush'
+         ]);
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+    }
+
+
     public function high_court_complete_case()
     {
         session()->forget('currentUrlPath');

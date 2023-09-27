@@ -226,12 +226,12 @@
                                                                     <th class="main_babadi_name main_respondent">মূল
                                                                         রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                                     </th>
-                                                                    <th width="50">
+                                                                    {{-- <th width="50">
                                                                         <a href="javascript:void();" id="addMainBibadiRow"
                                                                             class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                             <i class="fas fa-plus-circle"></i>
                                                                         </a>
-                                                                    </th>
+                                                                    </th> --}}
                                                                 </tr>
                                                                 <tr></tr>
                                                                 <input type="hidden" id="mainBibadi_count"
@@ -417,7 +417,7 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব প্রেরণ)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব প্রেরণ সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>

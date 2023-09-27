@@ -8,7 +8,7 @@
 </style>
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -36,6 +36,7 @@
         }
         addFileRowFunc();
         addFinalOrderFileRowFunc();
+        $('select').select2();
         // addAppealFinalOrderFileRowFunc();
 
         //===========caseType================//
@@ -151,7 +152,7 @@
 
         jQuery('select[name="case_number_origin"]').on('change', function() {
             var dataID = jQuery(this).val();
-        //   console.log(dataID);
+            //   console.log(dataID);
             var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
 
             if (dataID) {
@@ -375,7 +376,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]" id="ministry_id" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -387,6 +388,7 @@
             // console.log(items);
             return items;
         }
+        $('.other_respondentCls').select2();
     }
 
     //remove row function
