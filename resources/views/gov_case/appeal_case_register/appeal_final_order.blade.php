@@ -10,18 +10,15 @@
 
     @endphp
 
-    <?php
-    $case = [];
-    $case['create_by'] = '';
 
-    ?>
     @include('gov_case.case_register.create_css')
+    {{-- @dd($case) --}}
     <!--begin::Row-->
     <div class="row">
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div class="card card-custom gutter-b example example-compact">
+        <div class="card card-custom gutter-b example example-compact" style="width: 100%;">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -36,255 +33,11 @@
                 </div>
             @endif
 
-            <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
-                <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
-                    </li>
-                    <li class="nav-item nav-li-padding" role="presentation">
-                        <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
-                            aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
-                    </li>
-            </div>
 
 
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
-
-
-                        {{-- start মামলার সাধারণ তথ্য --}}
-
-                        <div class="tab-pane active" id="case_general_information" role="tabpanel"
-                            aria-labelledby="home-tab">
-                            <form id="appealCaseGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="row_int">
-                                    <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        {{-- <div class="step" id=""> --}}
-                                        <fieldset class="mb-8">
-                                            <div class="form-group row">
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
-                                                    <div class="" id="CaseCategorDiv">
-                                                        
-                                                        <select name="case_category" id="CaseCategory"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategory as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('case_category') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
-                                                    <div class="" id="CaseCategorDiv">
-                                                        <select name="case_category_type" id="case_category_type"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>মামলা নং <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required"
-                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                                                    <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-
-
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>বছর <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_year" id="case_year"
-                                                        class="form-control form-control-sm common_yearpicker"
-                                                        placeholder="বছর" autocomplete="off" required="required">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
-                                                </div>
-
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>আপিলকারি অফিস
-                                                        <span class="text-danger">*</span></label>
-
-                                                    <div class="" id="appeallateOffice">
-                                                        <select name="appeal_office" id="appeallateOffice"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($ministrys as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('appeal_office') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->office_name_bn }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_new_appeal_person_designation"
-                                                            id="concern_new_appeal_person_designation"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_new_appeal_person_designation') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="postpond_date" id="postpond_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                </div>
-
-
-                                                <div class="col-md-4 mb-5">
-                                                    <label>স্থগিতাদেশের বিবরণ</label>
-                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false"></textarea>
-                                                </div>
-
-
-                                                {{-- starting সংযুক্তি  --}}
-
-                                                <div class="col-md-12">
-                                                    <fieldset class="">
-                                                        <div
-                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                            <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                    <span class="text-danger">*</span>
-                                                                </h3>
-                                                            </div>
-
-                                                            <div class="symbol-group symbol-hover py-2">
-                                                                <div class="symbol symbol-30 symbol-light-primary"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="" role="button"
-                                                                    data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                    <div id="addFileRow">
-                                                                        <span
-                                                                            class="symbol-label font-weight-bold bg-success">
-                                                                            <i
-                                                                                class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="mt-3 px-5">
-                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
-                                                                style="border:1px solid #dcd8d8;">
-                                                                <tr></tr>
-                                                            </table>
-                                                            <input type="hidden" id="other_attachment_count"
-                                                                value="1">
-                                                        </div>
-                                                    </fieldset>
-                                                </div>
-
-                                                {{-- end সংযুক্তি --}}
-
-
-                                                <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
-
-                                                    <div class="" id="CaseCategorOriginDiv">
-                                                        <select name="case_category_origin" id="CaseCategory"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($GovCaseDivisionCategoryHighcourt as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('case_category_origin') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
-
-                                                    <div class="" id="CaseCategorOriginDiv">
-                                                        <select name="case_number_origin" id="case_number_origin"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
-
-                                        </fieldset>
-                                        {{-- </div> --}}
-
-                                        <!--end::Card-->
-                                    </div>
-                                    <div class="col-md-12" id="showHighCourtCaseDiv"></div>
-                                </div>
-                                <div class="form-footer mt-5" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="appealCaseGeneralInfoSaveBtn"
-                                        class="submit-button">সংরক্ষণ</button>
-                                </div>
-                            </form>
-                        </div>
-                        {{-- ---------- end মামলার সাধারণ তথ্য----------- --}}
 
 
                         <div class="tab-pane" id="final_order" role="tabpanel" aria-labelledby="home-tab">
@@ -310,6 +63,8 @@
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
                                                     <div class="col-md-6 mb-5">
+                                                        {{-- {{dd($appealCaseData->id)}} --}}
+                                                        <input type="hidden" name="case_id" value="{{$appealCaseData->id}}">
                                                         <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                         </label>
                                                         <div class="radio-inline">
@@ -450,70 +205,7 @@
                                                             class="form-control form-control-sm "autocomplete="off">
                                                     </div>
                                                 </div>
-                                                {{-- <div class="form-group row" id="civilSuitDiv">
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যে শ্রেণীর মামলা<span class="text-danger"></span></label>
-                                                        <input type="text" name="case_type_civil_suit"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>মামলা নম্বর<span class="text-danger"></span></label>
-                                                        <input type="text" name="case_number_civil_suit"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="contents_of_proposal_civil_revision"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব তারিখ(বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_date_civil_suit"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব স্মারক নম্বর <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_memorial_civil_suit"
-                                                            id="proposal_memorial_civil_suit"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
 
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="email" name="contact_email_civil_suit"
-                                                            id="contact_email_civil_suit"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের নাম (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_name_civil_suit"
-                                                            id="focal_person_name_civil_suit"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_designation_civil_suit"
-                                                            id="focal_person_designation_civil_suit"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_mobile_civil_suit"
-                                                            id="focal_person_mobile_civil_suit"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-                                                </div> --}}
                                                 <div class="form-group row" id="writDiv">
                                                     <div class="col-lg-4">
                                                         <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
@@ -627,6 +319,9 @@
                                 </div>
                             </form>
                         </div>
+
+
+
                     </div>
                 </div>
             </div>

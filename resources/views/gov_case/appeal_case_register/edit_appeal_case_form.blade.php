@@ -526,7 +526,7 @@
                                             <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
-                                                        value="1"
+                                                        value="1" onclick="showAlert()"
                                                         {{ $appealCaseData->is_final_order == '1' ? 'checked' : '' }}>
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>

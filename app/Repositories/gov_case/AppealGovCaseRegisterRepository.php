@@ -74,10 +74,14 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppeal($caseInfo)
     {
+        // dd($caseInfo->case_number_origin);
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-        $caseOriginId = GovCaseRegister::where('case_no', $caseInfo->case_number_origin)->get();
+        // return $case;
+        $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
+        // dd($caseOriginNum);
         try {
             $case->case_no = $caseInfo->case_no;
+
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
             // $case->action_user_id = userInfo()->id;
@@ -87,11 +91,17 @@ class AppealGovCaseRegisterRepository
             $case->appeal_office_id = $caseInfo->appeal_office;
             $case->concern_new_appeal_person_designation = $caseInfo->concern_new_appeal_person_designation;
             $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
-            $case->postponed_details = $caseInfo->postponed_details;
+            if(empty($caseInfo->postpond_date)) {
+                $case->postpond_date = date('Y-m-d'); // Set to current date
+            } else {
+                // If $caseInfo->postpond_date is not empty, convert and assign the value
+                $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
+            }
+            // $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
+            $case->postponed_details = $caseInfo->postponed_details ?? '';
             $case->case_category_origin = $caseInfo->case_category_origin;
-            $case->case_number_origin = $caseInfo->case_number_origin;
-            $case->case_origin_id = $caseOriginId->id;
+            $case->case_number_origin = $caseOriginNum;
+            $case->case_origin_id = $caseInfo->case_number_origin;
             $case->is_appeal = 1;
 
             if ($case->save()) {
@@ -101,6 +111,7 @@ class AppealGovCaseRegisterRepository
                 }
             }
         } catch (\Exception $e) {
+            dd("hello");
             dd($e);
             $caseId = null;
         }

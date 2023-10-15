@@ -89,14 +89,13 @@
                             $subjectMatter = $row->highcourt_case_detail;
                             if ($row->highcourt_case_detail !== null) {
                                 $subjectMatterData = $row->highcourt_case_detail['subject_matter'];
-                            }
-                            else{
+                            } else {
                                 $subjectMatterData = '';
                             }
                             ?>
                             {{-- {{ dd($subjectMattrData) }} --}}
 
-                            <td style="text-align:center;"> {{  Str::limit($subjectMatterData, 100)}}</td>
+                            <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
                             {{-- <td style="text-align:center;">{{ is_null($subjectMatter) ? 'p' : '-' }}</td> --}}
                             <td style="text-align:center;">{{ '-' }} </td>
                             <td style="text-align:center;">{{ '-' }} </td>
@@ -118,6 +117,11 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.editAppealCaseForm', $row->id) }}">সংশোধন</a>
                                             @endcan
+                                            @if ($row->is_final_order != 1)
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.appealFinalOrderEdit', $row->id) }}">
+                                                    চূড়ান্ত আদেশ</a>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -169,8 +173,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                             -->
+                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                     -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')

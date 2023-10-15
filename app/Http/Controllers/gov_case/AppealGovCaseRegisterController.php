@@ -383,7 +383,7 @@ class AppealGovCaseRegisterController extends Controller
         }
         $data['cases'] = $query->paginate(10);
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->where('gov_case_division_id', 1)->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
@@ -442,11 +442,11 @@ class AppealGovCaseRegisterController extends Controller
         }
         $data['cases'] = $query->paginate(10);
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->where('gov_case_division_id', 1)->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
+
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
     }
 
@@ -1200,6 +1200,8 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
+        // return $request->all();
+        // dd($request->all());
         $caseNo = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseNo,
@@ -1231,6 +1233,7 @@ class AppealGovCaseRegisterController extends Controller
             // gov_case_activity_logs($cs_activity_data);
             // ========= Gov Case Activity Log  End ==========
         } catch (\Exception $e) {
+            // return "appealError";
             dd($e);
             $flag = 'false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
@@ -1252,7 +1255,6 @@ class AppealGovCaseRegisterController extends Controller
             ]);
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppealFinalOrder($request);
-            // dd()
 
             if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
                 AttachmentRepository::storeAppealFinalOrderAttachment('appeal_gov_case', $caseId, $request);
@@ -1473,6 +1475,45 @@ class AppealGovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
+    public function appealFinalOrderEdit($id){
+        $roleID = userInfo()->role_id;
+
+        $officeID = userInfo()->office_id;
+
+        $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
+
+        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCaseData']->case_number_origin);
+        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
+        $data['ministrys'] = GovCaseOffice::get();
+
+        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+
+        $data['courts'] = DB::table('court')
+            ->select('id', 'court_name')
+            ->whereIn('id', [1, 2])
+            ->get();
+
+        $data['originCaseNumber'] = GovCaseRegister::orderby('id', 'desc')
+            ->select("case_no", "id", "year")->get();
+
+        if ($roleID != 33) {
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        } else {
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+
+        $data['usersInfo'] = User::all();
+        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+    //    return $data['appealCaseData'];
+        $data['page_title'] = 'আপিল বিভাগে চূড়ান্ত আদেশ';
+
+        return view('gov_case.appeal_case_register.appeal_final_order')->with($data);
+    }
+
     public function suspensionOrderEdit($id)
     {
         $roleID = userInfo()->role_id;
@@ -1603,7 +1644,7 @@ class AppealGovCaseRegisterController extends Controller
 // return  $data['govCaseRegister'];
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
-            ->where('gov_case_division_id', 2)->get();
+            ->where('gov_case_division_id', 1)->get();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
@@ -2049,7 +2090,6 @@ class AppealGovCaseRegisterController extends Controller
     public function editAppealCaseForm($id)
     {
         $roleID = userInfo()->role_id;
-
         $officeID = userInfo()->office_id;
 
         $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);

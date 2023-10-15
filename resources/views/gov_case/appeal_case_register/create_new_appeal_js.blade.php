@@ -9,6 +9,11 @@
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -566,9 +571,7 @@
             if (result.isConfirmed) {
 
                 var formData = new FormData(this);
-                console.log();
                 $.ajax({
-
                     type: 'POST',
                     url: "{{ route('cabinet.case.appealStore') }}",
                     data: formData,
@@ -597,7 +600,6 @@
                         console.log(data);
                         $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
-
                     }
                 });
             }
@@ -615,7 +617,6 @@
 
         Swal.fire({
             title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -623,10 +624,9 @@
             confirmButtonText: 'Yes!'
         }).then((result) => {
             if (result.isConfirmed) {
-
                 var formData = new FormData(this);
-                $.ajax({
 
+                $.ajax({
                     type: 'POST',
                     url: "{{ route('cabinet.case.appealFinalOrderStore') }}",
                     data: formData,
@@ -644,20 +644,14 @@
                             'success'
                         )
 
-                        // console.log(data.caseId);
-                        // $("#contempt_case").click();
-                        // $("#caseIDForSuspention").val(data.caseId);
-                        // console.log(data);
+                        console.log(data);
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
 
                         $('#finalOrderSaveBtn').prop('disabled', false);
                         $('#finalOrderSaveBtn').removeClass("disable-button");
-
-
                     },
                     error: function(data) {
-                        // console.log(data);
                         $('#finalOrderSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
 
@@ -729,6 +723,34 @@
     });
     // ================================Sending Replay Save==================================//
 </script>
+<script>
+    // ==================== মামলার রায়/চুড়ান্ত আদেশ হয়ে থাকলে সিলেক্ট করুন  =========== //
+    function showAlert() {
+        Swal.fire({
+            title: "আপনি কি নিশ্চিত?",
+            text: "আপনি কি মামলার রায়ের অবস্থা পরিবর্তন করতে চান?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "হ্যাঁ",
+            cancelButtonText: "না",
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+            } else {
+
+                document.getElementById('is_final_order').checked = false;
+                console.log("aoyon");
+                $('#finalOrderDiv').hide();
+            }
+        });
+    }
+</script>
+
+
+
+
 <!--end::Page Scripts-->
 @include('components.Ajax')
 <script>

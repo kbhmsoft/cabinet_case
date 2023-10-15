@@ -7,7 +7,9 @@ $officeInfo = user_office_info();
       <div class="col-lg-6 mb-5 px-2">
          <select name="case_category_id" class="w-100 form-control">
             <option value=""> মামলা ক্যাটেগরি </option>
+            {{-- {{dd($division_categories)}} --}}
             @foreach ($division_categories as $value)
+
                <option value="{{ $value->id }}"
                   {{ old('division_categories') == $value->id ? 'selected' : '' }}>
                   {{ $value->name_bn }}

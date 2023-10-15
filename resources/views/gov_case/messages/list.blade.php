@@ -21,9 +21,7 @@
          <p>{{ $message }}</p>
       </div>
       @endif
-     
-      @if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4)
-      @endif
+
       <div class="overflow-auto">
 
 
@@ -32,7 +30,7 @@
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">নাম</th>
-               <th scope="col">ইউজার</th>
+               {{-- <th scope="col">ইউজার</th> --}}
                <th scope="col">ইউজার রোল</th>
                <th scope="col">অফিসের নাম</th>
                <th scope="col">ইমেইল এড্রেস</th>
@@ -41,14 +39,13 @@
          </thead>
          <tbody>
             @foreach ($users as $row)
+            {{-- {{dd($users)}} --}}
                 @if ($row->id != Auth::user()->id)
                     <tr>
-                        {{-- <th scope="row" class="tg-bn">{{ en2bn(++$i) }}</th> --}}
                         <th scope="row" class="tg-bn">
                             @if ($row->profile_pic != null)
                             <div class="symbol symbol-circle symbol-40">
                                 <img alt="Pic" src="{{ url('/') }}/uploads/profile/{{ $row->profile_pic }}"/>
-                                {{-- <i class="symbol-badge bg-primary"></i> --}}
                             </div>
                            @else
                            @php
@@ -59,9 +56,9 @@
                             </div>
                            @endif
                         </th>
+
                         <td>{{ $row->name }}</td>
-                        <td>{{ $row->username }}</td>
-                        <td>{{ $row->name }}</td>
+                        <td>{{ $row->roleName  }}</td>
                         <td>{{ $row->office_name_bn }}</td>
                         <td>{{ $row->email }}</td>
                         <td>
@@ -71,7 +68,7 @@
                @else
                   <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বার্তা পাঠান</a>
                @endif
-                            
+
                         </td>
                     </tr>
                 @endif

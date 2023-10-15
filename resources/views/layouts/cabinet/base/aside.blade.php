@@ -569,7 +569,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                @can('causelist_menu')
+                                {{-- @can('causelist_menu')
                                     <li class="menu-item {{ request()->is('search/supremecourt/causelist') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ url('search/supremecourt/causelist') }}" class="menu-link">
@@ -588,7 +588,7 @@
                                             </a>
                                         </li>
                                     @endif
-                                @endcan
+                                @endcan --}}
 
 
                             </ul>

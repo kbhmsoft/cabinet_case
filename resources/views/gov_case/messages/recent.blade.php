@@ -30,14 +30,14 @@
                <th scope="col">#</th>
                <th scope="col">নাম</th>
                <th scope="col">ইউজার</th>
-               <th scope="col">ইউজার রোল</th>
-               <th scope="col">অফিসের নাম</th>
+               {{-- <th scope="col">ইউজার রোল</th> --}}
+               {{-- <th scope="col">অফিসের নাম</th> --}}
                <th scope="col">ইমেইল এড্রেস</th>
                <th scope="col">অ্যাকশন</th>
             </tr>
          </thead>
          <tbody>
-            
+
             @forelse($users as $user)
                 @php
                     $Ncount = App\Models\Message::select('id')
@@ -73,10 +73,12 @@
                         @endphp
                            <span class="badge badge-danger rounded-circle text-capitalize h3 mr-3">{{ substr($str, 0, 1) }}</span>
                         @endif --}}
+                        {{-- {{dd($user)}} --}}
                     <td>{{ $user->name ?? '' }} <span class="badge badge-danger">{{ $Ncount != 0 ? $Ncount : ''  }}</span></td>
                     <td>{{ $user->username ?? '' }}</td>
-                    <td>{{ $user->role->name ?? '' }}</td>
-                    <td>{{ $user->office->office_name_bn ?? '' }}, {{ $user->office->upazila->upazila_name_bn ?? '' }} {{ $user->office->district->district_name_bn ?? '' }}</td>
+                    {{-- <td>{{ $user->role->name ?? '' }}</td> --}}
+                    {{-- {{dd($user->office->office_name_bn)}} --}}
+                    {{-- <td>{{ $user->office->office_name_bn ?? '' }}</td> --}}
                     <td>{{ $user->email ?? '' }}</td>
                     <td>
 

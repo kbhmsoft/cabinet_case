@@ -1,7 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
- 
+
 
 <!--begin::Card-->
 <div class="card card-custom">
@@ -9,13 +9,13 @@
       <div class="card-title">
          <h2>অনুমতি প্রদান পরিচালনা </h2>
       </div>
-      <div class="card-toolbar">        
-       
-               
+      <div class="card-toolbar">
+
+
       </div>
    </div>
    <div class="card-body">
-      
+
       <table class="table table-hover mb-6 font-size-h6">
          <thead class="thead-light ">
             <tr>
@@ -35,41 +35,41 @@
 
             ?>
             @foreach ($users as $user)
-
+              {{-- {{dd($user)}} --}}
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
                <td>{{ $user->name }}</td>
                <td>{{ $user->email }}</td>
                <td>{{ $user->mobile_no }}</td>
                <td>{{ $user->role? $user->role->name: '' }}</td>
-               <td>{{ $user->office? $user->office->office_name_bn: '' }}</td>
-                
+               <td>{{ $user->govOffice? $user->govOffice->office_name_bn: '' }}</td>
+
                <td>
                     <span class="badge badge-primary">সক্রিয়</span>
                </td>
-               
+
                <td>
                 @if(auth()->user()->can('manage_permission_details'))
                   <a href="{{ route('cabinet.userPermissionManage', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                @else 
+                @else
                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
                 @endif
 
                </td>
             </tr>
             @endforeach
-           
+
          </tbody>
-      </table>      
-    
+      </table>
+
    </div>
 </div>
 <!--end::Card-->
 
 
- 
 
- 
+
+
 
 
 
@@ -79,7 +79,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 <!-- {{-- Scripts Section Related Page--}} -->
 @section('scripts')
@@ -89,8 +89,8 @@
 
 
 <script>
-   
- 
+
+
 </script>
 
 

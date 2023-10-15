@@ -1,119 +1,165 @@
 <?php
 
 namespace App\Http\Controllers\gov_case;
+
 use App\Http\Controllers\Controller;
-use App\Models\Message;
-use App\Models\User;
-use App\Models\Division;
+use App\Models\CaseRegister;
 use App\Models\District;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseOfficeType;
+use App\Models\Message;
 use App\Models\Office;
-use GrahamCampbell\ResultType\Success;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Carbon;
-use App\Models\CaseRegister;
-use Illuminate\Support\Arr;
 
 class GovCaseMessageController extends Controller
 {
 
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:recent_messages', ['only' => ['messages_recent']]);
-         
+
     }
-
-
 
     public function messages()
     {
+        //     $roleID = Auth::user()->role_id;
+        //     $officeInfo = user_office_info();
+
+        //     if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
+        //         $users= DB::table('users')
+        //             ->orderBy('id','DESC')
+        //             ->join('roles', 'users.role_id', '=', 'roles.id')
+        //             ->join('office', 'users.office_id', '=', 'office.id')
+        //             ->select('users.*', 'roles.name', 'office.office_name_bn')
+        //             ->where('users.is_gov', 1);
+        //             // ->paginate(10);
+        //     }else{
+        //         $users= DB::table('users')
+        //             ->orderBy('id','DESC')
+        //             ->join('roles', 'users.role_id', '=', 'roles.id')
+        //             ->join('office', 'users.office_id', '=', 'office.id')
+        //             ->select('users.*', 'roles.name', 'office.office_name_bn')
+        //             ->where('users.is_gov', 1);
+        //             // ->paginate(10);
+        //     }
+
+        //     // ?division=3&district=38&upazila=121
+
+        //     if(!empty($_GET['division'])) {
+        //         $users->where('office.division_id','=',$_GET['division']);
+        //     }
+        //     if(!empty($_GET['district'])) {
+        //         $users->where('office.district_id','=',$_GET['district']);
+        //     }
+        //     if(!empty($_GET['upazila'])) {
+        //         $users->where('office.upazila_id','=',$_GET['upazila']);
+        //     }
+
+        //     // return $users->toSql();
+        //     $users = $users->paginate(10);
+        //     $page_title = 'ব্যবহারকারীর তালিকা';
+        //    // return $users;
+        //     return view('gov_case.messages.list', compact('page_title','users'))
+        //     ->with('i', (request()->input('page',1) - 1) * 10);
+
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
-        if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 ){
-            $users= DB::table('users')
-                ->orderBy('id','DESC')
-                ->join('roles', 'users.role_id', '=', 'roles.id')
-                ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'roles.name', 'office.office_name_bn')
-                ->where('users.is_gov', 1);
-                // ->paginate(10);
-        }else{
-            $users= DB::table('users')
-                ->orderBy('id','DESC')
-                ->join('roles', 'users.role_id', '=', 'roles.id')
-                ->join('office', 'users.office_id', '=', 'office.id')
-                ->select('users.*', 'roles.name', 'office.office_name_bn')
-                ->where('users.is_gov', 1);
-                // ->paginate(10);
+        //Add Conditions
+        $query = DB::table('users')->orderBy('id', 'DESC')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.is_gov', 1);
+
+        if (!empty($_GET['office_id'])) {
+            $query->where('users.office_id', '=', $_GET['office_id']);
+        }
+        if (!empty($_GET['role'])) {
+            $query->where('users.role_id', '=', $_GET['role']);
         }
 
-        // ?division=3&district=38&upazila=121
+        $data['users'] = $query->paginate(10)->withQueryString();
 
-        if(!empty($_GET['division'])) {
-            $users->where('office.division_id','=',$_GET['division']);
-        }
-        if(!empty($_GET['district'])) {
-            $users->where('office.district_id','=',$_GET['district']);
-        }
-        if(!empty($_GET['upazila'])) {
-            $users->where('office.upazila_id','=',$_GET['upazila']);
-        }
+        $data['user_role'] = DB::table('roles')->select('id', 'name')
+            ->whereNotIn('id', $role)
+            ->where('is_gov', 1)
+            ->orderBy('sort_order', 'ASC')
+            ->get();
 
-        // return $users->toSql();
-        $users = $users->paginate(10);
-        $page_title = 'ব্যবহারকারীর তালিকা';
+        $data['ministries'] = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
+        // return $data;
+        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
-        return view('gov_case.messages.list', compact('page_title','users'))
-        ->with('i', (request()->input('page',1) - 1) * 10);
+        return view('gov_case.messages.list')
+            ->with($data);
 
     }
     public function messages_recent()
-    { 
+    {
 
         $user = Auth::user();
 
         $msgs = Message::select(DB::raw('id, user_sender, user_receiver, max(id) as mid'))
-                        ->orderby('mid', 'DESC')
-                        ->where('user_sender', [Auth::user()->id])
-                        ->orWhere('user_receiver', [Auth::user()->id])
-                        ->Where('msg_reqest', 0)
-                        ->groupby(['user_receiver', 'user_sender'])
-                        ->get();
+            ->orderby('mid', 'DESC')
+            ->where('user_sender', [Auth::user()->id])
+            ->orWhere('user_receiver', [Auth::user()->id])
+            ->Where('msg_reqest', 0)
+            ->groupby(['user_receiver', 'user_sender'])
+            ->get();
 
+        // $query = DB::table('messages')
+        // ->select(DB::raw('id, user_sender, user_receiver, max(id) as mid', 'roles.name as roleName', 'gov_case_office.office_name_bn'))
+        // ->orderBy('mid', 'DESC')
+        // ->join('roles', 'users.role_id', '=', 'roles.id')
+        // ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+        // ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+        // ->where('users.is_gov', 1);
 
-        // $data['count'] = $data['msgs']->count();
+// return  $msgs;
 
         $arr = [];
-        foreach($msgs as $mes){
-            if(in_array($mes->user_sender, $arr) || in_array($mes->user_receiver, $arr )){
+        foreach ($msgs as $mes) {
+            if (in_array($mes->user_sender, $arr) || in_array($mes->user_receiver, $arr)) {
                 continue;
             } else {
-                if( $mes->user_sender == Auth::user()->id ){
+                if ($mes->user_sender == Auth::user()->id) {
                     array_push($arr, $mes->user_receiver);
-                } else{
+                } else {
                     array_push($arr, $mes->user_sender);
                 }
             }
         }
 
-        $data['users'] = User::whereIn('id', $arr)
-            ->orderByRaw(DB::raw('FIELD(id,' . implode(",",$arr). ')'))
+        $data['users'] = DB::table('users')
+            ->whereIn('id', $arr)
+            ->orderByRaw(DB::raw('FIELD(id,' . implode(",", $arr) . ')'))
+            // ->join('roles', 'users.role_id', '=', 'roles.id')
+            // ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            // ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
             ->paginate(15);
-
-
+        //    return $data['users'];
         $data['page_title'] = 'সাম্প্রতিক বার্তা';
 
         return view('gov_case.messages.recent')->with($data)
-        ->with('i', (request()->input('page',1) - 1) * 10);
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function messages_request()
     {
         $data['msg_request'] = Message::orderby('id', 'DESC')
-            // ->select('user_sender', 'user_receiver', 'msg_reqest')
+        // ->select('user_sender', 'user_receiver', 'msg_reqest')
             ->Where('user_receiver', [Auth::user()->id])
             ->Where('msg_reqest', 1)
             ->groupby('user_sender')
@@ -123,8 +169,7 @@ class GovCaseMessageController extends Controller
         // return $data;
 
         return view('gov_case.messages.request')->with($data)
-        ->with('i', (request()->input('page',1) - 1) * 10);
-
+            ->with('i', (request()->input('page', 1) - 1) * 10);
 
         // return view('gov_case.messages.single', compact('page_title','user', 'messages'));
     }
@@ -150,8 +195,8 @@ class GovCaseMessageController extends Controller
             ->where('receiver_seen', 0)
             ->get();
 
-        if(count($msgSeen) != 0){
-            foreach($msgSeen as $msgSee){
+        if (count($msgSeen) != 0) {
+            foreach ($msgSeen as $msgSee) {
                 $msg = Message::findOrFail($msgSee->id);
                 $msg->receiver_seen = 1;
                 $msg->seen_at = Carbon::now()->toDateTimeString();
@@ -179,24 +224,24 @@ class GovCaseMessageController extends Controller
         $validator = Validator::make($request->all(), [
             'messages' => 'required',
         ],
-        [
-            'messages.required' => 'বার্তা তৈরী করুন!',
-        ]);
+            [
+                'messages.required' => 'বার্তা তৈরী করুন!',
+            ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->with(['error' => $validator->errors()->first()]);
         }
 
         //save message
-        foreach($request->receiver as $receiver){
+        foreach ($request->receiver as $receiver) {
             //find old msg request if have
             $OldMsgReq = Message::where('user_sender', $receiver)
-            ->where('user_receiver', Auth::user()->id)
-            ->where('msg_reqest', 1)
-            ->get();
+                ->where('user_receiver', Auth::user()->id)
+                ->where('msg_reqest', 1)
+                ->get();
             //update old msg request to - not msg request
-            if( count($OldMsgReq) != 0 ){
-                foreach($OldMsgReq as $oMsg){
+            if (count($OldMsgReq) != 0) {
+                foreach ($OldMsgReq as $oMsg) {
                     $msg = Message::findOrFail($oMsg->id);
                     $msg->msg_reqest = 0;
                     $msg->save();
@@ -204,8 +249,8 @@ class GovCaseMessageController extends Controller
             }
             //check is msg request?
             $IsMsgReq = Message::where('user_sender', $receiver)
-            ->where('user_receiver', Auth::user()->id)
-            ->first();
+                ->where('user_receiver', Auth::user()->id)
+                ->first();
             //save new message
             $message = new Message();
             $message->messages = $request->messages;
@@ -215,23 +260,23 @@ class GovCaseMessageController extends Controller
             $message->ip_info = request()->ip();
             $message->save();
         }
-        if($request->case_id){
-            return redirect()->route('case.details', $request->case_id)->with(['success' => 'আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে']);;
+        if ($request->case_id) {
+            return redirect()->route('case.details', $request->case_id)->with(['success' => 'আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে']);
         }
         return redirect()->back()->with(['success' => 'আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে']);
     }
 
     public function messages_group(Request $request)
     {
-        $case_id= $request->c;
+        $case_id = $request->c;
         $case = CaseRegister::findOrFail($case_id);
         $data['users'] = User::with('office')
-                    ->whereHas('office', function($query) use ($case){
-                        // $query->where('id', 7860);
-                        $query->where('district_id', $case->district_id);
-                        // $query->where('upazila_id', $case->upazila_id);
-                    })
-                    ->get();
+            ->whereHas('office', function ($query) use ($case) {
+                // $query->where('id', 7860);
+                $query->where('district_id', $case->district_id);
+                // $query->where('upazila_id', $case->upazila_id);
+            })
+            ->get();
 
         $data['page_title'] = 'গ্রুপ বার্তা বিনিময়';
         return view('gov_case.messages.group')->with($data);
@@ -242,11 +287,11 @@ class GovCaseMessageController extends Controller
         $mk = 'khalid';
 
         $offices = Office::where('office_name_bn', 'জেলা প্রশাসকের কার্যালয়')->get();
-        foreach($offices as $office){
+        foreach ($offices as $office) {
             $office->office_name_bn = 'জেলা প্রশাসকের কার্যালয়, ' . $office->district->district_name_bn;
-            if($office->save()){
+            if ($office->save()) {
                 $mk = 'Success';
-           }
+            }
         }
 
         // $divs = Division::all();

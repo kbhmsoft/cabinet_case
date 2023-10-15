@@ -171,7 +171,7 @@ class AclController extends Controller
 
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
         $users = User::where('is_gov', 1)->get();
-
+        // $data['users'] = $query->paginate(10)->withQueryString();
         return view('gov_case.user_permissions.index', compact('users'))->with($data);
     }
 

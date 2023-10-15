@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Http\Controllers\gov_case;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseDivision;
 
 class SumpremCourtController extends Controller
 {
     public function search_case()
     {
-        $data['page_title'] = 'search_case';
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+        $data['page_title'] = 'মামলা অনুসন্ধান';
         return view('gov_case.supreme_court.search_case')->with($data);
     }
     public function search_case_post_function(Request $request)
     {
-        //dd($request);
+        // return $request;
         $div_id = $request->division_id;
         $case_type_id = $request->case_type_id;
         $case_number = $request->case_number;
@@ -22,27 +24,33 @@ class SumpremCourtController extends Controller
 
         $url = 'https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=' . $div_id . '&case_type_id=' . $case_type_id . '&case_number=' . $case_number . '&year=' . $year;
 
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
         return response()->json([
             'success' => 'success',
-            'html' => $response,
+            'html' => $url,
         ]);
+
+        // $curl = curl_init();
+
+
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => $url,
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => '',
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 0,
+        //     CURLOPT_FOLLOWLOCATION => true,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => 'GET',
+        // ));
+
+        // $response = curl_exec($curl);
+
+        // curl_close($curl);
+
+        // return response()->json([
+        //     'success' => 'success',
+        //     'html' => $response,
+        // ]);
     }
     public function supremecourt_causelist()
     {
@@ -80,7 +88,7 @@ class SumpremCourtController extends Controller
         ));
 
         $response = curl_exec($curl);
-          
+
         curl_close($curl);
 
         $html = '<style>
@@ -146,7 +154,7 @@ class SumpremCourtController extends Controller
         // dd($complete);
 
         $date = date('d/m/y');
-        
+
         if (!empty($complete[0])) {
             if ($complete[0][array_key_last($complete[0])] == '27/02/23') {
 
@@ -167,15 +175,15 @@ class SumpremCourtController extends Controller
         {
             // $exploded_date=explode('/',$request->date);
             // $date_year=$exploded_date[2]; //substr($str, 4);
-            
+
             $date=$request->date;
 
         }
         else
         {
-            $date='27/02/2023';  
+            $date='27/02/2023';
         }
-        
+
         $all_case = DB::table('gov_case_notify_supre_court')->where('date', $date)->get();
         $output = '';
         if (count($all_case) > 0) {
@@ -236,7 +244,7 @@ class SumpremCourtController extends Controller
         $response = curl_exec($curl);
 
         curl_close($curl);
-       
+
         return $response;
     }
 }

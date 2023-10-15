@@ -92,21 +92,14 @@ class GovCaseActivityLogController extends Controller
             $query->where('gov_case_registers.case_no','=',$_GET['case_no']);
         }
 
-
         $data['cases'] = $query->paginate(10);
 
-        // echo "<pre>"; print_r($data['cases']); exit();
-
-          // Dorpdown
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
+        $data['page_title'] = 'মামলা নিরীক্ষা';
 
-        $data['page_title'] =   'মামলা নিরীক্ষা';
-        // return $atcases;
-        // return $data;
-        // dd($data['cases']);
         return view('gov_case.activity_log.index')->with($data);
     }
 

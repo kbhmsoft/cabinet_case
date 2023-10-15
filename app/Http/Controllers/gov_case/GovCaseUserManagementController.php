@@ -29,7 +29,6 @@ class GovCaseUserManagementController extends Controller
      */
     public function index()
     {
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
@@ -39,7 +38,12 @@ class GovCaseUserManagementController extends Controller
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
         //Add Conditions
-        $query = DB::table('users')->orderBy('id', 'DESC')->join('roles', 'users.role_id', '=', 'roles.id')->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')->where('users.is_gov', 1);
+        $query = DB::table('users')->orderBy('id', 'DESC')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.is_gov', 1);
+
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
         }
@@ -48,12 +52,18 @@ class GovCaseUserManagementController extends Controller
         }
 
         $data['users'] = $query->paginate(10)->withQueryString();
-        $data['user_role'] = DB::table('roles')->select('id', 'name')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name')
+            ->whereNotIn('id', $role)
+            ->where('is_gov', 1)
+            ->orderBy('sort_order', 'ASC')
+            ->get();
+
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
-        // return $users;
+
         return view('gov_case.user_manage.index')
             ->with($data);
     }
@@ -67,6 +77,7 @@ class GovCaseUserManagementController extends Controller
     {
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
+
         $role = array('1', '27');
         $data['roles'] = DB::table('roles')
             ->select('id', 'name')
@@ -77,7 +88,12 @@ class GovCaseUserManagementController extends Controller
 
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
-        $query = DB::table('users')->orderBy('id', 'DESC')->join('roles', 'users.role_id', '=', 'roles.id')->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')->where('users.is_gov', 1);
+        $query = DB::table('users')->orderBy('id', 'DESC')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.is_gov', 1);
+
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
         }

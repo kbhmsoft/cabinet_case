@@ -1,13 +1,11 @@
 @extends('layouts.cabinet.cab_default')
-
+<script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 @section('content')
-    
-
     <style>
-        #select2-case_type_id-container
-        {
+        #select2-case_type_id-container {
             line-height: 12px !important;
         }
+
         .select2-container .select2-selection--single {
             box-sizing: border-box;
             cursor: pointer;
@@ -16,6 +14,10 @@
             user-select: none;
             -webkit-user-select: none;
             /* font-size: 1.2rem; */
+        }
+        .iframe_resizing{
+            height: 900px;
+            width: 100%
         }
     </style>
 
@@ -29,50 +31,57 @@
                     <form action="" id="suprime_court_case_search_form">
                         <div class="form-group row">
                             <div class="col-md-4 text-center"><label for="exampleFormControlInput1"
-                                    class="form-label"><b>Division</b></label>
-                                <select class="form-control form-select required1" name="division_id" id="division_id" required>
-                                    <option value="">- Select -</option>
-                                    <option value="1">Appellate Division</option>
-                                    <option value="2">High Court Division</option>
+                                    class="form-label"><b>বিভাগ</b></label>
+                                <select class="form-control form-select required1" name="division_id" id="division_id"
+                                    required>
+                                    <option value="">-- নির্বাচন করুন --</option>
+                                    @foreach ($GovCaseDivision as $value)
+                                        <option value="{{ $value->id }}"
+                                            {{ old('case_category') == $value->id ? 'selected' : '' }}>
+                                            {{ $value->name_bn }} </option>
+                                    @endforeach
                                 </select>
                             </div>
+
                             <div class="col-md-4 text-center"><label for="exampleFormControlInput1"
-                                    class="form-label"><b>Case
-                                        Category</b></label>
+                                    class="form-label"><b>মামলার ক্যাটেগরি</b></label>
                                 <select class="form-control form-select required1" name="nature_id" id="nature_id" required>
-                                    <option value="">- Select -</option>
+                                    <option value="">-- নির্বাচন করুন --</option>
                                 </select>
                             </div>
+
                             <div class="col-md-4 text-center"><label for="exampleFormControlInput1"
-                                    class="form-label"><b>Case
-                                        Type</b></label>
-                                <select class="form-control form-select required1" name="case_type_id" id="case_type_id" required>
-                                    <option value="">- Select -</option>
+                                    class="form-label"><b>মামলার শ্রেণী/কেস-টাইপ</b></label>
+                                <select class="form-control form-select required1" name="case_type_id" id="case_type_id"
+                                    required>
+                                    <option value="">-- নির্বাচন করুন --</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mt-5">
-                            <div class="col-md-4"><label for="exampleFormControlInput1" class="form-label"><b>Case
-                                        Number</b></label>
+                            <div class="col-md-4"><label for="exampleFormControlInput1" class="form-label"><b>মামলা
+                                        নং</b></label>
                                 <input type="text" class="form-control required1" name="case_number" id="case_number"
                                     placeholder="" required>
                             </div>
                             <div class="col-md-4"><label for="exampleFormControlInput1"
-                                    class="form-label"><b>Year</b></label>
-                                <input type="text" class="form-control required1" id="year" name="year"
-                                    placeholder="" value="{{ date('Y') }}">
+                                    class="form-label"><b>বছর</b></label>
+                                <input type="text" class="form-control required1 common_yearpicker" id="year"
+                                    name="year" placeholder="" value="{{ date('Y') }}">
                             </div>
                             <div class="col-md-4"></div>
                         </div>
+
                     </form>
                     <div class="col-md-3"><button class="btn btn-primary mt-4"
-                            id="suprime_court_case_search_button">Search</button></div>
+                            id="suprime_court_case_search_button">অনুসন্ধান</button></div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12" id="search_result_supream_court">
-
+                    <iframe src="" title="description" id="itr" class="d-none iframe_resizing"></iframe>
                 </div>
+
             </div>
         </div>
 
@@ -87,110 +96,101 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $('.common_yearpicker').datepicker({
+            format: 'yyyy',
+            startView: 'years',
+            minViewMode: 'years',
+            orientation: "bottom left",
+        });
+    </script>
     <script>
         //$('#division_id').select2();
         $('#division_id').on('change', function() {
             var division_id = $(this).find('option:selected').val();
             var options_12 = [{
                     value: 8,
-                    text: 'Civil Cases'
+                    text: 'দেওয়ানী মামলা'
                 },
                 {
                     value: 10,
-                    text: 'Contempt Cases'
+                    text: 'অবমাননা মামলা'
                 },
                 {
                     value: 9,
-                    text: 'Jail Cases'
+                    text: 'জেল মামলা'
                 },
             ]
 
             var options_21 = [{
                     value: 3,
-                    text: 'Civil Appeal'
+                    text: 'সিভিল আপিল'
                 },
                 {
                     value: 4,
-                    text: 'Civil Revision'
+                    text: 'সিভিল রিভিশন'
                 },
                 {
                     value: 1,
-                    text: 'Original Cases'
+                    text: 'মূল মামলা'
                 },
                 {
                     value: 2,
-                    text: 'Writ Cases'
+                    text: 'রিট মামলা'
                 },
             ]
 
 
             if (division_id == 1) {
                 $('#nature_id').empty();
-                var option_html = '<option value="">- Select -</option>';
+                var option_html = '<option value="">-- নির্বাচন করুন --</option>';
                 $.each(options_12, function(i, item) {
                     option_html += '<option value="' + item.value + '">' + item.text + '</option>';
                 });
             } else if (division_id == 2) {
                 $('#nature_id').empty();
-                var option_html = '<option value="">- Select -</option>';
+                var option_html = '<option value="">-- নির্বাচন করুন --</option>';
                 $.each(options_21, function(i, item) {
                     option_html += '<option value="' + item.value + '">' + item.text + '</option>';
                 });
             } else {
                 $('#nature_id').empty();
-                var option_html = '<option value="">- Select -</option>';
+                var option_html = '<option value="">-- নির্বাচন করুন --</option>';
             }
             $('#nature_id').append(option_html);
-            //$('#nature_id').select2();
         })
 
-        $('#nature_id').on('change', function() {
-            var nature_id = $(this).find('option:selected').val();
 
-            if (nature_id == 8) {
-                $('#case_type_id').empty();
-                var options_8 =
-                    '<option value="">- Select -</option><option value="35">Civil Appeal</option><option value="36">Civil Petition</option><option value="37">Civil Misc Petition</option><option value="38">Civil Review Petition</option>';
-                $('#case_type_id').append(options_8);
-            } else if (nature_id == 10) {
-                $('#case_type_id').empty();
-                var options_10 =
-                    '<option value="">- Select -</option><option value="45">Contempt Petition(A)</option>';
-                $('#case_type_id').append(options_10);
-            } else if (nature_id == 9) {
-                $('#case_type_id').empty();
-                var options_9 =
-                    '<option value="">- Select -</option><option value="43">Jail Petition</option><option value="44">Jail Appeal(A)</option>';
-                $('#case_type_id').append(options_9);
-            } else if (nature_id == 3) {
-                $('#case_type_id').empty();
-                var options_3 =
-                    ' <option value="">- Select -</option><option value="47">Election Petition</option><option value="1">First Appeal</option><option value="2">First Misc Appeal</option><option value="3">Cross Objection</option><option value="4">Transfer Appeal</option><option value="32">Second Appeal</option><option value="33">Second Misc Appeal</option><option value="48">First Appeal Tender</option><option value="49">First Misc Appeal Tender</option><option value="93">VC Civil Rule</option><option value="94">In re : VC F M A</option><option value="96">In re : VC F A</option><option value="102">VC First Appeal</option>';
-                $('#case_type_id').append(options_3);
-            } else if (nature_id == 4) {
-                $('#case_type_id').empty();
-                var options_4 =
-                    '<option value="">- Select -</option><option value="5">Civil Rule</option><option value="6">Civil Revision</option><option value="7">Civil Misc</option><option value="8">Civil Order</option><option value="58">Contempt</option><option value="81">Civil Review</option><option value="89">Violation Misc</option><option value="100">In-re VC Voilation Misc</option><option value="83">Violation Case</option><option value="88">Violation Misc. Rule</option><option value="101">VC Contempt Petition (H)</option><option value="98">In re : VC Civil Revision</option><option value="99">VC Civil Revision</option>';
-                $('#case_type_id').append(options_4);
-            } else if (nature_id == 1) {
-                $('#case_type_id').empty();
-                var options_1 =
-                    ' <option value="">- Select -</option><option value="66">Letter of Administration Suit</option><option value="70">Violation Misc</option><option value="67">Review Petition</option><option value="73">Suo-Muto Rule (Original)</option><option value="34">Execution Case</option><option value="22">Company Matter</option><option value="23">Contempt Matter</option><option value="24">Customs Appeal</option><option value="25">Divorce Suit</option><option value="26">Income Tax Reference</option><option value="27">Merchant Shipping</option><option value="28">Trademark Appeal</option><option value="29">Trademark Application</option><option value="30">VAT Appeal</option><option value="18">Admiralty Suit</option><option value="19">Arbitration Appeal</option><option value="20">Arbitration Application</option><option value="21">Cancellation and Design</option><option value="69">Contempt Petition</option><option value="64">Contempt Rule</option><option value="65">Summary Suit</option><option value="79">Arbitration Rule</option><option value="78">Bank Company Application</option><option value="80">Family Matter</option><option value="87">VAT Revision</option><option value="105">Financial Institution</option>';
-                $('#case_type_id').append(options_1);
-            } else if (nature_id == 2) {
-                $('#case_type_id').empty();
-                var options_2 =
-                    '<option value="">- Select -</option><option value="61">In re : Writ Petition</option> <option value="13">Writ Petition</option><option value="14">Contempt Petition(H)</option><option value="15">Review Petition</option><option value="16">Suo-Muto Rule</option><option value="17">Transfer Petiion</option><option value="51">Reference Application</option><option value="59">I.T.R.</option><option value="60">Rule</option><option value="90">In re : VC Writ Petition</option><option value="86">Copy Right Appeal</option><option value="92">VC Writ Petition</option>';
-                $('#case_type_id').append(options_2);
+
+        jQuery('select[name="nature_id"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            jQuery("#case_type_id").after('<div class="loadersmall"></div>');
+
+            if (dataID) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
+                        dataID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="case_type_id"]').html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery('select[name="case_type_id"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="case_type_id"]').append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
             } else {
-                $('#case_type_id').empty();
-                var option_html = '<option value="">- Select -</option>';
+                $('select[name="case_type_id"]').empty();
             }
-            $('#case_type_id').append(option_html);
-            $('#case_type_id').select2();
-        })
-
-
+        });
 
         $('#suprime_court_case_search_button').on('click', function(e) {
             e.preventDefault();
@@ -201,75 +201,57 @@
                     passport = false;
                 }
             });
-            //alert(passport);
+
             if (passport) {
-                swal.showLoading();
-                $.ajax({
-                    url: '{{ route('supremecourt.case.search.post.value') }}',
-                    method: 'post',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "division_id": $('#division_id').find('option:selected').val(),
-                        "nature_id": $('#nature_id').find('option:selected').val(),
-                        "case_type_id": $('#case_type_id').find('option:selected').val(),
-                        "case_number": $('#case_number').val(),
-                        "year": $('#year').val(),
-                    },
 
-                    success: function(response) {
-                        swal.close();
-                        if (response.success == 'success') {
-                            //$('#search_result_supream_court').empty();
-                            $('#search_result_supream_court').html(response.html)
-                            var ahref = $('#search_result_supream_court a').attr('href');
-                            if (ahref != undefined) {
+                //     let division_id=$('#division_id').find('option:selected').val();
+                //     let nature_id = $('#nature_id').find('option:selected').val(),
+                //     let case_type_id= $('#case_type_id').find('option:selected').val(),
+                //     let case_number= $('#case_number').val(),
+                //     let year= $('#year').val(),
+                //     $url = `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=`  ${division_id} '&case_type_id=' ${case_type_id} '&case_number=' ${case_number} '&year=' ${year};
 
-                                var Nhref = 'https://supremecourt.gov.bd/web/' + ahref.replace('../',
-                                    '');;
-                                $('#search_result_supream_court a').attr("href", Nhref);
-                                $('#search_result_supream_court a').addClass('text-decoration-none');
-                            }
-                        }
-                    }
+                // let division_id = $('#division_id').find('option:selected').val();
+                // let nature_id = $('#nature_id').find('option:selected').val();
+                // let case_type_id = $('#case_type_id').find('option:selected').val();
+                // let case_number = $('#case_number').val();
+                // let year = $('#year').val();
+                // let url =
+                //     `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
+                // console.log(url);
 
-                });
-            } else {
-                Swal.fire('সব গুলো তথ্য দিন')
+                let division_id = $('#division_id').find('option:selected').val();
+                let case_type_id = $('#case_type_id').find('option:selected').val();
+                let case_number = $('#case_number').val();
+                let year = $('#year').val();
+                let url =
+                    `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
+
+                    //documet.getElementById('itr').setAttribute('src',url);
+                    $('#itr').removeClass('d-none');
+                    $('#itr').attr('src',url);
+                // fetch(url)
+                //     .then(response => {
+                //         if (!response.ok) {
+                //             throw new Error('Network response was not ok');
+                //         }
+                //         return response.text();
+                //     })
+                //     .then(data => {
+                //         if (data && data.trim() !== "") {
+                //             document.getElementById('search_result_supream_court').innerHTML = data;
+                //         } else {
+                //             document.getElementById('search_result_supream_court').innerHTML = "No data found.";
+                //         }
+                //     })
+                //     .catch(error => {
+                //         console.error('Error:', error);
+                //         document.getElementById('search_result_supream_court').innerHTML =
+                //             "Error occurred while fetching data.";
+                //     });
+
+
             }
-
-        })
-
-        // $('#suprime_court_case_search_form').on('submit', function(e) {
-        //     e.preventDefault();
-        //     swal.showLoading();
-        //     $.ajax({
-        //         url: '{{ route('supremecourt.case.search.post.value') }}',
-        //         method: 'post',
-        //         data: {
-        //             "_token": "{{ csrf_token() }}",
-        //             "division_id": $('#division_id').find('option:selected').val(),
-        //             "nature_id": $('#nature_id').find('option:selected').val(),
-        //             "case_type_id": $('#case_type_id').find('option:selected').val(),
-        //             "case_number": $('#case_number').val(),
-        //             "year": $('#year').val(),
-        //         },
-
-        //         success: function(response) {
-        //             swal.close();
-        //             if (response.success == 'success') {
-        //                 //$('#search_result_supream_court').empty();
-        //                 $('#search_result_supream_court').html(response.html)
-        //                 var ahref = $('#search_result_supream_court a').attr('href');
-        //                 if (ahref != undefined) {
-
-        //                     var Nhref = 'https://supremecourt.gov.bd/web/' + ahref.replace('../', '');;
-        //                     $('#search_result_supream_court a').attr("href", Nhref);
-        //                     $('#search_result_supream_court a').addClass('text-decoration-none');
-        //                 }
-        //             }
-        //         }
-
-        //     });
-        // })
+        });
     </script>
 @endsection

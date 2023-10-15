@@ -7,7 +7,7 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
 
@@ -243,7 +243,7 @@
             e.preventDefault();
             $('#leaveToAppealSaveBtn').addClass('spinner spinner-white spinner-right disabled');
             Swal.fire({
-                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                title: 'আপনি কি লিভ টু আপিলের তথ্য সংরক্ষণ করতে চান?',
                 // text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -252,10 +252,8 @@
                 confirmButtonText: 'Yes!'
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     var formData = new FormData(this);
                     $.ajax({
-
                         type: 'POST',
                         url: "{{ route('cabinet.case.leaveToAppealStore') }}",
                         data: formData,

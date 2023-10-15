@@ -49,7 +49,8 @@
             text-align: right;
             vertical-align: top
         }
-        .details-pdf-button{
+
+        .details-pdf-button {
             width: 95%;
             text-align: right;
         }
@@ -67,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                          @if (Auth::user()->role_id == 2)
+                              @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                        </div> -->
+                            </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -153,14 +154,14 @@
                                 </tr>
                             @endif
                             {{-- $case->date_issuing_rule_nishi ?? '' --}}
-                              {{-- {{dd($case->date_issuing_rule_nishi)}} --}}
+                            {{-- {{dd($case->date_issuing_rule_nishi)}} --}}
                             <tr>
                                 <th scope="row">ফলাফল</th>
                                 <td>
                                     @if ($case->result == '1')
-                                    সরকারের পক্ষে
+                                        সরকারের পক্ষে
                                     @elseif($case->result == '2')
-                                    সরকারের বিপক্ষে
+                                        সরকারের বিপক্ষে
                                     @else
                                         চলমান
                                     @endif
@@ -255,7 +256,6 @@
                             </thead>
                             <tbody class="text-center">
                                 @forelse ($hearings as $key=> $row)
-
                                     <tr>
                                         <td class="tg-nluh text-center" scope="row">{{ en2bn($key + 1) }}.</td>
                                         <td class="tg-nluh text-center">{{ en2bn($row->hearing_date) }}</td>

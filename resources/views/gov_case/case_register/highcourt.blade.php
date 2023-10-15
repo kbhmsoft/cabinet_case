@@ -118,6 +118,7 @@
                                                         href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
                                                         চূড়ান্ত আদেশ</a>
                                             @elseif ($row->is_final_order == 1)
+                                             @if(($row->result==2))
                                                 @if (empty($row->leave_to_appeal_no))
                                                     <a class="dropdown-item"
                                                         href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
@@ -128,6 +129,7 @@
                                                         href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
                                                         সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
                                                     </a>
+                                                @endif
                                                 @endif
                                             @endif
 

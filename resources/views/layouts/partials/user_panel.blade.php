@@ -23,7 +23,8 @@
             <div class="d-flex flex-column">
                 <a href="{{ route('my-profile.index') }}" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"> {{ Auth::user()->name }}</a>
                 <div class="text-muted mt-1"><?=auth()->user()->role->name?></div>
-                <div class="text-muted mt-1"><?=auth()->user()->office->office_name_bn?></div>
+
+                <div class="text-muted mt-1"><?=auth()->user()->govOffice->office_name_bn ?? ' ' ?></div>
                 <div class="navi mt-2">
                     <a href="#" class="navi-item">
                         <span class="navi-link p-0 pb-2">

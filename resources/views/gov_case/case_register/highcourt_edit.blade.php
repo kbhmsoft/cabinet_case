@@ -1,5 +1,9 @@
 @extends('layouts.cabinet.cab_default')
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 @section('content')
 
     @php
@@ -892,7 +896,7 @@
                                             <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
-                                                        value="1"
+                                                        value="1" onclick="showAlert()"
                                                         {{ $case->is_final_order == '1' ? 'checked' : '' }}>
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
@@ -1563,6 +1567,29 @@
         });
     </script>
 
+<script>
+    function showAlert() {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Are you sure you want to check/uncheck this checkbox?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+            } else {
+
+                document.getElementById('is_final_order').checked = false;
+                console.log("aoyon");
+                $('#finalOrderDiv').hide();
+            }
+        });
+    }
+</script>
 
     <script>
         $(document).ready(function() {

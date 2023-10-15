@@ -1,4 +1,9 @@
 @extends('layouts.cabinet.cab_default')
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 @section('content')
 
@@ -148,7 +153,8 @@
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                                        required="required"
+                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
@@ -228,7 +234,8 @@
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
 
                                                         <tr>
-                                                            <th style="height: 35px !IMPORTANT;">মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            <th style="height: 35px !IMPORTANT;">মূল রেসপন্ডেন্ট নাম <span
+                                                                    class="text-danger">*</span>
                                                             </th>
                                                             {{-- <select id="select2Dropdown" class="form-control">
 
@@ -281,7 +288,8 @@
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
-                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
+                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ:
+                                                                        5MB)</sub>
                                                                 </h3>
                                                             </div>
 
@@ -726,7 +734,7 @@
                                             <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
-                                                        value="1">
+                                                        value="1" onclick="showAlert()">
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
@@ -1068,7 +1076,8 @@
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
-                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
+                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ:
+                                                                        5MB)</sub>
                                                                 </h3>
                                                             </div>
 
@@ -1117,8 +1126,8 @@
 
                         {{-- ------------- start কনটেম্প্ট মামলা সম্পর্কিত------------- --}}
                         <div class="tab-pane" id="contempt_case" role="tabpanel" aria-labelledby="home-tab">
-                            <form id="contemptCaseForm" action="javascript:void(0)" class="form"
-                                method="POST" enctype="multipart/form-data">
+                            <form id="contemptCaseForm" action="javascript:void(0)" class="form" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -1173,13 +1182,11 @@
 
                                                         <div class="symbol-group symbol-hover py-2">
                                                             <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="" role="button"
-                                                                data-original-title="ফাইল যুক্ত করুণ">
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
 
                                                                 <div id="addContemptFileRow">
-                                                                    <span
-                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                    <span class="symbol-label font-weight-bold bg-success">
                                                                         <i
                                                                             class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                     </span>
@@ -1190,8 +1197,8 @@
 
                                                     </div>
                                                     <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5"
-                                                            id="contemptFileDiv" style="border:1px solid #dcd8d8;">
+                                                        <table width="100%" class="border-0 px-5" id="contemptFileDiv"
+                                                            style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
                                                         </table>
                                                         <input type="hidden" id="contempt_attachment_count"
@@ -1235,6 +1242,40 @@
             $('#select2Dropdown').select2();
         });
     </script>
+
+    {{-- <script>
+    function showAlert() {
+        if (confirm('Are you sure you want to check/uncheck this checkbox?')) {
+
+        } else {
+            event.preventDefault();
+        }
+    }
+</script> --}}
+    <script>
+        function showAlert() {
+            Swal.fire({
+                title: "আপনি কি নিশ্চিত?",
+                text: "আপনি কি মামলার রায়ের অবস্থা পরিবর্তন করতে চান?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "হ্যাঁ",
+                cancelButtonText: "না",
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                } else {
+
+                    document.getElementById('is_final_order').checked = false;
+                    console.log("aoyon");
+                    $('#finalOrderDiv').hide();
+                }
+            });
+        }
+    </script>
+
 
 
 

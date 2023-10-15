@@ -187,7 +187,7 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
@@ -697,7 +697,6 @@ class GovCaseRegisterController extends Controller
         return view('dashboard.cabinet.cabinet_admin_appeal_result_sending_date')->with($data);
     }
 
-
     // public function ministryWiseSentToSolicitorCase()
     // {
     //     session()->forget('currentUrlPath');
@@ -792,7 +791,6 @@ class GovCaseRegisterController extends Controller
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
             ->paginate(10);
 
-
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -846,7 +844,7 @@ class GovCaseRegisterController extends Controller
         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-    //   return $data['ministry'];
+        //   return $data['ministry'];
 
         // View
         $data['page_title'] = 'হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা';
@@ -1211,7 +1209,7 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট চলমান মামলার তালিকা';
@@ -1297,7 +1295,7 @@ class GovCaseRegisterController extends Controller
         $data['cases'] = $query->paginate(10);
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিস্পত্তিকৃত মামলার তালিকা';
@@ -1954,11 +1952,12 @@ class GovCaseRegisterController extends Controller
         // $data['ministrys'] = DB::table('gov_case_office')->get();
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
-        // return $data['concern_person_desig'];
+
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
             ->get();
+
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
         if ($roleID != 33) {
             $data['depatments'] = Office::where('parent', $officeID)->get();
@@ -1974,9 +1973,8 @@ class GovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
-        $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি '; //exit;
-        // dd($data);
-        // return $data;
+        $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি ';
+
         return view('gov_case.case_register.create_new')->with($data);
     }
 
@@ -2009,6 +2007,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
+        // return $data['GovCaseDivisionCategory'];
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
@@ -2711,8 +2710,7 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         $data['page_title'] = 'লিভ টু আপিল আবেদন';
-        // return $data['concern_person_desig'] ;
-        // return $data;
+
         return view('gov_case.case_register._inc.leave_to_appeal_answer_create')->with($data);
     }
 
@@ -2831,6 +2829,7 @@ class GovCaseRegisterController extends Controller
             ->where('case_category_id', $id)
             ->where('is_final_order', 1)
         // ->pluck("case_no", "id", "year");
+            ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -2879,6 +2878,7 @@ class GovCaseRegisterController extends Controller
         } else {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         }
+        //  return $data;
         return view('gov_case.case_register.showDetails')->with($data);
         // return $data;
     }
@@ -2899,17 +2899,19 @@ class GovCaseRegisterController extends Controller
         $this->generatePDF($html);
     }
 
-    public function generatePDF($html){
-        if (ob_get_contents()) ob_end_clean();
+    public function generatePDF($html)
+    {
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
+
         $mpdf = new \Mpdf\Mpdf([
-         'default_font_size' => 12,
-         'default_font'      => 'kalpurush'
-         ]);
+            'default_font_size' => 12,
+            'default_font' => 'kalpurush',
+        ]);
         $mpdf->WriteHTML($html);
         $mpdf->Output();
     }
-
-
 
     public function ajax_badi_del($id)
     {
