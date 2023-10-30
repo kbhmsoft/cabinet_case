@@ -9,7 +9,6 @@ $officeInfo = user_office_info();
             <option value=""> মামলা ক্যাটেগরি </option>
             {{-- {{dd($division_categories)}} --}}
             @foreach ($division_categories as $value)
-
                <option value="{{ $value->id }}"
                   {{ old('division_categories') == $value->id ? 'selected' : '' }}>
                   {{ $value->name_bn }}

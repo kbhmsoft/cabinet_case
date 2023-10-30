@@ -246,7 +246,6 @@ class GovCaseRegisterController extends Controller
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
             $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
@@ -272,15 +271,22 @@ class GovCaseRegisterController extends Controller
 
         $data['cases'] = $query->paginate(10);
 
+        // return $data['cases'];
+        // $data['case_bibadi'] = GovCaseBiBadi::where('gov_case_id', '=',$data['cases'][0]->id)
+        // ->where('is_main_bibadi',1)
+        // ->get();
+       // return $data['case_badi'];
+
+
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অধিক গুরুত্বপূর্ণ মামলার তালিকা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
 
         // return $data;
 
-        return view('gov_case.case_register.highcourt')->with($data);
+        return view('gov_case.case_register.most_important_highcourt')->with($data);
     }
 
     public function highcourtMostImportantSave(Request $request)
@@ -1944,7 +1950,6 @@ class GovCaseRegisterController extends Controller
     {
 
         session()->forget('currentUrlPath');
-
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
         // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
@@ -2209,7 +2214,7 @@ class GovCaseRegisterController extends Controller
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
-            GovCaseLogRepository::storeGovCaseLog($caseId);
+            // GovCaseLogRepository::storeGovCaseLog($caseId);
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
             }
@@ -2228,6 +2233,7 @@ class GovCaseRegisterController extends Controller
 
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+
             $caseRegisterData = array_merge($caseRegister, [
                 'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
                 'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
@@ -2236,6 +2242,7 @@ class GovCaseRegisterController extends Controller
             ]);
 
             $cs_activity_data['case_register_id'] = $caseId;
+            // dd($request->formType);
             if ($request->formType != 'edit') {
                 $cs_activity_data['activity_type'] = 'create';
                 $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
@@ -2550,7 +2557,6 @@ class GovCaseRegisterController extends Controller
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
 
-        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
     public function highcourt_edit($id)
     {
@@ -2581,7 +2587,7 @@ class GovCaseRegisterController extends Controller
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
         $data['page_title'] = 'মামলা সংশোধন';
-        // return $data;
+
         return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
@@ -2872,7 +2878,13 @@ class GovCaseRegisterController extends Controller
     public function show($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['usersInfo'] = User::all();
+        // return $data['usersInfo'];
+        // return $data['GovCaseDivisionCategoryType'];
+        // return  $data['GovCaseDivisionCategory'] ;
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         } else {
@@ -2886,6 +2898,10 @@ class GovCaseRegisterController extends Controller
     public function highcourtDetailsPdf($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['usersInfo'] = User::all();
 
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';

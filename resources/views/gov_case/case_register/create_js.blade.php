@@ -244,7 +244,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-            '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
 
             if (countVal != 1) {
@@ -290,7 +290,7 @@
             items +=
                 '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
 
-                items += '<input type="hidden" name="bibadi_id[]" value="">';
+            items += '<input type="hidden" name="bibadi_id[]" value="">';
             if (type == 'other') {
                 items +=
                     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
@@ -474,12 +474,10 @@
     // ================================Case General Info save==================================
 
     $('#caseGeneralInfoForm').submit(function(e) {
-        // alert(1);
         e.preventDefault();
         $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
         Swal.fire({
             title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -527,7 +525,8 @@
 
                     },
                     error: function(data) {
-                        console.log(JSON.stringify(data['responseJSON']['errors']['case_no'][0]));
+                        console.log(JSON.stringify(data['responseJSON']['errors']['case_no']
+                            [0]));
 
                         Swal.fire(
                             'Oops...!',
@@ -809,6 +808,24 @@
     });
     // ================================Final Order Save==================================//
 </script>
+
+
+<script>
+    // Case no can only be bangla and english
+    function allowBanglaAndEnglishNumerals(event) {
+        var charCode = event.which || event.keyCode;
+        // Allow Bangla numerals: ০-৯ (ASCII range: 2400-2409) and English numerals: 0-9 (ASCII range: 48-57)
+        if ((charCode >= 2400 && charCode <= 2409) || (charCode >= 48 && charCode <= 57)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+</script>
+
+
+
 <!--end::Page Scripts-->
 @include('components.Ajax')
 <script>

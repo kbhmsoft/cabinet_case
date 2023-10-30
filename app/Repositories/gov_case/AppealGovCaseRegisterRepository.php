@@ -103,7 +103,7 @@ class AppealGovCaseRegisterRepository
             $case->case_number_origin = $caseOriginNum;
             $case->case_origin_id = $caseInfo->case_number_origin;
             $case->is_appeal = 1;
-
+            //  dd($case);
             if ($case->save()) {
                 $caseId = $case->id;
                 if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {

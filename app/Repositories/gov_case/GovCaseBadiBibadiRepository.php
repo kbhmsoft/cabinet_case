@@ -76,6 +76,7 @@ class GovCaseBadiBibadiRepository
         $badi = GovCaseBadi::where('gov_case_id', $caseId)->get();
         return $badi;
     }
+    
     public static function getBibadiByCaseId($caseId)
     {
         $bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->get();

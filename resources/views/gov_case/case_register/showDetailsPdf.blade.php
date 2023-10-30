@@ -218,6 +218,35 @@
         <div class="priview-demand">
             <table class="table table-hover table-bordered report">
                 <thead class="headding">
+                    @if ($case->case_category_id)
+                        <tr>
+                            <th scope="row">মামলার ক্যাটেগরি</th>
+                            @php
+                                // Find the matched category based on case_category_id
+                                $matchedCategory = $GovCaseDivisionCategory->where('id', $case->case_category_id)->first();
+                            @endphp
+                            <td>
+                                @if ($matchedCategory)
+                                    {{ $matchedCategory->name_bn }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
+                    @if ($case->case_type_id)
+                        <tr>
+                            <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
+                            @php
+                                // Find the matched category based on case_type_id
+                                $matchedDivisionCategory = $GovCaseDivisionCategoryType->where('id', $case->case_type_id)->first();
+                            @endphp
+                            <td>
+                                @if ($matchedDivisionCategory)
+                                    {{ $matchedDivisionCategory->name_bn }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <th class="tg-19u4" width="130">মামলা নং</th>
                         <td class="tg-nluh">{{ $case->case_no ?? '-' }}</td>
@@ -226,6 +255,37 @@
                         <th class="tg-19u4">রুল ইস্যুর তারিখ</th>
                         <td class="tg-nluh">{{ en2bn($case->date_issuing_rule_nishi) ?? '-' }}</td>
                     </tr>
+
+                    @if ($case->concern_person_designation)
+                        <tr>
+                            <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তা</th>
+                            @php
+                                // Find the matched category based on concern_person_designation
+                                $matchedConcernPerson = $concern_person_desig->where('id', $case->concern_person_designation)->first();
+                            @endphp
+                            <td>
+                                @if ($matchedConcernPerson)
+                                    {{ $matchedConcernPerson->name }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
+                    @if ($case->concern_user_id)
+                        <tr>
+                            <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
+                            @php
+                                // Find the matched category based on concern_user_id
+                                $matchedConcernUser = $usersInfo->where('id', $case->concern_user_id)->first();
+                            @endphp
+                            <td>
+                                @if ($matchedConcernUser)
+                                    {{ $matchedConcernUser->name }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
                     <tr>
                         <th class="tg-19u4">বিষয়বস্তু(সংক্ষিপ্ত)</th>
                         <td class="tg-nluh">{{ $case->subject_matter ?? '-' }}</td>
@@ -270,8 +330,20 @@
 
                     <tr>
                         <th class="tg-19u4">মন্তব্য</th>
-                        <td class="tg-nluh">{{ $case->comments ?? '-'  }}</td>
+                        <td class="tg-nluh">{{ $case->comments ?? '-' }}</td>
                     </tr>
+                    @if (!empty($case->postponed_order))
+                    <tr>
+                        <th scope="row">স্থগিতাদেশ</th>
+                        <td>
+                            @if ($case->postponed_order == '1')
+                                আছে
+                            @elseif($case->postponed_order == '0')
+                                নেই
+                            @endif
+                        </td>
+                    </tr>
+                @endif
                     {{-- @if (!empty($info->lost_reason))
                         <tr>
                             <th class="tg-19u4">পরাজয়ের কারণ</th>
@@ -330,7 +402,7 @@
                         <tr>
                             <td class="tg-nluh">{{ en2bn($k) }}.</td>
                             <td class="tg-nluh">{{ $badi->name }}</td>
-                            <td class="tg-nluh">{{$badi->address }}</td>
+                            <td class="tg-nluh">{{ $badi->address }}</td>
                         </tr>
                         @php $k++; @endphp
                     @endforeach
@@ -352,8 +424,9 @@
                     @foreach ($caseBibadi as $bibadi)
                         <tr>
                             <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                            <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-'  }}</td>
-                            <td class="tg-nluh">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
+                            <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                            <td class="tg-nluh">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}
+                            </td>
                         </tr>
                         @php $k++; @endphp
                     @endforeach

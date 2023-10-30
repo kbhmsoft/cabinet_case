@@ -68,13 +68,13 @@ $roleID = Auth::user()->role_id;
             <div class="row">
                 <div class="col-md-12">
                     {{-- <a onclick='printDiv();' class="align-right btn btn-primary float-right" href="">Print</a> --}}
-                    <a class="align-right btn btn-primary float-right" href="{{ route('case_audit.caseActivityPDFlog', $case->id) }}">Print</a>
+                    {{-- <a class="align-right btn btn-primary float-right" href="{{ route('case_audit.caseActivityPDFlog', $case->id) }}">Print</a> --}}
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-4">
                     <h5><span class="font-weight-bolder">মামলা নং: </span>{{ en2bn($case->case_no) }}</h5>
                     {{-- <h5><span class="font-weight-bolder">আদালতের নাম: </span> {{ $case->court->court_name }}</h5> --}}
-                    
+
                 </div>
                 <div class="col-md-4">
                     <h5>
@@ -131,6 +131,7 @@ $roleID = Auth::user()->role_id;
 
                             @endphp
                             <tr>
+                                {{-- {{dd($caseActivityLog)}} --}}
                                 <td>{{ en2bn($caseActivityLog->created_at)}}</td>
                                 <td>{{ $caseActivityLog->user->name ?? '-'}}</td>
                                 <td>{{ $caseActivityLog->role->name ?? '-'}}</td>

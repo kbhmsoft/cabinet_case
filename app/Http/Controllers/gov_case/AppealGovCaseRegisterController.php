@@ -254,16 +254,19 @@ class AppealGovCaseRegisterController extends Controller
 
     }
 
-    public function generatePDF($html){
-        if (ob_get_contents()) ob_end_clean();
+    public function generatePDF($html)
+    {
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
+
         $mpdf = new \Mpdf\Mpdf([
-         'default_font_size' => 12,
-         'default_font'      => 'kalpurush'
-         ]);
+            'default_font_size' => 12,
+            'default_font' => 'kalpurush',
+        ]);
         $mpdf->WriteHTML($html);
         $mpdf->Output();
     }
-
 
     public function high_court_complete_case()
     {
@@ -1240,7 +1243,6 @@ class AppealGovCaseRegisterController extends Controller
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
 
-        // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
     public function appealFinalOrderStore(Request $request)
@@ -1475,7 +1477,8 @@ class AppealGovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
-    public function appealFinalOrderEdit($id){
+    public function appealFinalOrderEdit($id)
+    {
         $roleID = userInfo()->role_id;
 
         $officeID = userInfo()->office_id;
@@ -1508,7 +1511,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['usersInfo'] = User::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
-    //    return $data['appealCaseData'];
+        //    return $data['appealCaseData'];
         $data['page_title'] = 'আপিল বিভাগে চূড়ান্ত আদেশ';
 
         return view('gov_case.appeal_case_register.appeal_final_order')->with($data);
@@ -1607,7 +1610,6 @@ class AppealGovCaseRegisterController extends Controller
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
             ->where('deleted_at', '=', null);
 
-
         // $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
 
         $data['offices'] = DB::table('gov_case_office')->get();
@@ -1654,8 +1656,6 @@ class AppealGovCaseRegisterController extends Controller
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
     }
 
-
-
     public function appellateDivisionMostImportantCase()
     {
 
@@ -1666,7 +1666,7 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
-            ->where('deleted_at', '=', null)->where('most_important',1);
+            ->where('deleted_at', '=', null)->where('most_important', 1);
 
         $data['offices'] = DB::table('gov_case_office')->get();
 
@@ -1697,18 +1697,23 @@ class AppealGovCaseRegisterController extends Controller
         } elseif ($roleID == 9 || $roleID == 21) {
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
-        $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
-
+        $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
+            ->paginate(10);
+       // return $data['cases'];
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 2)->get();
 
+        // $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
+        // $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']
+        // ->case_number_origin);
+
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
         // return $data;
 
-        return view('gov_case.appeal_case_register.appealcourt')->with($data);
+        return view('gov_case.appeal_case_register.appealcourt_mostimportant')->with($data);
     }
 
     public function totalAppellateDivision()

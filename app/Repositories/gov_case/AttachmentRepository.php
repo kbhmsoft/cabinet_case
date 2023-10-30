@@ -173,6 +173,7 @@ class AttachmentRepository
     public static function storeAppealAttachment($appName, $caseId, $request)
     {
         if($request->file_name != NULL){
+            // dd($request);
             foreach($request->file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/attachment/";

@@ -154,10 +154,9 @@
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
                                                         required="required"
-                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
+                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
@@ -331,7 +330,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="caseGeneralInfoSaveBtn"
+                                    <button type="submit" id="              "
                                         class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>

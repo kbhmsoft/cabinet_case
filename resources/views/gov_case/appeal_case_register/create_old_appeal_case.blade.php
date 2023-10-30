@@ -101,13 +101,13 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label for="case_no">মামলা নং <span class="text-danger">*</span></label>
+                                                    <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                                        required="required"
+                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
+                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                                                 </div>
 
 

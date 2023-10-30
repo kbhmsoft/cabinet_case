@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                              @if (Auth::user()->role_id == 2)
+                                                      @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                            </div> -->
+                                                    </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -103,6 +103,40 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($case->case_category_id)
+                                <tr>
+                                    <th scope="row">মামলার ক্যাটেগরি</th>
+                                    @php
+                                        // Find the matched category based on case_category_id
+                                        $matchedCategory = $GovCaseDivisionCategory->where('id', $case->case_category_id)->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedCategory)
+                                            {{ $matchedCategory->name_bn }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+
+                            @if ($case->case_type_id)
+                                <tr>
+                                    <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
+                                    @php
+                                        // Find the matched category based on case_type_id
+                                        $matchedDivisionCategory = $GovCaseDivisionCategoryType->where('id', $case->case_type_id)->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedDivisionCategory)
+                                            {{ $matchedDivisionCategory->name_bn }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+
+                            {{-- <tr>
+                                <th scope="row">মামলা নং</th>
+                                <td>{{ $case->case_no ?? '-' }}</td>
+                            </tr> --}}
                             <tr>
                                 <th scope="row">মামলা নং</th>
                                 <td>{{ $case->case_no ?? '-' }}</td>
@@ -111,6 +145,36 @@
                                 <th scope="row">রুল ইস্যুর তারিখ</th>
                                 <td>{{ en2bn($case->date_issuing_rule_nishi) ?? '-' }}</td>
                             </tr>
+
+                            @if ($case->concern_person_designation)
+                                <tr>
+                                    <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তা</th>
+                                    @php
+                                        // Find the matched category based on concern_person_designation
+                                        $matchedConcernPerson = $concern_person_desig->where('id', $case->concern_person_designation)->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedConcernPerson)
+                                            {{ $matchedConcernPerson->name }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+
+                            @if ($case->concern_user_id)
+                                <tr>
+                                    <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
+                                    @php
+                                        // Find the matched category based on concern_user_id
+                                        $matchedConcernUser = $usersInfo->where('id', $case->concern_user_id)->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedConcernUser)
+                                            {{ $matchedConcernUser->name }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                             <tr>
                                 <th scope="row">বিষয়বস্তু(সংক্ষিপ্ত)</th>
                                 <td>{{ $case->subject_matter }}</td>
@@ -175,6 +239,35 @@
                                 <th scope="row">মন্তব্য</th>
                                 <td>{{ $case->comments ?? '-' }}</td>
                             </tr>
+
+                            @if (!empty($case->result_sending_date))
+                                <tr>
+                                    @if ($case->result_sending_date)
+                                        <th scope="row">দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ</th>
+                                        <td>{{ $case->result_sending_date ?? '-' }}</td>
+                                    @endif
+                                </tr>
+
+                                <tr>
+                                    @if ($case->result_sending_date_solisitor_to_ag)
+                                        <th scope="row">সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ</th>
+                                        <td>{{ $case->result_sending_date_solisitor_to_ag ?? '-' }}</td>
+                                    @endif
+                                </tr>
+                            @endif
+
+                            @if (!empty($case->postponed_order))
+                                <tr>
+                                    <th scope="row">স্থগিতাদেশ</th>
+                                    <td>
+                                        @if ($case->postponed_order == '1')
+                                            আছে
+                                        @elseif($case->postponed_order == '0')
+                                            নেই
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

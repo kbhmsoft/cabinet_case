@@ -27,8 +27,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- {{dd($cases)}} --}}
                     @foreach ($cases as $key => $row)
                         <tr>
+                            {{-- {{dd()}} --}}
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td>{{ $row->case_no }}</td>
                             <td>{{ $row->case_category->name_bn ?? '-' }}</td>

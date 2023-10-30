@@ -99,8 +99,6 @@ if (!function_exists('gov_case_activity_logs')) {
         $user = Auth::user();
         $userOffice = user_office_info();
 
-
-
         $log = new GovCaseActivityLog;
         $log->user_id = $user->id;
         $log->gov_case_id = $data['case_register_id'];
@@ -112,6 +110,7 @@ if (!function_exists('gov_case_activity_logs')) {
         $log->new_data = $data['new_data'];
         $log->ip_address = request()->ip();
         $log->user_agent = request()->userAgent();
+                
         $log->save();
         return $log;
 	}

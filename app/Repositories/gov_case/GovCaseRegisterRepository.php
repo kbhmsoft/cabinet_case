@@ -496,7 +496,7 @@ class GovCaseRegisterRepository
 
     public static function storeGeneralInfo($caseInfo)
     {
-        // dd($caseInfo['case_id']);
+        // dd($caseInfo);
         $case = self::checkGovCaseExist($caseInfo['case_id']);
         try {
             $case->case_no = $caseInfo->case_no;

@@ -1192,3 +1192,16 @@
 
     });
 </script>
+<script>
+    // Case no can only be bangla and english
+    function allowBanglaAndEnglishNumerals(event) {
+        var charCode = event.which || event.keyCode;
+        // Allow Bangla numerals: ০-৯ (ASCII range: 2400-2409) and English numerals: 0-9 (ASCII range: 48-57)
+        if ((charCode >= 2400 && charCode <= 2409) || (charCode >= 48 && charCode <= 57)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+</script>

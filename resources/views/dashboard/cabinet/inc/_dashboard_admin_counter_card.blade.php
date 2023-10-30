@@ -27,61 +27,68 @@
 </style>
 
 <div class="row mb-5">
+
     <div class="col-md-3">
-        <div class="card-counter success">
-            <a href="{{ route('cabinet.totalMinistryOffice') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.totalMinistryOffice') }}"><?= en2bn($total_ministry) ?></a></span>
-            <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.totalMinistryOffice') }}">মোট ব্যাবহারকারী মন্ত্রণালয়</a></span>
-        </div>
+        <a href="{{ route('cabinet.totalMinistryOffice') }}" style="text-decoration: none; color: inherit;">
+            <div class="card-counter success">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($total_ministry) ?></span>
+                <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">মোট
+                    ব্যাবহারকারী মন্ত্রণালয়</span>
+            </div>
+        </a>
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter success">
-            <a href="{{ route('cabinet.totalDoptor') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.totalDoptor') }}"><?= en2bn($total_doptor) ?></a></span>
-            <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.totalDoptor') }}">ব্যাবহারকারী দপ্তর</a></span>
-        </div>
+        <a href="{{ route('cabinet.totalDoptor') }}" style="text-decoration: none; color: inherit;">
+            <div class="card-counter success">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($total_doptor) ?></span>
+                <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
+                    ব্যাবহারকারী দপ্তর</span>
+            </div>
+        </a>
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter success">
-            <a href="{{ route('cabinet.totalDivisionOffice') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.totalDivisionOffice') }}"><?= en2bn($total_division) ?></a></span>
-            <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.totalDivisionOffice') }}">ব্যাবহারকারী বিভাগীয় প্রশাসন</a></span>
-        </div>
+        <a href="{{ route('cabinet.totalDivisionOffice') }}" style="text-decoration: none; color: inherit;">
+            <div class="card-counter success">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($total_division) ?></span>
+                <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
+                    ব্যাবহারকারী বিভাগীয় প্রশাসন</span>
+            </div>
+        </a>
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter success">
-            <a href="{{ route('cabinet.totalDistrictOffice') }}"><i class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.totalDistrictOffice') }}"><?= en2bn($total_district) ?></a></span>
-            <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.totalDistrictOffice') }}">ব্যাবহারকারী জেলা প্রশাসন</a></span>
-        </div>
+        <a href="{{ route('cabinet.totalDistrictOffice') }}" style="text-decoration: none; color: inherit;">
+            <div class="card-counter success">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($total_district) ?></span>
+                <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
+                    ব্যাবহারকারী জেলা প্রশাসন</span>
+            </div>
+        </a>
     </div>
 </div>
 
 
 <div class="row mb-5">
 
+
     <div class="col-md-3">
-        <div class="card-counter lightgreen">
-            <a href="{{ route('cabinet.case.fiveYearsRunningHighCourt') }}"><i
-                    class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.fiveYearsRunningHighCourt') }}"><?= en2bn($five_years_running_highcourt_case) ?></a></span>
-            <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.fiveYearsRunningHighCourt') }}">হাইকোর্ট বিভাগে ৫ বছরের <br> অধিককাল
-                    চলমান মামলা</a></span>
-        </div>
+        <a href="{{ route('cabinet.case.fiveYearsRunningHighCourt') }}" style="text-decoration: none; color: inherit;">
+            <div class="card-counter lightgreen">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($five_years_running_highcourt_case) ?></span>
+                <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
+                    হাইকোর্ট বিভাগে ৫ বছরের <br> অধিককাল
+                    চলমান মামলা</span>
+            </div>
+        </a>
     </div>
+
 
     <div class="col-md-3">
         <div class="card-counter lightgreen">

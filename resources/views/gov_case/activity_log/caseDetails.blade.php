@@ -3,7 +3,7 @@
    $roleID = Auth::user()->role_id;
    $data = json_decode($caseActivityLog->new_data, true);
    // echo $data['court_id'];
-   // print_r($data);
+//    print_r($data);
 @endphp
 
 @extends('layouts.cabinet.cab_default')
@@ -41,6 +41,7 @@
                             {{ App\Models\Court::where('id', $data['court_id'])->first()->court_name }}
                         </td>
                     </tr> --}}
+                    {{-- {{dd($data)}} --}}
                     <tr>
                         <th class="tg-19u4" width="130">মামলার ক্যাটেগরি</th>
                         <td class="tg-nluh">
@@ -66,7 +67,7 @@
                         <td class="tg-nluh">{{ en2bn($data['subject_matter']) }}</td>
                     </tr>
 
-                    
+
                     @if(!empty($data['ref_gov_case_no']))
                     <tr>
                         <th class="tg-19u4">পূর্বের মামলা নং</th>
@@ -123,7 +124,7 @@
             @endif
                 </thead>
             </table>
-             
+
           </div>
           @if($data['result'])
             <div class="col-md-6">
@@ -183,14 +184,14 @@
                         </tr>
                         @endif
                      </thead>
-                   
+
                   </table>
             </div>
           @endif
        </div>
 
       <div class="row">
-       
+
           <div class="col-md-6 mt-5">
                 <h4 class="font-weight-bolder ">পিটিশনারের বিবরণ</h4>
                 <table class="tg">
@@ -198,7 +199,7 @@
                       <tr>
                          <th class="tg-19u4" width="10">ক্রম</th>
                          <th class="tg-19u4 text-center" width="200">নাম</th>
-                         <th class="tg-19u4 text-center">পিতা/স্বামীর নাম</th>
+                         {{-- <th class="tg-19u4 text-center">পিতা/স্বামীর নাম</th> --}}
                          <th class="tg-19u4 text-center">ঠিকানা</th>
                       </tr>
                    </thead>
@@ -206,9 +207,9 @@
                     @for ( $i=0; $i < count($data['badi']); $i++)
                         <tr>
                             <td class="tg-nluh">{{en2bn($i+1)}}.</td>
-                            <td class="tg-nluh">{{ $data['badi'][$i]['name'] }}</td>
-                            <td class="tg-nluh">{{ $data['badi'][$i]['spouse_name'] }}</td>
-                            <td class="tg-nluh">{{ $data['badi'][$i]['address'] }}</td>
+                            <td class="tg-nluh text-center">{{ $data['badi'][$i]['name'] }}</td>
+                            {{-- <td class="tg-nluh">{{ $data['badi'][$i]['spouse_name'] }}</td> --}}
+                            <td class="tg-nluh text-center">{{ $data['badi'][$i]['address'] }}</td>
                         </tr>
                     @endfor
                    </tbody>
@@ -228,8 +229,8 @@
                     @for ( $i=0; $i < count($data['bibadi']); $i++)
                         <tr>
                             <td class="tg-nluh">{{en2bn($i+1)}}.</td>
-                            <td class="tg-nluh">{{ App\Models\gov_case\GovCaseOffice::where('id', $data['bibadi'][$i]['respondent_id'])->first()->office_name_bn }}</td>
-                            <td class="tg-nluh">
+                            <td class="tg-nluh text-center">{{ App\Models\gov_case\GovCaseOffice::where('id', $data['bibadi'][$i]['respondent_id'])->first()->office_name_bn }}</td>
+                            <td class="tg-nluh text-center">
                               @if($data['bibadi'][$i]['is_main_bibadi'] == 1)
                                 মুল রেস্পন্ডেন্ট
                               @else

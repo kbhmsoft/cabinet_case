@@ -192,7 +192,6 @@ Route::middleware('auth')->group(function () {
             route::post('ajax_case_file_del/{id}', [GovCaseRegisterController::class, 'ajax_case_file_del']);
 
             // for appeal controller route
-
             Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
             Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
             Route::post('completeAppealCaseStore', [AppealGovCaseRegisterController::class, 'completeAppealCaseStore'])->name('completeAppealCaseStore');

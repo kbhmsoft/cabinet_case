@@ -147,7 +147,7 @@ class GovCaseRegister extends Model
     }
 
     public function case_category(){
-        return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_division_id');
+        return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
     }
     public function badis(){
         return $this->hasMany(GovCaseBadi::class, 'gov_case_id', 'id');

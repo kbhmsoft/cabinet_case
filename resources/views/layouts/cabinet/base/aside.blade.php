@@ -87,7 +87,7 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                        <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
                                     </a>
                                 </li>
                                 {{-- @end
@@ -160,7 +160,7 @@
                                         <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}"
                                             class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">অধিক গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
                                         </a>
                                     </li>
                                     {{-- @endif --}}
@@ -192,7 +192,8 @@
                         </div>
                     </li>
                 @endcan
-                @can('case_audit_menu')
+
+                {{-- @can('case_audit_menu')
                     <li class="menu-item {{ request()->is('cabinet/case_audit') ? 'menu-item-active' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/case_audit') }}" class="menu-link">
@@ -200,7 +201,47 @@
                                 নিরীক্ষা</span>
                         </a>
                     </li>
+                @endcan --}}
+
+                @can('case_audit_menu')
+                    <li class="menu-item {{ request()->is('cabinet/case_audit') ? 'menu-item-open' : '' }}"
+                        aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-history"></i> মামলা
+                                নিরীক্ষা</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            @can('case_audit_menu')
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/case_audit']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/case_audit') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ মামলা নিরীক্ষা</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
+                            @can('case_audit_menu')
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/case_audit']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/case_audit') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">আপিল
+                                                বিভাগ মামলা নিরীক্ষা</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
+                        </div>
+                    </li>
                 @endcan
+
+
+
                 @can('report_menu')
                     <li class="menu-item {{ request()->is('govcase/report/caselist') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
