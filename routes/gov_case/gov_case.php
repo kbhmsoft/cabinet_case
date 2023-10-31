@@ -185,6 +185,7 @@ Route::middleware('auth')->group(function () {
             Route::get('leave-to-appeal-answer/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealAnswerCreate'])->name('leaveToAppealAnswerCreate');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');
             Route::get('highcourtDetailsPdf/{id}', [GovCaseRegisterController::class, 'highcourtDetailsPdf'])->name('highcourtDetailsPdf');
+            Route::get('highcourtRegisterPdf/{id}', [GovCaseRegisterController::class, 'highcourtRegisterPdf'])->name('highcourtRegisterPdf');
             Route::get('register/{id}', [GovCaseRegisterController::class, 'register'])->name('register');
             Route::post('getCaseCategory/{id}', [GovCaseRegisterController::class, 'getCaseCategory'])->name('getCaseCategory');
             route::post('ajax_badi_del/{id}', [GovCaseRegisterController::class, 'ajax_badi_del']);

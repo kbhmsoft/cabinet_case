@@ -84,7 +84,14 @@
                         <tr>
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
-                            <td>{{ $row->badis->first()->name ?? '-' }}</td>
+                            {{-- <td>{{ $row->badis->first()->name ?? '-' }}</td> --}}
+                            <td>
+                                @if ($row->badis && $row->badis->first() && $row->badis->first()->name && $row->total_badi_number > 1)
+                                    {{ $row->badis->first()->name . ' ও অন্যান্য' }}
+                                @elseif ($row->badis && $row->badis->first() && $row->badis->first()->name)
+                                    {{ $row->badis->first()->name }}
+                                @endif
+                            </td>
 
                             <td>{{ App\Models\gov_case\GovCaseOffice::find($row->mainBibadis->first()->respondent_id)->office_name_bn }}
                             </td>

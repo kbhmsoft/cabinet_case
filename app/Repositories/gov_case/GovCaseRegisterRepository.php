@@ -261,6 +261,7 @@ class GovCaseRegisterRepository
             $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
             $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
             $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
+            $case->total_badi_number = $caseInfo->total_badi_number;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -513,6 +514,7 @@ class GovCaseRegisterRepository
             $case->concern_person_designation = $caseInfo->concern_person_designation;
             $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
+            $case->total_badi_number = $caseInfo->total_badi_number;
             if ($case->save()) {
                 $caseId = $case->id;
             }

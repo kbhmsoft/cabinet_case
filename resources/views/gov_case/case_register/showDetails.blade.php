@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                      @if (Auth::user()->role_id == 2)
+                                                                  @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                    </div> -->
+                                                                </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -87,6 +87,7 @@
             </table>
 
         </div>
+        
         <div class="card-body">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -288,7 +289,14 @@
                             @foreach ($caseBadi as $badi)
                                 <tr>
                                     <td>{{ en2bn($k) }}.</td>
-                                    <td class="text-center">{{ $badi->name }}</td>
+                                    <td class="text-center">
+                                        {{-- {{ $badi->name }} --}}
+                                        @if ($badi->name && $case->total_badi_number > 1)
+                                            {{ $badi->name . ' ও অন্যান্য' }}
+                                        @elseif ($badi->name)
+                                            {{ $badi->name }}
+                                        @endif
+                                    </td>
                                     <td class="text-center">{{ $badi->address }}</td>
                                 </tr>
                                 @php $k++; @endphp

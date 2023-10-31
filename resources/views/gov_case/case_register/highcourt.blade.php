@@ -36,7 +36,7 @@
                     console.error('Error:', error);
                 });
         }
-        </script>
+    </script>
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom">
@@ -69,9 +69,9 @@
                 <thead class="thead-light font-size-h6">
                     <tr>
                         <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col">মামলা নং</th>
-                        <th scope="col">পিটিশনারের নাম</th>
-                        <th scope="col">মামলার বিষয়বস্তু</th>
+                        <th scope="col" style="text-align:center;">মামলা নং</th>
+                        <th scope="col" style="text-align:center;">পিটিশনারের নাম</th>
+                        <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
                         <th scope="col">রুল ইস্যুর তারিখ/প্রাপ্তির তারিখ</th>
                         <th scope="col">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
                         <th scope="col" width="170px">অ্যাকশন</th>
@@ -80,9 +80,17 @@
                 <tbody>
                     @foreach ($cases as $key => $row)
                         <tr>
+                            {{-- {{dd($row->total_badi_number)}} --}}
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
-                            <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
-                            <td>{{ $row->badis->first()->name ?? '-' }}</td>
+                            <td style="width: 10px;" style="text-align:center;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
+                            <td>
+                                @if ($row->badis && $row->badis->first() && $row->badis->first()->name && $row->total_badi_number > 1)
+                                    {{ $row->badis->first()->name . ' ও অন্যান্য' }}
+                                @elseif ($row->badis && $row->badis->first() && $row->badis->first()->name)
+                                    {{ $row->badis->first()->name }}
+                                @endif
+                            </td>
+
                             <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
                             <td>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi) : '-' }}</td>
                             <td>{{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
@@ -114,22 +122,22 @@
                                                         href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
                                                         স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
                                                 @endif
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
-                                                        চূড়ান্ত আদেশ</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
+                                                    চূড়ান্ত আদেশ</a>
                                             @elseif ($row->is_final_order == 1)
-                                             @if(($row->result==2))
-                                                @if (empty($row->leave_to_appeal_no))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
-                                                        সিএমপি/লিভ টু আপিল<br>দায়ের করুণ
-                                                    </a>
-                                                @elseif (empty($row->leave_to_appeal_order_date))
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
-                                                        সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
-                                                    </a>
-                                                @endif
+                                                @if ($row->result == 2)
+                                                    @if (empty($row->leave_to_appeal_no))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
+                                                            সিএমপি/লিভ টু আপিল<br>দায়ের করুণ
+                                                        </a>
+                                                    @elseif (empty($row->leave_to_appeal_order_date))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
+                                                            সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
+                                                        </a>
+                                                    @endif
                                                 @endif
                                             @endif
 
@@ -146,7 +154,9 @@
                                 </div>
                                 <div class="btn-group">
                                     @if ($roleID == 27)
-                                    <a class="btn btn-bg-danger btn-sm" href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে ফেলুন</a>
+                                        <a class="btn btn-bg-danger btn-sm"
+                                            href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে
+                                            ফেলুন</a>
                                     @endif
                                 </div>
 
@@ -180,31 +190,30 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                     -->
+                                                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                 -->
 
 
         <!--end::Page Scripts-->
 
 
-    <script>
-        $(document).ready(function() {
-            $(".delete-button").click(function(e) {
-                e.preventDefault();
-                var caseId = $(this).data('case-id');
-                console.log(caseId);
-                if (confirm('Are you sure you want to delete this record?')) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/cabinet.case.highcourt_case_delete/' + caseId,
+        <script>
+            $(document).ready(function() {
+                $(".delete-button").click(function(e) {
+                    e.preventDefault();
+                    var caseId = $(this).data('case-id');
+                    console.log(caseId);
+                    if (confirm('Are you sure you want to delete this record?')) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/cabinet.case.highcourt_case_delete/' + caseId,
 
-                        success: function(data) {
-                            alert(data.message);
+                            success: function(data) {
+                                alert(data.message);
 
-                        },
-                    });
-                }
+                            },
+                        });
+                    }
+                });
             });
-        });
-    </script>
-
+        </script>

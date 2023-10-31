@@ -218,44 +218,157 @@
         <div class="priview-demand">
             <table class="table table-hover table-bordered report">
                 <thead class="headding">
-                    @if ($case->case_category_id)
-                        <tr>
-                            <th scope="row">মামলার ক্যাটেগরি</th>
-                            @php
-                                // Find the matched category based on case_category_id
-                                $matchedCategory = $GovCaseDivisionCategory->where('id', $case->case_category_id)->first();
-                            @endphp
-                            <td>
-                                @if ($matchedCategory)
-                                    {{ $matchedCategory->name_bn }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endif
 
-                    @if ($case->case_type_id)
-                        <tr>
-                            <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
-                            @php
-                                // Find the matched category based on case_type_id
-                                $matchedDivisionCategory = $GovCaseDivisionCategoryType->where('id', $case->case_type_id)->first();
-                            @endphp
-                            <td>
-                                @if ($matchedDivisionCategory)
-                                    {{ $matchedDivisionCategory->name_bn }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endif
                     <tr>
-                        <th class="tg-19u4" width="130">মামলা নং</th>
-                        <td class="tg-nluh">{{ $case->case_no ?? '-' }}</td>
+                        <th class="tg-19u4" width="130">মামলা নম্বর/ক্যাটাগরি</th>
+                        <td class="tg-nluh">{{ $case->case_no ?? '-' }}/{{ $case->case_category->name_bn ?? '-' }}</td>
                     </tr>
+
+                    <tr>
+                        <th class="tg-19u4">পিটিশনারের নাম ও ঠিকানা</th>
+                        <td class="tg-nluh">
+                            @foreach ($caseBadi as $key => $badi)
+                                @if ($badi->name && $case->total_badi_number > 1)
+                                    {{ $badi->name . ' ও অন্যান্য' }},{{ $badi->address }}
+                                @elseif ($badi->name)
+                                    {{ $badi->name }}, {{ $badi->address }}
+                                @endif
+                            @endforeach
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">মূল রেসপন্ডেন্ট নাম</th>
+                        <td class="tg-nluh">
+                            @foreach ($caseMainBibadi as $key => $bibadi)
+                                {{ en2bn($key + 1) }}.{{ $bibadi->ministry->office_name_bn ?? '-' }}<br>
+                            @endforeach
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">মামলার বিষয়বস্তু</th>
+                        <td class="tg-nluh">
+                            {{ $case->subject_matter ?? '-'}}
+                        </td>
+                    </tr>
+
                     <tr>
                         <th class="tg-19u4">রুল ইস্যুর তারিখ</th>
                         <td class="tg-nluh">{{ en2bn($case->date_issuing_rule_nishi) ?? '-' }}</td>
                     </tr>
 
+                    <tr>
+                        <th class="tg-19u4">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->result_sending_date ? en2bn($case->result_sending_date) : '-' }}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">দফাওয়ারি এটর্নি জেনারেল অফিসে প্রেরণের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->result_sending_date_solisitor_to_ag ? en2bn($case->result_sending_date_solisitor_to_ag) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->reply_submission_date ? en2bn($case->reply_submission_date) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">শুনানির তারিখ সমুহ</th>
+                        <td class="tg-nluh">
+                            {{ '-' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="tg-19u4">রায়/আদেশ ঘোষণার তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->result_date ? en2bn($case->result_date) : '-' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="tg-19u4">রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->result_copy_asking_date ? en2bn($case->result_copy_asking_date) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">রায়ের নকল প্রাপ্তির তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->result_copy_reciving_date ? en2bn($case->result_copy_reciving_date) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">আপিল দায়েরের জন্য অনুরোধের স্মারক</th>
+                        <td class="tg-nluh">
+                            {{ $case->appeal_requesting_memorial ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">আপিল দায়েরের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->appeal_requesting_date ? en2bn($case->appeal_requesting_date) : '-' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="tg-19u4">আপিল/রিভিউ দায়ের না করার সিদ্বান্ত হলে তার কারণ</th>
+                        <td class="tg-nluh">
+                            {{ $case->reason_of_not_appealing ?? '-' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="tg-19u4">প্রযোজ্য ক্ষেত্রে কন্টেম্পট মামলা নম্বর ও রুল ইস্যুর তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->contempt_case_no ?? '-' }},{{ $case->contempt_case_isuue_date ? en2bn($case->contempt_case_isuue_date) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">কন্টেম্পট মামলায় জবাব প্রেরণের তারিখ</th>
+                        <td class="tg-nluh">
+                            {{ $case->contempt_case_answer_sending_date ? en2bn($case->contempt_case_answer_sending_date) : '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">অন্যান্য পদক্ষেপ</th>
+                        <td class="tg-nluh">
+                            {{ $case->others_action_detials ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="tg-19u4">মামলার ফলাফল</th>
+                        @if ($case->result == '1')
+                            <td class="tg-nluh">{{ 'সরকারের পক্ষে' }}</td>
+                        @elseif($case->result == '2')
+                            <td class="tg-nluh">{{ ' সরকারের বিপক্ষে' }}</td>
+                        @else
+                            <td class="tg-nluh">{{ 'চলমান' }}</td>
+                        @endif
+                    </tr>
+
+                    @if (!empty($case->postponed_order))
+                    <tr>
+                        <th scope="row">স্থগিতাদেশ</th>
+                        <td>
+                            @if ($case->postponed_order == '1')
+                                আছে
+                            @elseif($case->postponed_order == '0')
+                                নেই
+                            @endif
+                        </td>
+                    </tr>
+                   @endif
+
+                    {{--
                     @if ($case->concern_person_designation)
                         <tr>
                             <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তা</th>
@@ -269,9 +382,9 @@
                                 @endif
                             </td>
                         </tr>
-                    @endif
+                    @endif --}}
 
-                    @if ($case->concern_user_id)
+                    {{-- @if ($case->concern_user_id)
                         <tr>
                             <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
                             @php
@@ -284,18 +397,18 @@
                                 @endif
                             </td>
                         </tr>
-                    @endif
+                    @endif --}}
 
-                    <tr>
+                    {{-- <tr>
                         <th class="tg-19u4">বিষয়বস্তু(সংক্ষিপ্ত)</th>
                         <td class="tg-nluh">{{ $case->subject_matter ?? '-' }}</td>
-                    </tr>
-                    @if ($case->postponed_details)
+                    </tr> --}}
+                    {{-- @if ($case->postponed_details)
                         <tr>
                             <th class="tg-19u4">স্থগিতাদেশের বিবরণ</th>
                             <td class="tg-nluh">{{ $case->postponed_details ?? '-' }}</td>
                         </tr>
-                    @endif
+                    @endif --}}
                     {{-- <tr>
                      <th class="tg-19u4">মৌজা</th>
                       <td class="tg-nluh">
@@ -315,7 +428,7 @@
                   </tr> --}}
 
 
-                    <tr>
+                    {{-- <tr>
                         <th class="tg-19u4">ফলাফল</th>
                         <td class="tg-nluh">
                             @if ($case->result == '1')
@@ -333,17 +446,17 @@
                         <td class="tg-nluh">{{ $case->comments ?? '-' }}</td>
                     </tr>
                     @if (!empty($case->postponed_order))
-                    <tr>
-                        <th scope="row">স্থগিতাদেশ</th>
-                        <td>
-                            @if ($case->postponed_order == '1')
-                                আছে
-                            @elseif($case->postponed_order == '0')
-                                নেই
-                            @endif
-                        </td>
-                    </tr>
-                @endif
+                        <tr>
+                            <th scope="row">স্থগিতাদেশ</th>
+                            <td>
+                                @if ($case->postponed_order == '1')
+                                    আছে
+                                @elseif($case->postponed_order == '0')
+                                    নেই
+                                @endif
+                            </td>
+                        </tr>
+                    @endif --}}
                     {{-- @if (!empty($info->lost_reason))
                         <tr>
                             <th class="tg-19u4">পরাজয়ের কারণ</th>
@@ -387,7 +500,7 @@
                 </thead>
             </table>
         </div>
-        <div class="priview-demand">
+        {{-- <div class="priview-demand">
             <h4 class="font-weight-bolder">বাদীর বিবরণ</h4>
             <table class="table table-hover table-bordered report">
                 <thead class="headding">
@@ -433,7 +546,7 @@
                 </tbody>
                 </thead>
             </table>
-        </div>
+        </div> --}}
 
     </div>
 

@@ -206,14 +206,32 @@
 
                                                                     <th class="petisioner_address badi_address">ঠিকানা
                                                                         <span class="text-danger">*</span></th>
-                                                                    <th width="50">
+                                                                    {{-- <th width="50">
                                                                         <a href="javascript:void();" id="addBadiRow"
                                                                             class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
                                                                                 class="fas fa-plus-circle"></i></a>
-                                                                    </th>
+                                                                    </th> --}}
                                                                 </tr>
-                                                                <tr></tr>
+                                                                {{-- <tr></tr> --}}
                                                             </table>
+                                                        </div>
+
+                                                        <div class="col-lg-12 mb-5">
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>মোট পিটিশনারের সংখ্যা</label>
+                                                                <select name="total_badi_number" id="total_badi_number"
+                                                                    class="form-control form-control-sm" required="required">
+                                                                    <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
+                                                                    </option>
+                                                                    <?php
+                                                                    for ($i = 1; $i <= 1000; $i++) {
+                                                                        echo "<option value='$i'>$i</option>";
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                                <input type="hidden" name="caseId" value="">
+
+                                                            </div>
                                                         </div>
                                                         <div class="col-lg-6 mb-5">
                                                             <table width="100%" border="1" id="MainBibadiDiv"

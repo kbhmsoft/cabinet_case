@@ -156,7 +156,8 @@
                                                         required="required"
                                                         onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
+                                                    <span class="text-danger d-none vallidation-message">This field can not
+                                                        be empty</span>
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
@@ -219,19 +220,37 @@
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
-                                                            <th width="50">
+                                                            {{-- <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
-                                                            </th>
+                                                            </th> --}}
                                                         </tr>
-                                                        <tr></tr>
+                                                        {{-- <tr></tr> --}}
                                                     </table>
                                                 </div>
+
+                                              <div class="col-lg-12 mb-5">
+                                                    <div class="col-lg-4 mb-5">
+                                                        <label>মোট পিটিশনারের সংখ্যা</label>
+                                                        <select name="total_badi_number" id="total_badi_number"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
+                                                            </option>
+                                                            <?php
+                                                            for ($i = 1; $i <= 1000; $i++) {
+                                                                echo "<option value='$i'>$i</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                        <input type="hidden" name="caseId" value="">
+
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="MainBibadiDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
-
                                                         <tr>
                                                             <th style="height: 35px !IMPORTANT;">মূল রেসপন্ডেন্ট নাম <span
                                                                     class="text-danger">*</span>
@@ -330,8 +349,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="              "
-                                        class="submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="caseGeneralInfoSaveBtn" class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>

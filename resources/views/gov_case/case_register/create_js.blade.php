@@ -127,8 +127,8 @@
 
         items +=
             '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        items +=
-            '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        // items +=
+        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#badiDiv tr:last').after(items);
 

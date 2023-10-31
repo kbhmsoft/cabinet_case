@@ -275,8 +275,7 @@ class GovCaseRegisterController extends Controller
         // $data['case_bibadi'] = GovCaseBiBadi::where('gov_case_id', '=',$data['cases'][0]->id)
         // ->where('is_main_bibadi',1)
         // ->get();
-       // return $data['case_badi'];
-
+        // return $data['case_badi'];
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
@@ -2864,7 +2863,7 @@ class GovCaseRegisterController extends Controller
     public function register($id)
     {
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        // return $data;
+
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
             return view('gov_case.case_register.highCourtRegister')->with($data);
@@ -2872,7 +2871,7 @@ class GovCaseRegisterController extends Controller
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
             return view('gov_case.case_register.appealRegister')->with($data);
         }
-        // return $data;
+
     }
 
     public function show($id)
@@ -2915,6 +2914,23 @@ class GovCaseRegisterController extends Controller
         $this->generatePDF($html);
     }
 
+    public function highcourtRegisterPdf($id)
+    {
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+
+        if ($data['case']->case_division_id == 2) {
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+
+        } else {
+            $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
+
+        }
+        //  return $data;
+        $html = view('gov_case.case_register.showHighcourtRegisterPdf')->with($data);
+
+        $this->generatePDF($html);
+    }
+
     public function generatePDF($html)
     {
         if (ob_get_contents()) {
@@ -2925,6 +2941,7 @@ class GovCaseRegisterController extends Controller
             'default_font_size' => 12,
             'default_font' => 'kalpurush',
         ]);
+        // dd($html);
         $mpdf->WriteHTML($html);
         $mpdf->Output();
     }

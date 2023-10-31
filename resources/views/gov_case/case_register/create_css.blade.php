@@ -315,5 +315,7 @@
     .select2-selection{
         height: 40px !important;
     }
-
+    #total_badi_number {
+        font-size: 12px !important;
+    }
 </style>
