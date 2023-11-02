@@ -120,14 +120,14 @@ class ViewServiceProvider extends AppServiceProvider
                     ->get()
                     ->count();
 
-                $CaseHearingCount = DB::table('case_hearing')
-                    ->distinct()
-                    ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
-                    ->where('case_register.status', 1)
-                    ->select('case_id')
-                    ->get()
-                    ->count();
-                $notification_count = $CaseResultCount + $CaseHearingCount + $total_sf_count;
+                // $CaseHearingCount = DB::table('case_hearing')
+                //     ->distinct()
+                //     ->join('case_register', 'case_hearing.case_id', '=', 'case_register.id')
+                //     ->where('case_register.status', 1)
+                //     ->select('case_id')
+                //     ->get()
+                //     ->count();
+                // $notification_count = $CaseResultCount + $CaseHearingCount + $total_sf_count;
             } else {
                 //for role id : 5,6,7,8,13
                 $case_status = DB::table('case_register')
@@ -152,7 +152,7 @@ class ViewServiceProvider extends AppServiceProvider
             } else {
                 $view->with([
                     'notification_count' => $notification_count,
-                    'CaseHearingCount' => $CaseHearingCount,
+                    // 'CaseHearingCount' => $CaseHearingCount,
                     'CaseResultCount' => $CaseResultCount,
                     'total_sf_count' => $total_sf_count,
                 ]);

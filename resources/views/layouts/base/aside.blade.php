@@ -161,7 +161,7 @@
                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা হয়েছে</span>
                                <span class="menu-label">
-                                   <span class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
+                                   {{-- <span class="label label-rounded label-danger">{{ $CaseHearingCount }}</span> --}}
                                </span>
                                </a>
                            </li>

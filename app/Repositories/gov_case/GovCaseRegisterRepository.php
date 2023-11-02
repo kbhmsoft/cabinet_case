@@ -43,6 +43,7 @@ class GovCaseRegisterRepository
     }
     public static function storeGovCase($caseInfo)
     {
+        // dd($caseInfo);
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
         if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
@@ -262,6 +263,7 @@ class GovCaseRegisterRepository
             $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
             $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
             $case->total_badi_number = $caseInfo->total_badi_number;
+    //    return $case;
 
             if ($case->save()) {
                 $caseId = $case->id;

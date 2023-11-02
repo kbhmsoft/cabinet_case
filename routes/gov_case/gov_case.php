@@ -192,6 +192,17 @@ Route::middleware('auth')->group(function () {
             route::post('ajax_bibadi_del/{id}', [GovCaseRegisterController::class, 'ajax_bibadi_del']);
             route::post('ajax_case_file_del/{id}', [GovCaseRegisterController::class, 'ajax_case_file_del']);
 
+            // For Attorney Office
+            Route::get('attroneyHighcourt', [GovCaseRegisterController::class, 'attorney_high_court_case'])->name('attroneyHighcourt');
+            Route::get('attorney/highcourt/running', [GovCaseRegisterController::class, 'attorney_high_court_running_case'])->name('attorney.highcourt.running');
+            Route::get('attorney/highcourt/complete', [GovCaseRegisterController::class, 'attorney_high_court_complete_case'])->name('attorney.highcourt.complete');
+            Route::get('attorney/appellateDivision', [AppealGovCaseRegisterController::class, 'attorney_appellate_division_case'])->name('attorney.appellateDivision');
+            Route::get('attorney/appellateDivision/running', [AppealGovCaseRegisterController::class, 'attorney_appellate_division_running_case'])->name('attorney.appellateDivision.running');
+            Route::get('attorney/appellateDivision/complete', [AppealGovCaseRegisterController::class, 'attoney_appellate_division_complete_case'])->name('attorney.appellateDivision.complete');
+            Route::get('attorney/highcourt/mostImportantCase', [GovCaseRegisterController::class, 'attorneyHighcourtMostImportantCase'])->name('attorneyHighcourtMostImportantCase');
+
+
+
             // for appeal controller route
             Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
             Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');

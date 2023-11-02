@@ -7,6 +7,7 @@
     .header-department-name {
         line-height: 28px;
     }
+
     .custom-span {
         font-weight: bold;
         font-size: 1.05rem;
@@ -96,7 +97,7 @@
                         <div class="col-12 pb-2">
                             {{-- <span class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->govOffice->office_name_bn }}</span> --}}
                             <span
-                                class="custom-span d-none d-md-inline">{{ Auth::user()->govOffice->office_name_bn ?? ''}}</span>
+                                class="custom-span d-none d-md-inline">{{ Auth::user()->govOffice->office_name_bn ?? '' }}</span>
 
                         </div>
                     </div>

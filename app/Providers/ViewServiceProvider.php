@@ -69,7 +69,7 @@ class ViewServiceProvider extends AppServiceProvider
             $rm_case_status = [];
             $officeInfo = user_office_info();
             $roleID = Auth::user()->role_id;
-            
+
 
             if( $roleID == 29 || $roleID == 31){
                 // ===============Ministry Admin===============//
@@ -80,16 +80,16 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('gov_case_registers.selected_main_min_id','=', $officeInfo->office_id)
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
-                
 
-                $CaseHearingCount = DB::table('gov_case_hearings')
-                    ->distinct()
-                    ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
-                    ->where('gov_case_registers.status', 1)
-                    ->where('gov_case_registers.selected_main_min_id','=', $officeInfo->office_id)
-                    ->select('gov_case_hearings.gov_case_id')
-                    ->get()
-                    ->count();
+
+                // $CaseHearingCount = DB::table('gov_case_hearings')
+                //     ->distinct()
+                //     ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
+                //     ->where('gov_case_registers.status', 1)
+                //     ->where('gov_case_registers.selected_main_min_id','=', $officeInfo->office_id)
+                //     ->select('gov_case_hearings.gov_case_id')
+                //     ->get()
+                //     ->count();
 
             }elseif( $roleID == 32 || $roleID == 33){
                 // ===============Ministry Admin===============//
@@ -100,16 +100,16 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('gov_case_registers.selected_main_dept_id','=', $officeInfo->office_id)
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
-                
 
-                $CaseHearingCount = DB::table('gov_case_hearings')
-                    ->distinct()
-                    ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
-                    ->where('gov_case_registers.status', 1)
-                    ->where('gov_case_registers.selected_main_dept_id','=', $officeInfo->office_id)
-                    ->select('gov_case_hearings.gov_case_id')
-                    ->get()
-                    ->count();
+
+                // $CaseHearingCount = DB::table('gov_case_hearings')
+                //     ->distinct()
+                //     ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
+                //     ->where('gov_case_registers.status', 1)
+                //     ->where('gov_case_registers.selected_main_dept_id','=', $officeInfo->office_id)
+                //     ->select('gov_case_hearings.gov_case_id')
+                //     ->get()
+                //     ->count();
 
             } elseif($roleID == 34 || $roleID == 35 || $roleID == 36) {
                 $case_status = DB::table('gov_case_registers')
@@ -119,13 +119,13 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
 
-                $CaseHearingCount = DB::table('gov_case_hearings')
-                    ->distinct()
-                    ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
-                    ->where('gov_case_registers.status', 1)
-                    ->select('gov_case_hearings.gov_case_id')
-                    ->get()
-                    ->count();
+                // $CaseHearingCount = DB::table('gov_case_hearings')
+                //     ->distinct()
+                //     ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
+                //     ->where('gov_case_registers.status', 1)
+                //     ->select('gov_case_hearings.gov_case_id')
+                //     ->get()
+                //     ->count();
 
             }elseif($roleID == 27 || $roleID == 28) {
                 $CaseResultCount = DB::table('gov_case_registers')
@@ -133,14 +133,14 @@ class ViewServiceProvider extends AppServiceProvider
                     ->get()
                     ->count();
 
-                $CaseHearingCount = DB::table('gov_case_hearings')
-                    ->distinct()
-                    ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
-                    ->where('gov_case_registers.status', 1)
-                    ->where('gov_case_registers.selected_main_min_id','=', $officeInfo->office_id)
-                    ->select('gov_case_hearings.gov_case_id')
-                    ->get()
-                    ->count();
+                // $CaseHearingCount = DB::table('gov_case_hearings')
+                //     ->distinct()
+                //     ->join('gov_case_registers', 'gov_case_hearings.gov_case_id', '=', 'gov_case_registers.id')
+                //     ->where('gov_case_registers.status', 1)
+                //     ->where('gov_case_registers.selected_main_min_id','=', $officeInfo->office_id)
+                //     ->select('gov_case_hearings.gov_case_id')
+                //     ->get()
+                //     ->count();
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
                     ->leftJoin('case_status', 'gov_case_registers.case_status_id', '=', 'case_status.id')
@@ -151,45 +151,46 @@ class ViewServiceProvider extends AppServiceProvider
                     ->get();
                 // dd($dfsdf);
 
-                $notification_count = $CaseResultCount + $CaseHearingCount ;
+                // $notification_count = $CaseResultCount + $CaseHearingCount ;
 
                 foreach ($case_status as $row){
                      $notification_count += $row->total_case;
                 }
             } else {
                 //for role id : 5,6,7,8,13
-                $case_status = DB::table('case_register')
-                    ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-                    ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
-                    ->groupBy('case_register.cs_id')
-                    ->where('case_register.district_id','=', $officeInfo->district_id)
-                    ->where('case_register.action_user_group_id', $roleID)
-                    ->get();
+                // $case_status = DB::table('case_register')
+                //     ->select('case_register.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
+                //     ->leftJoin('case_status', 'case_register.cs_id', '=', 'case_status.id')
+                //     ->groupBy('case_register.cs_id')
+                //     ->where('case_register.district_id','=', $officeInfo->district_id)
+                //     ->where('case_register.action_user_group_id', $roleID)
+                //     ->get();
                 $rm_case_status = '';
 
                 // dd($rm_case_status);
             }
 
-           if( $roleID != 1 && $roleID != 2 && $roleID != 14 && $roleID != 28 && $roleID != 27){
-                foreach ($case_status as $row){
-                     $notification_count += $row->total_case;
-                }
-                     $notification_count += $CaseHearingCount;
+        //    if( $roleID != 1 && $roleID != 2 && $roleID != 14 && $roleID != 28 && $roleID != 27){
+        //         foreach ($case_status as $row){
+        //              $notification_count += $row->total_case;
+        //         }
+        //              $notification_count += $CaseHearingCount;
 
-                $view->with([
-                    'notification_count' => $notification_count,
-                    'case_status' => $case_status,
-                    'CaseHearingCount' => $CaseHearingCount,
-                ]);
+        //         $view->with([
+        //             'notification_count' => $notification_count,
+        //             'case_status' => $case_status,
+        //             'CaseHearingCount' => $CaseHearingCount,
+        //         ]);
 
-            } elseif($roleID == 27 || $roleID == 28) {
-                $view->with([
-                    'notification_count' => $notification_count,
-                    'CaseHearingCount' => $CaseHearingCount,
-                    'CaseResultCount' => $CaseResultCount,
-                    'case_status' => $case_status,
-                ]);
-            }
+        //     }
+        //     elseif($roleID == 27 || $roleID == 28) {
+        //         $view->with([
+        //             'notification_count' => $notification_count,
+        //             'CaseHearingCount' => $CaseHearingCount,
+        //             'CaseResultCount' => $CaseResultCount,
+        //             'case_status' => $case_status,
+        //         ]);
+        //     }
             //
 
             //Message Notification --- start

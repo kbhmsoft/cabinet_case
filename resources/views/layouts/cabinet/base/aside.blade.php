@@ -33,7 +33,9 @@
         <!--end::Toolbar-->
     </div>
     <!--end::Brand-->
-
+    <?php
+    $roleID = Auth::user()->role_id;
+    ?>
     <!--begin::Aside Menu-->
     <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
         <!--begin::Menu Container-->
@@ -60,29 +62,27 @@
                             <i class="menu-arrow"></i>
 
                             <ul class="menu-subnav">
+                                @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
+                                    @can('create_new_case')
+                                        <li class="menu-item {{ request()->is('cabinet/case/highcourt/create') ? 'menu-item-open' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">নতুন/চলমান হাইকোর্ট মামলা
+                                                    এন্ট্রি</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item {{ request()->is('cabinet/case/highcourt/create/old') ? 'menu-item-open' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
+                                                    এন্ট্রি</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                @endif
 
-                                @can('create_new_case')
-                                    <li class="menu-item {{ request()->is('cabinet/case/highcourt/create') ? 'menu-item-open' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourt.create') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি</span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ request()->is('cabinet/case/highcourt/create/old') ? 'menu-item-open' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
-                                                এন্ট্রি</span>
-                                        </a>
-                                    </li>
-                                @endcan
-
-                                <?php
-                                // $roleID = Auth()->user()->role_id;
-                                ?>
-                                {{-- @if ($roleID == 27) --}}
                                 <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
@@ -90,9 +90,16 @@
                                         <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
                                     </a>
                                 </li>
-                                {{-- @end
-                                    if --}}
 
+                                @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endif
 
                                 <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
@@ -426,7 +433,7 @@
                             <i class="menu-arrow"></i>
                             <ul class="menu-subnav">
 
-                                @can('hearing_date_fixed')
+                                {{-- @can('hearing_date_fixed')
                                     <li class="menu-item {{ request()->is('cabinet/hearing_date') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
@@ -437,7 +444,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                                 @can('case_result_done_menu')
                                     <li class="menu-item {{ request()->is('cabinet/results_completed') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
@@ -481,7 +488,7 @@
                                                 </span>
                                             </a>
                                         </li>
-                                        @can('hearing_date_fixed')
+                                        {{-- @can('hearing_date_fixed')
                                             <li class="menu-item {{ request()->is('cabinet/case/action/receive/' . $row->case_status_id) ? 'hilightMenu' : '' }}"
                                                 aria-haspopup="true">
                                                 <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
@@ -494,7 +501,7 @@
                                                     </span>
                                                 </a>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                     @empty
                                     @endforelse
                                 @endcan

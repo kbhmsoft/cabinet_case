@@ -227,6 +227,8 @@
                     <tr>
                         <th class="tg-19u4">পিটিশনারের নাম ও ঠিকানা</th>
                         <td class="tg-nluh">
+                            {{-- {{dd($case)}} --}}
+                            @if($caseBadi)
                             @foreach ($caseBadi as $key => $badi)
                                 @if ($badi->name && $case->total_badi_number > 1)
                                     {{ $badi->name . ' ও অন্যান্য' }},{{ $badi->address }}
@@ -234,6 +236,7 @@
                                     {{ $badi->name }}, {{ $badi->address }}
                                 @endif
                             @endforeach
+                            @endif
                         </td>
                     </tr>
 
@@ -280,8 +283,8 @@
 
                     <tr>
                         <th class="tg-19u4">শুনানির তারিখ সমুহ</th>
-                        <td class="tg-nluh">
-                            {{ '-' }}
+                        <td class="tg-nluh">{{ ' ' }}
+                            {{-- {{ '-' }} --}}
                         </td>
                     </tr>
                     <tr>

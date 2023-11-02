@@ -27,35 +27,12 @@ foreach ($cases as $val)
 
 <!--begin::Dashboard-->
 <!-- Dashboard Counter -->
-@include('dashboard.cabinet.inc._dashboard_counter_card')
+@include('dashboard.cabinet.inc.attorney_dashboard_counter_card')
 
 <!-- //Dashboard Counter -->
 
 {{-- @include('dashboard.cabinet.inc._dashboard_action_card') --}}
 
-<!--begin::Subheader-->
-   @php
-   /*
-      <div class="subheader py-2 py-lg-6 subheader-solid mb-10" id="kt_subheader">
-         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
-            <div class="d-flex align-items-center flex-wrap mr-2">
-               <!--begin::Page Title-->
-               <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5  font-size-h4">শুনানী/মামলার তারিখ</h5>
-               <!--end::Page Title-->
-               <!--begin::Action-->
-               <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-               <a href="{{ route('dashboard.hearing-today') }}" class="btn btn-light-primary font-weight-bolder btn-sm mr-3 font-size-h4">আজকের দিনে</a>
-               <a href="{{ route('dashboard.hearing-tomorrow') }}" class="btn btn-light-primary font-weight-bolder btn-sm mr-3 font-size-h4">আগামীকাল</a>
-               <a href="{{ route('dashboard.hearing-nextWeek') }}" class="btn btn-light-primary font-weight-bolder btn-sm mr-3 font-size-h4">আগামী সপ্তাহে</a>
-               <a href="{{ route('dashboard.hearing-nextMonth') }}" class="btn btn-light-primary font-weight-bolder btn-sm mr-3 font-size-h4">আগামী মাসে</a>
-               <!--end::Action-->
-            </div>
-            <!--end::Info-->
-         </div>
-      </div>
-   */
-   @endphp
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="https://code.highcharts.com/modules/drilldown.js"></script>
