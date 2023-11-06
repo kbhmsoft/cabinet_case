@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                                  @if (Auth::user()->role_id == 2)
+                                                                                  @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                                </div> -->
+                                                                                </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -87,7 +87,7 @@
             </table>
 
         </div>
-        
+
         <div class="card-body">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">

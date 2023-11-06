@@ -51,7 +51,7 @@
                 </li>
 
                 @can('highcourt_division')
-                    <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt/*') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt/*', 'cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-university"></i> হাইকোর্ট
@@ -60,7 +60,6 @@
                         </a>
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
-
                             <ul class="menu-subnav">
                                 @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
                                     @can('create_new_case')
@@ -83,45 +82,83 @@
                                     @endcan
                                 @endif
 
-                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
-                                    </a>
-                                </li>
+                                @if ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15)
+                                    <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.attorneyHighcourtMostImportantCase') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/attroneyHighcourt']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.attroneyHighcourt') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/running']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.attorney.highcourt.running') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/complete']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endif
 
                                 @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
                                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
+                                                তালিকা</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt/running']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourt.running') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt/complete']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endif
 
-                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
+                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourt') }}" class="menu-link">
+                                    <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
                                     </a>
-                                </li>
-                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt/running']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourt.running') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt/complete']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
-                                    </a>
-                                </li>
+                                </li> --}}
 
                             </ul>
 
@@ -130,7 +167,7 @@
                 @endcan
 
                 @can('appeal_division')
-                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*','cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i> আপিল
@@ -142,57 +179,102 @@
 
                             <ul class="menu-subnav">
                                 @can('create_new_case')
-                                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create') ? 'menu-item-open' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder"> নতুন/চলমান আপিল মামলা এন্ট্রি</span>
-                                        </a>
-                                    </li>
+                                    @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
+                                        <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create') ? 'menu-item-open' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivision.create') }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder"> নতুন/চলমান আপিল মামলা
+                                                    এন্ট্রি</span>
+                                            </a>
+                                        </li>
 
-                                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create/old') ? 'menu-item-open' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivision.create.old') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা এন্ট্রি</span>
-                                        </a>
-                                    </li>
+                                        <li class="menu-item {{ request()->is('cabinet/case/appellateDivision/create/old') ? 'menu-item-open' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivision.create.old') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা
+                                                    এন্ট্রি</span>
+                                            </a>
+                                        </li>
 
-                                    {{-- <?php
-                                    // $roleID = Auth()->user()->role_id;
-                                    ?>
-                                    @if ($roleID == 27) --}}
-                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}"
-                                            class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
-                                        </a>
-                                    </li>
-                                    {{-- @endif --}}
+                                        <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
+                                                    তালিকা</span>
+                                            </a>
+                                        </li>
 
-                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/running']) ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivision.running') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appellateDivision.complete') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
-                                        </a>
-                                    </li>
+
+                                        <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivision') }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/running']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivision.running') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            </a>
+                                        </li>
+                                    @endif
+
+
+                                    @if ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15)
+                                        <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.attorneyAppellateDivisionMostImportantCase') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
+                                                    তালিকা</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.attorney.appellateDivision') }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                            </a>
+                                        </li>
+
+                                        {{-- <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/running']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.attorney.appellateDivision.running') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            </a>
+                                        </li> --}}
+
+                                    @endif
                                 @endcan
                             </ul>
 

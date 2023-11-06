@@ -200,7 +200,8 @@ Route::middleware('auth')->group(function () {
             Route::get('attorney/appellateDivision/running', [AppealGovCaseRegisterController::class, 'attorney_appellate_division_running_case'])->name('attorney.appellateDivision.running');
             Route::get('attorney/appellateDivision/complete', [AppealGovCaseRegisterController::class, 'attoney_appellate_division_complete_case'])->name('attorney.appellateDivision.complete');
             Route::get('attorney/highcourt/mostImportantCase', [GovCaseRegisterController::class, 'attorneyHighcourtMostImportantCase'])->name('attorneyHighcourtMostImportantCase');
-
+            Route::get('attorney/appellateDivision/mostImportantCase', [AppealGovCaseRegisterController::class, 'attorneyHighcourtMostImportantCase'])->name('attorneyAppellateDivisionMostImportantCase');
+            Route::get('attorney/appellateDivision', [AppealGovCaseRegisterController::class, 'attorneyAppellateDivision'])->name('attorney.appellateDivision');
 
 
             // for appeal controller route

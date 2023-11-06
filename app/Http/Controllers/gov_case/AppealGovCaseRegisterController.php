@@ -1716,6 +1716,69 @@ class AppealGovCaseRegisterController extends Controller
         return view('gov_case.appeal_case_register.appealcourt_mostimportant')->with($data);
     }
 
+
+    public function attorneyHighcourtMostImportantCase()
+    {
+
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        $authUserId = Auth()->user()->id;
+
+        $query = AppealGovCaseRegister::orderby('id', 'DESC')
+            ->where('deleted_at', '=', null)
+            ->where('concern_user_id', $authUserId)
+            ->where('most_important', 1);
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->where('appeal_office_id', $officeID);
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->where('appeal_office_id', $officeID);
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+        $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
+            ->paginate(10);
+        // return $data['cases'];
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
+            ->where('gov_case_division_id', 2)->get();
+
+        // $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
+        // $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']
+        // ->case_number_origin);
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
+        // return $data;
+
+        return view('gov_case.appeal_case_register.attorney_appealcourt_mostimportant')->with($data);
+    }
     public function totalAppellateDivision()
     {
 
@@ -2623,5 +2686,61 @@ class AppealGovCaseRegisterController extends Controller
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিষ্পস্ততিকৃত মামলার তালিকা';
 
         return view('gov_case.appeal_case_register.attoney_complete_appealcourt')->with($data);
+    }
+
+
+    public function attorneyAppellateDivision()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $authUserId = Auth()->user()->id;
+        $officeID = userInfo()->office_id;
+
+        $query = AppealGovCaseRegister::orderby('id', 'DESC')
+            ->where('concern_user_id', $authUserId)
+            ->where('deleted_at', '=', null);
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->where('appeal_office_id', $officeID);
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->where('appeal_office_id', $officeID);
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+        $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
+            ->where('gov_case_division_id', 1)->get();
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+
+        return view('gov_case.appeal_case_register.attoney_appealcourt')->with($data);
     }
 }
