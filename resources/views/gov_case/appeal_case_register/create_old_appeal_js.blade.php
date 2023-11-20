@@ -169,7 +169,9 @@
                         jQuery.each(data, function(key, value) {
                             // caseNumberDropdown.append('<option value="' + key +
                             //     '">' + value + '</option>');
-                            caseNumberDropdown.append(`<option value="${value.id}">${value.case_no}/${value.year}</option>`);
+                            caseNumberDropdown.append(
+                                `<option value="${value.id}">${value.case_no}/${value.year}</option>`
+                                );
 
                         });
 
@@ -621,7 +623,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -684,7 +686,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -984,7 +986,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes!'
+                    confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         alert('okay')
@@ -1032,6 +1034,14 @@
                             //     );
                             // }
                         });
+                    } else {
+                        $('#saveOldAppealCaseBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        Swal.fire(
+                            'No',
+                            'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                            'info'
+                        );
                     }
                 })
 

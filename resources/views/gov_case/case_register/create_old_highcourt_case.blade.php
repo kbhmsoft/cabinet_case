@@ -38,26 +38,26 @@
 
             <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
                 <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
+                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br> তথ্য</a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="sending_reply_tab" data-toggle="tab" href="#sending_reply" role="tab"
-                            aria-controls="profile" aria-selected="false">জবাব প্রেরণ</a>
+                            aria-controls="profile" aria-selected="false">জবাব <br>প্রেরণ</a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
                             role="tab" aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
                             আদেশ সম্পর্কিত</a>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>
 
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="contempt_case_tab" href="#contempt_case" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">কনটেম্প্ট মামলা/<br>অন্যান্য</a>
                     </li>
@@ -126,11 +126,12 @@
                                                         <div class="col-lg-4 mb-5">
                                                             <label>মামলা নং <span class="text-danger">*</span></label>
                                                             <input type="text" name="case_no" id="case_no"
-                                                                class="form-control form-control-sm" placeholder="মামলা নং "
-                                                                required="required"
+                                                                class="form-control form-control-sm"
+                                                                placeholder="মামলা নং " required="required"
                                                                 onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                             <input type="hidden" name="caseId" value="">
-                                                            <span class="text-danger d-none vallidation-message">This field can not be empty</span>
+                                                            <span class="text-danger d-none vallidation-message">This field
+                                                                can not be empty</span>
                                                         </div>
 
                                                         <div class="col-lg-4 mb-5">
@@ -202,10 +203,12 @@
                                                                 style="border:1px solid #dcd8d8;">
                                                                 <tr>
                                                                     <th class="petisioner_name badi_name">পিটিশনারের নাম
-                                                                        <span class="text-danger">*</span> </th>
+                                                                        <span class="text-danger">*</span>
+                                                                    </th>
 
                                                                     <th class="petisioner_address badi_address">ঠিকানা
-                                                                        <span class="text-danger">*</span></th>
+                                                                        <span class="text-danger">*</span>
+                                                                    </th>
                                                                     {{-- <th width="50">
                                                                         <a href="javascript:void();" id="addBadiRow"
                                                                             class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
@@ -220,8 +223,10 @@
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>মোট পিটিশনারের সংখ্যা</label>
                                                                 <select name="total_badi_number" id="total_badi_number"
-                                                                    class="form-control form-control-sm" required="required">
-                                                                    <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                                    <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন
+                                                                        করুন
                                                                     </option>
                                                                     <?php
                                                                     for ($i = 1; $i <= 1000; $i++) {
@@ -291,8 +296,10 @@
                                                             <fieldset class="">
                                                                 <div
                                                                     class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                                    <div class="d-flex align-items-center mr-2 py-2 file_type">
-                                                                        <th class="mb-0 mr-8 ">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                                    <div
+                                                                        class="d-flex align-items-center mr-2 py-2 file_type">
+                                                                        <th class="mb-0 mr-8 ">সংযুক্তি (রুল কপি সংযুক্ত
+                                                                            করুন)
                                                                             <span class="text-danger">*</span>
                                                                         </th>
                                                                     </div>
@@ -766,7 +773,8 @@
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
                                             </div> --}}
-                                            <input type="hidden" id="is_final_order" name="is_final_order" value="1">
+                                            <input type="hidden" id="is_final_order" name="is_final_order"
+                                                value="1">
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
                                                     <div class="col-md-6 mb-5">
@@ -1124,8 +1132,8 @@
                                                     class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
-                                            <button type="submit"
-                                                class="action-button submit-button save-button" id="saveOldHighCourtCaseBtn">সংরক্ষণ</button>
+                                            <button type="submit" class="action-button submit-button save-button"
+                                                id="saveOldHighCourtCaseBtn">সংরক্ষণ</button>
                                         </div>
                                     </div>
                                 </div>

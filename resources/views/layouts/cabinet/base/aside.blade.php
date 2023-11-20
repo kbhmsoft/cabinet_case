@@ -170,7 +170,7 @@
                     <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*','cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i> আপিল
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>আপিল
                                 বিভাগ</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -226,6 +226,7 @@
                                                 <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
                                             </a>
                                         </li>
+
                                         <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
@@ -235,7 +236,6 @@
                                             </a>
                                         </li>
                                     @endif
-
 
                                     @if ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15)
                                         <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"

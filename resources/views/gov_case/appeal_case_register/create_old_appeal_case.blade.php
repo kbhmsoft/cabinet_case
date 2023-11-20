@@ -21,7 +21,7 @@
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div class="card card-custom gutter-b example example-compact">
+        <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -36,13 +36,13 @@
                 </div>
             @endif
 
-            <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
+            <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs" style="width:100%">
                 <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
+                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br>তথ্য</a>
                     </li>
-                    <li class="nav-item nav-li-padding" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation" style="width:100%">
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>

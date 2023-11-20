@@ -566,7 +566,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -602,6 +602,14 @@
                             'spinner spinner-white spinner-right disabled');
                     }
                 });
+            } else {
+                $('#appealCaseGeneralInfoSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire(
+                    'Canceled!',
+                    'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                    'info'
+                );
             }
         })
 
@@ -621,7 +629,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
                 var formData = new FormData(this);
@@ -657,6 +665,14 @@
 
                     }
                 });
+            } else {
+                $('#finalOrderSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire(
+                    'Canceled!',
+                    'মামলার চূড়ান্ত আদেশ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                    'info'
+                );
             }
         })
 
@@ -678,7 +694,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -717,7 +733,16 @@
 
                     }
                 });
+            } else {
+                $('#caseGeneralInfoSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire(
+                    'Canceled!',
+                    'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                    'info'
+                );
             }
+
         })
 
     });
@@ -801,9 +826,11 @@
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+            count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -833,9 +860,11 @@
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+            count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
-            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';

@@ -21,7 +21,7 @@
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div class="card card-custom gutter-b example example-compact">
+        <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -38,9 +38,9 @@
 
             <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
                 <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ তথ্য</a>
+                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br> তথ্য</a>
                     </li>
                     <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
@@ -52,8 +52,6 @@
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
-
-
                         {{-- start মামলার সাধারণ তথ্য --}}
 
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
@@ -104,7 +102,8 @@
                                                         required="required"
                                                         onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
-                                                    <span class="text-danger d-none vallidation-message">This field can not be empty</span>
+                                                    <span class="text-danger d-none vallidation-message">This field can not
+                                                        be empty</span>
                                                 </div>
 
 

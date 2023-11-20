@@ -8,8 +8,8 @@
             <thead class="thead-light font-size-h6">
                 <tr>
                     <th scope="col" width="30">#</th>
-                    <th scope="col"></th>
-                    <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
+                    <th scope="col">অফিসের নাম</th>
+                    <th scope="col" style="text-align:center;">হাইকোর্ট বিভাগে চলমান মামলা</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                                     href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a>
                             </h4>
                         </td>
-                        <td align="center">{{ en2bn($val->postponed_interim_order) }}</td>
+                        <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
                     </tr>
                 @endforeach
             </tbody>

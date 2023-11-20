@@ -492,7 +492,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -563,7 +563,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -631,7 +631,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -699,7 +699,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -767,7 +767,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -1106,7 +1106,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes!'
+                    confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         alert('okay')
@@ -1157,7 +1157,8 @@
                                 console.log(data);
                                 Swal.fire(
                                     'Oops...!',
-                                    data['responseJSON']['errors']['case_no'][0],
+                                    data['responseJSON']['errors']['case_no'][
+                                    0],
                                     'error'
                                 )
                                 $('#saveOldHighCourtCaseBtn').removeClass(
@@ -1165,6 +1166,15 @@
                                 );
                             }
                         });
+                    } else {
+                        console.log('aaaaaaaa');
+                        $('#saveOldHighCourtCaseBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        Swal.fire(
+                            'Canceled',
+                            'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                            'info'
+                        );
                     }
                 })
 

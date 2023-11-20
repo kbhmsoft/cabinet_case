@@ -230,11 +230,11 @@
                                                     </table>
                                                 </div>
 
-                                              <div class="col-lg-12 mb-5">
+                                                <div class="col-lg-12 mb-5">
                                                     <div class="col-lg-4 mb-5">
                                                         <label>মোট পিটিশনারের সংখ্যা</label>
                                                         <select name="total_badi_number" id="total_badi_number"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm">
                                                             <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
                                                             </option>
                                                             <?php
@@ -316,7 +316,6 @@
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
-
                                                                     <div id="addFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
@@ -325,9 +324,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
                                                         </div>
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
@@ -349,7 +346,8 @@
                                     </div>
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="caseGeneralInfoSaveBtn" class="submit-button">সংরক্ষণ</button>
+                                    <button type="submit" id="caseGeneralInfoSaveBtn"
+                                        class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
                         </div>
