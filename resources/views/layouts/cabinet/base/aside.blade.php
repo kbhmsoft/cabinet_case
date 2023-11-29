@@ -165,9 +165,8 @@
                         </div>
                     </li>
                 @endcan
-
                 @can('appeal_division')
-                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*','cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*', 'cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>আপিল
@@ -250,7 +249,8 @@
 
                                         <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision']) ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.attorney.appellateDivision') }}" class="menu-link">
+                                            <a href="{{ route('cabinet.case.attorney.appellateDivision') }}"
+                                                class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
                                             </a>
@@ -273,7 +273,6 @@
                                                 <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
                                             </a>
                                         </li> --}}
-
                                     @endif
                                 @endcan
                             </ul>

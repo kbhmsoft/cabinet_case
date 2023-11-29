@@ -168,3 +168,53 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
 
+<form method="POST" action="{{ route('login') }}">
+                @csrf
+                <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
+                <div class="form-group otp-hidden">
+                    <!-- <label class="control-label visible-ie8 visible-ie9">Username</label> -->
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input id="email" type="email" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
+
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group otp-hidden">
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password" name="password"/>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-actions otp-hidden">
+                    @if (Route::has('password.request'))
+                    <!-- <a href="{{ route('password.request') }}" id="forget-password" style="color:inherit; margin-top:10px; display:inline-block;">পাসওয়ার্ড পুনরুদ্ধার?</a> -->
+                     @endif
+                            <button type="submit" id="submit" class="btn pull-right">
+                                 <i class="a2i_gn_login2 "></i>        প্রবেশ
+                            </button>
+                </div>
+                <div class="form-group otp-visable">
+                    <label class="control-label visible-ie8 visible-ie9">OTP</label>
+                    <div class="input-icon">
+                        <i class="a2i_gn_user1"></i>
+                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="OTP" id="otp" name="otp"/>
+                    </div>
+                </div>
+                <div class="form-actions otp-visable">
+                    <label class="checkbox">
+                        <button type="button" id="otpLoginBtn" class="btn pull-right">
+                            <i class="a2i_gn_login2 otp_login_icon"></i> প্রবেশ
+                        </button>
+                </div>
+            </form>
