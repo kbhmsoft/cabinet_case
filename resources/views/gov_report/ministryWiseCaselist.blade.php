@@ -16,10 +16,7 @@
                </div> -->
             </div>
          </div>
-        <?php
-         $roleID = Auth::user()->role_id;
 
-        ?>
          <!-- <div class="loadersmall"></div> -->
 
          <!--begin::Form-->
@@ -44,21 +41,6 @@
                             <legend>ফিল্টারিং ফিল্ড সমূহ</legend>
                             <div class="form-group row">
                                 <div class="col-lg-6 mb-5">
-                                  <select name="office_type" id="office_type_id" class="form-control form-control-sm">
-                                      <option value="">-ধরণ নির্বাচন করুন-</option>
-                                      @foreach ($officeTypes as $value)
-                                      <option value="{{ $value->id }}"> {{ $value->type_name_bn }} </option>
-                                      @endforeach
-                                  </select>
-                                </div>
-                                <div class="col-lg-6 mb-5">
-                                  <select name="ministry" id="ministry_id" class="form-control form-control-sm ministry_select_field">
-                                      <option value="">-মন্ত্রণালয়/অধিদপ্তর নির্বাচন করুন-</option>
-
-                                  </select>
-                                </div>
-
-                                <div class="col-lg-6 mb-5">
                                 <input type="text" name="date_start"  class="form-control form-control-sm common_datepicker" placeholder="তারিখ হতে" autocomplete="off">
                                 </div>
                                 <div class="col-lg-6 mb-5">
@@ -71,7 +53,7 @@
                             <fieldset class="text-center">
                                 <legend>সংখ্যা ভিত্তিক রিপোর্ট বাটন</legend>
 
-                                    <button type="submit" name="btnsubmit" value="pdf_num_office_wise" class="btn btn-info btn-cons margin-top"> উচ্চ আদালতে চলমান</button>
+                                    <button type="submit" name="btnsubmit" value="pdf_num_ministry_office_wise" class="btn btn-info btn-cons margin-top"> উচ্চ আদালতে চলমান</button>
 
                                     <button type="submit" name="btnsubmit" value="pdf_num_importance" class="btn btn-info btn-cons margin-top"> গুরুত্বপূর্ণ ভিত্তিক </button>
 
@@ -81,11 +63,7 @@
                         </div>
                     </div>
                 </div>
-
-
             </div> <!--end::Card-body-->
-
-
          </form>
          <!--end::Form-->
       </div>

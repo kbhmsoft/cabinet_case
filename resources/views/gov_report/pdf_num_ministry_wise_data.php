@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,24 +54,19 @@
 	<div class="priview-body">
 		<div class="priview-header">
 			<div class="row">
-				<div class="col-3 text-left float-left">
-					 <?=en2bn(date('d-m-Y'))?>
-				</div>
-				<div class="col-6 text-center float-left">
-					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সরকারি স্বার্থ সংশ্লিষ্ট মামলা ব্যাবস্থাপনা</span><br> মন্ত্রিপরিষদ বিভাগ-গণপ্রজাতন্ত্রী বাংলাদেশ সরকার,<br> বাংলাদেশ সচিবালয়, ঢাকা</p>
+				<div class="col-12 text-center float-left">
+					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সরকারি স্বার্থ সংশ্লিষ্ট মামলা ব্যাবস্থাপনা</span><br> <?= auth()->user()->govOffice->office_name_bn ?? '' ?>-গণপ্রজাতন্ত্রী বাংলাদেশ সরকার,<br> বাংলাদেশ সচিবালয়, ঢাকা</p>
 
 				</div>
-				<!-- <div class="col-2 text-right float-right">
-					ডিজিটাল বাংলাদেশ, সকল সেবা হাতের মুঠয়।
-				</div> -->
+
 			</div>
 		</div>
 
 			<div class="priview-memorandum">
 				<div class="row">
 					<div class="col-12 text-center">
-						<div style="font-size:12px;"><u><?=$type_name?><?=$page_title?></u></div>
-                        <p class="text-center" style="margin-top: 0;"><span style="font-size:15px;">উচ্চ আদালতে সকল চলমান সরকারি স্বার্থ সংশ্লিষ্ট মামলার পরিসংখ্যান</p>
+                    <p class="text-center" style="margin-top: 0;"><span style="font-size:15px;">উচ্চ আদালতে সকল চলমান সরকারি স্বার্থ সংশ্লিষ্ট মামলার পরিসংখ্যান</p>
+
 						<?php if ($date_start != '1970-01-01') {?>
 						<div style="font-size:13px;">সময়কাল:<u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
 						<?php }?>
@@ -94,56 +90,36 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-foreach ($results as $key => $value) {
-    ?>
 
+                        <?php
+                            foreach ($ministryWiseData as $key => $value) {
+                                ?>
                                 <tr>
-                                    <!-- <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>" class="text-center"><?=en2bn($key + 1)?>.</td>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>"><?=$value['ministry_name_bn']?></td> -->
-                                    <?php
-                                        if (count($value['doptor']) != 0) {
-                                    foreach ($value['doptor'] as $mk => $row) {
-                                        if ($mk != 0) {
-                                            echo '<tr>';
-                                        }
 
-                                        ?>
-                                                <td class="text-center" ><?=en2bn($mk + 1)?></td>
-                                                <td class="text-center" ><?=$row->doptor_name?></td>
-                                                <td class="text-center" ><?=$row->dateBetween?></td>
-                                                <td class="text-center" ><?=$row->prevUndoneCase?></td>
-                                                <td class="text-center" ><?=$row->totalCase?></td>
-                                                <td class="text-center" ><?=$row->doneCase?></td>
-                                                <td class="text-center" ><?=$row->favouredGov?></td>
-                                                <td class="text-center" ><?=$row->againstGov?></td>
-                                                <td class="text-center" ><?=$row->lastWorkDay?></td>
+                        <td class="text-center" ><?= en2bn($key+1) ?></td>
+                            <td class="text-center" ><?= en2bn($value->office_name_bn)   ?></td>
+                            <td class="text-center" ><?= en2bn($value->dateBetween) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->prevUndoneCase) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->totalCase) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->doneCase) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->favouredGov) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->againstGov) ?? '-' ?></td>
+                            <td class="text-center" ><?= en2bn($value->lastWorkDay) ?? '-' ?></td>
+                         </tr>
+                        <?php
+                     }?>
 
-                                            <?php
-                                        if ($mk != 0) {
-                                                        echo '</tr>';
-                                                    }
-                                                }
-                                            } else {?>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <!-- <td >-</td> -->
-                                    <?php
-                                    }?>
-                                </tr>
-						<?php }?>
 					</tbody>
 
 				</table>
 			</div>
 
 		</div>
+        <div class="row">
+        <div class="col-3 text-left float-left">
+					 <?=en2bn(date('d-m-Y'))?>
+        </div>
+        </div>
 
 	</body>
 	</html>

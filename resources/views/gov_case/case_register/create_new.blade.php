@@ -769,6 +769,7 @@
                                                                 <input type="radio" name="result" id="result"
                                                                     value="2" />
                                                                 <span></span>সরকারের বিপক্ষে</label>
+                                                                
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">

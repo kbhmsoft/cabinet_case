@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     // setting
     Route::get('site_setting', [SiteSettingController::class, 'edit'])->name('app.setting.index');
     Route::post('site_setting', [SiteSettingController::class, 'update'])->name('app.setting.update');
-    
+
     Route::get('/home', [HomeController::class, 'index']);
     Route::get('/databaseCaseCheck', [HomeController::class, 'databaseCaseCheck']);
     Route::get('/databaseDataUpdated', [HomeController::class, 'databaseDataUpdated']);
@@ -80,9 +80,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/hearing-nextWeek', [DashboardController::class, 'hearing_date_nextWeek'])->name('dashboard.hearing-nextWeek');
     Route::get('/dashboard/hearing-nextMonth', [DashboardController::class, 'hearing_date_nextMonth'])->name('dashboard.hearing-nextMonth');
 
-
-
-   
 
     /////****************** Gov Case Report Module *************/////
     Route::get('/govcase/report', [Gov_ReportController::class, 'index'])->name('reportss');
@@ -105,8 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-profile/update-password', [MyprofileController::class, 'update_password'])->name('update.password');
     // Route::get('/my-profile', [MyprofileController::class, 'index'])->name('my-profile.index');
     /////************** Office Setting **************/////
-  
-    
+
+
     /////************** Court Setting **************/////
     // Route::resource('court-setting', CourtController::class);
     route::get('/court', [CourtController::class, 'index'])->name('court');

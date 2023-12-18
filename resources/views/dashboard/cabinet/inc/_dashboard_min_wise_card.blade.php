@@ -15,9 +15,7 @@
             </thead>
             <tbody>
                 {{-- @foreach ($ministryData as $ministry) --}}
-                @php
-                $index=1;
-                @endphp
+    
                 @foreach ($ministry as $key=>$val)
                <tr>
                 {{-- {{dd($ministry)}} --}}

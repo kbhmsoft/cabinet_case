@@ -30,11 +30,10 @@ class DashboardController extends Controller
 
         $officeInfo = user_office_info();
         $user = Auth::user();
-        // dd($user);
+
         $roleID = Auth::user()->role_id;
-        // return $roleID;
         $officeID = Auth::user()->office_id;
-        //   return $officeID;
+
         $data = [];
         $data['rm_case_status'] = [];
 
@@ -50,7 +49,6 @@ class DashboardController extends Controller
             $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', 1)->count();
             $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
             $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
-
             $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
             $data['total_ministry'] = DB::table('office')->where('level', 9)->count();
             $data['total_user'] = DB::table('users')->count();
@@ -919,7 +917,6 @@ class DashboardController extends Controller
                 ->groupBy('gov_case_registers.cs_id')
                 ->where('gov_case_registers.action_user_group_id', $roleID)
                 ->get();
-            // dd($data['case_status']);
 
             $data['page_title'] = 'অতিরিক্ত-অ্যাটর্নি-জেনারেল';
             return view('dashboard.cabinet.officer')->with($data);
