@@ -1699,19 +1699,14 @@ class AppealGovCaseRegisterController extends Controller
         }
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
             ->paginate(10);
-        // return $data['cases'];
+
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 2)->get();
 
-        // $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
-        // $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']
-        // ->case_number_origin);
-
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
-        // return $data;
 
         return view('gov_case.appeal_case_register.appealcourt_mostimportant')->with($data);
     }

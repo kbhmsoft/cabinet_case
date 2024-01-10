@@ -203,23 +203,6 @@
             });
 
             if (passport) {
-
-                //     let division_id=$('#division_id').find('option:selected').val();
-                //     let nature_id = $('#nature_id').find('option:selected').val(),
-                //     let case_type_id= $('#case_type_id').find('option:selected').val(),
-                //     let case_number= $('#case_number').val(),
-                //     let year= $('#year').val(),
-                //     $url = `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=`  ${division_id} '&case_type_id=' ${case_type_id} '&case_number=' ${case_number} '&year=' ${year};
-
-                // let division_id = $('#division_id').find('option:selected').val();
-                // let nature_id = $('#nature_id').find('option:selected').val();
-                // let case_type_id = $('#case_type_id').find('option:selected').val();
-                // let case_number = $('#case_number').val();
-                // let year = $('#year').val();
-                // let url =
-                //     `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
-                // console.log(url);
-
                 let division_id = $('#division_id').find('option:selected').val();
                 let case_type_id = $('#case_type_id').find('option:selected').val();
                 let case_number = $('#case_number').val();
@@ -227,29 +210,8 @@
                 let url =
                     `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
 
-                    //documet.getElementById('itr').setAttribute('src',url);
                     $('#itr').removeClass('d-none');
                     $('#itr').attr('src',url);
-                // fetch(url)
-                //     .then(response => {
-                //         if (!response.ok) {
-                //             throw new Error('Network response was not ok');
-                //         }
-                //         return response.text();
-                //     })
-                //     .then(data => {
-                //         if (data && data.trim() !== "") {
-                //             document.getElementById('search_result_supream_court').innerHTML = data;
-                //         } else {
-                //             document.getElementById('search_result_supream_court').innerHTML = "No data found.";
-                //         }
-                //     })
-                //     .catch(error => {
-                //         console.error('Error:', error);
-                //         document.getElementById('search_result_supream_court').innerHTML =
-                //             "Error occurred while fetching data.";
-                //     });
-
 
             }
         });

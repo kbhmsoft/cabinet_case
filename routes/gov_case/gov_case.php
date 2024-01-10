@@ -161,6 +161,7 @@ Route::middleware('auth')->group(function () {
             // Route::get('ministry_wise_gov_list/{id}/{id2}', [GovCaseRegisterController::class, 'ministry_wise_gov_list'])->name('ministry_wise_gov_list');
             Route::post('highcourtMostImportantSave',[GovCaseRegisterController::class, 'highcourtMostImportantSave'])->name('highcourtMostImportantSave');
             Route::get('highcourt/mostImportantCase', [GovCaseRegisterController::class, 'highcourtMostImportantCase'])->name('highcourtMostImportantCase');
+            Route::get('importgantCaseList', [GovCaseRegisterController::class, 'highcourtAppealMostImportantCase'])->name('highcourtAppealMostImportantCase');
             Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
             Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
             Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
@@ -174,6 +175,7 @@ Route::middleware('auth')->group(function () {
             Route::post('leaveToAppealStore', [GovCaseRegisterController::class, 'leaveToAppealStore'])->name('leaveToAppealStore');
             Route::post('leaveToAppealAnswerStore', [GovCaseRegisterController::class, 'leaveToAppealAnswerStore'])->name('leaveToAppealAnswerStore');
             Route::post('contemptCaseStore', [GovCaseRegisterController::class, 'contemptCaseStore'])->name('contemptCaseStore');
+            Route::post('contemptCaseStoreActionButton', [GovCaseRegisterController::class, 'contemptCaseStoreActionButton'])->name('contemptCaseStoreActionButton');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
             Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
@@ -181,6 +183,7 @@ Route::middleware('auth')->group(function () {
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
             Route::get('final/order/{id}', [GovCaseRegisterController::class, 'finalOrderEdit'])->name('finalOrderEdit');
+            Route::get('contemptCaseIssue/{id}', [GovCaseRegisterController::class, 'contemptCaseIssue'])->name('contemptCaseIssue');
             Route::get('leave-to-appeal/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealCreate'])->name('leaveToAppealCreate');
             Route::get('leave-to-appeal-answer/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealAnswerCreate'])->name('leaveToAppealAnswerCreate');
             Route::get('details/{id}', [GovCaseRegisterController::class, 'show'])->name('details');

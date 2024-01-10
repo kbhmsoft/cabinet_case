@@ -20,7 +20,6 @@
 		.date-value ul li.underline{border-bottom: 1px solid black;}
 		.subject-content{text-decoration: underline;}
 		.headding{border-top:1px solid #000;border-bottom:1px solid #000;}
-
 		.col-1{width:8.33%;float:left;}
 		.col-2{width:16.66%;float:left;}
 		.col-3{width:25%;float:left;}
@@ -92,7 +91,7 @@
         <tbody>
                 <?php
                     $totalCases = $totalDateBetween = $totalPrevUndoneCases = $totalDoneCases = $totalFavouredGov = $totalAgainstGov = $totalLastWorkDay = 0;
-                    foreach ($ministryWiseData as $key => $value) {
+                    foreach ($ministryListData as $key => $value) {
                         $totalCases += $value->totalCase;
                         $totalDateBetween += $value->dateBetween;
                         $totalPrevUndoneCases += $value->prevUndoneCase;

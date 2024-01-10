@@ -149,7 +149,7 @@ class DashboardController extends Controller
                 $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
                 array_push($arrayd, $val);
             }
-
+           
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];

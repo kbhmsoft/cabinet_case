@@ -185,6 +185,7 @@ class GovCaseRegisterController extends Controller
         }
 
         $data['cases'] = $query->paginate(10);
+        // return $data['cases'];
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -453,6 +454,134 @@ class GovCaseRegisterController extends Controller
         // return $data;
 
         return view('gov_case.case_register.most_important_highcourt')->with($data);
+    }
+
+    public function highcourtAppealMostImportantCase()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
+            ->where('most_important', 1);
+
+        if ($roleID == 32 || $roleID == 33) {
+            $query->whereHas(
+                'bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            );
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+        if (!empty($_GET['division'])) {
+            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
+        }
+        if (!empty($_GET['district'])) {
+            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
+        }
+        if (!empty($_GET['upazila'])) {
+            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
+        }
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
+
+        // For Appeal
+
+        $queryAppeal = AppealGovCaseRegister::orderby('id', 'DESC')
+            ->where('deleted_at', '=', null)->where('most_important', 1);
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
+        if ($roleID == 32 || $roleID == 33) {
+            $queryAppeal->where('appeal_office_id', $officeID);
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $queryAppeal->where('appeal_office_id', $officeID);
+        }
+
+        if (!empty($_GET['case_category_id'])) {
+            $queryAppeal->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $queryAppeal->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $queryAppeal->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if ($roleID == 5 || $roleID == 7) {
+            $queryAppeal->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $queryAppeal->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+        $data['appealCases'] = $queryAppeal->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
+            ->get();
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
+            ->where('gov_case_division_id', 2)->get();
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title2'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট অতি গুরুত্বপূর্ণ মামলার তালিকা';
+
+        return view('gov_case.case_register.most_important_highcourt_appeal')->with($data);
     }
 
     public function highcourtMostImportantSave(Request $request)
@@ -2761,6 +2890,39 @@ class GovCaseRegisterController extends Controller
         // return $data['case']->id;
         return view('gov_case.case_register._inc.final_order_edit')->with($data);
     }
+
+    public function contemptCaseIssue($id)
+    {
+        $roleID = userInfo()->role_id;
+
+        $officeID = userInfo()->office_id;
+
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+        $data['ministrys'] = GovCaseOffice::get();
+
+        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['courts'] = DB::table('court')
+            ->select('id', 'court_name')
+            ->whereIn('id', [1, 2])
+            ->get();
+
+        if ($roleID != 33) {
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        } else {
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+        $data['usersInfo'] = User::all();
+
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+
+        $data['page_title'] = 'কনটেম্প্ট মামলা / অন্যান্য';
+
+        return view('gov_case.case_register._inc.contempt_case_issue')->with($data);
+    }
+
     public function finalOrderStore(Request $request)
     {
         // dd($request);
@@ -2808,6 +2970,53 @@ class GovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
+    // public function finalOrderStore(Request $request)
+    // {
+    //     // dd($request);
+    //     $caseId = $request->case_id;
+    //     $request->validate(
+    //         [
+    //             'case_id' => 'required',
+    //         ],
+
+    //     );
+    //     try {
+    //         $caseId = GovCaseRegisterRepository::storeFinalOrder($request);
+    //         if ($request->file_type && $_FILES["file_name"]['name']) {
+    //             AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
+    //         }
+    //         //========= Gov Case Activity Log -  start ============
+    //         $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+    //         $caseRegisterData = array_merge($caseRegister, [
+    //             'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+    //         ]);
+    //         // return $caseRegisterData;
+    //         $cs_activity_data['case_register_id'] = $caseId;
+    //         if ($request->formType != 'edit') {
+    //             $cs_activity_data['activity_type'] = 'create';
+    //             $cs_activity_data['message'] = 'মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
+    //         } else {
+    //             $cs_activity_data['activity_type'] = 'update';
+    //             $cs_activity_data['message'] = 'মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
+    //         }
+    //         $cs_activity_data['old_data'] = null;
+    //         $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+    //         gov_case_activity_logs($cs_activity_data);
+    //         // ========= Gov Case Activity Log  End ==========
+
+    //     } catch (\Exception $e) {
+    //         dd($e);
+    //         $flag = 'false';
+    //         return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+    //     }
+    //     return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+    //     // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
+    // }
+
     public function contemptCaseStore(Request $request)
     {
         // dd($request);
@@ -2834,17 +3043,11 @@ class GovCaseRegisterController extends Controller
                 'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
             ]);
             // return $caseRegisterData;
-            $cs_activity_data['case_register_id'] = $caseId;
-            if ($request->formType != 'edit') {
-                $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
-            } else {
-                $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
-            }
-            $cs_activity_data['old_data'] = null;
+            // $cs_activity_data['case_register_id'] = $caseId;
+
+            // $cs_activity_data['old_data'] = null;
             $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-            gov_case_activity_logs($cs_activity_data);
+            // gov_case_activity_logs($cs_activity_data);
             // ========= Gov Case Activity Log  End ==========
 
         } catch (\Exception $e) {
@@ -2853,8 +3056,49 @@ class GovCaseRegisterController extends Controller
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
-
     }
+
+    // public function contemptCaseStoreActionButton(Request $request,$id)
+    // {
+    //     dd($request);
+    //     $caseId = $request->id;
+    //     $request->validate(
+    //         [
+    //             'case_id' => 'required',
+    //         ],
+    //         [
+    //             'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
+    //         ]
+    //     );
+    //     try {
+    //         $caseId = GovCaseRegisterRepository::storeContemptCase($request);
+    //         if ($request->file_type && $_FILES["file_name"]['name']) {
+    //             AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
+    //         }
+    //         //========= Gov Case Activity Log -  start ============
+    //         $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+    //         $caseRegisterData = array_merge($caseRegister, [
+    //             'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+    //             'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+    //         ]);
+    //         // return $caseRegisterData;
+    //         $cs_activity_data['case_register_id'] = $caseId;
+
+    //         $cs_activity_data['old_data'] = null;
+    //         $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+    //         gov_case_activity_logs($cs_activity_data);
+    //         // ========= Gov Case Activity Log  End ==========
+
+    //     } catch (\Exception $e) {
+    //         dd($e);
+    //         $flag = 'false';
+    //         return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+    //     }
+    //     return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+    // }
+
     public function highcourt_edit($id)
     {
         $roleID = userInfo()->role_id;

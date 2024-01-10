@@ -82,7 +82,8 @@
                         <tr>
                             {{-- {{dd($row->total_badi_number)}} --}}
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
-                            <td style="width: 10px;" style="text-align:center;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
+                            <td style="width: 10px;" style="text-align:center;">
+                                {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
                             <td>
                                 @if ($row->badis && $row->badis->first() && $row->badis->first()->name && $row->total_badi_number > 1)
                                     {{ $row->badis->first()->name . ' ও অন্যান্য' }}
@@ -125,6 +126,7 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
                                                     চূড়ান্ত আদেশ</a>
+
                                             @elseif ($row->is_final_order == 1)
                                                 @if ($row->result == 2)
                                                     @if (empty($row->leave_to_appeal_no))
@@ -140,19 +142,44 @@
                                                     @endif
                                                 @endif
                                             @endif
-
-                                            {{-- @if ($row->action_user_role_id == userInfo()->role_id)
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.action.details', $row->id) }}">জবাব প্রেরণ</a>
-                                            @endif --}}
+                                            @if ($row->contempt_case_isuue_date == null)
+                                            <a class="dropdown-item"
+                                                href="{{ route('cabinet.case.contemptCaseIssue', $row->id) }}">
+                                                কনটেম্প্ট মামলা / অন্যান্য<br> বিষয়ে ব্যাবস্থা</a>
+                                           @endif
                                         @endcan
                                         @can('register')
                                             <a class="dropdown-item"
                                                 href="{{ route('cabinet.case.register', $row->id) }}">রেজিস্টার</a>
                                         @endcan
+                                        <a id="caseLink{{ $key }}" class="dropdown-item"
+                                            data-case-division-id="{{ $row->case_division_id }}"
+                                            data-case-type-id="{{ $row->case_type_id }}"
+                                            data-case-number="{{ $row->case_no }}" data-case-year="{{ $row->year }}"
+                                            href="#">
+                                            মামলার বর্তমান অবস্থান
+                                        </a>
+
+                                        <!-- from মামলার বর্তমান অবস্থান button and data show from supreme court website  -->
+                                        <script>
+                                            document.getElementById('caseLink{{ $key }}').addEventListener('click', function(event) {
+                                                event.preventDefault();
+                                                // Prevent the default behavior of the anchor tag
+                                                var division_id = this.getAttribute('data-case-division-id');
+                                                var case_type_id = this.getAttribute('data-case-type-id');
+                                                var case_number = this.getAttribute('data-case-number');
+                                                var year = this.getAttribute('data-case-year');
+                                                var dynamicUrl =
+                                                    `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
+
+                                                window.open(dynamicUrl, '_blank');
+                                            });
+                                        </script>
+
                                     </div>
                                 </div>
                                 <div class="btn-group">
+
                                     @if ($roleID == 27)
                                         <a class="btn btn-bg-danger btn-sm"
                                             href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে
@@ -190,13 +217,9 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                                 -->
-
-
+                <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                -->
         <!--end::Page Scripts-->
-
-
         <script>
             $(document).ready(function() {
                 $(".delete-button").click(function(e) {

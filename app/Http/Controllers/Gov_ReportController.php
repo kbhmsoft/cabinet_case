@@ -65,6 +65,7 @@ class Gov_ReportController extends Controller
     {
         //=========================Ministry Wise Case Report========================//
         if ($request->btnsubmit == 'pdf_num_office_wise') {
+
             $data['page_title'] = 'সরকারি মামলার তালিকা';
             if ($request->date_start || $request->date_end) {
                 $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
@@ -74,172 +75,207 @@ class Gov_ReportController extends Controller
                 $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', now())));
             }
 
-            $request->validate(
-                [
-                    'office_type' => 'required',
-                    // 'date_start' => 'required',
-                    // 'date_end' => 'required'
-                ],
-                [
-                    'office_type.required' => 'অফিসের ধরণ নির্বাচন করুন',
-                    // 'date_start.required' => 'মামলা শুরুর তারিখ নির্বাচন করুন',
-                    // 'date_end.required' => 'মামলা শেষের তারিখ নির্বাচন করুন'
-                ]
-            );
-
-            $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
             $office_type = $request->office_type;
             $dept_id = $request->ministry;
 
-            // return [$office_type,$dept_id];
-            $data['type_name'] = GovCaseOfficeType::where('id', $office_type)->first()->type_name_bn;
-            if ($office_type != null) {
-                $data['offices'] = DB::table('gov_case_office')->select('id as office_id', 'office_name_bn')->where('id', $office_type)->get();
-            }
+            if ($office_type != null && $dept_id != null) {
 
-            foreach ($data['offices'] as $key => $value) {
+                $request->validate(
+                    [
+                        'office_type' => 'required',
+                    ],
+                    [
+                        'office_type.required' => 'অফিসের ধরণ নির্বাচন করুন',
+                    ]
+                );
 
-                $data['results'][$key]['ministry_name_bn'] = $value->office_name_bn;
+                $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
 
-                $data['results'][$key]['office_id'] = $value->office_id;
-                if ($dept_id != null) {
-                    $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level', $office_type)->where('id', $dept_id)->get();
-                } else {
-                    $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level', $office_type)->get();
+                $data['type_name'] = GovCaseOfficeType::where('id', $office_type)->first()->type_name_bn;
+                if ($office_type != null) {
+                    $data['offices'] = DB::table('gov_case_office')->select('id as office_id', 'office_name_bn')->where('id', $office_type)->get();
                 }
 
-                foreach ($data['results'][$key]['doptor'] as $k => $val) {
-                    $data['results'][$key]['doptor'][$k]->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->totalCase = $this->total_case_count_by_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->againstGov = $this->done_against_gov_case_count_highCourt($val->doptor_id, $data)->count();
-                    $data['results'][$key]['doptor'][$k]->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->doptor_id, $data);
-                    $data['results'][$key]['doptor'][$k]->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
+                foreach ($data['offices'] as $key => $value) {
+
+                    $data['results'][$key]['ministry_name_bn'] = $value->office_name_bn;
+
+                    $data['results'][$key]['office_id'] = $value->office_id;
+                    if ($dept_id != null) {
+                        $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level', $office_type)->where('id', $dept_id)->get();
+                    } else {
+                        $data['results'][$key]['doptor'] = DB::table('gov_case_office')->select('id as doptor_id', 'office_name_bn as doptor_name')->where('level', $office_type)->get();
+                    }
+
+                    foreach ($data['results'][$key]['doptor'] as $k => $val) {
+                        $data['results'][$key]['doptor'][$k]->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->totalCase = $this->total_case_count_by_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->againstGov = $this->done_against_gov_case_count_highCourt($val->doptor_id, $data)->count();
+                        $data['results'][$key]['doptor'][$k]->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->doptor_id, $data);
+                        $data['results'][$key]['doptor'][$k]->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->doptor_id, $data)->count();
+                    }
                 }
-            }
 
             $html = view('gov_report.pdf_num_ministry')->with($data);
-            // Generate PDF
             $this->generatePDF($html);
-            // return view('gov_report.pdf_num_ministry')->with($data);
-        }
+
+            }
+
+            if ($office_type == null && $dept_id == null) {
+                // Fetch ministry list
+                $ministryList = DB::table('gov_case_office')
+                    ->whereIn('gov_case_office.level', [1, 3])
+                    ->get(['id', 'office_name_bn']);
+
+                // Fetch child office IDs for all ministries at once
+                $childOfficeIds = DB::table('gov_case_office')
+                    ->whereIn('parent', $ministryList->pluck('id'))
+                    ->pluck('id')
+                    ->toArray();
+
+                $arrayd = [];
+
+                foreach ($ministryList as $ministry) {
+                    $val = (object) [
+                        'id' => $ministry->id,
+                        'office_name_bn' => $ministry->office_name_bn,
+                    ];
+
+                    // Combine operations into a single loop
+                    $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->id, $data)->count();
+                    $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->id, $data)->count();
+                    $val->totalCase = $this->total_case_count_by_highCourt($val->id, $data)->count();
+                    $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->id, $data)->count();
+                    $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->id, $data)->count();
+                    $val->againstGov = $this->done_against_gov_case_count_highCourt($val->id, $data)->count();
+                    $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->id, $data);
+
+                    // Add the ministry data to the array
+                    $arrayd[] = $val;
+                }
+
+                if ($office_type == null && $dept_id == null) {
+                    $data['ministryListData'] = $arrayd;
+                    $html = view('gov_report.pdf_num_ministry_list_data')->with($data);
+                    $this->generatePDF($html);
+                }
+            } //     if ($office_type == null && $dept_id == null) {
+            //         $data['ministryList'] = DB::table('gov_case_office')
+            //             ->whereIn('gov_case_office.level', [1, 3])
+            //             ->get(['id', 'office_name_bn']);
+
+            //         $arrayd = [];
+            //         foreach ($data['ministryList'] as $key => $val) {
+            //             $childOfficeIds = [];
+
+            //             $childOfficeQuery = DB::table('gov_case_office')
+            //                 ->select('id')
+            //                 ->where('parent', $val->id)->get();
+
+            //             foreach ($childOfficeQuery as $childOffice) {
+            //                 $childOfficeIds[] = $childOffice->id;
+            //             }
+
+            //             $finalOfficeIds = [];
+
+            //             if (empty($childOfficeIds)) {
+            //                 $finalOfficeIds[] = $val->id;
+            //             } else {
+            //                 $finalOfficeIds[] = $val->id;
+            //                 $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            //             }
+
+            //             $arrayd = [];
+            //             foreach ($data['ministryList'] as $key => $val) {
+            //                 $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->id, $data)->count();
+            //                 $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->id, $data)->count();
+            //                 $val->totalCase = $this->total_case_count_by_highCourt($val->id, $data)->count();
+            //                 $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->id, $data)->count();
+            //                 $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->id, $data)->count();
+            //                 $val->againstGov = $this->done_against_gov_case_count_highCourt($val->id, $data)->count();
+            //                 $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->id, $data);
+            //                 array_push($arrayd, $val);
+            //             }
+            //         }
+
+            //     if ($office_type == null && $dept_id == null) {
+            //         $data['ministryListData'] = $arrayd;
+            //         $html = view('gov_report.pdf_num_ministry_list_data')->with($data);
+            //         $this->generatePDF($html);
+            //     }
+
+            //     $html = view('gov_report.pdf_num_ministry')->with($data);
+            //     // Generate PDF
+            //     $this->generatePDF($html);
+            //     // return view('gov_report.pdf_num_ministry')->with($data);
+            // }
 
         if ($request->btnsubmit == 'pdf_num_ministry_office_wise') {
-            $data['page_title'] = 'সরকারি মামলার তালিকা';
-            if ($request->date_start || $request->date_end) {
-                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
-                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
-            } else {
-                $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
-                $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', now())));
+                $data['page_title'] = 'সরকারি মামলার তালিকা';
+                if ($request->date_start || $request->date_end) {
+                    $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                    $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
+                } else {
+                    $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
+                    $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', now())));
+                }
+
+                $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
+
+                $officeID = Auth::user()->office_id;
+                $childOfficeIds = [];
+                $childOfficeQuery = DB::table('gov_case_office')
+                    ->select('id')
+                    ->where('parent', $officeID)->get();
+
+                foreach ($childOfficeQuery as $childOffice) {
+                    $childOfficeIds[] = $childOffice->id;
+                }
+
+                $finalOfficeIds = [];
+                if (empty($childOfficeIds)) {
+                    $finalOfficeIds[] = $officeID;
+                } else {
+                    $finalOfficeIds[] = $officeID;
+                    $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+                }
+
+                $data['ministryWiseData'] = DB::table('gov_case_office')
+                    ->where('gov_case_office.parent', $finalOfficeIds)
+                    ->orwhere('id', $finalOfficeIds)
+                    ->get(['id', 'office_name_bn']);
+
+                $arrayd = [];
+                foreach ($data['ministryWiseData'] as $key => $val) {
+                    $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->id, $data)->count();
+                    $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->id, $data)->count();
+                    $val->totalCase = $this->total_case_count_by_highCourt($val->id, $data)->count();
+                    $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->id, $data)->count();
+                    $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->id, $data)->count();
+                    $val->againstGov = $this->done_against_gov_case_count_highCourt($val->id, $data)->count();
+                    $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->id, $data);
+                    $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->id, $data)->count();
+                    array_push($arrayd, $val);
+                }
+                $data['ministryWiseData'] = $arrayd;
+                $roleID = Auth::user()->role_id;
+                if ($roleID != 27) {
+                    $html = view('gov_report.pdf_num_ministry_wise_data')->with($data);
+                    $this->generatePDF($html);
+
+                } else {
+                    $html = view('gov_report.pdf_num_ministry')->with($data);
+                    $this->generatePDF($html);
+                }
+                // Generate PDF
+
+                // return view('gov_report.pdf_num_ministry')->with($data);
             }
 
-            $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
-            // $office_type = $request->office_type;
-            // $dept_id = $request->ministry;
-
-            // return [$office_type,$dept_id];
-            // $data['type_name'] = GovCaseOfficeType::where('id', $office_type)->first()->type_name_bn;
-            // if ($office_type != null) {
-            //     $data['offices'] = DB::table('gov_case_office')->select('id as office_id', 'office_name_bn')->where('id', $office_type)->get();
-            // }
-            $officeID = Auth::user()->office_id;
-            $childOfficeIds = [];
-            $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id')
-                ->where('parent', $officeID)->get();
-
-            foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->id;
-            }
-
-            $finalOfficeIds = [];
-            if (empty($childOfficeIds)) {
-                $finalOfficeIds[] = $officeID;
-            } else {
-                $finalOfficeIds[] = $officeID;
-                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-            }
-
-            $data['ministryWiseData'] = DB::table('gov_case_office')
-                ->where('gov_case_office.parent', $finalOfficeIds)
-                ->orwhere('id', $finalOfficeIds)
-                ->get(['id', 'office_name_bn']);
-
-            $arrayd = [];
-            foreach ($data['ministryWiseData'] as $key => $val) {
-                $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->id, $data)->count();
-                $val->totalCase = $this->total_case_count_by_highCourt($val->id, $data)->count();
-                $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->id, $data)->count();
-                $val->againstGov = $this->done_against_gov_case_count_highCourt($val->id, $data)->count();
-                $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->id, $data);
-                $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                array_push($arrayd, $val);
-            }
-            $data['ministryWiseData'] = $arrayd;
-            $roleID = Auth::user()->role_id;
-            if ($roleID != 27) {
-                $html = view('gov_report.pdf_num_ministry_wise_data')->with($data);
-                $this->generatePDF($html);
-                // return view('gov_report.ministryWiseCaselist')->with($data);
-            } else {
-                $html = view('gov_report.pdf_num_ministry')->with($data);
-                $this->generatePDF($html);
-            }
-            // Generate PDF
-
-            // return view('gov_report.pdf_num_ministry')->with($data);
         }
-
-        //=======================//Ministry Wise Case Report========================//
-
-        //=======================Important Wise Case Report========================//
-
-        if ($request->btnsubmit == 'pdf_num_importance') {
-            $data['page_title'] = 'সরকারি মামলার তালিকা'; //exit;
-            $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
-            $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
-
-            $data['page_title'] = 'গুরুত্বপূর্ণ ভিত্তিক সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট'; //exit;
-
-            $data['importantCase'] = $this->imprtant_case_details();
-            if (count($data['importantCase']) < 1) {
-                $data['results'] = [];
-            }
-            // dd(1);
-            foreach ($data['importantCase'] as $key => $value) {
-                $data['results'][$key]['caseID'] = $value->id;
-                $data['results'][$key]['caseNum'] = $value->case_no;
-                $data['results'][$key]['courtID'] = $value->court_id;
-                $data['results'][$key]['petitioner'] = $value->concern_user_id;
-                $data['results'][$key]['content'] = $value->subject_matter;
-                $data['results'][$key]['importaceReason'] = $value->important_cause;
-                // $data['results'][$key]['mulBibadi']  = $this->imprtant_case_mul_bibadi($data['results'][$key]['caseID']);
-                // $data['results'][$key]['otherBibadi']= $this->imprtant_case_other_bibadi($data['results'][$key]['caseID']);
-                // $data['results'][$key]['lastStep']= $this->imprtant_case_last_taken_step($data['results'][$key]['caseID']);
-                // $data['results'][$key]['courtName']= $this->imprtant_case_court_name($data['results'][$key]['courtID']);
-                // $data['results'][$key]['petitionerName']= $this->imprtant_case_petitioner_name($data['results'][$key]['petitioner']);
-
-                $data['results'][$key]['mulBibadi'] = $this->imprtant_case_mul_bibadi($data['results'][$key]['caseID']);
-                $data['results'][$key]['otherBibadi'] = $this->imprtant_case_other_bibadi($data['results'][$key]['caseID']);
-                $data['results'][$key]['lastStep'] = ' ';
-                $data['results'][$key]['courtName'] = ' ';
-                $data['results'][$key]['petitionerName'] = ' ';
-            }
-
-            // return $data;
-            // return $data['results'];
-            $html = view('gov_report.pdf_num_important')->with($data);
-            // Generate PDF
-            $this->generatePDF($html);
-        }
-
-        //=======================//Important Wise Case Report========================//
-
     }
 
     public function case_count_by_dateBetween_highCourt($id, $data = null)
@@ -247,25 +283,6 @@ class Gov_ReportController extends Controller
         $from = $data['date_start'];
         $to = $data['date_end'];
 
-        // $officeID = Auth::user()->office_id;
-
-        // $childOfficeIds = [];
-        // $childOfficeQuery = DB::table('gov_case_office')
-        //     ->select('id')
-        //     ->where('parent', $officeID)->get();
-
-        // foreach ($childOfficeQuery as $childOffice) {
-        //     $childOfficeIds[] = $childOffice->id;
-        // }
-
-        // $finalOfficeIds = [];
-        // if (empty($childOfficeIds)) {
-        //     $finalOfficeIds[] = $officeID;
-        // } else {
-        //     $finalOfficeIds[] = $officeID;
-        //     $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        // }
-        // return $finalOfficeIds;
         $query = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {$query->where('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');})->get();
 
         return $query;

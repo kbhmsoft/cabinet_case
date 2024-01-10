@@ -549,7 +549,8 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         ).then(function() {
-                            window.location = "{{ route('cabinet.case.highcourt') }}";
+                            window.location =
+                                "{{ route('cabinet.case.highcourt') }}";
                         });
                         console.log(data);
                         // console.log(data.caseId);
@@ -608,10 +609,11 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         ).then(function() {
-                            window.location = "{{ route('cabinet.case.highcourt') }}";
+                            window.location =
+                                "{{ route('cabinet.case.highcourt') }}";
                         });
                         console.log(data);
-                      
+
 
                     },
                     error: function(data) {
@@ -628,8 +630,6 @@
     // ================================Suspention Order Save==================================//
 
     // ================================Final Order Save==================================//
-
-
 
     $('#finalOrderForm').submit(function(e) {
         // alert(1);
@@ -698,26 +698,25 @@
     // ================================Final Order Save==================================//
 
 
-
     $('#contemptCaseForm').submit(function(e) {
-        // alert(1);
         e.preventDefault();
         $('#contemptCaseSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
         Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            title: 'আপনি কি কনটেম্প্ট মামলা তথ্য সংরক্ষণ করতে চান?',
             // text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-
+                var caseId = $("#caseIDForContempt").val();
+                console.log(caseId);
+                // var url = "{{ route('cabinet.case.contemptCaseStoreActionButton') }}?case_id=" + caseId;
                 var formData = new FormData(this);
                 $.ajax({
-
                     type: 'POST',
                     url: "{{ route('cabinet.case.contemptCaseStore') }}",
                     data: formData,
@@ -731,7 +730,7 @@
                         $orderData = data;
                         Swal.fire(
                             'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'কনটেম্প্ট মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         )
                         console.log(data);
@@ -749,10 +748,20 @@
 
                     }
                 });
+            } else {
+                $('#contemptCaseSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire(
+                    'Canceled!',
+                    'মামলার কনটেম্প্ট মামলা সংরক্ষণ বাতিল করা হয়েছে',
+                    'info'
+                );
             }
         })
 
     });
+
+
     // ================================Final Order Save==================================//
 </script>
 <!--end::Page Scripts-->
