@@ -55,19 +55,24 @@
 			<div class="row">
 
 				<div class="col-12 text-center float-left">
-					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সরকারি স্বার্থ সংশ্লিষ্ট মামলা ব্যাবস্থাপনা</span><br> <?=auth()->user()->govOffice->office_name_bn ?? ''?>-গণপ্রজাতন্ত্রী বাংলাদেশ সরকার,<br> বাংলাদেশ সচিবালয়, ঢাকা</p>
-
+					<p class="text-center" style="margin-top: 0;"><span style="font-size:12px;font-weight: bold;">সরকারি স্বার্থ সংশ্লিষ্ট মামলা ব্যাবস্থাপনা</span><br>
+                    <?php
+                        if (isset($officeData) && !empty($officeData)) {
+                            echo $officeName . ',';
+                        }
+                        // else {
+                        //     echo auth()->user()->govOffice->office_name_bn;
+                        // }
+                        ?>
+                      গণপ্রজাতন্ত্রী বাংলাদেশ সরকার<br></p>
 				</div>
-				<!-- <div class="col-2 text-right float-right">
-					ডিজিটাল বাংলাদেশ, সকল সেবা হাতের মুঠয়।
-				</div> -->
+
 			</div>
 		</div>
 
 			<div class="priview-memorandum">
 				<div class="row">
 					<div class="col-12 text-center">
-						<!-- <div style="font-size:12px;"><u><?=$type_name?><?=$page_title?></u></div> -->
                         <p class="text-center" style="margin-top: 0;"><span style="font-size:15px;">উচ্চ আদালতে সকল চলমান সরকারি স্বার্থ সংশ্লিষ্ট মামলার পরিসংখ্যান</p>
 						<?php if ($date_start != '1970-01-01') {?>
 						<div style="font-size:13px;">সময়কাল:<u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
@@ -86,59 +91,57 @@
 							<th class="text-center" >বিবেচ্য সময়কালের <br>পূর্ব পর্যন্ত অনিস্পন্ন<br> মামলার সংখ্যা</th>
 							<th class="text-center" >মামলার মোট সংখ্যা</th>
 							<th class="text-center" >বিবেচ্য সময়কালে<br> নিস্পত্তিকৃত মামলার সংখ্যা</th>
-							<th class="text-center" >সরকারের পক্ষে <br>নিস্পত্তিকৃত মামলার সংখ্যা</th>
-							<th class="text-center" >সরকারের বিপক্ষে <br>নিস্পত্তিকৃত মামলার সংখ্যা</th>
-							<th class="text-center" >বিবেচ্য সময়কালে শেষ <br>করমদিবসে অনিস্পন্ন <br>মামলার সংখ্যা</th>
-						</tr>
+							<th class="text-center" >সরকারের পক্ষে <br>রায়/আদেশ প্রদানকৃত মামলার সংখ্যা</th>
+							<th class="text-center" >সরকারের বিপক্ষে <br>রায়/আদেশ প্রদানকৃত মামলার সংখ্যা</th>
+                            <th class="text-center" >সরকারের পক্ষ হতে<br>দায়েরকৃত আপিল/রিভিউ/রিভিশন<br>মামলার সংখ্যা</th>
+							<th class="text-center" >বিবেচ্য সময়কালে শেষ <br>কর্মদিবসে অনিস্পন্ন <br>মামলার সংখ্যা</th>
+
+                        </tr>
 					</thead>
 					<tbody>
-						<?php
-							foreach ($results as $key => $value) {
-								?>
+                    <tbody>
+                <?php
+                    $totalCases = $totalDateBetween = $totalPrevUndoneCases = $totalDoneCases = $totalFavouredGov = $totalAgainstGov = $totalLastWorkDay = $totalFavouredGovAppeal = 0;
+                    foreach ($ministryWiseData as $key => $value) {
+                        $totalCases += $value->totalCase;
+                        $totalDateBetween += $value->dateBetween;
+                        $totalPrevUndoneCases += $value->prevUndoneCase;
+                        $totalDoneCases += $value->doneCase;
+                        $totalFavouredGov += $value->favouredGov;
+                        $totalAgainstGov += $value->againstGov;
+                        $totalLastWorkDay += $value->lastWorkDay;
+                        $totalFavouredGovAppeal += $value->favouredGovAppeal;
+                        ?>
+                <tr>
+                    <td class="text-center"><?=en2bn($key + 1)?></td>
+                    <td class="text-center"><?=en2bn($value->office_name_bn)?></td>
+                    <td class="text-center"><?=en2bn($value->dateBetween) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->prevUndoneCase) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->totalCase) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->doneCase) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->favouredGov) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->againstGov) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->favouredGovAppeal) ?? '-'?></td>
+                    <td class="text-center"><?=en2bn($value->lastWorkDay) ?? '-'?></td>
 
-                                <tr>
-                                    <!-- <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>" class="text-center"><?=en2bn($key + 1)?>.</td>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>"><?=$value['ministry_name_bn']?></td> -->
-                                    <?php
-                                        if (count($value['doptor']) != 0) {
-                                    foreach ($value['doptor'] as $mk => $row) {
-                                        if ($mk != 0) {
-                                            echo '<tr>';
-                                        }
+                </tr>
+              <?php
+}
+?>
+                <tr>
+                    <td class="text-center" colspan="2">মোট</td>
+                    <td class="text-center"><?=en2bn($totalDateBetween)?></td>
+                    <td class="text-center"><?=en2bn($totalPrevUndoneCases)?></td>
+                    <td class="text-center"><?=en2bn($totalCases)?></td>
+                    <td class="text-center"><?=en2bn($totalDoneCases)?></td>
+                    <td class="text-center"><?=en2bn($totalFavouredGov)?></td>
+                    <td class="text-center"><?=en2bn($totalAgainstGov)?></td>
+                    <td class="text-center"><?=en2bn($totalFavouredGovAppeal)?></td>
+                    <td class="text-center"><?=en2bn($totalLastWorkDay)?></td>
 
-                                        ?>
-                                                <td class="text-center" ><?=en2bn($mk + 1)?></td>
-                                                <td class="text-center" ><?=$row->doptor_name?></td>
-                                                <td class="text-center" ><?=$row->dateBetween?></td>
-                                                <td class="text-center" ><?=$row->prevUndoneCase?></td>
-                                                <td class="text-center" ><?=$row->totalCase?></td>
-                                                <td class="text-center" ><?=$row->doneCase?></td>
-                                                <td class="text-center" ><?=$row->favouredGov?></td>
-                                                <td class="text-center" ><?=$row->againstGov?></td>
-                                                <td class="text-center" ><?=$row->lastWorkDay?></td>
-
-                                            <?php
-                                        if ($mk != 0) {
-                                                        echo '</tr>';
-                                                    }
-                                                }
-                                            } else {?>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <td >-</td>
-                                        <!-- <td >-</td> -->
-                                    <?php
-                                    }?>
-                                </tr>
-						<?php }?>
-					</tbody>
-
-				</table>
+                </tr>
+            </tbody>
+			</table>
 			</div>
 
 		</div>

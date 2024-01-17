@@ -141,7 +141,12 @@
                                                     </div>
                                                 </div>
 
-
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>মামলা দায়েরের তারিখ<span
+                                                            class="text-danger"> *</span></label>
+                                                    <input type="text" name="case_entry_date" id="case_entry_date"
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                </div>
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label for="concern_new_appeal_person_designation">সংশ্লিষ্ট আইন কর্মকর্তা <span

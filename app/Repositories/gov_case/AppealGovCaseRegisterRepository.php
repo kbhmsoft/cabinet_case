@@ -2,14 +2,14 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Attachment;
 use App\Models\AppealAttachment;
-use Illuminate\Support\Facades\DB;
+use App\Models\Attachment;
+use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AppealGovCaseRegisterRepository
 {
@@ -74,14 +74,12 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppeal($caseInfo)
     {
-        // dd($caseInfo->case_number_origin);
+        // dd($caseInfo);
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-        // return $case;
         $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
-        // dd($caseOriginNum);
+
         try {
             $case->case_no = $caseInfo->case_no;
-
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
             // $case->action_user_id = userInfo()->id;
@@ -91,19 +89,27 @@ class AppealGovCaseRegisterRepository
             $case->appeal_office_id = $caseInfo->appeal_office;
             $case->concern_new_appeal_person_designation = $caseInfo->concern_new_appeal_person_designation;
             $case->concern_user_id = $caseInfo->concern_user_id;
-            if(empty($caseInfo->postpond_date)) {
+
+            if (empty($caseInfo->case_entry_date)) {
+                $case->case_entry_date = date('Y-m-d'); // Set to current date
+            } else {
+                // If $caseInfo->case_entry_date is not empty, convert and assign the value
+                $case->case_entry_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_entry_date)));
+            }
+
+            if (empty($caseInfo->postpond_date)) {
                 $case->postpond_date = date('Y-m-d'); // Set to current date
             } else {
                 // If $caseInfo->postpond_date is not empty, convert and assign the value
                 $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
             }
-            // $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
             $case->postponed_details = $caseInfo->postponed_details ?? '';
             $case->case_category_origin = $caseInfo->case_category_origin;
+
             $case->case_number_origin = $caseOriginNum;
+
             $case->case_origin_id = $caseInfo->case_number_origin;
             $case->is_appeal = 1;
-            //  dd($case);
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -113,7 +119,6 @@ class AppealGovCaseRegisterRepository
                 }
             }
         } catch (\Exception $e) {
-            dd("hello");
             dd($e);
             $caseId = null;
         }
@@ -125,7 +130,6 @@ class AppealGovCaseRegisterRepository
     public static function storeAppealFinalOrder($caseInfo)
     {
         $case = self::checkAppealGovCaseExist($caseInfo['case_id']);
-
 
         if ($caseInfo->result_date != null && $caseInfo->result_date != '') {
             $result_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->result_date)));
@@ -210,6 +214,14 @@ class AppealGovCaseRegisterRepository
         } else {
             $appeal_requesting_date = null;
         }
+
+        if (empty($caseInfo->case_entry_date)) {
+            $case_entry_date = date('Y-m-d'); // Set to current date
+        } else {
+            // If $caseInfo->case_entry_date is not empty, convert and assign the value
+            $case_entry_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_entry_date)));
+        }
+
         if ($caseInfo->proposal_date_civil_revision != null && $caseInfo->proposal_date_civil_revision != '') {
             $proposal_date_civil_revision = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->proposal_date_civil_revision)));
         } else {
@@ -226,7 +238,8 @@ class AppealGovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
-        $caseOriginId = GovCaseRegister::where('case_no', $caseInfo->case_number_origin)->get();
+        $caseOriginId = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first();
+
         try {
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;
@@ -242,7 +255,7 @@ class AppealGovCaseRegisterRepository
             $case->postponed_details = $caseInfo->postponed_details ?? '';
             $case->case_category_origin = $caseInfo->case_category_origin;
             $case->case_number_origin = $caseInfo->case_number_origin;
-            $case->case_origin_id = $caseOriginId->id;
+            $case->case_origin_id = $caseOriginId;
             // $case->is_appeal = 1;
             $case->is_final_order = $caseInfo->is_final_order ?? '';
             $case->result = $caseInfo->result ?? '';
@@ -250,6 +263,7 @@ class AppealGovCaseRegisterRepository
             $case->result_short_details = $caseInfo->result_short_details ?? '';
             // $case->is_appeal = $caseInfo->is_appeal;
             $case->result_date = $result_date;
+            $case->case_entry_date= $case_entry_date;
             $case->result_copy_asking_date = $result_copy_asking_date;
             $case->result_copy_receiving_date = $result_copy_receiving_date;
             $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
@@ -269,13 +283,13 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
-    public function prevCaseStatusUpdate($prevCaseNumber)
+    public static function prevCaseStatusUpdate($prevCaseNumber)
     {
         $data = [
             'is_appeal' => 1,
         ];
         $updatedVal = DB::table('gov_case_registers')
-            ->where('case_no', $prevCaseNumber)
+            ->where('gov_case_registers.id', $prevCaseNumber)
             ->update($data);
         return $updatedVal;
     }

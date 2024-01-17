@@ -1,7 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 @include('gov_case.case_register.create_css')
 @section('content')
-    {{-- <script>
+    <script>
         function updateDatabase(checkbox) {
 
             const rowId = checkbox.getAttribute("data-row-id");
@@ -36,7 +36,37 @@
                     console.error('Error:', error);
                 });
         }
-    </script> --}}
+
+        // for appeal most Important
+        function appealUpdateDatabase(checkbox) {
+            const rowId = checkbox.getAttribute("data-row-id");
+            const isChecked = checkbox.checked;
+            const mostImportantValue = isChecked ? 1 : null;
+            const data = {
+                rowId: rowId,
+                most_important: mostImportantValue
+            };
+            const routeUrl = "{{ route('cabinet.case.appealMostImportantSave') }}";
+            fetch(routeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data saved successfully.');
+                    } else {
+                        console.error('Failed to save data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom">
@@ -54,7 +84,9 @@
             @endif
 
             @include('gov_case.search')
-
+            <?php
+            $roleID = Auth()->user()->role_id;
+            ?>
             <table class="table table-hover mb-6 font-size-h5">
                 <thead class="thead-light font-size-h6">
                     <tr>
@@ -64,6 +96,9 @@
                         <th scope="col" style="text-align:center;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
                         <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
                         <th scope="col" style="text-align:center;">সর্বশেষ অবস্থা</th>
+                        @if ($roleID == 27)
+                            <th scope="col" width="">অতি গুরুত্বপূর্ণ</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -105,11 +140,19 @@
                                     @else
                                         চলমান
                                     @endif
-
-
                                 </div>
-
                             </td>
+                            <td>
+                                <div class="btn-group">
+                                    @if ($roleID == 27)
+                                        <input type="checkbox" id="most_important" name="most_important" value="1"
+                                            data-row-id="{{ $row->id }}" onchange="appealUpdateDatabase(this)"
+                                            {{ $row->most_important == 1 ? 'checked' : '' }}>
+                                        <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
+                                    @endif
+                                </div>
+                            </td>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -141,11 +184,15 @@
                 <thead class="thead-light font-size-h6">
                     <tr>
                         <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col">মামলা নং</th>
-                        <th scope="col">পিটিশনারের নাম</th>
-                        <th scope="col">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
-                        <th scope="col">মামলার বিষয়বস্তু</th>
-                        <th scope="col" width="">সর্বশেষ অবস্থা</th>
+                        <th scope="col" style="text-align:center;">মামলা নং</th>
+                        <th scope="col" style="text-align:center;">পিটিশনারের নাম</th>
+                        <th scope="col" style="text-align:center;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
+                        <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
+                        <th scope="col" style="text-align:center;">সর্বশেষ অবস্থা</th>
+                        @if ($roleID == 27)
+                            <th scope="col" style="text-align:center;">অতি গুরুত্বপূর্ণ</th>
+                        @endif
+
                     </tr>
                 </thead>
                 <tbody>
@@ -179,6 +226,18 @@
                                 ?>
 
                             </td>
+
+                            <td>
+                                <div class="btn-group">
+                                    @if ($roleID == 27)
+                                        <input type="checkbox" id="most_important" name="most_important" value="1"
+                                            data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
+                                            {{ $row->most_important == 1 ? 'checked' : '' }}>
+                                        <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
+                                    @endif
+                                </div>
+                            </td>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -207,6 +266,5 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                                             -->
-
+                                                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                                     -->

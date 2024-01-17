@@ -1203,8 +1203,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
-        // return $request->all();
-        // dd($request->all());
         $caseNo = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseNo,
@@ -1323,7 +1321,8 @@ class AppealGovCaseRegisterController extends Controller
             // $cs_activity_data['new_data'] = json_encode($caseRegister);
             gov_case_activity_logs($cs_activity_data);
             // ========= Gov Case Activity Log  End ==========
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $flag = 'false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }

@@ -530,6 +530,7 @@ class GovCaseRegisterController extends Controller
 
         $data['cases'] = $query->paginate(10);
 
+
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();

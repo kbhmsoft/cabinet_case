@@ -2,6 +2,13 @@
 
 @section('content')
 
+<style>
+.select2-selection {
+    height: 38px !important;
+}
+</style>
+
+
 <!--begin::Row-->
 <div class="row">
    <div class="col-md-12">
@@ -45,7 +52,7 @@
                             <div class="form-group row">
                                 <div class="col-lg-6 mb-5">
                                   <select name="office_type" id="office_type_id" class="form-control form-control-sm">
-                                      <option value="">-ধরণ নির্বাচন করুন-</option>
+                                      <option value="">-অফিসের ধরণ নির্বাচন করুন-</option>
                                       @foreach ($officeTypes as $value)
                                       <option value="{{ $value->id }}"> {{ $value->type_name_bn }} </option>
                                       @endforeach
@@ -53,8 +60,7 @@
                                 </div>
                                 <div class="col-lg-6 mb-5">
                                   <select name="ministry" id="ministry_id" class="form-control form-control-sm ministry_select_field">
-                                      <option value="">-মন্ত্রণালয়/অধিদপ্তর নির্বাচন করুন-</option>
-
+                                      <option value="">-অফিস নির্বাচন করুন-</option>
                                   </select>
                                 </div>
 
@@ -73,7 +79,7 @@
 
                                     <button type="submit" name="btnsubmit" value="pdf_num_office_wise" class="btn btn-info btn-cons margin-top"> উচ্চ আদালতে চলমান</button>
 
-                                    <button type="submit" name="btnsubmit" value="pdf_num_importance" class="btn btn-info btn-cons margin-top"> গুরুত্বপূর্ণ ভিত্তিক </button>
+                                    {{-- <button type="submit" name="btnsubmit" value="pdf_num_importance" class="btn btn-info btn-cons margin-top"> গুরুত্বপূর্ণ ভিত্তিক </button> --}}
 
                             </fieldset>
                             </div>
@@ -106,6 +112,20 @@
 {{-- Scripts Section Related Page--}}
 @section('scripts')
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#office_type_id').change(function () {
+            if ($(this).val() !== '') {
+                $('#ministry_id').prop('disabled', false).prop('required', true);
+            } else {
+                $('#ministry_id').prop('disabled', true).prop('required', false);
+            }
+        });
+    });
+
+</script>
+
 <script>
    // common datepicker
    $('.common_datepicker').datepicker({
@@ -153,5 +173,7 @@
     $(document).ready(function() {
         $('.ministry_select_field').select2();
     });
+
 </script>
 @endsection
+

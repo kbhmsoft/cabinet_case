@@ -192,7 +192,7 @@
                                         <input type="checkbox" id="most_important" name="most_important" value="1"
                                             data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
                                             {{ $row->most_important == 1 ? 'checked' : '' }}>
-                                        <label class="checkbox-name" for="most_important">অধিক গুরুত্বপূর্ণ</label>
+                                        <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
                                     @endif
                                 </div>
                             </td>
