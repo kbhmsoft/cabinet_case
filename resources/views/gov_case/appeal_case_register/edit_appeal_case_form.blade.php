@@ -208,7 +208,7 @@
 
                                                 {{-- starting সংযুক্তি  --}}
 
-                                                <div class="col-md-12">
+                                                {{-- <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -235,6 +235,54 @@
 
                                                             </div>
 
+                                                        </div>
+                                                        <div class="mt-3 px-5">
+                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                                style="border:1px solid #dcd8d8;">
+                                                                @foreach ($appealAttachment as $key => $value)
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" name="file_type[]"
+                                                                            id="customFileName"
+                                                                            class="form-control form-control-sm"
+                                                                            value="{{ old('file_type', $value->file_type) }}">
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                                <tr></tr>
+                                                            </table>
+                                                            <input type="hidden" id="other_attachment_count"
+                                                                value="1">
+                                                        </div>
+                                                    </fieldset>
+                                                </div> --}}
+
+                                                <div class="col-md-12">
+                                                    <fieldset class="">
+                                                        <div
+                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                            <div class="d-flex align-items-center mr-2 py-2">
+                                                                <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                                    <span class="text-danger">*</span>
+                                                                    <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ :
+                                                                        5MB)</sub>
+                                                                </h3>
+                                                            </div>
+
+                                                            <div class="symbol-group symbol-hover py-2">
+                                                                <div class="symbol symbol-30 symbol-light-primary"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="" role="button"
+                                                                    data-original-title="ফাইল যুক্ত করুণ">
+                                                                    <div id="addFileRow">
+                                                                        <span
+                                                                            class="symbol-label font-weight-bold bg-success">
+                                                                            <i
+                                                                                class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"

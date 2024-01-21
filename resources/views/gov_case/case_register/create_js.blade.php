@@ -912,7 +912,7 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +

@@ -18,7 +18,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -963,7 +963,8 @@
 
                                                 <div class="col-md-12">
                                                     <fieldset class="">
-                                                        <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                        <div
+                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
@@ -1260,25 +1261,49 @@
                 }
             });
 
+            $(document).ready(function() {
+                //------------ Initially hide the sections---------------
 
-
-            $("#postponed_order_details").hide();
-            $("#interim_order_details_div").hide();
-            $("#postponed_order_have").click(function() {
-                $("#postponed_order_details").show();
-            });
-
-            $("#postponed_order_not").click(function() {
                 $("#postponed_order_details").hide();
-            });
-
-            $("#interim_order_have").click(function() {
-                $("#interim_order_details_div").show();
-            });
-
-            $("#interim_order_not").click(function() {
                 $("#interim_order_details_div").hide();
+
+                //---------------- Event handlers for the "স্থগিতাদেশের" radio buttons----------------
+
+                $("input[name='postponed_order']").change(function() {
+                    if ($("#postponed_order_have").is(":checked")) {
+                        $("#postponed_order_details").show();
+
+                //--------------- Disable the "interim_order_have" radio button----------------------
+
+                        $("#interim_order_have").prop("disabled", true);
+                    } else {
+                        $("#postponed_order_details").hide();
+
+                //--------------- Enable the "interim_order_have" radio button------------------------
+
+                        $("#interim_order_have").prop("disabled", false);
+                    }
+                });
+
+                //--------------- Event handlers for the "অন্তর্বর্তীকালীন আদেশ" radio buttons--------------
+
+                $("input[name='interim_order']").change(function() {
+                    if ($("#interim_order_have").is(":checked")) {
+                        $("#interim_order_details_div").show();
+
+                //---------------- Disable the "postponed_order_have" radio button-------------------------
+
+                        $("#postponed_order_have").prop("disabled", true);
+                    } else {
+                        $("#interim_order_details_div").hide();
+                //--------------- Enable the "postponed_order_have" radio button--------------------------
+
+                        $("#postponed_order_have").prop("disabled", false);
+                    }
+                });
             });
+
+
 
             $("#appeal_case_id").change(function() {
                 var case_id = $('#appeal_case_id').find(":selected").val();
@@ -1332,7 +1357,9 @@
                                 icon: 'error',
                                 title: '<span style="color: red;font-size: larger;">দুঃখিত...',
 
-                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' + data.officeName + '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                    data.officeName +
+                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
                             });
 
                         }
@@ -1340,7 +1367,5 @@
                 });
             });
         });
-
     </script>
-
 @endsection
