@@ -26,7 +26,7 @@
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div style="width:100%" class="card card-custom gutter-b example example-compact">
+        <div style="width:100%" class="card gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -1122,9 +1122,6 @@
     </div>
     <!--end::Row-->
 
-@endsection
-
-@section('styles')
 @endsection
 
 @section('scripts')
