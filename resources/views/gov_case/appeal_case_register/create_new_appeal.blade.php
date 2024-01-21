@@ -98,7 +98,7 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
+                                                        class="form-control form-control-sm" placeholder="(type digits in English)"
                                                         required="required"
                                                         onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">

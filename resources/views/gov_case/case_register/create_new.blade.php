@@ -152,8 +152,8 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="(type digits in English)" required="required"
                                                         onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can not
@@ -168,6 +168,7 @@
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
+
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_date" id="case_date"
@@ -219,7 +220,7 @@
                                                         <tr>
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
-                                                            <th>ঠিকানা <span class="text-danger">*</span></th>
+                                                            <th>পিটিশনারের ঠিকানা <span class="text-danger"></span></th>
                                                             {{-- <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
@@ -268,13 +269,13 @@
                                                         <tr></tr>
                                                         <input type="hidden" id="mainBibadi_count" value="1">
                                                     </table>
-
                                                 </div>
+
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBibadiRow"
@@ -898,7 +899,7 @@
                                                             class="form-control form-control-sm "autocomplete="off">
                                                     </div>
                                                 </div>
-                                              
+
                                                 <div class="form-group row" id="writDiv">
                                                     <div class="col-lg-4">
                                                         <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
@@ -1314,4 +1315,35 @@
             });
         });
     </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(document).ready(function() {
+            $('#case_no').blur(function() {
+                var caseNo = $(this).val();
+                $.ajax({
+                    url: "{{ route('cabinet.case.check-case-no') }}",
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'case_no': caseNo
+                    },
+                    success: function(data) {
+                        if (data.exists) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' + data.officeName + '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                            });
+
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+
 @endsection

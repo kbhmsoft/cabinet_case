@@ -127,7 +127,7 @@
                                                             <label>মামলা নং <span class="text-danger">*</span></label>
                                                             <input type="text" name="case_no" id="case_no"
                                                                 class="form-control form-control-sm"
-                                                                placeholder="মামলা নং " required="required"
+                                                                placeholder="(type digits in English)" required="required"
                                                                 onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                             <input type="hidden" name="caseId" value="">
                                                             <span class="text-danger d-none vallidation-message">This field
@@ -206,8 +206,8 @@
                                                                         <span class="text-danger">*</span>
                                                                     </th>
 
-                                                                    <th class="petisioner_address badi_address">ঠিকানা
-                                                                        <span class="text-danger">*</span>
+                                                                    <th class="petisioner_address badi_address">পিটিশনারের ঠিকানা
+
                                                                     </th>
                                                                     {{-- <th width="50">
                                                                         <a href="javascript:void();" id="addBadiRow"
@@ -265,7 +265,7 @@
                                                                 <tr>
                                                                     <th class="other_bibadi_name other_respondent">অন্যান্য
                                                                         রেসপন্ডেন্ট নাম
-                                                                        <span class="text-danger">*</span>
+
                                                                     </th>
                                                                     <th width="50">
                                                                         <a href="javascript:void();" id="addBibadiRow"
@@ -855,128 +855,6 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="form-group row" id="civilRevisionDiv">
-                                                    <div class="col-lg-4">
-                                                        <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="contents_of_proposal_civil_revision"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যে মোকদ্দমার পরিপ্রেক্ষিতে প্রস্তাব প্রেরণ (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text"
-                                                            name="sending_motions_in_view_of_that_litigation_civil_revision"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব তারিখ(বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_date_civil_revision"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব স্মারক নম্বর <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_memorial_civil_revision"
-                                                            id="proposal_memorial_civil_revision"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="email" name="contact_email_civil_revision"
-                                                            id="contact_email_civil_revision"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের নাম (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_name_civil_revision"
-                                                            id="focal_person_name_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text"
-                                                            name="
-                                                            "
-                                                            id="focal_person_designation_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_mobile_civil_revision"
-                                                            id="focal_person_mobile_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" id="writDiv">
-                                                    <div class="col-lg-4">
-                                                        <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="contents_of_proposal_writ"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>রিট মোকাদ্দমা নং<span class="text-danger"></span></label>
-                                                        <input type="text" name="case_number_writ"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব তারিখ(বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_date_writ"
-                                                            class="form-control form-control-sm common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব স্মারক নম্বর <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_memorial_writ"
-                                                            id="proposal_memorial_writ"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="email" name="contact_email_writ"
-                                                            id="contact_email_writ"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের নাম (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_name_writ"
-                                                            id="focal_person_name_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_designation_writ"
-                                                            id="focal_person_designation_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_mobile_writ"
-                                                            id="focal_person_mobile_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-                                                </div>
 
                                                 {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
@@ -1340,6 +1218,32 @@
                             $('#important_cause').val(response.important_cause);
                             /*Swal.close();
                             $('.perssion_list').html(response.html);*/
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(document).ready(function() {
+            $('#case_no').blur(function() {
+                // $('#case_no').on('input', function () {
+                var caseNo = $(this).val();
+                $.ajax({
+                    url: "{{ route('cabinet.case.check-case-no') }}",
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'case_no': caseNo
+                    },
+                    success: function(data) {
+                        if (data.exists) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'দুঃখিত...',
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' + data.officeName + '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন.</strong>',
+                            });
                         }
                     }
                 });

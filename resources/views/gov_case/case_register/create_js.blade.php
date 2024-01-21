@@ -126,7 +126,7 @@
         items += '<input type="hidden" name="badi_id[]" value="">';
 
         items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         // items +=
         //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -234,7 +234,6 @@
         $('#mainBibadi_count').val(countVal + 1);
         var mk_main = $('#MainBibadiDiv tr').length;
         var MainCount = $('#MainBibadiDiv tr').length;
-        // console.log(MainCount);
         $('#MainBibadiDiv tr:last').after(ItemMain(mk_main + 1, 'other'));
         /*if(MainCount ==3){
             $('#MainBibadiDiv tr:last').after(ItemMain(MainCount, 'main'));
@@ -288,7 +287,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
 
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             if (type == 'other') {

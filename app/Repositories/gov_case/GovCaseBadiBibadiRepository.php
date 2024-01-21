@@ -50,7 +50,6 @@ class GovCaseBadiBibadiRepository
             }
         }
         foreach ($caseInfo->main_respondent as $key => $val) {
-            // dd($key);
             if ($caseInfo->main_respondent[$key] != null) {
                 $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
                 $bibadi->gov_case_id = $govCaseId;
@@ -76,7 +75,7 @@ class GovCaseBadiBibadiRepository
         $badi = GovCaseBadi::where('gov_case_id', $caseId)->get();
         return $badi;
     }
-    
+
     public static function getBibadiByCaseId($caseId)
     {
         $bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->get();

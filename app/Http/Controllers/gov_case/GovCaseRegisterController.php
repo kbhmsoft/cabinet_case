@@ -530,7 +530,6 @@ class GovCaseRegisterController extends Controller
 
         $data['cases'] = $query->paginate(10);
 
-
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
@@ -3892,5 +3891,23 @@ class GovCaseRegisterController extends Controller
             $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
         })->get();
         return $query;
+    }
+
+    public function checkCaseNo(Request $request)
+    {
+        $caseNo = $request->input('case_no');
+
+        $exists = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
+        $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+
+        if ($caseId && $exists) {
+            $id = $caseId->id;
+            $officeId = GovCaseBibadi::where('gov_case_id',$id)
+            ->where('is_main_bibadi', 1)
+            ->groupBy('gov_case_id')->first();
+
+           $officeName = GovCaseOffice::where('id', $officeId->respondent_id)->first();
+           return response()->json(['exists' => $exists,'officeName' => $officeName->office_name_bn]);
+        }
     }
 }

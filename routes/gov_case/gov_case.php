@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
             Route::get('highcourt/mostImportantCase', [GovCaseRegisterController::class, 'highcourtMostImportantCase'])->name('highcourtMostImportantCase');
             Route::get('importgantCaseList', [GovCaseRegisterController::class, 'highcourtAppealMostImportantCase'])->name('highcourtAppealMostImportantCase');
             Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
+            Route::post('check-case-no', [GovCaseRegisterController::class, 'checkCaseNo'])->name('check-case-no');
             Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
             Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
             Route::get('appellateDivision/create/old', [GovCaseRegisterController::class, 'appellateDivision_old_case_create'])->name('appellateDivision.create.old');
