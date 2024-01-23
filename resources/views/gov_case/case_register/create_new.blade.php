@@ -1158,9 +1158,6 @@
         }
     </script>
 
-
-
-
     <script>
         $(document).ready(function() {
             $('.tab-content .tab-pane:first-child').addClass('active');
@@ -1343,7 +1340,6 @@
                 });
             });
         });
-
     </script>
 
 @endsection
