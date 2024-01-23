@@ -611,8 +611,7 @@
 
                                                     <div class="col-lg-6 mb-5">
                                                         <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
-                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
-                                                                5MB)</sub>
+                                                            
                                                         </label>
                                                         <input type="text" name="appeal_against_postpond_interim_order"
                                                             id="appeal_against_postpond_interim_order"
@@ -660,10 +659,10 @@
                                                             <div
                                                                 class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                 <div class="d-flex align-items-center mr-2 py-2">
-                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
-                                                                        আদেশের কপি সংযুক্ত করুন)
-                                                                        <span class="text-danger">*</span>
+                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের
+                                                                        আদেশের কপি সংযুক্ত করুন) <small class="text-danger">*(PDF, সর্বোচ্চ সাইজ: 5MB)</small>
                                                                     </h3>
+                                                                    
                                                                 </div>
 
                                                                 <div class="symbol-group symbol-hover py-2">
@@ -724,9 +723,9 @@
                                                             <fieldset class="">
                                                                 <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                     <div class="d-flex align-items-center mr-2 py-2">
-                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (অন্তর্বর্তীকালীন
                                                                             আদেশের কপি সংযুক্ত করুন)
-                                                                            <span class="text-danger">*</span>
+                                                                            <small class="text-danger">*(PDF, সর্বোচ্চ সাইজ:5MB)</small>
                                                                         </h3>
                                                                     </div>
 
