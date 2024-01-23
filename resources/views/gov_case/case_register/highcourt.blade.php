@@ -80,6 +80,7 @@
                 <tbody>
                     @foreach ($cases as $key => $row)
                         <tr>
+                            
                             {{-- {{dd($row->total_badi_number)}} --}}
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;" style="text-align:center;">

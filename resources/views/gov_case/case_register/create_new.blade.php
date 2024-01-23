@@ -18,7 +18,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -26,7 +26,7 @@
 
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
-        <div style="width:100%" class="card card-custom gutter-b example example-compact">
+        <div style="width:100%" class="card gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
@@ -307,7 +307,7 @@
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
-                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ:
+                                                                    <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ :
                                                                         5MB)</sub>
                                                                 </h3>
                                                             </div>
@@ -433,7 +433,7 @@
                                                         <div class="d-flex align-items-center mr-2 py-2">
                                                             <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
-                                                                <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
+                                                                <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ: 5MB)</sub>
                                                             </h3>
                                                         </div>
 
@@ -611,7 +611,8 @@
 
                                                     <div class="col-lg-6 mb-5">
                                                         <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
-                                                            <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
+                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
+                                                                5MB)</sub>
                                                         </label>
                                                         <input type="text" name="appeal_against_postpond_interim_order"
                                                             id="appeal_against_postpond_interim_order"
@@ -653,7 +654,50 @@
                                                             id="tamil_requesting_date"
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
+
+                                                    <div class="col-md-12">
+                                                        <fieldset class="">
+                                                            <div
+                                                                class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                <div class="d-flex align-items-center mr-2 py-2">
+                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                        আদেশের কপি সংযুক্ত করুন)
+                                                                        <span class="text-danger">*</span>
+                                                                    </h3>
+                                                                </div>
+        
+                                                                <div class="symbol-group symbol-hover py-2">
+                                                                    <div class="symbol symbol-30 symbol-light-primary"
+                                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                                        role="button" data-original-title="ফাইল যুক্ত করুণ">
+        
+                                                                        <div id="addSuspensionOrderFileRow">
+                                                                            <span class="symbol-label font-weight-bold bg-success">
+                                                                                <i
+                                                                                    class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="mt-3 px-5">
+                                                                <table width="100%" class="border-0 px-5"
+                                                                    id="suspensionOrderFileDiv" style="border:1px solid #dcd8d8;">
+                                                                    <tr></tr>
+                                                                </table>
+                                                                <input type="hidden" id="suspension_order_attachment_count"
+                                                                    value="1">
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+
+                                                    <div class="form-footer" style="display: flex;justify-content: center;">
+                                                        <button type="submit" id="suspensionOrderSaveBtn"
+                                                            class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                    </div>
                                                 </div>
+
 
                                                 <div class="col-md-6">
                                                     <label
@@ -671,12 +715,53 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6 mb-5" id="interim_order_details_div">
-                                                    <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
+                                                <div class="row p-5" id="interim_order_details_div">
+                                                
+                                                        <label class="ml-2">অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
+                                                        <textarea name="interim_order_details" class="form-control ml-2" id="interim_order" rows="5" spellcheck="false"></textarea>
+                                                    
+                                                        <div class="col-md-12 mt-5">
+                                                            <fieldset class="">
+                                                                <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                            আদেশের কপি সংযুক্ত করুন)
+                                                                            <span class="text-danger">*</span>
+                                                                        </h3>
+                                                                    </div>
+            
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                                            role="button" data-original-title="ফাইল যুক্ত করুণ">
+            
+                                                                            <div id="addSuspensionOrderFileRowTwo">
+                                                                                <span class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                    </div>
+            
+                                                                </div>
+                                                                <br>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5" id="suspensionOrderFileDivTwo" style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="suspension_order_attachment_count"
+                                                                        value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="form-footer" style="display: flex;justify-content: center;">
+                                                            <button type="submit" id="suspensionOrderSaveBtn"
+                                                                class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                        </div>
+
                                                 </div>
-
-
                                             </div>
 
 
@@ -684,7 +769,7 @@
                                             {{-- starting সংযুক্তি  --}}
 
 
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <fieldset class="">
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -720,17 +805,17 @@
                                                             value="1">
                                                     </div>
                                                 </fieldset>
-                                            </div>
+                                            </div> --}}
 
                                             {{-- end সংযুক্তি --}}
                                         </fieldset>
 
                                     </div>
                                 </div>
-                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                {{-- <div class="form-footer" style="display: flex;justify-content: center;">
                                     <button type="submit" id="suspensionOrderSaveBtn"
                                         class="action-button submit-button">সংরক্ষণ</button>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                         {{-- ------------- end স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
@@ -968,7 +1053,7 @@
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
                                                                     <span class="text-danger">*</span>
-                                                                    <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ:
+                                                                    <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
                                                                         5MB)</sub>
                                                                 </h3>
                                                             </div>
@@ -1068,7 +1153,7 @@
                                                             <h3 class="mb-0 mr-8">সংযুক্তি
                                                                 (কনটেম্প্ট মামলা সম্পর্কিত কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
-                                                                <sub class="text-danger">(PDF, সাইজ সর্বোচ্চ: 5MB)</sub>
+                                                                <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ: 5MB)</sub>
                                                             </h3>
                                                         </div>
 
@@ -1122,9 +1207,6 @@
     </div>
     <!--end::Row-->
 
-@endsection
-
-@section('styles')
 @endsection
 
 @section('scripts')
@@ -1260,25 +1342,49 @@
                 }
             });
 
+            $(document).ready(function() {
+                //------------ Initially hide the sections---------------
 
-
-            $("#postponed_order_details").hide();
-            $("#interim_order_details_div").hide();
-            $("#postponed_order_have").click(function() {
-                $("#postponed_order_details").show();
-            });
-
-            $("#postponed_order_not").click(function() {
                 $("#postponed_order_details").hide();
-            });
-
-            $("#interim_order_have").click(function() {
-                $("#interim_order_details_div").show();
-            });
-
-            $("#interim_order_not").click(function() {
                 $("#interim_order_details_div").hide();
+
+                //---------------- Event handlers for the "স্থগিতাদেশের" radio buttons----------------
+
+                $("input[name='postponed_order']").change(function() {
+                    if ($("#postponed_order_have").is(":checked")) {
+                        $("#postponed_order_details").show();
+
+                //--------------- Disable the "interim_order_have" radio button----------------------
+
+                        $("#interim_order_have").prop("disabled", true);
+                    } else {
+                        $("#postponed_order_details").hide();
+
+                //--------------- Enable the "interim_order_have" radio button------------------------
+
+                        $("#interim_order_have").prop("disabled", false);
+                    }
+                });
+
+                //--------------- Event handlers for the "অন্তর্বর্তীকালীন আদেশ" radio buttons--------------
+
+                $("input[name='interim_order']").change(function() {
+                    if ($("#interim_order_have").is(":checked")) {
+                        $("#interim_order_details_div").show();
+
+                //---------------- Disable the "postponed_order_have" radio button-------------------------
+
+                        $("#postponed_order_have").prop("disabled", true);
+                    } else {
+                        $("#interim_order_details_div").hide();
+                //--------------- Enable the "postponed_order_have" radio button--------------------------
+
+                        $("#postponed_order_have").prop("disabled", false);
+                    }
+                });
             });
+
+
 
             $("#appeal_case_id").change(function() {
                 var case_id = $('#appeal_case_id').find(":selected").val();
@@ -1332,7 +1438,9 @@
                                 icon: 'error',
                                 title: '<span style="color: red;font-size: larger;">দুঃখিত...',
 
-                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' + data.officeName + '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                    data.officeName +
+                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
                             });
 
                         }
@@ -1341,5 +1449,4 @@
             });
         });
     </script>
-
 @endsection

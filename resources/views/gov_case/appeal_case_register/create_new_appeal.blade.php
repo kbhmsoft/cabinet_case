@@ -22,7 +22,7 @@
         {{-- <div class="col-md-12"> --}}
         <!--begin::Card-->
         <div class="card card-custom gutter-b example example-compact" style="width:100%">
-            <div class="card-header">
+            <div class="">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
             <!-- <div class="loadersmall"></div> -->
