@@ -1,6 +1,10 @@
 <?php
 $roleID = Auth::user()->role_id;
 $officeInfo = user_office_info();
+$caseNo = '';
+if (!empty($_GET['case_no'])) {
+    $caseNo = $_GET['case_no'];
+}
 ?>
 <form class="form-inline" method="GET">
    <div class="row">
@@ -27,7 +31,7 @@ $officeInfo = user_office_info();
 
       <div class="col-lg-6 px-2">
          <div class="input-group mb-3">
-            <input type="text" class="form-control" name="case_no" placeholder="মামলা নং" value="">
+            <input type="text" class="form-control" name="case_no" placeholder="মামলা নং" value="{{ $caseNo }}">
            <div class="input-group-append">
             <button type="submit" class="input-group-text btn btn-success ">অনুসন্ধান করুন</button>
            </div>

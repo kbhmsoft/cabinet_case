@@ -37,6 +37,7 @@
         addFileRowFunc();
         addReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
+        addSuspensionOrderFileRowFuncTwo();
         addContemptFileRowFunc();
         addFinalOrderFileRowFunc();
         $('select').select2();
@@ -975,6 +976,10 @@
     $("#addSuspensionOrderFileRow").click(function(e) {
         addSuspensionOrderFileRowFunc();
     });
+    $("#addSuspensionOrderFileRowTwo").click(function(e) {
+        console.log("two");
+        addSuspensionOrderFileRowFuncTwo();
+    });
     //add row function
     function addSuspensionOrderFileRowFunc() {
         var count = parseInt($('#suspension_order_attachment_count').val());
@@ -1003,9 +1008,32 @@
         }
     }
 
+    function addSuspensionOrderFileRowFuncTwo() {
+        var count = parseInt($('#suspension_order_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#suspension_order_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="suspension_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="suspensionAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customSuspensionFile' + count +
+            '" required/><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#suspensionOrderFileDivTwo tr:last').after(items);
 
-
-
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
 
 
     // ============= Add Final Order Attachment Row ========= start =========

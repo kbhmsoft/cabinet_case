@@ -654,7 +654,50 @@
                                                             id="tamil_requesting_date"
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
+
+                                                    <div class="col-md-12">
+                                                        <fieldset class="">
+                                                            <div
+                                                                class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                <div class="d-flex align-items-center mr-2 py-2">
+                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                        আদেশের কপি সংযুক্ত করুন)
+                                                                        <span class="text-danger">*</span>
+                                                                    </h3>
+                                                                </div>
+        
+                                                                <div class="symbol-group symbol-hover py-2">
+                                                                    <div class="symbol symbol-30 symbol-light-primary"
+                                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                                        role="button" data-original-title="ফাইল যুক্ত করুণ">
+        
+                                                                        <div id="addSuspensionOrderFileRow">
+                                                                            <span class="symbol-label font-weight-bold bg-success">
+                                                                                <i
+                                                                                    class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="mt-3 px-5">
+                                                                <table width="100%" class="border-0 px-5"
+                                                                    id="suspensionOrderFileDiv" style="border:1px solid #dcd8d8;">
+                                                                    <tr></tr>
+                                                                </table>
+                                                                <input type="hidden" id="suspension_order_attachment_count"
+                                                                    value="1">
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+
+                                                    <div class="form-footer" style="display: flex;justify-content: center;">
+                                                        <button type="submit" id="suspensionOrderSaveBtn"
+                                                            class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                    </div>
                                                 </div>
+
 
                                                 <div class="col-md-6">
                                                     <label
@@ -672,12 +715,53 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6 mb-5" id="interim_order_details_div">
-                                                    <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
+                                                <div class="row p-5" id="interim_order_details_div">
+                                                
+                                                        <label class="ml-2">অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
+                                                        <textarea name="interim_order_details" class="form-control ml-2" id="interim_order" rows="5" spellcheck="false"></textarea>
+                                                    
+                                                        <div class="col-md-12 mt-5">
+                                                            <fieldset class="">
+                                                                <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                            আদেশের কপি সংযুক্ত করুন)
+                                                                            <span class="text-danger">*</span>
+                                                                        </h3>
+                                                                    </div>
+            
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                                            role="button" data-original-title="ফাইল যুক্ত করুণ">
+            
+                                                                            <div id="addSuspensionOrderFileRowTwo">
+                                                                                <span class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                    </div>
+            
+                                                                </div>
+                                                                <br>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5" id="suspensionOrderFileDivTwo" style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="suspension_order_attachment_count"
+                                                                        value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="form-footer" style="display: flex;justify-content: center;">
+                                                            <button type="submit" id="suspensionOrderSaveBtn"
+                                                                class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                        </div>
+
                                                 </div>
-
-
                                             </div>
 
 
@@ -685,7 +769,7 @@
                                             {{-- starting সংযুক্তি  --}}
 
 
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <fieldset class="">
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -721,17 +805,17 @@
                                                             value="1">
                                                     </div>
                                                 </fieldset>
-                                            </div>
+                                            </div> --}}
 
                                             {{-- end সংযুক্তি --}}
                                         </fieldset>
 
                                     </div>
                                 </div>
-                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                {{-- <div class="form-footer" style="display: flex;justify-content: center;">
                                     <button type="submit" id="suspensionOrderSaveBtn"
                                         class="action-button submit-button">সংরক্ষণ</button>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                         {{-- ------------- end স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
