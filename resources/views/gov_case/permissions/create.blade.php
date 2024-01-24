@@ -48,14 +48,12 @@
          <tbody>
             <?php
                $i = (($permissions->currentPage() -1) * $permissions->perPage() + 1);
-
             ?>
             @foreach ($permissions as $permission)
  
             <?php
                 $parentName = App\Models\ParentPermissionName::find($permission->parent_permission_name_id);
                 $user = App\Models\User::find($permission->user_id);
-
             ?>
 
             <tr>
@@ -70,7 +68,6 @@
                   @else
                      <span class="badge badge-secondary">নিশক্রিয়</span>
                   @endif
-
                </td>
                
                <td class="text-center">
@@ -86,8 +83,6 @@
    </div>
 </div>
 <!--end::Card-->
-
- 
 
       <!-- update Modal -->
       <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -105,28 +100,23 @@
                <div class="modal-body">
                    <div class="card-body card-block">
 
-                        <div class="form-group">
-                            <label for="name" class=" form-control-label">অনুমতি নাম (ইংরেজি)<span class="text-danger">*</span></label>
-                            <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
-                             
-                        </div>
+                  <div class="form-group">
+                      <label for="name" class=" form-control-label">অনুমতি নাম (ইংরেজি)<span class="text-danger">*</span></label>
+                      <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
+                  </div>
                   <div class="form-group">
                       <label for="update_displayname" class=" form-control-label">পদর্শনী নাম (বাংলা)<span class="text-danger">*</span></label>
                       <input type="text" id="update_displayname" name="display_name" placeholder="অনুমতির পদর্শনী নাম লিখুন" class="form-control form-control-sm" required>
                      
                   </div>
+                  <div class="form-group">
+                      <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
+                       <select name="status" class="form-control">
+                          <option class="status1" value="1">সক্রিয়</option>
+                          <option class="status2" value="0">নিশক্রিয়</option>
+                       </select>
+                  </div>
                 
-                   
-
-
-                        <div class="form-group">
-                            <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
-                             <select name="status" class="form-control">
-                                <option class="status1" value="1">সক্রিয়</option>
-                                <option class="status2" value="0">নিশক্রিয়</option>
-                             </select>
-                        </div>
-                      
                   </div>
                </div>
             <div class="modal-footer">

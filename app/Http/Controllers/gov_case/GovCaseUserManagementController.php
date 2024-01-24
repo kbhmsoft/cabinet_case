@@ -5,11 +5,14 @@ namespace App\Http\Controllers\gov_case;
 use App\Http\Controllers\Controller;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseOfficeType;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\UserManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 use Redirect;
 // use Illuminate\Foundation\Auth\User as Authenticatable;
 use Response;
@@ -20,6 +23,9 @@ class GovCaseUserManagementController extends Controller
     public function __construct()
     {
         $this->middleware('permission:create_new_user', ['only' => ['create']]);
+
+        View::share('notification_count', 0);
+        View::share('case_status', array());
     }
 
     /**
@@ -31,6 +37,8 @@ class GovCaseUserManagementController extends Controller
     {
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
+
+
 
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
@@ -287,8 +295,8 @@ class GovCaseUserManagementController extends Controller
         } else {
             $profilePic = null;
         }
-
-        DB::table('users')
+        
+        $userUpdate = DB::table('users')
             ->where('id', $id)
             ->update(['name' => $request->name,
                 'username' => $request->username,
@@ -302,6 +310,16 @@ class GovCaseUserManagementController extends Controller
                 'role_id' => $request->role_id,
                 'office_id' => $request->office_id,
             ]);
+ 
+
+            $role = Role::where('id', $request->role_id)->first();
+            $user = User::where('id', $id)->first();
+
+            // clear all ruole for this user 
+            $user->syncRoles([]);
+
+
+            
         return redirect()->route('cabinet.user-management.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');
     }

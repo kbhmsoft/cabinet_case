@@ -41,7 +41,7 @@
             <tr>
                <th scope="col" width="30">#</th>
                <th scope="col">ভূমিকা নাম</th>
-               {{-- <th scope="col">প্রস্তুতকারক</th> --}}
+               <th scope="col">ভূমিকা নাম(ইংরেজি)</th>
                <th scope="col">অবস্থা</th>
                <th scope="col" width="150">অ্যাকশন</th>
             </tr>
@@ -57,18 +57,15 @@
                 ?>
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
+               <td>{{ $role->name_bn }}</td>
                <td>{{ $role->name }}</td>
-               {{-- <td>{{ $user? $user->name: '' }}</td> --}}
                <td>
                   @if($role->status == 1)
                      <span class="badge badge-primary">সক্রিয়</span>
                   @else
                      <span class="badge badge-secondary">নিশক্রিয়</span>
                   @endif
-
                </td>
-
-
                <td>
                 @if(auth()->user()->can('role_update'))
                   <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>

@@ -19,14 +19,12 @@
       <table class="table table-hover mb-6 font-size-h6">
          <thead class="thead-light ">
             <tr>
-               <th width="2%" >#</th>
-               <th width="35%">ব্যাবহারকারী নাম</th>
-               <th width="10%">ইমেল</th>
-               <th width="10%">মোবাইল</th>
-               <th width="10%">ভূমিকা</th>
-               <th width="20%">অফিস</th>
-               <th width="5%">অবস্থা</th>
-               <th width="5%">অ্যাকশন</th>
+               <th width="2%">#</th>
+               <th width="">ভুমিকার নাম</th>
+               <th width="">ভুমিকার নাম(ইংরেজি)</th>
+               <th width="">অবস্থা</th>
+               <th width="">প্রস্তুতকারক</th>
+               <th width="">অ্যাকশন</th>
             </tr>
          </thead>
          <tbody>
@@ -34,25 +32,27 @@
                $i = 1;
 
             ?>
-            @foreach ($users as $user)
-              {{-- {{dd($user)}} --}}
+            @foreach ($roles as $role)
+               <?php
+                    $user = App\Models\User::find($role->created_by);
+                ?>
             <tr>
                <th scope="row" class="tg-bn">{{ en2bn($i++) }}</th>
-               <td>{{ $user->name }}</td>
-               <td>{{ $user->email }}</td>
-               <td>{{ $user->mobile_no }}</td>
-               <td>{{ $user->role? $user->role->name: '' }}</td>
-               <td>{{ $user->govOffice? $user->govOffice->office_name_bn: '' }}</td>
-
+               <td>{{ $role->name_bn?? '' }}</td>
+               <td>{{ $role->name?? '' }}</td>
                <td>
-                    <span class="badge badge-primary">সক্রিয়</span>
+                  @if($role->status == 1)
+                     <span class="badge badge-primary">সক্রিয়</span>
+                  @else
+                     <span class="badge badge-secondary">নিশক্রিয়</span>
+                  @endif
                </td>
-
+               <td>{{ $user->name?? '' }}</td>
                <td>
                 @if(auth()->user()->can('manage_permission_details'))
-                  <a href="{{ route('cabinet.userPermissionManage', $user->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                  <a href="{{ route('cabinet.userPermissionManage', $role->id) }}" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">অনুমতি প্রদান পরিচালনা</a>
                 @else
-                 <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                 <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">অনুমতি প্রদান পরিচালনা</a>
                 @endif
 
                </td>

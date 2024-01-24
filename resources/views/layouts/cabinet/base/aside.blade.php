@@ -475,7 +475,7 @@
                                 </ul>
                             @endcan
 
-                            @if (Auth::user()->role_id == 1 && Auth::user()->role->name == 'ডেভলপার')
+                            <!-- @if (Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার') -->
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions']) ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
@@ -485,7 +485,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            @endif
+                            <!-- @endif -->
                             @can('manage_permission_menu')
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management']) ? 'hilightMenu' : '' }}"
