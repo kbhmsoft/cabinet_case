@@ -461,12 +461,6 @@
                                 <i class="fa fas fa-file-pdf icon-md"></i> {{ $file->file_type }}
                             </a>
 
-                            <h4 class="font-weight-bolder">{{ $file->file_type }}</h4>
-                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                                data-toggle="modal" data-target="#showFileModal">
-                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $file->file_type }}
-                            </a>
-
                             <!-- Modal-->
                             <div class="modal fade" id="showFileModal" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">

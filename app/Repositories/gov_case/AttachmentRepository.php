@@ -50,17 +50,17 @@ class AttachmentRepository
 
     public static function storeReplyAttachment($appName, $caseId, $request)
     {
-        if($request->reply_file_name != NULL){
-            foreach($request->reply_file_type as $key => $val)
+        if($request->file_name != NULL){
+            foreach($request->file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/reply_attachment/";
-                if($request->reply_file_name[$key] != NULL){
-                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->reply_file_name[$key]->extension();
-                    $request->reply_file_name[$key]->move(public_path($filePath), $otherfileName);
+                if($request->file_name[$key] != NULL){
+                    $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
+                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new ReplyAttachment();
                 $attachment->gov_case_id = $caseId;
-                $attachment->file_type = $request->reply_file_type[$key];
+                $attachment->file_type = $request->file_type[$key];
                 $attachment->file_name = $filePath.$otherfileName;
                 $attachment->file_submission_date = date('Y-m-d H:i:s');
                 $attachment->created_at = date('Y-m-d H:i:s');

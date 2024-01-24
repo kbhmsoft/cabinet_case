@@ -388,11 +388,11 @@
                                                                                 class="form-control form-control-sm"
                                                                                 value="{{ old('file_type', $value->file_type) }}">
                                                                         </td>
-                                                                        {{-- <td>
+                                                                        <td>
                                                                             <div class="custom-file">
 
                                                                                     @if ($value->file_name)
-                                                                                        <a target="_blank" class="text-center font-weight-bolder mt-2 mb-2" href="{{ asset($value->file_name) }}">সংযুক্তি কপি</a><br>
+                                                                                        <a target="_blank" class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light " href="{{ asset($value->file_name) }}">সংযুক্তি কপি</a><br>
                                                                                     @else
 
                                                                                 <input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(this)" class="custom-file-input" id="customFile" />
@@ -401,7 +401,7 @@
                                                                                 </label>
                                                                                 @endif
                                                                             </div>
-                                                                        </td> --}}
+                                                                        </td>
                                                                     </tr>
                                                                 @endforeach
                                                                 <tr></tr>
