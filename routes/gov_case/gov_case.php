@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-user-permission/{user_id}', [AclController::class, 'userPermissionManage'])->name('userPermissionManage');
 
         Route::post('/update-user-permission', [AclController::class, 'storeUpdateUserPermissionAll'])->name('storeUpdateUserPermissionAll');
+        Route::post('/get-permissions-by-ajax', [AclController::class, 'getPermissionByAjax'])->name('getPermissionByAjax');
 
         // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
 

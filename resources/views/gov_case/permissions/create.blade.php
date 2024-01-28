@@ -17,8 +17,10 @@
             <i class="la la-plus"></i>অনুমতি তৈরি করুন
          </button>                
       </div>
+
    </div>
    <div class="card-body">
+
       @if($errors->any())
       <div class="alert alert-danger">
           <ul>
@@ -33,6 +35,21 @@
          <p>{{ $message }}</p>
       </div>
       @endif
+ 
+            <div class="row">
+               <div class="offset-md-2 col-md-6 form-group mb-2 mr-2">
+                  <select name="parent_name" id="parent_name_for_search" class="form-control">
+                     <option value="">-অনুসন্ধানের জন্য নির্বাচন করুন-</option>
+                     <option value="123123">সকল অনুমতির তালিকা</option>
+                     @foreach($parentPermissions as $parent)
+                     <option value="{{$parent->id}}">{{$parent->name}}</option>
+                     @endforeach 
+                  </select>
+               </div>
+            </div>
+            
+            <div id="updateAjaxData">
+
       <table class="table table-hover mb-6 font-size-h6">
          <thead class="thead-light ">
             <tr>
@@ -71,7 +88,7 @@
                </td>
                
                <td class="text-center">
-                  <button type="button" onclick="updatePermissionModal({{$permission->id}}, '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                  <button type="button" onclick="updatePermissionModal('{{$permission->id}}', '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                   <a href="{{ route('cabinet.permissionItemDelete', $permission->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
@@ -80,6 +97,7 @@
          </tbody>
       </table>      
         {{ $permissions->links() }}
+   </div>
    </div>
 </div>
 <!--end::Card-->
@@ -231,7 +249,6 @@
 
 
 <script>
-   
    function updatePermissionModal(id, name,display_name, status){
        $('#updateRoleItem').modal().show();
 
@@ -248,8 +265,28 @@
        }else{
           $('.status1').attr('selected','selected');
        }
-
    }
+</script>
+<script>
+   $('#parent_name_for_search').on('change', function(){
+      var id = $(this).val();
+      var TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      $.ajax({
+         url: '{{ route("cabinet.getPermissionByAjax") }}',
+         type: 'POST',
+         dataType: 'text',
+         data: {_token: TOKEN, id: id},
+         success: function(response){
+            console.log(response);
+            // $('#updateAjaxData').html = response;
+                    document.getElementById('updateAjaxData').innerHTML = response;
+         }
+      })
+
+
+
+   });
 </script>
 
 

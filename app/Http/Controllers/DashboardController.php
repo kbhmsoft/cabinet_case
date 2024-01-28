@@ -10,6 +10,7 @@ use App\Models\gov_case\GovCaseRegister;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -27,7 +28,9 @@ class DashboardController extends Controller
     public function index()
     {
         session()->forget('currentUrlPath');
-
+ 
+        View::share('notification_count', 0);
+        View::share('case_status', array());
         $officeInfo = user_office_info();
         $user = Auth::user();
 

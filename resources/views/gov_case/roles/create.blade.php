@@ -49,7 +49,6 @@
          <tbody>
             <?php
                $i = (($roles->currentPage() -1) * $roles->perPage() + 1);
-
             ?>
             @foreach ($roles as $role)
                 <?php
@@ -68,16 +67,16 @@
                </td>
                <td>
                 @if(auth()->user()->can('role_update'))
-                  <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                  <button type="button" onclick="updateRoleModal({{$role->id}}, '{{$role->name_bn}}', '{{$role->name}}', '{{$role->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                 @else
                  <button type="button" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
                 @endif
 
-                {{-- @if(auth()->user()->can('role_delete'))
+                <!-- {{-- @if(auth()->user()->can('role_delete'))
                   <a href="{{ route('cabinet.roleItemDelete', $role->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                 @else
                  <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
-                @endif --}}
+                @endif --}} -->
                </td>
             </tr>
 
@@ -110,8 +109,11 @@
                    <div class="card-body card-block">
                         <div class="form-group">
                             <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
+                            <input type="text" id="update_name_bn" name="name_bn" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class=" form-control-label">ভূমিকা নাম(ইংরেজি) <span class="text-danger">*</span></label>
                             <input type="text" id="update_name" name="name" class="form-control form-control-sm" required>
-
                         </div>
                         <div class="form-group">
                             <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
@@ -155,6 +157,13 @@
              <div class="card-body card-block">
                   <div class="form-group">
                       <label for="name" class=" form-control-label">ভূমিকা নাম <span class="text-danger">*</span></label>
+                      <input type="text" id="name_bn" name="name_bn" placeholder="ভূমিকার নাম লিখুন" class="form-control form-control-sm" required>
+                      <span style="color: red">
+                        {{ $errors->first('name') }}
+                     </span>
+                  </div>
+                  <div class="form-group">
+                      <label for="name" class=" form-control-label">ভূমিকা নাম(ইংরেজি) <span class="text-danger">*</span></label>
                       <input type="text" id="name" name="name" placeholder="ভূমিকার নাম লিখুন" class="form-control form-control-sm" required>
                       <span style="color: red">
                         {{ $errors->first('name') }}
@@ -192,10 +201,11 @@
 
 <script>
 
-   function updateRoleModal(id, name, status){
+   function updateRoleModal(id, name_bn, name, status){
        $('#updateRoleItem').modal().show();
 
        $('#roleID').val(id);
+       $('#update_name_bn').val(name_bn);
        $('#update_name').val(name);
 
         $('.status2').attr('selected', false);

@@ -14,8 +14,7 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\RoleHasPermission;
 use App\Models\ParentPermission;
-
-
+use DB;
 use Auth;
 
 class AclController extends Controller
@@ -31,8 +30,7 @@ class AclController extends Controller
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
          $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
   
-        View::share('notification_count', 0);
-        View::share('case_status', array());
+  
     }
 
 
@@ -44,7 +42,8 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'ভূমিকা পরিচালনা';
-
+ 
+        
         $roles = Role::paginate(25);
         return view('gov_case.roles.create', compact('roles'))->with($data);
     }
@@ -68,11 +67,13 @@ class AclController extends Controller
 
     public function updateRole(Request $request){
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'name_bn' => 'required'
         ]);
 
         Role::where('id', $request->role_id)->update([
             'name' => $request->name,
+            'name_bn' => $request->name_bn,
             'status' => $request->status,
         ]);
 
@@ -91,20 +92,22 @@ class AclController extends Controller
 
     // for permissions
     public function permissionManagement(){
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-
         $data['page_title'] = 'অনুমতি পরিচালনা';
-        $permissions = Permission::orderBy('created_at', 'ASC')->paginate(25);
+    
+        $permissions = Permission::orderBy('created_at', 'ASC')
+            ->paginate(25);
+
+         
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
-        if(Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার'){
+        // if(Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার'){
             return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data);
-        }else{
-            abort(403);
-        }
+        // }else{
+        //     abort(403);
+        // }
 
     }
 
@@ -242,6 +245,16 @@ class AclController extends Controller
         // $data['notification_count'] = 0;
         // $data['case_status'] = [];
         return view('gov_case.user_permissions.manage_permissions', $data);
+    }
+
+    public function getPermissionByAjax(Request $request){
+        if($request->id == '123123'){
+            $data['permissions'] = Permission::paginate(250);
+        }else{
+            $data['permissions'] = Permission::where('parent_permission_name_id', $request->id)
+            ->paginate(80);
+        }
+        return view('gov_case.others_action.permissions_table', $data);
     }
 
 

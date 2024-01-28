@@ -24,7 +24,7 @@ class Permission extends Model implements PermissionContract
     use RefreshesPermissionCache;
 
     protected $guarded = [];
-    protected $fillable = ['name', 'display_name', 'parent_permission_id', 'guard_name', 'status'];
+    protected $fillable = ['name', 'display_name', 'parent_permission_name_id', 'guard_name', 'status'];
 
 
     public function __construct(array $attributes = [])
@@ -39,11 +39,11 @@ class Permission extends Model implements PermissionContract
 
 
     public function roleHasPermission($id) {
-
         return $this->hasOne(RoleHasPermission::class, 'permission_id')->where('role_id', $id)->first();
     }
+
     public function parent() {
-        return $this->belongsTo(ParentPermission::class, 'parent_permission_id');
+        return $this->belongsTo(ParentPermission::class, 'parent_permission_name_id');
     }
 
     /**

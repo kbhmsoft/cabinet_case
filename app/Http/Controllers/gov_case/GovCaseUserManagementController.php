@@ -318,6 +318,10 @@ class GovCaseUserManagementController extends Controller
             // clear all ruole for this user 
             $user->syncRoles([]);
 
+            // assign role to the user 
+            if($user != null && $role != null){
+                $user->assignRole($role);
+            }
 
             
         return redirect()->route('cabinet.user-management.index')

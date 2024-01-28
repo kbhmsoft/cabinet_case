@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultstringLength(191);
         Paginator::useBootstrap();
 
+        View::share('notification_count', 0);
+        View::share('case_status', array());
         // view()->composer('home', function ($view)
         // {
         //     $users = Auth::user()->id;
