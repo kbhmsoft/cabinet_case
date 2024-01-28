@@ -64,10 +64,10 @@ class LoginController extends Controller
         $password = $request->password;
 
         if (Auth::attempt(['email' => $request->username, 'password' => $request->password])) {
-            // $user = Auth::user();
-            return response()->json(['success' => 'Successfully logged in!']);
-            // $success['user_id'] = $user->id;
-            // return $this->sendResponse($success, 'User login successfully.');
+            $user = Auth::user();
+            // return response()->json(['success' => 'Successfully logged in!']);
+            $success['user_id'] = $user->id;
+            return $this->sendResponse($success, 'User login successfully.');
         }
          elseif (!empty($username) || !empty($password)) {
 
