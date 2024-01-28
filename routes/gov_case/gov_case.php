@@ -75,7 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store-user-role', [AclController::class, 'storeRole'])->name('storeRole');
         Route::post('/update-user-role', [AclController::class, 'updateRole'])->name('updateRole');
         Route::get('/delete-user-role/{id}', [AclController::class, 'roleItemDelete'])->name('roleItemDelete');
-
+        Route::get('update/role-permissions/{id}', [ACLController::class, 'updateRolePermissions'])->name('updateRolePermissions');
         // for permissions
         Route::get('/user-permissions', [AclController::class, 'permissionManagement'])->name('permissionManagement');
         Route::post('/store-user-permission', [AclController::class, 'storePermission'])->name('storePermission');
@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-user-permission/{user_id}', [AclController::class, 'userPermissionManage'])->name('userPermissionManage');
 
         Route::post('/update-user-permission', [AclController::class, 'storeUpdateUserPermissionAll'])->name('storeUpdateUserPermissionAll');
+        Route::post('/get-permissions-by-ajax', [AclController::class, 'getPermissionByAjax'])->name('getPermissionByAjax');
 
         // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
 

@@ -145,11 +145,11 @@
                <li class="menu-item {{ request()->is(['hearing_date', 'results_completed', 'new_sf_list']) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                   <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="menu-text font-weight-bolder"><i class="fas fa-bell"></i></i> নোটিফিকেশন</span>
-                       @if ($notification_count != 0)
+                       <!-- @if ($notification_count != 0)
                        <span class="menu-label">
                            <span class="label label-rounded label-danger">{{ $notification_count }}</span>
                        </span>
-                       @endif
+                       @endif -->
                      <i class="menu-arrow"></i>
                   </a>
                   <div class="menu-submenu">

@@ -47,6 +47,12 @@ class User extends Authenticatable
     public function role() {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    public function update(array $attributes = [], array $options = []) {
+        // ... your implementation
+        return parent::update($attributes, $options);
+     }
+
     public function office() {
         return $this->belongsTo(Office::class, 'office_id');
     }

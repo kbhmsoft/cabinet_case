@@ -120,6 +120,14 @@
                                 @endif
 
                                 @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
+                                    {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
+                                                তালিকা</span>
+                                        </a>
+                                    </li> --}}
 
                                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
@@ -144,13 +152,6 @@
                                     </li>
                                 @endif
 
-                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.ministryIdInsert') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">তালিকা</span>
-                                    </a>
-                                </li> --}}
                                 {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
@@ -474,7 +475,7 @@
                                 </ul>
                             @endcan
 
-
+                            <!-- @if (Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার') -->
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions']) ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
@@ -484,7 +485,7 @@
                                         </a>
                                     </li>
                                 </ul>
-
+                            <!-- @endif -->
                             @can('manage_permission_menu')
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management']) ? 'hilightMenu' : '' }}"

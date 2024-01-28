@@ -4,12 +4,17 @@ namespace App\Http\Controllers\gov_case;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\ParentPermissionName;
 use App\Models\RolePermission;
 use App\Models\ModelHasPermission;
+
+use App\Models\Role;
+use App\Models\Permission;
+use App\Models\RoleHasPermission;
+use App\Models\ParentPermission;
+use DB;
 use Auth;
 
 class AclController extends Controller
@@ -24,7 +29,8 @@ class AclController extends Controller
     {
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
          $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
-
+  
+  
     }
 
 
@@ -36,7 +42,8 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'ভূমিকা পরিচালনা';
-
+ 
+        
         $roles = Role::paginate(25);
         return view('gov_case.roles.create', compact('roles'))->with($data);
     }
@@ -48,6 +55,7 @@ class AclController extends Controller
 
         Role::create([
             'name' => $request->name,
+            'name_bn' => $request->name_bn,
             'created_by' => Auth::user()->id,
             'status' => 1,
             'in_action' => 1,
@@ -59,11 +67,13 @@ class AclController extends Controller
 
     public function updateRole(Request $request){
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'name_bn' => 'required'
         ]);
 
         Role::where('id', $request->role_id)->update([
             'name' => $request->name,
+            'name_bn' => $request->name_bn,
             'status' => $request->status,
         ]);
 
@@ -82,20 +92,22 @@ class AclController extends Controller
 
     // for permissions
     public function permissionManagement(){
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-
         $data['page_title'] = 'অনুমতি পরিচালনা';
-        $permissions = Permission::orderBy('created_at', 'ASC')->paginate(25);
+    
+        $permissions = Permission::orderBy('created_at', 'ASC')
+            ->paginate(25);
+
+         
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
-        if(Auth::user()->role_id == 1 && Auth::user()->role->name == 'ডেভলপার'){
+        // if(Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার'){
             return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data);
-        }else{
-            abort(403);
-        }
+        // }else{
+        //     abort(403);
+        // }
 
     }
 
@@ -170,51 +182,80 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
-        $users = User::where('is_gov', 1)->get();
+        $data['roles'] = Role::where(['is_gov'=> 1, 'status' => 1])->get();
+        // $users = User::where('is_gov', 1)->get();
         // $data['users'] = $query->paginate(10)->withQueryString();
-        return view('gov_case.user_permissions.index', compact('users'))->with($data);
+        return view('gov_case.user_permissions.index', $data);
     }
 
-
-    public function userPermissionManage(Request $request, $user_id){
-        $data['page_title'] = 'অনুমতি প্রদান পরিচালনা করুন';
-        $parentPermissions = ParentPermissionName::where('status', 1)->get();
-        // return $parentPermissions;
-
-        $rolePermissions = RolePermission::where('user_id', $user_id)->get();
-
-        return view('gov_case.user_permissions.manage_permissions', compact('user_id', 'parentPermissions', 'rolePermissions'))->with($data);
-    }
-
+ 
 
     public function storeUpdateUserPermissionAll(Request $request){
 
-       RolePermission::where('user_id', $request->user_id)->delete();
-       ModelHasPermission::where('model_id', $request->user_id)->delete();
-
-       $user = User::find($request->user_id);
-        foreach($request->permissionId as $index => $permission_id){
-            RolePermission::create([
-                'user_id' => $request->user_id,
-                'role_id' => $user->role->id,
-                'permission_id' => $permission_id,
-                'created_by' => Auth::user()->id,
-            ]);
-
-            // find permission for user
-            $permission = Permission::find($permission_id);
-
-            // Adding permissions to a user
-            $user->givePermissionTo($permission->name);
+        $role = Role::find($request->role_id);
+        
+        $rolePermissions = RoleHasPermission::where('role_id', $request->role_id)->get();
+    
+       
+        if(!empty($rolePermissions)){
+            foreach($rolePermissions as $rolePermissions) {
+                $permission = Permission::find($rolePermissions->permission_id);
+               
+                $role->revokePermissionTo($permission);
+                $permission->removeRole($role);
+            }
         }
 
-        return back()->with('success','অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');
+        RoleHasPermission::where('role_id', $request->role_id)->delete();
+
+        $allPermissions = $request->permissionId;
+        if(!empty($allPermissions)){
+            foreach ($allPermissions as $key => $permission_id) {
+                $permission = Permission::find($permission_id);
+                
+                $role->givePermissionTo($permission);
+            }
+        }
+        return back()->with('success','সফলতার সাথে অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');
+   
     }
 
 
 
+    /**
+    *  manage permissions page
+    *  @return void
+    */
+    public function updateRolePermissions(Request $request, $id){
+        $data['role'] = Role::find($id);
+
+        $data['permissions'] = Permission::with('parent')->paginate(25);
+        $data['parentPermissions'] = ParentPermission::with('permissions')->where('status', 1)->paginate(25);
+  
+        return view('backend.roles.manage_permissions', $data);
+    }
 
 
+    public function userPermissionManage(Request $request, $role_id){
+        $data['page_title'] = 'অনুমতি প্রদান পরিচালনা করুন';
+        $data['parentPermissions'] = ParentPermissionName::with('permissions')->where('status', 1)->paginate(25);
+        $data['role'] = Role::find($role_id);
+        $data['permissions'] = Permission::with('parent')->paginate(25);
+
+        // $data['notification_count'] = 0;
+        // $data['case_status'] = [];
+        return view('gov_case.user_permissions.manage_permissions', $data);
+    }
+
+    public function getPermissionByAjax(Request $request){
+        if($request->id == '123123'){
+            $data['permissions'] = Permission::paginate(250);
+        }else{
+            $data['permissions'] = Permission::where('parent_permission_name_id', $request->id)
+            ->paginate(80);
+        }
+        return view('gov_case.others_action.permissions_table', $data);
+    }
 
 
     // end user permissions

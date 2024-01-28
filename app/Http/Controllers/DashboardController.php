@@ -13,6 +13,9 @@ use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\AppealGovCaseRegister;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 
+use Illuminate\Support\Facades\View;
+
+
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 // use App\Http\Controllers\CommonController;
 
@@ -29,6 +32,8 @@ class DashboardController extends Controller
     {
         session()->forget('currentUrlPath');
 
+        View::share('notification_count', 0);
+        View::share('case_status', array());
         $officeInfo = user_office_info();
         $user = Auth::user();
 
@@ -1093,7 +1098,7 @@ class DashboardController extends Controller
         // }
     }
 
-   
+
 
     public function countHighCourtRunningCase($id)
     {
