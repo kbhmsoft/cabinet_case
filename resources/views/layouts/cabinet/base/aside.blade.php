@@ -128,6 +128,13 @@
                                                 তালিকা</span>
                                         </a>
                                     </li> --}}
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.ministryIdInsert') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">তালিকা</span>
+                                        </a>
+                                    </li>
 
                                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">

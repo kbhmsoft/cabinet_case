@@ -2,20 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourtController;
-use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\MyprofileController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PagesController;
-use App\Http\Controllers\UserNotificationController;
-Use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontHomeController;
-use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\MyprofileController;
+Use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
+use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\UserNotificationController;
 
 
 
@@ -58,6 +59,8 @@ Route::get('/view-clear', function() {
     $exitCode = Artisan::call('view:clear');
     return '<h1>View cache cleared</h1>';
 });
+
+Route::post('doptor/login', [LoginController::class, 'doptorLogin'])->name('doptor.login');
 
 Route::get('/', [DashboardController::class, 'logincheck']);
 Route::get('public_home', [FrontHomeController::class, 'public_home']);

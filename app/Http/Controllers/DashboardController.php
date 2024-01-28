@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 // use Auth;
 use App\Models\Dashboard;
-use App\Models\gov_case\AppealGovCaseRegister;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\gov_case\DoptorOffice;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 // use App\Http\Controllers\CommonController;
@@ -149,7 +150,7 @@ class DashboardController extends Controller
                 $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
                 array_push($arrayd, $val);
             }
-           
+
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -1092,6 +1093,8 @@ class DashboardController extends Controller
         // }
     }
 
+   
+
     public function countHighCourtRunningCase($id)
     {
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
@@ -1755,7 +1758,7 @@ class DashboardController extends Controller
     public function logincheck()
     {
         if (Auth::check()) {
-            // dd('checked');
+
             return redirect('dashboard');
         } else {
             return redirect('login');

@@ -14,6 +14,7 @@ use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Models\gov_case\GovCaseLog;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovOffice;
 use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
@@ -27,8 +28,6 @@ use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterController extends Controller
 {
-    //
-
     public function __construct()
     {
         $this->middleware('permission:create_new_case', ['only' => ['create']]);
@@ -106,9 +105,6 @@ class GovCaseRegisterController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'মামলা এন্ট্রি রেজিষ্টারের তালিকা';
-        // return $atcases;
-        // return $data;
-        // dd($data['cases']);
         return view('gov_case.case_register.index')->with($data);
     }
 
@@ -3395,7 +3391,6 @@ class GovCaseRegisterController extends Controller
     }
     public function getHighCourtCaseDetails($id)
     {
-
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         // return $data;
@@ -3423,9 +3418,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
         $data['usersInfo'] = User::all();
-        // return $data['usersInfo'];
-        // return $data['GovCaseDivisionCategoryType'];
-        // return  $data['GovCaseDivisionCategory'] ;
+
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         } else {
@@ -3902,12 +3895,327 @@ class GovCaseRegisterController extends Controller
 
         if ($caseId && $exists) {
             $id = $caseId->id;
-            $officeId = GovCaseBibadi::where('gov_case_id',$id)
-            ->where('is_main_bibadi', 1)
-            ->groupBy('gov_case_id')->first();
+            $officeId = GovCaseBibadi::where('gov_case_id', $id)
+                ->where('is_main_bibadi', 1)
+                ->groupBy('gov_case_id')->first();
 
-           $officeName = GovCaseOffice::where('id', $officeId->respondent_id)->first();
-           return response()->json(['exists' => $exists,'officeName' => $officeName->office_name_bn]);
+            $officeName = GovCaseOffice::where('id', $officeId->respondent_id)->first();
+            return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
     }
+
+    public function ministriesId()
+    {
+        // $curl = curl_init();
+
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/ministries/',
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => '',
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 0,
+        //     CURLOPT_FOLLOWLOCATION => true,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => 'POST',
+        //     CURLOPT_HTTPHEADER => array(
+        //         'Accept: application/json',
+        //         'Content-Type: application/json',
+        //         'api-version: 1',
+        //         'apikey: 8XI1PI',
+        //         'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDYwOTg5MzYsImp0aSI6Ik1UY3dOakE1T0Rrek5nPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjA5ODkzNiwiZXhwIjoxNzA2MTg1MzM2LCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.mJaC0nsi2vTy79ytTEBsc-u0oscONPRr5sNevb_PsCbO8i9TVF74BZsd0ddvap3wVmbzHkx2uXJCQlpTDOFN2A',
+        //     ),
+        // ));
+
+        // $response = curl_exec($curl);
+
+        // curl_close($curl);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeministry',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-version: 1',
+                'apikey: 8XI1PI',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDY0MTU4MTAsImp0aSI6Ik1UY3dOalF4TlRneE1BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjQxNTgxMCwiZXhwIjoxNzA2NTAyMjEwLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.4JH70gU1GCLoO1eUr1HRfMqFOZjZYgGTQi5ZiStZZ8lZ0O23EXmCGm_t9RG2iXtL9aRmF1VZpb7gtZOxmbs_Lg',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+    public function ministryLayerId($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/ministry/layers/',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            // CURLOPT_POSTFIELDS => array('ministry_id' => '25'),
+            CURLOPT_POSTFIELDS => json_encode(array('ministry_id' => $id)),
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-version: 1',
+                'apikey: 8XI1PI',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDYwOTg5MzYsImp0aSI6Ik1UY3dOakE1T0Rrek5nPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjA5ODkzNiwiZXhwIjoxNzA2MTg1MzM2LCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.mJaC0nsi2vTy79ytTEBsc-u0oscONPRr5sNevb_PsCbO8i9TVF74BZsd0ddvap3wVmbzHkx2uXJCQlpTDOFN2A',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+    public function ministryLayerOffices($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeorigin?ministry=' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-version: 1',
+                'apikey: 8XI1PI',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDY0MTU4MTAsImp0aSI6Ik1UY3dOalF4TlRneE1BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjQxNTgxMCwiZXhwIjoxNzA2NTAyMjEwLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.4JH70gU1GCLoO1eUr1HRfMqFOZjZYgGTQi5ZiStZZ8lZ0O23EXmCGm_t9RG2iXtL9aRmF1VZpb7gtZOxmbs_Lg',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+    public function ministryLayerAndOffices($layerId, $id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/ministry/layer/offices/',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array('ministry_id' => $id, 'layer_id' => $layerId)),
+            // CURLOPT_POSTFIELDS => array('ministry_id' => '13','layer_id' => '62'),
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-version: 1',
+                'apikey: 8XI1PI',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDYwOTY4OTIsImp0aSI6Ik1UY3dOakE1TmpnNU1nPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjA5Njg5MiwiZXhwIjoxNzA2MTgzMjkyLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.Ib_qBBCG-lj1fOIGTo5hY6b5F_P83ctuNlJ42zdjE5hw6eWzhJ57MxwkTJX_1IxRaoqw2TIJvGUeeQEYalmJ4Q',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
+
+    // public function ministryIdInsert()
+    // {
+    //     // $ministriesId = $this->ministriesId();
+    //     // $response = json_decode($ministriesId, true);
+    //     // if ($response['status'] === 'success') {
+
+    //     //     foreach ($response['data'] as $officeData) {
+
+    //     //         $id = $officeData['id'];
+    //     //         $ministryLayerId = $this->ministryLayerId($id);
+
+    //     //         $responseMinistryLayer = json_decode($ministryLayerId, true);
+    //     //         if ($responseMinistryLayer['status'] === 'success') {
+
+    //     //             foreach ($responseMinistryLayer['data'] as $officeDataMinistryLayerData) {
+    //     //                 $layerId = $officeDataMinistryLayerData['id'];
+    //     //                 $nameBng = $officeDataMinistryLayerData['layer_name_bng'];
+    //     //                 $nameEng = $officeDataMinistryLayerData['layer_name_eng'];
+    //     //                 $parentLayerId = $officeDataMinistryLayerData['parent_layer_id'];
+
+    //     //                 $dataToSave = [
+    //     //                     'min_id' =>$id,
+    //     //                     'layer_id' => $layerId,
+    //     //                     'parent_layer_id' => $parentLayerId,
+    //     //                     'layer_name_bng' => $nameBng,
+    //     //                     'layer_name_eng' => $nameEng,
+    //     //                     'status' => 1,
+    //     //                 ];
+
+    //     //                 MinistryLayers::create($dataToSave);
+    //     //             }
+    //     //         }
+    //     //         //    $nameBng = $officeData['name_bng'];
+    //     //         //    $nameEng = $officeData['name_eng'];
+    //     //         //    $officeType = $officeData['office_type'];
+
+    //     //         //    $dataToSave = [
+    //     //         //        'doptor_office_id' => $id,
+    //     //         //        'level' => 1,
+    //     //         //        'parent' => null,
+    //     //         //        'parent_doptor_id' => null,
+    //     //         //        'parent_name' => null,
+    //     //         //        'office_name_bn' => $nameBng,
+    //     //         //        'office_name_en' => $nameEng,
+    //     //         //        'status' => 1,
+    //     //         //    ];
+
+    //     //         //
+    //     //         // DoptorOffice::create($dataToSave);
+    //     //     }
+    //     //     dd($ministryLayerId);
+    //     //     echo "Data saved successfully!";
+    //     // } else {
+
+    //     //     echo "Failed to fetch data!";
+    //     // }
+
+    // }
+    public function ministryIdInsert()
+    {
+        // $ministriesId = $this->ministriesId();
+        // $response = json_decode($ministriesId, true);
+        // if ($response['status'] === 'success') {
+        //     foreach ($response['data'] as $officeData) {
+        //         $ministryId = $officeData['id'];
+        //         $ministryLayerId = $this->ministryLayerId($ministryId);
+
+        //         $ministryLayer = json_decode($ministryLayerId, true);
+        //         if ($ministryLayer['status'] === 'success') {
+        //             foreach ($ministryLayer['data'] as $officeDataMinistryLayerData) {
+
+        //                 $layerId = $officeDataMinistryLayerData['id'];
+        //                 $ministryUnderOfficeId = $this->ministryLayerAndOffices($layerId, $ministryId);
+        //                 $ministryUnderOffice = json_decode($ministryUnderOfficeId, true);
+
+        //                 if ($ministryUnderOffice['status'] === 'success') {
+        //                     foreach ($ministryUnderOffice['data'] as $ministryUnderOfficeData) {
+        //                         $nameId = $ministryUnderOfficeData['id'];
+        //                         $nameBng = $ministryUnderOfficeData['office_name_bng'];
+        //                         $dataToSave = [
+        //                             'doptor_office_id' => $nameId,
+        //                             'level' => 2,
+        //                             'parent' => null,
+        //                             'parent_doptor_id' => $ministryId,
+        //                             'parent_layer_id' => $layerId,
+        //                             'parent_name' => null,
+        //                             'office_name_bn' => $nameBng,
+        //                             'office_name_en' => null,
+        //                             'status' => 1,
+        //                         ];
+
+        //                         DoptorOffice::create($dataToSave);
+        //                     }
+        //                 }
+
+        //             }
+        //         }
+        //     }
+        // }
+
+        // $ministriesInfo = $this->ministriesId();
+
+        // $response = json_decode($ministriesInfo, true);
+        // // if ($response['status'] === 'success') {
+        // foreach ($response as $officeData) {
+
+        //     $id = $officeData['id'];
+        //     $nameBng = $officeData['nameBn'];
+        //     $nameEng = $officeData['name'];
+        //     $nameShort = $officeData['nameShort'];
+        //     $nameReference = $officeData['reference'];
+        //     $nameType = $officeData['type'];
+
+        //     $dataToSave = [
+        //         'doptor_office_id' => $id,
+        //         'level' => 1,
+        //         'parent' => null,
+        //         'parent_doptor_id' => null,
+        //         'parent_layer_id' => null,
+        //         'parent_name' => null,
+        //         'office_name_bn' => $nameBng,
+        //         'office_name_en' => $nameEng,
+        //         'status' => 1,
+        //         'reference' => $nameReference,
+        //         'type' => $nameType,
+        //     ];
+
+        //     GovOffice::create($dataToSave);
+
+        // }
+
+        $ministriesInfo = GovOffice::get();
+
+        foreach ($ministriesInfo as $officeData) {
+            $tableId = $officeData->id;
+            $doptorId = $officeData->doptor_office_id;
+            // dd($doptorId);
+            // dd($id);
+            // dd($officeData);
+            $ministryLayerId = $this->ministryLayerOffices($doptorId);
+            $responseMinistryLayer = json_decode($ministryLayerId, true);
+
+            foreach ($responseMinistryLayer as $ministryLayer) {
+
+                if (is_array($ministryLayer)) {
+                $ministryLayerId = $ministryLayer['id'];
+                $parentId = $ministryLayer['parent'];
+                $sequence = $ministryLayer['sequence'];
+                $ministry = $ministryLayer['ministry'];
+                $level = $ministryLayer['level'];
+                $nameBn = $ministryLayer['nameBn'];
+                $nameEn = $ministryLayer['name'];
+
+                $dataToSave = [
+                    'doptor_office_id' => $ministryLayerId,
+                    'level' => $level,
+                    'parent' => $tableId,
+                    'sequence' => $sequence,
+                    'parent_doptor_id' => $ministry,
+                    'parent_layer_id' => null,
+                    'parent_name' => null,
+                    'office_name_bn' => $nameBn,
+                    'office_name_en' => $nameEn,
+                    'doptor_parent_id' => $parentId,
+                    'status' => 1,
+                ];
+
+                GovOffice::create($dataToSave);
+            }
+        }
+        }
+        //  }
+
+    }
+
 }
