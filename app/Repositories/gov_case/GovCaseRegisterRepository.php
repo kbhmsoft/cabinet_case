@@ -5,6 +5,9 @@ namespace App\Repositories\gov_case;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Attachment;
+use App\Models\ReplyAttachment;
+use App\Models\SuspensionAttachment;
+use App\Models\FinalAttachment;
 use Illuminate\Support\Facades\DB;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
@@ -22,6 +25,9 @@ class GovCaseRegisterRepository
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
         $files = Attachment::where('gov_case_id', $caseId)->get();
+        $replyFiles = ReplyAttachment::where('gov_case_id', $caseId)->get();
+        $suspensionFiles = SuspensionAttachment::where('gov_case_id', $caseId)->get();
+        $finalFiles = FinalAttachment::where('gov_case_id', $caseId)->get();
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
@@ -35,6 +41,9 @@ class GovCaseRegisterRepository
             'caseLogs' => $caseLog,
             'hearings' => $hearings,
             'files' => $files,
+            'replyFiles' => $replyFiles,
+            'suspensionFiles' => $suspensionFiles,
+            'finalFiles' => $finalFiles,
             'concernpersondesig' => $concernpersondesig,
             'concernPersonName' => $concernPersonName,
         ];

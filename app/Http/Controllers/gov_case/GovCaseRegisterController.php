@@ -3408,6 +3408,7 @@ class GovCaseRegisterController extends Controller
         } else {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         }
+    // dd($data['files'],$data['replyFiles']);
         //  return $data;
         return view('gov_case.case_register.showDetails')->with($data);
         // return $data;

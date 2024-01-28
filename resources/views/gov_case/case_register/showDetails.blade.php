@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                                                  @if (Auth::user()->role_id == 2)
+                                                                                      @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                                                </div> -->
+                                                                                    </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -455,14 +455,14 @@
                 @if (count($files) != 0)
                     @foreach ($files as $file)
                         <div class="col-md-4">
-                            <h4 class="font-weight-bolder">{{ $file->file_type }}</h4>
+                            <h4 class="font-weight-bolder mt-3">{{ $file->file_type }}</h4>
                             <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                                data-toggle="modal" data-target="#showFileModal">
+                                data-toggle="modal" data-target="#showFileModal{{ $file->id }}">
                                 <i class="fa fas fa-file-pdf icon-md"></i> {{ $file->file_type }}
                             </a>
 
-                            <!-- Modal-->
-                            <div class="modal fade" id="showFileModal" tabindex="-1" role="dialog"
+                            <!-- Modal -->
+                            <div class="modal fade" id="showFileModal{{ $file->id }}" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
@@ -475,8 +475,125 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-
                                             <embed src="{{ asset($file->file_name) }}" type="application/pdf"
+                                                width="100%" height="400px" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                class="btn btn-light-primary font-weight-bold font-size-h5"
+                                                data-dismiss="modal">বন্ধ করুন</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /modal -->
+                        </div>
+                    @endforeach
+                @endif
+
+                @if (count($replyFiles) != 0)
+                    @foreach ($replyFiles as $reply)
+                        {{-- @dd($reply) --}}
+                        <div class="col-md-4">
+                            <h4 class="font-weight-bolder mt-3">{{ $reply->file_type }}</h4>
+                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
+                                data-toggle="modal" data-target="#showFileModalReply{{ $reply->id }}">
+                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $reply->file_type }}
+                            </a>
+
+                            <!-- Modal-->
+                            <div class="modal fade" id="showFileModalReply{{ $reply->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bolder font-size-h3"
+                                                id="exampleModalLabel">{{ $reply->file_type }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <i aria-hidden="true" class="ki ki-close"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <embed src="{{ asset($reply->file_name) }}" type="application/pdf"
+                                                width="100%" height="400px" />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                class="btn btn-light-primary font-weight-bold font-size-h5"
+                                                data-dismiss="modal">বন্ধ করুন</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /modal -->
+                        </div>
+                    @endforeach
+                @endif
+                @if (count($suspensionFiles) != 0)
+                    @foreach ($suspensionFiles as $suspension)
+                        <div class="col-md-4">
+                            <h4 class="font-weight-bolder mt-3">{{ $suspension->file_type }}</h4>
+                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
+                                data-toggle="modal" data-target="#showFileModalSuspension{{ $suspension->id }}">
+                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $suspension->file_type }}
+                            </a>
+
+                            <!-- Modal-->
+                            <div class="modal fade" id="showFileModalSuspension{{ $suspension->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bolder font-size-h3"
+                                                id="exampleModalLabel">{{ $suspension->file_type }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <i aria-hidden="true" class="ki ki-close"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <embed src="{{ asset($suspension->file_name) }}" type="application/pdf"
+                                                width="100%" height="400px" />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                class="btn btn-light-primary font-weight-bold font-size-h5"
+                                                data-dismiss="modal">বন্ধ করুন</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /modal -->
+                        </div>
+                    @endforeach
+                @endif
+                @if (count($finalFiles) != 0)
+                    @foreach ($finalFiles as $final)
+                        <div class="col-md-4">
+                            <h4 class="font-weight-bolder mt-5">{{ $final->file_type }}</h4>
+                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
+                                data-toggle="modal" data-target="#showFileModalFinal{{ $final->id }}">
+                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $final->file_type }}
+                            </a>
+
+                            <!-- Modal-->
+                            <div class="modal fade" id="showFileModalFinal{{ $final->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bolder font-size-h3"
+                                                id="exampleModalLabel">{{ $final->file_type }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <i aria-hidden="true" class="ki ki-close"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <embed src="{{ asset($final->file_name) }}" type="application/pdf"
                                                 width="100%" height="400px" />
 
                                         </div>
