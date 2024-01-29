@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class LoginController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +61,7 @@ class LoginController extends Controller
  
     public function doptorLogin(Request $request)
     {
-
+        // dd($request->all());
         $username = $request->username;
         $password = $request->password;
 
@@ -68,13 +69,13 @@ class LoginController extends Controller
             $user = Auth::user();
             // return response()->json(['success' => 'Successfully logged in!']);
             $success['user_id'] = $user->id;
-            return $this->sendResponse($success, 'User login successfully.');
+            return redirect()->route('dashboard');
         }
          elseif (!empty($username) || !empty($password)) {
 
             $verifyUser = $this->verifyUser($request);
             // $data = json_decode($verifyUser);
-            // return $verifyUser;
+            return $verifyUser;
             $officeId = $verifyUser->data->office_info[0]->office_id;
             // dd($officeId);
             // $curl = curl_init();
@@ -113,8 +114,10 @@ class LoginController extends Controller
             // $responsData = json_decode($response);
 
             // return $responsData;
-        } else {
-            return $this->sendError('Unauthorised.', ['error' => 'User login failed.'], 401);
+        } 
+        else {
+            return redirect()->back()->with('error','!! User Credential Not Matched !!');
+            // return;
         }
     }
 

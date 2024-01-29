@@ -55,32 +55,42 @@ License: You must have a valid license purchased only from themeforest(the above
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-} */
+}
+    .disabledContent
+    {
+        cursor: not-allowed;
+        background-color: rgb(229, 229, 229) !important;
+    }
+
+    .disabledContent > *
+    {
+        pointer-events:none;
+    }
 </style>
 <body class="page-md login" style="background: transparent !important;">
- 
+
     <div class="logo">
         <a href="#">
-            
+
             <img src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" style="width: 360px;" alt="" />
         </a>
     </div>
- 
+
     <div class="content">
        <br>
-       
+
         <div style="display: block; overflow: hidden; margin-bottom: 5px;">
 
-            <form method="POST" action="{{ route('doptor.login') }}">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
-
+                <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
                 <div class="form-group otp-hidden">
-                    
+
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
-                        <input id="username" type="text" class="form-control placeholder-no-fix @error('username') is-invalid @enderror" name="username" placeholder="ব্যবহারকারী" value="{{ old('username') }}" required autocomplete="username" autofocus/>
+                        <input id="email" type="email" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
 
-                        @error('username')
+                        @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -93,7 +103,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-lock"></i>
                         <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password" name="password"/>
                         @error('password')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -101,7 +111,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
                 <div class="form-actions otp-hidden">
                     @if (Route::has('password.request'))
-                     
+
                      @endif
                             <button type="submit" id="submit" class="btn pull-right">
                                  <i class="a2i_gn_login2 "></i>প্রবেশ
@@ -121,7 +131,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </button>
                 </div>
             </form>
-                         
+
         </div>
 
         <style>
@@ -138,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     </div>
 
-   
+
 
     <script src="{{ asset('/login_assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery-migrate.min.js') }}" type="text/javascript"></script>
@@ -146,16 +156,16 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ asset('/login_assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
- 
+
     <script src="{{ asset('/login_assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login-soft.js') }}" type="text/javascript"></script>
 
- 
+
 </body>
- 
+
 </html>
 
 
