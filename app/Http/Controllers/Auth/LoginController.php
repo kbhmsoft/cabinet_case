@@ -70,52 +70,52 @@ class LoginController extends BaseController
             $success['user_id'] = $user->id;
             return redirect()->route('dashboard');
         }
-        //  elseif (!empty($username) || !empty($password)) {
+         elseif (!empty($username) || !empty($password)) {
 
-        //     $verifyUser = $this->verifyUser($request);
-        //     // $data = json_decode($verifyUser);
-        //     // return $verifyUser;
-        //     $officeId = $verifyUser->data->office_info[0]->office_id;
-        //     // dd($officeId);
-        //     // $curl = curl_init();
+            $verifyUser = $this->verifyUser($request);
+            // $data = json_decode($verifyUser);
+            return $verifyUser;
+            $officeId = $verifyUser->data->office_info[0]->office_id;
+            // dd($officeId);
+            // $curl = curl_init();
 
-        //     // Set API endpoint and request details
-        //     // $apiUrl = 'https://apigw-stage.doptor.gov.bd/api/user/verify';
-        //     // $postData = json_encode(['username' => $username, 'password' => $password]);
+            // Set API endpoint and request details
+            // $apiUrl = 'https://apigw-stage.doptor.gov.bd/api/user/verify';
+            // $postData = json_encode(['username' => $username, 'password' => $password]);
 
-        //     // curl_setopt_array($curl, array(
-        //     //     CURLOPT_URL => $apiUrl,
-        //     //     CURLOPT_RETURNTRANSFER => true,
-        //     //     CURLOPT_ENCODING => '',
-        //     //     CURLOPT_MAXREDIRS => 10,
-        //     //     CURLOPT_TIMEOUT => 0,
-        //     //     CURLOPT_FOLLOWLOCATION => true,
-        //     //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     //     CURLOPT_CUSTOMREQUEST => 'POST',
-        //     //     CURLOPT_POSTFIELDS => $postData,
-        //     //     CURLOPT_HTTPHEADER => array(
-        //     //         'Accept: application/json',
-        //     //         'Content-Type: application/json',
-        //     //         'api-version: 1',
-        //     //         'apikey: 8XI1PI',
-        //     //         'Authorization: ' . $userToken,
-        //     //     ),
-        //     // ));
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => $apiUrl,
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_POSTFIELDS => $postData,
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Accept: application/json',
+            //         'Content-Type: application/json',
+            //         'api-version: 1',
+            //         'apikey: 8XI1PI',
+            //         'Authorization: ' . $userToken,
+            //     ),
+            // ));
 
-        //     // $response = curl_exec($curl);
-        //     // // Check for cURL errors
-        //     // if (curl_errno($curl)) {
-        //     //     $errorResponse = json_encode(["status" => "error", "message" => "cURL error: " . curl_error($curl)]);
-        //     //     return response()->json($errorResponse, 500);
-        //     // }
+            // $response = curl_exec($curl);
+            // // Check for cURL errors
+            // if (curl_errno($curl)) {
+            //     $errorResponse = json_encode(["status" => "error", "message" => "cURL error: " . curl_error($curl)]);
+            //     return response()->json($errorResponse, 500);
+            // }
 
-        //     // curl_close($curl);
-        //     // $responsData = json_decode($response);
+            // curl_close($curl);
+            // $responsData = json_decode($response);
 
-        //     // return $responsData;
-        // } 
+            // return $responsData;
+        } 
         else {
-            return redirect()->back();
+            return redirect()->back()->with('error','!! User Credential Not Matched !!');
             // return;
         }
     }
