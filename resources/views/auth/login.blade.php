@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.2
@@ -50,34 +49,33 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <style>
-    html {
+    /* html {
   background: url({{ asset('media/custom/logo.jpg') }}) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
+} */
 </style>
 <body class="page-md login" style="background: transparent !important;">
-<!-- BEGIN LOGO -->
+ 
     <div class="logo">
         <a href="#">
-           {{-- <img src="{{ asset('media/logos/civil-suit-logo.png') }}" style="width: 360px;" alt="" /> --}}
+            
             <img src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" style="width: 360px;" alt="" />
         </a>
     </div>
-<!-- END LOGO -->
-    <!-- BEGIN LOGIN -->
+ 
     <div class="content">
        <br>
-        <!-- BEGIN LOGIN FORM -->
+       
         <div style="display: block; overflow: hidden; margin-bottom: 5px;">
 
             <form method="POST" action="{{ route('doptor.login') }}">
                 @csrf
 
                 <div class="form-group otp-hidden">
-                    <!-- <label class="control-label visible-ie8 visible-ie9">Username</label> -->
+                    
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
                         <input id="username" type="text" class="form-control placeholder-no-fix @error('username') is-invalid @enderror" name="username" placeholder="ব্যবহারকারী" value="{{ old('username') }}" required autocomplete="username" autofocus/>
@@ -103,10 +101,10 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
                 <div class="form-actions otp-hidden">
                     @if (Route::has('password.request'))
-                    <!-- <a href="{{ route('password.request') }}" id="forget-password" style="color:inherit; margin-top:10px; display:inline-block;">পাসওয়ার্ড পুনরুদ্ধার?</a> -->
+                     
                      @endif
                             <button type="submit" id="submit" class="btn pull-right">
-                                 <i class="a2i_gn_login2 "></i>        প্রবেশ
+                                 <i class="a2i_gn_login2 "></i>প্রবেশ
                             </button>
                 </div>
                 <div class="form-group otp-visable">
@@ -123,7 +121,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </button>
                 </div>
             </form>
-                         <!-- END LOGIN FORM -->
+                         
         </div>
 
         <style>
@@ -140,9 +138,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     </div>
 
-    <!-- END LOGIN -->
-    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-    <!-- BEGIN CORE PLUGINS -->
+   
 
     <script src="{{ asset('/login_assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery-migrate.min.js') }}" type="text/javascript"></script>
@@ -150,20 +146,16 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ asset('/login_assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+ 
     <script src="{{ asset('/login_assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login-soft.js') }}" type="text/javascript"></script>
 
-
-<!-- END JAVASCRIPTS -->
+ 
 </body>
-<!-- END BODY -->
+ 
 </html>
 
 
