@@ -57,8 +57,10 @@ class LoginController extends BaseController
     }
     }
      */
+    //  public function showLoginForm(){
+    //     return 'aaa';
+    //  }
 
- 
     public function doptorLogin(Request $request)
     {
         // dd($request->all());
@@ -72,7 +74,6 @@ class LoginController extends BaseController
             return redirect()->route('dashboard');
         }
          elseif (!empty($username) || !empty($password)) {
-
             $verifyUser = $this->verifyUser($request);
             // $data = json_decode($verifyUser);
             return $verifyUser;
@@ -114,24 +115,22 @@ class LoginController extends BaseController
             // $responsData = json_decode($response);
 
             // return $responsData;
-        } 
+        }
         else {
             return redirect()->back()->with('error','!! User Credential Not Matched !!');
-            // return;
         }
     }
 
     public function verifyUser(Request $request)
     {
-
-        $username = $request->username;
+        $username = $request->email;
         $password = $request->password;
         $userToken = $this->tokenGenerate($username);
+        // return $userToken;
         $curl = curl_init();
-        // Set API endpoint and request details
         $apiUrl = 'https://apigw-stage.doptor.gov.bd/api/user/verify';
         $postData = json_encode(['username' => $username, 'password' => $password]);
-
+// return $postData;
         curl_setopt_array($curl, array(
             CURLOPT_URL => $apiUrl,
             CURLOPT_RETURNTRANSFER => true,
@@ -152,7 +151,7 @@ class LoginController extends BaseController
         ));
 
         $response = curl_exec($curl);
-        // Check for cURL errors
+
         if (curl_errno($curl)) {
             $errorResponse = json_encode(["status" => "error", "message" => "cURL error: " . curl_error($curl)]);
             return response()->json($errorResponse, 500);
@@ -167,7 +166,6 @@ class LoginController extends BaseController
     {
 
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/client/login',
             CURLOPT_RETURNTRANSFER => true,
@@ -188,7 +186,7 @@ class LoginController extends BaseController
         curl_close($curl);
 
         $responsData = json_decode($response);
-        // dd($responsData->data->token);
+        // dd($responsData);
         return $responsData->data->token;
 
     }

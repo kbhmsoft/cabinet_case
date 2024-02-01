@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attachment;
 use App\Models\Court;
 use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\DoptorGovOffice;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseDivision;
@@ -14,7 +15,6 @@ use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Models\gov_case\GovCaseLog;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\GovOffice;
 use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
@@ -3906,47 +3906,24 @@ class GovCaseRegisterController extends Controller
 
     public function ministriesId()
     {
-        // $curl = curl_init();
-
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/ministries/',
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING => '',
-        //     CURLOPT_MAXREDIRS => 10,
-        //     CURLOPT_TIMEOUT => 0,
-        //     CURLOPT_FOLLOWLOCATION => true,
-        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST => 'POST',
-        //     CURLOPT_HTTPHEADER => array(
-        //         'Accept: application/json',
-        //         'Content-Type: application/json',
-        //         'api-version: 1',
-        //         'apikey: 8XI1PI',
-        //         'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDYwOTg5MzYsImp0aSI6Ik1UY3dOakE1T0Rrek5nPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjA5ODkzNiwiZXhwIjoxNzA2MTg1MzM2LCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.mJaC0nsi2vTy79ytTEBsc-u0oscONPRr5sNevb_PsCbO8i9TVF74BZsd0ddvap3wVmbzHkx2uXJCQlpTDOFN2A',
-        //     ),
-        // ));
-
-        // $response = curl_exec($curl);
-
-        // curl_close($curl);
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeministry',
+            CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/offices',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array('layer_levels' => 3)),
             CURLOPT_HTTPHEADER => array(
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'api-version: 1',
                 'apikey: 8XI1PI',
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDY0MTU4MTAsImp0aSI6Ik1UY3dOalF4TlRneE1BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjQxNTgxMCwiZXhwIjoxNzA2NTAyMjEwLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.4JH70gU1GCLoO1eUr1HRfMqFOZjZYgGTQi5ZiStZZ8lZ0O23EXmCGm_t9RG2iXtL9aRmF1VZpb7gtZOxmbs_Lg',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDY3NzkyMDMsImp0aSI6Ik1UY3dOamMzT1RJd013PT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjc3OTIwMywiZXhwIjoxNzA2ODY1NjAzLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.P4lk5ndJBjH4bwj4bGU13SjAV0LZq7hhBCFT5jWcpBbN2bcOIBpWdkhXmg29dFUAZY8oHOVm7AS4N41IAEjfVQ',
             ),
         ));
 
@@ -3954,6 +3931,97 @@ class GovCaseRegisterController extends Controller
 
         curl_close($curl);
         return $response;
+    }
+
+    public function ministryIdInsert()
+    {
+        $ministriesInfo = $this->ministriesId();
+
+        $response = json_decode($ministriesInfo, true);
+        $responseData = $response['data'];
+
+        foreach ($responseData as $entry) {
+          $office = new DoptorGovOffice();
+            $office->doptor_office_id = $entry['id'];
+            $office->office_name_bn = $entry['office_name_bng'];
+            $office->office_name_en = $entry['office_name_eng'];
+            $office->parent_office_id = $entry['parent_office_id'];
+            $office->custom_layer_id = $entry['custom_layer_id'];
+            $office->office_ministry_id = $entry['office_ministry_id'];
+            $office->level = 5;
+            $office->parent = null;
+            $office->status = 1;
+            $office->save();
+        }
+
+        // foreach ($response as $officeData) {
+
+        //     $id = $officeData['id'];
+        //     $nameBng = $officeData['nameBn'];
+        //     $nameEng = $officeData['name'];
+        //     $nameShort = $officeData['nameShort'];
+        //     $nameReference = $officeData['reference'];
+        //     $nameType = $officeData['type'];
+
+        //     $dataToSave = [
+        //         'doptor_office_id' => $id,
+        //         'level' => 1,
+        //         'parent' => null,
+        //         'parent_doptor_id' => null,
+        //         'parent_layer_id' => null,
+        //         'parent_name' => null,
+        //         'office_name_bn' => $nameBng,
+        //         'office_name_en' => $nameEng,
+        //         'status' => 1,
+        //         'reference' => $nameReference,
+        //         'type' => $nameType,
+        //     ];
+
+        //     GovOffice::create($dataToSave);
+
+        // }
+
+        // $ministriesInfo = GovOffice::get();
+
+        // foreach ($ministriesInfo as $officeData) {
+        //     $tableId = $officeData->id;
+        //     $doptorId = $officeData->doptor_office_id;
+
+        //     // $ministryLayerId = $this->ministryLayerOffices($doptorId);
+        //     $ministryOrganogram = $this->ministryOraganogram($doptorId);
+        //     $responseMinistryLayer = json_decode($ministryOrganogram, true);
+
+        //     foreach ($responseMinistryLayer as $ministryLayer) {
+
+        //         if (is_array($ministryLayer)) {
+        //         $ministryLayerId = $ministryLayer['id'];
+        //         $parentId = $ministryLayer['parent'];
+        //         $sequence = $ministryLayer['sequence'];
+        //         $ministry = $ministryLayer['ministry'];
+        //         $level = $ministryLayer['level'];
+        //         $nameBn = $ministryLayer['nameBn'];
+        //         $nameEn = $ministryLayer['name'];
+
+        //         $dataToSave = [
+        //             'doptor_office_id' => $ministryLayerId,
+        //             'level' => $level,
+        //             'parent' => $tableId,
+        //             'sequence' => $sequence,
+        //             'parent_doptor_id' => $ministry,
+        //             'parent_layer_id' => null,
+        //             'parent_name' => null,
+        //             'office_name_bn' => $nameBn,
+        //             'office_name_en' => $nameEn,
+        //             'doptor_parent_id' => $parentId,
+        //             'status' => 1,
+        //         ];
+
+        //         GovOffice::create($dataToSave);
+        //     }
+        // }
+        // }
+        //  }
+
     }
 
     public function ministryLayerId($id)
@@ -4101,120 +4169,9 @@ class GovCaseRegisterController extends Controller
     //     // }
 
     // }
-    public function ministryIdInsert()
+
+    public function ministryOraganogram()
     {
-        // $ministriesId = $this->ministriesId();
-        // $response = json_decode($ministriesId, true);
-        // if ($response['status'] === 'success') {
-        //     foreach ($response['data'] as $officeData) {
-        //         $ministryId = $officeData['id'];
-        //         $ministryLayerId = $this->ministryLayerId($ministryId);
-
-        //         $ministryLayer = json_decode($ministryLayerId, true);
-        //         if ($ministryLayer['status'] === 'success') {
-        //             foreach ($ministryLayer['data'] as $officeDataMinistryLayerData) {
-
-        //                 $layerId = $officeDataMinistryLayerData['id'];
-        //                 $ministryUnderOfficeId = $this->ministryLayerAndOffices($layerId, $ministryId);
-        //                 $ministryUnderOffice = json_decode($ministryUnderOfficeId, true);
-
-        //                 if ($ministryUnderOffice['status'] === 'success') {
-        //                     foreach ($ministryUnderOffice['data'] as $ministryUnderOfficeData) {
-        //                         $nameId = $ministryUnderOfficeData['id'];
-        //                         $nameBng = $ministryUnderOfficeData['office_name_bng'];
-        //                         $dataToSave = [
-        //                             'doptor_office_id' => $nameId,
-        //                             'level' => 2,
-        //                             'parent' => null,
-        //                             'parent_doptor_id' => $ministryId,
-        //                             'parent_layer_id' => $layerId,
-        //                             'parent_name' => null,
-        //                             'office_name_bn' => $nameBng,
-        //                             'office_name_en' => null,
-        //                             'status' => 1,
-        //                         ];
-
-        //                         DoptorOffice::create($dataToSave);
-        //                     }
-        //                 }
-
-        //             }
-        //         }
-        //     }
-        // }
-
-        // $ministriesInfo = $this->ministriesId();
-
-        // $response = json_decode($ministriesInfo, true);
-        // // if ($response['status'] === 'success') {
-        // foreach ($response as $officeData) {
-
-        //     $id = $officeData['id'];
-        //     $nameBng = $officeData['nameBn'];
-        //     $nameEng = $officeData['name'];
-        //     $nameShort = $officeData['nameShort'];
-        //     $nameReference = $officeData['reference'];
-        //     $nameType = $officeData['type'];
-
-        //     $dataToSave = [
-        //         'doptor_office_id' => $id,
-        //         'level' => 1,
-        //         'parent' => null,
-        //         'parent_doptor_id' => null,
-        //         'parent_layer_id' => null,
-        //         'parent_name' => null,
-        //         'office_name_bn' => $nameBng,
-        //         'office_name_en' => $nameEng,
-        //         'status' => 1,
-        //         'reference' => $nameReference,
-        //         'type' => $nameType,
-        //     ];
-
-        //     GovOffice::create($dataToSave);
-
-        // }
-
-        $ministriesInfo = GovOffice::get();
-
-        foreach ($ministriesInfo as $officeData) {
-            $tableId = $officeData->id;
-            $doptorId = $officeData->doptor_office_id;
-            // dd($doptorId);
-            // dd($id);
-            // dd($officeData);
-            $ministryLayerId = $this->ministryLayerOffices($doptorId);
-            $responseMinistryLayer = json_decode($ministryLayerId, true);
-
-            foreach ($responseMinistryLayer as $ministryLayer) {
-
-                if (is_array($ministryLayer)) {
-                $ministryLayerId = $ministryLayer['id'];
-                $parentId = $ministryLayer['parent'];
-                $sequence = $ministryLayer['sequence'];
-                $ministry = $ministryLayer['ministry'];
-                $level = $ministryLayer['level'];
-                $nameBn = $ministryLayer['nameBn'];
-                $nameEn = $ministryLayer['name'];
-
-                $dataToSave = [
-                    'doptor_office_id' => $ministryLayerId,
-                    'level' => $level,
-                    'parent' => $tableId,
-                    'sequence' => $sequence,
-                    'parent_doptor_id' => $ministry,
-                    'parent_layer_id' => null,
-                    'parent_name' => null,
-                    'office_name_bn' => $nameBn,
-                    'office_name_en' => $nameEn,
-                    'doptor_parent_id' => $parentId,
-                    'status' => 1,
-                ];
-
-                GovOffice::create($dataToSave);
-            }
-        }
-        }
-        //  }
 
     }
 

@@ -144,14 +144,14 @@
                                     </li>
                                 @endif
 
-                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
+                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.ministryIdInsert') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                         <span class="menu-text font-weight-bolder">তালিকা</span>
                                     </a>
-                                </li> --}}
-                                
+                                </li>
+
                                 {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
@@ -501,6 +501,34 @@
                         </div>
                     </li>
                 @endcan
+
+                {{-- @can('manage_users_menu') --}}
+                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'menu-item-open' : '' }}"
+                        aria-haspopup="true">
+                        <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link menu-toggle">
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>দপ্তর ব্যাবহারকারী
+                                পরিচালনা</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+
+                            {{-- @can('users_list_menu') --}}
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">দপ্তর ব্যাবহারকারী
+                                                পরিচালনা</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            {{-- @endcan --}}
+                        </div>
+                    </li>
+                {{-- @endcan --}}
+
 
                 @can('manage_office_menu')
                     <li class="menu-item {{ request()->is('cabinet/office', 'cabinet/office/*', 'cabinet/office/create') ? 'menu-item-open' : '' }}"

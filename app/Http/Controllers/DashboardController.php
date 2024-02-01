@@ -1766,7 +1766,8 @@ class DashboardController extends Controller
 
             return redirect('dashboard');
         } else {
-            return redirect('login');
+            // return redirect('login');
+            return view('frontend.portalpage');
         }
     }
     public function public_home()

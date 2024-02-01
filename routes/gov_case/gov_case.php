@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/modal/case/details/view', [SumpremCourtController::class, 'modal_case_details_view'])->name('modal.case.details.view');
 
+
+    Route::get('cabinet/doptor/user-management', [GovCaseOfficeController::class, 'doptor_user_management'])->name('user-management');
+    Route::post('cabinet/doptor/user/manage', [GovCaseOfficeController::class, 'doptor_user_office'])->name('doptor.user.manage');
+    Route::post('cabinet/doptor/updateUserRole', [GovCaseOfficeController::class, 'doptorUpdateUserRole'])->name('doptor.updateUserRole');
+
     Route::group(['prefix' => 'cabinet/', 'as' => 'cabinet.'], function () {
 
         Route::resource('user-management', GovCaseUserManagementController::class);
