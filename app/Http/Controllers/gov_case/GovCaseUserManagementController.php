@@ -70,6 +70,20 @@ class GovCaseUserManagementController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
+
+///////// run script
+        // ***** assing role for all users
+        // $userItem = User::where('is_gov', 1)->get();
+        // foreach($userItem as $user){
+        //     $user->assignRole($user->role);
+        // } 
+
+ 
+
+
+///////// run script
+
+
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
         return view('gov_case.user_manage.index')
