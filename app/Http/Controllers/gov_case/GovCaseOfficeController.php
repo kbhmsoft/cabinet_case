@@ -756,7 +756,7 @@ class GovCaseOfficeController extends Controller
                 'Content-Type: application/json',
                 'api-version: 1',
                 'apikey: 8XI1PI',
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDY3OTYyMzgsImp0aSI6Ik1UY3dOamM1TmpJek9BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNjc5NjIzOCwiZXhwIjoxNzA2ODgyNjM4LCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.jwvxD8AOCPxmJbKAUN5H3qSFD3ri-CrUxCV4_YOhNg2QjbuA3_ESvixA2bNtGp77KSWxTPabLnP0pWO-OWkFjw',
+                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDcwMzY4NzAsImp0aSI6Ik1UY3dOekF6TmpnM01BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNzAzNjg3MCwiZXhwIjoxNzA3MTIzMjcwLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.epBLH3FmYYyQBch8eAzT_qUsFA-uoyiJQ54K56cs6SoJZ7bocQy4XcqQ9PGsNd0LeXmHtc07mksF0zCUBPTyTA',
             ),
         ));
 

@@ -89,7 +89,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- <label class="control-label visible-ie8 visible-ie9">Username</label> -->
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
-                        <input id="email" type="text" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
+                        <input id="email" type="email" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
 
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -115,7 +115,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- <a href="{{ route('password.request') }}" id="forget-password" style="color:inherit; margin-top:10px; display:inline-block;">পাসওয়ার্ড পুনরুদ্ধার?</a> -->
                      @endif
                             <button type="submit" id="submit" class="btn pull-right">
-                                 <i class="a2i_gn_login2 "></i>        প্রবেশ
+                                 <i class="a2i_gn_login2 "></i>প্রবেশ
                             </button>
                 </div>
                 <div class="form-group otp-visable">

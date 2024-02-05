@@ -75,6 +75,13 @@
       'Html' => 'Collective\\Html\\HtmlFacade',
     ),
   ),
+  'ndoptor/integration-sso-laravel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Ndoptor\\SSO\\NdoptorSSOServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 

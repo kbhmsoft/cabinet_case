@@ -15,6 +15,7 @@
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.4",
         "mpdf/mpdf": "^8.0",
+        "ndoptor/integration-sso-laravel": "^3.2",
         "spatie/laravel-permission": "^6.3"
     },
     "require-dev": {

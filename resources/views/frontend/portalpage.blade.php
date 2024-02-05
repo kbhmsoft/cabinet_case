@@ -106,10 +106,12 @@
       <div class="card shadow p-3 bg-white rounded" style="width: 300px; height: 300px;">
         <small class="text-muted d-block mx-auto mb-3 mt-3 ">স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</small>
         {{-- <button type="submit" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন </button> --}}
-        <a href="/login" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
+        <a href="{{ route('doptor.login') }}" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
 
         {{-- <button type="submit" class="btn btn-success d-block mx-auto m-3">নথি লগইন </button> --}}
-        <a href="/login" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a>
+        {{-- <a href="/login" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a> --}}
+        <a href="{{ route('sso.login') }}" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a>
+
       </div>
     </div>
   </div>

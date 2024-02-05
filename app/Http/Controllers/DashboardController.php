@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 // use Auth;
 use App\Models\Dashboard;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\DoptorOffice;
+use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-
 
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 // use App\Http\Controllers\CommonController;
@@ -38,6 +35,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $roleID = Auth::user()->role_id;
+
         $officeID = Auth::user()->office_id;
 
         $data = [];
@@ -61,51 +59,6 @@ class DashboardController extends Controller
             $data['total_court'] = DB::table('court')->whereNotIn('id', [1, 2])->count();
             $data['total_mouja'] = DB::table('mouja')->count();
             $data['total_ct'] = DB::table('case_type')->count();
-
-            // count ministry wise case status
-            /*$ministry_wise = DB::table('office')
-            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
-            \DB::raw('SUM(CASE WHEN gcr.status != "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS running_case'),
-            \DB::raw('SUM(CASE WHEN gcr.status = "3" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS completed_case'),
-            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS against_gov'),
-            \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "1" AND gcb.is_main_bibadi = "1" THEN 1 ELSE 0 END) AS not_against_gov'),
-            )
-            ->leftJoin('gov_case_bibadis as gcb', 'office.id', '=', 'gcb.respondent_id')
-            ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
-            ->where('office.level', 9)
-            ->groupBy('office.id')
-            ->groupBy('gcb.respondent_id')
-            ->orderBy('office.id', 'asc')
-            ->paginate(10);
-
-            $data['ministry_wise'] = $ministry_wise;
-
-            // Drildown Statistics
-            $ministry_list = DB::table('office')
-            ->select('office.id', 'office.office_name_bn', 'office.office_name_en')
-            ->where('office.level', 9)
-            ->get();
-
-            $ministrydata=array();
-            $departmentdata=array();
-
-            // Ministry List
-            foreach ($ministry_list as $ministry) {
-            // Ministry Data
-            $data['ministrydata'][] = array('name' => $ministry->office_name_bn, 'y' => $this->get_drildown_gov_case_count($ministry->id), 'drilldown' => $ministry->id);
-
-            // Department List
-            $department_list = DB::table('office')->select('office.id', 'office.office_name_bn')->where('parent', $ministry->id)->get();
-            foreach ($department_list as $department) {
-
-            $dept_data[$ministry->id][] = array('name' => $department->office_name_bn, 'y' => $this->get_drildown_gov_case_count('', $department->id), 'drilldown' => $department->id);
-            }
-
-            $deptdata = $dept_data[$ministry->id];
-            $departmentdata[] = array('name' => $ministry->office_name_bn, 'id' => $ministry->id, 'data' => $deptdata);
-
-            $data['department_data'] = array_merge( $departmentdata);
-            }*/
 
             $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
             $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
@@ -1060,45 +1013,13 @@ class DashboardController extends Controller
 
             $data['page_title'] = 'মনিটরিং ইউজারের ড্যাশবোর্ড';
             return view('dashboard.cabinet.cabinet_admin')->with($data);
+        } else if ($roleID == 43) {
+
+            $data['page_title'] = 'গেস্ট ইউজারের ড্যাশবোর্ড';
+            return view('dashboard.cabinet.cabinet_guest_user')->with($data);
         }
 
-        // elseif ($roleID == 36) {
-        //     // Solicitor
-        //     // Get case status by group
-        //     // Counter
-
-        //     $data['total_case'] = GovCaseRegister::count();
-        //     $data['running_case'] = GovCaseRegister::where('status', 1)->count();
-        //     $data['appeal_case'] = GovCaseRegister::where('status', 2)->count();
-        //     $data['completed_case'] = GovCaseRegister::where('status', 3)->count();
-
-        //     $data['running_case_appeal'] = GovCaseRegister::whereIn('status', [1, 2])->count();
-        //     $data['high_court_case'] = GovCaseRegister::where('case_division_id', 2)->where('status', '!=', 3)->count();
-        //     $data['appeal_court_case'] = GovCaseRegister::where('case_division_id', 1)->where('status', '!=', 3)->count();
-        //     $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->where('status', 3)->count();
-        //     $data['against_gov'] = GovCaseRegister::where('in_favour_govt', 0)->where('status', 3)->count();
-
-        //     $data['cases'] = DB::table('gov_case_registers')
-        //         ->select('gov_case_registers.*')
-        //         ->get();
-
-        //     $data['case_status'] = DB::table('gov_case_registers')
-        //         ->select('gov_case_registers.cs_id', 'case_status.status_name', DB::raw('COUNT(case_register.id) as total_case'))
-        //         ->leftJoin('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-        //         ->groupBy('gov_case_registers.cs_id')
-        //         ->where('gov_case_registers.action_user_group_id', $roleID)
-        //         ->get();
-        //     // dd($data['case_status']);
-
-        //     $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleIds([$roleID, 14]);
-
-        //     // dd($data['gov_case_status']);
-        //     $data['page_title'] = 'অ্যাটর্নি জেনারেল অফিস অপারেটরের ড্যাশবোর্ড';
-        //     return view('dashboard.cabinet.officer')->with($data);
-        // }
     }
-
-
 
     public function countHighCourtRunningCase($id)
     {
@@ -1406,23 +1327,6 @@ class DashboardController extends Controller
         return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
     }
 
-    // public function get_drildown_case_count($division = null, $district = null, $upazila = null, $status = null)
-    // {
-    //     $query = DB::table('gov_case_registers');
-
-    //     if ($division != null) {
-    //         $query->where('division_id', $division);
-    //     }
-    //     if ($district != null) {
-    //         $query->where('district_id', $district);
-    //     }
-    //     if ($upazila != null) {
-    //         $query->where('upazila_id', $upazila);
-    //     }
-
-    //     return $query->count();
-    // }
-
     public function get_drildown_gov_case_count($ministry = null, $department = null, $status = null)
     {
         $query = DB::table('gov_case_bibadis');
@@ -1452,84 +1356,6 @@ class DashboardController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CaseRegister  $caseRegister
-     * @return \Illuminate\Http\Response
-     */
-    /*public function case_details($id)
-    {
-    $data['info'] = DB::table('gov_case_registers')
-    ->join('court', 'gov_case_registers.court_id', '=', 'court.id')
-    ->join('upazila', 'gov_case_registers.upazila_id', '=', 'upazila.id')
-    ->join('mouja', 'gov_case_registers.mouja_id', '=', 'mouja.id')
-    ->join('case_type', 'gov_case_registers.ct_id', '=', 'case_type.id')
-    ->join('case_status', 'gov_case_registers.cs_id', '=', 'case_status.id')
-    ->join('case_badi', 'gov_case_registers.id', '=', 'case_badi.case_id')
-    ->join('case_bibadi', 'gov_case_registers.id', '=', 'case_bibadi.case_id')
-    ->select('gov_case_registers.*', 'court.court_name', 'upazila.upazila_name_bn', 'mouja.mouja_name_bn', 'case_type.ct_name', 'case_status.status_name', 'case_badi.badi_name', 'case_badi.badi_spouse_name', 'case_badi.badi_address', 'case_bibadi.bibadi_name', 'case_bibadi.bibadi_spouse_name', 'case_bibadi.bibadi_address')
-    ->where('gov_case_registers.id', '=', $id)
-    ->first();
-
-    $data['badis'] = DB::table('case_badi')
-    ->join('gov_case_registers', 'case_badi.case_id', '=', 'gov_case_registers.id')
-    ->select('case_badi.*')
-    ->where('case_badi.case_id', '=', $id)
-    ->get();
-
-    $data['bibadis'] = DB::table('case_bibadi')
-    ->join('gov_case_registers', 'case_bibadi.case_id', '=', 'gov_case_registers.id')
-    ->select('case_bibadi.*')
-    ->where('case_bibadi.case_id', '=', $id)
-    ->get();
-
-    $data['surveys'] = DB::table('case_survey')
-    ->join('gov_case_registers', 'case_survey.case_id', '=', 'gov_case_registers.id')
-    ->join('survey_type', 'case_survey.st_id', '=', 'survey_type.id')
-    ->join('land_type', 'case_survey.lt_id', '=', 'land_type.id')
-    ->select('case_survey.*','survey_type.st_name','land_type.lt_name')
-    ->where('case_survey.case_id', '=', $id)
-    ->get();
-
-    // Get SF Details
-    $data['sf'] = DB::table('case_sf')
-    ->select('case_sf.*')
-    ->where('case_sf.case_id', '=', $id)
-    ->first();
-    // dd($data['sf']);
-
-    // Get SF Details
-    $data['logs'] = DB::table('case_log')
-    ->select('case_log.comment', 'case_log.created_at', 'case_status.status_name', 'roles.name', 'users.name')
-    ->join('case_status', 'case_status.id', '=', 'case_log.status_id')
-    ->leftjoin('roles', 'case_log.send_user_group_id', '=', 'roles.id')
-    ->join('users', 'case_log.user_id', '=', 'users.id')
-    ->where('case_log.case_id', '=', $id)
-    ->orderBy('case_log.id', 'desc')
-    ->get();
-    // dd($data['sf']);
-
-    // Get SF Details
-    $data['hearings'] = DB::table('case_hearing')
-    ->select('case_hearing.*')
-    ->where('case_hearing.case_id', '=', $id)
-    ->orderBy('case_hearing.id', 'desc')
-    ->get();
-
-    // Dropdown
-    $data['roles'] = DB::table('roles')
-    ->select('id', 'name')
-    ->where('in_action', '=', 1)
-    ->orderBy('sort_order', 'asc')
-    ->get();
-
-    // dd($data['bibadis']);
-
-    $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
-    return view('dashboard.case_details')->with($data);
-    }*/
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -1547,180 +1373,9 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        /*$validator = \Validator::make($request->all(), [
-    'group' => 'required',
-    'comment' => 'required',
-    ]);
 
-    if ($validator->fails())
-    {
-    return response()->json(['errors'=>$validator->errors()->all()]);
     }
 
-    // User Info
-    $user = Auth::user();
-
-    // Inputs
-    $roleGroup = $request->group;
-    $caseID = $request->case_id;
-    $input = $request->all();
-
-    // Roles
-    if($roleGroup == 1){
-    // Superadmin
-    $caseStatus = '';
-    }elseif($roleGroup == 5){
-    // DC Assistant
-    $caseStatus = '';
-    }elseif($roleGroup == 6){
-    // DC
-    $caseStatus = 2;
-    }elseif($roleGroup == 7){
-    // ADC (Revenue)
-    $caseStatus = 3;
-    }elseif($roleGroup == 8){
-    // AC (RM)
-    $caseStatus = 4;
-    }elseif($roleGroup == 9){
-    // AC (Land)
-    $caseStatus = 5;
-    }elseif($roleGroup == 10){
-    // Survyor
-    $caseStatus = 6;
-    }elseif($roleGroup == 11){
-    // Kanongo
-    $caseStatus = 7;
-    }elseif($roleGroup == 12){
-    // ULAO
-    $caseStatus = 8;
-    }elseif($roleGroup == 13){
-    // GP
-    $caseStatus = 9;
-    }elseif($roleGroup == 14){
-    // ULAO
-    $caseStatus = 10;
-    }
-
-    // Get Case Data
-    $case = DB::table('gov_case_registers')
-    ->select('id', 'cs_id', 'court_id', 'case_number', 'case_date', 'ct_id', 'mouja_id', 'upazila_id', 'district_id', 'tafsil', 'chowhaddi', 'show_cause_file', 'created_at')
-    ->where('id', $caseID)
-    ->first();
-    // dd($case);
-
-    // Insert data into case_log table
-    $log_data = [
-    'case_id'       => $caseID,
-    'status_id'     => $caseStatus,
-    'user_id'       => $user->id,
-    'send_user_group_id' => $user->role_id,
-    'receive_user_group_id' => $roleGroup,
-    'comment'      => $request->comment,
-    'created_at'    => date('Y-m-d H:i:s'),
-    ];
-    DB::table('case_log')->insert($log_data);
-    // Book::create($input);
-    // dd($data_case_log);
-
-    // Update Case Register (cs_id, action_user_group_id, status(2), updated_at) table
-    $case_data = [
-    'cs_id'     => $caseStatus,
-    'action_user_group_id' => $roleGroup,
-    'status'       => 2,
-    'updated_at'    => date('Y-m-d H:i:s'),
-    ];
-    DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
-
-    return response()->json(['success'=>'Data is successfully added']);*/
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /*public function create_sf(Request $request)
-    {
-    $validator = \Validator::make($request->all(), [
-    'sf_details' => 'required',
-    ]);
-
-    if ($validator->fails())
-    {
-    return response()->json(['errors'=>$validator->errors()->all()]);
-    }
-
-    // User Info
-    $user = Auth::user();
-
-    // Inputs
-    $caseID = $request->case_id;
-    $sfDetails = $request->sf_details;
-    // $input = $request->all();
-    // dd($input);
-
-    // Insert data into case_sf table
-    $sf_data = [
-    'case_id'       => $caseID,
-    'sf_details'    => $sfDetails,
-    'user_id'       => $user->id,
-    'created_at'    => date('Y-m-d H:i:s'),
-    ];
-    DB::table('case_sf')->insert($sf_data);
-    // dd($sf_data);
-
-    // Update Case Register (is_sf(1), status(2), updated_at) table
-    $case_data = [
-    'is_sf'     => 1,
-    //'status'       => 2,
-    //'updated_at'    => date('Y-m-d H:i:s'),
-    ];
-    DB::table('gov_case_registers')->where('id', $caseID)->update($case_data);
-
-    return response()->json(['success'=>'Data is successfully added','sfdata'=>'Data is successfully added']);
-    } */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Dashboard  $dashboard
-     * @return \Illuminate\Http\Response
-     */
-    /*public function edit_sf(Request $request)
-    {
-    $validator = \Validator::make($request->all(), [
-    'sf_details' => 'required',
-    ]);
-
-    if ($validator->fails())
-    {
-    return response()->json(['errors'=>$validator->errors()->all()]);
-    }
-
-    // Inputs
-    $caseID = $request->case_id;
-    $sfID = $request->sf_id;
-    $sfDetails = $request->sf_details;
-    // $input = $request->all();
-    // dd($input);
-
-    // Update Case SF table
-    $sf_data = [
-    'sf_details'  => $sfDetails,
-    'updated_at'  => date('Y-m-d H:i:s'),
-    ];
-    DB::table('case_sf')->where('id', $sfID)->update($sf_data);
-
-    return response()->json(['success'=>'Data is successfully updated','sfdata'=> 'SF Details']);
-    }*/
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Dashboard  $dashboard
-     * @return \Illuminate\Http\Response
-     */
     public function show(Dashboard $dashboard)
     {
         //
@@ -1763,7 +1418,7 @@ class DashboardController extends Controller
     public function logincheck()
     {
         if (Auth::check()) {
-
+            // dd(Auth::user());
             return redirect('dashboard');
         } else {
             // return redirect('login');
@@ -1773,11 +1428,21 @@ class DashboardController extends Controller
     public function public_home()
     {
         if (Auth::check()) {
-            // dd('checked');
             return redirect('dashboard');
         } else {
             return view('public_home');
-            //  return redirect('login');
         }
+    }
+    public function logoutUser()
+    {
+        $userData = Auth::user();
+        // if ($userData->doptor_user_id == null) {
+        //     Auth::logout();
+        //     return redirect('login');
+        // }
+        Auth::logout();
+        $callbackurl = url('/');
+        $zoom_join_url = env('LOGIN_API2') . '/logout?' . 'referer=' . base64_encode($callbackurl);
+        return redirect()->away($zoom_join_url);
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\PagesController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontHomeController;
-use App\Http\Controllers\MyprofileController;
 Use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\MyprofileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
 use App\Http\Controllers\SiteSettingController;
@@ -60,7 +61,11 @@ Route::get('/view-clear', function() {
     return '<h1>View cache cleared</h1>';
 });
 
-Route::post('doptor/login', [LoginController::class, 'doptorLogin'])->name('doptor.login');
+Route::post('/login', [LoginController::class, 'doptorLogin'])->name('doptor.login');
+Route::get('/doptor/login', [LoginController::class, 'initiateSSOLogin'])->name('sso.login');
+Route::any('/nothi/callback', [LoginController::class, 'ndoptor_sso_callback']);
+
+Route::get('/sso/logout', [DashboardController::class, 'logoutUser'])->name('sso.logout');;
 
 Route::get('/', [DashboardController::class, 'logincheck']);
 Route::get('public_home', [FrontHomeController::class, 'public_home']);
@@ -109,12 +114,12 @@ Route::middleware('auth')->group(function () {
 
     /////************** Court Setting **************/////
     // Route::resource('court-setting', CourtController::class);
-    route::get('/court', [CourtController::class, 'index'])->name('court');
-    route::get('/court/create', [CourtController::class, 'create'])->name('court.create');
-    Route::post('/court/save', [CourtController::class, 'store'])->name('court.save');
-    route::get('/court/edit/{id}', [CourtController::class, 'edit'])->name('court.edit');
-    route::post('/court/update/{id}', [CourtController::class, 'update'])->name('court.update');
-    route::get('/court-setting/dropdownlist/getdependentdistrict/{id}', [CourtController::class , 'getDependentDistrict']);
+    // route::get('/court', [CourtController::class, 'index'])->name('court');
+    // route::get('/court/create', [CourtController::class, 'create'])->name('court.create');
+    // Route::post('/court/save', [CourtController::class, 'store'])->name('court.save');
+    // route::get('/court/edit/{id}', [CourtController::class, 'edit'])->name('court.edit');
+    // route::post('/court/update/{id}', [CourtController::class, 'update'])->name('court.update');
+    // route::get('/court-setting/dropdownlist/getdependentdistrict/{id}', [CourtController::class , 'getDependentDistrict']);
 
     /////************** General Setting **************/////
     // Route::resource('setting', SettingController::class);
