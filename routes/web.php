@@ -19,7 +19,6 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\UserNotificationController;
 
 
-
 Auth::routes([
     'login'    => true,
     'logout'   => true,
