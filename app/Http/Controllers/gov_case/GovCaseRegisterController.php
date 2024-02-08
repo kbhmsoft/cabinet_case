@@ -2374,9 +2374,10 @@ class GovCaseRegisterController extends Controller
         session()->forget('currentUrlPath');
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+
         $data['ministrys'] = GovCaseOffice::get();
-        // $data['ministrys'] = DB::table('gov_case_office')->get();
+        // return $data['ministrys'];
+        // $data['ministrys'] = DB::table('gov_case_office_duplicate')->whereIn('level',[1,2,3,4,5])->get();
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
@@ -3355,6 +3356,7 @@ class GovCaseRegisterController extends Controller
 
     public function getCaseCategory($id)
     {
+        // return $id;
         $categories = GovCaseDivisionCategory::orderby('id', 'desc')->where('gov_case_division_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
     }
@@ -3941,7 +3943,7 @@ class GovCaseRegisterController extends Controller
         $responseData = $response['data'];
 
         foreach ($responseData as $entry) {
-          $office = new DoptorGovOffice();
+          $office = new GovCaseOffice();
             $office->doptor_office_id = $entry['id'];
             $office->office_name_bn = $entry['office_name_bng'];
             $office->office_name_en = $entry['office_name_eng'];

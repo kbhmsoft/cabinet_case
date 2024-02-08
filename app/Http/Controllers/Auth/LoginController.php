@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\API\BaseController as BaseController;
 
 class LoginController extends BaseController
 {
@@ -81,7 +82,8 @@ class LoginController extends BaseController
     public function initiateSSOLogin(Request $request)
     {
         $callbackurl = url('/') . '/nothi/callback';
-        $zoom_join_url = 'https://api-training.doptor.gov.bd' . '/v2/login?referer=' . base64_encode($callbackurl);
+        // $zoom_join_url = 'https://api-training.doptor.gov.bd' . '/v2/login?referer=' . base64_encode($callbackurl);
+        $zoom_join_url = DOPTOR_ENDPOINT() . '/v2/login?referer=' . base64_encode($callbackurl);
         return redirect()->away($zoom_join_url);
     }
 
@@ -90,14 +92,17 @@ class LoginController extends BaseController
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
         if (!isset($data['token'])) {
-            return redirect()->route('nothi.v2.login');
+            // return redirect()->route('nothi.v2.login');
         } else {
             $token = $data['token'];
         }
+
+        session(['bearerToken' => $token]);
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('LOGIN_API2') . '/api/user/me',
+            CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/user/me',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -114,63 +119,14 @@ class LoginController extends BaseController
         $response = json_decode($response);
 
         if ($response->status == 'success') {
-
             $id = current($response->data->organogram_info)->id;
+
             $userData = $response->data;
             $organoGramUserInfo = DB::table('doptor_user_managements')
                 ->select('id', 'organogram_id', 'user_role')
                 ->where('doptor_user_managements.organogram_id', $id)
                 ->first();
 
-            // if ($id && $organoGramUserInfo && $organoGramUserInfo->user_role && $organoGramUserInfo->user_role != 42) {
-            //     $userInfo = $response->data->user;
-
-            //     $userEmployeeData = $response->data->employee_info;
-
-            //     $userOfficeInfo = $response->data->office_info;
-
-            //     $userOfficeInfo = $response->data->office_info;
-            //     $userDataSave = '';
-
-            //     if (!User::find($userInfo->id)) {
-            //         $userDataSave = DB::table('users')->insert([
-            //             'doptor_user_id' => $userInfo->id,
-            //             'name' => $userEmployeeData->name_bng,
-            //             'username' => $userInfo->user_alias,
-            //             'mobile_no' => $userEmployeeData->personal_mobile,
-            //             // 'designation_name' =>$user->designation_name->name_bn,
-            //             'email' => $userEmployeeData->personal_email,
-            //             'ministry' => $userOfficeInfo[0]->office_ministry_id,
-            //             'signature' => null,
-            //             'profile_image' => null,
-            //             'role_id' => $organoGramUserInfo->user_role,
-            //             'office_id' => $userOfficeInfo[0]->office_id,
-            //             'is_gov' => 1,
-            //             'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-            //         ]);
-            //     } else {
-            //         $userDataSave = DB::table('users')
-            //             ->where('doptor_user_id', $userInfo->id)
-            //             ->update([
-            //                 'name' => $userEmployeeData->name_bng,
-            //                 'username' => $userInfo->user_alias,
-            //                 'mobile_no' => $userEmployeeData->personal_mobile,
-            //                 // 'designation_name' =>$user->designation_name->name_bn,
-            //                 'email' => $userEmployeeData->personal_email,
-            //                 'ministry' => $userOfficeInfo[0]->office_ministry_id,
-            //                 'signature' => null,
-            //                 'profile_image' => null,
-            //                 'role_id' => $organoGramUserInfo->user_role,
-            //                 'office_id' => $userOfficeInfo[0]->office_id,
-            //                 'is_gov' => 1,
-            //                 'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-            //             ]);
-            //     }
-
-            //     $user = User::where('doptor_user_id', $userInfo->id)->first();
-            //     Auth::loginUsingId($user->id);
-            //     return redirect()->route('dashboard');
-            // }
             if ($id && $organoGramUserInfo && $organoGramUserInfo->user_role && $organoGramUserInfo->user_role != 42) {
                 $userInfo = $response->data->user;
                 $userEmployeeData = $response->data->employee_info;
@@ -188,6 +144,8 @@ class LoginController extends BaseController
                     'office_id' => $userOfficeInfo[0]->office_id,
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+                    'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
+                    'designation' => $userOfficeInfo[0]->designation
                 ];
 
                 User::updateOrInsert(
@@ -196,15 +154,17 @@ class LoginController extends BaseController
                 );
 
                 $user = User::where('doptor_user_id', $userInfo->id)->first();
+                $role = Role::find($organoGramUserInfo->user_role);
+                $user->assignRole($role);
                 Auth::loginUsingId($user->id);
                 return redirect()->route('dashboard');
-            }
 
-            else if ($id && (!$organoGramUserInfo || !$organoGramUserInfo->user_role)) {
+            } else if ($id && (!$organoGramUserInfo || !$organoGramUserInfo->user_role)) {
+
                 $userInfo = $response->data->user;
                 $userEmployeeData = $response->data->employee_info;
                 $userOfficeInfo = $response->data->office_info;
-
+                // dd($userOfficeInfo[0]->designation);
                 $userData = [
                     'name' => $userEmployeeData->name_bng,
                     'username' => $userInfo->user_alias,
@@ -217,6 +177,8 @@ class LoginController extends BaseController
                     'office_id' => $userOfficeInfo[0]->office_id,
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+                    'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
+                    'designation' => $userOfficeInfo[0]->designation
                 ];
 
                 User::updateOrInsert(
@@ -226,10 +188,14 @@ class LoginController extends BaseController
 
                 // Retrieve the user after update/insert
                 $user = User::where('doptor_user_id', $userInfo->id)->first();
+                $role = Role::find($organoGramUserInfo->user_role);
+                $user->assignRole($role);
                 Auth::loginUsingId($user->id);
 
                 return redirect()->route('dashboard');
             }
+            // dd($organoGramUserInfo);
+            // $user->assignRole($user->role);
         }
     }
 
@@ -316,9 +282,8 @@ class LoginController extends BaseController
 
     public static function logout_doptor()
     {
-        // dd(1);+
         $callbackurl = url('/');
-        $zoom_join_url = env('LOGIN_API2') . '/v2/logout?' . 'referer=' . base64_encode($callbackurl);
+        $zoom_join_url = DOPTOR_ENDPOINT() . '/v2/logout?' . 'referer=' . base64_encode($callbackurl);
 
         $curl = curl_init();
         curl_setopt_array($curl, array(

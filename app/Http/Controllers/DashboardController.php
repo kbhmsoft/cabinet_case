@@ -66,10 +66,8 @@ class DashboardController extends Controller
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-            // return $data;
             // View
 
-            // View
             $data['page_title'] = 'সুপার অ্যাডমিন ড্যাশবোর্ড';
             return view('dashboard.cabinet.super_admin')->with($data);
             // return view('dashboard.superadmin')->with($data);
@@ -80,24 +78,25 @@ class DashboardController extends Controller
                 ->whereIn('gov_case_office.level', [1, 3])
                 ->paginate(10);
 
+            //  return  $data['ministry'];
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
                 $childOfficeIds = [];
 
                 $childOfficeQuery = DB::table('gov_case_office')
-                    ->select('id')
-                    ->where('parent', $val->id)->get();
+                    ->select('id', 'doptor_office_id')
+                    ->where('parent_office_id', $val->doptor_office_id)->get();
 
                 foreach ($childOfficeQuery as $childOffice) {
-                    $childOfficeIds[] = $childOffice->id;
+                    $childOfficeIds[] = $childOffice->doptor_office_id;
                 }
 
                 $finalOfficeIds = [];
 
                 if (empty($childOfficeIds)) {
-                    $finalOfficeIds[] = $val->id;
+                    $finalOfficeIds[] = $val->doptor_office_id;
                 } else {
-                    $finalOfficeIds[] = $val->id;
+                    $finalOfficeIds[] = $val->doptor_office_id;
                     $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
                 }
 
@@ -228,11 +227,11 @@ class DashboardController extends Controller
 
             $childOfficeIds = [];
             $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id')
-                ->where('parent', $officeID)->get();
+                ->select('id', 'doptor_office_id')
+                ->where('parent_office_id', $officeID)->get();
 
             foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->id;
+                $childOfficeIds[] = $childOffice->doptor_office_id;
             }
 
             $finalOfficeIds = [];
@@ -341,21 +340,23 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $officeId = Auth::user()->office_id;
+
             $data['ministry'] = DB::table('gov_case_office')
-                ->where('gov_case_office.parent', $finalOfficeIds)
-                ->orwhere('id', $finalOfficeIds)
+                ->where('gov_case_office.parent_office_id', $finalOfficeIds)
+                ->orwhere('doptor_office_id', $finalOfficeIds)
                 ->paginate(10);
 
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
-                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
-                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
-                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
-                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
+                $doptorOfficeId = $val->doptor_office_id;
+                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($doptorOfficeId)->count();
+                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($doptorOfficeId)->count();
+                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($doptorOfficeId)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($doptorOfficeId)->count();
+                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($doptorOfficeId)->count();
                 array_push($arrayd, $val);
             }
-            // return $arrayd;
+
             $ministrydata = array();
             $departmentdata = array();
 
@@ -446,11 +447,11 @@ class DashboardController extends Controller
 
             $childOfficeIds = [];
             $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id')
-                ->where('parent', $officeID)->get();
+                ->select('id', 'doptor_office_id')
+                ->where('parent_office_id', $officeID)->get();
 
             foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->id;
+                $childOfficeIds[] = $childOffice->doptor_office_id;
             }
 
             $finalOfficeIds = [];
@@ -562,18 +563,20 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)->count();
 
             $officeId = Auth::user()->office_id;
-            $data['ministry'] = DB::table('gov_case_office')
-                ->where('gov_case_office.parent', $finalOfficeIds)
-                ->orwhere('id', $finalOfficeIds)
+
+             $data['ministry'] = DB::table('gov_case_office')
+                ->where('gov_case_office.parent_office_id', $finalOfficeIds)
+                ->orwhere('doptor_office_id', $finalOfficeIds)
                 ->paginate(10);
 
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
-                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
-                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
-                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
-                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
+                $doptorOfficeId = $val->doptor_office_id;
+                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($doptorOfficeId)->count();
+                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($doptorOfficeId)->count();
+                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($doptorOfficeId)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($doptorOfficeId)->count();
+                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($doptorOfficeId)->count();
                 array_push($arrayd, $val);
             }
             // return $arrayd;
@@ -592,15 +595,14 @@ class DashboardController extends Controller
             $childOfficeIds = [];
 
             $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id')
-                ->where('parent', $officeID)->get();
+                ->select('id','doptor_office_id')
+                ->where('parent_office_id', $officeID)->get();
 
             foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->id;
+                $childOfficeIds[] = $childOffice->doptor_office_id;
             }
 
             $finalOfficeIds = [];
-
             if (empty($childOfficeIds)) {
                 $finalOfficeIds[] = $officeID;
             } else {
@@ -711,17 +713,18 @@ class DashboardController extends Controller
 
             // $officeId = Auth::user()->office_id;
             $data['ministry'] = DB::table('gov_case_office')
-                ->where('gov_case_office.parent', $finalOfficeIds)
-                ->orwhere('id', $finalOfficeIds)
-                ->paginate(10);
+            ->where('gov_case_office.parent_office_id', $finalOfficeIds)
+            ->orwhere('doptor_office_id', $finalOfficeIds)
+            ->paginate(10);
 
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
-                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
-                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
-                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
-                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
+                $doptorOfficeId = $val->doptor_office_id;
+                $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($doptorOfficeId)->count();
+                $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($doptorOfficeId)->count();
+                $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($doptorOfficeId)->count();
+                $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($doptorOfficeId)->count();
+                $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($doptorOfficeId)->count();
                 array_push($arrayd, $val);
             }
             // return $arrayd;
@@ -909,37 +912,40 @@ class DashboardController extends Controller
         elseif ($roleID == 39) {
 
             $data['ministry'] = DB::table('gov_case_office')
-                ->whereIn('gov_case_office.level', [1, 3])
-                ->paginate(10);
+            ->whereIn('gov_case_office.level', [1, 3])
+            ->paginate(10);
+        $arrayd = [];
+        foreach ($data['ministry'] as $key => $val) {
+            $childOfficeIds = [];
 
-            $arrayd = [];
-            foreach ($data['ministry'] as $key => $val) {
-                $childOfficeIds = [];
+            // $childOfficeQuery = DB::table('gov_case_office')
+            //     ->select('id')
+            //     ->where('parent', $val->id)->get();
 
-                $childOfficeQuery = DB::table('gov_case_office')
-                    ->select('id')
-                    ->where('parent', $val->id)->get();
+            $childOfficeQuery = DB::table('gov_case_office')
+                ->select('id', 'doptor_office_id')
+                ->where('parent_office_id', $val->doptor_office_id)->get();
 
-                foreach ($childOfficeQuery as $childOffice) {
-                    $childOfficeIds[] = $childOffice->id;
-                }
-
-                $finalOfficeIds = [];
-
-                if (empty($childOfficeIds)) {
-                    $finalOfficeIds[] = $val->id;
-                } else {
-                    $finalOfficeIds[] = $val->id;
-                    $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-                }
-
-                $val->highcourt_running_case = $this->countHighCourtRunningCase($finalOfficeIds)->count();
-                $val->appeal_running_case = $this->countAppealRunningCase($finalOfficeIds)->count();
-                $val->against_gov = $this->countHighCourtAgainstGovCase($finalOfficeIds)->count();
-                $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($finalOfficeIds)->count();
-                $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
-                array_push($arrayd, $val);
+            foreach ($childOfficeQuery as $childOffice) {
+                $childOfficeIds[] = $childOffice->doptor_office_id;
             }
+
+            $finalOfficeIds = [];
+
+            if (empty($childOfficeIds)) {
+                $finalOfficeIds[] = $val->doptor_office_id;
+            } else {
+                $finalOfficeIds[] = $val->doptor_office_id;
+                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            }
+
+            $val->highcourt_running_case = $this->countHighCourtRunningCase($finalOfficeIds)->count();
+            $val->appeal_running_case = $this->countAppealRunningCase($finalOfficeIds)->count();
+            $val->against_gov = $this->countHighCourtAgainstGovCase($finalOfficeIds)->count();
+            $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($finalOfficeIds)->count();
+            $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
+            array_push($arrayd, $val);
+        }
 
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
@@ -1258,15 +1264,18 @@ class DashboardController extends Controller
     {
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
-        $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent', $ministry_id)->orwhere('id', $ministry_id)->paginate(10);
+        // $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent', $ministry_id)->orwhere('id', $ministry_id)->paginate(10);
+
+        $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
 
         $arrayd = [];
         foreach ($data['ministry_wise'] as $key => $val) {
-            $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($val->id)->count();
-            $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($val->id)->count();
-            $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($val->id)->count();
-            $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($val->id)->count();
-            $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($val->id)->count();
+            $doptorOfficeId = $val->doptor_office_id;
+            $val->highcourt_running_case = $this->countMinistryWiseHighCourtRunningCase($doptorOfficeId)->count();
+            $val->appeal_running_case = $this->countMinistryWiseAppealRunningCase($doptorOfficeId)->count();
+            $val->against_gov = $this->countMinistryWiseHighCourtAgainstGovCase($doptorOfficeId)->count();
+            $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($doptorOfficeId)->count();
+            $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($doptorOfficeId)->count();
             array_push($arrayd, $val);
         }
         //    return $arrayd;
@@ -1436,13 +1445,17 @@ class DashboardController extends Controller
     public function logoutUser()
     {
         $userData = Auth::user();
+
         // if ($userData->doptor_user_id == null) {
         //     Auth::logout();
         //     return redirect('login');
         // }
+
         Auth::logout();
+        session()->flush();
         $callbackurl = url('/');
-        $zoom_join_url = env('LOGIN_API2') . '/logout?' . 'referer=' . base64_encode($callbackurl);
+        $zoom_join_url = DOPTOR_ENDPOINT() . '/logout?' . 'referer=' . base64_encode($callbackurl);
+        // $zoom_join_url = 'https://api-training.doptor.gov.bd' . '/logout?' . 'referer=' . base64_encode($callbackurl);
         return redirect()->away($zoom_join_url);
     }
 }

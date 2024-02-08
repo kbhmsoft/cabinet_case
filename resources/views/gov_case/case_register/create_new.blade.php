@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
 <!-- Include SweetAlert JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script> --}}
 
 @section('content')
 
@@ -18,7 +18,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -665,12 +665,12 @@
                                                                         <span class="text-danger">*</span>
                                                                     </h3>
                                                                 </div>
-        
+
                                                                 <div class="symbol-group symbol-hover py-2">
                                                                     <div class="symbol symbol-30 symbol-light-primary"
                                                                         data-toggle="tooltip" data-placement="top" title=""
                                                                         role="button" data-original-title="ফাইল যুক্ত করুণ">
-        
+
                                                                         <div id="addSuspensionOrderFileRow">
                                                                             <span class="symbol-label font-weight-bold bg-success">
                                                                                 <i
@@ -716,10 +716,10 @@
                                                 </div>
 
                                                 <div class="row p-5" id="interim_order_details_div">
-                                                
+
                                                         <label class="ml-2">অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
                                                         <textarea name="interim_order_details" class="form-control ml-2" id="interim_order" rows="5" spellcheck="false"></textarea>
-                                                    
+
                                                         <div class="col-md-12 mt-5">
                                                             <fieldset class="">
                                                                 <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -729,12 +729,12 @@
                                                                             <span class="text-danger">*</span>
                                                                         </h3>
                                                                     </div>
-            
+
                                                                     <div class="symbol-group symbol-hover py-2">
                                                                         <div class="symbol symbol-30 symbol-light-primary"
                                                                             data-toggle="tooltip" data-placement="top" title=""
                                                                             role="button" data-original-title="ফাইল যুক্ত করুণ">
-            
+
                                                                             <div id="addSuspensionOrderFileRowTwo">
                                                                                 <span class="symbol-label font-weight-bold bg-success">
                                                                                     <i
@@ -742,9 +742,9 @@
                                                                                 </span>
                                                                             </div>
                                                                         </div>
-            
+
                                                                     </div>
-            
+
                                                                 </div>
                                                                 <br>
                                                                 <div class="mt-3 px-5">
@@ -1210,7 +1210,7 @@
 @endsection
 
 @section('scripts')
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
     <script>
         $(document).ready(function() {
             $('#select2Dropdown').select2();
@@ -1254,6 +1254,7 @@
 
 
     @include('gov_case.case_register.create_js')
+
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
@@ -1280,22 +1281,6 @@
                 }
             });
 
-
-
-
-
-            // checkBox = document.getElementById('is_final_order');
-            // // Check if the element is selected/checked
-            // if (checkBox.checked) {
-            //     // Respond to the result
-            //     alert("Checkbox checked!");
-            // }
-            // if ($("#is_final_order").prop('checked') == true) {
-            //     //do something
-            //     alert(1)
-            // } else {
-            //     $('#finalOrderDiv').hide();
-            // }
             $("#court").change(function() {
                 var getCourt = $('#court').find(":selected").val();
                 if (getCourt == 1) {

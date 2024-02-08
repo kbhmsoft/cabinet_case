@@ -1,3 +1,5 @@
+
+
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
@@ -143,13 +145,13 @@
                                     </li>
                                 @endif
 
-                                <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
+                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.case.ministryIdInsert') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                         <span class="menu-text font-weight-bolder">তালিকা</span>
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
@@ -280,7 +282,7 @@
                     </li>
                 @endcan
 
-                @can('most_important_case')
+                @can('most_important_case_list')
                     <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourtAppeal/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
@@ -291,7 +293,7 @@
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             <ul class="menu-subnav">
-                                
+
                                 @if ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15)
                                     <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
@@ -304,8 +306,9 @@
                                     </li>
                                 @endif
 
-                                @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
-                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourtAppeal/importgantCaseList']) ? 'menu-item-active' : '' }}"
+
+                                @can('case_list')
+                                <li class="menu-item {{ request()->is(['cabinet/case/highcourtAppeal/importgantCaseList']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourtAppealMostImportantCase') }}"
                                             class="menu-link">
@@ -314,7 +317,8 @@
                                                 তালিকা</span>
                                         </a>
                                     </li>
-                                @endif
+
+                                @endcan
                         </div>
                     </li>
                 @endcan
@@ -384,6 +388,7 @@
                         </div>
                     </li>
                 @endcan
+
                 @can('manage_users_menu')
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
@@ -445,7 +450,7 @@
                     </li>
                 @endcan
 
-                {{-- @can('manage_users_menu') --}}
+                @can('doptor_user_manage')
                 <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'menu-item-open' : '' }}"
                     aria-haspopup="true">
                     <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link menu-toggle">
@@ -456,7 +461,7 @@
                     <div class="menu-submenu">
                         <i class="menu-arrow"></i>
 
-                        {{-- @can('users_list_menu') --}}
+                        @can('doptor_user_management_different_user')
                         <ul class="menu-subnav">
                             <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'hilightMenu' : '' }}"
                                 aria-haspopup="true">
@@ -467,10 +472,10 @@
                                 </a>
                             </li>
                         </ul>
-                        {{-- @endcan --}}
+                        @endcan
                     </div>
                 </li>
-                {{-- @endcan --}}
+                @endcan
 
 
                 @can('manage_office_menu')
@@ -582,18 +587,7 @@
                                         </a>
                                     </li>
                                 @endcan --}}
-                                @can('case_result_done_menu')
-                                    <li class="menu-item {{ request()->is('cabinet/results_completed') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.results_completed') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">ফলাফল সম্পন্ন</span>
-                                            <span class="menu-label">
-                                                <span class="label label-rounded label-danger">{{ $CaseResultCount }}</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                @endcan
+                           
                                 @can('main_plaintiff_for_case')
 
                                     @forelse($case_status as $row)

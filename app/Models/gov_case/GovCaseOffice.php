@@ -2,31 +2,28 @@
 
 namespace App\Models\gov_case;
 
+use App\Models\CaseStatus;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\gov_case\GovCaseOfficeType;
 
 class GovCaseOffice extends Model
 {
 	use HasFactory;
+    protected $table = 'gov_case_office';
+	public $timestamps = true;
 
-	protected $table = 'gov_case_office';
-	public $timestamps = false;
-
-	
 	protected $fillable = [
-	'id',	
-	'level',
-	'parent_name',	
-	'office_name_bn',	
-	'office_name_en',	
-	'status',	
-	'type',
-	'office_head_desig',
+        'id',
+        'doptor_office_id',
+        'level',
+        'parent',
+        'office_name_bn',
+        'office_name_en',
+        'office_ministry_id',
+        'custom_layer_id',
+        'parent_office_id',
+        'status',
 	];
-
-    public function office_type(){
-        return $this->hasOne(GovCaseOfficeType::class,'id', 'level');
-    }
-	
 }

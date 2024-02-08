@@ -57,9 +57,11 @@ class User extends Authenticatable
         return $this->belongsTo(Office::class, 'office_id');
     }
     public function govOffice() {
-        return $this->belongsTo(GovCaseOffice::class, 'office_id');
+        return $this->belongsTo(GovCaseOffice::class, 'office_id', 'doptor_office_id');
     }
-
+    // public function govOffice() {
+    //     return $this->belongsTo(GovCaseOffice::class, 'office_id');
+    // }
     public function caseSF(){
 		return $this->hasMany(CaseSF::class, 'id', 'user_id');
 	}

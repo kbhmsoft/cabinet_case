@@ -1,18 +1,4 @@
 <!DOCTYPE html>
-<!--
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.2
-Version: 3.3.0
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
@@ -56,37 +42,26 @@ License: You must have a valid license purchased only from themeforest(the above
   -o-background-size: cover;
   background-size: cover;
 }
-    .disabledContent
-    {
-        cursor: not-allowed;
-        background-color: rgb(229, 229, 229) !important;
-    }
-
-    .disabledContent > *
-    {
-        pointer-events:none;
-    }
 </style>
 <body class="page-md login" style="background: transparent !important;">
-<!-- BEGIN LOGO -->
+
     <div class="logo">
         <a href="#">
-           {{-- <img src="{{ asset('media/logos/civil-suit-logo.png') }}" style="width: 360px;" alt="" /> --}}
+
             <img src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" style="width: 360px;" alt="" />
         </a>
     </div>
-<!-- END LOGO -->
-    <!-- BEGIN LOGIN -->
+
     <div class="content">
        <br>
-        <!-- BEGIN LOGIN FORM -->
+
         <div style="display: block; overflow: hidden; margin-bottom: 5px;">
 
             <form method="POST" action="{{ route('doptor.login') }}">
                 @csrf
                 <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
                 <div class="form-group otp-hidden">
-                    <!-- <label class="control-label visible-ie8 visible-ie9">Username</label> -->
+
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
                         <input id="email" type="email" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
@@ -112,7 +87,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
                 <div class="form-actions otp-hidden">
                     @if (Route::has('password.request'))
-                    <!-- <a href="{{ route('password.request') }}" id="forget-password" style="color:inherit; margin-top:10px; display:inline-block;">পাসওয়ার্ড পুনরুদ্ধার?</a> -->
+
                      @endif
                             <button type="submit" id="submit" class="btn pull-right">
                                  <i class="a2i_gn_login2 "></i>প্রবেশ
@@ -132,7 +107,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </button>
                 </div>
             </form>
-                         <!-- END LOGIN FORM -->
+
         </div>
 
         <style>
@@ -149,9 +124,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     </div>
 
-    <!-- END LOGIN -->
-    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-    <!-- BEGIN CORE PLUGINS -->
+
 
     <script src="{{ asset('/login_assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery-migrate.min.js') }}" type="text/javascript"></script>
@@ -159,10 +132,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ asset('/login_assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
     <script src="{{ asset('/login_assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
@@ -170,7 +140,6 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ asset('/login_assets/admin/pages/scripts/login-soft.js') }}" type="text/javascript"></script>
 
 
-<!-- END JAVASCRIPTS -->
 </body>
-<!-- END BODY -->
+
 </html>

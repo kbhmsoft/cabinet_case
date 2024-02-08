@@ -25,11 +25,11 @@ class Role extends Model implements RoleContract
     use RefreshesPermissionCache;
 
     protected $guarded = [];
-    
+
     protected $fillable = [
         'name','name_bn', 'status', 'guard_name','created_by'
     ];
-    
+
 
     public function __construct(array $attributes = [])
     {
@@ -135,6 +135,8 @@ class Role extends Model implements RoleContract
 
         return $role;
     }
+
+    
 
     /**
      * Find or create role by its name (and optionally guardName).

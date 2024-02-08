@@ -20,7 +20,6 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\UserNotificationController;
 
 
-
 Auth::routes([
     'login'    => true,
     'logout'   => true,
@@ -65,7 +64,7 @@ Route::post('/login', [LoginController::class, 'doptorLogin'])->name('doptor.log
 Route::get('/doptor/login', [LoginController::class, 'initiateSSOLogin'])->name('sso.login');
 Route::any('/nothi/callback', [LoginController::class, 'ndoptor_sso_callback']);
 
-Route::get('/sso/logout', [DashboardController::class, 'logoutUser'])->name('sso.logout');;
+Route::get('/sso/logout', [DashboardController::class, 'logoutUser'])->name('sso.logout');
 
 Route::get('/', [DashboardController::class, 'logincheck']);
 Route::get('public_home', [FrontHomeController::class, 'public_home']);

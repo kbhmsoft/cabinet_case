@@ -48,7 +48,7 @@ class GovCaseUserManagementController extends Controller
         //Add Conditions
         $query = DB::table('users')->orderBy('id', 'DESC')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
             ->where('users.is_gov', 1);
 
@@ -69,6 +69,16 @@ class GovCaseUserManagementController extends Controller
 
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
+
+
+            ///////// start run script
+                // ***** assing role for all users
+                // $userItem = User::where('is_gov', 1)->get();
+                // foreach($userItem as $user){
+                //     $user->assignRole($user->role);
+                // }
+            ///////// run script
+
 
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
@@ -295,7 +305,7 @@ class GovCaseUserManagementController extends Controller
         } else {
             $profilePic = null;
         }
-        
+
         $userUpdate = DB::table('users')
             ->where('id', $id)
             ->update(['name' => $request->name,
@@ -310,20 +320,20 @@ class GovCaseUserManagementController extends Controller
                 'role_id' => $request->role_id,
                 'office_id' => $request->office_id,
             ]);
- 
+
 
             $role = Role::where('id', $request->role_id)->first();
             $user = User::where('id', $id)->first();
 
-            // clear all ruole for this user 
+            // clear all ruole for this user
             $user->syncRoles([]);
 
-            // assign role to the user 
+            // assign role to the user
             if($user != null && $role != null){
                 $user->assignRole($role);
             }
 
-            
+
         return redirect()->route('cabinet.user-management.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');
     }

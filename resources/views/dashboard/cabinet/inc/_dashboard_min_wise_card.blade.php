@@ -14,11 +14,8 @@
                </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($ministryData as $ministry) --}}
-    
                 @foreach ($ministry as $key=>$val)
                <tr>
-                {{-- {{dd($ministry)}} --}}
                   <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
                   <td><h4><a href="{{ route('cabinet.case.ministryWiseData', $val->id) }}">{{ $val->office_name_bn }}</a></h4></td>
                   <td align="center">{{ en2bn($val->highcourt_running_case) }}</td>
@@ -37,20 +34,3 @@
       </div>
    </div>
 
-   <?php
-//    $ministryCount = DB::table('gov_case_office')
-//        ->select(
-//            'gov_case_office.id',
-//            'gov_case_office.office_name_bn',
-//            'gov_case_office.office_name_en',
-//            DB::raw('SUM(CASE WHEN agcr.is_final_order = "0" THEN 1 ELSE 0 END) AS appeal_running_case'),
-//        )
-//        ->leftJoin('appeal_gov_case_register as agcr', 'gov_case_office.id', '=', 'agcr.appeal_office_id')
-//        ->where('gov_case_office.id', $val->id)
-//        ->groupBy('gov_case_office.id')
-//        ->count();
-
-//    if($ministryCount){
-//        $appealRunningCount = $ministryCount;
-//    }
-   ?>

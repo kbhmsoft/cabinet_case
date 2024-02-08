@@ -1,5 +1,6 @@
 @extends('layouts.cabinet.cab_default')
 
+
 @section('content')
     <style type="text/css">
         #appRowDiv td {
@@ -92,16 +93,6 @@
 
                     </select>
                 </div>
-                {{-- <div class="form-group mb-2">
-                    <select name="role" class="form-control w-100">
-                        <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
-                        @foreach ($user_role as $value)
-                            <option value="{{ $value->id }}"
-                                {{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
-                                {{ $value->name }} </option>
-                        @endforeach
-                    </select>
-                </div> --}}
 
                 <button type="submit" class="btn btn-success" id="doptorOfficeSearch">অনুসন্ধান করুন</button>
             </form>
@@ -123,14 +114,19 @@
 
             </table>
 
-            {{-- {!! $users->links() !!} --}}
         </div>
     </div>
     <!--end::Card-->
 @endsection
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"></script>
+<script src="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script> --}}
+
 {{-- Includable CSS Related Page --}}
 @section('styles')
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -180,6 +176,13 @@
             var officeID = 0;
         </script>
     @endif
+
+    <script>
+        // $(document).ready(function() {
+        //     $('#example').DataTable();
+        // });
+    </script>
+
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
@@ -400,37 +403,10 @@
         });
     </script>
 
-    <script>
-        // $(document).ready(function () {
-
-        //     $("#doptorOfficeForm").submit(function (e) {
-        //         e.preventDefault();
-        //         var formData = $(this).serialize();
-
-        //         $.ajax({
-        //             url: "{{ route('doptor.user.manage') }}",
-        //             type: "POST",
-        //             data: formData,
-        //             success: function (response) {
-
-        //                 console.log(response);
-        //             },
-        //             error: function (xhr, status, error) {
-
-        //                 console.error(xhr.responseText);
-        //             }
-        //         });
-        //     });
-        // });
-    </script>
 
 
 
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
+
     <script>
         // $(document).ready(function() {
         //     $('#doptorOfficeForm').submit(function(e) {
@@ -455,14 +431,13 @@
        $('#doptorOfficeForm').submit(function(e) {
         e.preventDefault();
         var formData = $(this).serialize();
-
         $.ajax({
             type: 'POST',
             url: "{{ route('doptor.user.manage') }}",
             data: formData,
             success: function(response) {
                 Swal.fire({
-                    title: `<h3 class="text-center text-success font-weight-bolder">Auto-Close Alert</h3>`,
+                    title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
                     html: `<h4>I will close in <b></b> milliseconds.</h4>`,
                     timer: 2000,
                     timerProgressBar: true,
@@ -487,56 +462,6 @@
         });
     });
 });
-
-
-// $(document).ready(function() {
-//     $('#doptorOfficeForm').submit(function(e) {
-//         e.preventDefault();
-//         var formData = $(this).serialize();
-
-//         $.ajax({
-//             type: 'POST',
-//             url: "{{ route('doptor.user.manage') }}",
-//             data: formData,
-//             success: function(response) {
-//                 // Show SweetAlert here
-//                 Swal.fire({
-//                     title: "Auto-Close Alert",
-//                     html: `
-//                         <div class="custom-swal-content">
-//                             <p>I will close in <b id="timer"></b> milliseconds.</p>
-//                             <div class="progress-bar-container">
-//                                 <div class="progress-bar"></div>
-//                             </div>
-//                         </div>
-//                     `,
-//                     timer: 2500,
-//                     onBeforeOpen: () => {
-//                         Swal.showLoading();
-//                         const timer = Swal.getPopup().querySelector("#timer");
-//                         const progressBar = Swal.getPopup().querySelector(".progress-bar");
-
-//                         timerInterval = setInterval(() => {
-//                             timer.textContent = `${Math.ceil(Swal.getTimerLeft() / 1000)}`;
-//                             const progress = (Swal.getTimerLeft() / 2500) * 100;
-//                             progressBar.style.width = `${progress}%`;
-//                         }, 100);
-//                     },
-//                     onClose: () => {
-//                         clearInterval(timerInterval);
-//                     }
-//                 }).then((result) => {
-//                     // Continue with your existing code
-//                     console.log('Response:', response);
-//                     $('#tableBody').append(response.tableHtml);
-//                 });
-//             },
-//             error: function() {
-//                 console.error('Error fetching data.');
-//             }
-//         });
-//     });
-// });
 
     </script>
 @endsection

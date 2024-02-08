@@ -22,11 +22,9 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        // All user list
-        // $users = UserManagement::latest()->paginate(5);
+
         if($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4 || $roleID == 27 ){
             $users= DB::table('users')
                             ->orderBy('id','DESC')
@@ -74,12 +72,12 @@ class UserManagementController extends Controller
             ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
             ->get();
         }else{
-        $data['offices'] = DB::table('office')
-        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-        ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-        ->where('office.district_id', $officeInfo->district_id)
-        ->get();
+            $data['offices'] = DB::table('office')
+            ->leftJoin('district', 'office.district_id', '=', 'district.id')
+            ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+            ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
+            ->where('office.district_id', $officeInfo->district_id)
+            ->get();
         }
 
         // dd($case_type);
@@ -176,11 +174,11 @@ class UserManagementController extends Controller
         ->get();
 
         $data['offices'] = DB::table('office')
-        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-        ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')/*
-        ->where('office.district_id', 38)*/
-        ->get();
+            ->leftJoin('district', 'office.district_id', '=', 'district.id')
+            ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+            ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')/*
+            ->where('office.district_id', 38)*/
+            ->get();
         $data['page_title'] = 'ইউজার ইনফর্মেশন সংশোধন ফরম';
         return view('user_manage.edit')->with($data);
         // return view('user_manage.edit', compact('userManagement'));

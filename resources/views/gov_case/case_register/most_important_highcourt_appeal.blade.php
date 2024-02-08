@@ -209,7 +209,7 @@
                                 @endif
                             </td>
 
-                            <td>{{ App\Models\gov_case\GovCaseOffice::find($row->mainBibadis->first()->respondent_id)->office_name_bn }}
+                            <td>{{ App\Models\gov_case\GovCaseOffice::find($row->mainBibadis->first()->respondent_id)->office_name_bn  ?? ''}}
                             </td>
                             <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
                             <td style="">

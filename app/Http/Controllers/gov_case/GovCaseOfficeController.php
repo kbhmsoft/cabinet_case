@@ -7,6 +7,7 @@ use Response;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Helper\DoptorHandler;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,13 @@ use App\Models\gov_case\DoptorUserManagement;
 
 class GovCaseOfficeController extends Controller
 {
+    // private $authenticationService;
+
+    // public function __construct(DoptorHandler $authenticationService)
+    // {
+    //     $this->authenticationService = $authenticationService;
+    //     $this->middleware('permission:create_new_office', ['only' => ['create']]);
+    // }
 
     public function __construct()
     {
@@ -528,7 +536,7 @@ class GovCaseOfficeController extends Controller
     {
         // $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", "id");
         // return json_encode($subcategories);
-        $subcategories = DoptorGovOffice::where("level", $id)->pluck("office_name_bn", 'doptor_office_id');
+        $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", 'doptor_office_id');
         // dd($subcategories);
         return json_encode($subcategories);
     }
@@ -537,7 +545,7 @@ class GovCaseOfficeController extends Controller
         // $subcategories = GovCaseOffice::where("parent", $id)->pluck("office_name_bn", "id");
         // return json_encode($subcategories);
 
-        $subcategories = DoptorGovOffice::where("parent_office_id", $id)->pluck("office_name_bn",'doptor_office_id');
+        $subcategories = GovCaseOffice::where("parent_office_id", $id)->pluck("office_name_bn",'doptor_office_id');
         return json_encode($subcategories);
     }
     public function getDependentMouja($id)
@@ -557,11 +565,16 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
+        // $query = DB::table('users')->orderBy('id', 'DESC')
+        //     ->join('roles', 'users.role_id', '=', 'roles.id')
+        //     ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+        //     ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+        //     ->where('users.is_gov', 1);
         $query = DB::table('users')->orderBy('id', 'DESC')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-            ->where('users.is_gov', 1);
+        ->join('roles', 'users.role_id', '=', 'roles.id')
+        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+        ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+        ->where('users.is_gov', 1);
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -578,8 +591,8 @@ class GovCaseOfficeController extends Controller
             ->orderBy('sort_order', 'ASC')
             ->get();
 
-        $data['ministries'] = DoptorGovOffice::where('level', 1)->get();
-        $data['divOffices'] = DoptorGovOffice::where('level', 3)->get();
+        $data['ministries'] = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
         $data['organoGram'] = '';
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
@@ -649,7 +662,7 @@ class GovCaseOfficeController extends Controller
     public function doptor_user_office(Request $request)
     {
         session()->put('currentUrlPath', request()->path());
-    //    dd($request->all());
+
         $doptoOrganogramOffice = '';
 
         if ($request->office_type != null && $request->ministry == null && $request->divOffice == null && $request->office_id != null) {
@@ -667,6 +680,7 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['organoGram'] = json_decode($doptoOrganogramOffice);
+        // dd($data['organoGram']);
 
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
@@ -675,10 +689,10 @@ class GovCaseOfficeController extends Controller
 
         //Add Conditions
         $query = DB::table('users')->orderBy('id', 'DESC')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-            ->where('users.is_gov', 1);
+        ->join('roles', 'users.role_id', '=', 'roles.id')
+        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+        ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+        ->where('users.is_gov', 1);
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -687,7 +701,7 @@ class GovCaseOfficeController extends Controller
             $query->where('users.role_id', '=', $_GET['role']);
         }
 
-        $data['users'] = $query->paginate(10)->withQueryString();
+        // $data['users'] = $query->paginate(10)->withQueryString();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name_bn', 'name')
             ->whereNotIn('id', $role)
@@ -700,6 +714,8 @@ class GovCaseOfficeController extends Controller
 
         $data['doptorUserManagement'] = DoptorUserManagement::get();
 
+        // $data['users'] = $data['organoGram']->paginate(10)->withQueryString();
+
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
         $tableHtml = view('gov_case.doptor_user_manage.doptor_table')->with($data)->render();
@@ -708,41 +724,44 @@ class GovCaseOfficeController extends Controller
         return response()->json(['tableHtml' => $tableHtml]);
     }
 
-    public function tokenGenerate($user_id)
-    {
+    // public function tokenGenerate($user_id)
+    // {
+    //     $curl = curl_init();
+    //     $url="https://apigw.doptor.gov.bd/api/client/login";
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/client/login',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('username' => $user_id, 'password' => '8XI1PI12W', 'client_id' => '8XI1PI'),
-            CURLOPT_HTTPHEADER => array(
-                'apiKey: 8XI1PI  ',
-            ),
-        ));
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_URL => $url,
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING => '',
+    //         CURLOPT_MAXREDIRS => 10,
+    //         CURLOPT_TIMEOUT => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //         CURLOPT_CUSTOMREQUEST => 'POST',
+    //         CURLOPT_POSTFIELDS => array('username' => $user_id, 'password' => '8XI1PI12W', 'client_id' => '8XI1PI'),
+    //         CURLOPT_HTTPHEADER => array(
+    //             'apiKey: 8XI1PI  ',
+    //         ),
+    //     ));
 
-        $response = curl_exec($curl);
+    //     $response = curl_exec($curl);
 
-        curl_close($curl);
+    //     curl_close($curl);
 
-        $responsData = json_decode($response);
-        // dd($responsData->data->token);
-        return $responsData->data->token;
+    //     $responsData = json_decode($response);
 
-    }
+    //     return $responsData->data->token;
+
+    // }
 
     public function organoGramId($id)
     {
         $curl = curl_init();
-
+        $token = session('bearerToken');
+        // dd($token);
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeunitorganogram?office=' . $id,
+            // CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeunitorganogram?office=' . $id,
+            CURLOPT_URL => DOPTOR_ENDPOINT().'/api/v1/officeunitorganogram?office=' . $id,
 
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -755,8 +774,8 @@ class GovCaseOfficeController extends Controller
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'api-version: 1',
-                'apikey: 8XI1PI',
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDcwMzY4NzAsImp0aSI6Ik1UY3dOekF6TmpnM01BPT0iLCJpc3MiOiJodHRwczpcL1wvYXBpLXN0YWdlLmRvcHRvci5nb3YuYmRcLyIsIm5iZiI6MTcwNzAzNjg3MCwiZXhwIjoxNzA3MTIzMjcwLCJkYXRhIjoie1wiY2xpZW50X25hbWVcIjpcIlNtYXJ0IENhc2UgTWFuYWdlbWVudCBTeXN0ZW1cIixcInVzZXJuYW1lXCI6XCIyMDAwMDAwMDI5NjJcIn0ifQ.epBLH3FmYYyQBch8eAzT_qUsFA-uoyiJQ54K56cs6SoJZ7bocQy4XcqQ9PGsNd0LeXmHtc07mksF0zCUBPTyTA',
+                'apikey: YED1EN',
+                'Authorization: Bearer '.$token,
             ),
         ));
 
@@ -766,33 +785,8 @@ class GovCaseOfficeController extends Controller
         return $response;
     }
 
-
     public function doptorUpdateUserRole(Request $request)
     {
-        // $userId = $request->input('user_id');
-        // $roleId = $request->input('role_id');
-        // $officeId = $request->input('office_id');
-        // $organoGramId = $request->input('organogram_id');
-
-        // $userRole = Role::find($roleId);
-        // $userDetails= '';
-        // if ($userRole) {
-
-        //     $dataToSave = [
-        //         'office_type' => null,
-        //         'ministry' => null,
-        //         'div_office' => null,
-        //         'office_id' => $officeId,
-        //         'user_role' => $roleId,
-        //         'organogram_id' => $organoGramId,
-        //         'status' => 1,
-        //     ];
-
-        //     $userDetails = DoptorUserManagement::create($dataToSave);
-        // }
-
-        // return response()->json(['success' => true, 'message' => 'User role updated successfully', 'id' => $organoGramId, 'roleDetails' => $userDetails]);
-
         $userId = $request->input('user_id');
         $roleId = $request->input('role_id');
         $officeId = $request->input('office_id');
@@ -800,6 +794,11 @@ class GovCaseOfficeController extends Controller
 
         $userRole = Role::find($roleId);
         $userDetails = '';
+
+        // $user = User::find($userId);
+
+        //     //// assign role to a user
+        // $user->assignRole($user->role);
 
         if ($userRole) {
             $existingUserRole = DoptorUserManagement::where('organogram_id', $organoGramId)->first();
