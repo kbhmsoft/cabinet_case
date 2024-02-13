@@ -241,7 +241,7 @@ class GovCaseOfficeController extends Controller
         $data['offices'] = $query->paginate(10)->withQueryString();
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
-
+       
         $data['upazilas'] = null;
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
 
@@ -556,7 +556,6 @@ class GovCaseOfficeController extends Controller
 
     public function doptor_user_management(Request $request)
     {
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
@@ -570,6 +569,7 @@ class GovCaseOfficeController extends Controller
         //     ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
         //     ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
         //     ->where('users.is_gov', 1);
+
         $query = DB::table('users')->orderBy('id', 'DESC')
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
@@ -595,7 +595,7 @@ class GovCaseOfficeController extends Controller
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
         $data['organoGram'] = '';
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'দপ্তর ব্যাবহারকারী তালিকা';
         // return $data;
         return view('gov_case.doptor_user_manage.index')
             ->with($data);
@@ -716,7 +716,7 @@ class GovCaseOfficeController extends Controller
 
         // $data['users'] = $data['organoGram']->paginate(10)->withQueryString();
 
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'দপ্তর ব্যাবহারকারী তালিকা';
 
         $tableHtml = view('gov_case.doptor_user_manage.doptor_table')->with($data)->render();
         // $tableHtml = view('gov_case.doptor_user_manage.doptor_table')->with($data)->render();

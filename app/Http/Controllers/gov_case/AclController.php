@@ -29,8 +29,8 @@ class AclController extends Controller
     {
          // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
          $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
-  
-  
+
+
     }
 
 
@@ -42,8 +42,8 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'ভূমিকা পরিচালনা';
- 
-        
+
+
         $roles = Role::paginate(25);
         return view('gov_case.roles.create', compact('roles'))->with($data);
     }
@@ -96,11 +96,11 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'অনুমতি পরিচালনা';
-    
+
         $permissions = Permission::orderBy('created_at', 'ASC')
             ->paginate(25);
 
-         
+
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
         // if(Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার'){
@@ -182,25 +182,25 @@ class AclController extends Controller
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা';
-        $data['roles'] = Role::where(['is_gov'=> 1, 'status' => 1])->get();
+        $data['roles'] = Role::where(['status' => 1])->get();
         // $users = User::where('is_gov', 1)->get();
         // $data['users'] = $query->paginate(10)->withQueryString();
         return view('gov_case.user_permissions.index', $data);
     }
 
- 
+
 
     public function storeUpdateUserPermissionAll(Request $request){
 
         $role = Role::find($request->role_id);
-        
+
         $rolePermissions = RoleHasPermission::where('role_id', $request->role_id)->get();
-    
-       
+
+
         if(!empty($rolePermissions)){
             foreach($rolePermissions as $rolePermissions) {
                 $permission = Permission::find($rolePermissions->permission_id);
-               
+
                 $role->revokePermissionTo($permission);
                 $permission->removeRole($role);
             }
@@ -212,12 +212,12 @@ class AclController extends Controller
         if(!empty($allPermissions)){
             foreach ($allPermissions as $key => $permission_id) {
                 $permission = Permission::find($permission_id);
-                
+
                 $role->givePermissionTo($permission);
             }
         }
         return back()->with('success','সফলতার সাথে অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');
-   
+
     }
 
 
@@ -231,7 +231,7 @@ class AclController extends Controller
 
         $data['permissions'] = Permission::with('parent')->paginate(25);
         $data['parentPermissions'] = ParentPermission::with('permissions')->where('status', 1)->paginate(25);
-  
+
         return view('backend.roles.manage_permissions', $data);
     }
 
@@ -242,8 +242,6 @@ class AclController extends Controller
         $data['role'] = Role::find($role_id);
         $data['permissions'] = Permission::with('parent')->paginate(25);
 
-        // $data['notification_count'] = 0;
-        // $data['case_status'] = [];
         return view('gov_case.user_permissions.manage_permissions', $data);
     }
 

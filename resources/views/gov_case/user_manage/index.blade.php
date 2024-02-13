@@ -18,11 +18,17 @@
             width: 250px;
         }
 
-
         .select2-container .select2-selection--single {
             box-sizing: border-box;
             height: 41px;
             font-size: 1.2rem
+        }
+
+        .no-users-message {
+            text-align: center;
+            color: red;
+            font-size: 24px;
+            margin-top: 20px;
         }
     </style>
     <!--begin::Card-->
@@ -68,7 +74,7 @@
                         <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
                         @foreach ($ministries as $value)
                             <option
-                                value="{{ $value->id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->id ? 'selected' : '' }}>
+                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                 {{ $value->office_name_bn }} </option>
                         @endforeach
                     </select>
@@ -78,7 +84,7 @@
                         <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
                         @foreach ($divOffices as $value)
                             <option
-                                value="{{ $value->id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->id ? 'selected' : '' }}>
+                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                 {{ $value->office_name_bn }} </option>
                         @endforeach
                     </select>
@@ -96,57 +102,60 @@
                         @foreach ($user_role as $value)
                             <option value="{{ $value->id }}"
                                 {{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
-                                {{ $value->name }} </option>
+                                {{ $value->name_bn }} </option>
                         @endforeach
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
             </form>
 
-
-            <table class="table table-hover mb-6 font-size-h6">
-                <thead class="thead-light ">
-                    <tr>
-                        <th scope="col" width="30">#</th>
-                        <th scope="col">নাম</th>
-                        <th scope="col">ইউজার রোল</th>
-                        <th scope="col">অফিসের নাম</th>
-                        <th scope="col">ইমেইল এড্রেস</th>
-                        <th scope="col" width="150">অ্যাকশন</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $key => $row)
+            @if ($users && $users->isEmpty())
+                <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
+            @else
+                <table class="table table-hover mb-6 font-size-h6">
+                    <thead class="thead-light ">
                         <tr>
-                            <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th>
-                            <td>{{ $row->name }}</td>
-                            {{-- <td>{{ $row->username }}</td> --}}
-                            <td>{{ $row->roleName }}</td>
-                            <td>{{ $row->office_name_bn }}</td>
-                            <td>{{ $row->email }}</td>
-                            <td>
-                                @if (auth()->user()->can('show_user_details'))
-                                    <a href="{{ route('cabinet.user-management.show', $row->id) }}"
-                                        class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                                @else
-                                    <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                        বিস্তারিত
-                                    </a>
-                                @endif
-                                @if (auth()->user()->can('update_user_info'))
-                                    <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
-                                        class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
-                                @else
-                                    <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                        সংশোধন
-                                    </a>
-                                @endif
-                            </td>
+                            <th scope="col" width="30">#</th>
+                            <th scope="col">নাম</th>
+                            <th scope="col">ইউজার রোল</th>
+                            <th scope="col">অফিসের নাম</th>
+                            <th scope="col">ইমেইল এড্রেস</th>
+                            <th scope="col" width="150">অ্যাকশন</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {!! $users->links() !!}
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $key => $row)
+                            <tr>
+                                <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th>
+                                <td>{{ $row->name }}</td>
+
+                                <td>{{ $row->roleName }}</td>
+                                <td>{{ $row->office_name_bn }}</td>
+                                <td>{{ $row->email }}</td>
+                                <td>
+                                    @if (auth()->user()->can('show_user_details'))
+                                        <a href="{{ route('cabinet.user-management.show', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            বিস্তারিত
+                                        </a>
+                                    @endif
+                                    @if (auth()->user()->can('update_user_info'))
+                                        <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            সংশোধন
+                                        </a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {!! $users->links() !!}
+            @endif
         </div>
     </div>
     <!--end::Card-->
@@ -211,7 +220,7 @@
 
             jQuery('select[name="office_type"]').on('change', function() {
                 var officeType = jQuery(this).val();
-                alert(officeType);
+                // alert(officeType);
                 if (officeType == 2) {
                     $('#selectMinDiv').show();
                     $('#selectDivisionDiv').hide();
@@ -249,9 +258,9 @@
 
 
             jQuery('select[name="office_type"]').on('change', function() {
-                
+
                 var dataID = jQuery(this).val();
-                alert(dataID);
+                // alert(dataID);
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -259,15 +268,15 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            alert(data);
+                            // alert(data);
                             jQuery('select[name="office_id"]').html(
                                 '<div class="loadersmall"></div>');
                             jQuery('select[name="office_id"]').html(
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
-                                        '<option value="' + key +
-                                        '">' + value + '</option>');
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
                             });
                             jQuery('.loadersmall').remove();
                         }
@@ -293,8 +302,8 @@
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
-                                        '<option value="' + key +
-                                        '">' + value + '</option>');
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
                             });
                             jQuery('.loadersmall').remove();
                         }
@@ -308,6 +317,7 @@
             // DivisionOffice Wise Office
             jQuery('select[name="divOffice"]').on('change', function() {
                 var dataID = jQuery(this).val();
+                // alert(dataID);
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -321,8 +331,8 @@
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
                                 jQuery('select[name="office_id"]').append(
-                                        '<option value="' + key +
-                                        '">' + value + '</option>');
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
                                 //
                             });
                             jQuery('.loadersmall').remove();
@@ -420,10 +430,6 @@
                 $('select[name="office_id"]').empty();
                 jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
-
-
-
-
 
         });
     </script>

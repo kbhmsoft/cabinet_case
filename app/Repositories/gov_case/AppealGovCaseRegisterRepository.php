@@ -114,8 +114,7 @@ class AppealGovCaseRegisterRepository
             if ($case->save()) {
                 $caseId = $case->id;
                 if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {
-                    // dd($caseInfo->case_number_origin);
-                    self::prevCaseStatusUpdate($caseInfo->case_number_origin);
+                self::prevCaseStatusUpdate($caseInfo->case_number_origin);
                 }
             }
         } catch (\Exception $e) {

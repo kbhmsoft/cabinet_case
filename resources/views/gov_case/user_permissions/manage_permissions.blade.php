@@ -9,33 +9,33 @@
       @csrf
 
    <input type="hidden" name="role_id" value="{{ $role->id }}">
-    
+
    <div class="card-header flex-wrap py-5 mt-5">
       <div class="card-title mb-0 mt-2" >
          <h2 style="display: contents">অনুমতি প্রদান পরিচালনা করুন </h2>
-         <h3 style="display: contents">(ভুমিকা: <strong>{{ $role->name}}</strong>)</h3>
+         <h3 style="display: contents">(ভুমিকা: <strong>{{ $role->name_bn}}</strong>)</h3>
 
             @if($role->name == 'SuperAdmin')
                @if(Auth::user()->type == 'developer' || Auth::user()->role->name == 'SuperAdmin')
                   <button type="submit" class="btn btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
                      <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-                  </button>  
+                  </button>
                @else
                   <button type="button" class="btn btn-secondary font-weight-bolder float-right">
                      <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-                  </button> 
+                  </button>
                @endif
             @else
                   <button type="submit" class="btn btn-primary font-weight-bolder float-right" onclick="return confirm('আপনি কি নিশ্চিত অনুমতি বরাদ্দ সংশোধন করতে চান?')">
                   <i class="far fa-check-circle"></i>অনুমতি বরাদ্দ সংশোধন
-               </button> 
+               </button>
             @endif
-          
+
       </div>
-      <div class="card-toolbar">        
+      <div class="card-toolbar">
       </div>
    </div>
-   <div class="card-body">    
+   <div class="card-body">
    <div class="row grid">
    @foreach($parentPermissions as $parentPermission )
       <div class="col-lg-4 col-md-4 mb-5 grid-item">
@@ -45,11 +45,11 @@
                 </div>
                <div class="listPermission">
                   <ul>
-                      
+
                      @foreach($parentPermission->permissions as $permission)
-       
+
                      <li>
-                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if(isset($permission->roleHasPermission($role->id)->permission_id) && $permission->roleHasPermission($role->id)->permission_id == $permission->id) checked @endif> 
+                        <input type="checkbox" name="permissionId[]" value="{{$permission->id}}" class="mr-1" @if(isset($permission->roleHasPermission($role->id)->permission_id) && $permission->roleHasPermission($role->id)->permission_id == $permission->id) checked @endif>
                          <span>{{$permission->display_name}}</span>
                      </li>
                      @endforeach
@@ -57,20 +57,20 @@
                </div>
             </div>
       </div>
-   @endforeach 
-  
+   @endforeach
 
- 
+
+
    </div>
 
-    
+
    </div>
 </form>
 
 </div>
 <!--end::Card-->
 
- 
+
 
 @endsection
 
@@ -78,7 +78,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 <!-- {{-- Scripts Section Related Page--}} -->
 @section('scripts')
@@ -88,16 +88,16 @@
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 <script>
- 
+
    // jQuery
 $('.grid').masonry({
-  
+
   itemSelector: '.grid-item'
 });
-    
+
 </script>
 
- 
+
 
 @endsection
 

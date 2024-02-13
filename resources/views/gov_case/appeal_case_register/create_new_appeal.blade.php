@@ -127,8 +127,8 @@
                                                             class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($ministrys as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('appeal_office') == $value->id ? 'selected' : '' }}>
+                                                                <option value="{{ $value->doptor_office_id }}"
+                                                                    {{ old('appeal_office') == $value->doptor_office_id ? 'selected' : '' }}>
                                                                     {{ $value->office_name_bn }} </option>
                                                             @endforeach
                                                         </select>

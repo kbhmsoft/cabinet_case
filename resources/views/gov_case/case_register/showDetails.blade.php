@@ -105,6 +105,7 @@
                         </thead>
                         <tbody>
                             @if ($case->case_category_id)
+
                                 <tr>
                                     <th scope="row">মামলার ক্যাটেগরি</th>
                                     @php
@@ -287,6 +288,7 @@
                         <tbody>
                             @php $k = 1; @endphp
                             @foreach ($caseBadi as $badi)
+
                                 <tr>
                                     <td>{{ en2bn($k) }}.</td>
                                     <td class="text-center">
@@ -323,7 +325,6 @@
                                 <tr>
                                     <td class="tg-nluh">{{ en2bn($k) }}.</td>
                                     <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                    {{-- <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td> --}}
                                     <td class="tg-nluh text-center">
                                         {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
                                 </tr>

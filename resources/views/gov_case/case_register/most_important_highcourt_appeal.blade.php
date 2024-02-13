@@ -90,14 +90,14 @@
             <table class="table table-hover mb-6 font-size-h5">
                 <thead class="thead-light font-size-h6">
                     <tr>
-                        <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col" style="text-align:center;">মামলা নং</th>
-                        <th scope="col" style="text-align:center;">পিটিশনারের নাম</th>
-                        <th scope="col" style="text-align:center;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
-                        <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
-                        <th scope="col" style="text-align:center;">সর্বশেষ অবস্থা</th>
+                        <th scope="col" width="30" style="text-align:center; font-size: 12px; vertical-align: middle;">ক্রমিক</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">পিটিশনারের নাম</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার বিষয়বস্তু</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ অবস্থা</th>
                         @if ($roleID == 27)
-                            <th scope="col" width="">অতি গুরুত্বপূর্ণ</th>
+                            <th scope="col" width="" style="text-align:center; font-size: 12px; vertical-align: middle;">অতি গুরুত্বপূর্ণ</th>
                         @endif
                     </tr>
                 </thead>
@@ -183,14 +183,14 @@
             <table class="table table-hover mb-6 font-size-h5">
                 <thead class="thead-light font-size-h6">
                     <tr>
-                        <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col" style="text-align:center;">মামলা নং</th>
-                        <th scope="col" style="text-align:center;">পিটিশনারের নাম</th>
-                        <th scope="col" style="text-align:center;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
-                        <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
-                        <th scope="col" style="text-align:center;">সর্বশেষ অবস্থা</th>
+                        <th scope="col" width="30" style="text-align:center; font-size: 12px; vertical-align: middle;">ক্রমিক</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">পিটিশনারের নাম</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মূল বিবাদী ও সংশ্লিষ্ট মন্ত্রণালয়/বিভাগ</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার বিষয়বস্তু</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ অবস্থা</th>
                         @if ($roleID == 27)
-                            <th scope="col" style="text-align:center;">অতি গুরুত্বপূর্ণ</th>
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">অতি গুরুত্বপূর্ণ</th>
                         @endif
 
                     </tr>

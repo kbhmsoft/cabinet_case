@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\gov_case\GovCaseActivityLog;
-use App\Models\gov_case\GovCaseRegister;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseActivityLog;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
 
 class GovCaseActivityLogController extends Controller
 {
@@ -81,7 +82,9 @@ class GovCaseActivityLogController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')
             ->where('gov_case_division_id', 2)
             ->select('id', 'name_bn')->get();
+
         // return $data['division_categories'];
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
         $data['page_title'] = 'হাইকোর্ট বিভাগ মামলা নিরীক্ষা';

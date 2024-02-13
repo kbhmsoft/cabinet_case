@@ -108,6 +108,8 @@ class DashboardController extends Controller
                 array_push($arrayd, $val);
             }
 
+            // return $data['ministry'] = $arrayd;
+
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -173,8 +175,7 @@ class DashboardController extends Controller
 
             $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
             $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-            // $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-            // return $data['sent_to_solicitor_case'];
+
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 

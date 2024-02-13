@@ -225,10 +225,11 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealCaseShow($id)
     {
-
+    //    dd($id);
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
-
+        // dd($data['appealCase']);
         $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']->case_number_origin);
+        dd($data['govCaseRegister']);
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
 
         $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
@@ -356,12 +357,12 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('appeal_office_id', $officeID);
         }
 
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+
+        if (!empty($_GET['case_category_type'])) {
+            $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
             $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
@@ -388,6 +389,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->where('gov_case_division_id', 1)->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
         // return $data;
@@ -415,8 +418,8 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('appeal_office_id', $officeID);
         }
 
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+        if (!empty($_GET['case_category_type'])) {
+            $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
@@ -447,6 +450,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->where('gov_case_division_id', 1)->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
@@ -1599,7 +1604,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appellate_division_case()
     {
-
         session()->forget('currentUrlPath');
 
         $officeInfo = user_office_info();
@@ -1608,8 +1612,6 @@ class AppealGovCaseRegisterController extends Controller
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
             ->where('deleted_at', '=', null);
-
-        // $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
 
         $data['offices'] = DB::table('gov_case_office')->get();
 
@@ -1621,8 +1623,8 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('appeal_office_id', $officeID);
         }
 
-        if (!empty($_GET['case_category_id'])) {
-            $query->where('appeal_gov_case_register.case_category_id', '=', $_GET['case_category_id']);
+        if (!empty($_GET['case_category_type'])) {
+            $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
@@ -1640,17 +1642,23 @@ class AppealGovCaseRegisterController extends Controller
         } elseif ($roleID == 9 || $roleID == 21) {
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
+
+
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
-//         $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['cases']->case_number_origin);
-// return  $data['govCaseRegister'];
+
+        // dd($data['cases']);
+
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 1)->get();
 
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
+
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
+
 
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
     }
@@ -2618,6 +2626,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 1)->get();
+
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 

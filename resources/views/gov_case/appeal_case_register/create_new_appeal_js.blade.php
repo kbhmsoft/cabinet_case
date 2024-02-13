@@ -343,14 +343,9 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select  name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('main_ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
-            // items +='<td><select name="main_doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
-            // console.log(count);
-            // if (countVal != 1) {
-            //     items +=
-            //         '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            // }
+           
             items += '</tr>';
             // console.log(items);
             return items;
@@ -381,7 +376,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);

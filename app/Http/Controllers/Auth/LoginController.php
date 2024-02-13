@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Http\Controllers\API\BaseController as BaseController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends BaseController
 {
@@ -120,8 +120,15 @@ class LoginController extends BaseController
 
         if ($response->status == 'success') {
             $id = current($response->data->organogram_info)->id;
+            $userInformationa = $response->data;
+            $organogramId = key($userInformationa->organogram_info);
 
-            $userData = $response->data;
+            // dd($organogramId);
+            //  $organogramKeys = array_keys($userData->organogram_info);
+            //  dd($organogramKeys);
+            //  $organogramId = $organogramKeys[0];
+            //  dd($organogramId);
+
             $organoGramUserInfo = DB::table('doptor_user_managements')
                 ->select('id', 'organogram_id', 'user_role')
                 ->where('doptor_user_managements.organogram_id', $id)
@@ -145,7 +152,8 @@ class LoginController extends BaseController
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
                     'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
-                    'designation' => $userOfficeInfo[0]->designation
+                    'designation' => $userOfficeInfo[0]->designation,
+                    'organogram_id' => $organogramId ?? null,
                 ];
 
                 User::updateOrInsert(
@@ -154,16 +162,22 @@ class LoginController extends BaseController
                 );
 
                 $user = User::where('doptor_user_id', $userInfo->id)->first();
-                $role = Role::find($organoGramUserInfo->user_role);
-                $user->assignRole($role);
+                if ($organoGramUserInfo->user_role) {
+                    $role = Role::find($organoGramUserInfo->user_role);
+                    $user->assignRole($role);
+                }
+                // $role = Role::find($organoGramUserInfo->user_role);
+                // $user->assignRole($role);
                 Auth::loginUsingId($user->id);
                 return redirect()->route('dashboard');
 
             } else if ($id && (!$organoGramUserInfo || !$organoGramUserInfo->user_role)) {
 
                 $userInfo = $response->data->user;
+                $userInformationa = $response->data;
                 $userEmployeeData = $response->data->employee_info;
                 $userOfficeInfo = $response->data->office_info;
+                $organogramId = key($userInformationa->organogram_info);
                 // dd($userOfficeInfo[0]->designation);
                 $userData = [
                     'name' => $userEmployeeData->name_bng,
@@ -178,7 +192,8 @@ class LoginController extends BaseController
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
                     'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
-                    'designation' => $userOfficeInfo[0]->designation
+                    'designation' => $userOfficeInfo[0]->designation,
+                    'organogram_id' => $organogramId ?? null,
                 ];
 
                 User::updateOrInsert(
@@ -188,14 +203,14 @@ class LoginController extends BaseController
 
                 // Retrieve the user after update/insert
                 $user = User::where('doptor_user_id', $userInfo->id)->first();
-                $role = Role::find($organoGramUserInfo->user_role);
-                $user->assignRole($role);
+                if ($organoGramUserInfo && $organoGramUserInfo->user_role) {
+                    $role = Role::find($organoGramUserInfo->user_role);
+                    $user->assignRole($role);
+                }
                 Auth::loginUsingId($user->id);
 
                 return redirect()->route('dashboard');
             }
-            // dd($organoGramUserInfo);
-            // $user->assignRole($user->role);
         }
     }
 

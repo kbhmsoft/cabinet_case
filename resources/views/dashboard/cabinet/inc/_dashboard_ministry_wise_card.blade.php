@@ -14,12 +14,11 @@
                </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($ministryData as $ministry) --}}
+
                 @php
                 $index=1;
                 @endphp
                 @foreach ($ministry_wise as $key=>$val)
-                {{-- @dd($val->id) --}}
 
               <tr>
                   <td>{{ en2bn($key + $ministry_wise->firstItem()) }}</td>
@@ -29,12 +28,7 @@
                   <td align="center">{{ en2bn($val->against_gov) }}</td>
                   <td align="center">{{ en2bn($val->result_sending_count) }}</td>
                   <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
-                  {{-- <td><h4>{{ $key->office_name_bn }}</h4></td>
-                  <td align="center">{{ en2bn($key->highcourt_running_case) }}</td>
-                  <td align="center">{{ en2bn($key->appeal_running_case) }}</td>
-                  <td align="center">{{ en2bn($key->against_gov) }}</td>
-                  <td align="center">{{ en2bn($key->result_sending_count) }}</td>
-                  <td align="center">{{ en2bn($key->against_postponed_count) }}</td> --}}
+              
                </tr>
                @endforeach
             </tbody>

@@ -37,6 +37,15 @@
                 });
         }
     </script>
+
+    <style>
+         .no-users-message {
+            text-align: center;
+            color: red;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom">
@@ -53,8 +62,6 @@
                 @endcan
 
             </div>
-
-
         </div>
         <div class="card-body">
             @if ($message = Session::get('success'))
@@ -65,27 +72,37 @@
 
             @include('gov_case.search')
 
+            @if ($cases && $cases->isEmpty())
+            <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
+             @else
             <table class="table table-hover mb-6 font-size-h5">
-                <thead class="thead-light font-size-h6">
+                <thead class="thead-light">
                     <tr>
-                        <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col" style="text-align:center;">মামলা নং</th>
-                        <th scope="col" style="text-align:center;">পিটিশনারের নাম</th>
-                        <th scope="col" style="text-align:center;">মামলার বিষয়বস্তু</th>
-                        <th scope="col">রুল ইস্যুর তারিখ/প্রাপ্তির তারিখ</th>
-                        <th scope="col">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
-                        <th scope="col" width="170px">অ্যাকশন</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;" width="30">ক্রমিক</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার শ্রেণী/কেস-টাইপ</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">পিটিশনারের নাম</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার বিষয়বস্তু</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">দফাওয়ারি জবাব প্রেরণের তারিখ</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ অবস্থা</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;" width="170px">অ্যাকশন</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($cases as $key => $row)
                         <tr>
-                            
-                            {{-- {{dd($row->total_badi_number)}} --}}
-                            <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
+                            <td scope="row" style="text-align:center;" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;" style="text-align:center;">
                                 {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
-                            <td>
+                            <td style="text-align:center;">
+                                @foreach ($gov_case_division_category_type as $value)
+                                    @if ($value->id == $row['case_type_id'])
+                                        {{ $value->name_bn }}
+                                    @endif
+                                @endforeach
+                            </td>
+
+                            <td style="text-align:center;">
                                 @if ($row->badis && $row->badis->first() && $row->badis->first()->name && $row->total_badi_number > 1)
                                     {{ $row->badis->first()->name . ' ও অন্যান্য' }}
                                 @elseif ($row->badis && $row->badis->first() && $row->badis->first()->name)
@@ -93,9 +110,18 @@
                                 @endif
                             </td>
 
-                            <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
-                            <td>{{ $row->date_issuing_rule_nishi ? en2bn($row->date_issuing_rule_nishi) : '-' }}</td>
-                            <td>{{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
+                            <td style="text-align:center;">{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
+
+                            <td style="text-align:center;">{{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
+                            <td style="text-align:center;">
+                                @if ($row->result == '1')
+                                    সরকারের পক্ষে
+                                @elseif($row->result == '2')
+                                    সরকারের বিপক্ষে
+                                @else
+                                    চলমান
+                                @endif
+                            </td>
                             <td style="text-align:center;">
                                 <div class="btn-group">
                                     <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button"
@@ -127,7 +153,6 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
                                                     চূড়ান্ত আদেশ</a>
-
                                             @elseif ($row->is_final_order == 1)
                                                 @if ($row->result == 2)
                                                     @if (empty($row->leave_to_appeal_no))
@@ -144,10 +169,10 @@
                                                 @endif
                                             @endif
                                             @if ($row->contempt_case_isuue_date == null)
-                                            <a class="dropdown-item"
-                                                href="{{ route('cabinet.case.contemptCaseIssue', $row->id) }}">
-                                                কনটেম্প্ট মামলা / অন্যান্য<br> বিষয়ে ব্যাবস্থা</a>
-                                           @endif
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.contemptCaseIssue', $row->id) }}">
+                                                    কনটেম্প্ট মামলা / অন্যান্য<br> বিষয়ে ব্যাবস্থা</a>
+                                            @endif
                                         @endcan
                                         @can('register')
                                             <a class="dropdown-item"
@@ -202,6 +227,8 @@
                 </tbody>
             </table>
 
+            @endif
+
             <div class="d-flex justify-content-center">
                 {!! $cases->links() !!}
             </div>
@@ -218,8 +245,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                -->
+                        <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                        -->
         <!--end::Page Scripts-->
         <script>
             $(document).ready(function() {

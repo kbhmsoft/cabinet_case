@@ -67,7 +67,7 @@
                             <span
                                 class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->name }}</span>
                             <span
-                                class="label label-lg label-danger label-pill label-inline"><?= auth()->user()->role->name ?></span>
+                                class="label label-lg label-danger label-pill label-inline"><?= auth()->user()->role->name_bn ?></span>
                         </div>
 
                         <div class="col-12 pb-2">

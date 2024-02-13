@@ -98,7 +98,7 @@
             </form>
 
 
-            <table  id="example" class="table table-striped table-bordered" style="width:100%">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col" width="30">#</th>
@@ -118,7 +118,7 @@
     </div>
     <!--end::Card-->
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"></script>
@@ -177,11 +177,11 @@
         </script>
     @endif
 
-    <script>
-        // $(document).ready(function() {
-        //     $('#example').DataTable();
-        // });
-    </script>
+    {{-- <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script> --}}
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
@@ -403,65 +403,50 @@
         });
     </script>
 
-
-
-
-
-    <script>
-        // $(document).ready(function() {
-        //     $('#doptorOfficeForm').submit(function(e) {
-        //         e.preventDefault();
-        //         var formData = $(this).serialize();
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: "{{ route('doptor.user.manage') }}",
-        //             data: formData,
-        //             success: function(response) {
-        //                 console.log('Response:', response);
-        //                 $('#tableBody').append(response.tableHtml);
-        //             },
-        //             error: function() {
-        //                 console.error('Error fetching data.');
-        //             }
-        //         });
-        //     });
-        // });
-
-       $(document).ready(function() {
-       $('#doptorOfficeForm').submit(function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('doptor.user.manage') }}",
-            data: formData,
-            success: function(response) {
-                Swal.fire({
-                    title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
-                    html: `<h4>I will close in <b></b> milliseconds.</h4>`,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector("b");
-                        timerInterval = setInterval(() => {
-                            timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 100);
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
-                    }
-                }).then((result) => {
-                    console.log('Response:', response);
-                    $('#tableBody').append(response.tableHtml);
-                });
-            },
-            error: function() {
-                console.error('Error fetching data.');
-            }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    var timerInterval;
+    $(document).ready(function () {
+        $('#doptorOfficeForm').submit(function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            Swal.fire({
+                title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
+                html: `<h4>I will close in some milliseconds.</h4>`,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('doptor.user.manage') }}",
+                        data: formData,
+                        success: function (response) {
+                            clearInterval(timerInterval);
+                            Swal.close();
+                            console.log('Response:', response);
+                            $('#tableBody').append(response.tableHtml);
+                        },
+                        error: function () {
+                            clearInterval(timerInterval);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            });
+                            console.error('Error fetching data.');
+                        }
+                    });
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
         });
     });
-});
+</script>
 
-    </script>
 @endsection

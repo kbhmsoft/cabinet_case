@@ -47,11 +47,9 @@
 
         jQuery('select[name="case_category"]').on('change', function() {
             var dataID = jQuery(this).val();
-            // alert('alert1');
             jQuery("#case_category_type").after('<div class="loadersmall"></div>');
 
             if (dataID) {
-                // alert(dataID);
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
                         dataID,
@@ -134,6 +132,8 @@
         //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#badiDiv tr:last').after(items);
+
+
     }
 
     function removeRowBadiBibadiFunc(id, url) {
@@ -230,34 +230,6 @@
     });
 
     //add row function
-
-    // function addMainBibadiRowFunc() {
-    //     var countVal = parseInt($('#mainBibadi_count').val());
-    //     $('#mainBibadi_count').val(countVal + 1);
-    //     var mk_main = $('#MainBibadiDiv tr').length;
-    //     var MainCount = $('#MainBibadiDiv tr').length;
-    //     $('#MainBibadiDiv tr:last').after(  (mk_main + 1, 'other'));
-    //     /*if(MainCount ==3){
-    //         $('#MainBibadiDiv tr:last').after(ItemMain(MainCount, 'main'));
-    //     }*/
-
-    //     function ItemMain(count, type = NULL) {
-    //         var items = '';
-    //         items += '<tr id="bibadi_' + (count) + '">';
-    //         items +=
-    //             '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option> @foreach ($ministrys as $value) <option value="{{ $value->id }}"> {{ $value->id }} </option> @endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-    //         items += '<input type="hidden" name="bibadi_id[]" value="">';
-
-    //         if (countVal != 1) {
-    //             items +=
-    //                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeMainBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-    //         }
-    //         items += '</tr>';
-    //         return items;
-    //     }
-
-    //     // $('.main_respondent').select2();
-    // }
     function addMainBibadiRowFunc() {
         var countVal = parseInt($('#mainBibadi_count').val());
         $('#mainBibadi_count').val(countVal + 1);
@@ -272,7 +244,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('main_ministry') == $value->id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('main_ministry') == $value->doptor_office_id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
 
             if (countVal != 1) {
@@ -281,13 +253,11 @@
             }
             items += '</tr>';
             return items;
-        }
+
+    }
 
         // $('.main_respondent').select2();
     }
-
-
-
 
     //remove row function
     function removeMainBibadiRow(id) {
@@ -314,7 +284,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
 
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             if (type == 'other') {

@@ -61,14 +61,23 @@
             <table class="table table-hover mb-6 font-size-h5">
                 <thead class="thead-light font-size-h6">
                     <tr>
-                        <th scope="col" width="30">ক্রমিক</th>
-                        <th scope="col">মামলা নং</th>
-                        <th scope="col">আপিলকারীর নাম</th>
-                        <th scope="row">আপিলেট রেসপন্ডেন্ট</th>
-                        <th scope="col">বিষয়বস্তু</th>
-                        <th scope="col">শুনানির বিবরণ</th>
-                        <th scope="col">সর্বশেষ তারিখ</th>
-                        <th scope="col" width="170px">অ্যাকশন</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
+                            width="30">ক্রমিক</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
+                            শ্রেণী/কেস-টাইপ</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">আপিলকারীর নাম
+                        </th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">আপিলেট
+                            রেসপন্ডেন্ট</th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">বিষয়বস্তু
+                        </th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">শুনানির বিবরণ
+                        </th>
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ তারিখ
+                        </th>
+                        <th scope="col" width="170px"
+                            style="text-align:center; font-size: 12px; vertical-align: middle;">অ্যাকশন</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,13 +85,25 @@
                     $roleID = Auth()->user()->role_id;
                     ?>
                     @foreach ($cases as $key => $row)
-                        {{-- {{dd($row->highcourt_case_detail)}} --}}
                         <tr>
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
+
                             <td style="text-align:center;">
-                                {{ App\Models\gov_case\GovCaseOffice::find($row->appeal_office_id)->office_name_bn }}
+                                @foreach ($gov_case_division_category_type as $value)
+                                    @if ($value->id == $row['case_type_id'])
+                                        {{ $value->name_bn }}
+                                    @endif
+                                @endforeach
                             </td>
+
+                            <td style="text-align:center;">
+                                @php
+                                    $govCaseOffice = App\Models\gov_case\GovCaseOffice::where('doptor_office_id', $row->appeal_office_id)->first();
+                                @endphp
+                                {{ $govCaseOffice->office_name_bn ?? '' }}
+                            </td>
+
                             <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td>
                             <?php
                             $subjectMatter = $row->highcourt_case_detail;
@@ -92,10 +113,8 @@
                                 $subjectMatterData = '';
                             }
                             ?>
-                            {{-- {{ dd($subjectMattrData) }} --}}
-
                             <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
-                            {{-- <td style="text-align:center;">{{ is_null($subjectMatter) ? 'p' : '-' }}</td> --}}
+
                             <td style="text-align:center;">{{ '-' }} </td>
                             <td style="text-align:center;">{{ '-' }} </td>
 
@@ -107,6 +126,7 @@
                                             aria-expanded="false">অ্যাকশন</button>
                                         <div class="dropdown-menu">
                                             @can('show_details_info')
+                                         
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.appealCaseDetails', $row->id) }}">বিস্তারিত
                                                     তথ্য</a>
@@ -139,7 +159,7 @@
                                             <label for="most_important">অধিক গুরুত্বপূর্ণ</label>
                                         @endif
                                     </div> --}}
-                                    
+
                                     <div class="btn-group">
                                         @if ($roleID == 27)
                                             <input type="checkbox" id="most_important" name="most_important" value="1"
@@ -173,8 +193,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                     -->
+                                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                             -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')

@@ -22,9 +22,9 @@ class GovCaseBibadi extends Model
 	];
 
     public function ministry(){
-        return $this->hasOne(GovCaseOffice::class, 'id', 'respondent_id');
+        return $this->hasOne(GovCaseOffice::class, 'doptor_office_id', 'respondent_id');
     }
     public function department(){
-        return $this->hasOne(GovCaseOffice::class, 'id', 'department_id');
+        return $this->hasOne(GovCaseOffice::class, 'doptor_office_id', 'department_id');
     }
 }

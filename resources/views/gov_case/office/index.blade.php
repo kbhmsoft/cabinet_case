@@ -65,17 +65,17 @@
                         <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
                         @foreach ($ministries as $value)
                             <option
-                                value="{{ $value->id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->id ? 'selected' : '' }}>
+                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                 {{ $value->office_name_bn }} </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
                     <select name="divOffice" id="divOffice" class="form-control">
-                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
+                        <option value="">-  বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
                         @foreach ($divOffices as $value)
                             <option
-                                value="{{ $value->id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->id ? 'selected' : '' }}>
+                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                 {{ $value->office_name_bn }} </option>
                         @endforeach
                     </select>

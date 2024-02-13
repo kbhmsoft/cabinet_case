@@ -61,7 +61,7 @@ class GovCaseUserManagementController extends Controller
 
         $data['users'] = $query->paginate(10)->withQueryString();
 
-        $data['user_role'] = DB::table('roles')->select('id', 'name')
+        $data['user_role'] = DB::table('roles')->select('id', 'name','name_bn')
             ->whereNotIn('id', $role)
             ->where('is_gov', 1)
             ->orderBy('sort_order', 'ASC')
