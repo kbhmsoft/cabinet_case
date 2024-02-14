@@ -14,7 +14,10 @@ use App\Http\Controllers\gov_case\GovCaseSettingsController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
+use App\Http\Controllers\ApplicationFormAsMainDefendentController;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::middleware('auth')->group(function () {
 
@@ -123,7 +126,16 @@ Route::middleware('auth')->group(function () {
 
         //=================== Message End ==================//highcourt/running
 
+
         Route::group(['prefix' => 'case/', 'as' => 'case.'], function () {
+
+            Route::get('createApplicationForm/{caseNo}',[ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])->name('createApplicationForm');
+            Route::post('storeApplicationForm',[ApplicationFormAsMainDefendentController::class, 'storeApplicationForm'])->name('storeApplicationForm');
+            Route::get('indexApplications',[ApplicationFormAsMainDefendentController::class, 'indexApplications'])->name('indexApplications');
+            Route::get('/editApplications/{id}/edit', [ApplicationFormAsMainDefendentController::class, 'editApplications'])->name('editApplications');
+
+            // Route::get('/main-defendent', 'MainDefendentController@index')->name('main-defendent.index');
+
 
             route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class, 'getdependentMinDept']);
             route::get('/dropdownlist/getdependentconcernperson/{id}', [GovCaseRegisterController::class, 'getDependentConcernPerson']);
@@ -166,7 +178,7 @@ Route::middleware('auth')->group(function () {
             Route::get('ministry_wise_list/{id}', [GovCaseRegisterController::class, 'ministry_wise_list'])->name('ministry_wise_list');
             Route::get('department_wise_list/{id}', [GovCaseRegisterController::class, 'department_wise_list'])->name('department_wise_list');
             // Route::get('ministry_wise_gov_list/{id}/{id2}', [GovCaseRegisterController::class, 'ministry_wise_gov_list'])->name('ministry_wise_gov_list');
-            Route::post('highcourtMostImportantSave',[GovCaseRegisterController::class, 'highcourtMostImportantSave'])->name('highcourtMostImportantSave');
+            Route::post('highcourtMostImportantSave', [GovCaseRegisterController::class, 'highcourtMostImportantSave'])->name('highcourtMostImportantSave');
             Route::get('highcourt/mostImportantCase', [GovCaseRegisterController::class, 'highcourtMostImportantCase'])->name('highcourtMostImportantCase');
             Route::get('importgantCaseList', [GovCaseRegisterController::class, 'highcourtAppealMostImportantCase'])->name('highcourtAppealMostImportantCase');
             Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
@@ -225,7 +237,7 @@ Route::middleware('auth')->group(function () {
             Route::get('totalAppellateDivision', [AppealGovCaseRegisterController::class, 'totalAppellateDivision'])->name('totalAppellateDivision');
             Route::get('appellateDivisionRunning', [AppealGovCaseRegisterController::class, 'appellateDivisionRunning'])->name('appellateDivisionRunning');
             Route::get('appellateDivisionComplete', [AppealGovCaseRegisterController::class, 'appellateDivisionComplete'])->name('appellateDivisionComplete');
-            Route::post('appealMostImportantSave',[AppealGovCaseRegisterController::class, 'appealMostImportantSave'])->name('appealMostImportantSave');
+            Route::post('appealMostImportantSave', [AppealGovCaseRegisterController::class, 'appealMostImportantSave'])->name('appealMostImportantSave');
             Route::get('appealCaseDetails/{id}', [AppealGovCaseRegisterController::class, 'appealCaseShow'])->name('appealCaseDetails');
             Route::get('appealDetailsPdf/{id}', [AppealGovCaseRegisterController::class, 'appealDetailsPdf'])->name('appealDetailsPdf');
             Route::get('appellateDivision/mostImportantCase', [AppealGovCaseRegisterController::class, 'appellateDivisionMostImportantCase'])->name('appellateDivisionMostImportantCase');
@@ -270,7 +282,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('stepnottakenAgainstpostpondorderedit/{id}', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseEdit'])->name('stepnottakenAgainstpostpondorderedit');
                 Route::post('stepnottakenAgainstpostpondorderstore', [GovCaseOtherActionController::class, 'stepNotTakenAgainstPostpondOrderCaseStore'])->name('stepnottakenAgainstpostpondorderstore');
             });
-
         });
 
         //============ Case Activity Log Start ==============//

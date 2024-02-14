@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\UserNotificationController;
+
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SettingController;
@@ -15,9 +17,8 @@ Use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MyprofileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
-use App\Http\Controllers\SiteSettingController;
-use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\UserNotificationController;
+
+
 
 
 Auth::routes([
@@ -27,35 +28,35 @@ Auth::routes([
     'reset'    => true,   // for resetting passwords
     'confirm'  => false,  // for additional password confirmations
     'verify'   => false,  // for email verification
-    ]);
+]);
 
-require __DIR__.'/gov_case/gov_case.php';
+require __DIR__ . '/gov_case/gov_case.php';
 
-Route::get('/clear-cache', function() {
+Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('cache:clear');
     return '<h1>Cache facade value cleared</h1>';
 });
 
 //Reoptimized class loader:
-Route::get('/optimize', function() {
+Route::get('/optimize', function () {
     $exitCode = Artisan::call('optimize');
     return '<h1>Reoptimized class loader</h1>';
 });
 
 //Route cache:
-Route::get('/route-cache', function() {
+Route::get('/route-cache', function () {
     $exitCode = Artisan::call('route:cache');
     return '<h1>Routes cached</h1>';
 });
 
 //Clear Route cache:
-Route::get('/route-clear', function() {
+Route::get('/route-clear', function () {
     $exitCode = Artisan::call('route:clear');
     return '<h1>Route cache cleared</h1>';
 });
 
 //Clear View cache:
-Route::get('/view-clear', function() {
+Route::get('/view-clear', function () {
     $exitCode = Artisan::call('view:clear');
     return '<h1>View cache cleared</h1>';
 });
@@ -111,14 +112,7 @@ Route::middleware('auth')->group(function () {
     /////************** Office Setting **************/////
 
 
-    /////************** Court Setting **************/////
-    // Route::resource('court-setting', CourtController::class);
-    // route::get('/court', [CourtController::class, 'index'])->name('court');
-    // route::get('/court/create', [CourtController::class, 'create'])->name('court.create');
-    // Route::post('/court/save', [CourtController::class, 'store'])->name('court.save');
-    // route::get('/court/edit/{id}', [CourtController::class, 'edit'])->name('court.edit');
-    // route::post('/court/update/{id}', [CourtController::class, 'update'])->name('court.update');
-    // route::get('/court-setting/dropdownlist/getdependentdistrict/{id}', [CourtController::class , 'getDependentDistrict']);
+
 
     /////************** General Setting **************/////
     // Route::resource('setting', SettingController::class);
@@ -142,13 +136,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/survey', [SettingController::class, 'survey_type_list'])->name('survey');
     /*Route::get('/survey/edit/{id}', [SettingController::class, 'survey_edit'])->name('survey.edit');
     Route::post('/survey/update/{id}', [SettingController::class, 'survey_update'])->name('survey.update');*/
-     Route::get('/case_type', [SettingController::class, 'case_type_list'])->name('case-type');
-     Route::get('/case_status', [SettingController::class, 'case_status_list'])->name('case-status');
-     Route::get('/case_status/add', [SettingController::class, 'case_status_add'])->name('case-status.add');
-     Route::get('/case_status/details/{id}', [SettingController::class, 'case_status_details'])->name('case-status.details');
-     Route::post('/case_status/store', [SettingController::class, 'case_status_store'])->name('case-status.store');
-     Route::get('/case_status/edit/{id}', [SettingController::class, 'case_status_edit'])->name('case-status.edit');
-     Route::post('/case_status/update/{id}', [SettingController::class, 'case_status_update'])->name('case-status.update');
+    Route::get('/case_type', [SettingController::class, 'case_type_list'])->name('case-type');
+    Route::get('/case_status', [SettingController::class, 'case_status_list'])->name('case-status');
+    Route::get('/case_status/add', [SettingController::class, 'case_status_add'])->name('case-status.add');
+    Route::get('/case_status/details/{id}', [SettingController::class, 'case_status_details'])->name('case-status.details');
+    Route::post('/case_status/store', [SettingController::class, 'case_status_store'])->name('case-status.store');
+    Route::get('/case_status/edit/{id}', [SettingController::class, 'case_status_edit'])->name('case-status.edit');
+    Route::post('/case_status/update/{id}', [SettingController::class, 'case_status_update'])->name('case-status.update');
     /*Route::get('/case_type/edit/{id}', [SettingController::class, 'case_type_edit'])->name('case_type.edit');
     Route::post('/case_type/update/{id}', [SettingController::class, 'case_type_update'])->name('case_type.update');*/
     Route::get('/court_type', [SettingController::class, 'court_type_list'])->name('court-type');
@@ -186,4 +180,17 @@ Route::middleware('auth')->group(function () {
     //=================== Message End ==================
     Route::get('/script', [MessageController::class, 'script']);
 
+
+    // Route::resource('show-application-form', ApplicationFormAsMainDefendentController::class);
+    // use App\Http\Controllers\ApplicationFormAsMainDefendentController;
+
+    // Route::get('show-application-form/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'show'])
+    // ->name('show-application-form.show');
+
+    // Route::get('createApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])
+    // ->name('createApplicationForm');
+
+
+    // Route::post('storeApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'store'])
+    //     ->name('storeApplicationForm.store');
 });

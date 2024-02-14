@@ -180,6 +180,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
+
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
@@ -2616,6 +2617,7 @@ class GovCaseRegisterController extends Controller
             ]
         );
         try {
+            // dd($request->all());
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
@@ -3080,6 +3082,7 @@ class GovCaseRegisterController extends Controller
 
     public function highcourt_edit($id)
     {
+        // dd($id);
         $roleID = userInfo()->role_id;
 
         $officeID = userInfo()->office_id;

@@ -51,6 +51,12 @@
                             ড্যাশবোর্ড</span>
                     </a>
                 </li>
+                <li class="menu-item mt-2 {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                    <a href="{{ route('cabinet.case.indexApplications') }}" class="menu-link">
+                        <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল বিবাদি হিসেবে অন্তর্ভুক্তির আবেদন (সংখ্যা)</span>
+                    </a>
+                </li>
+                
 
                 @can('highcourt_division')
                     <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt/*', 'cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
