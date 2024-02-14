@@ -1,5 +1,3 @@
-
-
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
@@ -51,11 +49,32 @@
                             ড্যাশবোর্ড</span>
                     </a>
                 </li>
-                <li class="menu-item mt-2 {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                {{-- <li class="menu-item mt-2 {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}" aria-haspopup="true">
                     <a href="{{ route('cabinet.case.indexApplications') }}" class="menu-link">
                         <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল বিবাদি হিসেবে অন্তর্ভুক্তির আবেদন (সংখ্যা)</span>
                     </a>
-                </li>
+                </li> --}}
+
+                <li class="menu-item mt-2" aria-haspopup="true" data-menu-toggle="hover" id="main-menu">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল বিবাদি হিসেবে অন্তর্ভুক্তির আবেদন (সংখ্যা)</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <ul class="menu-subnav">
+                            <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                <a href="{{ route('cabinet.case.indexApplications', ['category' => 'highcourt']) }}" class="menu-link" >
+                                    <span class="menu-text font-weight-bolder"><i class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ</span>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->is('cabinet/case/appeal/indexApplications') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                <a href="{{ route('cabinet.case.indexApplications', ['category' => 'appeal']) }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder"><i class="menu-bullet menu-bullet-dot"><span></span></i> আপিল বিভাগ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>  
                 
 
                 @can('highcourt_division')

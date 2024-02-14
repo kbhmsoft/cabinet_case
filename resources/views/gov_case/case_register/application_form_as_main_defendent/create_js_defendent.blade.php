@@ -52,4 +52,6 @@
             $('select[name="case_category_type"]').empty();
         }
     });
+
+    
 </script>

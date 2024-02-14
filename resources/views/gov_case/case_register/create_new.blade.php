@@ -669,14 +669,8 @@
 
                                                                 <div class="symbol-group symbol-hover py-2">
                                                                     <div class="symbol symbol-30 symbol-light-primary"
-<<<<<<< HEAD
                                                                         data-toggle="tooltip" data-placement="top" title=""
                                                                         role="button" data-original-title="ফাইল যুক্ত করুণ">
-=======
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="" role="button"
-                                                                        data-original-title="ফাইল যুক্ত করুণ">
->>>>>>> 1c91f63 (main_difendent_application_form)
 
                                                                         <div id="addSuspensionOrderFileRow">
                                                                             <span
@@ -727,7 +721,6 @@
 
                                                 <div class="row p-5" id="interim_order_details_div">
 
-<<<<<<< HEAD
                                                         <label class="ml-2">অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
                                                         <textarea name="interim_order_details" class="form-control ml-2" id="interim_order" rows="5" spellcheck="false"></textarea>
 
@@ -754,37 +747,6 @@
                                                                             </div>
                                                                         </div>
 
-=======
-                                                    <label class="ml-2">অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control ml-2" id="interim_order" rows="5"
-                                                        spellcheck="false"></textarea>
-
-                                                    <div class="col-md-12 mt-5">
-                                                        <fieldset class="">
-                                                            <div
-                                                                class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                                <div class="d-flex align-items-center mr-2 py-2">
-                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (অন্তর্বর্তীকালীন
-                                                                        আদেশের কপি সংযুক্ত করুন)
-                                                                        <small class="text-danger">*(PDF, সর্বোচ্চ
-                                                                            সাইজ:5MB)</small>
-                                                                    </h3>
-                                                                </div>
-
-                                                                <div class="symbol-group symbol-hover py-2">
-                                                                    <div class="symbol symbol-30 symbol-light-primary"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="" role="button"
-                                                                        data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                        <div id="addSuspensionOrderFileRowTwo">
-                                                                            <span
-                                                                                class="symbol-label font-weight-bold bg-success">
-                                                                                <i
-                                                                                    class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                            </span>
-                                                                        </div>
->>>>>>> 1c91f63 (main_difendent_application_form)
                                                                     </div>
 
                                                                 </div>

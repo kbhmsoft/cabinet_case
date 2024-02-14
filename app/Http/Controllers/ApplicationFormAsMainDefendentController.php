@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Court;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\ApplicationFormAsMainDefendent;
 use App\Models\gov_case\GovCaseDivisionCategory;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
 use App\Http\Requests\StoreApplicationFormAsMainDefendentRequest;
 use App\Http\Requests\UpdateApplicationFormAsMainDefendentRequest;
+use Illuminate\Http\Request;
+// use Illuminate\Routing\Route;
 
 class ApplicationFormAsMainDefendentController extends Controller
 {
@@ -23,31 +26,42 @@ class ApplicationFormAsMainDefendentController extends Controller
         //
     }
 
-    public function indexApplications()
+    public function indexApplications(Request $request)
     {
-        $cases = ApplicationFormAsMainDefendent::with('court')->paginate(10);
-        $court = new Court();
-        // dd($court);
-        $office = new GovCaseOffice();
-        // dd($office);
-        // $data['ministrys'] = GovCaseOffice::get();
-        foreach ($cases as $key => $value) {
-            $court = Court::find($value->court);
-            if ($court) {
-                $value->court_name = $court->court_name;
-            }
-            // dd($court);
-        }
+        // $cases = ApplicationFormAsMainDefendent::with('court')->paginate(10);
+
+        // $court = new Court();
 
         // foreach ($cases as $key => $value) {
-        //     $office = GovCaseOffice::find($value);
-        //     if ($office) {
-        //         $value->office_name_bn = $office->office_name_bn ;
+        //     $court = Court::find($value->court);
+        //     if ($court) {
+        //         $value->court_name = $court->court_name;
         //     }
-        //     // dd($office);
         // }
 
-        return view('gov_case.case_register.application_form_as_main_defendent.index', compact('cases'));
+        // return view('gov_case.case_register.application_form_as_main_defendent.index', compact('cases'));
+
+        // Retrieve cases for আপিল বিভাগ (court id: 1)
+        $appealCases = ApplicationFormAsMainDefendent::where('court', 1)->paginate(10);
+
+        // Retrieve cases for হাইকোর্ট বিভাগ (court id: 2)
+        $highcourtCases = ApplicationFormAsMainDefendent::where('court', 2)->paginate(10);
+        /*  $value =
+            dd($value); */
+        $category = $request->input('category');
+
+        $appealCases->load('court');
+        $highcourtCases->load('court');
+
+        // return view('gov_case.case_register.application_form_as_main_defendent.index', compact('appealCases', 'highcourtCases', 'category'));
+        return view('gov_case.case_register.application_form_as_main_defendent.index', [
+            
+            'appealCases'           => $appealCases,
+            'highcourtCases'        => $highcourtCases,
+            'appealPagination'      => $appealCases->appends(request()->except('page')),
+            'highcourtPagination'   => $highcourtCases->appends(request()->except('page')),
+            'category'              => $category,
+        ]);
     }
 
 
