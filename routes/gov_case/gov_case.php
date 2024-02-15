@@ -1,20 +1,22 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
-use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
+use App\Http\Controllers\gov_case\AdalatAppealController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
-use App\Http\Controllers\gov_case\GovCaseActivityLogController;
-use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseOfficeController;
-use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\gov_case\GovCaseMessageController;
+use App\Http\Controllers\gov_case\AdalatHighCourtController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
-use App\Http\Controllers\gov_case\SumpremCourtController;
-use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
 
@@ -40,6 +42,10 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'cabinet/', 'as' => 'cabinet.'], function () {
 
+        Route::resource('highcourt-maintain', AdalatHighCourtController::class);
+        Route::resource('appeal-maintain', AdalatAppealController::class);
+
+        /////************** User Management **************/////
         Route::resource('user-management', GovCaseUserManagementController::class);
         /////************** Office Setting **************/////
         Route::get('/office', [GovCaseOfficeController::class, 'index'])->name('office');

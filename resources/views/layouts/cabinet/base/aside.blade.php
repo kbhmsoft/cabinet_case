@@ -411,6 +411,7 @@
                                     </li>
                                 </ul>
                             @endcan
+
                             @can('manage_role_menu')
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-role-management']) ? 'hilightMenu' : '' }}"
@@ -587,7 +588,7 @@
                                         </a>
                                     </li>
                                 @endcan --}}
-                           
+
                                 @can('main_plaintiff_for_case')
 
                                     @forelse($case_status as $row)
@@ -722,9 +723,7 @@
                     </li>
                 @endcan
                 @php
-
                     $supremeCourtCaseCout = DB::select(DB::raw("SELECT count(id) as total_hearing FROM gov_case_notify_supre_court WHERE date = '27/02/2023'"))[0]->total_hearing;
-
                 @endphp
                 @can('verify_case_information_menu')
                     <li class="menu-item {{ request()->is('search/supremecourt/case', 'search/supremecourt/causelist', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}"
@@ -768,15 +767,46 @@
                                         </li>
                                     @endif
                                 @endcan --}}
-
-
                             </ul>
                         </div>
                     </li>
                 @endcan
 
+                @can('maintain_adalat')
+                <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/highcourt-maintain','cabinet/appeal-maintain']) ? 'menu-item-open' : '' }}"
+                    aria-haspopup="true">
+                    <a href="{{ url('cabinet/highcourt-maintain') }}" class="menu-link menu-toggle">
+                        <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>আদালত পরিচালনা</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        @can('hightcourt_adalat')
+                        <ul class="menu-subnav">
+                            <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/highcourt-maintain']) ? 'hilightMenu' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ url('cabinet/highcourt-maintain') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                    <span class="menu-text font-weight-bolder">হাইকোর্ট আদালত</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @endcan
 
-
+                        @can('appeal_adalat')
+                        <ul class="menu-subnav">
+                            <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/appeal-maintain']) ? 'hilightMenu' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ url('cabinet/appeal-maintain') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                    <span class="menu-text font-weight-bolder">আপিল আদালত</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @endcan
+                    </div>
+                </li>
+                @endcan
             </ul> <!--end::Menu Nav-->
         </div> <!--end::Menu Container-->
     </div> <!--end::Aside Menu-->

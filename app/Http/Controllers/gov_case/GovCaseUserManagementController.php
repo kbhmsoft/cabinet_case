@@ -38,8 +38,6 @@ class GovCaseUserManagementController extends Controller
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-
-
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -70,7 +68,6 @@ class GovCaseUserManagementController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
-
             ///////// start run script
                 // ***** assing role for all users
                 // $userItem = User::where('is_gov', 1)->get();
@@ -78,7 +75,6 @@ class GovCaseUserManagementController extends Controller
                 //     $user->assignRole($user->role);
                 // }
             ///////// run script
-
 
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
