@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreApplicationFormAsMainDefendentRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'court'                     => 'nullable',
+            'case_no'                   => 'nullable',
+            'case_category'             => 'required',
+            'case_category_type'        => 'required',
+            'main_defendant_pdf'        => 'file', 'mimes:pdf',
+            'main_defendant_comments'   => 'required',
+            'additional_comments'       => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [];
+    }
+}

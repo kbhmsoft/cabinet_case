@@ -17,7 +17,7 @@ class GovCaseDivisionCategoryType extends Model
 	'name_bn',
 	'name_en',
     'status',
-	];
+	];	
 
     public function category(){
         return $this->hasOne(GovCaseDivisionCategory::class,'id', 'gov_case_category_id');

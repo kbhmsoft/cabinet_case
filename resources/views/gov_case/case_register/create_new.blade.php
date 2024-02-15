@@ -611,8 +611,7 @@
 
                                                     <div class="col-lg-6 mb-5">
                                                         <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
-                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
-                                                                5MB)</sub>
+
                                                         </label>
                                                         <input type="text" name="appeal_against_postpond_interim_order"
                                                             id="appeal_against_postpond_interim_order"
@@ -660,10 +659,12 @@
                                                             <div
                                                                 class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                 <div class="d-flex align-items-center mr-2 py-2">
-                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
-                                                                        আদেশের কপি সংযুক্ত করুন)
-                                                                        <span class="text-danger">*</span>
+                                                                    <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের
+                                                                        আদেশের কপি সংযুক্ত করুন) <small
+                                                                            class="text-danger">*(PDF, সর্বোচ্চ সাইজ:
+                                                                            5MB)</small>
                                                                     </h3>
+
                                                                 </div>
 
                                                                 <div class="symbol-group symbol-hover py-2">
@@ -672,7 +673,8 @@
                                                                         role="button" data-original-title="ফাইল যুক্ত করুণ">
 
                                                                         <div id="addSuspensionOrderFileRow">
-                                                                            <span class="symbol-label font-weight-bold bg-success">
+                                                                            <span
+                                                                                class="symbol-label font-weight-bold bg-success">
                                                                                 <i
                                                                                     class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                             </span>
@@ -683,16 +685,18 @@
                                                             <br>
                                                             <div class="mt-3 px-5">
                                                                 <table width="100%" class="border-0 px-5"
-                                                                    id="suspensionOrderFileDiv" style="border:1px solid #dcd8d8;">
+                                                                    id="suspensionOrderFileDiv"
+                                                                    style="border:1px solid #dcd8d8;">
                                                                     <tr></tr>
                                                                 </table>
-                                                                <input type="hidden" id="suspension_order_attachment_count"
-                                                                    value="1">
+                                                                <input type="hidden"
+                                                                    id="suspension_order_attachment_count" value="1">
                                                             </div>
                                                         </fieldset>
                                                     </div>
 
-                                                    <div class="form-footer" style="display: flex;justify-content: center;">
+                                                    <div class="form-footer"
+                                                        style="display: flex;justify-content: center;">
                                                         <button type="submit" id="suspensionOrderSaveBtn"
                                                             class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
                                                     </div>
@@ -724,9 +728,9 @@
                                                             <fieldset class="">
                                                                 <div class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                     <div class="d-flex align-items-center mr-2 py-2">
-                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (স্থগিতাদেশের/অন্তর্বর্তীকালীন
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (অন্তর্বর্তীকালীন
                                                                             আদেশের কপি সংযুক্ত করুন)
-                                                                            <span class="text-danger">*</span>
+                                                                            <small class="text-danger">*(PDF, সর্বোচ্চ সাইজ:5MB)</small>
                                                                         </h3>
                                                                     </div>
 
@@ -746,20 +750,25 @@
                                                                     </div>
 
                                                                 </div>
-                                                                <br>
-                                                                <div class="mt-3 px-5">
-                                                                    <table width="100%" class="border-0 px-5" id="suspensionOrderFileDivTwo" style="border:1px solid #dcd8d8;">
-                                                                        <tr></tr>
-                                                                    </table>
-                                                                    <input type="hidden" id="suspension_order_attachment_count"
-                                                                        value="1">
-                                                                </div>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="form-footer" style="display: flex;justify-content: center;">
-                                                            <button type="submit" id="suspensionOrderSaveBtn"
-                                                                class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
-                                                        </div>
+
+                                                            </div>
+                                                            <br>
+                                                            <div class="mt-3 px-5">
+                                                                <table width="100%" class="border-0 px-5"
+                                                                    id="suspensionOrderFileDivTwo"
+                                                                    style="border:1px solid #dcd8d8;">
+                                                                    <tr></tr>
+                                                                </table>
+                                                                <input type="hidden"
+                                                                    id="suspension_order_attachment_count" value="1">
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="form-footer"
+                                                        style="display: flex;justify-content: center;">
+                                                        <button type="submit" id="suspensionOrderSaveBtn"
+                                                            class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -1339,13 +1348,13 @@
                     if ($("#postponed_order_have").is(":checked")) {
                         $("#postponed_order_details").show();
 
-                //--------------- Disable the "interim_order_have" radio button----------------------
+                        //--------------- Disable the "interim_order_have" radio button----------------------
 
                         $("#interim_order_have").prop("disabled", true);
                     } else {
                         $("#postponed_order_details").hide();
 
-                //--------------- Enable the "interim_order_have" radio button------------------------
+                        //--------------- Enable the "interim_order_have" radio button------------------------
 
                         $("#interim_order_have").prop("disabled", false);
                     }
@@ -1357,12 +1366,12 @@
                     if ($("#interim_order_have").is(":checked")) {
                         $("#interim_order_details_div").show();
 
-                //---------------- Disable the "postponed_order_have" radio button-------------------------
+                        //---------------- Disable the "postponed_order_have" radio button-------------------------
 
                         $("#postponed_order_have").prop("disabled", true);
                     } else {
                         $("#interim_order_details_div").hide();
-                //--------------- Enable the "postponed_order_have" radio button--------------------------
+                        //--------------- Enable the "postponed_order_have" radio button--------------------------
 
                         $("#postponed_order_have").prop("disabled", false);
                     }
@@ -1406,8 +1415,57 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Add this button somewhere in your HTML file -->
+    {{-- <button id="redirectButton" class="btn btn-success">অনুরোধ করুন</button> --}}
+
+
+    {{-- <script>
+    $(document).ready(function() {
+        $('#case_no').blur(function() {
+            var caseNo = $(this).val();
+            $.ajax({
+                url: "{{ route('cabinet.case.check-case-no') }}",
+                type: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'case_no': caseNo
+                },
+                success: function(data) {
+                    if (data.exists) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+
+                            html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                data.officeName +
+                                '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            onOpen: function() {
+                                Swal.getPopup().appendChild(
+                                    $('<button>', {
+                                        text: 'অনুরোধ করুন',
+                                        id: 'saveButton',
+                                        class: 'btn btn-success',
+                                        click: function() {
+                                            url: "{{ route('createApplicationForm') }}/" + caseNo;
+                                        }
+                                    })[0]
+                                );
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script> --}}
+
+
     <script>
         $(document).ready(function() {
+            var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
+
             $('#case_no').blur(function() {
                 var caseNo = $(this).val();
                 $.ajax({
@@ -1426,8 +1484,26 @@
                                 html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
                                     data.officeName +
                                     '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                                onOpen: function() {
+                                    Swal.getPopup().appendChild(
+                                        $('<button>', {
+                                            text: 'অনুরোধ করুন',
+                                            id: 'saveButton',
+                                            class: 'btn btn-success',
+                                            click: function() {
+                                                var url =
+                                                    createApplicationFormRoute
+                                                    .replace(':caseNo',
+                                                        caseNo);
+                                                window.location.href =
+                                                    url;
+                                            }
+                                        })[0]
+                                    );
+                                }
                             });
-
                         }
                     }
                 });

@@ -257,7 +257,7 @@
 
 
 
-                                                                        @foreach ($ministrys as $item)
+                                                                             @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -302,7 +302,7 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                        @foreach ($ministrys as $item)
+                                                                             @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -370,38 +370,37 @@
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
                                                                 style="border:1px solid #dcd8d8;">
                                                                 @foreach ($files as $key => $value)
-                                                                    {{-- {{dd($value->id)}} --}}
                                                                     <tr>
-                                                                        {{-- <td><input type="text" name="file_type[]" id="customFileName"
-                                                         class="form-control form-control-sm"><span class="text-danger">{{ en2bn($value->file_type) }}</span></td> --}}
-                                                                        {{-- <td class="">{{ en2bn($value->file_type) }}</td> --}}
-                                                                        {{-- <td class="tg-nluh text-center">
-                                                                            <a target="_black" href="{{ asset($value->file_name) }}"
-                                                                                class="">সংযুক্তি</a>
-                                                                        </td> --}}
-                                                                        {{-- <td>
-                                                                            <input type="text" name="file_type[]" id="customFileName" class="form-control form-control-sm" value="{{ $value->file_type }}">
-                                                                        </td> --}}
                                                                         <td>
                                                                             <input type="text" name="file_type[]"
                                                                                 id="customFileName"
                                                                                 class="form-control form-control-sm"
                                                                                 value="{{ old('file_type', $value->file_type) }}">
                                                                         </td>
-                                                                        {{-- <td>
+                                                                        <td>
                                                                             <div class="custom-file">
 
-                                                                                    @if ($value->file_name)
-                                                                                        <a target="_blank" class="text-center font-weight-bolder mt-2 mb-2" href="{{ asset($value->file_name) }}">সংযুক্তি কপি</a><br>
-                                                                                    @else
-
-                                                                                <input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(this)" class="custom-file-input" id="customFile" />
-                                                                                <label id="file_error" class="text-danger font-weight-bolder mt-2 mb-2"></label>
-                                                                                <label class="custom-file-label custom-input" for="customFile">
-                                                                                </label>
+                                                                                @if ($value->file_name)
+                                                                                    <a target="_blank"
+                                                                                        class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
+                                                                                        href="{{ asset($value->file_name) }}">সংযুক্তি
+                                                                                        কপি</a><br>
+                                                                                @else
+                                                                                    <input type="file"
+                                                                                        accept="application/pdf"
+                                                                                        name="file_name[]"
+                                                                                        onChange="attachmentTitle(this)"
+                                                                                        class="custom-file-input"
+                                                                                        id="customFile" />
+                                                                                    <label id="file_error"
+                                                                                        class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                    <label
+                                                                                        class="custom-file-label custom-input"
+                                                                                        for="customFile">
+                                                                                    </label>
                                                                                 @endif
                                                                             </div>
-                                                                        </td> --}}
+                                                                        </td>
                                                                     </tr>
                                                                 @endforeach
                                                                 <tr></tr>
@@ -531,6 +530,48 @@
 
                                                         </div>
 
+                                                    </div>
+                                                    <div class="mt-3 px-5">
+                                                        <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                            style="border:1px solid #dcd8d8;">
+                                                            @foreach ($replyFiles as $key => $value)
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" name="file_type[]"
+                                                                            id="customFileName"
+                                                                            class="form-control form-control-sm"
+                                                                            value="{{ old('file_type', $value->file_type) }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="custom-file">
+
+                                                                            @if ($value->file_name)
+                                                                                <a target="_blank"
+                                                                                    class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
+                                                                                    href="{{ asset($value->file_name) }}">সংযুক্তি
+                                                                                    কপি</a><br>
+                                                                            @else
+                                                                                <input type="file"
+                                                                                    accept="application/pdf"
+                                                                                    name="file_name[]"
+                                                                                    onChange="attachmentTitle(this)"
+                                                                                    class="custom-file-input"
+                                                                                    id="customFile" />
+                                                                                <label id="file_error"
+                                                                                    class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                <label
+                                                                                    class="custom-file-label custom-input"
+                                                                                    for="customFile">
+                                                                                </label>
+                                                                            @endif
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr></tr>
+                                                        </table>
+                                                        <input type="hidden" id="other_attachment_count"
+                                                            value="1">
                                                     </div>
                                                     <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5" id="replyFileDiv"
@@ -857,6 +898,48 @@
 
                                                     </div>
                                                     <div class="mt-3 px-5">
+                                                        <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                            style="border:1px solid #dcd8d8;">
+                                                            @foreach ($suspensionFiles as $key => $value)
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" name="file_type[]"
+                                                                            id="customFileName"
+                                                                            class="form-control form-control-sm"
+                                                                            value="{{ old('file_type', $value->file_type) }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="custom-file">
+
+                                                                            @if ($value->file_name)
+                                                                                <a target="_blank"
+                                                                                    class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
+                                                                                    href="{{ asset($value->file_name) }}">সংযুক্তি
+                                                                                    কপি</a><br>
+                                                                            @else
+                                                                                <input type="file"
+                                                                                    accept="application/pdf"
+                                                                                    name="file_name[]"
+                                                                                    onChange="attachmentTitle(this)"
+                                                                                    class="custom-file-input"
+                                                                                    id="customFile" />
+                                                                                <label id="file_error"
+                                                                                    class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                <label
+                                                                                    class="custom-file-label custom-input"
+                                                                                    for="customFile">
+                                                                                </label>
+                                                                            @endif
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr></tr>
+                                                        </table>
+                                                        <input type="hidden" id="other_attachment_count"
+                                                            value="1">
+                                                    </div>
+                                                    <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5"
                                                             id="suspensionOrderFileDiv" style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
@@ -1147,6 +1230,48 @@
 
                                                                 </div>
 
+                                                            </div>
+                                                            <div class="mt-3 px-5">
+                                                                <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                                    style="border:1px solid #dcd8d8;">
+                                                                    @foreach ($finalFiles as $key => $value)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" name="file_type[]"
+                                                                                    id="customFileName"
+                                                                                    class="form-control form-control-sm"
+                                                                                    value="{{ old('file_type', $value->file_type) }}">
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="custom-file">
+        
+                                                                                    @if ($value->file_name)
+                                                                                        <a target="_blank"
+                                                                                            class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
+                                                                                            href="{{ asset($value->file_name) }}">সংযুক্তি
+                                                                                            কপি</a><br>
+                                                                                    @else
+                                                                                        <input type="file"
+                                                                                            accept="application/pdf"
+                                                                                            name="file_name[]"
+                                                                                            onChange="attachmentTitle(this)"
+                                                                                            class="custom-file-input"
+                                                                                            id="customFile" />
+                                                                                        <label id="file_error"
+                                                                                            class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                        <label
+                                                                                            class="custom-file-label custom-input"
+                                                                                            for="customFile">
+                                                                                        </label>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    <tr></tr>
+                                                                </table>
+                                                                <input type="hidden" id="other_attachment_count"
+                                                                    value="1">
                                                             </div>
                                                             <div class="mt-3 px-5">
                                                                 <table width="100%" class="border-0 px-5"
@@ -1567,29 +1692,29 @@
         });
     </script>
 
-<script>
-    function showAlert() {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Are you sure you want to check/uncheck this checkbox?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Confirm",
-            cancelButtonText: "Cancel",
-        }).then((result) => {
-            if (result.isConfirmed) {
+    <script>
+        function showAlert() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Are you sure you want to check/uncheck this checkbox?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Confirm",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
 
-            } else {
+                } else {
 
-                document.getElementById('is_final_order').checked = false;
-                console.log("aoyon");
-                $('#finalOrderDiv').hide();
-            }
-        });
-    }
-</script>
+                    document.getElementById('is_final_order').checked = false;
+                    console.log("aoyon");
+                    $('#finalOrderDiv').hide();
+                }
+            });
+        }
+    </script>
 
     <script>
         $(document).ready(function() {

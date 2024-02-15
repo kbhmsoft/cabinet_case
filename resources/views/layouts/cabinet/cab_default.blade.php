@@ -33,6 +33,13 @@
     {{-- Includable CSS Related Page --}}
     @yield('styles')
 
+    <style>
+        .wrapper {
+            padding: 0px ; 
+        }
+    </style>
+    
+
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
 
 </head>
@@ -55,7 +62,7 @@
             <!--end::Aside-->
 
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper">
                 <!--begin::Header-->
                 @include('layouts.cabinet.base.header')
                 <!--end::Header-->

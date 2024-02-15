@@ -665,6 +665,8 @@
                                                             id="tamil_requesting_date"
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
+
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -1174,23 +1176,68 @@
 
 
 
-            $("#postponed_order_details").hide();
-            $("#interim_order_details_div").hide();
-            $("#postponed_order_have").click(function() {
-                $("#postponed_order_details").show();
-            });
+            // $("#postponed_order_details").hide();
+            // $("#interim_order_details_div").hide();
+            // $("#postponed_order_have").click(function() {
+            //     $("#postponed_order_details").show();
+            // });
 
-            $("#postponed_order_not").click(function() {
+            // $("#postponed_order_not").click(function() {
+            //     $("#postponed_order_details").hide();
+            // });
+
+            // $("#interim_order_have").click(function() {
+            //     $("#interim_order_details_div").show();
+            // });
+
+            // $("#interim_order_not").click(function() {
+            //     $("#interim_order_details_div").hide();
+            // });
+
+            $(document).ready(function() {
+                //------------ Initially hide the sections---------------
+
                 $("#postponed_order_details").hide();
-            });
-
-            $("#interim_order_have").click(function() {
-                $("#interim_order_details_div").show();
-            });
-
-            $("#interim_order_not").click(function() {
                 $("#interim_order_details_div").hide();
+
+                //---------------- Event handlers for the "স্থগিতাদেশের" radio buttons----------------
+
+                $("input[name='postponed_order']").change(function() {
+                    if ($("#postponed_order_have").is(":checked")) {
+                        $("#postponed_order_details").show();
+
+                //--------------- Disable the "interim_order_have" radio button----------------------
+
+                        $("#interim_order_have").prop("disabled", true);
+                    } else {
+                        $("#postponed_order_details").hide();
+
+                //--------------- Enable the "interim_order_have" radio button------------------------
+
+                        $("#interim_order_have").prop("disabled", false);
+                    }
+                });
+
+                //--------------- Event handlers for the "অন্তর্বর্তীকালীন আদেশ" radio buttons--------------
+
+                $("input[name='interim_order']").change(function() {
+                    if ($("#interim_order_have").is(":checked")) {
+                        $("#interim_order_details_div").show();
+
+                //---------------- Disable the "postponed_order_have" radio button-------------------------
+
+                        $("#postponed_order_have").prop("disabled", true);
+                    } else {
+                        $("#interim_order_details_div").hide();
+                //--------------- Enable the "postponed_order_have" radio button--------------------------
+
+                        $("#postponed_order_have").prop("disabled", false);
+                    }
+                });
             });
+
+
+
 
             $("#appeal_case_id").change(function() {
                 var case_id = $('#appeal_case_id').find(":selected").val();
