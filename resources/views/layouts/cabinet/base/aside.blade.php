@@ -55,7 +55,8 @@
                     </a>
                 </li> --}}
 
-                <li class="menu-item mt-2" aria-haspopup="true" data-menu-toggle="hover" id="main-menu">
+                <li class="menu-item mt-2 has-treeview {{ request()->is('cabinet/case/highcourt/indexApplications*'),'cabinet/case/appeal/indexApplications*') ? 'menu-is-opening menu-open' 'menu-item-open' : '' }}" 
+                    aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল বিবাদি হিসেবে অন্তর্ভুক্তির আবেদন (সংখ্যা)</span>
                         <i class="menu-arrow"></i>
@@ -74,7 +75,9 @@
                             </li>
                         </ul>
                     </div>
-                </li>  
+                </li>
+                
+                
                 
 
                 @can('highcourt_division')
@@ -807,3 +810,5 @@
     </div> <!--end::Aside Menu-->
 </div> <!-- /aside-left -->
 </div> <!-- /aside-left -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
