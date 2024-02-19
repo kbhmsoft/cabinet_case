@@ -526,6 +526,9 @@ class GovCaseRegisterRepository
             $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number;
+            $case->highcourt_adalat = $caseInfo->highcourt_adalat;
+            $case->money_amount = $caseInfo->money_amount;
+            $case->hearing_short_order = $caseInfo->hearing_short_order;
             if ($case->save()) {
                 $caseId = $case->id;
             }

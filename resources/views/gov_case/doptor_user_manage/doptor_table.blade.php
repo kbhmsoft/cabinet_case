@@ -3,7 +3,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <td>{{ $index + 1 }}</td>
         <td>{{ $row->nameBn }}</td>
-        <td>{{ $row->unitNameBn }}</td>
+        <td>{{ $row->unitNameBn ?? '' }}</td>
         <td>
             <div class="form-group mb-2">
                 @php
@@ -40,7 +40,7 @@
             </strong>
         </td>
     </tr>
-  
+
 @endforeach
 
 

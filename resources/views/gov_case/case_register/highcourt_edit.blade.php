@@ -163,7 +163,7 @@
                                                             @foreach ($concern_person_desig as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
+                                                                    {{ $value->name_bn }} </option>
                                                             @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
@@ -255,22 +255,20 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-
-
-                                                                             @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                            {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
+                                                                     @foreach ($ministrys as $item)
+                                                                        <option value="{{ $item->doptor_office_id }}"
+                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
                                                         @endforeach
                                                         </select>
                                                         </td>
                                                         <input type="hidden"
-                                                            name="bibadi_id[]"value="{{ $val->id }}">
+                                                            name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
                                                         <td>
                                                             @if ($key > 0)
                                                                 <a href="javascript:void();"
                                                                     class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->id }}"
+                                                                    data-id="{{ $value->doptor_office_id }}"
                                                                     onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                     <i class="fas fa-minus-circle"></i>
                                                                 </a>
@@ -301,21 +299,20 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-
                                                                              @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                            {{ $item->id == $val->respondent_id ? 'selected' : '' }}>
+                                                                        <option value="{{ $item->doptor_office_id }}"
+                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
                                                         @endforeach
                                                         </select>
                                                         </td>
                                                         <input type="hidden" name="bibadi_id[]"
-                                                            value="{{ $val->id }}">
+                                                            value="{{ $val->doptor_office_id }}">
                                                         <td>
                                                             @if ($key > 0)
                                                                 <a href="javascript:void();"
                                                                     class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->id }}"
+                                                                    data-id="{{ $value->doptor_office_id }}"
                                                                     onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                     <i class="fas fa-minus-circle"></i>
                                                                 </a>
@@ -1244,7 +1241,7 @@
                                                                             </td>
                                                                             <td>
                                                                                 <div class="custom-file">
-        
+
                                                                                     @if ($value->file_name)
                                                                                         <a target="_blank"
                                                                                             class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "

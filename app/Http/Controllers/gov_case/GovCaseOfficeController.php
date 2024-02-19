@@ -241,7 +241,7 @@ class GovCaseOfficeController extends Controller
         $data['offices'] = $query->paginate(10)->withQueryString();
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
-       
+
         $data['upazilas'] = null;
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
 

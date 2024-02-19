@@ -102,6 +102,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col" width="30">#</th>
+                        <th scope="col">কর্মকর্তার নাম</th>
                         <th scope="col">পদবি</th>
                         <th scope="col">শাখা</th>
                         <th scope="col">রোল</th>

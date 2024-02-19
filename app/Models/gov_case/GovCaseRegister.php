@@ -120,7 +120,10 @@ class GovCaseRegister extends Model
         'focal_person_name_leave_to_appeal',
         'focal_person_designation_leave_to_appeal',
         'focal_person_mobile_leave_to_appeal',
-        'total_badi_number'
+        'total_badi_number',
+        'highcourt_adalat',
+        'money_amount',
+        'hearing_short_order',
 
 	];
 

@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\Attachment;
-use App\Models\Court;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseLog;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\Court;
+use App\Models\Office;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseLog;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\HighcourtAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
 
 class GovCaseRegisterController extends Controller
 {
@@ -2359,8 +2360,8 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data['ministrys'] = GovCaseOffice::get();
-        // return $data['ministrys'];
-        // $data['ministrys'] = DB::table('gov_case_office_duplicate')->whereIn('level',[1,2,3,4,5])->get();
+
+        $data['highCourtAdalat'] = HighcourtAdalat::get();
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
@@ -3082,7 +3083,6 @@ class GovCaseRegisterController extends Controller
 
     public function highcourt_edit($id)
     {
-        // dd($id);
         $roleID = userInfo()->role_id;
 
         $officeID = userInfo()->office_id;
@@ -3888,6 +3888,7 @@ class GovCaseRegisterController extends Controller
                 ->groupBy('gov_case_id')->first();
 
             $officeName = GovCaseOffice::where('doptor_office_id', $officeId->respondent_id)->first();
+
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
     }

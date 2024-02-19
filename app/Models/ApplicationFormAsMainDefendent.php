@@ -20,10 +20,11 @@ class ApplicationFormAsMainDefendent extends Model
         'main_defendant_comments',
         'additional_comments',
         'main_defendant_pdf',
+        'office_id'
     ];
 
     public function category(){
-        
+
         return $this->hasOne(GovCaseDivisionCategory::class,'id', 'gov_case_category_id');
     }
     public function court()
