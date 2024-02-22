@@ -137,7 +137,6 @@
                                                         not be empty</span>
                                                 </div>
 
-
                                                 <div class="col-lg-4 mb-5">
                                                     <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
                                                     <div class="" id="AdalatDiv">
@@ -231,7 +230,6 @@
                                                             ?>
                                                         </select>
                                                         <input type="hidden" name="caseId" value="">
-
                                                     </div>
                                                 </div>
 
@@ -283,7 +281,7 @@
                                                 <div class="col-lg-6 mb-5">
                                                     <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য মূল্য ইত্যাদি)
 
-                                                    <textarea name="money_amount" class="form-control" id="money_amount" rows="1" spellcheck="false"></textarea>
+                                                    <input name="money_amount" class="form-control" id="money_amount" rows="1" spellcheck="false"></input>
                                                 </div>
 
 
@@ -326,11 +324,6 @@
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
-                                                </div>
-
-                                                <div class="col-lg-12 mb-5">
-                                                    <label>শুনানির তারিখ/সংক্ষিপ্ত আদেশ </label>( সুপ্রিম কোর্টের কেস সার্চ অপশন থেকে মামলাটি সিলেক্ট করে লিংক কপি করে পেস্ট করুন)
-                                                    <input  type="url"  name="hearing_short_order" class="form-control" id="hearing_short_order" rows="1" spellcheck="false"></input >
                                                 </div>
 
                                                 {{-- end সংযুক্তি --}}

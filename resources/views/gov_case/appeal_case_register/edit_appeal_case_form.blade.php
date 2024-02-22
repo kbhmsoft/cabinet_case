@@ -124,6 +124,25 @@
                                                         not be empty</span>
                                                 </div>
 
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+
+                                                    <div class="" id="AdalatDiv">
+                                                        <select name="appeal_adalat" id="AppealAdalat"
+                                                            class="form-control form-control-sm">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($appealCourtAdalat as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('appeal_adalat') == $value->id || $case->appeal_adalat == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name }} </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আপিলকারি অফিস
@@ -197,7 +216,7 @@
                                                 </div>
 
 
-                                                <div class="col-md-4 mb-5">
+                                                <div class="col-md-12 mb-5">
                                                     <label>স্থগিতাদেশের বিবরণ</label>
                                                     <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false">
                                                         {{ $appealCaseData->postponed_details ?? '' }}
@@ -345,7 +364,6 @@
                                                             can not be empty</span>
                                                     </div>
                                                 </div>
-
 
                                         </fieldset>
                                         {{-- </div> --}}

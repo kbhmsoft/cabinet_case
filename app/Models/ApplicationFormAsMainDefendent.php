@@ -18,7 +18,6 @@ class ApplicationFormAsMainDefendent extends Model
         'case_category',
         'case_category_type',
         'main_defendant_comments',
-        'additional_comments',
         'main_defendant_pdf',
         'office_id'
     ];

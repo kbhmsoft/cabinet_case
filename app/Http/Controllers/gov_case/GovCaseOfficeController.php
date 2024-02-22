@@ -39,20 +39,19 @@ class GovCaseOfficeController extends Controller
      */
     public function index()
     {
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        // dd($officeInfo);
+
         $data['page_title'] = 'অফিসের তালিকা';
         // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
         //Add Conditions
         $query = GovCaseOffice::orderby('id', 'ASC');
-        //    dd($query);
+
         if (!empty($_GET['office_type'])) {
             $query->where('gov_case_office.level', '=', $_GET['office_type']);
         }
@@ -136,12 +135,14 @@ class GovCaseOfficeController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         // dd($officeInfo);
-        $data['page_title'] = 'ব্যাবহারকারী দপ্তর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারী দপ্তর-সংস্থা তালিকা';
         // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
         //Add Conditions
-        $query = GovCaseOffice::orderby('id', 'ASC')->where('level', 2);
+        $query = GovCaseOffice::orderby('id', 'ASC')->whereIn('level', [2, 5]);
+
+
         //    dd($query);
         if (!empty($_GET['office_type'])) {
             $query->where('gov_case_office.level', '=', $_GET['office_type']);
@@ -680,7 +681,7 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['organoGram'] = json_decode($doptoOrganogramOffice);
-        // dd($data['organoGram']);
+
 
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
@@ -758,10 +759,10 @@ class GovCaseOfficeController extends Controller
     {
         $curl = curl_init();
         $token = session('bearerToken');
-        // dd($token);
+
         curl_setopt_array($curl, array(
-            // CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/v1/officeunitorganogram?office=' . $id,
-            CURLOPT_URL => DOPTOR_ENDPOINT().'/api/v1/officeunitorganogram?office=' . $id,
+
+            CURLOPT_URL => DOPTOR_ENDPOINT().'/api/v1/empoffice?office=' . $id,
 
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',

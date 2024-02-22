@@ -45,7 +45,7 @@
                 <i class="fa fas fa-layer-group text-white"></i>
                 <span class="count-numbers"><?= en2bn($total_doptor) ?></span>
                 <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                    ব্যাবহারকারী দপ্তর</span>
+                    ব্যবহারকারী দপ্তর-সংস্থা</span>
             </div>
         </a>
     </div>

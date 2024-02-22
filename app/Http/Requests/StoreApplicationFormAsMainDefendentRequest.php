@@ -25,12 +25,11 @@ class StoreApplicationFormAsMainDefendentRequest extends FormRequest
     {
         return [
             'court'                     => 'nullable',
-            'case_no'                   => 'nullable',
+            'case_no'                   => 'required',
             'case_category'             => 'required',
             'case_category_type'        => 'required',
             'main_defendant_pdf'        => 'file', 'mimes:pdf',
             'main_defendant_comments'   => 'required',
-            'additional_comments'       => 'required',
         ];
     }
 

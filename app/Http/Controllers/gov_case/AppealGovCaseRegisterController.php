@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\AppealAttachment;
-use App\Models\Attachment;
-use App\Models\Court;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseLog;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\Court;
+use App\Models\Office;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
+use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseLog;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\AppealAdalat;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
 
 class AppealGovCaseRegisterController extends Controller
 {
@@ -2190,6 +2191,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['usersInfo'] = User::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+
+        $data['appealCourtAdalat'] = AppealAdalat::get();
 
         $data['page_title'] = 'আপিল বিভাগ মামলা সংশোধন';
         // return $data;

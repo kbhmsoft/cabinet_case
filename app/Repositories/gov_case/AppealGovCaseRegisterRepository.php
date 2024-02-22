@@ -74,7 +74,6 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppeal($caseInfo)
     {
-        // dd($caseInfo);
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
         $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
 
@@ -82,13 +81,13 @@ class AppealGovCaseRegisterRepository
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
-            // $case->action_user_id = userInfo()->id;
-            // $case->action_user_role_id = userInfo()->role_id;
-            // $case->create_by = userInfo()->id;
             $case->year = $caseInfo->case_year;
             $case->appeal_office_id = $caseInfo->appeal_office;
             $case->concern_new_appeal_person_designation = $caseInfo->concern_new_appeal_person_designation;
             $case->concern_user_id = $caseInfo->concern_user_id;
+            $case->appeal_adalat = $caseInfo->appeal_adalat;
+
+            $case->case_division_id = 1;
 
             if (empty($caseInfo->case_entry_date)) {
                 $case->case_entry_date = date('Y-m-d'); // Set to current date
@@ -114,7 +113,7 @@ class AppealGovCaseRegisterRepository
             if ($case->save()) {
                 $caseId = $case->id;
                 if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {
-                self::prevCaseStatusUpdate($caseInfo->case_number_origin);
+                    self::prevCaseStatusUpdate($caseInfo->case_number_origin);
                 }
             }
         } catch (\Exception $e) {
@@ -217,7 +216,7 @@ class AppealGovCaseRegisterRepository
         if (empty($caseInfo->case_entry_date)) {
             $case_entry_date = date('Y-m-d'); // Set to current date
         } else {
-            // If $caseInfo->case_entry_date is not empty, convert and assign the value
+
             $case_entry_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_entry_date)));
         }
 
@@ -256,18 +255,20 @@ class AppealGovCaseRegisterRepository
             $case->case_number_origin = $caseInfo->case_number_origin;
             $case->case_origin_id = $caseOriginId;
             // $case->is_appeal = 1;
-            $case->is_final_order = $caseInfo->is_final_order ?? '';
-            $case->result = $caseInfo->result ?? '';
+            $case->is_final_order = $caseInfo->is_final_order ?? null;
+            $case->result = $caseInfo->result ?? null;
             $case->in_favour_govt = $in_favour_govt;
-            $case->result_short_details = $caseInfo->result_short_details ?? '';
+            $case->result_short_details = $caseInfo->result_short_details ?? null;
             // $case->is_appeal = $caseInfo->is_appeal;
             $case->result_date = $result_date;
-            $case->case_entry_date= $case_entry_date;
+            $case->case_entry_date = $case_entry_date;
             $case->result_copy_asking_date = $result_copy_asking_date;
             $case->result_copy_receiving_date = $result_copy_receiving_date;
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
+            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? null;
             $case->appeal_requesting_date = $appeal_requesting_date;
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
+            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? null;
+            $case->appeal_adalat = $caseInfo->appeal_adalat ?? null;
+            $case->case_division_id = 1;
 
             if ($case->save()) {
                 $caseId = $case->id;

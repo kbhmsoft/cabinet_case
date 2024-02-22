@@ -272,6 +272,8 @@ class GovCaseRegisterRepository
             $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
             $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
             $case->total_badi_number = $caseInfo->total_badi_number;
+            $case->highcourt_adalat = $caseInfo->highcourt_adalat;
+            $case->money_amount = $caseInfo->money_amount;
     //    return $case;
 
             if ($case->save()) {
@@ -528,7 +530,6 @@ class GovCaseRegisterRepository
             $case->total_badi_number = $caseInfo->total_badi_number;
             $case->highcourt_adalat = $caseInfo->highcourt_adalat;
             $case->money_amount = $caseInfo->money_amount;
-            $case->hearing_short_order = $caseInfo->hearing_short_order;
             if ($case->save()) {
                 $caseId = $case->id;
             }

@@ -29,20 +29,20 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane active" id="case_general_information" role="tabpanel" aria-labelledby="home-tab">
 
-                    <form method="POST" id="caseGeneralInfoForm">
+                    <form method="POST" id="caseGeneralInfoForm" enctype="multipart/form-data">
                         @csrf
-
                         <div class="row">
                             <div class="col-lg-4 mb-3">
-                                <label for="court" style="font-weight: bold; font-size: 1.5em;">আদালতের নাম <span
+                                <label for="court" style="font-weight: bold; font-size: 1.5em;">আদালতের নাম<span
                                         class="text-danger">*</span></label>
                                 <select name="court" id="court" class="form-control form-control-sm"
                                     required="required">
                                     <option value=""> -- নির্বাচন করুন --</option>
-                                    @foreach ($courts as $value)
+
+                                    @foreach ($GovCaseDivision as $value)
                                         <option value="{{ $value->id }}"
                                             {{ old('court') == $value->id ? 'selected' : '' }}>
-                                            {{ $value->court_name }} </option>
+                                            {{ $value->name_bn }} </option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger d-none vallidation-message">This field can not be empty</span>
@@ -100,11 +100,7 @@
                                 <textarea name="main_defendant_comments" class="form-control" id="main_defendant_comments" rows="3"
                                     spellcheck="false"></textarea>
                             </div>
-                            <div class="col-lg-12 mt-5">
-                                <label for="additional_comments"
-                                    style="font-weight: bold; font-size: 1.5em;">বিষয়বস্তু(সংক্ষিপ্ত) </label>
-                                <textarea name="additional_comments" class="form-control" id="additional_comments" rows="3" spellcheck="false"></textarea>
-                            </div>
+
                             <div class="col-lg-12 mt-5">
                                 <label for="main_defendant_pdf" style="font-weight: bold; font-size: 1.5em;">মূল বিবাদী
                                     হিসেবে অন্তর্ভুক্তির (PDF ফাইল) <span class="text-danger">*</span> <sub

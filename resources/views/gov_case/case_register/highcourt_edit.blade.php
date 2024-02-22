@@ -140,6 +140,27 @@
                                                         not be empty</span>
                                                 </div>
 
+
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+
+                                                    <div class="" id="AdalatDiv">
+                                                        <select name="highcourt_adalat" id="HighCourtAdalat"
+                                                            class="form-control form-control-sm">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($highCourtAdalat as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('highcourt_adalat') == $value->id || $case->highcourt_adalat == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name }} </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_date" id="case_date"
@@ -232,6 +253,27 @@
                                                         @endforeach
                                                     </table>
                                                 </div>
+
+
+                                                <div class="col-lg-12 mb-5">
+                                                    <div class="col-lg-4 mb-5">
+                                                        <label>মোট পিটিশনারের সংখ্যা</label>
+                                                        <select name="total_badi_number" id="total_badi_number"
+                                                            class="form-control form-control-sm">
+                                                            <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
+                                                            </option>
+                                                            @for ($i = 1; $i <= 1000; $i++)
+                                                                <option value="{{ $i }}"
+                                                                    {{ old('total_badi_number') == $i || $case->total_badi_number == $i ? 'selected' : '' }}>
+                                                                    {{ $i }}</option>
+                                                            @endfor
+                                                        </select>
+                                                        <input type="hidden" name="caseId" value="">
+                                                    </div>
+                                                </div>
+
+
+
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="MainBibadiDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
@@ -255,7 +297,7 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                     @foreach ($ministrys as $item)
+                                                                               @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -299,7 +341,7 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                             @foreach ($ministrys as $item)
+                                                                                       @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -329,7 +371,16 @@
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">{{ $case->subject_matter ?? '' }}</textarea>
                                                 </div>
 
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা
+                                                    সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য
+                                                    মূল্য ইত্যাদি)
 
+                                                    <input name="money_amount" class="form-control" id="money_amount"
+                                                        rows="1" spellcheck="false"
+                                                        value="{{ $case->money_amount ?? '' }}">
+                                                    </input>
+                                                </div>
 
 
                                                 {{-- starting সংযুক্তি  --}}
@@ -567,8 +618,7 @@
                                                             @endforeach
                                                             <tr></tr>
                                                         </table>
-                                                        <input type="hidden" id="other_attachment_count"
-                                                            value="1">
+                                                        <input type="hidden" id="other_attachment_count" value="1">
                                                     </div>
                                                     <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5" id="replyFileDiv"
@@ -933,8 +983,7 @@
                                                             @endforeach
                                                             <tr></tr>
                                                         </table>
-                                                        <input type="hidden" id="other_attachment_count"
-                                                            value="1">
+                                                        <input type="hidden" id="other_attachment_count" value="1">
                                                     </div>
                                                     <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5"
@@ -1229,8 +1278,8 @@
 
                                                             </div>
                                                             <div class="mt-3 px-5">
-                                                                <table width="100%" class="border-0 px-5" id="fileDiv"
-                                                                    style="border:1px solid #dcd8d8;">
+                                                                <table width="100%" class="border-0 px-5"
+                                                                    id="fileDiv" style="border:1px solid #dcd8d8;">
                                                                     @foreach ($finalFiles as $key => $value)
                                                                         <tr>
                                                                             <td>

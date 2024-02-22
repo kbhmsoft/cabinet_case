@@ -144,6 +144,25 @@
                                                                 can
                                                                 not be empty</span>
                                                         </div>
+
+
+                                                        <div class="col-lg-4 mb-5">
+                                                            <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                            <div class="" id="AdalatDiv">
+                                                                <select name="highcourt_adalat" id="HighCourtAdalat"
+                                                                    class="form-control form-control-sm" required="required">
+                                                                    <option value="">-- নির্বাচন করুন --</option>
+                                                                    @foreach ($highCourtAdalat as $value)
+                                                                        <option value="{{ $value->id }}"
+                                                                            {{ old('highcourt_adalat') == $value->id ? 'selected' : '' }}>
+                                                                            {{ $value->name }} </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <span class="text-danger d-none vallidation-message">This field
+                                                                    can not be empty</span>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-lg-4 mb-5">
                                                             <label for="case_date">রুল ইস্যুর তারিখ <span
                                                                     class="text-danger">*</span></label>
@@ -287,7 +306,11 @@
                                                         <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                     </div>
 
+                                                    <div class="col-lg-6 mb-5">
+                                                        <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য মূল্য ইত্যাদি)
 
+                                                        <input name="money_amount" class="form-control" id="money_amount" rows="1" spellcheck="false"></input>
+                                                    </div>
                                                     {{-- starting সংযুক্তি  --}}
 
                                                     <div id="thirdrequriedfields" class="form-group row">
@@ -666,7 +689,7 @@
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
 
-                                                    
+
                                                 </div>
 
                                                 <div class="col-md-6">

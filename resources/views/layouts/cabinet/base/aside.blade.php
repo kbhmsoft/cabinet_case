@@ -818,25 +818,33 @@
                                 হিসেবে অন্তর্ভুক্তির আবেদন</span>
                             <i class="menu-arrow"></i>
                         </a>
+
+                        @can('highcourt_same_case_menu')
                         <div class="menu-submenu">
                             <ul class="menu-subnav">
                                 <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.indexApplications', ['category' => 'highcourt']) }}"
+                                    <a href="{{ route('cabinet.case.highcourtIndexApplications') }}"
                                         class="menu-link">
                                         <span class="menu-text font-weight-bolder"><i
                                                 class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ</span>
                                     </a>
                                 </li>
+                            </ul>
+                         @endcan
+
+                         @can('appeal_same_case_menu')
+                            <ul class="menu-subnav">
                                 <li class="menu-item {{ request()->is('cabinet/case/appeal/indexApplications') ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.indexApplications', ['category' => 'appeal']) }}"
+                                    <a href="{{ route('cabinet.case.appealIndexApplications') }}"
                                         class="menu-link">
                                         <span class="menu-text font-weight-bolder"><i
                                                 class="menu-bullet menu-bullet-dot"><span></span></i> আপিল বিভাগ</span>
                                     </a>
                                 </li>
                             </ul>
+                         @endcan
                         </div>
                     </li>
                 @endcan

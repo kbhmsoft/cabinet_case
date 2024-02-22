@@ -99,6 +99,7 @@
                 </thead>
                 <tbody>
                     @foreach ($offices as $row)
+                    {{-- @dd($row) --}}
                         <?php
                         if ($row->status == 1) {
                             $officeStatus = '<span class="label label-inline label-light-primary font-weight-bold">এনাবল</span>';
@@ -109,7 +110,31 @@
                         <tr>
                             <th scope="row" class="tg-bn">{{ en2bn(++$i) }}.</th>
                             <td>{{ $row->office_name_bn }}</td>
-                            <td>{{ $row->office_type->type_name_bn }}</td>
+                            {{-- <td>{{ $row->level ?? '' }}</td> --}}
+                            <td>
+                                @php
+                                    switch ($row->level) {
+                                        case 1:
+                                            echo "মন্ত্রণালয়/বিভাগ";
+                                            break;
+                                        case 2:
+                                            echo "পরিদপ্তর/অধিদপ্তর";
+                                            break;
+                                        case 3:
+                                            echo "বিভাগীয় কার্যালয়/মেট্রোপলিটন";
+                                            break;
+                                        case 4:
+                                            echo "জেলা প্রশাসন";
+                                            break;
+                                        case 5:
+                                            echo "অন্যান্য দপ্তর/সংস্থা";
+                                            break;
+                                        default:
+                                            echo "Unknown level";
+                                    }
+                                @endphp
+                            </td>
+
                             <td><?= $officeStatus ?></td>
                             <td>
                                 <a href="{{ route('cabinet.office.edit', $row->id) }}"

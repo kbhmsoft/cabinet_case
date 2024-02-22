@@ -169,7 +169,8 @@ class DashboardController extends Controller
             $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
             $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
             $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
-            $data['total_doptor'] = DB::table('gov_case_office')->where('level', 2)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
+
 
             $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
 
@@ -890,7 +891,7 @@ class DashboardController extends Controller
         }
          elseif ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15) {
             $authUserId = Auth()->user()->id;
-       
+
             $childOfficeIds = [];
             // $childOfficeQuery = DB::table('gov_case_office')
             //     ->select('id')
@@ -1156,7 +1157,8 @@ class DashboardController extends Controller
             $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
             $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
             $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
-            $data['total_doptor'] = DB::table('gov_case_office')->where('level', 2)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
+
 
             $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
 
@@ -1472,7 +1474,8 @@ class DashboardController extends Controller
         $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
         $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
         $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
-        $data['total_doptor'] = DB::table('gov_case_office')->where('level', 2)->count();
+        $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
+
 
         $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
 

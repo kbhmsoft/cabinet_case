@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\gov_case\GovCaseLog;
 use App\Http\Controllers\Controller;
 use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\AppealAdalat;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivision;
@@ -2427,6 +2428,8 @@ class GovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
+        $data['appealCourtAdalat'] = AppealAdalat::get();
+
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
 
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
@@ -2438,11 +2441,8 @@ class GovCaseRegisterController extends Controller
 
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
         $data['ministrys'] = GovCaseOffice::get();
-        // $data['ministrys'] = DB::table('gov_case_office')->get();
         $data['caseRegister'] = GovCaseRegister::all();
-        // return $data['caseRegister'];
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
@@ -2467,8 +2467,11 @@ class GovCaseRegisterController extends Controller
         $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
+
+        $data['appealCourtAdalat'] = AppealAdalat::get();
+        
         $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
-        // return $data;
+
         return view('gov_case.appeal_case_register.create_old_appeal_case')->with($data);
     }
 
@@ -3109,6 +3112,8 @@ class GovCaseRegisterController extends Controller
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
+        $data['highCourtAdalat'] = HighcourtAdalat::get();
+
         $data['page_title'] = 'মামলা সংশোধন';
 
         return view('gov_case.case_register.highcourt_edit')->with($data);
@@ -3159,6 +3164,8 @@ class GovCaseRegisterController extends Controller
         $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
+
+        $data['highCourtAdalat'] = HighcourtAdalat::get();
 
         $data['page_title'] = 'নিস্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি '; //exit;
         // dd($data);

@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreApplicationFormAsMainDefendentRequest;
 use App\Http\Requests\UpdateApplicationFormAsMainDefendentRequest;
 use App\Models\ApplicationFormAsMainDefendent;
+use App\Models\gov_case\GovCaseDivision;
 use App\Models\gov_case\GovCaseDivisionCategory;
 use App\Models\gov_case\GovCaseDivisionCategoryType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 // use Illuminate\Routing\Route;
 
@@ -27,40 +29,19 @@ class ApplicationFormAsMainDefendentController extends Controller
 
     public function indexApplications(Request $request)
     {
-        // $cases = ApplicationFormAsMainDefendent::with('court')->paginate(10);
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
 
-        // $court = new Court();
+        $query = DB::table('application_form_as_main_defendents')
+            ->where('court', 2)
+            ->orderBy('id', 'DESC');
 
-        // foreach ($cases as $key => $value) {
-        //     $court = Court::find($value->court);
-        //     if ($court) {
-        //         $value->court_name = $court->court_name;
-        //     }
-        // }
+        $data['users'] = $query->paginate(10)->withQueryString();
 
-        // return view('gov_case.case_register.application_form_as_main_defendent.index', compact('cases'));
+        $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
 
-        // Retrieve cases for আপিল বিভাগ (court id: 1)
-        $appealCases = ApplicationFormAsMainDefendent::where('court', 1)->paginate(10);
-
-        // Retrieve cases for হাইকোর্ট বিভাগ (court id: 2)
-        $highcourtCases = ApplicationFormAsMainDefendent::where('court', 2)->paginate(10);
-        /*  $value =
-        dd($value); */
-        $category = $request->input('category');
-
-        $appealCases->load('court');
-        $highcourtCases->load('court');
-
-        // return view('gov_case.case_register.application_form_as_main_defendent.index', compact('appealCases', 'highcourtCases', 'category'));
-        return view('gov_case.case_register.application_form_as_main_defendent.index', [
-
-            'appealCases' => $appealCases,
-            'highcourtCases' => $highcourtCases,
-            'appealPagination' => $appealCases->appends(request()->except('page')),
-            'highcourtPagination' => $highcourtCases->appends(request()->except('page')),
-            'category' => $category,
-        ]);
+        return view('gov_case.case_register.application_form_as_main_defendent.index')
+            ->with($data);
     }
 
     /**
@@ -72,12 +53,15 @@ class ApplicationFormAsMainDefendentController extends Controller
     {
         $data = [];
 
-        $data['courts'] = DB::table('court')
-            ->select('id', 'court_name')
-            ->whereIn('id', [1, 2])
-            ->get();
+        // $data['courts'] = DB::table('court')
+        //     ->select('id', 'court_name')
+        //     ->whereIn('id', [1, 2])
+        //     ->get();
+
+        $data['GovCaseDivision'] = GovCaseDivision::all();
 
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        // dd($data['GovCaseDivisionCategory']);
         $GovCaseDivisionCategoryType = GovCaseDivisionCategoryType::all();
         $data['GovCaseDivisionCategoryType'] = $GovCaseDivisionCategoryType;
 
@@ -93,32 +77,37 @@ class ApplicationFormAsMainDefendentController extends Controller
      */
     public function storeApplicationForm(StoreApplicationFormAsMainDefendentRequest $request)
     {
-        // dd($request->all());
+
         $validatedData = $request->validated();
-        // $officeID = userInfo()->office_id;
         $authUserOfficeId = Auth()->user()->office_id;
+
+        if ($request->hasFile('main_defendant_pdf')) {
+            $file = $request->file('main_defendant_pdf');
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $filePath = $file->move(public_path('uploads/case_same_number'), $filename);
+            $validatedData['main_defendant_pdf'] = 'uploads/case_same_number/' . $filename;
+        }
+
         $applicationForm = new ApplicationFormAsMainDefendent([
             'court' => $validatedData['court'],
             'case_no' => $validatedData['case_no'],
             'case_category' => $validatedData['case_category'],
             'case_category_type' => $validatedData['case_category_type'],
             'main_defendant_comments' => $validatedData['main_defendant_comments'],
-            'additional_comments' => $validatedData['additional_comments'],
             'main_defendant_pdf' => $validatedData['main_defendant_pdf'],
             'office_id' => $authUserOfficeId,
         ]);
 
-        // $validatedData = $request->validated();
-        if ($request->hasFile('main_defendant_pdf')) {
-            $filePath = $request->file('main_defendant_pdf')->store('MainDefendantPDFs', 'public');
-            $validatedData['main_defendant_pdf'] = $filePath;
+        $applicationForm->save();
+        if ($validatedData['court'] == 2) {
+            $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
+            return response()->json(['redirect' => route('cabinet.case.highcourtIndexApplications')]);
         }
 
-        // $applicationForm->save();
-        $applicationForm = new ApplicationFormAsMainDefendent($validatedData);
-        $applicationForm->save();
-
-        return redirect()->route('cabinet.case.indexApplications')->with('success', 'সফলভাবে, আপনার উদ্দেশ্যে ও লক্ষ্য তৈরি করা হয়েছে।');
+        if ($validatedData['court'] == 1) {
+            $data['page_title'] = 'Appeal মামলা তালিকা';
+            return response()->json(['redirect' => route('cabinet.case.appealIndexApplications')]);
+        }
     }
 
     /**
@@ -180,4 +169,18 @@ class ApplicationFormAsMainDefendentController extends Controller
 
         return view('gov_case.case_register.application_form_as_main_defendent.edit', compact('applicationFormAsMainDefendent', 'GovCaseDivisionCategory', 'GovCaseDivisionCategoryType', 'data'));
     }
+
+    public function getCaseCategories(Request $request)
+    {
+        $courtId = $request->court_id;
+        $caseCategories = GovCaseDivisionCategory::where('gov_case_division_id', $courtId)->get();
+
+        $options = '<option value="">-- নির্বাচন করুন --</option>';
+        foreach ($caseCategories as $category) {
+            $options .= '<option value="' . $category->id . '">' . $category->name_bn . '</option>';
+        }
+
+        return $options;
+    }
+
 }

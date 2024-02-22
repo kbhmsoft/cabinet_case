@@ -2,8 +2,10 @@
     <tr>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <td>{{ $index + 1 }}</td>
-        <td>{{ $row->nameBn }}</td>
+
+        <td>{{ $row->designation }}</td>
         <td>{{ $row->unitNameBn ?? '' }}</td>
+        <td>{{ $row->name_bng }}</td>
         <td>
             <div class="form-group mb-2">
                 @php
@@ -15,8 +17,8 @@
                         }
                     }
                 @endphp
-                <select name="role" class="form-control w-100"
-                    onchange="updateUserRole(this, {{ $row->id }}, {{ $row->officeId }})">
+                <select name="role" class="form-control"
+                    onchange="updateUserRole(this, {{ $row->id }}, {{ $row->office }})">
                     <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
                     @foreach ($user_role as $role)
                         <option value="{{ $role->id }}" {{ $role->id == $selectedRoleId ? 'selected' : '' }}>
@@ -47,7 +49,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-    function updateUserRole(selectElement, organogramId, officeId) {
+    function updateUserRole(selectElement, organogramId, office) {
         // alert(selectElement.value);
         var selectedRole = selectElement.value;
         Swal.fire({
@@ -64,7 +66,7 @@
                     data: {
                         organogram_id: organogramId,
                         role_id: selectedRole,
-                        office_id: officeId
+                        office_id: office
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -98,15 +98,13 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলা নং <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_no" id="case_no"
-                                                        class="form-control form-control-sm" placeholder="(type digits in English)"
-                                                        required="required"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="(type digits in English)" required="required"
                                                         onkeypress="return allowBanglaAndEnglishNumerals(event)">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can not
                                                         be empty</span>
                                                 </div>
-
-
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>বছর <span class="text-danger">*</span></label>
@@ -115,6 +113,23 @@
                                                         placeholder="বছর" autocomplete="off" required="required">
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
+                                                </div>
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <div class="" id="AdalatDiv">
+                                                        <select name="appeal_adalat" id="AppealAdalat"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($appealCourtAdalat as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('appeal_adalat') == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
                                                 </div>
 
 
@@ -138,8 +153,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলা দায়েরের তারিখ<span
-                                                            class="text-danger"> *</span></label>
+                                                    <label>মামলা দায়েরের তারিখ<span class="text-danger"> *</span></label>
                                                     <input type="text" name="case_entry_date" id="case_entry_date"
                                                         class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                 </div>
@@ -156,7 +170,7 @@
                                                             @foreach ($concern_person_desig as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('concern_new_appeal_person_designation') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
+                                                                    {{ $value->name_bn }} </option>
                                                             @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
@@ -188,11 +202,10 @@
                                                 </div>
 
 
-                                                <div class="col-md-4 mb-5">
+                                                <div class="col-md-12 mb-5">
                                                     <label>স্থগিতাদেশের বিবরণ</label>
                                                     <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false"></textarea>
                                                 </div>
-
 
                                                 {{-- starting সংযুক্তি  --}}
 

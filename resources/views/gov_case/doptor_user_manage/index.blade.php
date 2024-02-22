@@ -102,11 +102,11 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col" width="30">#</th>
-                        <th scope="col">কর্মকর্তার নাম</th>
-                        <th scope="col">পদবি</th>
-                        <th scope="col">শাখা</th>
-                        <th scope="col">রোল</th>
-                        <th scope="col" width="150">স্ট্যাটাস</th>
+                        <th scope="col" style="text-align:center;">পদবি</th>
+                        <th scope="col" style="text-align:center;">শাখা</th>
+                        <th scope="col" style="text-align:center;">বর্তমান কর্মকর্তার নাম</th>
+                        <th scope="col" style="text-align:center;">রোল</th>
+                        <th scope="col" width="150" style="text-align:center;">স্ট্যাটাস</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -413,7 +413,7 @@
             var formData = $(this).serialize();
             Swal.fire({
                 title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
-                html: `<h4>I will close in some milliseconds.</h4>`,
+                html: `<h4>অপেক্ষা করুন...</h4>`,
                 timerProgressBar: true,
                 didOpen: () => {
                     Swal.showLoading();

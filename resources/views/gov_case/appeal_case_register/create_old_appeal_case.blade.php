@@ -127,6 +127,23 @@
 
 
                                             <div class="col-lg-4 mb-5">
+                                                <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                <div class="" id="AdalatDiv">
+                                                    <select name="appeal_adalat" id="AppealAdalat"
+                                                        class="form-control form-control-sm" required="required">
+                                                        <option value="">-- নির্বাচন করুন --</option>
+                                                        @foreach ($appealCourtAdalat as $value)
+                                                            <option value="{{ $value->id }}"
+                                                                {{ old('appeal_adalat') == $value->id ? 'selected' : '' }}>
+                                                                {{ $value->name }} </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger d-none vallidation-message">This field
+                                                        can not be empty</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 mb-5">
                                                 <label for="appeallateOffice">আপিলকারি অফিস
                                                     <span class="text-danger">*</span></label>
 

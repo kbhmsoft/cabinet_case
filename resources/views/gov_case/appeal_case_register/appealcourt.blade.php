@@ -74,8 +74,11 @@
                         </th>
                         <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">শুনানির বিবরণ
                         </th>
-                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ তারিখ
+
+                        <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ
+                            অবস্থা
                         </th>
+
                         <th scope="col" width="170px"
                             style="text-align:center; font-size: 12px; vertical-align: middle;">অ্যাকশন</th>
                     </tr>
@@ -116,7 +119,20 @@
                             <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
 
                             <td style="text-align:center;">{{ '-' }} </td>
-                            <td style="text-align:center;">{{ '-' }} </td>
+
+
+                            <td style="text-align:center;" class="hover-trigger"
+                                id="caseLinkAppealCourt{{ $key }}"
+                                data-case-division-id="{{ $row->case_division_id }}"
+                                data-case-type-id="{{ $row->case_type_id }}" data-case-number="{{ $row->case_no }}"
+                                data-case-year="{{ $row->year }}">
+
+                                @if ($row->is_final_order == '1')
+                                    নিষ্পত্তিকৃত মামলা
+                                @else
+                                    মামলা চলমান
+                                @endif
+                            </td>
 
                             <td style="text-align:center;">
                                 <div>
@@ -126,7 +142,6 @@
                                             aria-expanded="false">অ্যাকশন</button>
                                         <div class="dropdown-menu">
                                             @can('show_details_info')
-                                         
                                                 <a class="dropdown-item"
                                                     href="{{ route('cabinet.case.appealCaseDetails', $row->id) }}">বিস্তারিত
                                                     তথ্য</a>
@@ -193,8 +208,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                             -->
+                                                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                 -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')
@@ -220,3 +235,37 @@
             });
         </script> --}}
     @endsection
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function showSwal(link) {
+                Swal.fire({
+                    title: '<h3>শুনানির তারিখ/সংক্ষিপ্ত আদেশ দেখতে এখানে ক্লিক করুন!</h3>',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'ক্লিক করুন',
+                    cancelButtonText: 'বাতিল',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.open(link, '_blank');
+                    }
+
+                });
+            }
+            // Event listener to trigger SweetAlert on hover if link is present
+            document.querySelectorAll('.hover-trigger').forEach(item => {
+                item.addEventListener('mouseenter', event => {
+                    var division_id = event.target.getAttribute('data-case-division-id');
+                    var case_type_id = event.target.getAttribute('data-case-type-id');
+                    var case_number = event.target.getAttribute('data-case-number');
+                    var year = event.target.getAttribute('data-case-year');
+                    var link =
+                        `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
+                    if (link) {
+                        showSwal(link);
+                    }
+                });
+            });
+        });
+    </script>
