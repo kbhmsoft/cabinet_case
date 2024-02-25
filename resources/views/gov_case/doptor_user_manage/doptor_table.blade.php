@@ -1,4 +1,5 @@
 @foreach ($organoGram as $index => $row)
+
     <tr>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <td>{{ $index + 1 }}</td>
@@ -11,14 +12,14 @@
                 @php
                     $selectedRoleId = null;
                     foreach ($doptorUserManagement as $value) {
-                        if ($value->organogram_id == $row->id) {
+                        if ($value->organogram_id == $row->organogram) {
                             $selectedRoleId = $value->user_role;
                             break;
                         }
                     }
                 @endphp
                 <select name="role" class="form-control"
-                    onchange="updateUserRole(this, {{ $row->id }}, {{ $row->office }})">
+                    onchange="updateUserRole(this, {{ $row->organogram }}, {{ $row->office }})">
                     <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
                     @foreach ($user_role as $role)
                         <option value="{{ $role->id }}" {{ $role->id == $selectedRoleId ? 'selected' : '' }}>
@@ -31,11 +32,11 @@
         <td class="text-center">
             <strong>
                 @if ($selectedRoleId)
-                    <button id="role_yes_{{ $row->id }}" class="font-weight-bolder btn btn-success">
+                    <button id="role_yes_{{ $row->organogram }}" class="font-weight-bolder btn btn-success">
                         রোল দেয়া হয়েছে!
                     </button>
                 @else
-                    <button id="role_no_{{ $row->id }}" class="font-weight-bolder btn btn-danger">
+                    <button id="role_no_{{ $row->organogram }}" class="font-weight-bolder btn btn-danger">
                         কোনো রোল দেয়া হয় নি!
                     </button>
                 @endif
