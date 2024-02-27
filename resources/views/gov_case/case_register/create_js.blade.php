@@ -509,7 +509,6 @@
                         $("#caseIDForFinalOrder").val(data.caseId);
                         $("#caseIDForContempt").val(data.caseId);
 
-
                         $('#sendingReplySaveBtn').prop('disabled', false);
                         $('#sendingReplySaveBtn').removeClass("disable-button");
                         $('#suspensionOrderSaveBtn').prop('disabled', false);

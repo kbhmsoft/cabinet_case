@@ -2750,4 +2750,22 @@ class AppealGovCaseRegisterController extends Controller
 
         return view('gov_case.appeal_case_register.attoney_appealcourt')->with($data);
     }
+
+    public function checkAppealCaseNo(Request $request)
+    {
+        $caseNo = $request->input('case_no');
+
+        $exists = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
+        $caseId = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+
+        if ($caseId && $exists) {
+            $id = $caseId->id;
+            $officeId = AppealGovCaseRegister::where('id', $id)
+                ->where('deleted_at', null)->first();
+
+            $officeName = GovCaseOffice::where('doptor_office_id', $officeId->appeal_office_id)->first();
+
+            return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
+        }
+    }
 }

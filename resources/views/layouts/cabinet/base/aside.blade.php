@@ -780,6 +780,7 @@
                             <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>আদালত পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
+                        
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             @can('hightcourt_adalat')
@@ -819,8 +820,8 @@
                             <i class="menu-arrow"></i>
                         </a>
 
-                        @can('highcourt_same_case_menu')
                         <div class="menu-submenu">
+                        @can('highcourt_same_case_menu')
                             <ul class="menu-subnav">
                                 <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
@@ -840,7 +841,7 @@
                                     <a href="{{ route('cabinet.case.appealIndexApplications') }}"
                                         class="menu-link">
                                         <span class="menu-text font-weight-bolder"><i
-                                                class="menu-bullet menu-bullet-dot"><span></span></i> আপিল বিভাগ</span>
+                                                class="menu-bullet menu-bullet-dot"><span></span></i>আপিল বিভাগ</span>
                                     </a>
                                 </li>
                             </ul>

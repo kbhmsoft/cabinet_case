@@ -2,47 +2,82 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-$(document).ready(function() {
-    $('#caseGeneralInfoForm').submit(function(e) {
-        e.preventDefault();
+    $(document).ready(function() {
+        $('#caseGeneralInfoForm').submit(function(e) {
+            e.preventDefault();
 
-        Swal.fire({
-            title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'হ্যাঁ',
-            cancelButtonText: 'না'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var formData = new FormData(this);
-                console.log(formData);
+            Swal.fire({
+                title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var formData = new FormData(this);
+                    console.log(formData);
 
-                $.ajax({
-                    url: "{{ route('cabinet.case.storeApplicationForm') }}",
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    success: function(response) {
-                        console.log(response);
+                    $.ajax({
+                        url: "{{ route('cabinet.case.storeApplicationForm') }}",
+                        type: 'POST',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(response) {
+                            console.log(response);
 
-                        if(response.redirect) {
-                            window.location.href = response.redirect;
+                            if (response.redirect) {
+                                window.location.href = response.redirect;
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     });
-});
 
 
 
+    // For Edit general Info Save
+    $(document).ready(function() {
+        $('#caseGeneralInfoFormForEdit').submit(function(e) {
+            e.preventDefault();
 
+            Swal.fire({
+                title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var formData = new FormData(this);
+                    console.log(formData);
 
+                    $.ajax({
+                        url: "{{ route('cabinet.case.caseGeneralInfoForEdit') }}",
+                        type: 'POST',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(response) {
+                            console.log(response);
+
+                            if (response.redirect) {
+                                window.location.href = response.redirect;
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        });
+    });
 
 
 
@@ -76,19 +111,19 @@ $(document).ready(function() {
             $('select[name="case_category_type"]').empty();
         }
     });
-
-
 </script>
 <script>
-    $(document).ready(function () {
-        $('#court').change(function () {
+    $(document).ready(function() {
+        $('#court').change(function() {
             var courtId = $(this).val();
             if (courtId) {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('cabinet.case.getCaseCategories') }}",
-                    data: {court_id: courtId},
-                    success: function (response) {
+                    data: {
+                        court_id: courtId
+                    },
+                    success: function(response) {
                         $('#CaseCategory').html(response);
                     }
                 });

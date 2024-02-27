@@ -32,8 +32,7 @@ class ApplicationFormAsMainDefendentController extends Controller
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-        $query = DB::table('application_form_as_main_defendents')
-            ->where('court', 2)
+        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 2)
             ->orderBy('id', 'DESC');
 
         $data['users'] = $query->paginate(10)->withQueryString();
@@ -41,6 +40,23 @@ class ApplicationFormAsMainDefendentController extends Controller
         $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
 
         return view('gov_case.case_register.application_form_as_main_defendent.index')
+            ->with($data);
+    }
+
+    public function appealIndexApplications(Request $request)
+    {
+        // dd('aaa');
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 1)
+            ->orderBy('id', 'DESC');
+
+        $data['users'] = $query->paginate(10)->withQueryString();
+    //   dd($data['users']);
+        $data['page_title'] = 'আপিল মামলা তালিকা';
+
+        return view('gov_case.case_register.application_form_as_main_defendent.appeal_index')
             ->with($data);
     }
 
@@ -52,16 +68,10 @@ class ApplicationFormAsMainDefendentController extends Controller
     public function createApplicationForm($caseNo)
     {
         $data = [];
-
-        // $data['courts'] = DB::table('court')
-        //     ->select('id', 'court_name')
-        //     ->whereIn('id', [1, 2])
-        //     ->get();
-
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
-        // dd($data['GovCaseDivisionCategory']);
+
         $GovCaseDivisionCategoryType = GovCaseDivisionCategoryType::all();
         $data['GovCaseDivisionCategoryType'] = $GovCaseDivisionCategoryType;
 
@@ -78,6 +88,7 @@ class ApplicationFormAsMainDefendentController extends Controller
     public function storeApplicationForm(StoreApplicationFormAsMainDefendentRequest $request)
     {
 
+        //  dd($request->all());
         $validatedData = $request->validated();
         $authUserOfficeId = Auth()->user()->office_id;
 
@@ -101,12 +112,12 @@ class ApplicationFormAsMainDefendentController extends Controller
         $applicationForm->save();
         if ($validatedData['court'] == 2) {
             $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
-            return response()->json(['redirect' => route('cabinet.case.highcourtIndexApplications')]);
+            return response()->json(['redirect' => route('dashboard')]);
         }
 
         if ($validatedData['court'] == 1) {
-            $data['page_title'] = 'Appeal মামলা তালিকা';
-            return response()->json(['redirect' => route('cabinet.case.appealIndexApplications')]);
+            $data['page_title'] = 'আপিল মামলা তালিকা';
+            return response()->json(['redirect' => route('dashboard')]);
         }
     }
 

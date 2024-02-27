@@ -2,11 +2,12 @@
 
 namespace App\Models\gov_case;
 
-use App\Models\CaseStatus;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\CaseStatus;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ApplicationFormAsMainDefendent;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GovCaseOffice extends Model
 {
@@ -26,4 +27,9 @@ class GovCaseOffice extends Model
         'parent_office_id',
         'status',
 	];
+
+    public function requestSameCaseMinistry()
+    {
+        return $this->hasOne(ApplicationFormAsMainDefendent::class,'office_id','doptor_office_id');
+    }
 }

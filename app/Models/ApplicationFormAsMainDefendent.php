@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ApplicationFormAsMainDefendent extends Model
@@ -29,5 +30,10 @@ class ApplicationFormAsMainDefendent extends Model
     public function court()
     {
         return $this->belongsTo(Court::class);
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(GovCaseOffice::class,'doptor_office_id','office_id');
     }
 }

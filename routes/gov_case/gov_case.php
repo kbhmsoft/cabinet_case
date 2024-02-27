@@ -142,7 +142,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('highcourt/indexApplications', [ApplicationFormAsMainDefendentController::class, 'indexApplications'])->name('highcourtIndexApplications');
 
-            Route::get('appeal/indexApplications', [ApplicationFormAsMainDefendentController::class, 'indexApplications'])->name('appealIndexApplications');
+            Route::get('appeal/indexApplications', [ApplicationFormAsMainDefendentController::class, 'appealIndexApplications'])->name('appealIndexApplications');
 
             Route::get('/editApplications/{id}/edit', [ApplicationFormAsMainDefendentController::class, 'editApplications'])->name('editApplications');
 
@@ -193,12 +193,14 @@ Route::middleware('auth')->group(function () {
             Route::get('importgantCaseList', [GovCaseRegisterController::class, 'highcourtAppealMostImportantCase'])->name('highcourtAppealMostImportantCase');
             Route::get('highcourt/create', [GovCaseRegisterController::class, 'highcourt_create'])->name('highcourt.create');
             Route::post('check-case-no', [GovCaseRegisterController::class, 'checkCaseNo'])->name('check-case-no');
+            Route::post('check-appeal-case-no', [AppealGovCaseRegisterController::class, 'checkAppealCaseNo'])->name('check_appeal_caseno');
             Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
             Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
             Route::get('appellateDivision/create/old', [GovCaseRegisterController::class, 'appellateDivision_old_case_create'])->name('appellateDivision.create.old');
             Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('storeGeneralInfo', [GovCaseRegisterController::class, 'storeGeneralInfo'])->name('storeGeneralInfo');
+            Route::post('caseGeneralInfoForEdit', [GovCaseRegisterController::class, 'caseGeneralInfoForEdit'])->name('caseGeneralInfoForEdit');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
@@ -208,6 +210,7 @@ Route::middleware('auth')->group(function () {
             Route::post('contemptCaseStoreActionButton', [GovCaseRegisterController::class, 'contemptCaseStoreActionButton'])->name('contemptCaseStoreActionButton');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
+            Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
             Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
             Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
