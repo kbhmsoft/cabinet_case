@@ -306,6 +306,7 @@ class GovCaseRegisterRepository
         // dd($oldcase->case_no);
 
         try {
+
             $case->case_no = $caseInfo->case_no;
             $case->court_id = $caseInfo->court;
             $case->action_user_id = userInfo()->id;
@@ -510,9 +511,10 @@ class GovCaseRegisterRepository
 
     public static function storeGeneralInfo($caseInfo)
     {
-        // dd($caseInfo);
-        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        // // dd($caseInfo['case_id']);
+        // $case = self::checkGovCaseExist($caseInfo['case_id']);
         try {
+            $case = self::checkGovCaseExist($caseInfo['case_id']);
             $case->case_no = $caseInfo->case_no;
             $case->case_type = $caseInfo->case_type;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));

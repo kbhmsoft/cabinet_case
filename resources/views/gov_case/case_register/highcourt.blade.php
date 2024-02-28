@@ -125,13 +125,11 @@
                                 <td style="text-align:center;">
                                     {{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
 
-
                                 <td style="text-align:center;" class="hover-trigger"
-                                    id="caseLinkSupremeCourt{{ $key }}" {{-- data-link="{{ $row->hearing_short_order }}" --}}
+                                    id="caseLinkSupremeCourt{{ $key }}"
                                     data-case-division-id="{{ $row->case_division_id }}"
                                     data-case-type-id="{{ $row->case_type_id }}" data-case-number="{{ $row->case_no }}"
                                     data-case-year="{{ $row->year }}">
-
                                     @if ($row->is_final_order == '1')
                                         নিষ্পত্তিকৃত মামলা
                                     @else
@@ -263,8 +261,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                            <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                            -->
+                                                                    <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                    -->
         <!--end::Page Scripts-->
         <script>
             $(document).ready(function() {
@@ -288,8 +286,10 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                let swalInstance = null;
+
                 function showSwal(link) {
-                    Swal.fire({
+                    swalInstance = Swal.fire({
                         title: '<h3>শুনানির তারিখ/সংক্ষিপ্ত আদেশ দেখতে এখানে ক্লিক করুন!</h3>',
                         icon: 'info',
                         showCancelButton: true,
@@ -299,10 +299,15 @@
                         if (result.isConfirmed) {
                             window.open(link, '_blank');
                         }
-
                     });
                 }
-                // Event listener to trigger SweetAlert on hover if link is present
+
+                function hideSwal() {
+                    if (swalInstance) {
+                        swalInstance.close();
+                    }
+                }
+
                 document.querySelectorAll('.hover-trigger').forEach(item => {
                     item.addEventListener('mouseenter', event => {
                         var division_id = event.target.getAttribute('data-case-division-id');
@@ -315,6 +320,8 @@
                             showSwal(link);
                         }
                     });
+
+                    item.addEventListener('mouseleave', hideSwal);
                 });
             });
         </script>

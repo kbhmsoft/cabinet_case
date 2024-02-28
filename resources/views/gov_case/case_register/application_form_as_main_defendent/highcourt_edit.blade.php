@@ -83,7 +83,8 @@
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
-
+                                                     <input type="hidden" id="" name="case_id"
+                                            value="{{ $case->id }}">
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
@@ -297,13 +298,13 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
-                                                              
+
                                                                 <!-- Hidden field to store current doptor_office_id -->
                                                                 <input type="hidden" name="bibadi_id[]" value="{{ $val->doptor_office_id }}">
                                                                 <td>
                                                                     @if ($key > 0)
                                                                         <a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->doptor_office_id }}"
+                                                                            data-id="{{ $val->id }}"
                                                                             onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
@@ -334,10 +335,8 @@
                                                         @foreach ($otherBibadi as $key => $val)
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
-
-
-                                                                             @foreach ($ministrys as $item)
+                                                                    <select {{ request('red') ? 'disabled' : '' }} name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                        @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -345,12 +344,12 @@
                                                         </select>
                                                         </td>
                                                         <input type="hidden" name="bibadi_id[]"
-                                                            value="{{ $val->doptor_office_id }}">
+                                                            value="{{ $val->id }}">
                                                         <td>
                                                             @if ($key > 0)
                                                                 <a href="javascript:void();"
                                                                     class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->doptor_office_id }}"
+                                                                    data-id="{{ $val->id }}"
                                                                     onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                     <i class="fas fa-minus-circle"></i>
                                                                 </a>

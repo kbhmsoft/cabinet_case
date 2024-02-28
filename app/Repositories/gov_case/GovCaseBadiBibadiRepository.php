@@ -60,6 +60,29 @@ class GovCaseBadiBibadiRepository
         }
     }
 
+    public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->other_respondent as $key => $val) {
+            if ($caseInfo->other_respondent[$key] != null) {
+                $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->first();
+
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->respondent_id = $caseInfo->other_respondent[$key];
+                $bibadi->save();
+            }
+        }
+        
+        foreach ($caseInfo->main_respondent as $key => $val) {
+            if ($caseInfo->main_respondent[$key] != null) {
+                $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->where('is_main_bibadi',1)->first();
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->respondent_id = $caseInfo->main_respondent[$key];
+                $bibadi->is_main_bibadi = 1;
+                $bibadi->save();
+            }
+        }
+    }
+
     public static function checkBibadiExist($bibadiId)
     {
         if (isset($bibadiId)) {
@@ -67,6 +90,18 @@ class GovCaseBadiBibadiRepository
         } else {
             $bibadi = new GovCaseBibadi();
         }
+        return $bibadi;
+    }
+
+
+    public static function checkBibadiExistForChangingMainRespondent($bibadiId)
+    {
+        if (isset($bibadiId)) {
+            $bibadi = GovCaseBibadi::find($bibadiId);
+        }
+        //  else {
+        //     $bibadi = new GovCaseBibadi();
+        // }
         return $bibadi;
     }
 

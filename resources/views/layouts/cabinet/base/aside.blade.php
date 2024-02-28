@@ -36,6 +36,7 @@
     <?php
     $roleID = Auth::user()->role_id;
     ?>
+
     <!--begin::Aside Menu-->
     <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
         <!--begin::Menu Container-->
@@ -144,23 +145,6 @@
                                         </a>
                                     </li>
                                 @endif
-
-                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.ministryIdInsert') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">তালিকা</span>
-                                    </a>
-                                </li> --}}
-
-                                {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/mostImportantCase']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourtMostImportantCase') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার তালিকা</span>
-                                    </a>
-                                </li> --}}
-
                             </ul>
 
                         </div>
@@ -198,16 +182,6 @@
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
-
-                                        {{-- <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/mostImportantCase']) ? 'menu-item-active' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.appellateDivisionMostImportantCase') }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
-                                                    তালিকা</span>
-                                            </a>
-                                        </li> --}}
 
 
                                         <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision']) ? 'menu-item-active' : '' }}"
@@ -256,24 +230,6 @@
                                                 <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
                                             </a>
                                         </li>
-
-                                        {{-- <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/running']) ? 'menu-item-active' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.attorney.appellateDivision.running') }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="menu-item {{ request()->is(['cabinet/case/attorney/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
-                                            </a>
-                                        </li> --}}
                                     @endif
                                 @endcan
                             </ul>
@@ -564,92 +520,35 @@
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-bell"></i> নোটিফিকেশন</span>
-                            @if ($notification_count != 0)
+                            @if ($notificationCount != 0)
                                 <span class="menu-label">
-                                    <span class="label label-rounded label-danger">{{ $notification_count }}</span>
+                                    <span class="label label-rounded label-danger">{{ $notificationCount }}</span>
                                 </span>
                             @endif
                             <i class="menu-arrow"></i>
                         </a>
+
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             <ul class="menu-subnav">
-
-                                {{-- @can('hearing_date_fixed')
-                                    <li class="menu-item {{ request()->is('cabinet/hearing_date') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা হয়েছে</span>
-                                            <span class="menu-label">
-                                                <span class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
+                                @forelse ($case_swap as $row)
+                                    <li class="menu-item" aria-haspopup="true">
+                                        <a href="" class="menu-link">
+                                            <i class="far fa-bell text-dark p-5"></i>
+                                            <span class="font-size-h6-sm text-dark">
+                                                <b>{{ $row->case_no }} </b>নং মামলাটি আপনার দপ্তরের পরিবর্তে<b> {{ $row->officeName->office_name_bn }} </b> নামে মূল বিবাদী হিসেবে এন্ট্রি করা হয়েছে।
+                                                আপনার আপত্তি/বক্তব্য থাকলে সুপার অ্যাডমিন এর কাছে অনুরোধ করুন।
                                             </span>
                                         </a>
+                                        <br>
                                     </li>
-                                @endcan --}}
-
-                                @can('main_plaintiff_for_case')
-
-                                    @forelse($case_status as $row)
-                                        <li class="menu-item {{ request()->is(['cabinet/case/action/receive/' . $row->case_status_id, 'cabinet/case/action/details/*']) ? 'hilightMenu' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">{{ $row->status_name }}</span>
-                                                <span class="menu-label">
-                                                    <span
-                                                        class="label label-rounded label-danger">{{ $row->total_case }}</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    @empty
-                                    @endforelse
-                                @else
-                                    @forelse($case_status as $row)
-                                        <li class="menu-item {{ request()->is('cabinet/case/action/receive/' . $row->case_status_id) ? 'hilightMenu' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('cabinet.case.action.receive', $row->case_status_id) }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">{{ $row->status_name }}</span>
-                                                <span class="menu-label">
-                                                    <span
-                                                        class="label label-rounded label-danger">{{ $row->total_case }}</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        {{-- @can('hearing_date_fixed')
-                                            <li class="menu-item {{ request()->is('cabinet/case/action/receive/' . $row->case_status_id) ? 'hilightMenu' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('cabinet.hearing_date') }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                    <span class="menu-text font-weight-bolder">শুনানির তারিখ নির্ধারণ করা
-                                                        হয়েছে</span>
-                                                    <span class="menu-label">
-                                                        <span
-                                                            class="label label-rounded label-danger">{{ $CaseHearingCount }}</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        @endcan --}}
-                                    @empty
-                                    @endforelse
-                                @endcan
-
-
-
-
-
-                                @if (count($case_status) == 0)
-                                    <div class="d-flex align-items-center rounded p-5 mb-5">
-                                        <span>কোন নোটিফিকেশন পাওয়া যায়নি</span>
-                                    </div>
-                                @endif
-
+                                @empty
+                                    <span>কোন নোটিফিকেশন পাওয়া যায়নি</span>
+                                @endforelse
                             </ul>
                         </div>
                     </li>
+
                 @endcan
                 @can('message_menu')
                     <li class="menu-item {{ request()->is('cabinet/notice/list', 'cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent', 'cabinet/messages_request') ? 'menu-item-open' : '' }}"
@@ -780,7 +679,7 @@
                             <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>আদালত পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        
+
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             @can('hightcourt_adalat')
@@ -821,31 +720,29 @@
                         </a>
 
                         <div class="menu-submenu">
-                        @can('highcourt_same_case_menu')
-                            <ul class="menu-subnav">
-                                <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.highcourtIndexApplications') }}"
-                                        class="menu-link">
-                                        <span class="menu-text font-weight-bolder"><i
-                                                class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ</span>
-                                    </a>
-                                </li>
-                            </ul>
-                         @endcan
+                            @can('highcourt_same_case_menu')
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
+                                            <span class="menu-text font-weight-bolder"><i
+                                                    class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
 
-                         @can('appeal_same_case_menu')
-                            <ul class="menu-subnav">
-                                <li class="menu-item {{ request()->is('cabinet/case/appeal/indexApplications') ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.appealIndexApplications') }}"
-                                        class="menu-link">
-                                        <span class="menu-text font-weight-bolder"><i
-                                                class="menu-bullet menu-bullet-dot"><span></span></i>আপিল বিভাগ</span>
-                                    </a>
-                                </li>
-                            </ul>
-                         @endcan
+                            @can('appeal_same_case_menu')
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/indexApplications') ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
+                                            <span class="menu-text font-weight-bolder"><i
+                                                    class="menu-bullet menu-bullet-dot"><span></span></i>আপিল বিভাগ</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
                         </div>
                     </li>
                 @endcan

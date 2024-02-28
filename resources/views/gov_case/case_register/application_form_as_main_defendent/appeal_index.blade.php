@@ -63,7 +63,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('cabinet.case.editApplications', $row->id) }}"
+                                        <a href="{{ route('cabinet.case.editAppealCaseApplication', $row->case_no) }}"
                                             class="btn btn-primary">সম্পাদনা</a>
                                     </td>
                                 </tr>

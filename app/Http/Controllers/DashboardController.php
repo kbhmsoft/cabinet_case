@@ -30,7 +30,8 @@ class DashboardController extends Controller
         session()->forget('currentUrlPath');
 
         View::share('notification_count', 0);
-        View::share('case_status', array());
+        View::share('case_status_highcourt', array());
+        // View::share('case_status', array());
         $officeInfo = user_office_info();
         $user = Auth::user();
 
