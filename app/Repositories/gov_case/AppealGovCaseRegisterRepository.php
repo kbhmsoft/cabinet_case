@@ -56,13 +56,6 @@ class AppealGovCaseRegisterRepository
         // return $caseNumberOrigin;
         $data = [
             'appealCase' => $case,
-            // 'caseBadi' => $caseBadi,
-            // 'caseMainBibadi' => $caseMainBibadi,
-            // 'caseBibadi' => $caseBibadi,
-            // 'mainBibadi' => $mainBibadi,
-            // 'otherBibadi' => $otherBibadi,
-            // 'caseLogs' => $caseLog,
-            // 'hearings' => $hearings,
             'caseNumberOrigin' => $caseNumberOrigin,
             'files' => $files,
             'concernpersondesig' => $concernpersondesig,

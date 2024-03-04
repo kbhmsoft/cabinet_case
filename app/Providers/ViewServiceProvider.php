@@ -137,30 +137,31 @@ class ViewServiceProvider extends AppServiceProvider
                 $rm_case_status = '';
 
             }
+            if ($roleID != 14 && $roleID != 15 && $roleID != 33 && $roleID != 34) {
 
-            //Message Notification --- start
-            $NewMessagesCount = Message::select('id')
-                ->where('user_receiver', Auth::user()->id)
-                ->where('receiver_seen', 0)
-                ->where('msg_reqest', 0)
-                ->count();
-            $msg_request_count = Message::orderby('id', 'DESC')
-            // ->select('user_sender', 'user_receiver', 'msg_reqest')
-                ->Where('user_receiver', [Auth::user()->id])
-                ->Where('msg_reqest', 1)
-                ->groupby('user_sender')
-                ->count();
-            $Ncount = $NewMessagesCount + $msg_request_count;
+                //Message Notification --- start
+                $NewMessagesCount = Message::select('id')
+                    ->where('user_receiver', Auth::user()->id)
+                    ->where('receiver_seen', 0)
+                    ->where('msg_reqest', 0)
+                    ->count();
+                $msg_request_count = Message::orderby('id', 'DESC')
+                // ->select('user_sender', 'user_receiver', 'msg_reqest')
+                    ->Where('user_receiver', [Auth::user()->id])
+                    ->Where('msg_reqest', 1)
+                    ->groupby('user_sender')
+                    ->count();
+                $Ncount = $NewMessagesCount + $msg_request_count;
 
-            $view->with([
-                'Ncount' => $Ncount,
-                'case_status' => $case_status,
-                'case_swap' => $case_swap,
-                'NewMessagesCount' => $NewMessagesCount,
-                'msg_request_count' => $msg_request_count,
-                'notificationCount' => $notificationCount,
-            ]);
-            //Message Notification  --- End
+                $view->with([
+                    'Ncount' => $Ncount,
+                    'case_status' => $case_status,
+                    'case_swap' => $case_swap,
+                    'NewMessagesCount' => $NewMessagesCount,
+                    'msg_request_count' => $msg_request_count,
+                    'notificationCount' => $notificationCount,
+                ]);
+            }
 
         });
 

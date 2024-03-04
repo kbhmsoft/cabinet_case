@@ -15,33 +15,25 @@
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
-
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="{{ asset('plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Theme Styles-->
-    <!--begin::Layout Themes(used by all pages)-->
     <link href="{{ asset('css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/themes/layout/brand/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/themes/layout/aside/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!--end::Layout Themes-->
-
-    <!--begin::Page Vendors Styles(used by this page)-->
-    {{-- Includable CSS Related Page --}}
     @yield('styles')
 
     <style>
         .wrapper {
-            padding: 0px ; 
+            padding: 0px ;
         }
     </style>
-    
-
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
-
 </head>
 <!--end::Head-->
 <!--begin::Body-->

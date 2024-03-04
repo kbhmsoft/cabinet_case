@@ -3207,13 +3207,11 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
 
         $officeID = userInfo()->office_id;
-
         $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
 
         if ($caseId) {
             $id = $caseId->id;
         }
-
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 

@@ -345,7 +345,7 @@
                 @endcan
 
                 @can('manage_users_menu')
-                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management']) ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management','cabinet/e-nothi-assigned-user-list']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী
@@ -392,7 +392,7 @@
 
                             @can('manage_permission_menu')
                                 <ul class="menu-subnav">
-                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permission-management']) ? 'hilightMenu' : '' }}"
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-role-management']) ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.permissionToUserManagement') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
@@ -401,6 +401,22 @@
                                     </li>
                                 </ul>
                             @endcan
+
+
+                            @can('e_nothi_user_list_menu')
+                            <ul class="menu-subnav">
+                                <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/e-nothi-assigned-user-list']) ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.assignedENothiUserManagement') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">অনুমোদিত
+                                            ই-নথি ব্যাবহারকারী</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            @endcan
+
 
                         </div>
                     </li>

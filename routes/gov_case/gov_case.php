@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
         /////************** User Management **************/////
         Route::resource('user-management', GovCaseUserManagementController::class);
+        Route::get('/e-nothi-assigned-user-list', [GovCaseUserManagementController::class, 'assignedENothiUserManagement'])->name('assignedENothiUserManagement');
         /////************** Office Setting **************/////
         Route::get('/office', [GovCaseOfficeController::class, 'index'])->name('office');
         Route::get('/office/ministry', [GovCaseOfficeController::class, 'totalMinistryOffice'])->name('totalMinistryOffice');
@@ -103,6 +104,11 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/update-user-permission', [AclController::class, 'storeUpdateUserPermissionAll'])->name('storeUpdateUserPermissionAll');
         Route::post('/get-permissions-by-ajax', [AclController::class, 'getPermissionByAjax'])->name('getPermissionByAjax');
+
+        //// ************** Doptor User List **************/////
+
+
+
 
         // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
 
@@ -241,6 +247,7 @@ Route::middleware('auth')->group(function () {
 
             // for appeal controller route
             Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
+            Route::post('appeal_store/edit', [AppealGovCaseRegisterController::class, 'appealEditStore'])->name('appealEditStore');
             Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
             Route::post('completeAppealCaseStore', [AppealGovCaseRegisterController::class, 'completeAppealCaseStore'])->name('completeAppealCaseStore');
             Route::get('editAppealCaseForm/{id}', [AppealGovCaseRegisterController::class, 'editAppealCaseForm'])->name('editAppealCaseForm');
@@ -257,6 +264,9 @@ Route::middleware('auth')->group(function () {
             Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
             Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
             Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
+            Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
+
+
 
             Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                 Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

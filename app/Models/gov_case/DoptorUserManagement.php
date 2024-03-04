@@ -23,6 +23,10 @@ class DoptorUserManagement extends Model
         'user_role',
         'organogram_id',
         'status',
+        'designation',
+        'officeNameBn',
+        'name_bng',
+        'email'
 	];
 
 

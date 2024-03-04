@@ -1249,6 +1249,44 @@ class AppealGovCaseRegisterController extends Controller
 
     }
 
+    public function appealEditStore(Request $request)
+    {
+        // dd($request->all());
+        $caseNo = $request->caseId;
+
+
+        try {
+            $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
+
+            if ($request->file_type && $_FILES["file_name"]['name']) {
+                AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
+            }
+
+            // GovCaseLogRepository::storeGovCaseLog($caseId);
+            //========= Gov Case Activity Log -  start ============
+
+            // $cs_activity_data['case_register_id'] = $caseId;
+            // if ($request->formType != 'edit') {
+            //     $cs_activity_data['activity_type'] = 'create';
+            //     $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+            // } else {
+            //     $cs_activity_data['activity_type'] = 'update';
+            //     $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+            // }
+            // $cs_activity_data['old_data'] = null;
+
+            // gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+        } catch (\Exception $e) {
+            // return "appealError";
+            dd($e);
+            $flag = 'false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        }
+        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+    }
+
     public function appealFinalOrderStore(Request $request)
     {
         $caseId = $request->case_id;
@@ -2767,5 +2805,59 @@ class AppealGovCaseRegisterController extends Controller
 
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
+    }
+
+    public function editAppealCaseApplication($caseNo)
+    {
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $caseId = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+
+        if ($caseId) {
+            $id = $caseId->id;
+        }
+
+        $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
+
+
+        $govCaseInfo = GovCaseRegister::where('case_no', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
+        $govCaseId = $govCaseInfo->id;
+
+        if($data['appealCaseData']){
+        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
+        }
+
+        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
+        $data['ministrys'] = GovCaseOffice::get();
+
+        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+
+        $data['courts'] = DB::table('court')
+            ->select('id', 'court_name')
+            ->whereIn('id', [1, 2])
+            ->get();
+
+        $data['originCaseNumber'] = GovCaseRegister::orderby('id', 'desc')
+            ->select("case_no", "id", "year")->get();
+
+        if ($roleID != 33) {
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        } else {
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+
+        $data['usersInfo'] = User::all();
+        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+
+        $data['appealCourtAdalat'] = AppealAdalat::get();
+
+        $data['page_title'] = 'আপিল বিভাগ মামলা সংশোধন';
+
+        return view('gov_case.case_register.application_form_as_main_defendent.appeal_edit')->with($data);
     }
 }

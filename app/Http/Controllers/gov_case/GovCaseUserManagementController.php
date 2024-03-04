@@ -344,4 +344,48 @@ class GovCaseUserManagementController extends Controller
     {
         //
     }
+
+    public function assignedENothiUserManagement(){
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $role = array('1', '27');
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+
+        //Add Conditions
+        $query = DB::table('doptor_user_managements')->orderBy('id', 'DESC')
+            ->join('roles', 'doptor_user_managements.user_role', '=', 'roles.id')
+            ->join('gov_case_office', 'doptor_user_managements.office_id', '=', 'gov_case_office.doptor_office_id')
+            ->select('doptor_user_managements.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('doptor_user_managements.status', 1)
+            ->orderby('id','DESC');
+
+        if (!empty($_GET['office_id'])) {
+            $query->where('users.office_id', '=', $_GET['office_id']);
+        }
+        if (!empty($_GET['role'])) {
+            $query->where('users.role_id', '=', $_GET['role']);
+        }
+
+        $data['users'] = $query->paginate(10)->withQueryString();
+        // dd($data['users']);
+        $data['user_role'] = DB::table('roles')->select('id', 'name','name_bn')
+            ->whereNotIn('id', $role)
+            ->where('is_gov', 1)
+            ->orderBy('sort_order', 'ASC')
+            ->get();
+        $data['offices'] = GovCaseOffice::orderby('id','DESC');
+        $data['ministries'] = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
+
+        // dd($data);
+
+        $data['page_title'] = 'অনুমোদিত
+        ই-নথি ব্যাবহারকারী তালিকা';
+
+        return view('gov_case.user_manage.e-nothi-assigned-user-index')
+            ->with($data);
+    }
 }

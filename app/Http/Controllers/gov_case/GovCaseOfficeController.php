@@ -565,12 +565,6 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
-        // $query = DB::table('users')->orderBy('id', 'DESC')
-        //     ->join('roles', 'users.role_id', '=', 'roles.id')
-        //     ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-        //     ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-        //     ->where('users.is_gov', 1);
-
         $query = DB::table('users')->orderBy('id', 'DESC')
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
@@ -793,8 +787,10 @@ class GovCaseOfficeController extends Controller
         $roleId = $request->input('role_id');
         $officeId = $request->input('office_id');
         $organoGramId = $request->input('organogram_id');
-
-        // dd($request->all());
+        $designation = $request->input('designation');
+        $officeNameBn = $request->input('officeNameBn');
+        $name_bng = $request->input('name_bng');
+        $email = $request->input('email');
 
         $userRole = Role::find($roleId);
         $userDetails = '';
@@ -814,6 +810,10 @@ class GovCaseOfficeController extends Controller
                     // 'office_id' => $officeId,
                     'user_role' => $roleId,
                     'status' => 1,
+                    'designation' => $designation,
+                    'officeNameBn' => $officeNameBn,
+                    'name_bng' => $name_bng,
+                    'email' => $email
                 ]);
 
                 $userDetails = $existingUserRole;
@@ -826,6 +826,10 @@ class GovCaseOfficeController extends Controller
                     'user_role' => $roleId,
                     'organogram_id' => $organoGramId,
                     'status' => 1,
+                    'designation' => $designation,
+                    'officeNameBn' => $officeNameBn,
+                    'name_bng' => $name_bng,
+                    'email' => $email
                 ];
 
                 $userDetails = DoptorUserManagement::create($dataToSave);
@@ -834,4 +838,6 @@ class GovCaseOfficeController extends Controller
         }
 
     }
+
+  
 }
