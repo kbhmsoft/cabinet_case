@@ -170,6 +170,9 @@ Route::middleware('auth')->group(function () {
             Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
             Route::get('highcourt/running', [GovCaseRegisterController::class, 'high_court_running_case'])->name('highcourt.running');
             Route::get('highcourt/complete', [GovCaseRegisterController::class, 'high_court_complete_case'])->name('highcourt.complete');
+            Route::get('highcourt/sent-To-SolicitorPending', [GovCaseRegisterController::class, 'sentToSolicitorPending'])->name('highcourt.sentToSolicitorPending');
+            Route::get('highcourt/pending-postpondOrder', [GovCaseRegisterController::class, 'pendingPostpondOrder'])->name('highcourt.pendingPostpondOrder');
+
             Route::get('highcourt/sentToSolicitor', [GovCaseRegisterController::class, 'sentToSolicitor'])->name('sentToSolicitor');
             // Route::get('highcourt/appealAgainstGovt', [GovCaseRegisterController::class, 'appealAgainstGovt'])->name('appealAgainstGovt');
             Route::get('highcourt/againstPostponedOrder', [GovCaseRegisterController::class, 'againstPostponedOrder'])->name('againstPostponedOrder');
@@ -178,11 +181,15 @@ Route::middleware('auth')->group(function () {
             Route::get('againstCasePostponedOrder', [GovCaseRegisterController::class, 'againstCasePostponedOrder'])->name('againstCasePostponedOrder');
             Route::get('sentToSolicitorCase', [GovCaseRegisterController::class, 'sentToSolicitorCase'])->name('sentToSolicitorCase');
             Route::get('appellateDivision/complete', [AppealGovCaseRegisterController::class, 'appellate_division_complete_case'])->name('appellateDivision.complete');
+            Route::get('appellateDivision/appeal-not-against-gov', [AppealGovCaseRegisterController::class, 'appellateNotAgainstGov'])->name('appellateDivision.notAgainstGov');
+            Route::get('appellateDivision/appeal-against-gov', [AppealGovCaseRegisterController::class, 'appellateAgainstGov'])->name('appellateDivision.againstGov');
             Route::get('running_case', [GovCaseRegisterController::class, 'running_case'])->name('running');
             Route::get('appeal_case', [GovCaseRegisterController::class, 'appeal_case'])->name('appeal');
             Route::get('complete_case', [GovCaseRegisterController::class, 'complete_case'])->name('complete');
             Route::get('govt_not_against_case', [GovCaseRegisterController::class, 'govt_not_against_case'])->name('not_against');
             Route::get('govt_against_case', [GovCaseRegisterController::class, 'govt_against_case'])->name('against');
+            Route::get('highcourt/not-against-gov', [GovCaseRegisterController::class, 'highcourtNotAgainstGov'])->name('highcourtNotAgainstGov');
+            Route::get('highcourt/against-gov', [GovCaseRegisterController::class, 'highcourtAgainstGov'])->name('highcourtAgainstGov');
             Route::get('mostImportantHighcourtCase', [GovCaseRegisterController::class, 'mostImportantHighcourtCase'])->name('mostImportantHighcourtCase');
 
             Route::get('againstHighCourtCaseAppealPending', [GovCaseRegisterController::class, 'againstHighCourtCaseAppealPending'])->name('againstHighCourtCaseAppealPending');
