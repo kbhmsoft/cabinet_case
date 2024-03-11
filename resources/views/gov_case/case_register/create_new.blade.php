@@ -293,7 +293,7 @@
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                                <h3 class="mb-0 mr-8">রুলের কপি সংযুক্ত করুন
                                                                     <span class="text-danger">*</span>
                                                                     <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ :
                                                                         5MB)</sub>
@@ -336,7 +336,7 @@
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
                                     <button type="submit" id="caseGeneralInfoSaveBtn"
-                                        class="submit-button">সংরক্ষণ</button>
+                                        class="submit-button">আবেদন দাখিল করুন</button>
                                 </div>
                             </form>
                         </div>
@@ -556,7 +556,7 @@
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
                                     <button type="submit" id="sendingReplySaveBtn"
-                                        class="action-button submit-button">সংরক্ষণ</button>
+                                        class="action-button submit-button">আবেদন দাখিল করুন</button>
                                 </div>
                             </form>
                         </div>
@@ -686,7 +686,7 @@
                                                     <div class="form-footer"
                                                         style="display: flex;justify-content: center;">
                                                         <button type="submit" id="suspensionOrderSaveBtn"
-                                                            class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                                            class="action-button submit-button mt-3 ml-40">আবেদন দাখিল করুন</button>
                                                     </div>
                                                 </div>
 
@@ -759,7 +759,7 @@
                                     </div>
                                     <div class="form-footer" style="display: flex;justify-content: center;">
                                         <button type="submit" id="suspensionOrderSaveBtn"
-                                            class="action-button submit-button mt-3 ml-40">সংরক্ষণ</button>
+                                            class="action-button submit-button mt-3 ml-40">আবেদন দাখিল করুন</button>
                                     </div>
                                 </div>
 
@@ -1024,7 +1024,7 @@
                     </div>
                     <div class="form-footer" style="display: flex;justify-content: center;">
                         <button type="submit" id="finalOrderSaveBtn"
-                            class="action-button submit-button">সংরক্ষণ</button>
+                            class="action-button submit-button">আবেদন দাখিল করুন</button>
                     </div>
                 </form>
             </div>
@@ -1116,7 +1116,7 @@
                     </div>
                     <div class="form-footer" style="display: flex;justify-content: center;">
                         <button type="submit" id="contemptCaseSaveBtn"
-                            class="action-button submit-button">সংরক্ষণ</button>
+                            class="action-button submit-button">আবেদন দাখিল করুন</button>
                     </div>
                 </form>
             </div>

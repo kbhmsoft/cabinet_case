@@ -30,7 +30,12 @@
 
     <style>
         .wrapper {
-            padding: 0px ;
+            padding: 0px;
+        }
+
+        #kt_brand,
+        #kt_header {
+            height: 80px !important;
         }
     </style>
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
@@ -54,13 +59,14 @@
             <!--end::Aside-->
 
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper" >
+            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper">
                 <!--begin::Header-->
                 @include('layouts.cabinet.base.header')
                 <!--end::Header-->
 
                 <!--begin::Content-->
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="background-color:white">
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content"
+                    style="background-color:white">
                     <!--begin::Subheader-->
 
                     <!--end::Subheader-->

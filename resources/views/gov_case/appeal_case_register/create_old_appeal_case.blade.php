@@ -585,7 +585,7 @@
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="submit" class="action-button submit-button save-button"
-                                                id="saveOldAppealCaseBtn">সংরক্ষণ</button>
+                                                id="saveOldAppealCaseBtn">আবেদন দাখিল করুন</button>
                                         </div>
                                     </div>
                                 </div>

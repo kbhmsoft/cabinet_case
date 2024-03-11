@@ -18,8 +18,7 @@
                     }
                 @endphp
                 <select name="role" class="form-control"
-                    onchange="updateUserRole(this, {{ $row->organogram }}, {{ $row->office }},'{{ $row->designation }}','{{ $row->officeNameBn }}','{{ $row->name_bng }}','{{ $row->name_bng }}' ,'{{ $row->email }}')">
-
+                    onchange="updateUserRole(this, {{ $row->organogram }}, {{ $row->office }},'{{ $row->designation }}','{{ $row->officeNameBn }}','{{ $row->name_bng }}','{{ $row->email }}')">
                     <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
                     @foreach ($user_role as $role)
                         <option value="{{ $role->id }}" {{ $role->id == $selectedRoleId ? 'selected' : '' }}>

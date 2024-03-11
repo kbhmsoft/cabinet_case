@@ -112,8 +112,13 @@
                             <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                             <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
                             <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td>
+
                             <td style="text-align:center;">
-                                {{ App\Models\gov_case\GovCaseOffice::find($row->appeal_office_id)->office_name_bn }}
+                                @if($row->appeal_office_id !== null)
+                                    {{ optional(App\Models\gov_case\GovCaseOffice::find($row->appeal_office_id))->office_name_bn ?? '' }}
+                                @else
+                                    
+                                @endif
                             </td>
 
                             <?php
@@ -209,8 +214,14 @@
                                 @endif
                             </td>
 
-                            <td>{{ App\Models\gov_case\GovCaseOffice::find($row->mainBibadis->first()->respondent_id)->office_name_bn  ?? ''}}
+                            <td>
+                                @if($row->mainBibadis->first() !== null)
+                                    {{ optional(App\Models\gov_case\GovCaseOffice::find($row->mainBibadis->first()->respondent_id))->office_name_bn ?? '' }}
+                                @else
+
+                                @endif
                             </td>
+
                             <td>{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
                             <td style="">
                                 @if ($row->result == '1')

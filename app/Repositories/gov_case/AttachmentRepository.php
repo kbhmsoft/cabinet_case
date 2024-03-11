@@ -26,7 +26,6 @@ class AttachmentRepository
     public static function storeAttachment($appName, $caseId, $request)
     {
         if($request->file_name != NULL){
-            // return $request->file_name;
             foreach($request->file_type as $key => $val)
             {
                 $filePath = "uploads/" . $appName ."/attachment/";

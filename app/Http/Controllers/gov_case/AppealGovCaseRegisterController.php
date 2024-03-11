@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers\gov_case;
 
+use App\Http\Controllers\Controller;
+use App\Models\AppealAttachment;
+use App\Models\Attachment;
+use App\Models\Court;
+use App\Models\gov_case\AppealAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\GovCaseLog;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Court;
-use App\Models\Office;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-use App\Models\AppealAttachment;
-use Illuminate\Support\Facades\DB;
-use App\Models\gov_case\GovCaseLog;
-use App\Http\Controllers\Controller;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\AppealAdalat;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AppealGovCaseRegisterController extends Controller
 {
@@ -226,7 +226,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealCaseShow($id)
     {
-    //    dd($id);
+        //    dd($id);
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
         // dd($data['appealCase']);
         $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']->case_number_origin);
@@ -350,14 +350,13 @@ class AppealGovCaseRegisterController extends Controller
             ->where('deleted_at', '=', null);
         // return $query;
 
-        if ($roleID == 32 || $roleID == 33) {
+        if ($roleID == 32 || $roleID == 41) {
             $query->where('appeal_office_id', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
             $query->where('appeal_office_id', $officeID);
         }
-
 
         if (!empty($_GET['case_category_type'])) {
             $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
@@ -408,27 +407,27 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $childOfficeIds = [];
-            $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id', 'doptor_office_id')
-                ->where('parent_office_id', $officeID)->get();
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
 
-            foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->doptor_office_id;
-            }
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
 
-            $finalOfficeIds = [];
-            if (empty($childOfficeIds)) {
-                $finalOfficeIds[] = $officeID;
-            } else {
-                $finalOfficeIds[] = $officeID;
-                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-            }
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
 
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
             ->where('is_final_order', 1)
             ->where('deleted_at', '=', null);
 
-        if ($roleID == 32 || $roleID == 33) {
+        if ($roleID == 32 || $roleID == 41) {
             $query->where('appeal_office_id', $officeID);
         }
 
@@ -699,6 +698,22 @@ class AppealGovCaseRegisterController extends Controller
             $appeal = AppealGovCaseRegister::findOrFail($rowId);
             $appeal->most_important = $mostImportant;
             $appeal->save();
+
+            return response()->json(['message' => 'Data saved successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error saving data: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function appealImportantSave(Request $request)
+    {
+        $rowId = $request->input('rowId');
+        $important = $request->input('important');
+
+        try {
+            $appealData = AppealGovCaseRegister::findOrFail($rowId);
+            $appealData->important = $important;
+            $appealData->save();
 
             return response()->json(['message' => 'Data saved successfully']);
         } catch (\Exception $e) {
@@ -1271,7 +1286,6 @@ class AppealGovCaseRegisterController extends Controller
         // dd($request->all());
         $caseNo = $request->caseId;
 
-
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
 
@@ -1382,8 +1396,7 @@ class AppealGovCaseRegisterController extends Controller
             // $cs_activity_data['new_data'] = json_encode($caseRegister);
             gov_case_activity_logs($cs_activity_data);
             // ========= Gov Case Activity Log  End ==========
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $flag = 'false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }
@@ -1699,7 +1712,6 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
 
         // dd($data['cases']);
@@ -1712,9 +1724,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-
 
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
     }
@@ -1773,7 +1783,6 @@ class AppealGovCaseRegisterController extends Controller
 
         return view('gov_case.appeal_case_register.appealcourt_mostimportant')->with($data);
     }
-
 
     public function attorneyHighcourtMostImportantCase()
     {
@@ -2750,7 +2759,6 @@ class AppealGovCaseRegisterController extends Controller
         return view('gov_case.appeal_case_register.attoney_complete_appealcourt')->with($data);
     }
 
-
     public function attorneyAppellateDivision()
     {
         session()->forget('currentUrlPath');
@@ -2837,12 +2845,11 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
 
-
         $govCaseInfo = GovCaseRegister::where('case_no', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
         $govCaseId = $govCaseInfo->id;
 
-        if($data['appealCaseData']){
-        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
+        if ($data['appealCaseData']) {
+            $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
         }
 
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
@@ -2878,7 +2885,6 @@ class AppealGovCaseRegisterController extends Controller
         return view('gov_case.case_register.application_form_as_main_defendent.appeal_edit')->with($data);
     }
 
-
     public function appellateNotAgainstGov()
     {
 
@@ -2889,27 +2895,27 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $childOfficeIds = [];
-            $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id', 'doptor_office_id')
-                ->where('parent_office_id', $officeID)->get();
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
 
-            foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->doptor_office_id;
-            }
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
 
-            $finalOfficeIds = [];
-            if (empty($childOfficeIds)) {
-                $finalOfficeIds[] = $officeID;
-            } else {
-                $finalOfficeIds[] = $officeID;
-                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-            }
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
 
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
-            ->where('is_final_order', 1)->where('result',1)
+            ->where('is_final_order', 1)->where('result', 1)
             ->where('deleted_at', '=', null);
 
-        if ($roleID == 32 || $roleID == 33) {
+        if ($roleID == 32 || $roleID == 41) {
             $query->where('appeal_office_id', $officeID);
         }
 
@@ -2957,38 +2963,35 @@ class AppealGovCaseRegisterController extends Controller
         return view('gov_case.appeal_case_register.appealcourt_not_against_gov')->with($data);
     }
 
-
     public function appellateAgainstGov()
     {
-
         session()->forget('currentUrlPath');
-
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
         $childOfficeIds = [];
-            $childOfficeQuery = DB::table('gov_case_office')
-                ->select('id', 'doptor_office_id')
-                ->where('parent_office_id', $officeID)->get();
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
 
-            foreach ($childOfficeQuery as $childOffice) {
-                $childOfficeIds[] = $childOffice->doptor_office_id;
-            }
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
 
-            $finalOfficeIds = [];
-            if (empty($childOfficeIds)) {
-                $finalOfficeIds[] = $officeID;
-            } else {
-                $finalOfficeIds[] = $officeID;
-                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-            }
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
 
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
-            ->where('is_final_order', 1)->where('result',2)
+            ->where('is_final_order', 1)->where('result', 2)
             ->where('deleted_at', '=', null);
 
-        if ($roleID == 32 || $roleID == 33) {
+        if ($roleID == 32 || $roleID == 41) {
             $query->where('appeal_office_id', $officeID);
         }
 

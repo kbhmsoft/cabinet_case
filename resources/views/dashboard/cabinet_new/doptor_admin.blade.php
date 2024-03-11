@@ -66,7 +66,7 @@
 
             <!-- Card 2 -->
             <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5; height:194px;">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
                     <div class="card-body"
                         style="margin-bottom: 1.2rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
@@ -82,7 +82,7 @@
                                     কার্যক্রম গ্রহণের জন্য অপেক্ষমান
                                 </h5>
                                 <!-- Links -->
-                                <div style="font-size: 13px;">
+                                <div style="font-size: 15px;">
                                     <div style="display: flex; align-items: center;">
                                         <a href="#" style="color: black; flex: 1;">আপিল দায়েরের জন্য পেন্ডিং</a>
                                         <span class="count-numbers"

@@ -321,8 +321,7 @@
                                                                     class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                     <div
                                                                         class="d-flex align-items-center mr-2 py-2 file_type">
-                                                                        <th class="mb-0 mr-8 ">সংযুক্তি (রুল কপি সংযুক্ত
-                                                                            করুন)
+                                                                        <th class="mb-0 mr-8 ">রুলের কপি সংযুক্ত করুন
                                                                             <span class="text-danger">*</span>
                                                                         </th>
                                                                     </div>
@@ -1036,7 +1035,7 @@
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="submit" class="action-button submit-button save-button"
-                                                id="saveOldHighCourtCaseBtn">সংরক্ষণ</button>
+                                                id="saveOldHighCourtCaseBtn">আবেদন দাখিল করুন</button>
                                         </div>
                                     </div>
                                 </div>

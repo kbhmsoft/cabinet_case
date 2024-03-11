@@ -1,3 +1,7 @@
+<style>
+
+    
+</style>
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
@@ -270,6 +274,33 @@
                                             class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">অতি গুরুত্বপূর্ণ মামলার
+                                                তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                        </div>
+                    </li>
+                @endcan
+
+
+                @can('important_case_list')
+                    <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt-appeal/importgantCaseList') ? 'menu-item-open' : '' }}"
+                        aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-exclamation"></i>গুরুত্বপূর্ণ
+                                মামলা</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+                                @can('important_case')
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt-appeal/importgantCaseList']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.highcourtAppealImportantCase') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">গুরুত্বপূর্ণ মামলার
                                                 তালিকা</span>
                                         </a>
                                     </li>
