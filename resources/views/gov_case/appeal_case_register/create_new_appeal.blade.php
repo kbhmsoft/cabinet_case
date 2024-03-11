@@ -294,7 +294,7 @@
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
                                     <button type="submit" id="appealCaseGeneralInfoSaveBtn"
-                                        class="submit-button">সংরক্ষণ</button>
+                                        class="submit-button">আবেদন দাখিল করুন</button>
                                 </div>
                             </form>
                         </div>
@@ -637,7 +637,7 @@
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
                                     <button type="submit" id="finalOrderSaveBtn"
-                                        class="action-button submit-button">সংরক্ষণ</button>
+                                        class="action-button submit-button">আবেদন দাখিল করুন</button>
                                 </div>
                             </form>
                         </div>

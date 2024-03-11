@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 // use Illuminate\Support\ServiceProvider;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\MainRespondentNotification;
 use App\Models\Message;
 use App\Models\User;
@@ -27,6 +29,73 @@ class ViewServiceProvider extends AppServiceProvider
 
         //     $view->with('users', $users);
         // });
+
+        view()->composer('layouts.cabinet.base.header', function ($view) {
+            $roleID = Auth::user()->role_id;
+            $officeID = Auth::user()->office_id;
+            $childOfficeIds = [];
+            $childOfficeQuery = DB::table('gov_case_office')
+                ->select('id', 'doptor_office_id')
+                ->where('parent_office_id', $officeID)
+                ->get();
+
+            foreach ($childOfficeQuery as $childOffice) {
+                $childOfficeIds[] = $childOffice->doptor_office_id;
+            }
+
+            $finalOfficeIds = [];
+            if (empty($childOfficeIds)) {
+                $finalOfficeIds[] = $officeID;
+            } else {
+                $finalOfficeIds[] = $officeID;
+                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            }
+
+            $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
+                $query->whereIn('respondent_id', $finalOfficeIds);
+            })
+                ->where('deleted_at', null)
+                ->count();
+
+            $total_appeal = AppealGovCaseRegister::whereIn('appeal_office_id', $finalOfficeIds)
+                ->where('deleted_at', null)
+                ->count();
+
+            $total_case = $total_highcourt + $total_appeal;
+
+            if ($roleID == 32 || $roleID == 41) {
+
+                $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID);
+                })
+                    ->where('deleted_at', null)
+                    ->count();
+
+                $total_appeal = AppealGovCaseRegister::where('appeal_office_id', $officeID)
+                    ->where('deleted_at', null)
+                    ->count();
+
+                $total_case = $total_highcourt + $total_appeal;
+            }
+
+            if ($roleID == 27) {
+
+                $total_highcourt = GovCaseRegister::where('deleted_at', null)
+                    ->count();
+
+                $total_appeal = AppealGovCaseRegister::where('deleted_at', null)
+                    ->count();
+
+                $total_case = $total_highcourt + $total_appeal;
+            }
+
+            $view->with([
+                'total_highcourt' => $total_highcourt,
+                'total_appeal' => $total_appeal,
+                'total_case' => $total_case,
+            ]);
+
+        });
 
         view()->composer('messages.inc.search', function ($view) {
             $roleID = Auth::user()->role_id;
@@ -96,7 +165,7 @@ class ViewServiceProvider extends AppServiceProvider
                 //     ->get()
                 //     ->count();
 
-            } elseif ($roleID == 32 || $roleID == 33) {
+            } elseif ($roleID == 32 || $roleID == 41) {
                 // ===============Ministry Admin===============//
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))

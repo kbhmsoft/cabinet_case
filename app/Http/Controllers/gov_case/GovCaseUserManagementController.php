@@ -358,7 +358,7 @@ class GovCaseUserManagementController extends Controller
         $query = DB::table('doptor_user_managements')->orderBy('id', 'DESC')
             ->join('roles', 'doptor_user_managements.user_role', '=', 'roles.id')
             ->join('gov_case_office', 'doptor_user_managements.office_id', '=', 'gov_case_office.doptor_office_id')
-            ->select('doptor_user_managements.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->select('doptor_user_managements.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
             ->where('doptor_user_managements.status', 1)
             ->orderby('id','DESC');
 

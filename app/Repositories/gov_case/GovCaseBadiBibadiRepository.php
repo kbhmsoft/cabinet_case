@@ -14,10 +14,10 @@ class GovCaseBadiBibadiRepository
 {
     public static function storeBadi($caseInfo, $govCaseId)
     {
+
         if ($caseInfo->badi_name) {
             foreach ($caseInfo->badi_name as $key => $val) {
                 if ($caseInfo->badi_name[$key] != null) {
-                    // dd($caseInfo->badi_name);
                     $badi = self::checkBadiExist($caseInfo->badi_id[$key]);
                     $badi->gov_case_id = $govCaseId;
                     $badi->name = $caseInfo->badi_name[$key];
@@ -71,7 +71,7 @@ class GovCaseBadiBibadiRepository
                 $bibadi->save();
             }
         }
-        
+
         foreach ($caseInfo->main_respondent as $key => $val) {
             if ($caseInfo->main_respondent[$key] != null) {
                 $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->where('is_main_bibadi',1)->first();

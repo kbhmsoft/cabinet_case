@@ -1081,7 +1081,7 @@
             e.preventDefault();
 
             Swal.fire({
-                title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
+                title: 'আপনি কি মূল বিবাদি হিসেবে অন্তর্ভুক্তির আবেদন সুপার অ্যডমিন বরাবর দাখিল করতে চান?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'হ্যাঁ',

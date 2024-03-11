@@ -17,6 +17,7 @@ Use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MyprofileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
+use App\Http\Controllers\SiteSettingController;
 
 
 

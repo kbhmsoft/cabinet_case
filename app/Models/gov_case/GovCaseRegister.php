@@ -124,7 +124,7 @@ class GovCaseRegister extends Model
         'highcourt_adalat',
         'money_amount',
         'hearing_short_order',
-
+        'important'
 	];
 
     public function users(){

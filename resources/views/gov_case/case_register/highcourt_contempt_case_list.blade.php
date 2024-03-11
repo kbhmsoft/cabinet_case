@@ -282,21 +282,12 @@
                                         @endif
                                     </div>
 
-
                                     <div class="btn-group">
                                         @if ($roleID == 27)
                                             <input type="checkbox" id="most_important" name="most_important" value="1"
                                                 data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
                                                 {{ $row->most_important == 1 ? 'checked' : '' }}>
                                             <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
-                                        @endif
-                                    </div>
-                                    <div class="btn-group">
-                                        @if($roleID == 29 || $roleID == 31)
-                                            <input type="checkbox" id="important" name="important" value="1"
-                                                data-row-id="{{ $row->id }}" onchange="updateImportantCaseDatabase(this)"
-                                                {{ $row->important == 1 ? 'checked' : '' }}>
-                                            <label class="checkbox-name" for="important">গুরুত্বপূর্ণ</label>
                                         @endif
                                     </div>
                                 </td>
@@ -366,39 +357,3 @@
                 });
             });
         </script>
-<script>
-    function updateImportantCaseDatabase(checkbox) {
-
-        const rowId = checkbox.getAttribute("data-row-id");
-        const isChecked = checkbox.checked;
-
-        const importantValue = isChecked ? 1 : null;
-        const data = {
-            rowId: rowId,
-            important: importantValue
-        };
-
-        const routeUrl = "{{ route('cabinet.case.highcourtImportantSave') }}";
-
-        fetch(routeUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Data saved successfully.');
-                } else {
-
-                    console.error('Failed to save data.');
-                }
-            })
-            .catch(error => {
-
-                console.error('Error:', error);
-            });
-    }
-</script>
