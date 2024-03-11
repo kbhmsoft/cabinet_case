@@ -54,13 +54,13 @@
             <!--end::Aside-->
 
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper" >
                 <!--begin::Header-->
                 @include('layouts.cabinet.base.header')
                 <!--end::Header-->
 
                 <!--begin::Content-->
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="background-color:white">
                     <!--begin::Subheader-->
 
                     <!--end::Subheader-->
@@ -69,7 +69,7 @@
                     <div class="d-flex flex-column-fluid">
                         <!--begin::Container2-->
 
-                        <div class="container">
+                        <div class="container" style="background-color:white ">
                             @yield('content')
 
                         </div>
