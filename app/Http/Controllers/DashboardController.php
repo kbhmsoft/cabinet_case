@@ -244,7 +244,7 @@ class DashboardController extends Controller
                 $finalOfficeIds[] = $officeID;
                 $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
             }
-
+            //    dd($finalOfficeIds);
             $data['total_highcourt'] = GovCaseRegister::whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -935,7 +935,7 @@ class DashboardController extends Controller
                 ->where('deleted_at', null)
                 ->count();
 
-            $data['against_postpond_order'] = GovCaseRegister::whereHas(
+            $data['pendingPostpondOrder'] = GovCaseRegister::whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);

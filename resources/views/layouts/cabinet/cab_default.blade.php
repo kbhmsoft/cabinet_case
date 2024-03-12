@@ -59,7 +59,7 @@
             <!--end::Aside-->
 
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper " id="kt_wrapper" >
                 <!--begin::Header-->
                 @include('layouts.cabinet.base.header')
                 <!--end::Header-->

@@ -4709,10 +4709,6 @@ class GovCaseRegisterController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
-
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট স্থগিতাদেশ সম্পর্কিত পেন্ডিং মামলার তালিকা';
-
         return view('gov_case.case_register.highcourt_pendingPostpondOrder')->with($data);
     }
 
