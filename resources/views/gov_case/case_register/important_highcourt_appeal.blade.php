@@ -116,9 +116,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $roleID = Auth()->user()->role_id;
-                        ?>
+               
                         {{-- {{dd($cases)}} --}}
                         @foreach ($appealCases as $key => $row)
                             {{-- {{dd($row->highcourtCaseDetail)}} --}}

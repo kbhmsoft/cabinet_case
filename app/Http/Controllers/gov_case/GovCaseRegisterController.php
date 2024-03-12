@@ -2748,11 +2748,12 @@ class GovCaseRegisterController extends Controller
             ]);
 
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
 
             if ($request->file_type && $_FILES["file_name"]['name']) {
-
+         
                 AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
             }
             if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {

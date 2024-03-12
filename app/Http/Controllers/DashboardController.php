@@ -180,8 +180,8 @@ class DashboardController extends Controller
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
             $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
-            // return view('dashboard.cabinet.cabinet_admin')->with($data);
-            return view('dashboard.cabinet_new.super_admin')->with($data);
+            return view('dashboard.cabinet.cabinet_admin')->with($data);
+            // return view('dashboard.cabinet_new.super_admin')->with($data);
         } elseif ($roleID == 28) {
 
             $data['total_case'] = GovCaseRegister::count();
