@@ -48,6 +48,7 @@ class GovCaseUserManagementController extends Controller
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.role_id', '!=' , 42)
             ->where('users.is_gov', 1);
 
         if (!empty($_GET['office_id'])) {
@@ -94,7 +95,7 @@ class GovCaseUserManagementController extends Controller
 
         $role = array('1', '27');
         $data['roles'] = DB::table('roles')
-            ->select('id', 'name')
+            ->select('id', 'name','name_bn')
             ->whereNotIn('id', $role)
             ->where('is_gov', 1)
             ->orderBy('sort_order', 'ASC')
@@ -104,7 +105,7 @@ class GovCaseUserManagementController extends Controller
 
         $query = DB::table('users')->orderBy('id', 'DESC')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
             ->where('users.is_gov', 1);
 
@@ -116,7 +117,7 @@ class GovCaseUserManagementController extends Controller
         }
 
         $data['users'] = $query->paginate(10)->withQueryString();
-        $data['user_role'] = DB::table('roles')->select('id', 'name')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name','name_bn')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
@@ -328,7 +329,6 @@ class GovCaseUserManagementController extends Controller
             if($user != null && $role != null){
                 $user->assignRole($role);
             }
-
 
         return redirect()->route('cabinet.user-management.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');

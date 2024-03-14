@@ -8,7 +8,7 @@
 
    <!--begin::Dashboard-->
     <!-- Dashboard Counter -->
-    @include('dashboard.cabinet.inc._dashboard_admin_counter_card')
+    @include('dashboard.cabinet_new.card_layout.super_admin_card_layout')
 
     <!-- //Dashboard Counter -->
 

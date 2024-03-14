@@ -109,14 +109,14 @@
                                     style="text-align:center; font-size: 12px; vertical-align: middle;">অতি গুরুত্বপূর্ণ
                                 </th>
                             @endif
-                            @if ($roleID == 29 || $roleID == 31)
+                            @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
                                 <th scope="col" width=""
                                     style="text-align:center; font-size: 12px; vertical-align: middle;">গুরুত্বপূর্ণ</th>
                             @endif
                         </tr>
                     </thead>
                     <tbody>
-               
+
                         {{-- {{dd($cases)}} --}}
                         @foreach ($appealCases as $key => $row)
                             {{-- {{dd($row->highcourtCaseDetail)}} --}}

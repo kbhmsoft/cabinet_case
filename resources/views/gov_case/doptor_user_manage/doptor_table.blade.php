@@ -4,7 +4,7 @@
         <td>{{ $index + 1 }}</td>
 
         <td>{{ $row->designation }}</td>
-        <td>{{ $row->officeNameBn ?? '' }}</td>
+        <td>{{ $row->unitNameBn ?? '' }}</td>
         <td>{{ $row->name_bng }}</td>
         <td>
             <div class="form-group mb-2">

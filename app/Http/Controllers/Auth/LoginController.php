@@ -163,6 +163,7 @@ class LoginController extends BaseController
 
                 $user = User::where('doptor_user_id', $userInfo->id)->first();
                 if ($organoGramUserInfo->user_role) {
+                    $user->syncRoles([]);
                     $role = Role::find($organoGramUserInfo->user_role);
                     $user->assignRole($role);
                 }

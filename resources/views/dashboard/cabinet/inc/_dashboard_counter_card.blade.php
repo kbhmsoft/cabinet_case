@@ -160,7 +160,7 @@
             <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"><?= en2bn($against_postpond_order) ?></a></span>
+                    href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
                 <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}">স্থগিতাদেশ অন্তর্বর্তীকালীন
                     <br>পেন্ডিং মামলা</a></span>

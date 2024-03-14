@@ -675,9 +675,7 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['organoGram'] = json_decode($doptoOrganogramOffice);
-        // dd($data['organoGram']);
-
-
+    //   dd($data['organoGram']);
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -839,5 +837,5 @@ class GovCaseOfficeController extends Controller
 
     }
 
-  
+
 }
