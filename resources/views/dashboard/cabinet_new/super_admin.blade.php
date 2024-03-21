@@ -13,16 +13,28 @@
         .count-item a:hover {
             color: black;
         }
+
+        @media (max-width: 768px) {
+
+            .card-body {
+                padding: 10px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 992px) {
+            .card-body {
+                padding: 20px;
+            }
+        }
     </style>
 @endsection
-<div class="container">
+<div class="container-fluid">
     <div class="mt-5">
         <div class="row">
-             <!-- Card 7 -->
-             <div class="col-md-6 mb-4">
+            <!-- Card 7 -->
+            <div class="col-md-6 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body"
-                        style="margin-bottom: 1rem; background-color: #f5f5f5; border-radius: 1rem;">
+                    <div class="card-body" style="margin-bottom: 1rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div class="d-flex align-items-center">
                             <div style="font-size: 3rem; margin-right: 1rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/office.png') }}"
@@ -107,8 +119,7 @@
             <!-- Card 8 -->
             <div class="col-md-6 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body"
-                        style="background-color: #f5f5f5; border-radius: 1rem; margin-bottom: 3rem;">
+                    <div class="card-body" style="background-color: #f5f5f5; border-radius: 1rem; margin-bottom: 3rem;">
                         <div class="d-flex align-items-center " style=" margin-top: 2rem;">
                             <div style="font-size: 3rem; margin-right: 2rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/group.png') }}"
@@ -211,7 +222,8 @@
             <!-- Card 3 -->
             <div class="col-md-4 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style="margin-bottom: 3.5rem; background-color: #f5f5f5; border-radius: 1rem;">
+                    <div class="card-body"
+                        style="margin-bottom: 3.5rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <div style="font-size: 3rem; margin-right: 2rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
@@ -236,7 +248,8 @@
             <!-- Card 4 -->
             <div class="col-md-4 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style="margin-bottom: 3rem; background-color: #f5f5f5; border-radius: 1rem;">
+                    <div class="card-body"
+                        style="margin-bottom: 3rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
