@@ -1,5 +1,9 @@
 @extends('layouts.cabinet.cab_default')
 @include('gov_case.case_register.create_css')
+
+@php
+    $roleID = Auth()->user()->role_id;
+@endphp
 @section('content')
     <script>
         function updateDatabase(checkbox) {
@@ -86,9 +90,7 @@
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
             @else
                 @include('gov_case.search')
-                <?php
-                $roleID = Auth()->user()->role_id;
-                ?>
+          
                 <table class="table table-hover mb-6 font-size-h5">
                     <thead class="thead-light font-size-h6">
                         <tr>
@@ -165,7 +167,7 @@
                                     </div>
 
                                     <div class="btn-group">
-                                        @if ($roleID == 29 || $roleID == 31)
+                                        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
                                             <input type="checkbox" id="important" name="important" value="1"
                                                 data-row-id="{{ $row->id }}"
                                                 onchange="updateAppealImportantCaseDatabase(this)"
@@ -216,11 +218,12 @@
                             বিষয়বস্তু</th>
                         <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ
                             অবস্থা</th>
+
                         @if ($roleID == 27)
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">অতি
                                 গুরুত্বপূর্ণ</th>
                         @endif
-                        @if ($roleID == 29 || $roleID == 31)
+                        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">
                                 গুরুত্বপূর্ণ</th>
                         @endif
@@ -274,7 +277,7 @@
                                 </div> --}}
 
                                 <div class="btn-group">
-                                    @if ($roleID == 29 || $roleID == 31)
+                                    @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
                                         <input type="checkbox" id="important" name="important" value="1"
                                             data-row-id="{{ $row->id }}" onchange="updateImportantCaseDatabase(this)"
                                             {{ $row->important == 1 ? 'checked' : '' }}>

@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use Redirect;
-use Response;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\DoptorUserManagement;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseOfficeType;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Helper\DoptorHandler;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\DoptorGovOffice;
-use App\Models\gov_case\GovCaseOfficeType;
-use App\Models\gov_case\DoptorUserManagement;
+use Illuminate\Support\Facades\DB;
+use Redirect;
+use Response;
 
 class GovCaseOfficeController extends Controller
 {
@@ -141,7 +139,6 @@ class GovCaseOfficeController extends Controller
 
         //Add Conditions
         $query = GovCaseOffice::orderby('id', 'ASC')->whereIn('level', [2, 5]);
-
 
         //    dd($query);
         if (!empty($_GET['office_type'])) {
@@ -535,18 +532,37 @@ class GovCaseOfficeController extends Controller
     }
     public function getDependentOffice($id)
     {
-        // $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", "id");
-        // return json_encode($subcategories);
+        $roleID = Auth::user()->role_id;
+        $officeID = userInfo()->office_id;
         $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", 'doptor_office_id');
-        // dd($subcategories);
+
+        if ($roleID == 29 && $id!=2) {
+            // dd('aoyom');
+            $subcategories = GovCaseOffice::where("level", $id)->where("doptor_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
+            return json_encode($subcategories);
+        }
+
+        if ($roleID == 29 && $id==2) {
+            // dd($officeID);
+            $subcategories = GovCaseOffice::where("level", $id)->where("parent_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
+            return json_encode($subcategories);
+        }
+
         return json_encode($subcategories);
+
     }
     public function getDependentChildOffice($id)
     {
-        // $subcategories = GovCaseOffice::where("parent", $id)->pluck("office_name_bn", "id");
-        // return json_encode($subcategories);
+        $roleID = Auth::user()->role_id;
+        $officeID = userInfo()->office_id;
 
-        $subcategories = GovCaseOffice::where("parent_office_id", $id)->pluck("office_name_bn",'doptor_office_id');
+        $subcategories = GovCaseOffice::where("parent_office_id", $id)->pluck("office_name_bn", 'doptor_office_id');
+
+        if ($roleID == 29) {
+            // dd($officeID);
+            $subcategories = GovCaseOffice::where("parent_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
+            return json_encode($subcategories);
+        }
         return json_encode($subcategories);
     }
     public function getDependentMouja($id)
@@ -566,10 +582,10 @@ class GovCaseOfficeController extends Controller
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
         $query = DB::table('users')->orderBy('id', 'DESC')
-        ->join('roles', 'users.role_id', '=', 'roles.id')
-        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
-        ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-        ->where('users.is_gov', 1);
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.is_gov', 1);
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -675,7 +691,7 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['organoGram'] = json_decode($doptoOrganogramOffice);
-    //   dd($data['organoGram']);
+        //   dd($data['organoGram']);
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -683,10 +699,10 @@ class GovCaseOfficeController extends Controller
 
         //Add Conditions
         $query = DB::table('users')->orderBy('id', 'DESC')
-        ->join('roles', 'users.role_id', '=', 'roles.id')
-        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
-        ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-        ->where('users.is_gov', 1);
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+            ->where('users.is_gov', 1);
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -755,7 +771,7 @@ class GovCaseOfficeController extends Controller
 
         curl_setopt_array($curl, array(
 
-            CURLOPT_URL => DOPTOR_ENDPOINT().'/api/v1/empoffice?office=' . $id,
+            CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/v1/empoffice?office=' . $id,
 
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -769,7 +785,7 @@ class GovCaseOfficeController extends Controller
                 'Content-Type: application/json',
                 'api-version: 1',
                 'apikey: YED1EN',
-                'Authorization: Bearer '.$token,
+                'Authorization: Bearer ' . $token,
             ),
         ));
 
@@ -811,7 +827,7 @@ class GovCaseOfficeController extends Controller
                     'designation' => $designation,
                     'officeNameBn' => $officeNameBn,
                     'name_bng' => $name_bng,
-                    'email' => $email
+                    'email' => $email,
                 ]);
 
                 $userDetails = $existingUserRole;
@@ -827,7 +843,7 @@ class GovCaseOfficeController extends Controller
                     'designation' => $designation,
                     'officeNameBn' => $officeNameBn,
                     'name_bng' => $name_bng,
-                    'email' => $email
+                    'email' => $email,
                 ];
 
                 $userDetails = DoptorUserManagement::create($dataToSave);
@@ -836,6 +852,5 @@ class GovCaseOfficeController extends Controller
         }
 
     }
-
 
 }
