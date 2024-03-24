@@ -542,8 +542,8 @@ class GovCaseOfficeController extends Controller
             return json_encode($subcategories);
         }
 
-        if ($roleID == 29 && $id==2) {
-            // dd($officeID);
+        if ($roleID == 29 && ($id==2 || $id==1 || $id==5)) {
+            // dd($id);
             $subcategories = GovCaseOffice::where("level", $id)->where("parent_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
             return json_encode($subcategories);
         }

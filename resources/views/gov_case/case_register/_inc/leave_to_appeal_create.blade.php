@@ -141,7 +141,7 @@
                     {{-- </div> --}}
                 </div>
                 <div class="form-footer mb-5" style="display: flex;justify-content: center;">
-                    <button type="submit" id="leaveToAppealSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                    <button type="submit" id="leaveToAppealSaveBtn" class="action-button submit-button">আবেদন দাখিল করুন</button>
                 </div>
 
             </form>

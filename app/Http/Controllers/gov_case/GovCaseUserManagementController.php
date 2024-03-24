@@ -185,18 +185,14 @@ class GovCaseUserManagementController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'office_type' => 'nullable',
             'ministry' => 'nullable',
             'div_office' => 'nullable',
-            // 'username' => 'required', 'max:100',
             'role_id' => 'required',
             'email' => 'required|unique:users,email',
             'office_id' => 'required',
-            /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
-            'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */
             'password' => [
                 'required',
                 'string',
@@ -204,7 +200,6 @@ class GovCaseUserManagementController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                // 'regex:/[@$!%*#?&]/',
             ],
         ],
             [
@@ -216,9 +211,8 @@ class GovCaseUserManagementController extends Controller
                 'password.required' => 'পাসওয়ার্ড লিখুন',
             ]);
 
-        DB::table('users')->insert([
+        $user = User::create([
             'name' => $request->name,
-            // 'username' =>$request->username,
             'ministry' => $request->ministry,
             'div_office' => $request->divOffice,
             'office_type' => $request->office_type,
@@ -228,9 +222,16 @@ class GovCaseUserManagementController extends Controller
             'office_id' => $request->office_id,
             'is_gov' => 1,
             'password' => Hash::make($request->password),
-
         ]);
-        // dd($request->all());
+
+
+        if ($user) {
+            $role = Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role]);
+            }
+        }
+
 
         return redirect()->route('cabinet.user-management.index')->with('success', 'সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
     }

@@ -637,7 +637,7 @@
         $('#finalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
         Swal.fire({
-            title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+            title: 'আপনি কি মামলার চূড়ান্ত আদেশের তথ্য সংরক্ষণ করতে চান?',
             // text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -663,7 +663,7 @@
                         $orderData = data;
                         Swal.fire(
                             'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'মামলার মামলার চূড়ান্ত আদেশের তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         )
                         console.log(data);

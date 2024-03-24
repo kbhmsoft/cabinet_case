@@ -113,7 +113,11 @@
                 <hr class="middle-line">
             </div>
             <!-- End of header-case-count -->
+            @elseif ($roleID == 45)
+            <!-- White space -->
+            <div style="width: 100%; height: 20px;"></div>
         @endif
+      
 
         <!--end::Header Menu Wrapper-->
 
@@ -122,9 +126,6 @@
             <!--begin::Notifications-->
             @include('layouts.partials.notifications')
             <!--end::Notifications-->
-
-
-
             <!--begin::User-->
             <div class="topbar-item">
                 <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
@@ -145,8 +146,6 @@
                     </div>
                 </div>
             </div>
-
-
             <!--end::User-->
         </div>
         <!--end::Topbar-->

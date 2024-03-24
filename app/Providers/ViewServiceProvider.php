@@ -63,7 +63,7 @@ class ViewServiceProvider extends AppServiceProvider
 
             $total_case = $total_highcourt + $total_appeal;
 
-            if ($roleID == 32 || $roleID == 41 || $roleID == 44) {
+            if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {
 
                 $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($officeID) {
                     $query->where('respondent_id', $officeID);
@@ -133,7 +133,7 @@ class ViewServiceProvider extends AppServiceProvider
             $officeInfo = user_office_info();
             $roleID = Auth::user()->role_id;
 
-            if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45) {
                 $authUserOfficeId = Auth()->user()->office_id;
                 $case_swap = MainRespondentNotification::
                     where('previous_office_id', $authUserOfficeId)
@@ -146,7 +146,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->count();
             }
 
-            if ($roleID == 29 || $roleID == 31) {
+            if ($roleID == 29 || $roleID == 31 || $roleID==45) {
                 // ===============Ministry Admin===============//
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
