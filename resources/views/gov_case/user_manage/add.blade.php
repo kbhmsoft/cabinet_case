@@ -81,7 +81,7 @@
                                     <select name="role_id" id="role_id" class="form-control-sm form-control">
                                         <option value="">-- নির্বাচন করুন --</option>
                                         @foreach ($roles as $value)
-                                            <option value="{{ $value->id }}"> {{ $value->name }} </option>
+                                            <option value="{{ $value->id }}"> {{ $value->name_bn }} </option>
                                         @endforeach
                                     </select>
                                     <span style="color: red">
@@ -113,7 +113,7 @@
                                         <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
                                         @foreach ($ministries as $value)
                                             <option
-                                                value="{{ $value->id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->id ? 'selected' : '' }}>
+                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                                 {{ $value->office_name_bn }}
                                             </option>
                                         @endforeach
@@ -130,7 +130,7 @@
                                         <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
                                         @foreach ($divOffices as $value)
                                             <option
-                                                value="{{ $value->id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->id ? 'selected' : '' }}>
+                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                                 {{ $value->office_name_bn }}
                                             </option>
                                         @endforeach

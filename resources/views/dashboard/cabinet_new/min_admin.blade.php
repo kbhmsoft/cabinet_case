@@ -14,6 +14,8 @@
             color: black;
         }
 
+        
+
         .hover-effect:hover {
             font-size: 25px !important;
         }
@@ -24,51 +26,11 @@
 <div class="container">
     <div class="mt-4">
         <div class="row">
-            <!-- Card 1 -->
-            {{-- <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style="background-color: #f5f5f5; border-radius: 1rem;">
-                        <div class="d-flex align-items-center">
-                            <div style="font-size: 3rem; margin-right: 1rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/all.png') }}" style=" height: 50px; width: 100%; "
-                                    alt="Logo" class="brand-image">
-                            </div>
-                            <div>
-                                <h5 class="font-weight-bolder" style="color: black;">
-                                    মোট এন্ট্রিকৃত মামলার সংখ্যা (<span
-                                        class="count-numbers"><?= en2bn($total_case) ?></span>)
-                                </h5>
-                                <div class="case-info">
-
-                                    <span class="count-item"
-                                        style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
-                                        <a href="{{ route('cabinet.case.highcourt') }}" class="hover-effect"
-                                            style="text-decoration: none; color: black;">
-                                            হাইকোর্ট বিভাগে মোট মামলা
-                                        </a>
-                                        <span class="count-numbers"
-                                            style="margin-left:10rem; color: black">{{ en2bn($total_high_court_case) }}</span>
-                                    </span>
-
-                                    <span class="count-item"
-                                        style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
-                                        <a href="{{ route('cabinet.case.appellateDivision') }}"
-                                            style="text-decoration: none; color: black;"> আপিল বিভাগে মোট মামলা</a>
-                                        <span class="count-numbers"
-                                            style="margin-left:10rem; color: black">{{ en2bn($total_appeal_case) }}</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
 
             <!-- Card 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5; height:194px;">
-                    <div class="card-body"
-                        style="margin-bottom: 1.2rem; background-color: #f5f5f5; border-radius: 1rem;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0" style=" background-color: #f5f5f5; height:194px;">
+                    <div class="card-body" style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
@@ -110,17 +72,12 @@
 
 
             <!-- Card 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
-                    {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(155, 229, 240);"> --}}
-                    {{-- <div class="card-body" style="margin-bottom: 1.5rem; background-color: rgb(155, 229, 240); border-radius: 1rem;"> --}}
-                    <div class="card-body"
-                        style="margin-bottom: 2.5rem; background-color: #f5f5f5;; border-radius: 1rem;">
-                        <div style="display: flex; align-items: center;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
+                    <div class="card-body" style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2.7rem;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
-                                {{-- <i class="fas fa-exclamation-circle text-danger fa-fw mb-md-0 mr-3"
-                                        style="font-size: 4rem;"></i> --}}
                                 <img src="{{ asset('uploads/IconeSCMS/danger.png') }}"
                                     style=" height: 60px; width: 100%; margin-top: 2rem; " alt="Logo"
                                     class="brand-image">
@@ -146,17 +103,15 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="col-md-4 mb-4">
-                {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(215, 227, 89);"> --}}
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
-                    {{-- <div class="card-body" style="margin-bottom: 3.5rem; background-color: rgb(215, 227, 89); border-radius: 1rem;"> --}}
-                    <div class="card-body"
-                        style="margin-bottom: 1.8rem; background-color: #f5f5f5;; border-radius: 1rem;">
-                        <div style="display: flex; align-items: center;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+
+                <div class="card border-0" style=" background-color: #f5f5f5;;">
+
+                    <div class="card-body" style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;; ">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
-                                {{-- <i class="fas fa-calendar-alt text-primary fa-fw mb-md-0 mr-3"
-                                        style="font-size: 4rem;"></i> --}}
+
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
                                     style=" height: 50px; width: 80%; margin-top: 4rem; " alt="Logo"
                                     class="brand-image">
@@ -179,16 +134,14 @@
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body"
-                        style="margin-bottom: 1.5rem; background-color: #f5f5f5; border-radius: 1rem;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
+                    <div class="card-body" style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}"
-                                    style="height: 50px; width: 100%; " alt="Logo"
-                                    class="brand-image">
+                                    style="height: 50px; width: 100%; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -197,27 +150,27 @@
                                 </h5>
                                 <!-- Links -->
                                 <div style="font-size: 15px;">
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.running') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right:7rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_high_court_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">নিষ্পত্তিকৃত মামলা</a>
+                                            style="color: black; flex: 1;">নিষ্পত্তিকৃত মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($final_high_court_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtNotAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-পক্ষে</a>
+                                            style="color: black; flex: 1; ">সরকারের-পক্ষে</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($highcourt_not_against_gov) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-বিপক্ষে</a>
+                                            style="color: black; flex: 1;">সরকারের-বিপক্ষে</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($highcourt_against_gov) }}</span>
                                     </div>
@@ -231,16 +184,14 @@
 
 
             <!-- Card 6 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body"
-                        style="margin-bottom: 1.5rem; background-color: #f5f5f5; border-radius: 1rem;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
+                    <div class="card-body" style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/law.png') }}"
-                                    style="height: 50px; width: 100%;" alt="Logo"
-                                    class="brand-image">
+                                    style="height: 50px; width: 100%;" alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -249,27 +200,27 @@
                                 </h5>
                                 <!-- Links -->
                                 <div style="font-size: 15px;">
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.running') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right:7rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_appeal_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">নিষ্পত্তিকৃত মামলা</a>
+                                            style="color: black; flex: 1; ">নিষ্পত্তিকৃত মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($final_appeal_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.notAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-পক্ষে</a>
+                                            style="color: black; flex: 1; ">সরকারের-পক্ষে</a>
                                         <span class="count-numbers" style="color: black;">
                                             {{ en2bn($appeal_not_against_gov) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.againstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-বিপক্ষে</a>
+                                            style="color: black; flex: 1; ">সরকারের-বিপক্ষে</a>
                                         <span class="count-numbers" style="color: black;">
                                             {{ en2bn($appeal_against_gov) }}</span>
                                     </div>
@@ -281,20 +232,17 @@
             </div>
 
 
-            <div class="col-md-4 mb-4">
-                {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(215, 227, 89);"> --}}
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
-                    {{-- <div class="card-body" style="margin-bottom: 3.5rem; background-color: rgb(215, 227, 89); border-radius: 1rem;"> --}}
-                    <div class="card-body"
-                        style="margin-bottom: 1.5rem; background-color: #f5f5f5;  border-radius: 1rem;">
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+
+                <div class="card border-0" style=" background-color: #f5f5f5;;">
+
+                    <div class="card-body" style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
-                                {{-- <i class="fas fa-calendar-alt text-primary fa-fw mb-md-0 mr-3"
-                                        style="font-size: 4rem;"></i> --}}
+
                                 <img src="{{ asset('uploads/IconeSCMS/1320101.webp') }}"
-                                    style=" height: 50px; width: 80%; " alt="Logo"
-                                    class="brand-image">
+                                    style=" height: 50px; width: 80%; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>

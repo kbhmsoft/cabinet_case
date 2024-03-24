@@ -65,10 +65,10 @@
             </div> --}}
 
             <!-- Card 2 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                <div class="card border-0" style=" background-color: #f5f5f5;">
+            <div class="col-md-4 mb-4">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
                     <div class="card-body"
-                        style=" background-color: #f5f5f5;border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; ">
+                        style="margin-bottom: 1.2rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
@@ -110,14 +110,17 @@
 
 
             <!-- Card 3 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                <div class="card border-0" style=" background-color: #f5f5f5;;">
-            
+            <div class="col-md-4 mb-4">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
+                    {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(155, 229, 240);"> --}}
+                    {{-- <div class="card-body" style="margin-bottom: 1.5rem; background-color: rgb(155, 229, 240); border-radius: 1rem;"> --}}
                     <div class="card-body"
-                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
-                        <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        style="margin-bottom: 2.5rem; background-color: #f5f5f5;; border-radius: 1rem;">
+                        <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
+                                {{-- <i class="fas fa-exclamation-circle text-danger fa-fw mb-md-0 mr-3"
+                                        style="font-size: 4rem;"></i> --}}
                                 <img src="{{ asset('uploads/IconeSCMS/danger.png') }}"
                                     style=" height: 60px; width: 100%; margin-top: 2rem; " alt="Logo"
                                     class="brand-image">
@@ -143,18 +146,19 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                
-                <div class="card border-0" style=" background-color: #f5f5f5; ">
-                   
+            <div class="col-md-4 mb-4">
+                {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(215, 227, 89);"> --}}
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
+                    {{-- <div class="card-body" style="margin-bottom: 3.5rem; background-color: rgb(215, 227, 89); border-radius: 1rem;"> --}}
                     <div class="card-body"
-                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        style="margin-bottom: 1.8rem; background-color: #f5f5f5;; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
-                            <div style="font-size: 3rem; margin-right: 2rem; margin-bottom: 1.7rem;">
-                                
+                            <div style="font-size: 3rem; margin-right: 2rem;">
+                                {{-- <i class="fas fa-calendar-alt text-primary fa-fw mb-md-0 mr-3"
+                                        style="font-size: 4rem;"></i> --}}
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
-                                    style=" height: 50px; width: 80%; margin-top: 3rem; " alt="Logo"
+                                    style=" height: 50px; width: 80%; margin-top: 4rem; " alt="Logo"
                                     class="brand-image">
                             </div>
                             <!-- Content -->
@@ -175,10 +179,10 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                <div class="card border-0" style=" background-color: #f5f5f5;">
+            <div class="col-md-4 mb-4">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
                     <div class="card-body"
-                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        style="margin-bottom: 1.5rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
@@ -188,30 +192,30 @@
                             </div>
                             <!-- Content -->
                             <div>
-                                <h5 class="font-weight-bolder" style="color:rgb(3, 62, 164); ">
+                                <h5 class="font-weight-bolder" style="color:rgb(3, 62, 164);">
                                     হাইকোর্ট বিভাগ
                                 </h5>
                                 <!-- Links -->
                                 <div style="font-size: 15px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; ">
+                                    <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.running') }}"
-                                            style="color: black; flex: 1; margin-right:90px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_high_court_case) }}</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}"
                                             style="color: black; flex: 1; margin-right:30px;">নিষ্পত্তিকৃত মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($final_high_court_case) }}</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtNotAgainstGov') }}"
                                             style="color: black; flex: 1; margin-right:30px;">সরকারের-পক্ষে</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($highcourt_not_against_gov) }}</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtAgainstGov') }}"
                                             style="color: black; flex: 1; margin-right:30px;">সরকারের-বিপক্ষে</a>
                                         <span class="count-numbers"
@@ -227,10 +231,10 @@
 
 
             <!-- Card 6 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                <div class="card border-0" style=" background-color: #f5f5f5;">
+            <div class="col-md-4 mb-4">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
                     <div class="card-body"
-                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        style="margin-bottom: 1.5rem; background-color: #f5f5f5; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
@@ -247,7 +251,7 @@
                                 <div style="font-size: 15px;">
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.running') }}"
-                                            style="color: black; flex: 1; margin-right:90px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_appeal_case) }}</span>
                                     </div>
@@ -277,12 +281,12 @@
             </div>
 
 
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-md-4 mb-4">
                 {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(215, 227, 89);"> --}}
-                <div class="card border-0" style=" background-color: #f5f5f5; ">
+                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
                     {{-- <div class="card-body" style="margin-bottom: 3.5rem; background-color: rgb(215, 227, 89); border-radius: 1rem;"> --}}
                     <div class="card-body"
-                        style=" background-color: #f5f5f5;  border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        style="margin-bottom: 1.5rem; background-color: #f5f5f5;  border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">

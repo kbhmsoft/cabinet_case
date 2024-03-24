@@ -345,16 +345,36 @@ class AppealGovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
+        $childOfficeIds = [];
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
+
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
-        // return $query;
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->where('appeal_office_id', $officeID);
+            $query->whereIn('appeal_office_id', $finalOfficeIds);
         }
 
         if ($roleID == 29 || $roleID == 31) {
+            $query->whereIn('appeal_office_id', $officeID);
+        }
+
+        if ($roleID == 44) {
             $query->where('appeal_office_id', $officeID);
         }
 
@@ -433,6 +453,10 @@ class AppealGovCaseRegisterController extends Controller
 
         if ($roleID == 29 || $roleID == 31) {
             $query->whereIn('appeal_office_id', $finalOfficeIds);
+        }
+
+        if ($roleID == 44) {
+            $query->where('appeal_office_id', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
@@ -2923,6 +2947,10 @@ class AppealGovCaseRegisterController extends Controller
             $query->whereIn('appeal_office_id', $finalOfficeIds);
         }
 
+        if ($roleID == 44) {
+            $query->where('appeal_office_id', $officeID);
+        }
+
         if (!empty($_GET['case_category_type'])) {
             $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
@@ -2997,6 +3025,10 @@ class AppealGovCaseRegisterController extends Controller
 
         if ($roleID == 29 || $roleID == 31) {
             $query->whereIn('appeal_office_id', $finalOfficeIds);
+        }
+
+        if ($roleID == 44) {
+            $query->where('appeal_office_id', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {

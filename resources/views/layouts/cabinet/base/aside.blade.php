@@ -1,6 +1,6 @@
 <style>
 
-    
+
 </style>
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
@@ -410,7 +410,7 @@
                                 </ul>
                             @endcan
 
-
+                            @can('all_permission_menu')
                             <ul class="menu-subnav">
                                 <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions']) ? 'hilightMenu' : '' }}"
                                     aria-haspopup="true">
@@ -420,6 +420,8 @@
                                     </a>
                                 </li>
                             </ul>
+                            @endcan
+
 
                             @can('manage_permission_menu')
                                 <ul class="menu-subnav">
