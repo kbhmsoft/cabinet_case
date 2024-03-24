@@ -16,6 +16,7 @@ use App\Models\LeaveToAppealAttachment;
 use App\Models\ReplyAttachment;
 use App\Models\SuspensionAttachment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class AttachmentRepository
@@ -195,14 +196,23 @@ class AttachmentRepository
     }
     public static function storeLeaveToAppealAttachment($appName, $caseId, $request)
     {
+        Log::debug(print_r($request->leave_to_appeal_file_type, true));
         if ($request->leave_to_appeal_file_name != null) {
             foreach ($request->leave_to_appeal_file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/leave_to_appeal_attachment/";
                 if ($request->leave_to_appeal_file_name[$key] != null) {
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->extension();
-                    $request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName);
+
+                    if ($request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName)) {
+                        Log::debug("File moved successfully");
+                    } else {
+                        Log::debug("Failed to move file");
+                    }
+
                 }
+
                 $attachment = new LeaveToAppealAttachment();
+                Log::debug(print_r($caseId, true));
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->leave_to_appeal_file_type[$key];
                 $attachment->file_name = $filePath . $otherfileName;

@@ -422,7 +422,6 @@
                             </ul>
                             @endcan
 
-
                             @can('manage_permission_menu')
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-role-management']) ? 'hilightMenu' : '' }}"
@@ -599,40 +598,40 @@
                     </li>
 
                 @endcan
+
                 @can('message_menu')
                     <li class="menu-item {{ request()->is('cabinet/notice/list', 'cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent', 'cabinet/messages_request') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-envelope" aria-hidden="true"></i>
                                 বার্তা</span>
-                            @if ($Ncount != 0)
+                            {{-- @if ($Ncount != 0)
                                 <span class="menu-label">
                                     <span class="label label-rounded label-danger">{{ $Ncount }}</span>
                                 </span>
-                            @endif
+                            @endif --}}
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             <ul class="menu-subnav">
-
                                 @can('recent_messages')
                                     <li class="menu-item {{ request()->is('cabinet/messages_recent') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.messages_recent') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">সাম্প্রতিক বার্তা</span>
-                                            @if ($NewMessagesCount != 0)
+                                            {{-- @if ($NewMessagesCount != 0)
                                                 <span class="menu-label">
                                                     <span
                                                         class="label label-rounded label-danger">{{ $NewMessagesCount }}</span>
                                                 </span>
-                                            @endif
+                                            @endif --}}
                                         </a>
                                     </li>
                                 @endcan
 
-                                @if ($msg_request_count != 0)
+                                {{-- @if ($msg_request_count != 0)
                                     <li class="menu-item {{ request()->is('cabinet/messages_request') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.messages_request') }}" class="menu-link">
@@ -644,7 +643,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                @endif
+                                @endif --}}
 
                                 @can('notice_menu')
                                     <li class="menu-item {{ request()->is('cabinet/notice/list') ? 'hilightMenu' : '' }}"
