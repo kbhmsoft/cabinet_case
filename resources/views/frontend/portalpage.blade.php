@@ -111,6 +111,7 @@
         <div class="right-section">
             <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
                 <p>নোটিশ বোর্ড ________________________________</p>
+                <p>মুক্ত সংস্থার সময়: {{ date('d-M-Y h:i:s A') }}</p>
             </div>
         </div>
 

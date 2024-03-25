@@ -297,8 +297,7 @@
                                 @can('important_case')
                                     <li class="menu-item {{ request()->is(['cabinet/case/highcourt-appeal/importgantCaseList']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourtAppealImportantCase') }}"
-                                            class="menu-link">
+                                        <a href="{{ route('cabinet.case.highcourtAppealImportantCase') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">গুরুত্বপূর্ণ মামলার
                                                 তালিকা</span>
@@ -376,7 +375,7 @@
                 @endcan
 
                 @can('manage_users_menu')
-                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management','cabinet/e-nothi-assigned-user-list']) ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management', 'cabinet/e-nothi-assigned-user-list']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী
@@ -411,15 +410,15 @@
                             @endcan
 
                             @can('all_permission_menu')
-                            <ul class="menu-subnav">
-                                <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions']) ? 'hilightMenu' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">সকল অনুমতি</span>
-                                    </a>
-                                </li>
-                            </ul>
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-permissions']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.permissionManagement') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল অনুমতি</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             @endcan
 
                             @can('manage_permission_menu')
@@ -436,17 +435,17 @@
 
 
                             @can('e_nothi_user_list_menu')
-                            <ul class="menu-subnav">
-                                <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/e-nothi-assigned-user-list']) ? 'hilightMenu' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.assignedENothiUserManagement') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">অনুমোদিত
-                                            ই-নথি ব্যাবহারকারী</span>
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/e-nothi-assigned-user-list']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.assignedENothiUserManagement') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">অনুমোদিত
+                                                ই-নথি ব্যাবহারকারী</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
                             @endcan
 
 
@@ -584,7 +583,9 @@
                                         <a href="" class="menu-link">
                                             <i class="far fa-bell text-dark p-5"></i>
                                             <span class="font-size-h6-sm text-dark">
-                                                <b>{{ $row->case_no }} </b>নং মামলাটি আপনার দপ্তরের পরিবর্তে<b> {{ $row->officeName->office_name_bn }} </b> নামে মূল বিবাদী হিসেবে এন্ট্রি করা হয়েছে।
+                                                <b>{{ $row->case_no }} </b>নং মামলাটি আপনার দপ্তরের পরিবর্তে<b>
+                                                    {{ $row->officeName->office_name_bn }} </b> নামে মূল বিবাদী হিসেবে
+                                                এন্ট্রি করা হয়েছে।
                                                 আপনার আপত্তি/বক্তব্য থাকলে সুপার অ্যাডমিন এর কাছে অনুরোধ করুন।
                                             </span>
                                         </a>
@@ -669,7 +670,11 @@
                     </li>
                 @endcan
                 @php
-                    $supremeCourtCaseCout = DB::select(DB::raw("SELECT count(id) as total_hearing FROM gov_case_notify_supre_court WHERE date = '27/02/2023'"))[0]->total_hearing;
+                    $supremeCourtCaseCout = DB::select(
+                        DB::raw(
+                            "SELECT count(id) as total_hearing FROM gov_case_notify_supre_court WHERE date = '27/02/2023'",
+                        ),
+                    )[0]->total_hearing;
                 @endphp
                 @can('verify_case_information_menu')
                     <li class="menu-item {{ request()->is('search/supremecourt/case', 'search/supremecourt/causelist', 'show/notification/supremecourt') ? 'menu-item-open' : '' }}"
@@ -794,6 +799,17 @@
                         </div>
                     </li>
                 @endcan
+
+                <ul class="menu-nav">
+                    <li class="menu-item has-treeview " aria-haspopup="true" data-menu-toggle="hover">
+                        <a href=
+                        "{{ route('notices.index') }}"     
+                        class="nav-link {{ ('notices') }}">
+                        <i class="fa-solid fa-triangle-exclamation text-dark"></i>
+                        <span class="menu-text font-weight-bolder" style="font-size:18px;"><i class="fas fa-solid fa-file"></i> নোটিশ পরিচালনা</span>
+                        </a>
+                    </li>
+                </ul>
 
             </ul> <!--end::Menu Nav-->
         </div> <!--end::Menu Container-->

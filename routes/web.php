@@ -18,6 +18,7 @@ use App\Http\Controllers\MyprofileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
 use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\NoticeController;
 
 
 
@@ -72,6 +73,8 @@ Route::get('/', [DashboardController::class, 'logincheck']);
 Route::get('public_home', [FrontHomeController::class, 'public_home']);
 Route::get('hearing-case-list', [FrontHomeController::class, 'dateWaysCase'])->name('dateWaysCase');
 Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'])->name('dateWaysRMCase');
+
+Route::resource('notices', NoticeController::class);
 
 Route::middleware('auth')->group(function () {
     // setting
