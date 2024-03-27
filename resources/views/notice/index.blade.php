@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                         <th>বিষয়</th>
-                        <th>PDF ফাইল</th>
+                        <th> (পিডিএফ) ফাইল</th>
                         <th>তারিখ</th>
                         <th>স্ট্যাটাস</th>
                         <th class="text-center">প্রক্রিয়া</th>
@@ -60,12 +60,14 @@
 
                             <td class="text-center d-flex justify-content-center align-items-center">
                                 <a href="{{ route('notices.edit', $item) }}" class="btn btn-primary btn-sm"><i
-                                        class="fas fa-edit"></i>
-                                </a>
-                                <button class="btn btn-danger btn-sm btn-delete ml-1"
-                                    data-url="{{ route('notices.destroy', $item) }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                        class="fas fa-edit"></i></a>
+
+                                <form action="{{ route('notices.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm ml-2 btn-delete"><i
+                                            class="fas fa-trash"></i></button>
+                                </form> 
                             </td>
 
                         </tr>
@@ -109,24 +111,17 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.value) {
-                        $.ajax({
-                            url: $this.data('url'),
-                            type: 'DELETE', // Change POST to DELETE
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(res) {
-                                $this.closest('tr').fadeOut(500, function() {
-                                    $(this).remove();
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(xhr.responseText);
-                            }
-                        });
+                        $.post($this.data('url'), {
+                            _method: 'DELETE',
+                            _token: '{{ csrf_token() }}'
+                        }, function(res) {
+                            $this.closest('tr').fadeOut(500, function() {
+                                $(this).remove();
+                            })
+                        })
                     }
                 });
-            });
-        });
+            })
+        })
     </script>
 @endsection

@@ -1,5 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 
+@section('title', 'নোটিশ তৈরি করুন')
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet"

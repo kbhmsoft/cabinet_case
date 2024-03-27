@@ -44,7 +44,7 @@
                         <label class="custom-file-label" for="notice_pdf">ফাইল নির্বাচন করুন</label>
                     </div>
                     @error('notice_pdf')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">    
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror

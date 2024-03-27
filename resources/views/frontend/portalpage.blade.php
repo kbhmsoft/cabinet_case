@@ -12,10 +12,19 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Include Kalpurush font CSS -->
-    <link rel="stylesheet" href="path/to/kalpurush-font.css">
+    {{-- <link rel="stylesheet" href="path/to/kalpurush-font.css"> --}}
     <style>
-        body {
+        /* body {
             font-family: 'Kalpurush', sans-serif;
+            padding-top: 70px;
+        } */
+        @font-face {
+            font-family: 'Nikosh';
+            /* src: url('path/to/Nikosh.ttf'); */
+        }
+
+        body {
+            font-family: 'Nikosh', sans-serif;
             padding-top: 70px;
         }
 
@@ -105,20 +114,40 @@
         </div> --}}
         <div class="right-section">
             <div class="card shadow p-3 border-dark rounded" style="width: 200px; height: 200px;">
-              <p>উচ্চ আদালতে সরকারি স্বার্থ চলমান সংশ্লিষ্ট মামলার তথ্য সংরক্ষণ ও সরকার-পক্ষে পরিচালনা কার্যক্রমের ভিত্তিক ব্যবস্থাপনা মামলা সম্পর্কিত অনলাইন-</p>
+                <p style="font-size: 20px">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
+                    ব্যবস্থাপনা সিস্টেম’ টেক্সট
+                    থাকবে</p>
             </div>
         </div>
         <div class="right-section">
             <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
                 <p>নোটিশ বোর্ড ________________________________</p>
                 <p>মুক্ত সংস্থার সময়: {{ date('d-M-Y h:i:s A') }}</p>
+
+                @if (isset($data['title']) && isset($data['notice_pdf']))
+                    <p>শিরোনাম: {{ $data['title'] }}</p>
+                    <p><a href="{{ $data['notice_pdf'] }}" target="_blank">পিডিএফ দেখুন</a></p>
+                @endif
             </div>
         </div>
+
+        {{-- <div class="right-section">
+            <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
+                <h5>{{ $notice->title }}</h5>
+                @if ($notice->notice_pdf)
+                    <embed src="{{ Storage::url($notice->notice_pdf) }}" type="application/pdf" width="100%" height="100%">
+                @else
+                    <p>No PDF available</p>
+                @endif
+            </div>
+        </div> --}}
+
 
 
         <div class="right-section">
             <div class="card shadow p-3 bg-white rounded" style="width: 300px; height: 300px; margin-top: 20px;">
-                <small class="text-muted d-block mx-auto mb-3 mt-3 ">স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</small>
+                <small class="text-muted d-block mx-auto mb-3 mt-3" style="font-size: 20px">স্মার্ট কেস ম্যানেজমেন্ট
+                    সিস্টেম</small>
                 <a href="{{ route('doptor.login') }}" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
                 <a href="{{ route('sso.login') }}" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a>
             </div>
@@ -136,9 +165,10 @@
                                 <h3 style="float: left;">পরিকল্পনা ও বাস্তবায়নে</h3>
                             </div>
                             <a href="https://minland.gov.bd/" target="_blank">
-                              <img style="width: 100px; height: 50px; float: middle; margin-right: 28px;" src="images/logo1.png" alt="">
-                          </a>
-                          
+                                <img style="width: 100px; height: 50px; float: middle; margin-right: 28px;"
+                                    src="images/logo1.png" alt="">
+                            </a>
+
                         </div>
                     </div>
 

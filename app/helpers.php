@@ -29,7 +29,7 @@ if (!function_exists('userInfo')) {
         return $user;
 	}
 }
-
+	
 if (!function_exists('user_division')) {
 	function user_division() {
 		$user = Auth::user();

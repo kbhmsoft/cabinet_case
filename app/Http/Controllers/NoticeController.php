@@ -126,6 +126,8 @@ class NoticeController extends Controller
     }
 
 
+
+
     // Show the form for editing the specified resource.
 
     public function edit(Notice $notice)
@@ -139,28 +141,34 @@ class NoticeController extends Controller
 
     public function update(UpdateNoticeRequest $request, Notice $notice)
     {
-        $data = $notice;
+        // Retrieve the current PDF path
+        $currentPdfPath = $notice->notice_pdf;
 
-        if ($request->hasFile('notice_pdf_path')) {
+        if ($request->hasFile('notice_pdf')) {
             // Remove the old file first
-            Storage::delete($data->notice_pdf_path);
+            Storage::delete($currentPdfPath);
 
             // Upload and store the new PDF
-            $data->notice_pdf_path = $request->file('notice_pdf_path')->store('pdfs', 'public');
+            $newPdfPath = $request->file('notice_pdf')->store('notice', 'public');
+        } else {
+            // Keep the current PDF path if no new file is uploaded
+            $newPdfPath = $currentPdfPath;
         }
 
-        $update = $data->update([
+        // Update the notice attributes
+        $notice->update([
             'title' => $request->title,
-            'notice_pdf' => $data->notice_pdf_path,
+            'notice_pdf' => $newPdfPath,
             'date' => $request->date,
             'status' => $request->status,
         ]);
 
-        if (!$update) {
-            return redirect()->back()->with('error', 'দুঃখিত, বিজ্ঞপ্তি আপডেট করার সময় একটি সমস্যা হয়েছেॷ');
+        // Check if the update was successful
+        if ($notice->wasChanged()) {
+            return redirect()->route('notices.index')->with('success', 'সফলভাবে, আপনার বিজ্ঞপ্তি আপডেট করা হয়েছে।');
+        } else {
+            return redirect()->back()->with('error', 'দুঃখিত, বিজ্ঞপ্তি আপডেট করার সময় একটি সমস্যা হয়েছে।');
         }
-
-        return redirect()->route('notices.index')->with('success', 'সফলভাবে, আপনার বিজ্ঞপ্তি আপডেট করা হয়েছে।');
     }
 
 
@@ -169,14 +177,11 @@ class NoticeController extends Controller
     // Remove the specified resource from storage.
 
     // Remove the specified resource from storage.
-    public function destroy(Notice $notice)
+    public function destroy($id)
     {
-        $notice->delete();
+        $resource = Notice::findOrFail($id);
+        $resource->delete();
 
-        if (request()->wantsJson()) {
-            return response()->json(['success' => true]);
-        } else {
-            return redirect()->route('notices.index')->with('success', 'সফলভাবে, বিজ্ঞপ্তি মুছে ফেলা হয়েছে।');
-        }
+        return redirect()->route('notices.index')->with('সাফল্য', 'বিজ্ঞপ্তি সফলভাবে মুছে ফেলা হয়েছে');
     }
 }
