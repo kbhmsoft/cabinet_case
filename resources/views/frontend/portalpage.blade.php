@@ -11,16 +11,11 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Include Kalpurush font CSS -->
-    {{-- <link rel="stylesheet" href="path/to/kalpurush-font.css"> --}}
+
     <style>
-        /* body {
-            font-family: 'Kalpurush', sans-serif;
-            padding-top: 70px;
-        } */
+
         @font-face {
             font-family: 'Nikosh';
-            /* src: url('path/to/Nikosh.ttf'); */
         }
 
         body {
@@ -107,42 +102,38 @@
 
 
     <div class="main-section">
-        {{-- <div class="left-section m-5">
-            <!-- Add your image, title, and content here -->
-            <img src="images/book.png" alt="Your Image" class="img-fluid" width="300">
-            <h2 class="m-3">স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</h2>
-        </div> --}}
         <div class="right-section">
             <div class="card shadow p-3 border-dark rounded" style="width: 200px; height: 200px;">
                 <p style="font-size: 20px">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
-                    ব্যবস্থাপনা সিস্টেম’ টেক্সট
-                    থাকবে</p>
+                    ব্যবস্থাপনা সিস্টেম</p>
             </div>
         </div>
+
+        <!-- Inside the "নোটিশ বোর্ড" div -->
         <div class="right-section">
-            <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
-                <p>নোটিশ বোর্ড ________________________________</p>
-                <p>মুক্ত সংস্থার সময়: {{ date('d-M-Y h:i:s A') }}</p>
-
-                @if (isset($data['title']) && isset($data['notice_pdf']))
-                    <p>শিরোনাম: {{ $data['title'] }}</p>
-                    <p><a href="{{ $data['notice_pdf'] }}" target="_blank">পিডিএফ দেখুন</a></p>
+            <div class="card shadow p-3 rounded border-dark"
+                style="width: 400px; height: auto; background-color: #F3F3F3">
+                <img src="{{ asset('uploads/IconeSCMS/bg_notice_board.png') }}" alt="Image"
+                    style="position: absolute; top: 0; left: 0; width: 52px; height: 54px; z-index: 1;">
+                <?php
+                $latestNotices = \App\Models\Notice::latest()->take(5)->get();
+                ?>
+                @if ($latestNotices->isNotEmpty())
+                    <h5 class="font-weight-bolder" style="margin-left: 3rem">নোটিশ বোর্ড </h5>
+                    <ul style="list-style-type: none; padding-left: 0; margin-top: 10px">
+                        @foreach ($latestNotices as $key => $notice)
+                            <li style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <span style="color: green;">&#9658;</span>
+                                <a href="{{ Storage::url($notice->notice_pdf) }}" target="_blank"
+                                    style="text-decoration: none;">{{ $notice->title }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>No notices available</p>
                 @endif
             </div>
         </div>
-
-        {{-- <div class="right-section">
-            <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
-                <h5>{{ $notice->title }}</h5>
-                @if ($notice->notice_pdf)
-                    <embed src="{{ Storage::url($notice->notice_pdf) }}" type="application/pdf" width="100%" height="100%">
-                @else
-                    <p>No PDF available</p>
-                @endif
-            </div>
-        </div> --}}
-
-
 
         <div class="right-section">
             <div class="card shadow p-3 bg-white rounded" style="width: 300px; height: 300px; margin-top: 20px;">

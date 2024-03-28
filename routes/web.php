@@ -74,7 +74,8 @@ Route::get('public_home', [FrontHomeController::class, 'public_home']);
 Route::get('hearing-case-list', [FrontHomeController::class, 'dateWaysCase'])->name('dateWaysCase');
 Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'])->name('dateWaysRMCase');
 
-Route::resource('notices', NoticeController::class); //notice পরিচালনা করুন
+//**------notice-----------**//
+Route::resource('notices', NoticeController::class);
 Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.destroy');
 
 

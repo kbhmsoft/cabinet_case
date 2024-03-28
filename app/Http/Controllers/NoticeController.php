@@ -46,9 +46,12 @@ class NoticeController extends Controller
         $data = Notice::latest()->paginate(10);
         $rank = $data->firstItem();
 
+        $notice = Notice::latest()->first();
+        $latestNotice = Notice::latest()->first();
 
-        return view('notice.index', compact('data', 'rank'));
+        return view('notice.index', compact('data', 'rank', 'notice', 'latestNotice'));
     }
+
 
 
 
@@ -157,10 +160,10 @@ class NoticeController extends Controller
 
         // Update the notice attributes
         $notice->update([
-            'title' => $request->title,
-            'notice_pdf' => $newPdfPath,
-            'date' => $request->date,
-            'status' => $request->status,
+            'title'         => $request->title,
+            'notice_pdf'    => $newPdfPath,
+            'date'          => $request->date,
+            'status'        => $request->status,
         ]);
 
         // Check if the update was successful

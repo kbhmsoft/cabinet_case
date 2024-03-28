@@ -802,11 +802,10 @@
 
                 <ul class="menu-nav">
                     <li class="menu-item has-treeview " aria-haspopup="true" data-menu-toggle="hover">
-                        <a href=
-                        "{{ route('notices.index') }}"     
-                        class="nav-link {{ ('notices') }}">
-                        <i class="fa-solid fa-triangle-exclamation text-dark"></i>
-                        <span class="menu-text font-weight-bolder" style="font-size:18px;"><i class="fas fa-solid fa-file"></i> নোটিশ পরিচালনা</span>
+                        <a href="{{ route('notices.index') }}"class="nav-link {{ 'notices' }}">
+                            <i class="fa-solid fa-triangle-exclamation text-dark"></i>
+                            <span class="menu-text font-weight-bolder" style="font-size:18px;"><i
+                                    class="fas fa-solid fa-file"></i> নোটিশ পরিচালনা</span>
                         </a>
                     </li>
                 </ul>
