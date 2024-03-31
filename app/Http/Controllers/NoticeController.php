@@ -47,7 +47,7 @@ class NoticeController extends Controller
         $rank = $data->firstItem();
 
         $notice = Notice::latest()->first();
-        $latestNotice = Notice::latest()->first();
+        $latestNotice = Notice::latest()->first(); //notice with latest date 
 
         return view('notice.index', compact('data', 'rank', 'notice', 'latestNotice'));
     }
@@ -104,31 +104,12 @@ class NoticeController extends Controller
 
     // Display the specified resource.
 
-    public function show(Notice $notice)
+    public function show($id)
     {
-        if (request()->wantsJson()) {
+        $notices = Notice::latest()->paginate(10);  
 
-            if ($notice) {
-                return response([
-                    'status' => true,
-                    'message' => 'তথ্য সফলভাবে দেখায়।',
-                    'code' => 200,
-                    'data' => ['data' => $notice, 'related_more' => Notice::latest()->limit(10)->get()],
-
-                ], 200);
-            } else {
-                return response([
-                    'status' => false,
-                    'message' => 'তথ্য পাওয়া যায়নি',
-                    'code' => 404,
-                    'data' => null,
-
-                ], 404);
-            }
-        }
+        return view('notice.show', compact('notices'));
     }
-
-
 
 
     // Show the form for editing the specified resource.

@@ -77,6 +77,7 @@ Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'
 //**------notice-----------**//
 Route::resource('notices', NoticeController::class);
 Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.destroy');
+Route::get('notices/view', [NoticeController::class, 'show'])->name('notices.show');
 
 
 Route::middleware('auth')->group(function () {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</title>
     <!-- Bootstrap stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-
         @font-face {
             font-family: 'Nikosh';
         }
@@ -67,16 +66,47 @@
             text-decoration: none;
         }
 
+        /* .all-button {
+            background-color: #898989;
+            color: #fff;
+            border: solid;
+            border-radius: 5px;
+            padding: 1px 10px;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+        } */
+        .all-button {
+            background-color: #898989;
+            color: #fff;
+            border: solid;
+            border-radius: 2px;
+            border-color: transparent;
+            padding: 1px 10px;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .all-button:hover {
+            background-color: #898989;
+            color: #000000;
+            text-decoration: none;
+
+        }
 
         @media (max-width: 768px) {
             .main-section {
                 flex-direction: column;
             }
 
-            .left-section,
             .right-section {
                 flex: 1;
                 padding: 0;
+            }
+
+            .card {
+                width: 100%;
             }
         }
     </style>
@@ -132,7 +162,10 @@
                 @else
                     <p>No notices available</p>
                 @endif
+                <a href="{{ route('notices.show', $notice->id) }}" class="all-button"
+                    style="position: absolute; bottom: 10px; right: 10px;"> সকল</i> </a>
             </div>
+
         </div>
 
         <div class="right-section">
