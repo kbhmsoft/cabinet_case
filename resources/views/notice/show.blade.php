@@ -5,7 +5,6 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
     <style>
-        
         @media (max-width: 767px) {
             .content-header h1 {
                 text-align: center;
@@ -46,7 +45,7 @@
                                     <th style="border-color: #000000; font-size: 1.2rem;">ক্রমিক</th>
                                     <th class="text-center" style="border-color: #000000; font-size: 1.2rem;">শিরোনাম</th>
                                     <th style="border-color: #000000; font-size: 1.2rem;">প্রকাশের তারিখ</th>
-                                    <th style="border-color: #000000; font-size: 1.2rem;">পিডিএফ</th>
+                                    <th style="border-color: #000000; font-size: 1.2rem; text-align: center">পিডিএফ</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,17 +62,18 @@
                                 @endphp
                                 @foreach ($notices as $index => $notice)
                                     <tr>
-                                        <td style="border-color: #D8D8D8; font-size: 1rem; text-align: center">{{ toBangla($index + 1) }}</td>
+                                        <td style="border-color: #D8D8D8; font-size: 1rem; text-align: center">
+                                            {{ toBangla($index + 1) }}</td>
+
                                         <td style="border-color: #D8D8D8; font-size: 1.1rem">{{ $notice->title }}</td>
+
                                         <td style="border-color: #D8D8D8; font-size: 1.1rem">
                                             {{ convertToBanglaDate($notice->date) }}</td>
-                                        {{-- <td style="border-color: black;"><a href="{{ Storage::url($notice->notice_pdf) }}"
-                                                target="_blank">পিডিএফ দেখুন</a></td> --}}
+
                                         <td style="border-color: #D8D8D8;"><a href="{{ Storage::url($notice->notice_pdf) }}"
-                                                target="_blank">
-                                                <img src="{{ asset('uploads/IconeSCMS/pdf.png') }}" alt="পিডিএফ দেখুন" width="width"
-                                                    height="height" class="d-inline-block align-text-top p-0 m-0 ml-4">
-                                            </a></td>
+                                                target="_blank"><img src="{{ asset('uploads/IconeSCMS/pdf.png') }}"
+                                                    alt="পিডিএফ দেখুন" width="width" height="height"
+                                                    class="d-inline-block align-text-top p-0 m-0 ml-4"></a></td>
 
                                     </tr>
                                 @endforeach
