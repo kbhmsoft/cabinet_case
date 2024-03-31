@@ -63,6 +63,9 @@
             text-decoration: none;
         }
 
+        .text-landing-page {
+            margin-top: 40px !important;
+        }
 
         @media (max-width: 768px) {
             .main-section {
@@ -105,7 +108,8 @@
         </div> --}}
         <div class="right-section">
             <div class="card shadow p-3 border-dark rounded" style="width: 200px; height: 200px;">
-              <p>উচ্চ আদালতে সরকারি স্বার্থ চলমান সংশ্লিষ্ট মামলার তথ্য সংরক্ষণ ও সরকার-পক্ষে পরিচালনা কার্যক্রমের ভিত্তিক ব্যবস্থাপনা মামলা সম্পর্কিত অনলাইন-</p>
+                <p class="text-landing-page">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
+                    ব্যবস্থাপনা সিস্টেম</p>
             </div>
         </div>
         <div class="right-section">
@@ -135,9 +139,10 @@
                                 <h3 style="float: left;">পরিকল্পনা ও বাস্তবায়নে</h3>
                             </div>
                             <a href="https://minland.gov.bd/" target="_blank">
-                              <img style="width: 100px; height: 50px; float: middle; margin-right: 28px;" src="images/logo1.png" alt="">
-                          </a>
-                          
+                                <img style="width: 100px; height: 50px; float: middle; margin-right: 28px;"
+                                    src="images/logo1.png" alt="">
+                            </a>
+
                         </div>
                     </div>
 

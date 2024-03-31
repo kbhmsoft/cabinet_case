@@ -261,7 +261,7 @@
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}"
-                                    style="height: 50px; width: 100%; " alt="Logo" class="brand-image">
+                                    style="height: 50px; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -272,7 +272,7 @@
                                 <div style="font-size: 17px; ">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.running') }}"
-                                            style="color: black; flex: 1; margin-right: 10rem;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right: 3rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_high_court_case) }}</span>
                                     </div>
@@ -310,7 +310,7 @@
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/law.png') }}"
-                                    style="height: 50px; width: 100%;" alt="Logo" class="brand-image">
+                                    style="height: 50px; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -321,7 +321,7 @@
                                 <div style="font-size: 17px;">
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.running') }}"
-                                            style="color: black; flex: 1; margin-right: 10rem;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right: 3rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_appeal_case) }}</span>
                                     </div>
@@ -356,24 +356,34 @@
             <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
-                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
-                            <div style="font-size: 3rem; margin-right: 2rem;">
+                            <div style="font-size: 1.5rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/tribunal.png') }}"
-                                    style=" height: 50px; width: 100%; " alt="Logo" class="brand-image">
+                                    style="height: 50px; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
-                                <h5 class="card-title font-weight-bolder" style="color:rgb(0, 0, 0);">
+                                <h5 class="font-weight-bolder" style="color:rgb(3, 62, 164);">
                                     প্রশাসনিক ট্রাইব্যুনাল
                                 </h5>
                                 <!-- Links -->
-                                <div style="font-size: 1.4rem;">
-                                    <a href="#" style="color:black">চলমান মামলা</a><br>
-                                    <a href="#" style="color:black">নিষ্পত্তিকৃত মামলা</a><br>
-                                    <a href="#" style="color:black">সরকার-পক্ষে</a><br>
-                                    <a href="#" style="color:black">সরকার-বিপক্ষে</a>
+                                <div style="font-size: 17px;">
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">চলমান মামলা</a>
+
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">নিষ্পত্তিকৃত মামলা</a>
+
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">সরকার-পক্ষে</a>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">সরকার-বিপক্ষে</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

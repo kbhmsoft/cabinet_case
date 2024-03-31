@@ -1000,3 +1000,48 @@
         $(id).closest("tr").remove();
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $('#sending_reply_data_details').hide();
+        $('#trackingNumberField').hide();
+        $('input[name="sending_reply_have"]').change(function() {
+            if ($(this).val() == '1') {
+
+                $('#sending_reply_data_details').show();
+            } else {
+
+                $('#sending_reply_data_details').hide();
+                $('#trackingNumberField').hide();
+                $('.sending_reply_div').hide();
+                $('#sending_reply_data_details input').val('');
+                $('.sending_reply_div input').val('');
+                $('#sending_reply_data_details input[type="checkbox"]').prop('checked', false);
+            }
+        });
+
+        $('#solicitor_checkbox').change(function() {
+            if ($(this).is(':checked')) {
+
+                $('#trackingNumberField').show();
+            } else {
+                $('#trackingNumberField').hide();
+            }
+        });
+
+        var solicitorCheckbox = document.getElementById("solicitor_checkbox");
+        var lawOfficerCheckbox = document.getElementById("law_officer_checkbox");
+        var sendingReplyDiv = document.querySelector(".sending_reply_div");
+
+        function toggleSendingReplyDiv() {
+            if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                sendingReplyDiv.style.display = "block";
+            } else {
+                sendingReplyDiv.style.display = "none";
+            }
+        }
+
+        toggleSendingReplyDiv();
+        solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+    });
+</script>

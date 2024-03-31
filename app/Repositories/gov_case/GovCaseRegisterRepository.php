@@ -2,15 +2,15 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Attachment;
-use App\Models\ReplyAttachment;
-use App\Models\SuspensionAttachment;
 use App\Models\FinalAttachment;
-use Illuminate\Support\Facades\DB;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\ReplyAttachment;
+use App\Models\Role;
+use App\Models\SuspensionAttachment;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterRepository
 {
@@ -237,7 +237,6 @@ class GovCaseRegisterRepository
             $case->result_copy_asking_date = $result_copy_asking_date;
             $case->result_copy_reciving_date = $result_copy_reciving_date;
             $case->others_action_detials = $caseInfo->others_action_detials;
-
             $case->contents_of_proposal_civil_revision = $caseInfo->contents_of_proposal_civil_revision;
             $case->sending_motions_in_view_of_that_litigation_civil_revision = $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision;
             $case->proposal_date_civil_revision = $proposal_date_civil_revision;
@@ -274,7 +273,12 @@ class GovCaseRegisterRepository
             $case->total_badi_number = $caseInfo->total_badi_number;
             $case->highcourt_adalat = $caseInfo->highcourt_adalat;
             $case->money_amount = $caseInfo->money_amount;
-    //    return $case;
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
+            $case->sending_reply_have = $caseInfo->sending_reply_have;
+            $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
+            $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
+            $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -406,7 +410,6 @@ class GovCaseRegisterRepository
             });
         }
 
-
         $case_status = $query->count();
         return $case_status;
     }
@@ -433,8 +436,8 @@ class GovCaseRegisterRepository
             $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
         }
 
-        $query = GovCaseRegister::where('deleted_at',null)->whereNull('result_sending_date');
-            if ($roleID != 27 && $roleID != 28) {
+        $query = GovCaseRegister::where('deleted_at', null)->whereNull('result_sending_date');
+        if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('mainBibadis', function ($q) use ($finalOfficeIds) {
                 $q->whereIn('respondent_id', $finalOfficeIds);
             });
@@ -446,7 +449,7 @@ class GovCaseRegisterRepository
     {
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
-        $query = GovCaseRegister::where('deleted_at',null)->whereNull('result_sending_date_solisitor_to_ag');
+        $query = GovCaseRegister::where('deleted_at', null)->whereNull('result_sending_date_solisitor_to_ag');
         if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('bibadis', function ($q) use ($office) {
                 $q->where('respondent_id', $office);
@@ -511,8 +514,6 @@ class GovCaseRegisterRepository
 
     public static function storeGeneralInfo($caseInfo)
     {
-        // // dd($caseInfo['case_id']);
-        // $case = self::checkGovCaseExist($caseInfo['case_id']);
         try {
             $case = self::checkGovCaseExist($caseInfo['case_id']);
             $case->case_no = $caseInfo->case_no;
@@ -532,6 +533,9 @@ class GovCaseRegisterRepository
             $case->total_badi_number = $caseInfo->total_badi_number;
             $case->highcourt_adalat = $caseInfo->highcourt_adalat;
             $case->money_amount = $caseInfo->money_amount;
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
+
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -575,6 +579,11 @@ class GovCaseRegisterRepository
             $case->result_sending_memorial_solisitor_to_ag = $caseInfo->result_sending_memorial_solisitor_to_ag;
             $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial;
             $case->tamil_requesting_date = $tamil_requesting_date;
+            $case->sending_reply_have = $caseInfo->sending_reply_have;
+            $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
+            $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
+            $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
+
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -661,7 +670,6 @@ class GovCaseRegisterRepository
         } else {
             $in_favour_govt = 0;
         }
-
 
         try {
             $case->is_final_order = $caseInfo->is_final_order;
@@ -782,8 +790,6 @@ class GovCaseRegisterRepository
         } else {
             $leave_to_appeal_order_date = null;
         }
-
-
 
         try {
             $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;

@@ -26,7 +26,7 @@
     }
 
     .header-content {
-        margin-top: 30px;
+        margin-top: 20px;
         margin-left: 25px;
         /* Adjust as needed */
     }
@@ -107,7 +107,7 @@
                             আপিল বিভাগে মোট মামলা:
                         </a>
                         <span class="count-numbers"
-                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }})</span>
+                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক ট্রাইব্যুনাল: ০০)</span>
                     </span>
                 </div>
                 <hr class="middle-line">
@@ -117,7 +117,7 @@
             <!-- White space -->
             <div style="width: 100%; height: 20px;"></div>
         @endif
-      
+
 
         <!--end::Header Menu Wrapper-->
 
