@@ -54,7 +54,7 @@
 
                 <div class="form-group">
                     <label for="date">তারিখ <span class="text-danger"> * </span></label>
-                    <input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date" placeholder="তারিখ লিখুন" value="{{ old('date') }}">
+                    <input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date" placeholder="তারিখ লিখুন">
                     @error('date')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

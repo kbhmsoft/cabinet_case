@@ -1,6 +1,20 @@
 @extends('layouts.app')
+@section('title', 'নোটিশ তালিকা')
 
-@section('title', 'নোটিশ দেখুন')
+@section('head')
+<link rel="icon" href="favicon.ico" type="image/x-icon"> 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+        link.href = 'images/govlogo.png';
+    })
+</script>
+@endsection
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">

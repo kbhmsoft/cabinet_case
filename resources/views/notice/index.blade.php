@@ -62,10 +62,10 @@
                                 <a href="{{ route('notices.edit', $item) }}" class="btn btn-primary btn-sm"><i
                                         class="fas fa-edit"></i></a>
 
-                                <form action="{{ route('notices.delete', $item->id) }}" method="POST">
+                                <form action="{{ route('notices.delete', $item->id) }}" method="POST" id="deleteForm">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm ml-2 btn-delete"><i
+                                    <button type="button" class="btn btn-danger btn-sm ml-2 btn-delete" onclick="confirmDelete('{{ $item->id }}')"><i
                                             class="fas fa-trash"></i></button>
                                 </form>
                             </td>
@@ -85,43 +85,33 @@
             {{ $data->render() }}
         </div>
     </div>
-@endsection
 
-@section('js')
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $(document).on('click', '.btn-delete', function() {
-                $this = $(this);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                });
+        function confirmDelete(id) {
+            swal.fire({
+                title: 'আপনি কি নিশ্চিতভাবে এই তথ্যটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'হ্যা, মুছে ফেলুন',
+                cancelButtonText: 'বাতিল'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm').action = '{{ route('notices.destroy', '') }}' + '/' + id;
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        }
 
-                swalWithBootstrapButtons.fire({
-                    title: 'আপনি কি নিশ্চিত?',
-                    text: "আপনি কি সত্যিই এই বিজ্ঞপ্তিটি মুছতে চান?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'হ্যাঁ, এটা মুছে ফেলুন!',
-                    cancelButtonText: 'না',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        $.post($this.data('url'), {
-                            _method: 'DELETE',
-                            _token: '{{ csrf_token() }}'
-                        }, function(res) {
-                            $this.closest('tr').fadeOut(500, function() {
-                                $(this).remove();
-                            })
-                        })
-                    }
-                });
-            })
-        })
+        @if(session('status'))
+            swal.fire({
+                title: '{{ session('status') }}',
+                icon: '{{ session('type') }}',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        @endif
     </script>
 @endsection
