@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</title>
+    <!-- Favicon -->
+    <link rel=" icon" href="favicon.ico" type="image/x-icon">
     <!-- Bootstrap stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -66,16 +68,6 @@
             text-decoration: none;
         }
 
-        /* .all-button {
-            background-color: #898989;
-            color: #fff;
-            border: solid;
-            border-radius: 5px;
-            padding: 1px 10px;
-            cursor: pointer;
-            font-size: 15px;
-            text-decoration: none;
-        } */
         .all-button {
             background-color: #898989;
             color: #fff;
@@ -92,7 +84,6 @@
             background-color: #898989;
             color: #000000;
             text-decoration: none;
-
         }
 
         @media (max-width: 768px) {
@@ -110,6 +101,18 @@
             }
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+            link.href = 'images/govlogo.png';
+        });
+    </script>
 </head>
 
 <body>
