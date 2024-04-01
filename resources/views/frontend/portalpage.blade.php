@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</title>
     <!-- Favicon -->
-    <link rel=" icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Bootstrap stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -21,24 +21,19 @@
 
         body {
             font-family: 'Nikosh', sans-serif;
-            padding-top: 70px;
+            margin: 0;
         }
 
-        footer {
+        .footer-section {
             background-color: rgb(168, 220, 203);
             color: rgb(0, 0, 0);
-            padding: 5%;
+            padding: 2% 5%;
             text-align: center;
-            position: relative;
-            margin-top: 20px;
+            margin-top: 3.5rem;
         }
 
-        footer p {
-            text-align: center;
-        }
-
-        .footer-text-color {
-            color: green;
+        .footer-widget-heading {
+            margin-bottom: 1rem;
         }
 
         .main-section {
@@ -47,6 +42,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            /* min-height: calc(100vh - 6rem); */
         }
 
         .left-section {
@@ -56,16 +52,6 @@
 
         .right-section {
             padding-right: 5rem;
-        }
-
-        .footer-widget ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-widget ul li a {
-            text-decoration: none;
         }
 
         .all-button {
@@ -103,7 +89,7 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var link = document.querySelector("link[rel~='icon']");
             if (!link) {
                 link = document.createElement('link');
@@ -134,18 +120,19 @@
     </header>
 
 
-    <div class="main-section">
-        <div class="right-section">
-            <div class="card shadow p-3 border-dark rounded" style="width: 200px; height: 200px;">
-                <p style="font-size: 20px">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
+    <div class="main-section" style="margin-top: 6rem;">
+        <div class="right-section" style="text-align: center;">
+            <div class="card shadow p-3 rounded" style="width: 200px; height: 220px; background-color: #F3F3F3">
+                <p style="font-size: 20px; margin-top: 20px;">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা
+                    সম্পর্কিত কার্যক্রম
                     ব্যবস্থাপনা সিস্টেম</p>
             </div>
         </div>
 
+
         <!-- Inside the "নোটিশ বোর্ড" div -->
-        <div class="right-section">
-            <div class="card shadow p-3 rounded border-dark"
-                style="width: 400px; height: auto; background-color: #F3F3F3">
+        <div class="right-section" style="margin-left: 3rem">
+            <div class="card shadow p-3 rounded " style="width: 500px; height: auto; background-color: #F3F3F3">
                 <img src="{{ asset('uploads/IconeSCMS/bg_notice_board.png') }}" alt="Image"
                     style="position: absolute; top: 0; left: 0; width: 52px; height: 54px; z-index: 1;">
                 <?php
@@ -171,8 +158,9 @@
 
         </div>
 
-        <div class="right-section">
-            <div class="card shadow p-3 bg-white rounded" style="width: 300px; height: 300px; margin-top: 20px;">
+        <div class="" style="margin-left: 3rem;">
+            <div class="card shadow p-3 rounded"
+                style="width: 250px; height: 250px; margin-top: 20px; background-color: #F3F3F3; ">
                 <small class="text-muted d-block mx-auto mb-3 mt-3" style="font-size: 20px">স্মার্ট কেস ম্যানেজমেন্ট
                     সিস্টেম</small>
                 <a href="{{ route('doptor.login') }}" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
@@ -182,38 +170,37 @@
     </div>
 
     <!------- Start of footer -------->
-    <footer class="footer-section ">
+    <footer class="footer-section">
         <div class="container">
-            <div class="footer-content pt-5 pb-5">
-                <div class="row justify-content-center">
-                    <div class="col-xl-3 col-lg-3 mb-50">
-                        <div class="footer-widget">
+            <div class="footer-content">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="footer-widget text-start mb-3 mb-lg-0">
                             <div class="footer-widget-heading">
-                                <h3 style="float: left;">পরিকল্পনা ও বাস্তবায়নে</h3>
+                                <h5>পরিকল্পনা ও বাস্তবায়নে</h5>
                             </div>
                             <a href="https://minland.gov.bd/" target="_blank">
-                                <img style="width: 100px; height: 50px; float: middle; margin-right: 28px;"
-                                    src="images/logo1.png" alt="">
+                                <img src="images/logo1.png" alt="" style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
                             </a>
-
                         </div>
                     </div>
-
-                    <div class="col-xl-3 col-lg-3 mb-50">
-                        <div class="footer-widget">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="footer-widget text-end">
                             <div class="footer-widget-heading">
-                                <h3 style="float: right;">কারিগরি সহায়তায়</h3>
+                                <h5>কারিগরি সহায়তায়</h5>
                             </div>
-                            <a href="http://mysoftheaven.com" target="_blank"><img
-                                    style="width: 120px;height: auto;float: right;"
-                                    src="https://ldtax.gov.bd/assets/images/auto.png" alt=""></a>
+                            <a href="http://mysoftheaven.com" target="_blank">
+                                <img src="https://ldtax.gov.bd/assets/images/auto.png" alt=""
+                                    style="width: 150px; height: auto;">
+                            </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </footer>
+
+
     <!------- End footer ------->
 
 
