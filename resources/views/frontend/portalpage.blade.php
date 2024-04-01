@@ -166,7 +166,7 @@
                     <p>No notices available</p>
                 @endif
                 <a href="{{ route('notices.show', $notice->id) }}" class="all-button"
-                    style="position: absolute; bottom: 10px; right: 10px;"> সকল</i> </a>
+                    style="position: absolute; bottom: 5px; right: 10px;"> সকল</i> </a>
             </div>
 
         </div>
