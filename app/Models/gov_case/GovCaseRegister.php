@@ -2,26 +2,23 @@
 
 namespace App\Models\gov_case;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\CaseStatus;
 use App\Models\Court;
-use App\Models\Division;
 use App\Models\gov_case\GovCaseDivision;
 use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\CaseStatus;
 use App\Models\Role;
-use App\Models\Upazila;
-use App\Models\Mouja;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GovCaseRegister extends Model
 {
-	use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-	public $timestamps = true;
+    public $timestamps = true;
     protected $fillable = [
-		'id',
+        'id',
         'case_no',
         'case_type',
         'appeal_case_id',
@@ -124,48 +121,65 @@ class GovCaseRegister extends Model
         'highcourt_adalat',
         'money_amount',
         'hearing_short_order',
-        'important'
-	];
+        'important',
+        'postponed_interim_have',
+        'postponed_interim_data_details',
+        'soltrack_tracking_number',
+        'sending_reply_have',
+        'sending_reply_person_unit'
+    ];
 
-    public function users(){
-        return $this->hasOne(Users::class,'id', 'concern_user_id');
+    public function users()
+    {
+        return $this->hasOne(User::class, 'id', 'concern_user_id');
     }
 
-    public function court(){
-        return $this->hasOne(Court::class,'id', 'court_id');
+    public function court()
+    {
+        return $this->hasOne(Court::class, 'id', 'court_id');
     }
-    public function role(){
-        return $this->hasOne(Role::class,'id', 'action_user_role_id');
-    }
-
-    public function advocate(){
-        return $this->hasOne(User::class,'id', 'concern_user_id');
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'action_user_role_id');
     }
 
-    public function case_status(){
+    public function advocate()
+    {
+        return $this->hasOne(User::class, 'id', 'concern_user_id');
+    }
+
+    public function case_status()
+    {
         return $this->hasOne(CaseStatus::class, 'id', 'case_status_id');
     }
 
-    public function case_division(){
+    public function case_division()
+    {
         return $this->hasOne(GovCaseDivision::class, 'id', 'case_division_id');
     }
 
-    public function case_category(){
+    public function case_category()
+    {
         return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
     }
-    public function badis(){
+    public function badis()
+    {
         return $this->hasMany(GovCaseBadi::class, 'gov_case_id', 'id');
     }
-    public function bibadis(){
+    public function bibadis()
+    {
         return $this->hasMany(GovCaseBibadi::class, 'gov_case_id', 'id');
     }
-    public function mainBibadis(){
-        return $this->hasMany(GovCaseBibadi::class, 'gov_case_id', 'id')->where('is_main_bibadi',1);
+    public function mainBibadis()
+    {
+        return $this->hasMany(GovCaseBibadi::class, 'gov_case_id', 'id')->where('is_main_bibadi', 1);
     }
-    public function hearings(){
+    public function hearings()
+    {
         return $this->hasMany(GovCaseHearing::class, 'gov_case_id', 'id')->orderby('id', 'DESC');
     }
-    public function div_category(){
+    public function div_category()
+    {
         return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
     }
 

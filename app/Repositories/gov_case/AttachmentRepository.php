@@ -7,17 +7,18 @@
  */
 namespace App\Repositories\gov_case;
 
-use App\Models\AppealAttachment;
-use App\Models\AppealFinalOrderAttachment;
 use App\Models\Attachment;
-use App\Models\ContemptAttachment;
 use App\Models\FinalAttachment;
-use App\Models\LeaveToAppealAttachment;
 use App\Models\ReplyAttachment;
-use App\Models\SuspensionAttachment;
+use App\Models\AppealAttachment;
+use App\Models\ContemptAttachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\SuspensionAttachment;
+use App\Models\LeaveToAppealAttachment;
 use Illuminate\Support\Facades\Session;
+use App\Models\AppealFinalOrderAttachment;
+use App\Models\LeaveToAppealAnswerAttachment;
 
 class AttachmentRepository
 {
@@ -199,7 +200,7 @@ class AttachmentRepository
         Log::debug(print_r($request->leave_to_appeal_file_type, true));
         if ($request->leave_to_appeal_file_name != null) {
             foreach ($request->leave_to_appeal_file_type as $key => $val) {
-                $filePath = "uploads/" . $appName . "/leave_to_appeal_attachment/";
+                $filePath = "uploads/" . $appName . "/leave_to_appeal_nswera_attachment/";
                 if ($request->leave_to_appeal_file_name[$key] != null) {
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->extension();
 
@@ -212,6 +213,38 @@ class AttachmentRepository
                 }
 
                 $attachment = new LeaveToAppealAttachment();
+                Log::debug(print_r($caseId, true));
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->leave_to_appeal_file_type[$key];
+                $attachment->file_name = $filePath . $otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
+
+    public static function storeLeaveToAppealAnswerAttachment($appName, $caseId, $request)
+    {
+        Log::debug(print_r($request->leave_to_appeal_file_type, true));
+        if ($request->leave_to_appeal_file_name != null) {
+            foreach ($request->leave_to_appeal_file_type as $key => $val) {
+                $filePath = "uploads/" . $appName . "/leave_to_appeal_answer_attachment/";
+                if ($request->leave_to_appeal_file_name[$key] != null) {
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->extension();
+
+                    if ($request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName)) {
+                        Log::debug("File moved successfully");
+                    } else {
+                        Log::debug("Failed to move file");
+                    }
+
+                }
+
+                $attachment = new LeaveToAppealAnswerAttachment();
                 Log::debug(print_r($caseId, true));
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->leave_to_appeal_file_type[$key];

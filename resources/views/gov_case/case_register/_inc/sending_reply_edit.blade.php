@@ -33,13 +33,9 @@
                 </div>
             @endif
 
-
-
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
-
-
                         {{-- ------------- start জবাব প্রেরণ ------------- --}}
                         <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
                             <form id="sendingReplyForm" action="javascript:void(0)" class="form" method="POST"
@@ -47,106 +43,151 @@
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        <input type="hidden" id="caseIDForAnswer" name="case_id" value="{{ $case->id }}">
+
+                                        <input type="hidden" id="caseIDForAnswer" name="case_id"
+                                            value="{{ $case->id }}">
 
                                         <fieldset class="mb-8">
-                                            {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
-                                            <div class="form-group row">
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
-                                                    <input type="text" name="result_sending_date"
-                                                        id="result_sending_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off" value="{{ $case->result_sending_date ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
-                                                    <input type="text" name="result_sending_memorial"
-                                                        id="result_sending_memorial" class="form-control form-control-sm"
-                                                        placeholder="" autocomplete="off" value="{{ $case->result_sending_memorial ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
+                                            <div class="col-lg-12 mb-5">
+                                                <div class="col-md-6">
+                                                    <label class="form-group font-weight-bolder font-size-h5">জবাব প্রেরণ
+                                                        করা হয়েছে কিনা
                                                     </label>
-                                                    <input type="text" name="result_sending_date_solisitor_to_ag"
-                                                        id="result_sending_date_solisitor_to_ag"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off" value="{{ $case->result_sending_date_solisitor_to_ag ?? '' }}" >
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
-                                                        স্মারক </label>
-                                                    <input type="text" name="result_sending_memorial_solisitor_to_ag"
-                                                        id="result_sending_memorial_solisitor_to_ag"
-                                                        class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off" value="{{ $case->result_sending_memorial_solisitor_to_ag ?? '' }}" >
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
-                                                    <input type="text" name="reply_submission_date"
-                                                        id="reply_submission_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off"  value="{{ $case->reply_submission_date ?? '' }}" >
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" name="sending_reply_have"
+                                                                id="sending_reply_have" value="1" />
+                                                            <span></span>হ্যাঁ</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="sending_reply_have"
+                                                                id="sending_reply_have_not" value="0" checked />
+                                                            <span></span>না</label>
+                                                    </div>
                                                 </div>
 
+                                                <div class="p-5" id="sending_reply_data_details">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1"
+                                                            id="solicitor_checkbox" name="sending_reply_person_solicitor">
+                                                        <label class="form-check-label lawyer_title"
+                                                            for="solicitor_checkbox">
+                                                            সলিসিটর বরাবর
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1"
+                                                            id="law_officer_checkbox"
+                                                            name="sending_reply_person_law_officer">
+                                                        <label class="form-check-label lawyer_title"
+                                                            for="law_officer_checkbox">
+                                                            আইন কর্মকর্তা/প্যানেল আইনজীবী বরাবর
+                                                        </label>
+                                                    </div>
+                                                </div>
 
-                                            </div>
-
-                                            <div class="form-group row" id="highCourt_hide_show">
-                                                {{-- <div class="col-md-6 mb-5">
-                                                        <label>মন্তব্য</label>
-                                                        <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
-                                                                </textarea>
-                                                    </div> --}}
-                                            </div>
-
-
-
-                                            {{-- starting সংযুক্তি  --}}
-
-
-                                            <div class="col-md-12">
-                                                <fieldset class="">
-                                                    <div
-                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                        <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব প্রেরণ কপি সংযুক্ত করুন)
-                                                                <span class="text-danger">*</span>
-                                                            </h3>
+                                                <div class="sending_reply_div">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 mb-5 mt-8">
+                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
+                                                            <input type="text" name="result_sending_date"
+                                                                id="result_sending_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
                                                         </div>
 
-                                                        <div class="symbol-group symbol-hover py-2">
-                                                            <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top" title=""
-                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
+                                                        <div class="col-lg-6 mb-5 mt-8">
+                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
+                                                            <input type="text" name="result_sending_memorial"
+                                                                id="result_sending_memorial"
+                                                                class="form-control form-control-sm" placeholder=""
+                                                                autocomplete="off">
+                                                        </div>
 
-                                                                <div id="addReplyFileRow">
-                                                                    <span class="symbol-label font-weight-bold bg-success">
-                                                                        <i
-                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                    </span>
+                                                        {{-- starting সংযুক্তি  --}}
+                                                        <div class="col-md-12 mt-8">
+                                                            <fieldset class="">
+                                                                <div
+                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত
+                                                                            করুন)
+                                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
+                                                                                5MB)</sub>
+                                                                        </h3>
+                                                                    </div>
+
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="" role="button"
+                                                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                            <div id="addReplyFileRow">
+                                                                                <span
+                                                                                    class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="replyFileDiv" style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="reply_attachment_count"
+                                                                        value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                        {{-- end সংযুক্তি --}}
+                                                        <div class="col-md-8 mb-5 mt-6" id="trackingNumberField"
+                                                            style="display: none;">
+                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে
+                                                                ট্র্যাকিং নম্বর প্রদান করুন</label>
+                                                            <input type="text" name="soltrack_tracking_number"
+                                                                class="form-control">
                                                         </div>
 
-                                                    </div>
-                                                    <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5" id="replyFileDiv"
-                                                            style="border:1px solid #dcd8d8;">
-                                                            <tr></tr>
-                                                        </table>
-                                                        <input type="hidden" id="reply_attachment_count" value="1">
-                                                    </div>
-                                                </fieldset>
-                                            </div>
+                                                        <div class="col-lg-6 mb-5 mt-10">
+                                                            <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
+                                                            </label>
+                                                            <input type="text"
+                                                                name="result_sending_date_solisitor_to_ag"
+                                                                id="result_sending_date_solisitor_to_ag"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-5 mt-10">
+                                                            <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
+                                                                স্মারক </label>
+                                                            <input type="text"
+                                                                name="result_sending_memorial_solisitor_to_ag"
+                                                                id="result_sending_memorial_solisitor_to_ag"
+                                                                class="form-control form-control-sm" placeholder=""
+                                                                autocomplete="off">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-5">
+                                                            <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
+                                                            <input type="text" name="reply_submission_date"
+                                                                id="reply_submission_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        </div>
+                                                        <div class="col-md-6 mb-5">
+                                                            <label>মন্তব্য</label>
+                                                            <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
+                                                                </textarea>
+                                                        </div>
 
-                                            {{-- end সংযুক্তি --}}
+
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </fieldset>
-
-
 
                                         <!--end::Card-->
                                     </div>

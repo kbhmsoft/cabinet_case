@@ -34,7 +34,7 @@
             @endif
 
 
-            <form id="leaveToAppealForm" action="javascript:void(0)" class="form" method="POST"
+            <form id="leaveToAppealAnswerForm" action="javascript:void(0)" class="form" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
@@ -100,7 +100,7 @@
                     {{-- </div> --}}
                 </div>
                 <div class="form-footer mb-5" style="display: flex;justify-content: center;">
-                    <button type="submit" id="leaveToAppealSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
+                    <button type="submit" id="leaveToAppealAnswerSaveBtn" class="action-button submit-button">সংরক্ষণ</button>
                 </div>
 
             </form>
@@ -197,12 +197,12 @@
 
 
 
-        $('#leaveToAppealForm').submit(function(e) {
+        $('#leaveToAppealAnswerForm').submit(function(e) {
             // alert(1);
             e.preventDefault();
-            $('#leaveToAppealSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+            $('#leaveToAppealAnswerSaveBtn').addClass('spinner spinner-white spinner-right disabled');
             Swal.fire({
-                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
                 // text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -223,7 +223,7 @@
                         processData: false,
 
                         success: (data) => {
-                            $('#leaveToAppealSaveBtn').removeClass(
+                            $('#leaveToAppealAnswerSaveBtn').removeClass(
                                 'spinner spinner-white spinner-right disabled');
                             $orderData = data;
                             Swal.fire(
@@ -248,7 +248,7 @@
                                 'error'
                             )
                             // swal("Oops...", data.responseJSON.message, "error");
-                            $('#leaveToAppealSaveBtn').removeClass(
+                            $('#leaveToAppealAnswerSaveBtn').removeClass(
                                 'spinner spinner-white spinner-right disabled');
 
                         }
