@@ -30,6 +30,7 @@ use App\Http\Controllers\API\MessageController;
 
 Route::post('login', [LoginController::class, 'login']);
 
+
 // With Auth
 Route::middleware('auth:api')->group( function () {
 

@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</title>
     <!-- Bootstrap stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Include Kalpurush font CSS -->
-    <link rel="stylesheet" href="path/to/kalpurush-font.css">
+
     <style>
+        @font-face {
+            font-family: 'Nikosh';
+        }
+
         body {
-            font-family: 'Kalpurush', sans-serif;
+            font-family: 'Nikosh', sans-serif;
             padding-top: 70px;
         }
 
@@ -63,8 +66,33 @@
             text-decoration: none;
         }
 
-        .text-landing-page {
-            margin-top: 40px !important;
+        /* .all-button {
+            background-color: #898989;
+            color: #fff;
+            border: solid;
+            border-radius: 5px;
+            padding: 1px 10px;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+        } */
+        .all-button {
+            background-color: #898989;
+            color: #fff;
+            border: solid;
+            border-radius: 2px;
+            border-color: transparent;
+            padding: 1px 10px;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .all-button:hover {
+            background-color: #898989;
+            color: #000000;
+            text-decoration: none;
+
         }
 
         @media (max-width: 768px) {
@@ -72,10 +100,13 @@
                 flex-direction: column;
             }
 
-            .left-section,
             .right-section {
                 flex: 1;
                 padding: 0;
+            }
+
+            .card {
+                width: 100%;
             }
         }
     </style>
@@ -101,27 +132,46 @@
 
 
     <div class="main-section">
-        {{-- <div class="left-section m-5">
-            <!-- Add your image, title, and content here -->
-            <img src="images/book.png" alt="Your Image" class="img-fluid" width="300">
-            <h2 class="m-3">স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</h2>
-        </div> --}}
         <div class="right-section">
             <div class="card shadow p-3 border-dark rounded" style="width: 200px; height: 200px;">
-                <p class="text-landing-page">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
+                <p style="font-size: 20px">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা সম্পর্কিত কার্যক্রম
                     ব্যবস্থাপনা সিস্টেম</p>
             </div>
         </div>
-        <div class="right-section">
-            <div class="card shadow p-3 rounded border-dark" style="width: 400px; height: 200px;">
-                <p>নোটিশ বোর্ড ________________________________</p>
-            </div>
-        </div>
 
+        <!-- Inside the "নোটিশ বোর্ড" div -->
+        <div class="right-section">
+            <div class="card shadow p-3 rounded border-dark"
+                style="width: 400px; height: auto; background-color: #F3F3F3">
+                <img src="{{ asset('uploads/IconeSCMS/bg_notice_board.png') }}" alt="Image"
+                    style="position: absolute; top: 0; left: 0; width: 52px; height: 54px; z-index: 1;">
+                <?php
+                $latestNotices = \App\Models\Notice::latest()->take(5)->get();
+                ?>
+                @if ($latestNotices->isNotEmpty())
+                    <h5 class="font-weight-bolder" style="margin-left: 3rem">নোটিশ বোর্ড </h5>
+                    <ul style="list-style-type: none; padding-left: 0; margin-top: 10px">
+                        @foreach ($latestNotices as $key => $notice)
+                            <li style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <span style="color: green;">&#9658;</span>
+                                <a href="{{ Storage::url($notice->notice_pdf) }}" target="_blank"
+                                    style="text-decoration: none;">{{ $notice->title }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>No notices available</p>
+                @endif
+                <a href="{{ route('notices.show', $notice->id) }}" class="all-button"
+                    style="position: absolute; bottom: 10px; right: 10px;"> সকল</i> </a>
+            </div>
+
+        </div>
 
         <div class="right-section">
             <div class="card shadow p-3 bg-white rounded" style="width: 300px; height: 300px; margin-top: 20px;">
-                <small class="text-muted d-block mx-auto mb-3 mt-3 ">স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</small>
+                <small class="text-muted d-block mx-auto mb-3 mt-3" style="font-size: 20px">স্মার্ট কেস ম্যানেজমেন্ট
+                    সিস্টেম</small>
                 <a href="{{ route('doptor.login') }}" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
                 <a href="{{ route('sso.login') }}" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a>
             </div>
