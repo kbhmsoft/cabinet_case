@@ -26,7 +26,7 @@
     }
 
     .header-content {
-        margin-top: 20px;
+        margin-top: 30px;
         margin-left: 25px;
         /* Adjust as needed */
     }
@@ -95,7 +95,7 @@
                         style="justify-content: space-between; align-items: center; font-size: 15px;">
                         <a href="{{ route('cabinet.case.highcourt') }}" class="hover-effect"
                             style="text-decoration: none; color: rgb(241, 230, 11);">
-                           ( হাইকোর্ট বিভাগে মোট মামলা:
+                            ( হাইকোর্ট বিভাগ:
                         </a>
                         <span class="count-numbers"
                             style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_highcourt) }};</span>
@@ -104,16 +104,17 @@
                         style="justify-content: space-between; align-items: center; font-size: 15px;">
                         <a href="{{ route('cabinet.case.appellateDivision') }}"
                             style="text-decoration: none; color: rgb(241, 230, 11);">
-                            আপিল বিভাগে মোট মামলা:
+                            আপিল বিভাগ:
                         </a>
                         <span class="count-numbers"
-                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক ট্রাইব্যুনাল: ০০)</span>
+                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক
+                            ট্রাইব্যুনাল: ০০)</span>
                     </span>
                 </div>
                 <hr class="middle-line">
             </div>
             <!-- End of header-case-count -->
-            @elseif ($roleID == 45)
+        @elseif ($roleID == 45)
             <!-- White space -->
             <div style="width: 100%; height: 20px;"></div>
         @endif

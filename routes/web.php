@@ -75,10 +75,10 @@ Route::get('hearing-case-list', [FrontHomeController::class, 'dateWaysCase'])->n
 Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'])->name('dateWaysRMCase');
 
 //**------notice-----------**//
-Route::resource('notices', NoticeController::class);
-Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.destroy');
-Route::get('notices/view', [NoticeController::class, 'show'])->name('notices.show');
 
+Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.delete');
+Route::get('notices/details/{id}', [NoticeController::class, 'show'])->name('notices.details');
+Route::resource('notices', NoticeController::class);
 
 Route::middleware('auth')->group(function () {
     // setting
