@@ -1,144 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+<html>
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <meta charset="utf-8"/>
 <title>লগইন | {{ config('app.name') }}</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta content="" name="description"/>
-<meta content="" name="author"/>
-<!-- BEGIN GLOBAL MANDATORY STYLES -->
-<!-- <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/> -->
-<link href="{{ asset('/login_assets/global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/global/plugins/simple-line-icons/simple-line-icons.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/global/plugins/uniform/css/uniform.default.css') }}" rel="stylesheet" type="text/css"/>
-<!-- END GLOBAL MANDATORY STYLES -->
-<!-- BEGIN PAGE LEVEL STYLES -->
-<link href="{{ asset('/login_assets/admin/pages/css/login.css') }}" rel="stylesheet" type="text/css"/>
-<!-- END PAGE LEVEL SCRIPTS -->
-<!-- BEGIN THEME STYLES -->
-<link href="{{ asset('/login_assets/global/css/components-rounded.css') }}" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/global/css/plugins.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/admin/layout/css/layout.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/admin/layout/css/themes/default.css') }}" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="{{ asset('/login_assets/admin/layout/css/custom.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('/login_assets/admin/pages/css/login-soft.css') }}" rel="stylesheet" type="text/css"/>
-<!-- <link href="{{ asset('/css/common.css') }}" rel="stylesheet" type="text/css"/> -->
+    <style>
 
-<!-- END THEME STYLES -->
-<link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}"/>
+
+        .login-page {
+            width: 360px;
+            padding: 8% 0 0;
+            margin: auto;
+        }
+
+        .form {
+            position: relative;
+            margin-top: 118px !important;
+            z-index: 1;
+            background: #FFFFFF;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+
+        .form input {
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .form button {
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            outline: 0;
+            background: #4CAF50;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+
+        .form button:hover,
+        .form button:active,
+        .form button:focus {
+            background: #43A047;
+        }
+
+        .form .message {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+
+
+        .form .register-form {
+            display: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .container:before,
+        .container:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .container .info {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .container .info h1 {
+            margin: 0 0 15px;
+            padding: 0;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+
+        .container .info span {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+
+        .container .info span a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .container .info span .fa {
+            color: #EF3B3A;
+        }
+
+        /* body {
+            background: #76b852;
+            /* fallback for old browsers */
+            /* background: rgb(141, 194, 111);
+            background: linear-gradient(90deg, rgba(141, 194, 111, 1) 0%, rgba(118, 184, 82, 1) 50%);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale; */
+        /* } */
+    </style>
+    <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}"/>
 </head>
-<!-- END HEAD -->
-<!-- BEGIN BODY -->
-<style>
-    html {
-  background: url({{ asset('media/custom/logo.jpg') }}) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-</style>
-<body class="page-md login" style="background: transparent !important;">
 
-    <div class="logo">
-        <a href="#">
+<body>
 
-            <img src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" style="width: 360px;" alt="" />
-        </a>
-    </div>
-
-    <div class="content">
-       <br>
-
-        <div style="display: block; overflow: hidden; margin-bottom: 5px;">
-
-            <form method="POST" action="{{ route('doptor.login') }}">
-                @csrf
-                <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
-                <div class="form-group otp-hidden">
-
-                    <div class="input-icon">
-                        <i class="fa fa-user"></i>
-                        <input id="email" type="email" class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email" placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email" autofocus/>
-
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group otp-hidden">
-                    <label class="control-label visible-ie8 visible-ie9">Password</label>
-                    <div class="input-icon">
-                        <i class="fa fa-lock"></i>
-                        <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password" name="password"/>
-                        @error('password')
-                            <span class="invalid-feedback text-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-actions otp-hidden">
-                    @if (Route::has('password.request'))
-
-                     @endif
-                            <button type="submit" id="submit" class="btn pull-right">
-                                 <i class="a2i_gn_login2 "></i>প্রবেশ
-                            </button>
-                </div>
-                <div class="form-group otp-visable">
-                    <label class="control-label visible-ie8 visible-ie9">OTP</label>
-                    <div class="input-icon">
-                        <i class="a2i_gn_user1"></i>
-                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="OTP" id="otp" name="otp"/>
-                    </div>
-                </div>
-                <div class="form-actions otp-visable">
-                    <label class="checkbox">
-                        <button type="button" id="otpLoginBtn" class="btn pull-right">
-                            <i class="a2i_gn_login2 otp_login_icon"></i> প্রবেশ
-                        </button>
-                </div>
-            </form>
-
+    <div class="form">
+        <div class="logo">
+            <a href="#">
+                <img src="{{ asset('images/logo.png') }}" style="width: 100%;" alt="" />
+            </a>
         </div>
+       
+            <form method="POST" action="{{ route('doptor.login') }}">
+            @csrf
+            <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
+            <div class="form-group otp-hidden">
+                 {{-- <label class="control-label visible-ie8 visible-ie9">ব্যবহারকারীর আই ডি</label> --}}
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input id="email" type="text"
+                        class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email"
+                        placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email"
+                        autofocus />
 
-        <style>
-            #submit{
-                background-color: #8dc542;
-            }
-            #submit:hover{
-                background-color: #682F91;
-                color: #fff;
-            }
-            .msgBox{display: none}
-            .otp-visable{display: none;}
-        </style>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group otp-hidden">
+                {{-- <label class="control-label visible-ie8 visible-ie9">পাসওয়ার্ড</label> --}}
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required
+                        autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password"
+                        name="password" />
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-actions otp-hidden submit_loader">
 
+                <button type="submit" id="submit" class="btn pull-right" onclick="buttonDisable()">
+                    <i class="a2i_gn_login2 "></i> লগইন করুণ
+                </button>
+            </div>
+
+        </form>
     </div>
-
-
-
+    </div>
     <script src="{{ asset('/login_assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery-migrate.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
-
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="{{ asset('/login_assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/admin/pages/scripts/login-soft.js') }}" type="text/javascript"></script>
-
+    <script type="text/javascript">
+        function buttonDisable() {
+            $('.submit_loader').append('<b class="pull-right"><img src="{{ asset('media/loading/loading-load.gif') }}" style="width: 20px;" alt="" /></b>');
+            $('.submit_loader').append('<b class="pull-right">অপেক্ষা করুণ...</b>');
+            $('#submit').hide();
+            return true;
+        }
+    </script>
 
 </body>
 
