@@ -47,7 +47,7 @@ class NoticeController extends Controller
         $rank = $data->firstItem();
 
         $notice = Notice::latest()->first();
-        $latestNotice = Notice::latest()->first(); //notice with latest date 
+        $latestNotice = Notice::latest()->first(); //notice with latest date
 
         return view('notice.index', compact('data', 'rank', 'notice', 'latestNotice'));
     }
@@ -74,10 +74,7 @@ class NoticeController extends Controller
 
     public function store(StoreNoticeRequest $request)
     {
-
-
         $notice_pdf_path = '';
-
 
         if ($request->hasFile('notice_pdf')) {
 
@@ -90,15 +87,14 @@ class NoticeController extends Controller
             'date'          => $request->date,
             'status'        => $request->status,
         ];
-        // dd($request->all());
 
         $notice = Notice::create($data);
 
         if (!$notice) {
-            return redirect()->back()->with('error', 'দুঃখিত, ভূমি মন্ত্রণালয়ের বিজ্ঞপ্তি তৈরি করার সমস্যা ছিল৷');
+            return redirect()->back()->with('error', 'বিজ্ঞপ্তি তৈরি করার সমস্যা ছিল৷');
         }
 
-        return redirect()->route('notices.index')->with('success', 'সফলভাবে, আপনার ভূমি মন্ত্রণালয়ের বিজ্ঞপ্তি তৈরি করা হয়েছে।');
+        return redirect()->route('notices.index')->with('success', 'সফলভাবে, আপনার বিজ্ঞপ্তি তৈরি করা হয়েছে।');
     }
 
 
@@ -106,7 +102,7 @@ class NoticeController extends Controller
 
     public function show($id)
     {
-        $notices = Notice::latest()->paginate(10);  
+        $notices = Notice::latest()->paginate(10);
 
         return view('notice.show', compact('notices'));
     }

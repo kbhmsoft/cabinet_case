@@ -69,7 +69,7 @@ class LoginController extends BaseController
     {
         $userEmail = $request->email;
         $password = $request->password;
-
+    //   dd([$userEmail, $password]);
         if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
             $user = Auth::user();
             $success['user_id'] = $user->id;
@@ -314,7 +314,6 @@ class LoginController extends BaseController
         ));
 
         curl_exec($curl);
-
         curl_close($curl);
 
         return;
