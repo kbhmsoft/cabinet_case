@@ -375,6 +375,12 @@ class GovCaseUserManagementController extends Controller
     public function destroy(UserManagement $userManagement)
     {
         //
+        // return $userManagement->id;
+        $id = $userManagement->id;
+        DB::table('users')->where('id', $id)->delete();
+        return redirect()->route('cabinet.user-management.index')
+            ->with('success', 'ইউজার ডাটা সফলভাবে মুছে ফেলা হয়েছে');
+
     }
 
     public function assignedENothiUserManagement()
