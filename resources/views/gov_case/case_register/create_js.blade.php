@@ -568,7 +568,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    // url: "{{ route('cabinet.case.sendingReplyStore') }}",
+                    url: "{{ route('cabinet.case.sendingReplyStore') }}",
                     data: formData,
                     cache: false,
                     contentType: false,

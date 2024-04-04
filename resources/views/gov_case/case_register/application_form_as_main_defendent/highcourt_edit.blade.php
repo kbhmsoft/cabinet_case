@@ -83,8 +83,8 @@
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
-                                                     <input type="hidden" id="" name="case_id"
-                                            value="{{ $case->id }}">
+                                                <input type="hidden" id="" name="case_id"
+                                                    value="{{ $case->id }}">
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
@@ -276,7 +276,8 @@
 
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="MainBibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="MainBibadiDiv"
+                                                        class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span></th>
                                                         </tr>
@@ -288,11 +289,16 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <!-- Hidden field to store previous main_respondent -->
-                                                                    <input type="hidden" name="previous_main_respondent[]" value="{{ $val->respondent_id }}">
+                                                                    <input type="hidden"
+                                                                        name="previous_main_respondent[]"
+                                                                        value="{{ $val->respondent_id }}">
 
-                                                                    <select {{ request('red') ? 'disabled' : '' }} name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                    <select {{ request('red') ? 'disabled' : '' }}
+                                                                        name="main_respondent[]" id="ministry_id"
+                                                                        class="form-control form-control-sm">
                                                                         @foreach ($ministrys as $item)
-                                                                            <option value="{{ $item->doptor_office_id }}" {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                            <option value="{{ $item->doptor_office_id }}"
+                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }}
                                                                             </option>
                                                                         @endforeach
@@ -300,10 +306,12 @@
                                                                 </td>
 
                                                                 <!-- Hidden field to store current doptor_office_id -->
-                                                                <input type="hidden" name="bibadi_id[]" value="{{ $val->doptor_office_id }}">
+                                                                <input type="hidden" name="bibadi_id[]"
+                                                                    value="{{ $val->doptor_office_id }}">
                                                                 <td>
                                                                     @if ($key > 0)
-                                                                        <a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $val->id }}"
                                                                             onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                             <i class="fas fa-minus-circle"></i>
@@ -335,27 +343,29 @@
                                                         @foreach ($otherBibadi as $key => $val)
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }} name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                    <select {{ request('red') ? 'disabled' : '' }}
+                                                                        name="other_respondent[]" id="ministry_id"
+                                                                        class="form-control form-control-sm">
                                                                         @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->doptor_office_id }}"
-                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                            {{ $item->office_name_bn ?? '' }} </option>
-                                                        @endforeach
-                                                        </select>
-                                                        </td>
-                                                        <input type="hidden" name="bibadi_id[]"
-                                                            value="{{ $val->id }}">
-                                                        <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $val->id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
-                                                            @endif
-                                                        </td>
-                                                        </tr>
+                                                                            <option value="{{ $item->doptor_office_id }}"
+                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                                {{ $item->office_name_bn ?? '' }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <input type="hidden" name="bibadi_id[]"
+                                                                    value="{{ $val->id }}">
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $val->id }}"
+                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                     </table>
                                                 </div>
@@ -527,11 +537,11 @@
                                                         placeholder="দিন/মাস/বছর" autocomplete="off"
                                                         value="{{ $case->reply_submission_date ?? '' }}">
                                                 </div>
-                                                <div class="col-md-6 mb-5">
+                                                {{-- <div class="col-md-6 mb-5">
                                                     <label>মন্তব্য</label>
                                                     <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">{{ $case->comments ?? '' }}
                                                     </textarea>
-                                                </div>
+                                                </div> --}}
 
                                             </div>
 

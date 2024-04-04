@@ -206,10 +206,11 @@ class GovCaseRegisterRepository
             $case->result = $caseInfo->result;
             $case->in_favour_govt = $in_favour_govt;
             $case->is_appeal = $caseInfo->is_appeal;
-            $case->comments = $caseInfo->comments;
+            // $case->comments = $caseInfo->comments;
             $case->is_final_order = $is_final_order;
             $case->arji_file = null;
             $case->status = 1;
+
             $case->case_status_id = 33;
             $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial;
             $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing;
@@ -587,6 +588,7 @@ class GovCaseRegisterRepository
             if ($case->save()) {
                 $caseId = $case->id;
             }
+
         } catch (\Exception $e) {
             dd($e);
             $caseId = null;

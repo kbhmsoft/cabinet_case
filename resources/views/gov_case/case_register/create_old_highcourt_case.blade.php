@@ -13,7 +13,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -561,11 +561,12 @@
                                                                 class="form-control form-control-sm  common_datepicker"
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off">
                                                         </div>
-                                                        <div class="col-md-6 mb-5">
+
+                                                        {{-- <div class="col-md-6 mb-5">
                                                             <label>মন্তব্য</label>
                                                             <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
                                                                 </textarea>
-                                                        </div>
+                                                        </div> --}}
 
 
                                                     </div>

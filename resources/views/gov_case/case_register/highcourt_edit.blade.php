@@ -557,7 +557,7 @@
                                                             বরাবর</label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="sending_reply_div">
                                                     <div class="form-group row">
                                                         <div class="col-lg-6 mb-5">
@@ -697,11 +697,11 @@
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off"
                                                                 value="{{ $case->reply_submission_date ?? '' }}">
                                                         </div>
-                                                        <div class="col-md-6 mb-5">
+                                                        {{-- <div class="col-md-6 mb-5">
                                                             <label>মন্তব্য</label>
                                                             <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">{{ $case->comments ?? '' }}
-                                                    </textarea>
-                                                        </div>
+                                                            </textarea>
+                                                        </div> --}}
 
                                                     </div>
 
