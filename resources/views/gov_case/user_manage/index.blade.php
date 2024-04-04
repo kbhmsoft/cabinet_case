@@ -119,6 +119,7 @@
                             <th scope="col">নাম</th>
                             <th scope="col">ইউজার রোল</th>
                             <th scope="col">অফিসের নাম</th>
+                            <th scope="col">মোবাইল</th>
                             <th scope="col">ইমেইল এড্রেস</th>
                             <th scope="col" width="150">অ্যাকশন</th>
                         </tr>
@@ -131,8 +132,35 @@
 
                                 <td>{{ $row->roleName }}</td>
                                 <td>{{ $row->office_name_bn }}</td>
+                                <td>{{ $row->mobile_no ? en2bn($row->mobile_no) : '-' }}</td>
                                 <td>{{ $row->email }}</td>
+
                                 <td>
+                                    <a href="{{ route('cabinet.user-management.show', $row->id) }}"
+                                        class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
+                                            title="বিস্তারিত"></i></a>
+                                    <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                        class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
+                                            title="সংশোধন"></i></a>
+                                    @if (Auth::user()->role_id == 27)
+                                       
+                                       
+                                        {{-- <a href="javascript:void(0)" onclick="userDelete({{ $row->id }})"
+                                            class="font-weight-bold pt-1 pb-1"><i class="fas fa-key text-warning"
+                                                title="পাসওয়ার্ড সংশোধন"></i></a> --}}
+                                        <form method="post" action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-danger btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"><i
+                                                    class="fas fa-user-slash" onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')" title="মুছে ফেলুন"></i></button>
+                                        </form>
+                                    @endif
+                                </td>
+                                
+
+
+                                {{-- <td>
                                     @if (auth()->user()->can('show_user_details'))
                                         <a href="{{ route('cabinet.user-management.show', $row->id) }}"
                                             class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
@@ -149,7 +177,7 @@
                                             সংশোধন
                                         </a>
                                     @endif
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
