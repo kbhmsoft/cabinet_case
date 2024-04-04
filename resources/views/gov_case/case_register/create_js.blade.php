@@ -36,6 +36,7 @@
         }
         addFileRowFunc();
         addReplyFileRowFunc();
+        addAdalatReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
         addSuspensionOrderFileRowFuncTwo();
         addContemptFileRowFunc();
@@ -242,7 +243,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('main_ministry') == $value->doptor_office_id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+                '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($mainRespondentMinistrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('main_ministry') == $value->doptor_office_id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
 
             if (countVal != 1) {
@@ -547,9 +548,6 @@
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//
-
-
-
     $('#sendingReplyForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
@@ -570,7 +568,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: "{{ route('cabinet.case.sendingReplyStore') }}",
+                    // url: "{{ route('cabinet.case.sendingReplyStore') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -622,7 +620,81 @@
     });
     // ================================Sending Replay Save==================================//
 
-    // ================================Suspention Order Save==================================//
+
+     // ================================Sending Replay Save==================================//
+    //  $('#adalatReplySubmitForm').submit(function(e) {
+    //     // alert(1);
+    //     e.preventDefault();
+    //     $('#adalatReplySubmitSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার আদালতে জবাব দাখিলের তথ্য সংরক্ষণ করতে চান?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+
+    //             var formData = new FormData(this);
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 // url: "{{ route('cabinet.case.adalatReplySubmitStore') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
+
+    //                 success: (data) => {
+    //                     $('#adalatReplySubmitSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     $orderData = data;
+    //                     Swal.fire(
+    //                         'Saved!',
+    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success'
+    //                     )
+    //                     console.log(data);
+    //                     // console.log(data.caseId);
+    //                     $("#suspension_order").click();
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
+    //                     $('#adalatReplySubmitSaveBtn').prop('disabled', false);
+    //                     $('#adalatReplySubmitSaveBtn').removeClass("disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false);
+    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+    //                 },
+    //                 error: function(data) {
+    //                     console.log(data);
+    //                     $('#adalatReplySubmitSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+
+    //                 }
+    //             });
+    //         } else {
+    //             $('#adalatReplySubmitSaveBtn').removeClass(
+    //                 'spinner spinner-white spinner-right disabled');
+    //             Swal.fire(
+    //                 'Canceled!',
+    //                 'মামলার আদালতে জবাব দাখিল সংরক্ষণ বাতিল করা হয়েছে',
+    //                 'info'
+    //             );
+    //         }
+    //     })
+
+    // });
+    // ================================Sending Replay Save==================================//
+
+
+
+    // ================================Suspention Order Save ======================//
 
 
 
@@ -949,8 +1021,8 @@
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
             count + '" for="customFile' + count +
             '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
-        items +=
-            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        // items +=
+        //     '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#replyFileDiv tr:last').after(items);
 
@@ -961,7 +1033,38 @@
     }
 
 
+// =================== Adalat Reply Submit =============
+  // ============= Add Reply Attachment Row ========= start =========
+  $("#addRepaddAdalatReplyFileRowlyFileRow").click(function(e) {
+      addAdalatReplyFileRowFunc();
+    });
+    //add row function
+    function addAdalatReplyFileRowFunc() {
+        var count = parseInt($('#adalat_reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#adalat_reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="adalat_reply_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="adalat_reply_file_name[]" onChange="adalatReplyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customAdalatReplyFile' + count +
+            '" required/><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adalat-reply-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#adalatReplyFileDiv tr:last').after(items);
 
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
 
 
 
@@ -1120,6 +1223,13 @@
         var value = $('#customReplyFile' + id)[0].files[0];
         $('.custom-reply-input' + id).text(value['name']);
     }
+
+     //Attachment Title Change
+     function adalatReplyAttachmentTitle(id) {
+        // var value = $('#customFile' + id).val();
+        var value = $('#customAdalatReplyFile' + id)[0].files[0];
+        $('.custom-adalat-reply-input' + id).text(value['name']);
+    }
     //Attachment Title Change
     function suspensionAttachmentTitle(id) {
         // var value = $('#customFile' + id).val();
@@ -1187,4 +1297,35 @@
         solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
         lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
     });
+</script>
+<script>
+    // document.addEventListener("DOMContentLoaded", function () {
+
+    //     var haveReplyYes = document.getElementById("adalat_reply_submit_have");
+
+    //     var adalatReplyDiv = document.querySelector(".adalat_reply_div");
+    //     haveReplyYes.addEventListener("change", function () {
+    //         if (haveReplyYes.checked) {
+    //             adalatReplyDiv.style.display = "block";
+    //         } else {
+    //             adalatReplyDiv.style.display = "none";
+    //         }
+    //     });
+    // });
+
+
+
+
+        $(document).ready(function() {
+            $('#postponed_interim_data_details').hide();
+            $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
+            $('input[name="postponed_interim_have"]').change(function() {
+                if ($(this).val() == '1') {
+                    $('#postponed_interim_data_details').show();
+                } else {
+                    $('#postponed_interim_data_details').hide();
+                }
+            });
+        });
+
 </script>

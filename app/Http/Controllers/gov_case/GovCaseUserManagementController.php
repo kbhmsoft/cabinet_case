@@ -125,6 +125,7 @@ class GovCaseUserManagementController extends Controller
         $officeInfo = user_office_info();
 
         $role = array('1', '27');
+        // $role = array('1');
         $data['roles'] = DB::table('roles')
             ->select('id', 'name', 'name_bn')
             ->whereNotIn('id', $role)

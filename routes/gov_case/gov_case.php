@@ -216,6 +216,7 @@ Route::middleware('auth')->group(function () {
             Route::post('storeGeneralInfo', [GovCaseRegisterController::class, 'storeGeneralInfo'])->name('storeGeneralInfo');
             Route::post('caseGeneralInfoForEdit', [GovCaseRegisterController::class, 'caseGeneralInfoForEdit'])->name('caseGeneralInfoForEdit');
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
+            Route::post('adalatReplySubmitStore', [GovCaseRegisterController::class, 'adalatReplySubmitStore'])->name('adalatReplySubmitStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
             Route::post('leaveToAppealStore', [GovCaseRegisterController::class, 'leaveToAppealStore'])->name('leaveToAppealStore');

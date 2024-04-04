@@ -189,7 +189,7 @@
     }
 
     .nav-li-padding {
-        padding-right: 50px !important;
+        padding-right: 24px !important;
     }
 
     .disabled {

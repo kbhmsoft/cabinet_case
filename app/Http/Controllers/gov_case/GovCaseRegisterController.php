@@ -2517,6 +2517,7 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data['ministrys'] = GovCaseOffice::get();
+        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id',$officeID)->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -2997,6 +2998,54 @@ class GovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
+    public function adalatReplySubmitStore(Request $request)
+    {
+        $caseId = $request->case_id;
+        $request->validate(
+            [
+                'case_id' => 'required',
+            ],
+            [
+                'case_id' => 'আদালতে জবাব দাখিলের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
+            ]
+        );
+        try {
+            $caseInfo = GovCaseRegisterRepository::storeSendingReply($request);
+
+            //========= Gov Case Activity Log -  start ============
+            $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+            if ($request->file_type && $_FILES["file_name"]['name']) {
+                AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
+            }
+            $caseRegisterData = array_merge($caseRegister, [
+                'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+            ]);
+            // return $caseRegisterData;
+            $cs_activity_data['case_register_id'] = $caseId;
+            if ($request->formType != 'edit') {
+                $cs_activity_data['activity_type'] = 'create';
+                $cs_activity_data['message'] = 'সলিসিটর অনুবিভাগে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
+            } else {
+                $cs_activity_data['activity_type'] = 'update';
+                $cs_activity_data['message'] = 'সলিসিটর অনুবিভাগে জবাব প্রেরণের জন্য অপেক্ষমান মামলার তথ্য সফলভাবে হালনাগাদ করা হয়েছে';
+            }
+            $cs_activity_data['old_data'] = null;
+            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+            gov_case_activity_logs($cs_activity_data);
+            // ========= Gov Case Activity Log  End ==========
+
+        } catch (\Exception $e) {
+            dd($e);
+            $flag = 'false';
+            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        }
+        return response()->json(['success' => 'জবাব প্রেরণের তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+    }
+
+
     public function suspensionOrderEdit($id)
     {
         $roleID = userInfo()->role_id;
@@ -3290,6 +3339,8 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
         $data['ministrys'] = GovCaseOffice::get();
+
+        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id',$officeID)->get();
 
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
