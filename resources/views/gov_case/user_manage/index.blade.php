@@ -73,27 +73,28 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
-                    <select name="ministry" id="ministry" class="form-control">
-                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                        @foreach ($ministries as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
-                    <select name="divOffice" id="divOffice" class="form-control">
-                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
-                        @foreach ($divOffices as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-
+                @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
+                    <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
+                        <select name="ministry" id="ministry" class="form-control">
+                            <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
+                            @foreach ($ministries as $value)
+                                <option
+                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    {{ $value->office_name_bn }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
+                        <select name="divOffice" id="divOffice" class="form-control">
+                            <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
+                            @foreach ($divOffices as $value)
+                                <option
+                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    {{ $value->office_name_bn }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 <div class="form-group mb-2 mr-2">
                     <select name="office_id" id="office_id" class="form-control">
                         <option value="">- অফিস নির্বাচন করুন-</option>3
