@@ -576,9 +576,11 @@ class GovCaseOfficeController extends Controller
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        if($roleID != 29 && $roleID != 31){
+        if($roleID == 27){
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-        }else{
+        }elseif($roleID == 29 && $roleID == 31){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        }elseif($roleID == 32 && $roleID == 41){
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
         }
 
