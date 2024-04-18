@@ -37,6 +37,7 @@
         addFileRowFunc();
         addReplyFileRowFunc();
         addAdalatReplyFileRowFunc();
+        adeshTamilDecisionFileRowFunc();
         addSuspensionOrderFileRowFunc();
         addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
@@ -861,8 +862,41 @@
     }
 
 
+    // ====== start adesh tamil decision file  ======
 
 
+
+    $("#adeshTamilDecisionFileRow").click(function(e) {
+        adeshTamilDecisionFileRowFunc();
+    });
+    //add row function
+    function adeshTamilDecisionFileRowFunc() {
+        var count = parseInt($('#adesh_tamil_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#adesh_tamil_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="adeshTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adesh-tamil-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#adeshTamilDecisionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+    // ====== end adesh tamil decision file  ======
 
 
     // ============= Add Suspention Order Attachment Row ========= start =========
@@ -976,6 +1010,13 @@
         var value = $('#customReplyFile' + id)[0].files[0];
         $('.custom-reply-input' + id).text(value['name']);
     }
+
+    // Adesh Attachment Title Change
+    function adeshTamilAttachmentTitle(id) {
+        var value = $('#adeshTamilAttachmentTitle' + id)[0].files[0];
+        $('.custom-adesh-tamil-input' + id).text(value['name']);
+    }
+
     //Attachment Title Change
     function suspensionAttachmentTitle(id) {
         // var value = $('#customFile' + id).val();
@@ -1062,7 +1103,7 @@
 
 <script>
     $("#addAdalatReplyFileRow").click(function(e) {
-      addAdalatReplyFileRowFunc();
+        addAdalatReplyFileRowFunc();
     });
 
     //add row function
@@ -1092,7 +1133,6 @@
             $(`#customFileName${count}`).attr('required', false);
         }
     }
-
 </script>
 
 <script>

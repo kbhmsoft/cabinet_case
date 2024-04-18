@@ -98,7 +98,6 @@
                                                 </div>
 
                                                 <div class="col-lg-12 mb-5">
-
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">আদেশ
                                                             তামিল/বাস্তবায়নের সিদ্ধান্ত গ্রহণ করা হয়েছে
@@ -120,7 +119,8 @@
                                                         <div class="form-group row">
                                                             <div class="p-5" id="adesh_tamil_decision_data_details">
                                                                 <div class="col-md-12 mb-5">
-                                                                    <label>বাস্তবায়নে গৃহীত ব্যবস্থার সংক্ষিপ্ত বিবরণ</label>
+                                                                    <label>বাস্তবায়নে গৃহীত ব্যবস্থার সংক্ষিপ্ত
+                                                                        বিবরণ</label>
                                                                     <textarea name="adesh_tamil_decision_data_details" class="form-control" id="adesh_tamil_decision_data_details"
                                                                         rows="5" spellcheck="false"></textarea>
                                                                 </div>
@@ -132,7 +132,8 @@
                                                                     <div
                                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (বাস্তবায়নে গৃহীত ব্যবস্থার কপি সংযুক্ত
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (বাস্তবায়নে গৃহীত
+                                                                                ব্যবস্থার কপি সংযুক্ত
                                                                                 করুন)
                                                                                 <sub class="text-danger">(PDF, সর্বোচ্চ
                                                                                     সাইজ:
@@ -150,7 +151,7 @@
                                                                                     <span
                                                                                         class="symbol-label font-weight-bold bg-success">
                                                                                         <i
-                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
@@ -158,12 +159,12 @@
                                                                     </div>
                                                                     <div class="mt-3 px-5">
                                                                         <table width="100%" class="border-0 px-5"
-                                                                            id="adalatReplyFileDiv"
+                                                                            id="adeshTamilDecisionFileDiv"
                                                                             style="border:1px solid #dcd8d8;">
                                                                             <tr></tr>
                                                                         </table>
                                                                         <input type="hidden"
-                                                                            id="adalat_reply_attachment_count"
+                                                                            id="adesh_tamil_attachment_count"
                                                                             value="1">
                                                                     </div>
                                                                 </fieldset>
@@ -493,6 +494,20 @@
             });
         });
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_div').hide();
+        $('input[name="adesh_tamil_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="adesh_tamil_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_div').show();
+            } else {
+                $('.adesh_tamil_decision_div').hide();
+            }
+        });
+    });
+</script>
 
 
     <script type="text/javascript">
