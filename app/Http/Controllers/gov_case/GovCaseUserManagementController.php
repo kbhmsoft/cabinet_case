@@ -135,7 +135,7 @@ class GovCaseUserManagementController extends Controller
         $officeId = Auth::user()->office_id;
 
         $role = array('1', '27');
-        if ($roleID != 29) {
+        if ($roleID == 27) {
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
                 ->whereNotIn('id', $role)
@@ -147,7 +147,7 @@ class GovCaseUserManagementController extends Controller
                 // ->where('level', 1)
                 ->get();
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-        } else {
+        } elseif ($roleID == 29 || $roleID == 31) {
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
                 ->whereNotIn('id', [1, 14, 15, 27, 29, 39, 42, 43])
@@ -160,6 +160,20 @@ class GovCaseUserManagementController extends Controller
                 ->where('parent_office_id', $officeId)
                 ->get();
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } else {
+            
+            $data['roles'] = DB::table('roles')
+                ->select('id', 'name', 'name_bn')
+                ->whereIn('id', [45])
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
+
+            $data['offices'] = DB::table('gov_case_office')
+                ->select('gov_case_office.*')
+                ->where('parent_office_id', $officeId)
+                ->get();
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
 
         $query = DB::table('users')->orderBy('id', 'DESC')
