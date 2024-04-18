@@ -90,12 +90,13 @@ class LoginController extends BaseController
     {
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
+        $token = '';
         if (!isset($data['token'])) {
-            // return redirect()->route('nothi.v2.login');
+            return redirect()->route('doptor.login');
         } else {
             $token = $data['token'];
         }
-
+        // dd($token);
         session(['bearerToken' => $token]);
 
         $curl = curl_init();
