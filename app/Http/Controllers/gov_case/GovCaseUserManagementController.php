@@ -63,22 +63,23 @@ class GovCaseUserManagementController extends Controller
         }
 
         //Add Conditions
-        $query = DB::table('users')->orderBy('id', 'DESC')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
-            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-            ->where('users.role_id', '!=', 42)
-            ->where('users.is_gov', 1);
+        if ($roleID == 27) {
+            $query = DB::table('users')->orderBy('id', 'DESC')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+                ->where('users.role_id', '!=', 42)
+                ->where('users.is_gov', 1);
 
-        // For Ministry Admin
-        if ($roleID == 29) {
+            // For Ministry Admin
+        } else {
             $query = DB::table('users')
                 ->orderBy('id', 'DESC')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                 ->whereIn('users.office_id', $finalOfficeIds)
-                ->where('users.role_id', '!=', 42)
+                ->whereNotIn('users.role_id', [27,42])
                 ->where('users.is_gov', 1);
         }
 
@@ -108,6 +109,7 @@ class GovCaseUserManagementController extends Controller
         //     $user->assignRole($user->role);
         // }
         ///////// run script
+        // return $data;
 
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
