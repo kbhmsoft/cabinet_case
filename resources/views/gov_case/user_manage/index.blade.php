@@ -32,6 +32,9 @@
         }
     </style>
     <!--begin::Card-->
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
     <div class="card card-custom">
 
         <div class="card-header flex-wrap py-5">
@@ -40,7 +43,8 @@
             </div>
             <div class="card-toolbar">
                 @if (auth()->user()->can('create_new_user'))
-                    <a href="{{ route('cabinet.user-management.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
+                    <a href="{{ route('cabinet.user-management.create') }}"
+                        class="btn btn-sm btn-primary font-weight-bolder">
                         <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
                     </a>
                 @else
@@ -112,7 +116,7 @@
             @if ($users && $users->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
             @else
-                <table class="table table-hover mb-6 font-size-h6">
+                <table id="userTable" class="table table-hover mb-6 font-size-h6">
                     <thead class="thead-light ">
                         <tr>
                             <th scope="col" width="30">#</th>
@@ -127,7 +131,8 @@
                     <tbody>
                         @foreach ($users as $key => $row)
                             <tr>
-                                <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th>
+                                {{-- <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th> --}}
+                                <th scope="row" class="tg-bn">{{ en2bn($key + 1) }}</th>
                                 <td>{{ $row->name }}</td>
 
                                 <td>{{ $row->roleName }}</td>
@@ -143,21 +148,22 @@
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
                                             title="সংশোধন"></i></a>
                                     @if (Auth::user()->role_id == 27)
-                                       
-                                       
                                         {{-- <a href="javascript:void(0)" onclick="userDelete({{ $row->id }})"
                                             class="font-weight-bold pt-1 pb-1"><i class="fas fa-key text-warning"
                                                 title="পাসওয়ার্ড সংশোধন"></i></a> --}}
-                                        <form method="post" action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                        <form method="post"
+                                            action="{{ route('cabinet.user-management.destroy', $row->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="btn btn-danger btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"><i
-                                                    class="fas fa-user-slash" onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')" title="মুছে ফেলুন"></i></button>
+                                                    class="fas fa-user-slash"
+                                                    onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
+                                                    title="মুছে ফেলুন"></i></button>
                                         </form>
                                     @endif
                                 </td>
-                                
+
 
 
                                 {{-- <td>
@@ -182,7 +188,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {!! $users->links() !!}
+                {{-- {!! $users->links() !!} --}}
             @endif
         </div>
     </div>
@@ -191,14 +197,11 @@
 
 {{-- Includable CSS Related Page --}}
 @section('styles')
-    <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 @endsection
 
 {{-- Scripts Section Related Page --}}
 @section('scripts')
-    <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
     <!--end::Page Scripts-->
 
     @if (request()->get('office_type'))
@@ -241,9 +244,31 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
+            new DataTable('#userTable', {
+                layout: {
+                    topStart: {
+                        buttons: [{
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5]
+                                }
+                            },
+
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+
+                            'colvis'
+                        ]
+                    }
+                }
+            });
             $('#ministry').select2();
             $('#divOffice').select2();
-            // $('#office_id').select2();
+            $('#office_id').select2();
 
 
             jQuery('select[name="office_type"]').on('change', function() {

@@ -9,13 +9,13 @@
    <!--begin::Dashboard-->
     <!-- Dashboard Counter -->
     @include('dashboard.cabinet_new.card_layout.super_admin_card_layout')
+    @include('dashboard.cabinet.inc._dashboard_ministry_wise_card')
 
     <!-- //Dashboard Counter -->
 
 
     <!-- Dashboard Action Card -->
 
-    @include('dashboard.cabinet.inc._dashboard_ministry_wise_card')
     <!-- //Dashboard Action Card -->
 
 
