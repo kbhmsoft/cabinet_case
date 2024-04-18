@@ -42,7 +42,14 @@ class GovCaseUserManagementController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $officeID = userInfo()->office_id;
-        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        if($roleID == 27){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        }elseif($roleID == 29 || $roleID == 31){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        }elseif($roleID == 32 || $roleID == 41){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
+        
 
         // Parent office and corresponding child office
         $childOfficeIds = [];
