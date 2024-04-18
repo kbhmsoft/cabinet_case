@@ -46,6 +46,12 @@
                         <a class="nav-link" id="sending_reply_tab" data-toggle="tab" href="#sending_reply" role="tab"
                             aria-controls="profile" aria-selected="false">জবাব <br>প্রেরণ</a>
                     </li>
+
+                    <li class="nav-item nav-li-padding" role="presentation">
+                        <a class="nav-link" id="adalat_reply_tab" data-toggle="tab" href="#adalat_reply" role="tab"
+                            aria-controls="profile" aria-selected="false">আদালতে জবাব <br>দাখিল</a>
+                    </li>
+
                     <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
                             role="tab" aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
@@ -302,9 +308,6 @@
                                                         </div>
 
                                                     </div>
-
-
-
                                                     <div class="col-lg-12 mb-5">
                                                         <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
                                                         <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
@@ -393,12 +396,6 @@
 
                                                     {{-- end সংযুক্তি --}}
                                                 </div>
-
-
-
-
-
-
                                             </div>
                                         </fieldset>
                                         {{-- </div> --}}
@@ -591,7 +588,109 @@
                                 </div>
 
                             </div>
-                            {{-- ------------- end জবাব প্রেরণ ------------- --}}
+                            {{--------------- end জবাব প্রেরণ ---------------}}
+
+
+
+                             {{-- ------------- start আদালতে জবাব দাখিল ------------- --}}
+                         <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
+
+                                <div class="row_int">
+                                    <div class="col-lg-12">
+                                        <!--begin::Card-->
+                                        <input type="hidden" id="caseIDForAnswer" name="case_id">
+                                        <fieldset class="mb-8">
+                                            <div class="col-lg-12 mb-5">
+
+                                                <div class="col-md-6">
+                                                    <label class="form-group font-weight-bolder font-size-h5">আদালতে জবাব (affidavit) দাখিল করা হয়েছে কিনা
+                                                    </label>
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" name="adalat_reply_submit_have"
+                                                                id="adalat_reply_submit_have" value="1" />
+                                                            <span></span>হ্যাঁ</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="adalat_reply_submit_have"
+                                                                id="adalat_reply_submit_have_not" value="0" checked />
+                                                            <span></span>না</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="adalat_reply_div">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 mb-5 mt-8">
+                                                            <label>আদালতে জবাব দাখিলের তারিখ </label>
+                                                            <input type="text" name="adalat_reply_sending_date"
+                                                                id="adalat_reply_sending_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        </div>
+
+                                                        {{-- starting সংযুক্তি  --}}
+                                                        <div class="col-md-12 mt-8">
+                                                            <fieldset class="">
+                                                                <div
+                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (আদালতে জবাব দাখিল কপি সংযুক্ত
+                                                                            করুন)
+                                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
+                                                                                5MB)</sub>
+                                                                        </h3>
+                                                                    </div>
+
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="" role="button"
+                                                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                            <div id="addAdalatReplyFileRow">
+                                                                                <span
+                                                                                    class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="adalatReplyFileDiv"
+                                                                        style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="adalat_reply_attachment_count"
+                                                                        value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-footer mt-5">
+                                    <div class="from-group row">
+                                        <div class="col-md-6" style="display: flex;justify-content: left;">
+                                            <button type="button" id="adalatReplySendingPrevtBtn" class="submit-button"><i
+                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                        </div>
+                                        <div class="col-md-6" style="display: flex;justify-content: right;">
+                                            <button type="button" id="adalatReplySendingNextBtn"
+                                                class="submit-button">পরবর্তী <i class="fas fa-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+                        {{-- ------------- end আদালতে জবাব দাখিল  ------------- --}}
 
                             {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                             <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
@@ -1104,11 +1203,19 @@
             });
 
             $('#seendingReplyNextBtn').on("click", function() {
+                $("#adalat_reply_tab").trigger('click');
+            });
+
+            $('#adalatReplySendingPrevtBtn').on("click", function() {
+                $("#sending_reply_tab").trigger('click');
+            });
+
+            $('#adalatReplySendingNextBtn').on("click", function() {
                 $("#suspension_order_tab").trigger('click');
             });
 
             $('#suspensionOrderPrevtBtn').on("click", function() {
-                $("#sending_reply_tab").trigger('click');
+                $("#adalat_reply_tab").trigger('click');
             });
 
             $('#suspensionOrderNextBtn').on("click", function() {
@@ -1274,6 +1381,22 @@
             });
         });
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('.adalat_reply_div').hide();
+        $('input[name="adalat_reply_submit_have"][value="0"]').prop('checked', true);
+        $('input[name="adalat_reply_submit_have"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adalat_reply_div').show();
+            } else {
+                $('.adalat_reply_div').hide();
+            }
+        });
+    });
+</script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         $(document).ready(function() {

@@ -52,7 +52,6 @@ class GovCaseRegisterRepository
     }
     public static function storeGovCase($caseInfo)
     {
-        // dd($caseInfo);
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
         if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
@@ -173,6 +172,12 @@ class GovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
+
+        if ($caseInfo->adalat_reply_sending_date != null && $caseInfo->adalat_reply_sending_date != '') {
+            $adalat_reply_sending_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->adalat_reply_submit_have)));
+        } else {
+            $adalat_reply_sending_date = null;
+        }
         // dd($ref_case_num);
 
         try {
@@ -280,6 +285,8 @@ class GovCaseRegisterRepository
             $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
             $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
             $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
+            $case->adalat_reply_sending_date = $adalat_reply_sending_date;
+            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -584,6 +591,32 @@ class GovCaseRegisterRepository
             $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
             $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
             $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
+
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
+    // store adalat reply submit
+
+    public static function storeAdalatReplySubmit($caseInfo)
+    {
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        if ($caseInfo->adalat_reply_sending_date != null && $caseInfo->adalat_reply_sending_date != '') {
+            $adalat_reply_sending_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->adalat_reply_submit_have)));
+        } else {
+            $adalat_reply_sending_date = null;
+        }
+
+        try {
+            $case->adalat_reply_sending_date = $adalat_reply_sending_date;
+            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;

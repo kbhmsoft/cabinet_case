@@ -622,74 +622,73 @@
 
 
      // ================================Sending Replay Save==================================//
-    //  $('#adalatReplySubmitForm').submit(function(e) {
-    //     // alert(1);
-    //     e.preventDefault();
-    //     $('#adalatReplySubmitSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+     $('#adalatReplySubmitForm').submit(function(e) {
+        e.preventDefault();
+        $('#adalatReplySubmitSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
-    //     Swal.fire({
-    //         title: 'আপনি কি মামলার আদালতে জবাব দাখিলের তথ্য সংরক্ষণ করতে চান?',
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
+        Swal.fire({
+            title: 'আপনি কি মামলার আদালতে জবাব দাখিলের তথ্য সংরক্ষণ করতে চান?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-    //             var formData = new FormData(this);
-    //             $.ajax({
-    //                 type: 'POST',
-    //                 // url: "{{ route('cabinet.case.adalatReplySubmitStore') }}",
-    //                 data: formData,
-    //                 cache: false,
-    //                 contentType: false,
-    //                 processData: false,
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.adalatReplySubmitStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
 
-    //                 success: (data) => {
-    //                     $('#adalatReplySubmitSaveBtn').removeClass(
-    //                         'spinner spinner-white spinner-right disabled');
-    //                     $orderData = data;
-    //                     Swal.fire(
-    //                         'Saved!',
-    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-    //                         'success'
-    //                     )
-    //                     console.log(data);
-    //                     // console.log(data.caseId);
-    //                     $("#suspension_order").click();
-    //                     $("#caseIDForSuspention").val(data.caseId);
-    //                     $("#caseIDForFinalOrder").val(data.caseId);
-    //                     $("#caseIDForContempt").val(data.caseId);
-    //                     $('#adalatReplySubmitSaveBtn').prop('disabled', false);
-    //                     $('#adalatReplySubmitSaveBtn').removeClass("disable-button");
-    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
-    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
-    //                     $('#finalOrderSaveBtn').prop('disabled', false);
-    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
-    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
-    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+                    success: (data) => {
+                        $('#adalatReplySubmitSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        )
+                        console.log(data);
+                        // console.log(data.caseId);
+                        $("#suspension_order").click();
+                        $("#caseIDForSuspention").val(data.caseId);
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $("#caseIDForContempt").val(data.caseId);
+                        $('#adalatReplySubmitSaveBtn').prop('disabled', false);
+                        $('#adalatReplySubmitSaveBtn').removeClass("disable-button");
+                        $('#suspensionOrderSaveBtn').prop('disabled', false);
+                        $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                        $('#contemptCaseSaveBtn').prop('disabled', false);
+                        $('#contemptCaseSaveBtn').removeClass("disable-button");
 
-    //                 },
-    //                 error: function(data) {
-    //                     console.log(data);
-    //                     $('#adalatReplySubmitSaveBtn').removeClass(
-    //                         'spinner spinner-white spinner-right disabled');
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#adalatReplySubmitSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
 
-    //                 }
-    //             });
-    //         } else {
-    //             $('#adalatReplySubmitSaveBtn').removeClass(
-    //                 'spinner spinner-white spinner-right disabled');
-    //             Swal.fire(
-    //                 'Canceled!',
-    //                 'মামলার আদালতে জবাব দাখিল সংরক্ষণ বাতিল করা হয়েছে',
-    //                 'info'
-    //             );
-    //         }
-    //     })
+                    }
+                });
+            } else {
+                $('#adalatReplySubmitSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire(
+                    'Canceled!',
+                    'মামলার আদালতে জবাব দাখিল সংরক্ষণ বাতিল করা হয়েছে',
+                    'info'
+                );
+            }
+        })
 
-    // });
+    });
     // ================================Sending Replay Save==================================//
 
 
@@ -1035,9 +1034,10 @@
 
 // =================== Adalat Reply Submit =============
   // ============= Add Reply Attachment Row ========= start =========
-  $("#addRepaddAdalatReplyFileRowlyFileRow").click(function(e) {
+  $("#addAdalatReplyFileRow").click(function(e) {
       addAdalatReplyFileRowFunc();
     });
+
     //add row function
     function addAdalatReplyFileRowFunc() {
         var count = parseInt($('#adalat_reply_attachment_count').val());
@@ -1299,23 +1299,6 @@
     });
 </script>
 <script>
-    // document.addEventListener("DOMContentLoaded", function () {
-
-    //     var haveReplyYes = document.getElementById("adalat_reply_submit_have");
-
-    //     var adalatReplyDiv = document.querySelector(".adalat_reply_div");
-    //     haveReplyYes.addEventListener("change", function () {
-    //         if (haveReplyYes.checked) {
-    //             adalatReplyDiv.style.display = "block";
-    //         } else {
-    //             adalatReplyDiv.style.display = "none";
-    //         }
-    //     });
-    // });
-
-
-
-
         $(document).ready(function() {
             $('#postponed_interim_data_details').hide();
             $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
@@ -1327,5 +1310,4 @@
                 }
             });
         });
-
 </script>

@@ -58,10 +58,10 @@
                             aria-controls="profile" aria-selected="false">জবাব <br>প্রেরণ</a>
                     </li>
 
-                    {{-- <li class="nav-item nav-li-padding" role="presentation">
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="adalat_reply_tab" data-toggle="tab" href="#adalat_reply" role="tab"
                             aria-controls="profile" aria-selected="false">আদালতে জবাব <br>দাখিল</a>
-                    </li> --}}
+                    </li>
 
                     <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
@@ -391,6 +391,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         <input type="hidden" id="caseIDForAnswer" name="case_id">
+                                        
                                         <fieldset class="mb-8">
                                             <div class="col-lg-12 mb-5">
 
@@ -523,14 +524,6 @@
                                                                 class="form-control form-control-sm  common_datepicker"
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off">
                                                         </div>
-
-                                                        {{-- <div class="col-md-6 mb-5">
-                                                            <label>মন্তব্য</label>
-                                                            <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
-                                                            </textarea>
-                                                        </div> --}}
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -546,7 +539,7 @@
                         {{-- ------------- end জবাব প্রেরণ ------------- --}}
 
                         {{-- ------------- start আদালতে জবাব দাখিল ------------- --}}
-                        {{-- <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
+                         <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
                             <form id="adalatReplySubmitForm" action="javascript:void(0)" class="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -583,7 +576,7 @@
                                                         </div>
 
                                                         {{-- starting সংযুক্তি  --}}
-                        {{-- <div class="col-md-12 mt-8">
+                                                        <div class="col-md-12 mt-8">
                                                             <fieldset class="">
                                                                 <div
                                                                     class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
@@ -633,12 +626,9 @@
                                     <button type="submit" id="adalatReplySubmitSaveBtn"
                                         class="action-button submit-button">সংরক্ষণ</button>
                                 </div>
-                            </form> --}}
-                        {{-- </div> --}}
+                            </form>
+                        </div>
                         {{-- ------------- end আদালতে জবাব দাখিল  ------------- --}}
-
-
-
 
                         {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                         <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
@@ -1469,6 +1459,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $('.adalat_reply_div').hide();

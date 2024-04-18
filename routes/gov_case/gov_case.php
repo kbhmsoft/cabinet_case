@@ -229,6 +229,7 @@ Route::middleware('auth')->group(function () {
             Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
             Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
+            Route::get('adalat/reply-sending/{id}', [GovCaseRegisterController::class, 'adalatReplySending'])->name('adalatReplySending');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
             Route::get('final/order/{id}', [GovCaseRegisterController::class, 'finalOrderEdit'])->name('finalOrderEdit');
             Route::get('contemptCaseIssue/{id}', [GovCaseRegisterController::class, 'contemptCaseIssue'])->name('contemptCaseIssue');

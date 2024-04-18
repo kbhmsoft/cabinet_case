@@ -2661,6 +2661,11 @@ class GovCaseRegisterController extends Controller
             if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
                 AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
             }
+
+            if ($request->adalat_reply_file_type && $_FILES["adalat_reply_file_name"]['name']) {
+                AttachmentRepository::storeAdalatReplySendingAttachment('gov_case', $caseId, $request);
+            }
+
             if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
                 AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
             }
@@ -2949,9 +2954,43 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.sending_reply_edit')->with($data);
     }
 
+
+        public function adalatReplySending($id)
+    {
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
+
+        $data['ministrys'] = GovCaseOffice::get();
+
+        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['courts'] = DB::table('court')
+            ->select('id', 'court_name')
+            ->whereIn('id', [1, 2])
+            ->get();
+
+        if ($roleID != 33) {
+            $data['depatments'] = Office::where('parent', $officeID)->get();
+        } else {
+            $data['depatments'] = Office::where('level', 12)->get();
+        }
+        $data['GovCaseDivision'] = GovCaseDivision::all();
+        $data['usersInfo'] = User::all();
+
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+
+        $data['page_title'] = 'আদালতে জবাব দাখিল';
+
+        return view('gov_case.case_register._inc.adalat_reply_sending_edit')->with($data);
+    }
+
     public function sendingReplyStore(Request $request)
     {
         $caseId = $request->case_id;
+
         $request->validate(
             [
                 'case_id' => 'required',
@@ -3000,6 +3039,7 @@ class GovCaseRegisterController extends Controller
 
     public function adalatReplySubmitStore(Request $request)
     {
+
         $caseId = $request->case_id;
         $request->validate(
             [
@@ -3010,13 +3050,14 @@ class GovCaseRegisterController extends Controller
             ]
         );
         try {
-            $caseInfo = GovCaseRegisterRepository::storeSendingReply($request);
-
+            $caseInfo = GovCaseRegisterRepository::storeAdalatReplySubmit($request);
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+
             if ($request->file_type && $_FILES["file_name"]['name']) {
-                AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
+                AttachmentRepository::storeAdalatReplySendingAttachment('gov_case', $caseId, $request);
             }
+
             $caseRegisterData = array_merge($caseRegister, [
                 'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
                 'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
@@ -3053,9 +3094,9 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+
         $data['ministrys'] = GovCaseOffice::get();
-        // $data['concern_person'] = User::whereIn('role_id', [15,34,35])->get();
+
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
@@ -3063,7 +3104,7 @@ class GovCaseRegisterController extends Controller
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
             ->get();
-        // dd($data['concern_person_desig']);
+        
         if ($roleID != 33) {
             $data['depatments'] = Office::where('parent', $officeID)->get();
         } else {
@@ -3071,12 +3112,11 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
-        // return $data['usersInfo'];
+
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
-        // return $data['concern_person_desig'];
+
         $data['page_title'] = 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিষয়ে ব্যাবস্থা';
-        // return $data['concern_person_desig'] ;
-        // return $data;
+
         return view('gov_case.case_register._inc.suspension_order_edit')->with($data);
     }
 
