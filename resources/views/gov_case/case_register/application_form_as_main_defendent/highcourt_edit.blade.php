@@ -83,8 +83,8 @@
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
-                                                     <input type="hidden" id="" name="case_id"
-                                            value="{{ $case->id }}">
+                                                <input type="hidden" id="" name="case_id"
+                                                    value="{{ $case->id }}">
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
@@ -276,7 +276,8 @@
 
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="MainBibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="MainBibadiDiv"
+                                                        class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span></th>
                                                         </tr>
@@ -288,11 +289,16 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <!-- Hidden field to store previous main_respondent -->
-                                                                    <input type="hidden" name="previous_main_respondent[]" value="{{ $val->respondent_id }}">
+                                                                    <input type="hidden"
+                                                                        name="previous_main_respondent[]"
+                                                                        value="{{ $val->respondent_id }}">
 
-                                                                    <select {{ request('red') ? 'disabled' : '' }} name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                    <select {{ request('red') ? 'disabled' : '' }}
+                                                                        name="main_respondent[]" id="ministry_id"
+                                                                        class="form-control form-control-sm">
                                                                         @foreach ($ministrys as $item)
-                                                                            <option value="{{ $item->doptor_office_id }}" {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                            <option value="{{ $item->doptor_office_id }}"
+                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }}
                                                                             </option>
                                                                         @endforeach
@@ -300,10 +306,12 @@
                                                                 </td>
 
                                                                 <!-- Hidden field to store current doptor_office_id -->
-                                                                <input type="hidden" name="bibadi_id[]" value="{{ $val->doptor_office_id }}">
+                                                                <input type="hidden" name="bibadi_id[]"
+                                                                    value="{{ $val->doptor_office_id }}">
                                                                 <td>
                                                                     @if ($key > 0)
-                                                                        <a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $val->id }}"
                                                                             onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
                                                                             <i class="fas fa-minus-circle"></i>
@@ -335,27 +343,29 @@
                                                         @foreach ($otherBibadi as $key => $val)
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }} name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                    <select {{ request('red') ? 'disabled' : '' }}
+                                                                        name="other_respondent[]" id="ministry_id"
+                                                                        class="form-control form-control-sm">
                                                                         @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->doptor_office_id }}"
-                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                            {{ $item->office_name_bn ?? '' }} </option>
-                                                        @endforeach
-                                                        </select>
-                                                        </td>
-                                                        <input type="hidden" name="bibadi_id[]"
-                                                            value="{{ $val->id }}">
-                                                        <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $val->id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
-                                                            @endif
-                                                        </td>
-                                                        </tr>
+                                                                            <option value="{{ $item->doptor_office_id }}"
+                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                                {{ $item->office_name_bn ?? '' }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <input type="hidden" name="bibadi_id[]"
+                                                                    value="{{ $val->id }}">
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $val->id }}"
+                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                     </table>
                                                 </div>
@@ -484,249 +494,199 @@
                                             value="{{ $case->id }}">
 
                                         <fieldset class="mb-8">
-                                            {{-- <legend> পদক্ষেপের বিবরণ</legend> --}}
-                                            <div class="form-group row">
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
-                                                    <input type="text" name="result_sending_date"
-                                                        id="result_sending_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="" autocomplete="off"
-                                                        value="{{ $case->result_sending_date ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
-                                                    <input type="text" name="result_sending_memorial"
-                                                        id="result_sending_memorial" class="form-control form-control-sm"
-                                                        placeholder="" autocomplete="off"
-                                                        value="{{ $case->result_sending_memorial ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
+                                            <div class="col-lg-12 mb-5">
+
+                                                <div class="col-md-6">
+                                                    <label class="form-group font-weight-bolder font-size-h5">জবাব প্রেরণ
+                                                        করা হয়েছে কিনা
                                                     </label>
-                                                    <input type="text" name="result_sending_date_solisitor_to_ag"
-                                                        id="result_sending_date_solisitor_to_ag"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
-                                                        value="{{ $case->result_sending_date_solisitor_to_ag ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
-                                                        স্মারক </label>
-                                                    <input type="text" name="result_sending_memorial_solisitor_to_ag"
-                                                        id="result_sending_memorial_solisitor_to_ag"
-                                                        class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off"
-                                                        value="{{ $case->result_sending_memorial_solisitor_to_ag ?? '' }}">
-                                                </div>
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
-                                                    <input type="text" name="reply_submission_date"
-                                                        id="reply_submission_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off"
-                                                        value="{{ $case->reply_submission_date ?? '' }}">
-                                                </div>
-                                                <div class="col-md-6 mb-5">
-                                                    <label>মন্তব্য</label>
-                                                    <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">{{ $case->comments ?? '' }}
-                                                    </textarea>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="form-group row" id="highCourt_hide_show">
-                                                {{-- <div class="col-md-6 mb-5">
-                                                        <label>মন্তব্য</label>
-                                                        <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
-                                                                </textarea>
-                                                    </div> --}}
-                                            </div>
-
-
-
-                                            {{-- starting সংযুক্তি  --}}
-
-
-                                            <div class="col-md-12">
-                                                <fieldset class="">
-                                                    <div
-                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                        <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত করুন)
-                                                                <span class="text-danger">*</span>
-                                                            </h3>
-                                                        </div>
-
-                                                        <div class="symbol-group symbol-hover py-2">
-                                                            <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top" title=""
-                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                <div id="addReplyFileRow">
-                                                                    <span class="symbol-label font-weight-bold bg-success">
-                                                                        <i
-                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" name="sending_reply_have"
+                                                                id="sending_reply_have" value="1"
+                                                                {{ $case->sending_reply_have == 1 ? 'checked' : '' }} />
+                                                            <span></span>হ্যাঁ</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="sending_reply_have"
+                                                                id="sending_reply_have_not" value="0"
+                                                                {{ $case->sending_reply_have == 0 ? 'checked' : '' }} />
+                                                            <span></span>না</label>
                                                     </div>
-                                                    <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5" id="fileDiv"
-                                                            style="border:1px solid #dcd8d8;">
-                                                            @foreach ($replyFiles as $key => $value)
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="text" name="file_type[]"
-                                                                            id="customFileName"
-                                                                            class="form-control form-control-sm"
-                                                                            value="{{ old('file_type', $value->file_type) }}">
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="custom-file">
+                                                </div>
 
-                                                                            @if ($value->file_name)
-                                                                                <a target="_blank"
-                                                                                    class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
-                                                                                    href="{{ asset($value->file_name) }}">সংযুক্তি
-                                                                                    কপি</a><br>
-                                                                            @else
-                                                                                <input type="file"
-                                                                                    accept="application/pdf"
-                                                                                    name="file_name[]"
-                                                                                    onChange="attachmentTitle(this)"
-                                                                                    class="custom-file-input"
-                                                                                    id="customFile" />
-                                                                                <label id="file_error"
-                                                                                    class="text-danger font-weight-bolder mt-2 mb-2"></label>
-                                                                                <label
-                                                                                    class="custom-file-label custom-input"
-                                                                                    for="customFile">
-                                                                                </label>
-                                                                            @endif
+
+                                                <div class="p-5" id="sending_reply_data_details">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1"
+                                                            id="solicitor_checkbox" name="sending_reply_person_solicitor"
+                                                            {{ in_array(1, explode(',', $case->sending_reply_person_unit)) ? 'checked' : '' }}>
+                                                        <label class="form-check-label lawyer_title"
+                                                            for="solicitor_checkbox">সলিসিটর বরাবর</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1"
+                                                            id="law_officer_checkbox"
+                                                            name="sending_reply_person_law_officer"
+                                                            {{ in_array(2, explode(',', $case->sending_reply_person_unit)) ? 'checked' : '' }}>
+                                                        <label class="form-check-label lawyer_title"
+                                                            for="law_officer_checkbox">আইন কর্মকর্তা/প্যানেল আইনজীবী
+                                                            বরাবর</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="sending_reply_div">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 mb-5">
+                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
+                                                            <input type="text" name="result_sending_date"
+                                                                id="result_sending_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="" autocomplete="off"
+                                                                value="{{ $case->result_sending_date ?? '' }}">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-5">
+                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
+                                                            <input type="text" name="result_sending_memorial"
+                                                                id="result_sending_memorial"
+                                                                class="form-control form-control-sm" placeholder=""
+                                                                autocomplete="off"
+                                                                value="{{ $case->result_sending_memorial ?? '' }}">
+                                                        </div>
+
+                                                        {{-- starting সংযুক্তি  --}}
+                                                        <div class="col-md-12">
+                                                            <fieldset class="">
+                                                                <div
+                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত
+                                                                            করুন)
+                                                                            <span class="text-danger">*</span>
+                                                                        </h3>
+                                                                    </div>
+
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="" role="button"
+                                                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                            <div id="addReplyFileRow">
+                                                                                <span
+                                                                                    class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
                                                                         </div>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                            <tr></tr>
-                                                        </table>
-                                                        <input type="hidden" id="other_attachment_count" value="1">
-                                                    </div>
-                                                    <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5" id="replyFileDiv"
-                                                            style="border:1px solid #dcd8d8;">
-                                                            <tr></tr>
-                                                        </table>
-                                                        <input type="hidden" id="reply_attachment_count" value="1">
-                                                    </div>
-                                                </fieldset>
-                                            </div>
 
-                                            {{-- end সংযুক্তি --}}
+                                                                    </div>
 
-                                        </fieldset>
+                                                                </div>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="fileDiv" style="border:1px solid #dcd8d8;">
+                                                                        @foreach ($replyFiles as $key => $value)
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <input type="text"
+                                                                                        name="file_type[]"
+                                                                                        id="customFileName"
+                                                                                        class="form-control form-control-sm"
+                                                                                        value="{{ old('file_type', $value->file_type) }}">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="custom-file">
 
-                                        {{-- <div class="row">
-                                            <div class="col-md-12" id="appeal_hide_show_3">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <fieldset class="mb-6">
-                                                            <legend>লিভ টু আপিল </legend>
-                                                            <div class="form-group row">
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>লিভ টু আপিল নম্বর <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="leave_to_appeal_no"
-                                                                        id="leave_to_appeal_no"
-                                                                        class="form-control form-control-sm"autocomplete="off">
+                                                                                        @if ($value->file_name)
+                                                                                            <a target="_blank"
+                                                                                                class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
+                                                                                                href="{{ asset($value->file_name) }}">সংযুক্তি
+                                                                                                কপি</a><br>
+                                                                                        @else
+                                                                                            <input type="file"
+                                                                                                accept="application/pdf"
+                                                                                                name="file_name[]"
+                                                                                                onChange="attachmentTitle(this)"
+                                                                                                class="custom-file-input"
+                                                                                                id="customFile" />
+                                                                                            <label id="file_error"
+                                                                                                class="text-danger font-weight-bolder mt-2 mb-2"></label>
+                                                                                            <label
+                                                                                                class="custom-file-label custom-input"
+                                                                                                for="customFile">
+                                                                                            </label>
+                                                                                        @endif
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="other_attachment_count"
+                                                                        value="1">
                                                                 </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>লিভ টু আপিল দায়েরের তারিখ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="leave_to_appeal_date"
-                                                                        id="leave_to_appeal_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="replyFileDiv"
+                                                                        style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden" id="reply_attachment_count"
+                                                                        value="1">
                                                                 </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>লিভ টু আপিল আদেশের তারিখ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text"
-                                                                        name="leave_to_appeal_order_date"
-                                                                        id="leave_to_appeal_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>লিভ টু আপিল আদেশের বিবরণ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <textarea name="leave_to_appeal_order_details" class="form-control" id="leave_to_appeal_order_details"
-                                                                        rows="3" spellcheck="false"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <fieldset class="mb-6">
-                                                            <legend>সিভিল আপিল </legend>
-                                                            <div class="form-group row">
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="col-md-8 mb-5 mt-6" id="trackingNumberField"
+                                                            style="display: none;">
+                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে
+                                                                ট্র্যাকিং নম্বর প্রদান করুন</label>
+                                                            <input type="text" name="soltrack_tracking_number"
+                                                                class="form-control"
+                                                                value="{{ $case->soltrack_tracking_number ?? '' }}">
+                                                        </div>
 
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>সিভিল আদেশের তারিখ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="civil_appeal_order_date"
-                                                                        id="civil_appeal_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>সিভিল আপিল আদেশের বিবরণ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <textarea name="civil_appeal_order_details" class="form-control" id="civil_appeal_order_details" rows="3"
-                                                                        spellcheck="false"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
+                                                        <div class="col-lg-6 mb-5 mt-5">
+                                                            <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের তারিখ
+                                                            </label>
+                                                            <input type="text"
+                                                                name="result_sending_date_solisitor_to_ag"
+                                                                id="result_sending_date_solisitor_to_ag"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                                value="{{ $case->result_sending_date_solisitor_to_ag ?? '' }}">
+                                                        </div>
+                                                        <div class="col-lg-6 mb- mt-5">
+                                                            <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
+                                                                স্মারক </label>
+                                                            <input type="text"
+                                                                name="result_sending_memorial_solisitor_to_ag"
+                                                                id="result_sending_memorial_solisitor_to_ag"
+                                                                class="form-control form-control-sm" placeholder=""
+                                                                autocomplete="off"
+                                                                value="{{ $case->result_sending_memorial_solisitor_to_ag ?? '' }}">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-5">
+                                                            <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
+                                                            <input type="text" name="reply_submission_date"
+                                                                id="reply_submission_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                                value="{{ $case->reply_submission_date ?? '' }}">
+                                                        </div>
+                                                        {{-- <div class="col-md-6 mb-5">
+                                                                <label>মন্তব্য</label>
+                                                                <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">{{ $case->comments ?? '' }}
+                                                                </textarea>
+                                                            </div> --}}
+
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <fieldset class="mb-6">
-                                                            <legend>রিভিউ মামলা </legend>
-                                                            <div class="form-group row">
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>রিভিউ নম্বর <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="review_case_no"
-                                                                        id="review_case_no"
-                                                                        class="form-control form-control-sm"autocomplete="off">
-                                                                </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>রিভিউ দায়েরের তারিখ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="review_case_date"
-                                                                        id="review_case_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>রিভিউ আদেশের তারিখ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <input type="text" name="review_case_order_date"
-                                                                        id="review_case_order_date"
-                                                                        class="form-control form-control-sm common_datepicker"autocomplete="off">
-                                                                </div>
-                                                                <div class="col-lg-6 mb-5">
-                                                                    <label>রিভিউ আদেশের বিবরণ <span
-                                                                            class="text-danger"></span></label>
-                                                                    <textarea name="review_case_order_details" class="form-control" id="review_case_order_details" rows="3"
-                                                                        spellcheck="false"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                    </div>
+
+
                                                 </div>
                                             </div>
-                                        </div> --}}
-
-                                        <!--end::Card-->
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="form-footer" style="display: flex;justify-content: center;">
@@ -1442,7 +1402,8 @@
                                                         <div class="col-lg-4 mb-5">
                                                             <label>প্রস্তাব স্মারক নম্বর <span
                                                                     class="text-danger"></span></label>
-                                                            <input type="text" name="proposal_memorial_civil_revision"
+                                                            <input type="text"
+                                                                name="proposal_memorial_civil_revision"
                                                                 id="proposal_memorial_civil_revision"
                                                                 class="form-control form-control-sm"autocomplete="off">
                                                         </div>
@@ -1702,8 +1663,6 @@
                             </form>
                         </div>
                         {{-- ------------- end কনটেম্প্ট মামলা------------- --}}
-
-
                     </div>
                 </div>
             </div>
@@ -1734,6 +1693,51 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('#sending_reply_data_details').hide();
+            $('#trackingNumberField').hide();
+            $('input[name="sending_reply_have"]').change(function() {
+                if ($(this).val() == '1') {
+
+                    $('#sending_reply_data_details').show();
+                } else {
+
+                    $('#sending_reply_data_details').hide();
+                    $('#trackingNumberField').hide();
+                    $('.sending_reply_div').hide();
+                    $('#sending_reply_data_details input').val('');
+                    $('.sending_reply_div input').val('');
+                    $('#sending_reply_data_details input[type="checkbox"]').prop('checked', false);
+                }
+            });
+
+            $('#solicitor_checkbox').change(function() {
+                if ($(this).is(':checked')) {
+
+                    $('#trackingNumberField').show();
+                } else {
+                    $('#trackingNumberField').hide();
+                }
+            });
+
+            var solicitorCheckbox = document.getElementById("solicitor_checkbox");
+            var lawOfficerCheckbox = document.getElementById("law_officer_checkbox");
+            var sendingReplyDiv = document.querySelector(".sending_reply_div");
+
+            function toggleSendingReplyDiv() {
+                if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                    sendingReplyDiv.style.display = "block";
+                } else {
+                    sendingReplyDiv.style.display = "none";
+                }
+            }
+
+            toggleSendingReplyDiv();
+            solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+            lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        });
+    </script>
     <script>
         function showAlert() {
             Swal.fire({

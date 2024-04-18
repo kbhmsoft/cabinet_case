@@ -18,6 +18,7 @@ use App\Models\SuspensionAttachment;
 use App\Models\LeaveToAppealAttachment;
 use Illuminate\Support\Facades\Session;
 use App\Models\AppealFinalOrderAttachment;
+use App\Models\AdalatReplySendingAttachment;
 use App\Models\LeaveToAppealAnswerAttachment;
 
 class AttachmentRepository
@@ -114,6 +115,30 @@ class AttachmentRepository
                     $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new ReplyAttachment();
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_name = $filePath . $otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
+
+    public static function storeAdalatReplySendingAttachment($appName, $caseId, $request)
+    {
+   
+        if ($request->file_name != null) {
+            foreach ($request->file_type as $key => $val) {
+                $filePath = "uploads/" . $appName . "/adalat_reply_sending_attachment/";
+                if ($request->file_name[$key] != null) {
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
+                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                }
+                $attachment = new AdalatReplySendingAttachment();
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type[$key];
                 $attachment->file_name = $filePath . $otherfileName;

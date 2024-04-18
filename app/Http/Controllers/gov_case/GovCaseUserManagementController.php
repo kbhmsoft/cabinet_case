@@ -124,7 +124,7 @@ class GovCaseUserManagementController extends Controller
     {
         $roleID = Auth::user()->role_id;
         $officeId = Auth::user()->office_id;
-        
+
         $role = array('1', '27');
         if ($roleID != 29) {
             $data['roles'] = DB::table('roles')

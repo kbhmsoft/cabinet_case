@@ -52,7 +52,6 @@ class GovCaseRegisterRepository
     }
     public static function storeGovCase($caseInfo)
     {
-        // dd($caseInfo);
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
         if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
@@ -173,6 +172,12 @@ class GovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
+
+        if ($caseInfo->adalat_reply_sending_date != null && $caseInfo->adalat_reply_sending_date != '') {
+            $adalat_reply_sending_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->adalat_reply_submit_have)));
+        } else {
+            $adalat_reply_sending_date = null;
+        }
         // dd($ref_case_num);
 
         try {
@@ -206,10 +211,11 @@ class GovCaseRegisterRepository
             $case->result = $caseInfo->result;
             $case->in_favour_govt = $in_favour_govt;
             $case->is_appeal = $caseInfo->is_appeal;
-            $case->comments = $caseInfo->comments;
+            // $case->comments = $caseInfo->comments;
             $case->is_final_order = $is_final_order;
             $case->arji_file = null;
             $case->status = 1;
+
             $case->case_status_id = 33;
             $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial;
             $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing;
@@ -279,6 +285,8 @@ class GovCaseRegisterRepository
             $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
             $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
             $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
+            $case->adalat_reply_sending_date = $adalat_reply_sending_date;
+            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -587,6 +595,33 @@ class GovCaseRegisterRepository
             if ($case->save()) {
                 $caseId = $case->id;
             }
+
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
+    // store adalat reply submit
+
+    public static function storeAdalatReplySubmit($caseInfo)
+    {
+        $case = self::checkGovCaseExist($caseInfo['case_id']);
+        if ($caseInfo->adalat_reply_sending_date != null && $caseInfo->adalat_reply_sending_date != '') {
+            $adalat_reply_sending_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->adalat_reply_submit_have)));
+        } else {
+            $adalat_reply_sending_date = null;
+        }
+
+        try {
+            $case->adalat_reply_sending_date = $adalat_reply_sending_date;
+            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
+
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+
         } catch (\Exception $e) {
             dd($e);
             $caseId = null;

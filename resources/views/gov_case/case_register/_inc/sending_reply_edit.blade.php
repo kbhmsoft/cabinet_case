@@ -36,6 +36,8 @@
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
+
+
                         {{-- ------------- start জবাব প্রেরণ ------------- --}}
                         <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
                             <form id="sendingReplyForm" action="javascript:void(0)" class="form" method="POST"
@@ -176,13 +178,12 @@
                                                                 class="form-control form-control-sm  common_datepicker"
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off">
                                                         </div>
-                                                        <div class="col-md-6 mb-5">
+
+                                                        {{-- <div class="col-md-6 mb-5">
                                                             <label>মন্তব্য</label>
                                                             <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
                                                                 </textarea>
-                                                        </div>
-
-
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -219,7 +220,6 @@
 
 @section('scripts')
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-
     <script>
         $(document).ready(function() {
             $('.tab-content .tab-pane:first-child').addClass('active');
@@ -232,10 +232,9 @@
         });
     </script>
 
-
-
-
     @include('gov_case.case_register._inc.action_js')
+
+
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
