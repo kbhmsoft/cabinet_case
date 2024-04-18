@@ -105,22 +105,23 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4 mb-4" id="selectMinDiv" style="display: none;">
+                            @if (Auth::user()->role_id != 29)
+                                <div class="col-4 mb-4" id="selectMinDiv" style="display: none;">
 
-                                <div class="form-group mb-4">
-                                    <label class=" form-control-label">মন্ত্রণালয়/বিভাগ</label>
-                                    <select name="ministry" id="ministry" class="form-control">
-                                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                                        @foreach ($ministries as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-group mb-4">
+                                        <label class=" form-control-label">মন্ত্রণালয়/বিভাগ</label>
+                                        <select name="ministry" id="ministry" class="form-control">
+                                            <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
+                                            @foreach ($ministries as $value)
+                                                <option
+                                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                                    {{ $value->office_name_bn }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-
+                            @endif
 
                             <div class="col-4 mb-4" id="selectDivisionDiv" style="display: none;">
                                 <div class="form-group mb-4">
@@ -137,18 +138,32 @@
                                     </select>
                                 </div>
                             </div>
-
-
-                            <div class="form-group mb-4 col-lg-4 ">
-                                <label>অফিস</label>
-                                <select name="office_id" id="office_id" class="form-control">
-                                    <option value="">- অফিস নির্বাচন করুন-</option>3
-                                </select>
-                                <span style="color: red">
-                                    {{ $errors->first('office_id') }}
-                                </span>
-                            </div>
-
+                            @if (Auth::user()->role_id != 29)
+                                <div class="form-group mb-4 col-lg-4 ">
+                                    <label>অফিস</label>
+                                    <select name="office_id" id="office_id" class="form-control">
+                                        <option value="">- অফিস নির্বাচন করুন-</option>3
+                                    </select>
+                                    <span style="color: red">
+                                        {{ $errors->first('office_id') }}
+                                    </span>
+                                </div>
+                            @else
+                                <div class="form-group mb-4 col-lg-4 ">
+                                    <label>অফিস</label>
+                                    <select name="office_id" id="office_id" class="form-control">
+                                        <option value="">- অফিস নির্বাচন করুন-</option>
+                                        @foreach ($offices as $value)
+                                            <option value="{{ $value->doptor_office_id }}">
+                                                {{ $value->office_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span style="color: red">
+                                        {{ $errors->first('office_id') }}
+                                    </span>
+                                </div>
+                            @endif
 
                             <div class="col-4">
                                 <div class="form-group">
@@ -232,16 +247,16 @@
     </div>
     <style>
         /* .select2-container .select2-selection--single {
-                                        height: 37px !important;
-                                    }
+                                                    height: 37px !important;
+                                                }
 
-                                    .select2-container--default .select2-selection--single .select2-selection__arrow {
-                                        top: 5px !important;
-                                    }
+                                                .select2-container--default .select2-selection--single .select2-selection__arrow {
+                                                    top: 5px !important;
+                                                }
 
-                                    .select2-container--default .select2-selection--single .select2-selection__rendered {
-                                        line-height: 25px !important;
-                                    } */
+                                                .select2-container--default .select2-selection--single .select2-selection__rendered {
+                                                    line-height: 25px !important;
+                                                } */
     </style>
 @endsection
 @section('scripts')
@@ -410,59 +425,63 @@
 
 
             // Level Wise Office
-            jQuery('select[name="office_type"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
-            });
+            // if (Auth::user() - > role_id != 29) {
 
-            // Ministry Wise Office
-            jQuery('select[name="ministry"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
-            });
 
+                jQuery('select[name="office_type"]').on('change', function() {
+                    var dataID = jQuery(this).val();
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        jQuery.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                jQuery('select[name="office_id"]').html(
+                                    '<div class="loadersmall"></div>');
+                                jQuery('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                                jQuery.each(data, function(key, value) {
+                                    jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                });
+                                jQuery('.loadersmall').remove();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty();
+                    }
+                });
+
+                // Ministry Wise Office
+                jQuery('select[name="ministry"]').on('change', function() {
+                    var dataID = jQuery(this).val();
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        jQuery.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                jQuery('select[name="office_id"]').html(
+                                    '<div class="loadersmall"></div>');
+                                jQuery('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                                jQuery.each(data, function(key, value) {
+                                    jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                });
+                                jQuery('.loadersmall').remove();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty();
+                    }
+                });
+
+            // }
 
             // DivisionOffice Wise Office
             jQuery('select[name="divOffice"]').on('change', function() {

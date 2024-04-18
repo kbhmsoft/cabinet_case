@@ -32,6 +32,8 @@
         }
     </style>
     <!--begin::Card-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
     <div class="card card-custom">
 
         <div class="card-header flex-wrap py-5">
@@ -112,7 +114,7 @@
             @if ($users && $users->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
             @else
-                <table class="table table-hover mb-6 font-size-h6">
+                <table id="nothiUserTable" class="table table-hover mb-6 font-size-h6">
                     <thead class="thead-light ">
                         <tr>
                             <th scope="col" width="30">#</th>
@@ -126,7 +128,7 @@
                     <tbody>
                         @foreach ($users as $key => $row)
                             <tr>
-                                <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th>
+                                <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
                                 <td>{{ $row->name_bng ?? ''}}</td>
                                 <td>{{ $row->roleName ?? ''}}</td>
                                 <td>{{ $row->office_name_bn ??''}}</td>
@@ -135,7 +137,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {!! $users->links() !!}
+                {{-- {!! $users->links() !!} --}}
             @endif
         </div>
     </div>
@@ -194,9 +196,31 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
+            new DataTable('#nothiUserTable', {
+                layout: {
+                    topStart: {
+                        buttons: [{
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4]
+                                }
+                            },
+
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+
+                            'colvis'
+                        ]
+                    }
+                }
+            });
             $('#ministry').select2();
             $('#divOffice').select2();
-            // $('#office_id').select2();
+            $('#office_id').select2();
 
 
             jQuery('select[name="office_type"]').on('change', function() {

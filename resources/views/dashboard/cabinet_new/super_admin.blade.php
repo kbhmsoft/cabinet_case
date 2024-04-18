@@ -140,14 +140,14 @@
                                 <div class="case-info">
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
-                                        <a href="{{ route('cabinet.case.highcourt') }}"
+                                        <a href="{{ route('user-management') }}"
                                             style="text-decoration: none; color: black;">
                                             ই-নথি আইডি</a>
                                         {{-- <span class="count-numbers" style="margin-left:10rem; color: black">{{ en2bn($total_high_court_case) }}</span> --}}
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
-                                        <a href="{{ route('cabinet.case.appellateDivision') }}"
+                                        <a href="{{ route('cabinet.user-management.index') }}"
                                             style="text-decoration: none; color: black;"> ই-নথি বহির্ভুত আইডি</a>
                                         {{-- <span class="count-numbers"
                                         style="margin-left:10rem; color: black">{{ en2bn($total_appeal_case) }}</span> --}}
