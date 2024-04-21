@@ -149,7 +149,7 @@
                                         {{ $errors->first('office_id') }}
                                     </span>
                                 </div>
-                            @elseif (Auth::user()->role_id == 32)
+                            @elseif (Auth::user()->role_id == 29 || Auth::user()->role_id == 32)
                             <input type="hidden" name="office_id" id="office_id" value="{{Auth::user()->office_id}}">
                             @endif
 
