@@ -150,7 +150,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম (কোর্ট নাম)</label>
+                                                    <label>আদালতের নাম (Justice Name)</label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
                                                             class="form-control form-control-sm" required="required">
@@ -391,7 +391,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         <input type="hidden" id="caseIDForAnswer" name="case_id">
-                                        
+
                                         <fieldset class="mb-8">
                                             <div class="col-lg-12 mb-5">
 

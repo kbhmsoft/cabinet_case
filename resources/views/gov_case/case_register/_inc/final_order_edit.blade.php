@@ -7,7 +7,7 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-        
+
     @endphp
 
 
@@ -63,8 +63,18 @@
 
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
+                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
+
+
+                                                    <div class="col-lg-4">
+                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
+                                                        <input type="text" name="result_date"
+                                                            class="form-control form-control-sm  common_datepicker"
+                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                    </div>
+
                                                     <div class="col-md-6 mb-5">
-                                                        <input type="hidden" name="case_id" value="{{ $case->id }}">
+
                                                         <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                         </label>
                                                         <div class="radio-inline">
@@ -78,10 +88,8 @@
                                                                 <span></span>সরকারের বিপক্ষে</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
-                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3" spellcheck="false"></textarea>
-                                                    </div>
+
+
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">সরকারের
                                                             বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
@@ -97,12 +105,15 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-4">
-                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
-                                                        <input type="text" name="result_date"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
+
+                                                    <div class="col-md-12">
+                                                        <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
+                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3" spellcheck="false"></textarea>
                                                     </div>
+
+
+
+
                                                     <div class="col-lg-4 mb-5">
                                                         <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
                                                                 class="text-danger"></span></label>
@@ -203,7 +214,7 @@
                                                             class="form-control form-control-sm "autocomplete="off">
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row" id="writDiv">
                                                     <div class="col-lg-4">
                                                         <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
@@ -263,7 +274,7 @@
                                                             class="form-control form-control-sm "autocomplete="off">
                                                     </div>
                                                 </div>
-                                                
+
                                                 {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
                                                     <fieldset class="">
@@ -318,8 +329,6 @@
                             </form>
                         </div>
                         {{-- ------------- end জবাব প্রেরণ ------------- --}}
-
-
 
                     </div>
                 </div>

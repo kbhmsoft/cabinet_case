@@ -144,7 +144,7 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম (Justice Name) <span class="text-danger">*</span></label>
 
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
