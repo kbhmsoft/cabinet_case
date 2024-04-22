@@ -116,7 +116,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম <span class="text-danger">*</span></label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="appeal_adalat" id="AppealAdalat"
                                                             class="form-control form-control-sm" required="required">

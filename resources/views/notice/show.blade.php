@@ -2,7 +2,7 @@
 @section('title', 'নোটিশ তালিকা')
 
 @section('head')
-<link rel="icon" href="favicon.ico" type="image/x-icon"> 
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var link = document.querySelector("link[rel~='icon']");

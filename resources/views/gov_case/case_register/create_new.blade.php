@@ -18,7 +18,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -169,7 +169,7 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5">
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                             class="text-danger">*</span></label>
 
@@ -202,7 +202,60 @@
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
+                                                </div> --}}
+
+                                                <div class="container">
+                                                    <div id="dynamicDivs">
+                                                        <!-- Initial divs -->
+                                                        <div class="row mb-3 dynamic-div">
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                        class="text-danger">*</span></label>
+                                                                <div class="concernPersonDesignationDiv">
+                                                                    <select name="concern_person_designation"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        <option value="">-- নির্বাচন করুন --</option>
+                                                                        <!-- Assuming $concern_person_desig is a PHP variable containing designations -->
+                                                                        @foreach ($concern_person_desig as $value)
+                                                                            <option value="{{ $value->id }}">
+                                                                                {{ $value->name_bn }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <span
+                                                                        class="text-danger d-none validation-message">This
+                                                                        field can not be empty</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                                        class="text-danger">*</span></label>
+                                                                <div class="concernPersonNameDiv">
+                                                                    <select name="concern_user_id"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        <option value="">-- নির্বাচন করুন --</option>
+                                                                    </select>
+                                                                    <span
+                                                                        class="text-danger d-none validation-message">This
+                                                                        field can not be empty</span>
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="col-lg-4 mb-5 align-self-end">
+                                                                <button class="btn btn-primary add-btn mb-1"><i
+                                                                        class="fas fa-plus-circle"></i></button>
+                                                                <button class="btn btn-danger remove-btn d-none"><i
+                                                                        class="fas fa-minus-circle"></i></button>
+                                                            </div> --}}
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                                <!-- jQuery -->
+                                                {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+                                                
+
+
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
@@ -1424,6 +1477,24 @@
             toggleSendingReplyDiv();
             solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
             lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Counter to keep track of added divs
+            var count = 1;
+
+            // Function to add more divs
+            $("#addDivBtn").click(function() {
+                count++;
+                var newDiv = $("#container").children().first().clone();
+                newDiv.find("select").each(function() {
+                    // Clear selected options
+                    $(this).val('');
+                });
+                $("#container").append(newDiv);
+            });
         });
     </script>
 @endsection

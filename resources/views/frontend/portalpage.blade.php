@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" />
     <title>স্মার্ট কেস ম্যানেজমেন্ট সিস্টেম</title>
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -122,7 +123,7 @@
 
     <div class="main-section" style="margin-top: 6rem;">
         <div class="right-section" style="text-align: center;">
-            <div class="card shadow p-3 rounded" style="width: 200px; height: 220px; background-color: #F3F3F3">
+            <div class="card shadow p-3 rounded" style="width: 200px; height: 250px; background-color: #F3F3F3">
                 <p style="font-size: 20px; margin-top: 20px;">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা
                     সম্পর্কিত কার্যক্রম
                     ব্যবস্থাপনা সিস্টেম</p>
@@ -132,7 +133,7 @@
 
         <!-- Inside the "নোটিশ বোর্ড" div -->
         <div class="right-section" style="margin-left: 3rem">
-            <div class="card shadow p-3 rounded " style="width: 500px; height: auto; background-color: #F3F3F3">
+            <div class="card shadow p-3 rounded " style="width: 500px; height: 250px; background-color: #F3F3F3">
                 <img src="{{ asset('uploads/IconeSCMS/bg_notice_board.png') }}" alt="Image"
                     style="position: absolute; top: 0; left: 0; width: 52px; height: 54px; z-index: 1;">
                 <?php
@@ -150,10 +151,10 @@
                         @endforeach
                     </ul>
                 @else
-                    <p>No notices available</p>
+                    <p style="margin-left: 3rem">কোন নোটিশ পাওয়া যায়নি</p>
                 @endif
-                <a href="{{ route('notices.show', $notice->id) }}" class="all-button"
-                    style="position: absolute; bottom: 5px; right: 10px;"> সকল</i> </a>
+                <a href="{{ route('notices.details') }}" class="all-button"
+                    style="position: absolute; bottom: 10px; right: 10px;"> সকল</i> </a>
             </div>
 
         </div>
@@ -163,8 +164,8 @@
                 style="width: 250px; height: 250px; margin-top: 20px; background-color: #F3F3F3; ">
                 <small class="text-muted d-block mx-auto mb-3 mt-3" style="font-size: 20px">স্মার্ট কেস ম্যানেজমেন্ট
                     সিস্টেম</small>
-                <a href="{{ route('doptor.login') }}" class="btn btn-success d-block mx-auto m-3">সাধারণ লগইন</a>
-                <a href="{{ route('sso.login') }}" class="btn btn-success d-block mx-auto m-3">নথি লগইন</a>
+                <a href="{{ route('doptor.login') }}" class="btn btn-success btn-block  m-3">সাধারণ লগইন</a>
+                <a href="{{ route('sso.login') }}" class="btn btn-success btn-block  m-3">নথি লগইন</a>
             </div>
         </div>
     </div>
@@ -180,7 +181,8 @@
                                 <h5>পরিকল্পনা ও বাস্তবায়নে</h5>
                             </div>
                             <a href="https://minland.gov.bd/" target="_blank">
-                                <img src="images/logo1.png" alt="" style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
+                                <img src="images/logo1.png" alt=""
+                                    style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
                             </a>
                         </div>
                     </div>
