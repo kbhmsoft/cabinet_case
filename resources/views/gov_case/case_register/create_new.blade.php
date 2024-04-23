@@ -161,7 +161,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম (কোর্ট নাম)</label>
+                                                    <label>আদালতের নাম (Justice Name)</label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
                                                             class="form-control form-control-sm" required="required">

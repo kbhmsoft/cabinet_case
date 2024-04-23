@@ -193,6 +193,28 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="adesh_tamil_decision_yes_taken_div">
+                                                        <div class="col-md-6">
+                                                            <label class="form-group font-weight-bolder font-size-h5">আপিল
+                                                                দায়েরের জন্য অনুরোধ করা হয়েছে কিনা
+                                                            </label>
+                                                            <div class="radio-inline">
+                                                                <label class="radio">
+                                                                    <input type="radio"
+                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        id="adesh_tamil_decision_yes_taken"
+                                                                        value="1" />
+                                                                    <span></span>হ্যাঁ</label>
+                                                                <label class="radio">
+                                                                    <input type="radio"
+                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        id="adesh_tamil_decision_yes_taken_not"
+                                                                        value="0" checked />
+                                                                    <span></span>না</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
 
                                                     <div class="p-5" id="sending_reply_data_details">
                                                         <div class="form-check">
@@ -219,19 +241,21 @@
                                                     <div class="sending_reply_div">
                                                         <div class="form-group row">
                                                             <div class="col-lg-6 mb-5 mt-8">
-                                                                <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ
+                                                                <label>আপিল দায়েরের অনুরোধের তারিখ
                                                                 </label>
-                                                                <input type="text" name="result_sending_date"
-                                                                    id="result_sending_date"
+                                                                <input type="text"
+                                                                    name="appeal_submission_requesting_date"
+                                                                    id="appeal_submission_requesting_date"
                                                                     class="form-control form-control-sm  common_datepicker"
                                                                     placeholder="দিন/মাস/বছর" autocomplete="off">
                                                             </div>
 
                                                             <div class="col-lg-6 mb-5 mt-8">
-                                                                <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক
+                                                                <label>আপিল দায়েরের অনুরোধের স্মারক
                                                                 </label>
-                                                                <input type="text" name="result_sending_memorial"
-                                                                    id="result_sending_memorial"
+                                                                <input type="text"
+                                                                    name="appeal_submission_requesting_memorial"
+                                                                    id="appeal_submission_requesting_memorial"
                                                                     class="form-control form-control-sm" placeholder=""
                                                                     autocomplete="off">
                                                             </div>
@@ -242,7 +266,7 @@
                                                                     <div
                                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (আপিল দায়েরের অনুরোধ কপি
                                                                                 সংযুক্ত
                                                                                 করুন)
                                                                                 <sub class="text-danger">(PDF, সর্বোচ্চ
@@ -286,33 +310,6 @@
                                                                     ট্র্যাকিং নম্বর প্রদান করুন</label>
                                                                 <input type="text" name="soltrack_tracking_number"
                                                                     class="form-control">
-                                                            </div>
-
-                                                            <div class="col-lg-6 mb-5 mt-10">
-                                                                <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
-                                                                    তারিখ
-                                                                </label>
-                                                                <input type="text"
-                                                                    name="result_sending_date_solisitor_to_ag"
-                                                                    id="result_sending_date_solisitor_to_ag"
-                                                                    class="form-control form-control-sm  common_datepicker"
-                                                                    placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                            </div>
-                                                            <div class="col-lg-6 mb-5 mt-10">
-                                                                <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
-                                                                    স্মারক </label>
-                                                                <input type="text"
-                                                                    name="result_sending_memorial_solisitor_to_ag"
-                                                                    id="result_sending_memorial_solisitor_to_ag"
-                                                                    class="form-control form-control-sm" placeholder=""
-                                                                    autocomplete="off">
-                                                            </div>
-                                                            <div class="col-lg-6 mb-5">
-                                                                <label>সংশ্লিষ্ট আদালতে জবাব দাখিলের তারিখ </label>
-                                                                <input type="text" name="reply_submission_date"
-                                                                    id="reply_submission_date"
-                                                                    class="form-control form-control-sm  common_datepicker"
-                                                                    placeholder="দিন/মাস/বছর" autocomplete="off">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -495,20 +492,66 @@
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('.adesh_tamil_decision_div').hide();
-        $('input[name="adesh_tamil_decision_taken"][value="0"]').prop('checked', true);
-        $('input[name="adesh_tamil_decision_taken"]').change(function() {
-            if ($(this).val() == '1') {
-                $('.adesh_tamil_decision_div').show();
-            } else {
-                $('.adesh_tamil_decision_div').hide();
-            }
+    <script>
+        $(document).ready(function() {
+            $('.adesh_tamil_decision_yes_taken_div').hide();
+            $('input[name="appeal_against_adesh_decision_taken"][value="0"]').prop('checked', true);
+            $('input[name="appeal_against_adesh_decision_taken"]').change(function() {
+                if ($(this).val() == '1') {
+                    $('.adesh_tamil_decision_yes_taken_div').show();
+                } else {
+                    $('.adesh_tamil_decision_yes_taken_div').hide();
+                }
+            });
         });
-    });
-</script>
+    </script>
 
+
+    <script>
+        $(document).ready(function() {
+            $('#sending_reply_data_details').hide();
+            $('#trackingNumberField').hide();
+            $('input[name="adesh_tamil_decision_yes_taken"]').change(function() {
+                if ($(this).val() == '1') {
+
+                    $('#sending_reply_data_details').show();
+                } else {
+
+                    $('#sending_reply_data_details').hide();
+                    $('#trackingNumberField').hide();
+                    $('.sending_reply_div').hide();
+                    $('#sending_reply_data_details input').val('');
+                    $('.sending_reply_div input').val('');
+                    $('#sending_reply_data_details input[type="checkbox"]').prop('checked', false);
+                }
+            });
+
+            $('#solicitor_checkbox').change(function() {
+                if ($(this).is(':checked')) {
+
+                    $('#trackingNumberField').show();
+                } else {
+                    $('#trackingNumberField').hide();
+                }
+            });
+
+            var solicitorCheckbox = document.getElementById("solicitor_checkbox");
+            var lawOfficerCheckbox = document.getElementById("law_officer_checkbox");
+            var sendingReplyDiv = document.querySelector(".sending_reply_div");
+
+            function toggleSendingReplyDiv() {
+                if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                    sendingReplyDiv.style.display = "block";
+                } else {
+                    sendingReplyDiv.style.display = "none";
+                }
+            }
+
+            toggleSendingReplyDiv();
+            solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+            lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        });
+    </script>
 
     <script type="text/javascript">
         // dynamically change high court / appeal court
