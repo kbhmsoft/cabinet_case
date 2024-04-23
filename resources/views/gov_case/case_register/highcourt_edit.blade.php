@@ -296,9 +296,7 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
-
-
-                                                                             @foreach ($ministrys as $item)
+                                                                        @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
