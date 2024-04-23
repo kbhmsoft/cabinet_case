@@ -6,6 +6,7 @@ use App\Models\Attachment;
 use App\Models\FinalAttachment;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\ReplyAttachment;
 use App\Models\Role;
 use App\Models\SuspensionAttachment;
@@ -535,8 +536,8 @@ class GovCaseRegisterRepository
             $case->case_division_id = $caseInfo->court;
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
-            $case->concern_person_designation = $caseInfo->concern_person_designation;
-            $case->concern_user_id = $caseInfo->concern_user_id;
+            // $case->concern_person_designation = $caseInfo->concern_person_designation;
+            // $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number;
             $case->highcourt_adalat = $caseInfo->highcourt_adalat;
@@ -553,6 +554,25 @@ class GovCaseRegisterRepository
         }
         return $caseId;
     }
+
+    public static function storeConcernPerson($caseInfo, $govCaseId)
+    {
+
+        if ($caseInfo->concernPersonDesignation) {
+            foreach ($caseInfo->concernPersonDesignation as $key => $val) {
+                if ($caseInfo->concernPersonDesignation[$key] != null) {
+                    $concernPrerson = self::checkConcernPersonExist($caseInfo->badi_id[$key]);
+                    $concernPrerson->gov_case_id = $govCaseId;
+                    $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
+                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+                    $concernPrerson->save();
+                }
+            }
+
+        }
+    }
+
+
 
     public static function storeSendingReply($caseInfo)
     {
@@ -839,6 +859,16 @@ class GovCaseRegisterRepository
             $caseId = null;
         }
         return $caseId;
+    }
+
+    public static function checkConcernPersonExist($badiId)
+    {
+        if (isset($badiId)) {
+            $badi = GovCaseConcernPerson::find($badiId);
+        } else {
+            $badi = new GovCaseConcernPerson();
+        }
+        return $badi;
     }
 
 }

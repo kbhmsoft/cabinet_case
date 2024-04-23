@@ -161,6 +161,8 @@
             var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
 
             if (dataID) {
+                $('#showHighCourtCaseManualDiv').empty();
+                $('#showHighCourtCaseManualDiv').hide();
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
                     type: "GET",

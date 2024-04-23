@@ -2521,7 +2521,7 @@ class GovCaseRegisterController extends Controller
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -2544,7 +2544,7 @@ class GovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি ';
-
+        // return $data;
         return view('gov_case.case_register.create_new')->with($data);
     }
 
@@ -2652,6 +2652,7 @@ class GovCaseRegisterController extends Controller
         );
         try {
             $caseId = GovCaseRegisterRepository::storeGovCase($request);
+            GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
             GovCaseLogRepository::storeGovCaseLog($caseId);
@@ -2782,6 +2783,8 @@ class GovCaseRegisterController extends Controller
             ]);
 
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+            
+            GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
 
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
@@ -3852,7 +3855,14 @@ class GovCaseRegisterController extends Controller
     }
     public function getDependentConcernPerson($id)
     {
-        $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
+        $officeID = userInfo()->office_id;
+        if($id != 45){
+            $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
+            
+        }else{
+            $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
+
+        }
         return json_encode($getdependentUser);
     }
 
@@ -4885,4 +4895,23 @@ class GovCaseRegisterController extends Controller
 
         return view('gov_case.case_register.highcourt_contempt_case_list')->with($data);
     }
+
+
+
+    public function getAllAdvocates(){
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
+            ->get();
+
+        foreach($query as $key=>$val){
+            DB::table('gov_case_concern_persons')->insert([
+                'gov_case_id' => $val->id,
+                'concern_person_designation' => $val->concern_person_designation,
+                'concern_user_id' => $val->concern_user_id,
+            ]);
+        }
+        return "Data Inserted Successfully";
+    }
+
+
+
 }

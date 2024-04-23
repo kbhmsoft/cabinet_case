@@ -296,26 +296,26 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
+
                                                                         @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->doptor_office_id }}"
-                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                            {{ $item->office_name_bn ?? '' }} </option>
-                                                        @endforeach
-                                                        </select>
-                                                        </td>
-                                                        <input type="hidden"
-                                                            name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
-                                                        <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->doptor_office_id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
-                                                            @endif
-                                                        </td>
-                                                        </tr>
+                                                                            <option value="{{ $item->doptor_office_id }}"
+                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                                {{ $item->office_name_bn ?? '' }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <input type="hidden" name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $value->doptor_office_id }}"
+                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                     </table>
                                                 </div>
@@ -341,7 +341,7 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                                  @foreach ($ministrys as $item)
+                                                                                       @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -548,7 +548,8 @@
 
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="1"
-                                                            id="law_officer_checkbox" name="sending_reply_person_law_officer"
+                                                            id="law_officer_checkbox"
+                                                            name="sending_reply_person_law_officer"
                                                             {{ in_array(2, explode(',', $case->sending_reply_person_unit)) ? 'checked' : '' }}>
                                                         <label class="form-check-label lawyer_title"
                                                             for="law_officer_checkbox">আইন কর্মকর্তা/প্যানেল আইনজীবী
@@ -661,8 +662,11 @@
                                                         </div>
 
                                                         <div class="col-md-8 mb-5 mt-6" id="trackingNumberField">
-                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে ট্র্যাকিং নম্বর প্রদান করুন</label>
-                                                            <input type="text" name="soltrack_tracking_number" class="form-control form-control-sm" value="{{ $case->soltrack_tracking_number  }}">
+                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে
+                                                                ট্র্যাকিং নম্বর প্রদান করুন</label>
+                                                            <input type="text" name="soltrack_tracking_number"
+                                                                class="form-control form-control-sm"
+                                                                value="{{ $case->soltrack_tracking_number }}">
                                                         </div>
 
                                                         <div class="col-lg-6 mb-5 mt-5">

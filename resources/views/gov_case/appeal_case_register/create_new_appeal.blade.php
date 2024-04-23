@@ -13,7 +13,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -207,48 +207,6 @@
                                                     <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false"></textarea>
                                                 </div>
 
-                                                {{-- starting সংযুক্তি  --}}
-
-                                                <div class="col-md-12">
-                                                    <fieldset class="">
-                                                        <div
-                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                            <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                    <span class="text-danger">*</span>
-                                                                </h3>
-                                                            </div>
-
-                                                            <div class="symbol-group symbol-hover py-2">
-                                                                <div class="symbol symbol-30 symbol-light-primary"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="" role="button"
-                                                                    data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                    <div id="addFileRow">
-                                                                        <span
-                                                                            class="symbol-label font-weight-bold bg-success">
-                                                                            <i
-                                                                                class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="mt-3 px-5">
-                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
-                                                                style="border:1px solid #dcd8d8;">
-                                                                <tr></tr>
-                                                            </table>
-                                                            <input type="hidden" id="other_attachment_count"
-                                                                value="1">
-                                                        </div>
-                                                    </fieldset>
-                                                </div>
-
-                                                {{-- end সংযুক্তি --}}
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
@@ -256,7 +214,7 @@
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($GovCaseDivisionCategoryHighcourt as $value)
                                                                 <option value="{{ $value->id }}"
@@ -275,7 +233,7 @@
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_number_origin" id="case_number_origin"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm">
                                                             <option value="">-- নির্বাচন করুন --</option>
 
                                                         </select>
@@ -290,7 +248,86 @@
 
                                         <!--end::Card-->
                                     </div>
+
+                                    <div class="col-md-12" id="showHighCourtCaseManualDiv">
+                                        <fieldset class="mb-8">
+                                            <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্টি না হয়ে থাকলে নিম্নের
+                                                কলামসমুহ পুরণ করুণঃ</legend>
+                                            <div class="form-group row">
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>মামলা নং: <span class="text-danger">*</span></label>
+                                                    <input type="text" name="case_number_origin_manual" id="case_number_origin_manual"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="(Type digits in English)" required="required"
+                                                        >
+                                                    
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>রিট পিটিশনারের নাম: <span class="text-danger">*</span></label>
+                                                    <input type="text" name="writ_petitioner_name" id="writ_petitioner_name"
+                                                        class="form-control form-control-sm"
+                                                        required="required"
+                                                       >
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small class="text-danger">
+                                                        </small> </label>
+                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
+                                                </div>
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>রায়/আদেশ প্রদানের তারিখ: <span class="text-danger">*</span></label>
+                                                    <input type="text" name="case_order_date" id="case_order_date"
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-8 mb-5">
+                                                    <label>রায়/আদেশের বিবরণ:<small class="text-danger">
+                                                        </small> </label>
+                                                    <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"></textarea>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
                                     <div class="col-md-12" id="showHighCourtCaseDiv"></div>
+                                    {{-- starting সংযুক্তি  --}}
+
+                                    <div class="col-md-12">
+                                        <fieldset class="">
+                                            <div
+                                                class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                <div class="d-flex align-items-center mr-2 py-2">
+                                                    <h3 class="mb-0 mr-8">সংযুক্তি
+                                                        <span class="text-danger">*</span>
+                                                    </h3>
+                                                </div>
+
+                                                <div class="symbol-group symbol-hover py-2">
+                                                    <div class="symbol symbol-30 symbol-light-primary"
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        role="button" data-original-title="ফাইল যুক্ত করুণ">
+
+                                                        <div id="addFileRow">
+                                                            <span class="symbol-label font-weight-bold bg-success">
+                                                                <i class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="mt-3 px-5">
+                                                <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                    style="border:1px solid #dcd8d8;">
+                                                    <tr></tr>
+                                                </table>
+                                                <input type="hidden" id="other_attachment_count" value="1">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    {{-- end সংযুক্তি --}}
+
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
                                     <button type="submit" id="appealCaseGeneralInfoSaveBtn"
@@ -777,52 +814,52 @@
 
 
 
-<script>
-    $(document).ready(function() {
-        var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
+    <script>
+        $(document).ready(function() {
+            var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
 
-        $('#case_no').blur(function() {
-            var caseNo = $(this).val();
-            $.ajax({
-                url: "{{ route('cabinet.case.check_appeal_caseno') }}",
-                type: 'POST',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'case_no': caseNo
-                },
-                success: function(data) {
-                    if (data.exists) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+            $('#case_no').blur(function() {
+                var caseNo = $(this).val();
+                $.ajax({
+                    url: "{{ route('cabinet.case.check_appeal_caseno') }}",
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'case_no': caseNo
+                    },
+                    success: function(data) {
+                        if (data.exists) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
 
-                            html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-                                data.officeName +
-                                '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            onOpen: function() {
-                                Swal.getPopup().appendChild(
-                                    $('<button>', {
-                                        text: 'অনুরোধ করুন',
-                                        id: 'saveButton',
-                                        class: 'btn btn-success',
-                                        click: function() {
-                                            var url =
-                                                createApplicationFormRoute
-                                                .replace(':caseNo',
-                                                    caseNo);
-                                            window.location.href =
-                                                url;
-                                        }
-                                    })[0]
-                                );
-                            }
-                        });
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                    data.officeName +
+                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                                onOpen: function() {
+                                    Swal.getPopup().appendChild(
+                                        $('<button>', {
+                                            text: 'অনুরোধ করুন',
+                                            id: 'saveButton',
+                                            class: 'btn btn-success',
+                                            click: function() {
+                                                var url =
+                                                    createApplicationFormRoute
+                                                    .replace(':caseNo',
+                                                        caseNo);
+                                                window.location.href =
+                                                    url;
+                                            }
+                                        })[0]
+                                    );
+                                }
+                            });
+                        }
                     }
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endsection
