@@ -1274,7 +1274,7 @@
 
 
 
-        /************************ Add multiple survey  *************************/
+        /************************ Add multiple advocate  *************************/
         $("#addAdvocateLawer").click(function(e) {
             addAdvocateLawerFunc();
             // $('select').select2();

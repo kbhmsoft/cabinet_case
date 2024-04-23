@@ -3,6 +3,16 @@
 @section('content')
 
     @php
+        $concernPersonDesig = '<option value="">-- নির্বাচন করুন --</option>';
+
+        for ($i = 0; $i < sizeof($concern_person_desig); $i++) {
+            $concernPersonDesig .=
+                '<option value="' .
+                $concern_person_desig[$i]->id .
+                '">' .
+                $concern_person_desig[$i]->name_bn .
+                '</option>';
+        }
         $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
@@ -13,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -185,43 +195,24 @@
                                                                 not be empty</span>
                                                         </div>
 
-                                                        <div class="col-lg-4 mb-5">
-                                                            <label for="concern_person_designation">সংশ্লিষ্ট আইন কর্মকর্তা
-                                                                <span class="text-danger">*</span></label>
+                                                        <div class="col-lg-12 mb-5">
+                                                            <table width="100%" border="1" id="advocateLawerDiv"
+                                                                style="border:1px solid #dcd8d8;">
+                                                                <tr>
 
-                                                            <div class="" id="concernPersonDesignationDiv">
-                                                                <select name="concern_person_designation"
-                                                                    id="concern_person_designation"
-                                                                    class="form-control form-control-sm"
-                                                                    required="required">
-                                                                    <option value="">-- নির্বাচন করুন --</option>
-                                                                    @foreach ($concern_person_desig as $value)
-                                                                        <option value="{{ $value->id }}"
-                                                                            {{ old('concern_person_designation') == $value->id ? 'selected' : '' }}>
-                                                                            {{ $value->name }} </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <span class="text-danger d-none vallidation-message">This
-                                                                    field
-                                                                    can not be empty</span>
-                                                            </div>
-                                                        </div>
+                                                                    <th>সংশ্লিষ্ট আইন কর্মকর্তা</th>
+                                                                    <th>সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
+                                                                    <th width="30">
+                                                                        <a href="javascript:void(0);"
+                                                                            id="addAdvocateLawer"
+                                                                            class="btn btn-sm btn-primary pr-2"><i
+                                                                                class="fas fa-plus-circle"></i></a>
 
-                                                        <div class="col-lg-4 mb-5">
-                                                            <label for="concern_user_id">সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                                    class="text-danger">*</span></label>
-
-                                                            <div class="" id="concernPersonNameDiv">
-                                                                <select name="concern_user_id" id="concern_user_id"
-                                                                    class="form-control form-control-sm"
-                                                                    required="required">
-                                                                    <option value="">-- নির্বাচন করুন --</option>
-
-                                                                </select>
-                                                                <span class="text-danger d-none vallidation-message">This
-                                                                    field
-                                                                    can not be empty</span>
-                                                            </div>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr></tr>
+                                                            </table>
+                                                            <input type="hidden" id="survey_count" value="1">
                                                         </div>
                                                     </div>
 
@@ -588,12 +579,12 @@
                                 </div>
 
                             </div>
-                            {{--------------- end জবাব প্রেরণ ---------------}}
+                            {{-- ------------- end জবাব প্রেরণ ------------- --}}
 
 
 
-                             {{-- ------------- start আদালতে জবাব দাখিল ------------- --}}
-                         <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
+                            {{-- ------------- start আদালতে জবাব দাখিল ------------- --}}
+                            <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
 
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -603,7 +594,8 @@
                                             <div class="col-lg-12 mb-5">
 
                                                 <div class="col-md-6">
-                                                    <label class="form-group font-weight-bolder font-size-h5">আদালতে জবাব (affidavit) দাখিল করা হয়েছে কিনা
+                                                    <label class="form-group font-weight-bolder font-size-h5">আদালতে জবাব
+                                                        (affidavit) দাখিল করা হয়েছে কিনা
                                                     </label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
@@ -612,7 +604,8 @@
                                                             <span></span>হ্যাঁ</label>
                                                         <label class="radio">
                                                             <input type="radio" name="adalat_reply_submit_have"
-                                                                id="adalat_reply_submit_have_not" value="0" checked />
+                                                                id="adalat_reply_submit_have_not" value="0"
+                                                                checked />
                                                             <span></span>না</label>
                                                     </div>
                                                 </div>
@@ -633,7 +626,8 @@
                                                                 <div
                                                                     class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                     <div class="d-flex align-items-center mr-2 py-2">
-                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (আদালতে জবাব দাখিল কপি সংযুক্ত
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (আদালতে জবাব দাখিল
+                                                                            কপি সংযুক্ত
                                                                             করুন)
                                                                             <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
                                                                                 5MB)</sub>
@@ -662,8 +656,8 @@
                                                                         style="border:1px solid #dcd8d8;">
                                                                         <tr></tr>
                                                                     </table>
-                                                                    <input type="hidden" id="adalat_reply_attachment_count"
-                                                                        value="1">
+                                                                    <input type="hidden"
+                                                                        id="adalat_reply_attachment_count" value="1">
                                                                 </div>
                                                             </fieldset>
                                                         </div>
@@ -679,8 +673,9 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="adalatReplySendingPrevtBtn" class="submit-button"><i
-                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="adalatReplySendingPrevtBtn"
+                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী
+                                            </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="button" id="adalatReplySendingNextBtn"
@@ -689,8 +684,8 @@
                                     </div>
                                 </div>
 
-                        </div>
-                        {{-- ------------- end আদালতে জবাব দাখিল  ------------- --}}
+                            </div>
+                            {{-- ------------- end আদালতে জবাব দাখিল  ------------- --}}
 
                             {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                             <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
@@ -1170,10 +1165,95 @@
         $(document).ready(function() {
             addBadiRowFunc();
             addBibadiRowFunc();
+            addAdvocateLawerFunc();
         });
     </script>
 
     <script type="text/javascript">
+        /************************ Add multiple advocate  *************************/
+        $("#addAdvocateLawer").click(function(e) {
+            addAdvocateLawerFunc();
+            // $('select').select2();
+        });
+
+        //add row function
+        function addAdvocateLawerFunc() {
+
+            var count = parseInt($('#survey_count').val());
+
+
+            $('#survey_count').val(count + 1);
+            var items = '';
+            items += '<tr>';
+
+            items +=
+                '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+                '" class="form-control form-control-sm" onchange="getConcernPerName(' + count +
+                ')" required="required"><?php echo $concernPersonDesig; ?></select></td>';
+            items +=
+                '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+                '" class="form-control form-control-sm" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+
+            if (count != 1) {
+                items +=
+                    '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+            }
+            items += '</tr>';
+
+            $('#advocateLawerDiv tr:last').after(items);
+            //scout_id_select2_dd();
+        }
+
+        //remove row function
+        function removeAdvocateLawerRow(id) {
+            $(id).closest("tr").remove();
+        }
+
+        function getConcernPerName(id) {
+            var desig = $(`#concernPersonDesignation_${id}`).val();
+            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
+            if (desig) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                        desig,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery(`#concern_user_id_${id}`).html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery(`#concern_user_id_${id}`).html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery(`#concern_user_id_${id}`).append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $(`#concern_user_id_${id}`).empty();
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         // dynamically change high court / appeal court
         $(document).ready(function() {
             $('#appeal_hide_show_3').hide();
@@ -1382,19 +1462,19 @@
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('.adalat_reply_div').hide();
-        $('input[name="adalat_reply_submit_have"][value="0"]').prop('checked', true);
-        $('input[name="adalat_reply_submit_have"]').change(function() {
-            if ($(this).val() == '1') {
-                $('.adalat_reply_div').show();
-            } else {
-                $('.adalat_reply_div').hide();
-            }
+    <script>
+        $(document).ready(function() {
+            $('.adalat_reply_div').hide();
+            $('input[name="adalat_reply_submit_have"][value="0"]').prop('checked', true);
+            $('input[name="adalat_reply_submit_have"]').change(function() {
+                if ($(this).val() == '1') {
+                    $('.adalat_reply_div').show();
+                } else {
+                    $('.adalat_reply_div').hide();
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

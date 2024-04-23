@@ -68,7 +68,11 @@ class AppealGovCaseRegisterRepository
     public static function storeAppeal($caseInfo)
     {
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-        $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
+        $caseOriginNum = '';
+        if($caseInfo->case_number_origin){
+            $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
+        }
+        // dd($caseInfo);
 
         try {
             $case->case_no = $caseInfo->case_no;
@@ -96,11 +100,20 @@ class AppealGovCaseRegisterRepository
                 $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
             }
             $case->postponed_details = $caseInfo->postponed_details ?? '';
-            $case->case_category_origin = $caseInfo->case_category_origin;
+            if($caseInfo->case_number_origin){
 
-            $case->case_number_origin = $caseOriginNum;
-
-            $case->case_origin_id = $caseInfo->case_number_origin;
+                $case->case_category_origin = $caseInfo->case_category_origin;
+                
+                $case->case_number_origin = $caseOriginNum;
+                
+                $case->case_origin_id = $caseInfo->case_number_origin;
+            }else{
+                 $case->case_number_origin = $caseInfo->case_number_origin_manual;
+                 $case->writ_petitioner_name = $caseInfo->writ_petitioner_name;
+                 $case->subject_matter = $caseInfo->subject_matter;
+                 $case->case_order_date = $caseInfo->case_order_date;
+                 $case->case_order_details = $caseInfo->case_order_details;
+            }
             $case->is_appeal = 1;
 
             if ($case->save()) {

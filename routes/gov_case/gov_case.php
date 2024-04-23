@@ -158,6 +158,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/origincasedetails/{id}', [GovCaseRegisterController::class, 'getOriginCaseDetails']);
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
+            Route::get('getAllAdvocates', [GovCaseRegisterController::class, 'getAllAdvocates']);
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');
