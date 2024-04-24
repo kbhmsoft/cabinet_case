@@ -15,7 +15,7 @@ class GovCaseConcernPerson extends Model
 	use HasFactory;
 	// protected $table = 'mouja';
 	public $timestamps = true;
-
+    protected $table = 'gov_case_concern_persons';
 	protected $fillable = [
         'id',
         'gov_case_id',

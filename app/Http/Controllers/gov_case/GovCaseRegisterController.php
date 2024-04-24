@@ -2773,6 +2773,7 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
+        // dd($request);
         try {
             $caseId = $request->caseId;
 
@@ -2783,7 +2784,7 @@ class GovCaseRegisterController extends Controller
             ]);
 
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
-            
+            // dd($request);
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
 
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);

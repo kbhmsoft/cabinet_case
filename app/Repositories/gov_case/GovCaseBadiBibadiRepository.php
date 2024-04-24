@@ -41,6 +41,7 @@ class GovCaseBadiBibadiRepository
 
     public static function storeBibadi($caseInfo, $govCaseId)
     {
+        // dd($caseInfo);
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
                 $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);

@@ -1290,10 +1290,11 @@
             var items = '';
             items += '<tr>';
 
+            items += '<input type="hidden" name="concern_person_id[]" value="">';
             items +=
                 '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
                 '" class="form-control form-control-sm" onchange="getConcernPerName(' + count +
-                ')" required="required"><?php echo $concernPersonDesig; ?></select></td>';
+                ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
             items +=
                 '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
                 '" class="form-control form-control-sm" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
