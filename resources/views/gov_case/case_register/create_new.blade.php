@@ -1267,6 +1267,7 @@
             addBadiRowFunc();
             addBibadiRowFunc();
             addAdvocateLawerFunc();
+            $('select').select2();
         });
     </script>
     <script type="text/javascript">
