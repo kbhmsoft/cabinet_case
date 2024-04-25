@@ -2544,7 +2544,7 @@ class GovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি ';
-        // return $data;
+
         return view('gov_case.case_register.create_new')->with($data);
     }
 
@@ -2554,11 +2554,10 @@ class GovCaseRegisterController extends Controller
 
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        // $data['ministrys'] = Office::whereIn('level', [8,9])->get();
+
         $data['ministrys'] = GovCaseOffice::get();
-        // $data['ministrys'] = DB::table('gov_case_office')->get();
+
         $data['caseRegister'] = GovCaseRegister::all();
-        // return $data['caseRegister'];
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
@@ -2577,7 +2576,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
-        // return $data['GovCaseDivisionCategory'];
+
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
@@ -3108,7 +3107,7 @@ class GovCaseRegisterController extends Controller
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
             ->get();
-        
+
         if ($roleID != 33) {
             $data['depatments'] = Office::where('parent', $officeID)->get();
         } else {
@@ -3696,9 +3695,9 @@ class GovCaseRegisterController extends Controller
     {
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-            ->where('is_final_order', 1)
-        // ->pluck("case_no", "id", "year");
-            ->where('leave_to_appeal_is_favour_of_gov', 1)
+        //     ->where('is_final_order', 1)
+        // // ->pluck("case_no", "id", "year");
+        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -3859,7 +3858,7 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
         if($id != 45){
             $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
-            
+
         }else{
             $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
 

@@ -28,7 +28,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -185,25 +185,25 @@
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
+
+
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
 
-                                                            <th>সংশ্লিষ্ট আইন কর্মকর্তা</th>
-                                                            <th>সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা</th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
                                                             <th width="30">
                                                                 <a href="javascript:void(0);" id="addAdvocateLawer"
                                                                     class="btn btn-sm btn-primary pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
-
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
                                                     </table>
                                                     <input type="hidden" id="survey_count" value="1">
                                                 </div>
-
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
@@ -261,7 +261,7 @@
                                                     </table>
                                                 </div>
 
-                                                <div class="col-lg-6 mb-5">
+                                                {{-- <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
@@ -275,6 +275,36 @@
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
+                                                    </table>
+                                                </div> --}}
+
+                                                {{-- <div class="col-lg-6 mb-5">
+                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম</th>
+                                                            <th width="50">
+                                                                <a href="javascript:void();" id="addBibadiRow"
+                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
+                                                    </table>
+                                                </div> --}}
+
+                                                <div class="col-lg-6 mb-5">
+                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম</th>
+                                                            <th width="50">
+                                                                <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <!-- Initially, there are no rows -->
                                                     </table>
                                                 </div>
 
@@ -1285,8 +1315,6 @@
         function addAdvocateLawerFunc() {
 
             var count = parseInt($('#survey_count').val());
-
-
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';
@@ -1294,11 +1322,11 @@
             items += '<input type="hidden" name="concern_person_id[]" value="">';
             items +=
                 '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm" onchange="getConcernPerName(' + count +
+                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
                 ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
             items +=
                 '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
             if (count != 1) {
                 items +=
@@ -1307,6 +1335,8 @@
             items += '</tr>';
 
             $('#advocateLawerDiv tr:last').after(items);
+
+            $('.select2').select2();
             //scout_id_select2_dd();
         }
 
@@ -1341,10 +1371,6 @@
             } else {
                 $(`#concern_user_id_${id}`).empty();
             }
-
-
-
-
 
         }
 

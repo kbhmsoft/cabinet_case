@@ -700,7 +700,7 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['organoGram'] = json_decode($doptoOrganogramOffice);
-        //   dd($data['organoGram']);
+    
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
@@ -720,7 +720,6 @@ class GovCaseOfficeController extends Controller
             $query->where('users.role_id', '=', $_GET['role']);
         }
 
-        // $data['users'] = $query->paginate(10)->withQueryString();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name_bn', 'name')
             ->whereNotIn('id', $role)
