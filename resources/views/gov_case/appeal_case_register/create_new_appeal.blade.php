@@ -13,7 +13,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <!--begin::Row-->
@@ -116,7 +116,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম (Justice Name) <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম (Justice Name) <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="appeal_adalat" id="AppealAdalat"
                                                             class="form-control form-control-sm" required="required">
@@ -210,7 +211,7 @@
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
+                                                    <label>যে মামলা হতে উদ্ভূত তার শ্রেণী/কেস-টাইপ </label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
@@ -222,14 +223,13 @@
                                                                     {{ $value->name_bn }} </option>
                                                             @endforeach
                                                         </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
+
                                                     </div>
                                                 </div>
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
+                                                    <label>মামলা নং(যে মামলা হতে উদ্ভূত তার মামলা নং)</label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_number_origin" id="case_number_origin"
@@ -237,8 +237,7 @@
                                                             <option value="">-- নির্বাচন করুন --</option>
 
                                                         </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
+
                                                     </div>
                                                 </div>
 
@@ -255,19 +254,19 @@
                                                 কলামসমুহ পুরণ করুণঃ</legend>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলা নং: <span class="text-danger">*</span></label>
-                                                    <input type="text" name="case_number_origin_manual" id="case_number_origin_manual"
+                                                    <label>হাইকোর্ট
+                                                         মামলা নং: <span class="text-danger">*</span></label>
+                                                    <input type="text" name="case_number_origin_manual"
+                                                        id="case_number_origin_manual"
                                                         class="form-control form-control-sm"
-                                                        placeholder="(Type digits in English)" required="required"
-                                                        >
-                                                    
+                                                        placeholder="(Type digits in English)" required="required">
+
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রিট পিটিশনারের নাম: <span class="text-danger">*</span></label>
-                                                    <input type="text" name="writ_petitioner_name" id="writ_petitioner_name"
-                                                        class="form-control form-control-sm"
-                                                        required="required"
-                                                       >
+                                                    <input type="text" name="writ_petitioner_name"
+                                                        id="writ_petitioner_name" class="form-control form-control-sm"
+                                                        required="required">
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small class="text-danger">
@@ -275,7 +274,8 @@
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>রায়/আদেশ প্রদানের তারিখ: <span class="text-danger">*</span></label>
+                                                    <label>রায়/আদেশ প্রদানের তারিখ: <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" name="case_order_date" id="case_order_date"
                                                         class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                 </div>
@@ -297,7 +297,7 @@
                                                 class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                 <div class="d-flex align-items-center mr-2 py-2">
                                                     <h3 class="mb-0 mr-8">সংযুক্তি
-                                                        <span class="text-danger">*</span>
+
                                                     </h3>
                                                 </div>
 

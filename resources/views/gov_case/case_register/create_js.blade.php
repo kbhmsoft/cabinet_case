@@ -270,33 +270,65 @@
     });
 
     //add row function
+    // function addBibadiRowFunc() {
+    //     var mk = $('#bibadiDiv tr').length;
+    //     var MainCount = $('#MainBibadiDiv tr').length;
+    //     // console.log(MainCount);
+    //     $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
+    //     /*if(MainCount ==3){
+    //         $('#MainBibadiDiv tr:last').after(Item(MainCount, 'main'));
+    //     }*/
+
+    //     function Item(count, type = NULL) {
+    //         var items = '';
+    //         items += '<tr id="bibadi_' + (count) + '">';
+    //         items +=
+    //             '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+
+    //         items += '<input type="hidden" name="bibadi_id[]" value="">';
+    //         if (type == 'other') {
+    //             items +=
+    //                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //         }
+    //         items += '</tr>';
+
+    //         return items;
+    //     }
+
+    //     $('.other_respondentCls2').select2();
+    // }
+
+    // Event delegation for adding row function
+    // $(document).on("click", "#addBibadiRow", function(e) {
+    //     addBibadiRowFunc();
+    // });
+    $(document).on("click", "#addBibadiRow", function(e) {
+        addBibadiRowFunc();
+    });
+
+    // Add row function
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
-        var MainCount = $('#MainBibadiDiv tr').length;
-        // console.log(MainCount);
-        $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-        /*if(MainCount ==3){
-            $('#MainBibadiDiv tr:last').after(Item(MainCount, 'main'));
-        }*/
+        // Create a new row
+        var newRow = '<tr id="bibadi_' + mk + '">';
+        newRow +=
+            '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}">{{ $value->office_name_bn }}</option>@endforeach</select></td>';
+        newRow += '<input type="hidden" name="bibadi_id[]" value="">';
+        newRow +=
+            '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        newRow += '</tr>';
 
-        function Item(count, type = NULL) {
-            var items = '';
-            items += '<tr id="bibadi_' + (count) + '">';
-            items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+        // Append the new row to the table
+        $('#bibadiDiv tr:last').after(newRow);
 
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
-            if (type == 'other') {
-                items +=
-                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            }
-            items += '</tr>';
+        // Initialize select2 for the new select element
+        $('#bibadi_' + mk + ' .other_respondentCls2').select2();
 
-            return items;
-        }
-
-        $('.other_respondentCls2').select2();
+        // Reset the value of the newly added select element to default
+        $('#bibadi_' + mk + ' select').val('').trigger('change');
     }
+
+
 
     //remove row function
     function removeBibadiRow(id) {
@@ -621,8 +653,8 @@
     // ================================Sending Replay Save==================================//
 
 
-     // ================================Sending Replay Save==================================//
-     $('#adalatReplySubmitForm').submit(function(e) {
+    // ================================Sending Replay Save==================================//
+    $('#adalatReplySubmitForm').submit(function(e) {
         e.preventDefault();
         $('#adalatReplySubmitSaveBtn').addClass('spinner spinner-white spinner-right disabled');
 
@@ -1032,10 +1064,10 @@
     }
 
 
-// =================== Adalat Reply Submit =============
-  // ============= Add Reply Attachment Row ========= start =========
-  $("#addAdalatReplyFileRow").click(function(e) {
-      addAdalatReplyFileRowFunc();
+    // =================== Adalat Reply Submit =============
+    // ============= Add Reply Attachment Row ========= start =========
+    $("#addAdalatReplyFileRow").click(function(e) {
+        addAdalatReplyFileRowFunc();
     });
 
     //add row function
@@ -1224,8 +1256,8 @@
         $('.custom-reply-input' + id).text(value['name']);
     }
 
-     //Attachment Title Change
-     function adalatReplyAttachmentTitle(id) {
+    //Attachment Title Change
+    function adalatReplyAttachmentTitle(id) {
         // var value = $('#customFile' + id).val();
         var value = $('#customAdalatReplyFile' + id)[0].files[0];
         $('.custom-adalat-reply-input' + id).text(value['name']);
@@ -1299,15 +1331,15 @@
     });
 </script>
 <script>
-        $(document).ready(function() {
-            $('#postponed_interim_data_details').hide();
-            $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
-            $('input[name="postponed_interim_have"]').change(function() {
-                if ($(this).val() == '1') {
-                    $('#postponed_interim_data_details').show();
-                } else {
-                    $('#postponed_interim_data_details').hide();
-                }
-            });
+    $(document).ready(function() {
+        $('#postponed_interim_data_details').hide();
+        $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
+        $('input[name="postponed_interim_have"]').change(function() {
+            if ($(this).val() == '1') {
+                $('#postponed_interim_data_details').show();
+            } else {
+                $('#postponed_interim_data_details').hide();
+            }
         });
+    });
 </script>

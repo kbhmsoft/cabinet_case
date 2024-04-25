@@ -1741,14 +1741,14 @@
     <script>
         function showAlert() {
             Swal.fire({
-                title: "Are you sure?",
-                text: "Are you sure you want to check/uncheck this checkbox?",
+                title: "আপনি কি নিশ্চিত?",
+                text: "আপনি কি মামলার রায়ের অবস্থা পরিবর্তন করতে চান?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Confirm",
-                cancelButtonText: "Cancel",
+                confirmButtonText: "হ্যাঁ",
+                cancelButtonText: "না",
             }).then((result) => {
                 if (result.isConfirmed) {
 
