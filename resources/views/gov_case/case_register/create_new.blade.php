@@ -1293,94 +1293,15 @@
     @include('gov_case.case_register.create_js')
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            addBadiRowFunc();
-            addBibadiRowFunc();
-            addAdvocateLawerFunc();
-            $('select').select2();
-        });
+        // $(document).ready(function() {
+        //     addBadiRowFunc();
+        //     addBibadiRowFunc();
+
+        //     // $('select').select2();
+        // });
     </script>
     <script type="text/javascript">
         // dynamically change high court / appeal court
-
-
-
-        /************************ Add multiple advocate  *************************/
-        $("#addAdvocateLawer").click(function(e) {
-            addAdvocateLawerFunc();
-            // $('select').select2();
-        });
-
-        //add row function
-        function addAdvocateLawerFunc() {
-
-            var count = parseInt($('#survey_count').val());
-            $('#survey_count').val(count + 1);
-            var items = '';
-            items += '<tr>';
-
-            items += '<input type="hidden" name="concern_person_id[]" value="">';
-            items +=
-                '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-                ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-            items +=
-                '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
-
-            if (count != 1) {
-                items +=
-                    '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-            }
-            items += '</tr>';
-
-            $('#advocateLawerDiv tr:last').after(items);
-
-            $('.select2').select2();
-            //scout_id_select2_dd();
-        }
-
-        //remove row function
-        function removeAdvocateLawerRow(id) {
-            $(id).closest("tr").remove();
-        }
-
-        function getConcernPerName(id) {
-            var desig = $(`#concernPersonDesignation_${id}`).val();
-            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-            if (desig) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        desig,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery(`#concern_user_id_${id}`).append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $(`#concern_user_id_${id}`).empty();
-            }
-
-        }
-
-
-
-
-
-
-
-
         $(document).ready(function() {
             $('#appeal_hide_show_3').hide();
             $('#civilRevisionDiv').hide();
