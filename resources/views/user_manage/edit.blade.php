@@ -13,7 +13,7 @@
          @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 6)
          <div class="card-toolbar">        
             <a href="{{ url('user-management') }}" class="btn btn-sm btn-primary font-weight-bolder">
-               <i class="la la-list"></i> ব্যাবহারকারীর তালিকা
+               <i class="la la-list"></i> ব্যবহারকারীর তালিকা
             </a>                
          </div>
          @endif
@@ -34,7 +34,7 @@
          @method('PUT')
          <div class="card-body">
             <fieldset>
-               <legend>ব্যাবহারকারীর তথ্য</legend> 
+               <legend>ব্যবহারকারীর তথ্য</legend> 
                <div class=" col-12 row">
                   <div class="col-4">
                      <div class="form-group">

@@ -167,7 +167,7 @@
                                             @method('DELETE')
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5" onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')" title="মুছে ফেলুন">
-                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}" style="height: 40px; width: auto;" alt="Logo" class="mr-2">
+                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}" style="height: 20px; width: auto;" alt="Logo" class="mr-2">
                                                 </button>
                                             </div>
                                         </form>

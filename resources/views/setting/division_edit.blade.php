@@ -11,7 +11,7 @@
       </div>
       <!-- <div class="card-toolbar">        
          <a href="{{ url('division') }}" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-list"></i> ব্যাবহারকারীর তালিকা
+            <i class="la la-list"></i> ব্যবহারকারীর তালিকা
          </a>                
       </div> -->
    </div>

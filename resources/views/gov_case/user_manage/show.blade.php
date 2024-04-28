@@ -7,11 +7,11 @@
 <div class="card card-custom col-7">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
-         <h3 class="card-label"> ব্যাবহারকারীর বিস্তারিত </h3>
+         <h3 class="card-label"> ব্যবহারকারীর বিস্তারিত </h3>
       </div>
       <div class="card-toolbar">
          <a href="{{ url('cabinet/user-management') }}" class="btn btn-sm btn-primary font-weight-bolder">
-            <i class="la la-list"></i> ব্যাবহারকারীর তালিকা
+            <i class="la la-list"></i> ব্যবহারকারীর তালিকা
          </a>
       </div>
    </div>

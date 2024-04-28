@@ -9,7 +9,7 @@
     <div class="card card-custom col-7">
         <div class="card-header flex-wrap py-5">
             <div class="card-title">
-                <h2 class="card-title h2 font-weight-bolder"> ব্যাবহারকারীর বিস্তারিত </h2>
+                <h2 class="card-title h2 font-weight-bolder"> ব্যবহারকারীর বিস্তারিত </h2>
             </div>
         </div>
         @if ($message = Session::get('success'))
