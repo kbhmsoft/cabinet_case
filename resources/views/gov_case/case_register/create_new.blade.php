@@ -192,8 +192,10 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
 
-                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span class="text-danger">*</span></th>
-                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
+                                                                    class="text-danger">*</span></th>
                                                             <th width="30">
                                                                 <a href="javascript:void(0);" id="addAdvocateLawer"
                                                                     class="btn btn-sm btn-primary pr-2"><i
@@ -295,11 +297,13 @@
                                                 </div> --}}
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
+                                                        style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th>অন্যান্য রেসপন্ডেন্ট নাম</th>
                                                             <th width="50">
-                                                                <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                <a href="javascript:void();" id="addBibadiRow"
+                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
                                                             </th>
@@ -460,7 +464,8 @@
                                                 <div class="sending_reply_div">
                                                     <div class="form-group row">
                                                         <div class="col-lg-6 mb-5 mt-8">
-                                                            <label>দফাওয়ারি জবাব প্রেরণের তারিখ <span class="text-danger">*</span></label>
+                                                            <label>দফাওয়ারি জবাব প্রেরণের তারিখ <span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" name="result_sending_date"
                                                                 id="result_sending_date"
                                                                 class="form-control form-control-sm  common_datepicker"
@@ -468,7 +473,8 @@
                                                         </div>
 
                                                         <div class="col-lg-6 mb-5 mt-8">
-                                                            <label>দফাওয়ারি জবাব প্রেরণের স্মারক <span class="text-danger">*</span></label>
+                                                            <label>দফাওয়ারি জবাব প্রেরণের স্মারক <span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" name="result_sending_memorial"
                                                                 id="result_sending_memorial"
                                                                 class="form-control form-control-sm" placeholder=""
@@ -484,7 +490,8 @@
                                                                         <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত
                                                                             করুন)
                                                                             <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
-                                                                                5MB) <span class="text-danger">*</span></sub>
+                                                                                5MB) <span
+                                                                                    class="text-danger">*</span></sub>
                                                                         </h3>
                                                                     </div>
 
@@ -1456,24 +1463,73 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
+        // $(document).ready(function() {
+        //     var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
+
+        //     $('#case_no').blur(function() {
+        //         var caseNo = $(this).val();
+        //         $.ajax({
+        //             url: "{{ route('cabinet.case.check-case-no') }}",
+        //             type: 'POST',
+        //             data: {
+        //                 '_token': '{{ csrf_token() }}',
+        //                 'case_no': caseNo
+        //             },
+        //             success: function(data) {
+        //                 if (data.exists) {
+        //                     Swal.fire({
+        //                         icon: 'error',
+        //                         title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+
+        //                         html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+        //                             data.officeName +
+        //                             '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+        //                         showCancelButton: false,
+        //                         showConfirmButton: false,
+        //                         onOpen: function() {
+        //                             Swal.getPopup().appendChild(
+        //                                 $('<button>', {
+        //                                     text: 'অনুরোধ করুন',
+        //                                     id: 'saveButton',
+        //                                     class: 'btn btn-success',
+        //                                     click: function() {
+        //                                         var url =
+        //                                             createApplicationFormRoute
+        //                                             .replace(':caseNo',
+        //                                                 caseNo);
+        //                                         window.location.href =
+        //                                             url;
+        //                                     }
+        //                                 })[0]
+        //                             );
+        //                         }
+        //                     });
+        //                 }
+        //             }
+        //         });
+        //     });
+        // });
+
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
 
             $('#case_no').blur(function() {
                 var caseNo = $(this).val();
+                var caseYear = $('#case_year').val(); // Get the case year
+
                 $.ajax({
                     url: "{{ route('cabinet.case.check-case-no') }}",
                     type: 'POST',
                     data: {
                         '_token': '{{ csrf_token() }}',
-                        'case_no': caseNo
+                        'case_no': caseNo,
+                        'case_year': caseYear // Send case year along with case number
                     },
                     success: function(data) {
                         if (data.exists) {
                             Swal.fire({
                                 icon: 'error',
                                 title: '<span style="color: red;font-size: larger;">দুঃখিত...',
-
                                 html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
                                     data.officeName +
                                     '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
