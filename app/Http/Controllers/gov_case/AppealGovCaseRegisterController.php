@@ -1275,6 +1275,7 @@ class AppealGovCaseRegisterController extends Controller
 
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
+            AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
 
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
