@@ -652,9 +652,9 @@ class GovCaseRegisterRepository
 
     public static function storeSuspensionOrder($caseInfo)
     {
-        // dd($caseInfo['case_id']);
         $case = self::checkGovCaseExist($caseInfo['case_id']);
-
+        dd($case->postponed_interim_have);
+        dd($case);
         if ($caseInfo->appeal_against_postpond_interim_order_date != null && $caseInfo->appeal_against_postpond_interim_order_date != '') {
             $appeal_against_postpond_interim_order_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_against_postpond_interim_order_date)));
         } else {
@@ -665,6 +665,16 @@ class GovCaseRegisterRepository
         } else {
             $tamil_requesting_date = null;
         }
+
+        if($case->postponed_interim_have == 0){
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+        }
+
+        if($case->postponed_interim_data_details == null){
+            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
+        }
+
+
         // dd($caseInfo);
         try {
             $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;

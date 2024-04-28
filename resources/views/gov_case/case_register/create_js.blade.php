@@ -236,10 +236,8 @@
         var mk_main = $('#MainBibadiDiv tr').length;
         var MainCount = $('#MainBibadiDiv tr').length;
         $('#MainBibadiDiv tr:last').after(ItemMain(mk_main + 1, 'other'));
-        /*if(MainCount ==3){
-            $('#MainBibadiDiv tr:last').after(ItemMain(MainCount, 'main'));
-        }*/
 
+        
         function ItemMain(count, type = NULL) {
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';

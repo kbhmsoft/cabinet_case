@@ -14,7 +14,7 @@ class GovCaseBadiBibadiRepository
 {
     public static function storeBadi($caseInfo, $govCaseId)
     {
-
+        //  dd($caseInfo);
         if ($caseInfo->badi_name) {
             foreach ($caseInfo->badi_name as $key => $val) {
                 if ($caseInfo->badi_name[$key] != null) {

@@ -192,8 +192,8 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
 
-                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা</th>
-                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম</th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span class="text-danger">*</span></th>
                                                             <th width="30">
                                                                 <a href="javascript:void(0);" id="addAdvocateLawer"
                                                                     class="btn btn-sm btn-primary pr-2"><i
@@ -460,19 +460,19 @@
                                                 <div class="sending_reply_div">
                                                     <div class="form-group row">
                                                         <div class="col-lg-6 mb-5 mt-8">
-                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
+                                                            <label>দফাওয়ারি জবাব প্রেরণের তারিখ <span class="text-danger">*</span></label>
                                                             <input type="text" name="result_sending_date"
                                                                 id="result_sending_date"
                                                                 class="form-control form-control-sm  common_datepicker"
-                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off" required>
                                                         </div>
 
                                                         <div class="col-lg-6 mb-5 mt-8">
-                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের স্মারক </label>
+                                                            <label>দফাওয়ারি জবাব প্রেরণের স্মারক <span class="text-danger">*</span></label>
                                                             <input type="text" name="result_sending_memorial"
                                                                 id="result_sending_memorial"
                                                                 class="form-control form-control-sm" placeholder=""
-                                                                autocomplete="off">
+                                                                autocomplete="off" required>
                                                         </div>
 
                                                         {{-- starting সংযুক্তি  --}}
@@ -484,7 +484,7 @@
                                                                         <h3 class="mb-0 mr-8">সংযুক্তি (জবাব কপি সংযুক্ত
                                                                             করুন)
                                                                             <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
-                                                                                5MB)</sub>
+                                                                                5MB) <span class="text-danger">*</span></sub>
                                                                         </h3>
                                                                     </div>
 

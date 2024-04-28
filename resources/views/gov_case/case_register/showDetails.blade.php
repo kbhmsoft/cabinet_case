@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                                                      @if (Auth::user()->role_id == 2)
+                                                                                          @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                                                    </div> -->
+                                                                                        </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -105,12 +105,13 @@
                         </thead>
                         <tbody>
                             @if ($case->case_category_id)
-
                                 <tr>
                                     <th scope="row">মামলার ক্যাটেগরি</th>
                                     @php
                                         // Find the matched category based on case_category_id
-                                        $matchedCategory = $GovCaseDivisionCategory->where('id', $case->case_category_id)->first();
+                                        $matchedCategory = $GovCaseDivisionCategory
+                                            ->where('id', $case->case_category_id)
+                                            ->first();
                                     @endphp
                                     <td>
                                         @if ($matchedCategory)
@@ -125,7 +126,9 @@
                                     <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
                                     @php
                                         // Find the matched category based on case_type_id
-                                        $matchedDivisionCategory = $GovCaseDivisionCategoryType->where('id', $case->case_type_id)->first();
+                                        $matchedDivisionCategory = $GovCaseDivisionCategoryType
+                                            ->where('id', $case->case_type_id)
+                                            ->first();
                                     @endphp
                                     <td>
                                         @if ($matchedDivisionCategory)
@@ -153,7 +156,9 @@
                                     <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তা</th>
                                     @php
                                         // Find the matched category based on concern_person_designation
-                                        $matchedConcernPerson = $concern_person_desig->where('id', $case->concern_person_designation)->first();
+                                        $matchedConcernPerson = $concern_person_desig
+                                            ->where('id', $case->concern_person_designation)
+                                            ->first();
                                     @endphp
                                     <td>
                                         @if ($matchedConcernPerson)
@@ -277,7 +282,8 @@
                     <table class="table table-striped border">
                         <thead>
                             <tr>
-                                <th class="h3" scope="col" colspan="4">বাদীর বিবরণ</th>
+                                <th class="h3" scope="col" colspan="4">
+                                    পিটিশনারের বিবরণ</th>
                             </tr>
                             <tr class="bg-light-primary">
                                 <th scope="row" width="10">ক্রম</th>
@@ -288,7 +294,6 @@
                         <tbody>
                             @php $k = 1; @endphp
                             @foreach ($caseBadi as $badi)
-
                                 <tr>
                                     <td>{{ en2bn($k) }}.</td>
                                     <td class="text-center">
@@ -311,7 +316,7 @@
                     <table class="table table-striped border">
                         <thead>
                             <tr>
-                                <th class="h3" scope="col" colspan="4">বিবাদীর বিবরণ</th>
+                                <th class="h3" scope="col" colspan="4">রেসপন্ডেন্ট বিবরণ</th>
                             </tr>
                             <tr class="bg-light-primary">
                                 <th scope="row" width="10">ক্রম</th>
@@ -326,7 +331,8 @@
                                     <td class="tg-nluh">{{ en2bn($k) }}.</td>
                                     <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
                                     <td class="tg-nluh text-center">
-                                        {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
+                                        {{ $bibadi->is_main_bibadi == 1 ? 'মূল রেসপন্ডেন্ট ' : 'অন্যান্য রেসপন্ডেন্ট' }}
+                                    </td>
                                 </tr>
                                 @php $k++; @endphp
                             @endforeach
@@ -501,8 +507,8 @@
                             </a>
 
                             <!-- Modal-->
-                            <div class="modal fade" id="showFileModalReply{{ $reply->id }}" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="showFileModalReply{{ $reply->id }}" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -540,8 +546,8 @@
                             </a>
 
                             <!-- Modal-->
-                            <div class="modal fade" id="showFileModalSuspension{{ $suspension->id }}" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="showFileModalSuspension{{ $suspension->id }}" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -579,8 +585,8 @@
                             </a>
 
                             <!-- Modal-->
-                            <div class="modal fade" id="showFileModalFinal{{ $final->id }}" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="showFileModalFinal{{ $final->id }}" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">

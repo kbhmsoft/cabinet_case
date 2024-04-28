@@ -362,7 +362,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                {{-- <div class="col-md-6">
                                                     <label
                                                         class="form-group font-weight-bolder font-size-h5">অন্তর্বর্তীকালীন
                                                         আদেশ </label>
@@ -381,7 +381,7 @@
                                                 <div class="col-md-6 mb-5" id="interim_order_details_div">
                                                     <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
                                                     <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
-                                                </div>
+                                                </div> --}}
                                             </div>
 
 

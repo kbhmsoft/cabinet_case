@@ -152,16 +152,27 @@
                                         {{-- <a href="javascript:void(0)" onclick="userDelete({{ $row->id }})"
                                             class="font-weight-bold pt-1 pb-1"><i class="fas fa-key text-warning"
                                                 title="পাসওয়ার্ড সংশোধন"></i></a> --}}
-                                        <form method="post"
+                                        {{-- <form method="post"
                                             action="{{ route('cabinet.user-management.destroy', $row->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="btn btn-danger btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"><i
-                                                    class="fas fa-user-slash"
+                                                    class="fas fa-times"
                                                     onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
                                                     title="মুছে ফেলুন"></i></button>
+                                        </form> --}}
+                                        <form method="post" action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5" onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')" title="মুছে ফেলুন">
+                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}" style="height: 40px; width: auto;" alt="Logo" class="mr-2">
+                                                </button>
+                                            </div>
                                         </form>
+
+
                                     @endif
                                 </td>
 

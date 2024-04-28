@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Court;
-use App\Models\Office;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\gov_case\GovCaseLog;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\gov_case\GovCaseBadi;
+use App\Models\Attachment;
+use App\Models\Court;
 use App\Models\gov_case\AppealAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\GovCaseLog;
+use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\HighcourtAdalat;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Models\Office;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GovCaseRegisterController extends Controller
 {
@@ -2517,7 +2517,7 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data['ministrys'] = GovCaseOffice::get();
-        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id',$officeID)->get();
+        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -2772,7 +2772,6 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
-        // dd($request);
         try {
             $caseId = $request->caseId;
 
@@ -2783,7 +2782,7 @@ class GovCaseRegisterController extends Controller
             ]);
 
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
-            // dd($request);
+
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
 
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
@@ -2957,8 +2956,7 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register._inc.sending_reply_edit')->with($data);
     }
 
-
-        public function adalatReplySending($id)
+    public function adalatReplySending($id)
     {
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
@@ -3088,7 +3086,6 @@ class GovCaseRegisterController extends Controller
         }
         return response()->json(['success' => 'জবাব প্রেরণের তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
     }
-
 
     public function suspensionOrderEdit($id)
     {
@@ -3372,7 +3369,6 @@ class GovCaseRegisterController extends Controller
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
     }
 
-
     public function highcourt_edit($id)
     {
         $roleID = userInfo()->role_id;
@@ -3383,7 +3379,7 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id',$officeID)->get();
+        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
 
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
@@ -3519,8 +3515,8 @@ class GovCaseRegisterController extends Controller
 
     public function leaveToAppealStore(Request $request)
     {
-    //    return $request->all();
-    Log::debug(print_r($request->all(), true));
+        //    return $request->all();
+        Log::debug(print_r($request->all(), true));
 
         $caseId = $request->case_id;
         $request->validate(
@@ -3856,10 +3852,10 @@ class GovCaseRegisterController extends Controller
     public function getDependentConcernPerson($id)
     {
         $officeID = userInfo()->office_id;
-        if($id != 45){
+        if ($id != 45) {
             $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
 
-        }else{
+        } else {
             $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
 
         }
@@ -4896,13 +4892,12 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt_contempt_case_list')->with($data);
     }
 
-
-
-    public function getAllAdvocates(){
+    public function getAllAdvocates()
+    {
         $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
             ->get();
 
-        foreach($query as $key=>$val){
+        foreach ($query as $key => $val) {
             DB::table('gov_case_concern_persons')->insert([
                 'gov_case_id' => $val->id,
                 'concern_person_designation' => $val->concern_person_designation,
@@ -4911,7 +4906,5 @@ class GovCaseRegisterController extends Controller
         }
         return "Data Inserted Successfully";
     }
-
-
 
 }
