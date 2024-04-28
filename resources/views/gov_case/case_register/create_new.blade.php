@@ -1513,49 +1513,54 @@
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
 
-            $('#case_no').blur(function() {
-                var caseNo = $(this).val();
-                var caseYear = $('#case_year').val(); // Get the case year
+            // Function to check case number when case year changes
+            $('#case_year').change(function() {
+                var caseNo = $('#case_no').val(); // Get the case number
+                var caseYear = $(this).val(); // Get the case year
 
-                $.ajax({
-                    url: "{{ route('cabinet.case.check-case-no') }}",
-                    type: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'case_no': caseNo,
-                        'case_year': caseYear // Send case year along with case number
-                    },
-                    success: function(data) {
-                        if (data.exists) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
-                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-                                    data.officeName +
-                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                onOpen: function() {
-                                    Swal.getPopup().appendChild(
-                                        $('<button>', {
-                                            text: 'অনুরোধ করুন',
-                                            id: 'saveButton',
-                                            class: 'btn btn-success',
-                                            click: function() {
-                                                var url =
-                                                    createApplicationFormRoute
-                                                    .replace(':caseNo',
-                                                        caseNo);
-                                                window.location.href =
-                                                    url;
-                                            }
-                                        })[0]
-                                    );
-                                }
-                            });
+                // Proceed with AJAX request only if both fields are filled
+                if (caseNo && caseYear) {
+                    $.ajax({
+                        url: "{{ route('cabinet.case.check-case-no') }}",
+                        type: 'POST',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'case_no': caseNo,
+                            'case_year': caseYear
+                        },
+                        success: function(data) {
+                            if (data.exists) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+                                    html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                        data.officeName +
+                                        '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    onOpen: function() {
+                                        Swal.getPopup().appendChild(
+                                            $('<button>', {
+                                                text: 'অনুরোধ করুন',
+                                                id: 'saveButton',
+                                                class: 'btn btn-success',
+                                                click: function() {
+                                                    var url =
+                                                        createApplicationFormRoute
+                                                        .replace(
+                                                            ':caseNo',
+                                                            caseNo);
+                                                    window.location
+                                                        .href = url;
+                                                }
+                                            })[0]
+                                        );
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
         });
     </script>

@@ -97,7 +97,7 @@ class LoginController extends BaseController
         } else {
             $token = $data['token'];
         }
-   
+
         session(['bearerToken' => $token]);
 
         $curl = curl_init();
@@ -118,10 +118,16 @@ class LoginController extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
-   
 
         if ($response->status == 'success') {
-            $id = end($response->data->organogram_info)->id;
+            if (end($response->data->organogram_info)) {
+                $id = end($response->data->organogram_info)->id;
+            } else {
+                // return redirect()->route('sso.logout');
+              
+                return redirect()->route('sso.logout')->with('message', 'Information not found.');
+            }
+
             $userInformationa = $response->data;
             $organogramId = key($userInformationa->organogram_info);
 
@@ -134,7 +140,7 @@ class LoginController extends BaseController
                 $userInfo = $response->data->user;
                 $userEmployeeData = $response->data->employee_info;
                 $userOfficeInfo = end($response->data->office_info);
-      
+
                 $userData = [
                     'name' => $userEmployeeData->name_bng,
                     'username' => $userInfo->user_alias,
