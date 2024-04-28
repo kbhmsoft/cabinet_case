@@ -120,25 +120,18 @@
     </div>
     <!--end::Card-->
 @endsection
-{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
-{{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"></script>
-<script src="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-{{-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 
 {{-- Includable CSS Related Page --}}
 @section('styles')
-    <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 @endsection
 
 {{-- Scripts Section Related Page --}}
 @section('scripts')
-    <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+   
     <!--end::Page Scripts-->
 
     @if (request()->get('office_type'))
@@ -179,19 +172,13 @@
         </script>
     @endif
 
-    {{-- <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script> --}}
 
+    
     <script type="text/javascript">
-        jQuery(document).ready(function() {
+        $(document).ready(function() {
 
             $('#ministry').select2();
             $('#divOffice').select2();
-            // $('#office_id').select2();
-
             jQuery('select[name="office_type"]').on('change', function() {
                 var officeType = jQuery(this).val();
                 // alert(officeType);
