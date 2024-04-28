@@ -458,7 +458,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ url('cabinet/user-management') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">ব্যাবহারকারীর তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
                                         </a>
                                     </li>
                                 </ul>

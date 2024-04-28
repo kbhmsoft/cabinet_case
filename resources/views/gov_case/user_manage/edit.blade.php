@@ -35,7 +35,7 @@
                 @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 6)
                     <div class="card-toolbar">
                         <a href="{{ url('user-management') }}" class="btn btn-sm btn-primary font-weight-bolder">
-                            <i class="la la-list"></i> ব্যাবহারকারীর তালিকা
+                            <i class="la la-list"></i> ব্যবহারকারীর তালিকা
                         </a>
                     </div>
                 @endif
