@@ -65,7 +65,7 @@
                     </select>
                 </div>
                 @if(Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
-                
+
                 <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
                     <select name="ministry" id="ministry" class="form-control">
                         <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
@@ -127,7 +127,7 @@
 <script src="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 {{-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script> 
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
 {{-- Includable CSS Related Page --}}
 @section('styles')
