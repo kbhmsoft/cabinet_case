@@ -5,6 +5,7 @@ namespace App\Repositories\gov_case;
 use App\Models\AppealAttachment;
 use App\Models\Attachment;
 use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\Role;
@@ -127,6 +128,24 @@ class AppealGovCaseRegisterRepository
             $caseId = null;
         }
         return $caseId;
+    }
+    
+
+    public static function storeConcernPerson($caseInfo, $govCaseId)
+    {
+        // dd($caseInfo);
+        if ($caseInfo->concernPersonDesignation) {
+            foreach ($caseInfo->concernPersonDesignation as $key => $val) {
+                if ($caseInfo->concernPersonDesignation[$key] != null) {
+                    $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);
+                    $concernPrerson->gov_case_id = $govCaseId;
+                    $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
+                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+                    $concernPrerson->save();
+                }
+            }
+
+        }
     }
 
     //store appeal final order
@@ -646,4 +665,13 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
+    public static function checkConcernPersonExist($badiId)
+    {
+        if (isset($badiId)) {
+            $badi = AppealGovCaseConcernPerson::find($badiId);
+        } else {
+            $badi = new AppealGovCaseConcernPerson();
+        }
+        return $badi;
+    }
 }
