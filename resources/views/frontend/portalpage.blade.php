@@ -119,6 +119,12 @@
             </div>
         </nav>
     </header>
+    {{-- {{ dd(session('message')) }} --}}
+    {{-- @if (session('message'))
+        <div class="alert alert-warning">
+            {{ session('message') }}
+        </div>
+    @endif --}}
 
 
     <div class="main-section" style="margin-top: 6rem;">

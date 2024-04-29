@@ -2842,9 +2842,10 @@ class AppealGovCaseRegisterController extends Controller
     public function checkAppealCaseNo(Request $request)
     {
         $caseNo = $request->input('case_no');
+        $caseYear = $request->input('case_year'); // Get the case year
 
-        $exists = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
-        $caseId = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+        $exists = AppealGovCaseRegister::where('case_no', $caseNo)->where('year', $caseYear)->where('deleted_at', null)->exists();
+        $caseId = AppealGovCaseRegister::where('case_no', $caseNo)->where('year', $caseYear)->where('deleted_at', null)->first();
 
         if ($caseId && $exists) {
             $id = $caseId->id;
@@ -2855,6 +2856,33 @@ class AppealGovCaseRegisterController extends Controller
 
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
+
+        // $caseNo = $request->input('case_no');
+        // $caseYear = $request->input('case_year'); // Get the case year
+
+        // $exists = AppealGovCaseRegister::where('case_no', $caseNo)
+        //     ->where('year', $caseYear) // Check for both case number and case year
+        //     ->where('deleted_at', null)
+        //     ->exists();
+
+        // if ($exists) {
+        //     $caseId = AppealGovCaseRegister::where('case_no', $caseNo)
+        //         ->where('year', $caseYear) // Check for both case number and case year
+        //         ->where('deleted_at', null)
+        //         ->first();
+
+        //     $id = $caseId->id;
+        //     $officeId = GovCaseBibadi::where('gov_case_id', $caseId->id)
+        //         ->where('is_main_bibadi', 1)
+        //         ->groupBy('gov_case_id')
+        //         ->first();
+
+        //     $officeName = GovCaseOffice::where('doptor_office_id', $officeId->respondent_id)->first();
+
+        //     return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
+        // }
+
+        // return response()->json(['exists' => $exists]);
     }
 
     public function editAppealCaseApplication($caseNo)

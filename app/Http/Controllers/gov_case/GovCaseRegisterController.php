@@ -4218,21 +4218,33 @@ class GovCaseRegisterController extends Controller
 
     public function checkCaseNo(Request $request)
     {
+
         $caseNo = $request->input('case_no');
+        $caseYear = $request->input('case_year'); // Get the case year
 
-        $exists = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
-        $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+        $exists = GovCaseRegister::where('case_no', $caseNo)
+            ->where('year', $caseYear) // Check for both case number and case year
+            ->where('deleted_at', null)
+            ->exists();
 
-        if ($caseId && $exists) {
-            $id = $caseId->id;
-            $officeId = GovCaseBibadi::where('gov_case_id', $id)
+        if ($exists) {
+            $caseId = GovCaseRegister::where('case_no', $caseNo)
+                ->where('year', $caseYear) // Check for both case number and case year
+                ->where('deleted_at', null)
+                ->first();
+
+            $officeId = GovCaseBibadi::where('gov_case_id', $caseId->id)
                 ->where('is_main_bibadi', 1)
-                ->groupBy('gov_case_id')->first();
+                ->groupBy('gov_case_id')
+                ->first();
 
             $officeName = GovCaseOffice::where('doptor_office_id', $officeId->respondent_id)->first();
 
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
+
+        return response()->json(['exists' => $exists]);
+
     }
 
     public function ministriesId()
