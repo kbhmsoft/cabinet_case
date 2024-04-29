@@ -253,7 +253,7 @@ class DashboardController extends Controller
             $childOfficeQuery = DB::table('gov_case_office')
                 ->select('id', 'doptor_office_id')
                 ->where('parent_office_id', $officeID)->get();
-
+            // dd($childOfficeQuery);
             foreach ($childOfficeQuery as $childOffice) {
                 $childOfficeIds[] = $childOffice->doptor_office_id;
             }
@@ -1960,6 +1960,7 @@ class DashboardController extends Controller
 
         $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
         return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
+        // return view('dashboard.cabinet.cabinet_admin_ministry_wise_old')->with($data);
     }
 
     public function get_drildown_gov_case_count($ministry = null, $department = null, $status = null)

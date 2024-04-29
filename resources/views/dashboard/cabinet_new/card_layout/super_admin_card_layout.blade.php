@@ -32,46 +32,50 @@
     <div class="mt-5">
         <div class="row">
             <!-- Card 7 -->
-            <div class="col-md-6 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style=" background-color: #f5f5f5; border-radius: 1rem;">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card border-0" style="background-color: #F5F5F5;">
+                    <div class="card-body"
+                        style="background-color: #F5F5F5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
                         <div class="d-flex align-items-center">
                             <div style="font-size: 3rem; margin-right: 1rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/office.png') }}"
-                                    style=" height: 30px; width: 100%; margin-top: -1rem; " alt="Logo"
+                                    style="height: 30px; width: 100%; margin-top: -1rem;" alt="Logo"
                                     class="brand-image">
                             </div>
                             <div class="ml-2">
                                 <h5 class="card-title font-weight-bolder" style="color: black;">ব্যবহারকারী অফিস</h5>
                                 <div class="case-info">
                                     <span class="count-item"
-                                        style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
+                                        style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
                                         <a href="{{ route('cabinet.totalMinistryOffice') }}"
-                                            style="text-decoration: none; color: black;">
-                                            মন্ত্রণালয়/বিভাগ</a>
-                                        <span class="count-numbers" style="margin-left:10rem; color: black">
-                                            <?= en2bn($total_ministry) ?> </span>
+                                            style="text-decoration: none; color: black;">মন্ত্রণালয়/বিভাগ</a>
+                                        <span class="count-numbers" style="margin-left: 10rem; color: black;">
+                                            <?= en2bn($total_ministry) ?>
+                                        </span>
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
                                         <a href="{{ route('cabinet.totalDoptor') }}"
-                                            style="text-decoration: none; color: black;"> দপ্তর-সংস্থা</a>
-                                        <span class="count-numbers" style="margin-left:10rem; color: black">
-                                            <?= en2bn($total_doptor) ?> </span>
+                                            style="text-decoration: none; color: black;">দপ্তর-সংস্থা</a>
+                                        <span class="count-numbers" style="margin-left: 10rem; color: black;">
+                                            <?= en2bn($total_doptor) ?>
+                                        </span>
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
                                         <a href="{{ route('cabinet.totalDivisionOffice') }}"
                                             style="text-decoration: none; color: black;">বিভাগীয় কমিশনারের কার্যালয়</a>
-                                        <span class="count-numbers" style="margin-left:10rem; color: black">
-                                            <?= en2bn($total_division) ?> </span>
+                                        <span class="count-numbers" style="margin-left: 10rem; color: black;">
+                                            <?= en2bn($total_division) ?>
+                                        </span>
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
                                         <a href="{{ route('cabinet.totalDistrictOffice') }}"
-                                            style="text-decoration: none; color: black;"> জেলা প্রশাসকের কার্যালয়</a>
-                                        <span class="count-numbers" style="margin-left:10rem; color: black">
-                                            <?= en2bn($total_district) ?> </span>
+                                            style="text-decoration: none; color: black;">জেলা প্রশাসকের কার্যালয়</a>
+                                        <span class="count-numbers" style="margin-left: 10rem; color: black;">
+                                            <?= en2bn($total_district) ?>
+                                        </span>
                                     </span>
                                 </div>
                             </div>
@@ -117,10 +121,11 @@
                 </div>
             </div> --}}
             <!-- Card 8 -->
-            <div class="col-md-6 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style="background-color: #f5f5f5; border-radius: 1rem; margin-bottom: 2rem;">
-                        <div class="d-flex align-items-center " style=" margin-top: 2rem;">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card border-0 " style=" background-color: #f5f5f5;">
+                    <div class="card-body"
+                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
+                        <div class="d-flex align-items-center " style=" margin-bottom: 3.8rem;">
                             <div style="font-size: 3rem; margin-right: 2rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/group.png') }}"
                                     style=" height: 30px; width: 100%; margin-top: 3rem; " alt="Logo"
@@ -152,9 +157,10 @@
                 </div>
             </div>
             <!-- Card 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body" style="background-color: #f5f5f5; border-radius: 1rem; margin-bottom: 1rem;">
+            <div class="col-lg-4 col-sm-12 col-md-6 mb-4">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
+                    <div class="card-body"
+                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <div style="font-size: 3rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/7.png') }}"
@@ -169,18 +175,18 @@
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="#" style="color: black;">আপিল দায়েরের জন্য পেন্ডিং</a>
                                         <span class="count-numbers"
-                                            style="margin-left:rem; color: black">{{ en2bn($appealAgainstGovt) }}</span>
+                                            style=" color: black">{{ en2bn($appealAgainstGovt) }}</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="#" style=" color: black;">জবাব প্রেরণের জন্য পেন্ডিং</a>
                                         <span class="count-numbers"
-                                            style="margin-left:rem; color: black">{{ en2bn($sent_to_solicitor_case) }}</span>
+                                            style=" color: black">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="#" style=" color: black;">স্থগিতাদেশ সম্পর্কিত
                                             পেন্ডিং</a>
                                         <span class="count-numbers"
-                                            style="margin-left:rem; color: black">{{ en2bn($against_postpond_order) }}</span>
+                                            style=" color: black">{{ en2bn($against_postpond_order) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -189,11 +195,11 @@
                 </div>
             </div>
             <!-- Card 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
+                <div class="card border-0" style=" background-color: #f5f5f5;;">
                     <div class="card-body"
-                        style="margin-bottom: 2rem; background-color: #f5f5f5;; border-radius: 1rem;">
-                        <div style="display: flex; align-items: center;">
+                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
+                        <div style="display: flex; align-items: center; margin-bottom:1rem;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/danger.png') }}"
@@ -220,11 +226,11 @@
                 </div>
             </div>
             <!-- Card 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
-                        style="margin-bottom: 3.5rem; background-color: #f5f5f5; border-radius: 1rem;">
-                        <div style="display: flex; align-items: center;">
+                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
+                        <div style="display: flex; align-items: center; margin-bottom:2.4rem;">
                             <div style="font-size: 3rem; margin-right: 2rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
                                     style=" height: 50px; width: 80%; margin-top: 4rem; " alt="Logo"
@@ -246,15 +252,15 @@
                 </div>
             </div>
             <!-- Card 4 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
-                        style="margin-bottom: 3rem; background-color: #f5f5f5; border-radius: 1rem;">
+                        style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}"
-                                    style="height: 50px; width: 100%; " alt="Logo" class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -262,29 +268,31 @@
                                     হাইকোর্ট বিভাগ
                                 </h5>
                                 <!-- Links -->
-                                <div style="font-size: 17px;">
-                                    <div style="display: flex; align-items: center;">
+                                <div style="font-size: 17px; ">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.running') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right: 3rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_high_court_case) }}</span>
                                     </div>
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">নিষ্পত্তিকৃত
+                                            style="color: black; flex: 1; ">নিষ্পত্তিকৃত
                                             মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($final_high_court_case) }}</span>
                                     </div>
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtNotAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-পক্ষে</a>
-                                        <span class="count-numbers" style="color: black;">{{ en2bn($highcourt_not_against_gov) }}</span>
+                                            style="color: black; flex: 1;">সরকারের-পক্ষে</a>
+                                        <span class="count-numbers"
+                                            style="color: black;">{{ en2bn($highcourt_not_against_gov) }}</span>
                                     </div>
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourtAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-বিপক্ষে</a>
-                                        <span class="count-numbers" style="color: black;">{{ en2bn($highcourt_against_gov) }}</span>
+                                            style="color: black; flex: 1; ">সরকারের-বিপক্ষে</a>
+                                        <span class="count-numbers"
+                                            style="color: black;">{{ en2bn($highcourt_against_gov) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -293,15 +301,15 @@
                 </div>
             </div>
             <!-- Card 5 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12 ">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
-                        style="margin-bottom: 3rem; background-color: #f5f5f5; border-radius: 1rem;">
+                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}"
-                                    style="height: 50px; width: 100%;" alt="Logo" class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -312,27 +320,29 @@
                                 <div style="font-size: 17px;">
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.running') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">চলমান মামলা</a>
+                                            style="color: black; flex: 1; margin-right: 3rem;">চলমান মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($running_appeal_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">নিষ্পত্তিকৃত
+                                            style="color: black; flex: 1; ">নিষ্পত্তিকৃত
                                             মামলা</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($final_appeal_case) }}</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.notAgainstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-পক্ষে</a>
-                                        <span class="count-numbers" style="color: black;">{{ en2bn($appeal_not_against_gov) }}
+                                            style="color: black; flex: 1; ">সরকারের-পক্ষে</a>
+                                        <span class="count-numbers"
+                                            style="color: black;">{{ en2bn($appeal_not_against_gov) }}
                                         </span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.appellateDivision.againstGov') }}"
-                                            style="color: black; flex: 1; margin-right:30px;">সরকারের-বিপক্ষে</a>
-                                        <span class="count-numbers" style="color: black;">{{ en2bn($appeal_against_gov) }}
+                                            style="color: black; flex: 1; ">সরকারের-বিপক্ষে</a>
+                                        <span class="count-numbers"
+                                            style="color: black;">{{ en2bn($appeal_against_gov) }}
                                         </span>
                                     </div>
                                 </div>
@@ -342,29 +352,37 @@
                 </div>
             </div>
             <!-- Card 6 -->
-            <div class="col-md-4 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
+                <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
-                        style="background-color: #f5f5f5; border-radius: 1rem; margin-bottom: 1rem;">
+                        style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
-                            <div style="font-size: 3rem; margin-right: 2rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/tribunal.png') }}"
-                                    style=" height: 60px; width: 100%; margin-bottom: -.5rem; " alt="Logo"
-                                    class="brand-image">
+                            <div style="font-size: 1.5rem; margin-right: 1.5rem;">
+                                <img src="{{ asset('uploads/IconeSCMS/tribunal.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
-                                <h5 class="card-title font-weight-bolder"
-                                    style="color:rgb(0, 0, 0); margin-bottom: 1.5rem">
+                                <h5 class="font-weight-bolder" style="color:rgb(3, 62, 164);">
                                     প্রশাসনিক ট্রাইব্যুনাল
                                 </h5>
                                 <!-- Links -->
-                                <div style="font-size: 1.4rem;">
-                                    <a href="#" style="color:black">চলমান মামলা</a><br>
-                                    <a href="#" style="color:black">নিষ্পত্তিকৃত মামলা</a><br>
-                                    <a href="#" style="color:black">সরকার-পক্ষে</a><br>
-                                    <a href="#" style="color:black">সরকার-বিপক্ষে</a>
+                                <div style="font-size: 17px;">
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">চলমান মামলা</a>
+
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">নিষ্পত্তিকৃত মামলা</a>
+
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">সরকার-পক্ষে</a>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <a href="#" style="color:black">সরকার-বিপক্ষে</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,11 +1,12 @@
 <br>
+<div class="row">
     <div class="container card">
       <div class="card-body">
          <table class="table table-hover mb-6 font-size-h5">
             <thead class="thead-light font-size-h6">
                <tr>
                   <th scope="col" width="30">#</th>
-                  <th scope="col"></th>
+                  <th scope="col">অফিসের নাম</th>
                   <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
                   <th scope="col">আপিল বিভাগে চলমান মামলা</th>
                   <th scope="col">সরকারের বিপক্ষে আপিলের জন্য পেন্ডিং</th>
@@ -39,3 +40,4 @@
          </div>
       </div>
    </div>
+</div>

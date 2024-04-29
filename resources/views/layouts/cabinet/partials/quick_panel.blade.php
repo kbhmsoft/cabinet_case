@@ -21,7 +21,7 @@
     </div>
     <!--end::Header-->
     <!--begin::Content-->
-    <div class="offcanvas-content px-10">
+    {{-- <div class="offcanvas-content px-10">
         <div class="tab-content">
             <!--begin::Tabpane-->
             <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
@@ -227,7 +227,7 @@
                             <span class="text-muted font-size-sm">0</span>
                         </div>
                         <span class="font-weight-bolder text-danger py-1 font-size-lg">-27%</span>
-                    </div> --}}
+                    </div> --}} 
                     <!--end: Item-->
                     <!--begin: Item-->
                     <?php /* ?> ?>
@@ -277,7 +277,7 @@
             </div>
             <!--end::Tabpane-->
             <!--begin::Tabpane-->
-            <div class="tab-pane fade pt-2 pr-5 mr-n5" id="kt_quick_panel_notifications" role="tabpanel">
+            {{-- <div class="tab-pane fade pt-2 pr-5 mr-n5" id="kt_quick_panel_notifications" role="tabpanel">
                 <!--begin::Nav-->
                 <div class="navi navi-icon-circle navi-spacer-x-0">
                     <!--begin::Item-->
@@ -602,6 +602,6 @@
             </div>
             <!--end::Tabpane-->
         </div>
-    </div>
+    </div> --}}
     <!--end::Content-->
 </div>

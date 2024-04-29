@@ -367,7 +367,7 @@
                                                             spellcheck="false"></textarea>
                                                     </div>
 
-                                                    {{-- <div class="col-md-6">
+                                                    <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">সরকারের
                                                             বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
                                                         <div class="radio-inline">
@@ -380,7 +380,7 @@
                                                                     value="2" checked="checke" />
                                                                 <span></span>না</label>
                                                         </div>
-                                                    </div> --}}
+                                                    </div>
 
                                                     <div class="col-lg-4">
                                                         <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
