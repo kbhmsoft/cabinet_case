@@ -722,7 +722,7 @@ class GovCaseOfficeController extends Controller
 
 
         $data['user_role'] = DB::table('roles')->select('id', 'name_bn', 'name')
-            ->whereNotIn('id', $role)
+            // ->whereNotIn('id', $role)
             ->where('is_gov', 1)
             ->orderBy('sort_order', 'ASC')
             ->get();

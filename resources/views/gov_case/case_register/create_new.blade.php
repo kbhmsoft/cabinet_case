@@ -1463,52 +1463,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
-        // $(document).ready(function() {
-        //     var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
-
-        //     $('#case_no').blur(function() {
-        //         var caseNo = $(this).val();
-        //         $.ajax({
-        //             url: "{{ route('cabinet.case.check-case-no') }}",
-        //             type: 'POST',
-        //             data: {
-        //                 '_token': '{{ csrf_token() }}',
-        //                 'case_no': caseNo
-        //             },
-        //             success: function(data) {
-        //                 if (data.exists) {
-        //                     Swal.fire({
-        //                         icon: 'error',
-        //                         title: '<span style="color: red;font-size: larger;">দুঃখিত...',
-
-        //                         html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-        //                             data.officeName +
-        //                             '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
-        //                         showCancelButton: false,
-        //                         showConfirmButton: false,
-        //                         onOpen: function() {
-        //                             Swal.getPopup().appendChild(
-        //                                 $('<button>', {
-        //                                     text: 'অনুরোধ করুন',
-        //                                     id: 'saveButton',
-        //                                     class: 'btn btn-success',
-        //                                     click: function() {
-        //                                         var url =
-        //                                             createApplicationFormRoute
-        //                                             .replace(':caseNo',
-        //                                                 caseNo);
-        //                                         window.location.href =
-        //                                             url;
-        //                                     }
-        //                                 })[0]
-        //                             );
-        //                         }
-        //                     });
-        //                 }
-        //             }
-        //         });
-        //     });
-        // });
 
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
@@ -1535,7 +1489,7 @@
                                     title: '<span style="color: red;font-size: larger;">দুঃখিত...',
                                     html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
                                         data.officeName +
-                                        '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                        '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল রেসপন্ডেন্ট হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
                                     showCancelButton: false,
                                     showConfirmButton: false,
                                     onOpen: function() {
