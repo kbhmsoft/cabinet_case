@@ -723,11 +723,11 @@
             items += '<input type="hidden" name="concern_person_id[]" value="">';
             items +=
                 '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+                '" class="form-control form-control-sm lawer" onchange="getConcernPerName(' + count +
                 ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
             items +=
                 '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                '" class="form-control form-control-sm lawer" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
             if (count != 1) {
                 items +=
@@ -737,8 +737,7 @@
 
             $('#advocateLawerDiv tr:last').after(items);
 
-            $('.select2').select2();
-            //scout_id_select2_dd();
+            $('.lawer').select2();
         }
 
         //remove row function
