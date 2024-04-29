@@ -42,7 +42,14 @@ class GovCaseUserManagementController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $officeID = userInfo()->office_id;
-        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        if($roleID == 27){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        }elseif($roleID == 29 || $roleID == 31){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        }elseif($roleID == 32 || $roleID == 41){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
+        
 
         // Parent office and corresponding child office
         $childOfficeIds = [];
@@ -63,22 +70,23 @@ class GovCaseUserManagementController extends Controller
         }
 
         //Add Conditions
-        $query = DB::table('users')->orderBy('id', 'DESC')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
-            ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
-            ->where('users.role_id', '!=', 42)
-            ->where('users.is_gov', 1);
+        if ($roleID == 27) {
+            $query = DB::table('users')->orderBy('id', 'DESC')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+                ->where('users.role_id', '!=', 42)
+                ->where('users.is_gov', 1);
 
-        // For Ministry Admin
-        if ($roleID == 29) {
+            // For Ministry Admin
+        } else {
             $query = DB::table('users')
                 ->orderBy('id', 'DESC')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                 ->whereIn('users.office_id', $finalOfficeIds)
-                ->where('users.role_id', '!=', 42)
+                ->whereNotIn('users.role_id', [27,42])
                 ->where('users.is_gov', 1);
         }
 
@@ -89,7 +97,8 @@ class GovCaseUserManagementController extends Controller
             $query->where('users.role_id', '=', $_GET['role']);
         }
 
-        $data['users'] = $query->paginate(10)->withQueryString();
+        // $data['users'] = $query->paginate(10)->withQueryString();
+        $data['users'] = $query->get();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')
             ->whereNotIn('id', $role)
@@ -107,6 +116,7 @@ class GovCaseUserManagementController extends Controller
         //     $user->assignRole($user->role);
         // }
         ///////// run script
+        // return $data;
 
         $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
 
@@ -122,17 +132,49 @@ class GovCaseUserManagementController extends Controller
     public function create()
     {
         $roleID = Auth::user()->role_id;
-        $officeInfo = user_office_info();
+        $officeId = Auth::user()->office_id;
 
         $role = array('1', '27');
-        $data['roles'] = DB::table('roles')
-            ->select('id', 'name', 'name_bn')
-            ->whereNotIn('id', $role)
-            ->where('is_gov', 1)
-            ->orderBy('sort_order', 'ASC')
-            ->get();
+        if ($roleID == 27) {
+            $data['roles'] = DB::table('roles')
+                ->select('id', 'name', 'name_bn')
+                ->whereNotIn('id', $role)
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
+            $data['offices'] = DB::table('gov_case_office')
+                ->select('gov_case_office.*')
+                // ->where('level', 1)
+                ->get();
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        } elseif ($roleID == 29 || $roleID == 31) {
+            $data['roles'] = DB::table('roles')
+                ->select('id', 'name', 'name_bn')
+                ->whereNotIn('id', [1, 14, 15, 27, 29, 39, 42, 43])
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
 
-        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+            $data['offices'] = DB::table('gov_case_office')
+                ->select('gov_case_office.*')
+                ->where('parent_office_id', $officeId)
+                ->get();
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } else {
+            
+            $data['roles'] = DB::table('roles')
+                ->select('id', 'name', 'name_bn')
+                ->whereIn('id', [45])
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
+
+            $data['offices'] = DB::table('gov_case_office')
+                ->select('gov_case_office.*')
+                ->where('parent_office_id', $officeId)
+                ->get();
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
 
         $query = DB::table('users')->orderBy('id', 'DESC')
             ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -152,10 +194,7 @@ class GovCaseUserManagementController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
-        $data['offices'] = DB::table('gov_case_office')
-            ->select('gov_case_office.*')
-        // ->where('level', 1)
-            ->get();
+
 
         $data['ministries'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
@@ -179,29 +218,29 @@ class GovCaseUserManagementController extends Controller
 
         $data['page_title'] = 'নতুন ব্যাবহারকারী এন্ট্রি ফরম';
         // dd($data);
-
         return view('gov_case.user_manage.add')->with($data);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'office_type' => 'nullable',
-            'ministry' => 'nullable',
-            'div_office' => 'nullable',
-            'role_id' => 'required',
-            'email' => 'required|unique:users,email',
-            'office_id' => 'required',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
+        $request->validate(
+            [
+                'name' => 'required',
+                'office_type' => 'nullable',
+                'ministry' => 'nullable',
+                'div_office' => 'nullable',
+                'role_id' => 'required',
+                'email' => 'required|unique:users,email',
+                'office_id' => 'required',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'regex:/[a-z]/',
+                    'regex:/[A-Z]/',
+                    'regex:/[0-9]/',
+                ],
             ],
-        ],
             [
                 'name.required' => 'পুরো নাম লিখুন',
                 'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
@@ -209,7 +248,8 @@ class GovCaseUserManagementController extends Controller
                 'role_id.required' => 'ভূমিকা নির্বাচন করুন',
                 'office_id.required' => 'অফিস নির্বাচন করুন',
                 'password.required' => 'পাসওয়ার্ড লিখুন',
-            ]);
+            ]
+        );
 
         $user = User::create([
             'name' => $request->name,
@@ -301,25 +341,27 @@ class GovCaseUserManagementController extends Controller
      */
     public function update(Request $request, $id = '')
     {
-        $request->validate([
-            'name' => 'required',
-            // 'username' => 'required', 'unique:users', 'max:100',
-            'role_id' => 'required',
-            'office_type' => 'nullable',
-            'ministry' => 'nullable',
-            'div_office' => 'nullable',
-            'office_id' => 'required',
-            // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
-            // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
-            'signature' => 'max:10240',
-        ],
+        $request->validate(
+            [
+                'name' => 'required',
+                // 'username' => 'required', 'unique:users', 'max:100',
+                'role_id' => 'required',
+                'office_type' => 'nullable',
+                'ministry' => 'nullable',
+                'div_office' => 'nullable',
+                'office_id' => 'required',
+                // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
+                // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
+                'signature' => 'max:10240',
+            ],
             [
                 'name.required' => 'পুরো নাম লিখুন',
                 // 'username.required' => 'ইউজার নাম লিখুন',
                 'role_id.required' => 'ভূমিকা নির্বাচন করুন',
                 'office_id.required' => 'অফিস নির্বাচন করুন',
 
-            ]);
+            ]
+        );
 
         // File upload
         if ($file = $request->file('signature')) {
@@ -337,7 +379,8 @@ class GovCaseUserManagementController extends Controller
 
         $userUpdate = DB::table('users')
             ->where('id', $id)
-            ->update(['name' => $request->name,
+            ->update([
+                'name' => $request->name,
                 'username' => $request->username,
                 'mobile_no' => $request->mobile_no,
                 'office_type' => $request->office_type,
@@ -374,6 +417,11 @@ class GovCaseUserManagementController extends Controller
     public function destroy(UserManagement $userManagement)
     {
         //
+        // return $userManagement->id;
+        $id = $userManagement->id;
+        DB::table('users')->where('id', $id)->delete();
+        return redirect()->route('cabinet.user-management.index')
+            ->with('success', 'ইউজার ডাটা সফলভাবে মুছে ফেলা হয়েছে');
     }
 
     public function assignedENothiUserManagement()
@@ -395,13 +443,14 @@ class GovCaseUserManagementController extends Controller
             ->orderby('id', 'DESC');
 
         if (!empty($_GET['office_id'])) {
-            $query->where('users.office_id', '=', $_GET['office_id']);
+            $query->where('doptor_user_managements.office_id', '=', $_GET['office_id']);
         }
         if (!empty($_GET['role'])) {
-            $query->where('users.role_id', '=', $_GET['role']);
+            $query->where('doptor_user_managements.role_id', '=', $_GET['role']);
         }
 
-        $data['users'] = $query->paginate(10)->withQueryString();
+        // $data['users'] = $query->paginate(10)->withQueryString();
+        $data['users'] = $query->get();
         // dd($data['users']);
         $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')
             ->whereNotIn('id', $role)

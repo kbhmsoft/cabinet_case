@@ -89,38 +89,40 @@
                                     </span>
                                 </div>
                             </div>
+                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 32)
 
-                            <div class="col-4 mb-4">
-                                <div class="form-group">
+                                <div class="col-4 mb-4">
+                                    <div class="form-group">
 
-                                    <label for="office_type" class=" form-control-label">অফিস লেভেল</label>
+                                        <label for="office_type" class=" form-control-label">অফিস লেভেল</label>
 
-                                    <select name="office_type" id="office_type" class="form-control">
-                                        <option value="">-বিভাগ নির্বাচন করুন-</option>3
-                                        @foreach ($office_types as $value)
-                                            <option
-                                                value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
-                                                {{ $value->type_name_bn }} </option>
-                                        @endforeach
-                                    </select>
+                                        <select name="office_type" id="office_type" class="form-control">
+                                            <option value="">-বিভাগ নির্বাচন করুন-</option>3
+                                            @foreach ($office_types as $value)
+                                                <option
+                                                    value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
+                                                    {{ $value->type_name_bn }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 mb-4" id="selectMinDiv" style="display: none;">
 
-                                <div class="form-group mb-4">
-                                    <label class=" form-control-label">মন্ত্রণালয়/বিভাগ</label>
-                                    <select name="ministry" id="ministry" class="form-control">
-                                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                                        @foreach ($ministries as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-4 mb-4" id="selectMinDiv" style="display: none;">
+
+                                    <div class="form-group mb-4">
+                                        <label class=" form-control-label">মন্ত্রণালয়/বিভাগ</label>
+                                        <select name="ministry" id="ministry" class="form-control">
+                                            <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
+                                            @foreach ($ministries as $value)
+                                                <option
+                                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                                    {{ $value->office_name_bn }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-
+                            @endif
 
                             <div class="col-4 mb-4" id="selectDivisionDiv" style="display: none;">
                                 <div class="form-group mb-4">
@@ -137,18 +139,19 @@
                                     </select>
                                 </div>
                             </div>
-
-
-                            <div class="form-group mb-4 col-lg-4 ">
-                                <label>অফিস</label>
-                                <select name="office_id" id="office_id" class="form-control">
-                                    <option value="">- অফিস নির্বাচন করুন-</option>3
-                                </select>
-                                <span style="color: red">
-                                    {{ $errors->first('office_id') }}
-                                </span>
-                            </div>
-
+                            @if (Auth::user()->role_id == 27)
+                                <div class="form-group mb-4 col-lg-4 ">
+                                    <label>অফিস</label>
+                                    <select name="office_id" id="office_id" class="form-control">
+                                        <option value="">- অফিস নির্বাচন করুন-</option>3
+                                    </select>
+                                    <span style="color: red">
+                                        {{ $errors->first('office_id') }}
+                                    </span>
+                                </div>
+                            @elseif (Auth::user()->role_id == 29 || Auth::user()->role_id == 32)
+                            <input type="hidden" name="office_id" id="office_id" value="{{Auth::user()->office_id}}">
+                            @endif
 
                             <div class="col-4">
                                 <div class="form-group">
@@ -232,16 +235,16 @@
     </div>
     <style>
         /* .select2-container .select2-selection--single {
-                                        height: 37px !important;
-                                    }
+                                                        height: 37px !important;
+                                                    }
 
-                                    .select2-container--default .select2-selection--single .select2-selection__arrow {
-                                        top: 5px !important;
-                                    }
+                                                    .select2-container--default .select2-selection--single .select2-selection__arrow {
+                                                        top: 5px !important;
+                                                    }
 
-                                    .select2-container--default .select2-selection--single .select2-selection__rendered {
-                                        line-height: 25px !important;
-                                    } */
+                                                    .select2-container--default .select2-selection--single .select2-selection__rendered {
+                                                        line-height: 25px !important;
+                                                    } */
     </style>
 @endsection
 @section('scripts')
@@ -410,6 +413,9 @@
 
 
             // Level Wise Office
+            // if (Auth::user() - > role_id != 29) {
+
+
             jQuery('select[name="office_type"]').on('change', function() {
                 var dataID = jQuery(this).val();
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
@@ -463,6 +469,7 @@
                 }
             });
 
+            // }
 
             // DivisionOffice Wise Office
             jQuery('select[name="divOffice"]').on('change', function() {

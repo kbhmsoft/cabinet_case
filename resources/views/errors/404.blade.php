@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="contant_box_404">
-                             <img alt="Logo" src="{{ asset('media/logos/civil-suit-white-logo.png') }}" width="50px"  style="width: 200px" />
+                             {{-- <img alt="Logo" src="{{ asset('media/logos/civil-suit-white-logo.png') }}" width="50px"  style="width: 200px" /> --}}
                             <h3 class="h2">
                                 দুঃখিত!
                             </h3>

@@ -361,7 +361,7 @@ class GovCaseOfficeController extends Controller
         //
         $data['offices'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
-        // ->where('level', 1)
+            // ->where('level', 1)
             ->get();
 
         $data['ministries'] = DB::table('gov_case_office')
@@ -536,20 +536,17 @@ class GovCaseOfficeController extends Controller
         $officeID = userInfo()->office_id;
         $subcategories = GovCaseOffice::where("level", $id)->pluck("office_name_bn", 'doptor_office_id');
 
-        if ($roleID == 29 && $id!=2) {
+        if ($roleID == 29 && $id == 1) {
             // dd('aoyom');
             $subcategories = GovCaseOffice::where("level", $id)->where("doptor_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
             return json_encode($subcategories);
-        }
-
-        if ($roleID == 29 && ($id==2 || $id==1 || $id==5)) {
+        } elseif ($roleID == 29 && ($id == 2 || $id == 5)) {
             // dd($id);
             $subcategories = GovCaseOffice::where("level", $id)->where("parent_office_id", $officeID)->pluck("office_name_bn", 'doptor_office_id');
             return json_encode($subcategories);
         }
 
         return json_encode($subcategories);
-
     }
     public function getDependentChildOffice($id)
     {
@@ -575,11 +572,16 @@ class GovCaseOfficeController extends Controller
     {
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
-
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        if ($roleID == 27) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        }elseif($roleID == 29 || $roleID == 31) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        }else{
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
 
         $query = DB::table('users')->orderBy('id', 'DESC')
             ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -595,12 +597,19 @@ class GovCaseOfficeController extends Controller
         }
 
         $data['users'] = $query->paginate(10)->withQueryString();
-
-        $data['user_role'] = DB::table('roles')->select('id', 'name')
-            ->whereNotIn('id', $role)
-            ->where('is_gov', 1)
-            ->orderBy('sort_order', 'ASC')
-            ->get();
+        if ($roleID == 32 && $roleID == 41) {
+            $data['user_role'] = DB::table('roles')->select('id', 'name')
+                ->where('id', 45)
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
+        } else {
+            $data['user_role'] = DB::table('roles')->select('id', 'name')
+                ->whereNotIn('id', $role)
+                ->where('is_gov', 1)
+                ->orderBy('sort_order', 'ASC')
+                ->get();
+        }
 
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
@@ -850,7 +859,5 @@ class GovCaseOfficeController extends Controller
             }
             return response()->json(['success' => true, 'message' => 'User role updated successfully', 'id' => $organoGramId, 'roleDetails' => $userDetails]);
         }
-
     }
-
 }

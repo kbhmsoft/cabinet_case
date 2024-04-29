@@ -52,10 +52,17 @@
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
                             role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br> তথ্য</a>
                     </li>
+
                     <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="sending_reply_tab" data-toggle="tab" href="#sending_reply" role="tab"
                             aria-controls="profile" aria-selected="false">জবাব <br>প্রেরণ</a>
                     </li>
+
+                    <li class="nav-item nav-li-padding" role="presentation">
+                        <a class="nav-link" id="adalat_reply_tab" data-toggle="tab" href="#adalat_reply" role="tab"
+                            aria-controls="profile" aria-selected="false">আদালতে জবাব <br>দাখিল</a>
+                    </li>
+
                     <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="suspension_order_tab" href="#suspension_order" data-toggle="tab"
                             role="tab" aria-controls="contact" aria-selected="false">স্থগিতাদেশ/<br>অন্তর্বর্তীকালীন
@@ -111,7 +118,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
+                                                    <label>মামলার শ্রেণী/কেস-টাইপ <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category_type" id="case_category_type"
                                                             class="form-control form-control-sm" required="required">
@@ -143,7 +151,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম (Justice Name)</label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
                                                             class="form-control form-control-sm" required="required">
@@ -154,8 +162,7 @@
                                                                     {{ $value->name }} </option>
                                                             @endforeach
                                                         </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
+
                                                     </div>
                                                 </div>
 
@@ -253,7 +260,7 @@
 
                                                 <!-- jQuery -->
                                                 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-                                                
+
 
 
 
@@ -438,6 +445,7 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
                                         <input type="hidden" id="caseIDForAnswer" name="case_id">
+
                                         <fieldset class="mb-8">
                                             <div class="col-lg-12 mb-5">
 
@@ -570,13 +578,6 @@
                                                                 class="form-control form-control-sm  common_datepicker"
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off">
                                                         </div>
-                                                        <div class="col-md-6 mb-5">
-                                                            <label>মন্তব্য</label>
-                                                            <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">
-                                                                </textarea>
-                                                        </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -590,6 +591,101 @@
                             </form>
                         </div>
                         {{-- ------------- end জবাব প্রেরণ ------------- --}}
+
+                        {{-- ------------- start আদালতে জবাব দাখিল ------------- --}}
+                        <div class="tab-pane" id="adalat_reply" role="tabpanel" aria-labelledby="home-tab">
+                            <form id="adalatReplySubmitForm" action="javascript:void(0)" class="form" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="row_int">
+                                    <div class="col-lg-12">
+                                        <!--begin::Card-->
+                                        <input type="hidden" id="caseIDForAnswer" name="case_id">
+                                        <fieldset class="mb-8">
+                                            <div class="col-lg-12 mb-5">
+
+                                                <div class="col-md-6">
+                                                    <label class="form-group font-weight-bolder font-size-h5">আদালতে জবাব
+                                                        (affidavit) দাখিল করা হয়েছে কিনা
+                                                    </label>
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" name="adalat_reply_submit_have"
+                                                                id="adalat_reply_submit_have" value="1" />
+                                                            <span></span>হ্যাঁ</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="adalat_reply_submit_have"
+                                                                id="adalat_reply_submit_have_not" value="0"
+                                                                checked />
+                                                            <span></span>না</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="adalat_reply_div">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 mb-5 mt-8">
+                                                            <label>আদালতে জবাব দাখিলের তারিখ </label>
+                                                            <input type="text" name="adalat_reply_sending_date"
+                                                                id="adalat_reply_sending_date"
+                                                                class="form-control form-control-sm  common_datepicker"
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                        </div>
+
+                                                        {{-- starting সংযুক্তি  --}}
+                                                        <div class="col-md-12 mt-8">
+                                                            <fieldset class="">
+                                                                <div
+                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                    <div class="d-flex align-items-center mr-2 py-2">
+                                                                        <h3 class="mb-0 mr-8">সংযুক্তি (আদালতে জবাব দাখিল
+                                                                            কপি সংযুক্ত
+                                                                            করুন)
+                                                                            <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
+                                                                                5MB)</sub>
+                                                                        </h3>
+                                                                    </div>
+
+                                                                    <div class="symbol-group symbol-hover py-2">
+                                                                        <div class="symbol symbol-30 symbol-light-primary"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="" role="button"
+                                                                            data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                            <div id="addAdalatReplyFileRow">
+                                                                                <span
+                                                                                    class="symbol-label font-weight-bold bg-success">
+                                                                                    <i
+                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mt-3 px-5">
+                                                                    <table width="100%" class="border-0 px-5"
+                                                                        id="adalatReplyFileDiv"
+                                                                        style="border:1px solid #dcd8d8;">
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                    <input type="hidden"
+                                                                        id="adalat_reply_attachment_count" value="1">
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="form-footer" style="display: flex;justify-content: center;">
+                                    <button type="submit" id="adalatReplySubmitSaveBtn"
+                                        class="action-button submit-button">সংরক্ষণ</button>
+                                </div>
+                            </form>
+                        </div>
+                        {{-- ------------- end আদালতে জবাব দাখিল  ------------- --}}
 
                         {{-- ------------- start স্থগিতাদেশ/অন্তর্বর্তীকালীন আদেশ সম্পর্কিত------------- --}}
                         <div class="tab-pane" id="suspension_order" role="tabpanel" aria-labelledby="home-tab">
@@ -839,7 +935,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">সরকারের
-                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
+                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা</label>
                                                         <div class="radio-inline">
                                                             <label class="radio">
                                                                 <input type="radio" name="is_appeal" id="is_appeal"
@@ -1393,7 +1489,7 @@
 
                                 html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
                                     data.officeName +
-                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                    '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
                                 showCancelButton: false,
                                 showConfirmButton: false,
                                 onOpen: function() {
@@ -1420,15 +1516,16 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
-            $('#postponed_interim_data_details').hide();
-            $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
-            $('input[name="postponed_interim_have"]').change(function() {
+            $('.adalat_reply_div').hide();
+            $('input[name="adalat_reply_submit_have"][value="0"]').prop('checked', true);
+            $('input[name="adalat_reply_submit_have"]').change(function() {
                 if ($(this).val() == '1') {
-                    $('#postponed_interim_data_details').show();
+                    $('.adalat_reply_div').show();
                 } else {
-                    $('#postponed_interim_data_details').hide();
+                    $('.adalat_reply_div').hide();
                 }
             });
         });

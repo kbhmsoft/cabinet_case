@@ -62,12 +62,12 @@
                                 <a href="{{ route('notices.edit', $item) }}" class="btn btn-primary btn-sm"><i
                                         class="fas fa-edit"></i></a>
 
-                                <form action="{{ route('notices.destroy', $item->id) }}" method="POST" id="deleteForm">
+                                <form action="{{ route('notices.delete', $item->id) }}" method="POST" id="deleteForm">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-danger btn-sm ml-2 btn-delete" onclick="confirmDelete('{{ $item->id }}')"><i
                                             class="fas fa-trash"></i></button>
-                                </form> 
+                                </form>
                             </td>
 
                         </tr>

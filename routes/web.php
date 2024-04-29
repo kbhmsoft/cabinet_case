@@ -1,35 +1,28 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CourtController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\UserNotificationController;
-
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontHomeController;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\MyprofileController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Gov_ReportController;
-use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MyprofileController;
 use App\Http\Controllers\NoticeController;
-
-
-
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\UserNotificationController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Auth::routes([
-    'login'    => true,
-    'logout'   => true,
+    'login' => true,
+    'logout' => true,
     'register' => false,
-    'reset'    => true,   // for resetting passwords
-    'confirm'  => false,  // for additional password confirmations
-    'verify'   => false,  // for email verification
+    'reset' => true, // for resetting passwords
+    'confirm' => false, // for additional password confirmations
+    'verify' => false, // for email verification
 ]);
 
 require __DIR__ . '/gov_case/gov_case.php';
@@ -40,9 +33,16 @@ Route::get('/clear-cache', function () {
 });
 
 //Reoptimized class loader:
+
 Route::get('/optimize', function () {
     $exitCode = Artisan::call('optimize');
     return '<h1>Reoptimized class loader</h1>';
+});
+
+
+Route::get('/linkstorage', function () {
+    $exitCode = Artisan::call('storage:link');
+    return '<h1>Storalge Link Created</h1>';
 });
 
 //Route cache:
@@ -75,10 +75,10 @@ Route::get('hearing-case-list', [FrontHomeController::class, 'dateWaysCase'])->n
 Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'])->name('dateWaysRMCase');
 
 //**------notice-----------**//
-Route::resource('notices', NoticeController::class);
-Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.destroy');
-Route::get('notices/view', [NoticeController::class, 'show'])->name('notices.show');
 
+Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.delete');
+Route::get('all-notice', [NoticeController::class, 'show'])->name('notices.details');
+Route::resource('notices', NoticeController::class);
 
 Route::middleware('auth')->group(function () {
     // setting
@@ -96,14 +96,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/hearing-nextWeek', [DashboardController::class, 'hearing_date_nextWeek'])->name('dashboard.hearing-nextWeek');
     Route::get('/dashboard/hearing-nextMonth', [DashboardController::class, 'hearing_date_nextMonth'])->name('dashboard.hearing-nextMonth');
 
-
     /////****************** Gov Case Report Module *************/////
     Route::get('/govcase/report', [Gov_ReportController::class, 'index'])->name('reportss');
     Route::get('/govcase/report/caselist', [Gov_ReportController::class, 'caselist'])->name('report.govcaselist');
     Route::post('/govcase/report/pdf', [Gov_ReportController::class, 'pdf_generate']);
     // Route::get('/report/old-case', [RM_ReportController::class, 'old_case']);
     //============ Case Activity Log End ==============//
-
 
     /////************** User Management **************/////
     Route::resource('user-management', UserManagementController::class);
@@ -118,9 +116,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-profile/update-password', [MyprofileController::class, 'update_password'])->name('update.password');
     // Route::get('/my-profile', [MyprofileController::class, 'index'])->name('my-profile.index');
     /////************** Office Setting **************/////
-
-
-
 
     /////************** General Setting **************/////
     // Route::resource('setting', SettingController::class);
@@ -188,7 +183,6 @@ Route::middleware('auth')->group(function () {
     //=================== Message End ==================
     Route::get('/script', [MessageController::class, 'script']);
 
-
     // Route::resource('show-application-form', ApplicationFormAsMainDefendentController::class);
     // use App\Http\Controllers\ApplicationFormAsMainDefendentController;
 
@@ -197,7 +191,6 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('createApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])
     // ->name('createApplicationForm');
-
 
     // Route::post('storeApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'store'])
     //     ->name('storeApplicationForm.store');

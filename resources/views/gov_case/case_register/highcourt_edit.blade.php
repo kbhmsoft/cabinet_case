@@ -143,7 +143,7 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম (Justice Name) <span class="text-danger">*</span></label>
 
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
@@ -557,7 +557,7 @@
                                                             বরাবর</label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="sending_reply_div">
                                                     <div class="form-group row">
                                                         <div class="col-lg-6 mb-5">
@@ -661,12 +661,10 @@
                                                                 </div>
                                                             </fieldset>
                                                         </div>
-                                                        <div class="col-md-8 mb-5 mt-6" id="trackingNumberField"
-                                                            style="display: none;">
-                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে
-                                                                ট্র্যাকিং নম্বর প্রদান করুন</label>
-                                                            <input type="text" name="soltrack_tracking_number"
-                                                                class="form-control">
+
+                                                        <div class="col-md-8 mb-5 mt-6" id="trackingNumberField">
+                                                            <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা হলে ট্র্যাকিং নম্বর প্রদান করুন</label>
+                                                            <input type="text" name="soltrack_tracking_number" class="form-control form-control-sm" value="{{ $case->soltrack_tracking_number  }}">
                                                         </div>
 
                                                         <div class="col-lg-6 mb-5 mt-5">
@@ -679,6 +677,7 @@
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off"
                                                                 value="{{ $case->result_sending_date_solisitor_to_ag ?? '' }}">
                                                         </div>
+
                                                         <div class="col-lg-6 mb- mt-5">
                                                             <label>সলিসিটর অফিস হতে এটর্নি জেনারেল অফিসে জবাব প্রেরণের
                                                                 স্মারক </label>
@@ -697,11 +696,11 @@
                                                                 placeholder="দিন/মাস/বছর" autocomplete="off"
                                                                 value="{{ $case->reply_submission_date ?? '' }}">
                                                         </div>
-                                                        <div class="col-md-6 mb-5">
+                                                        {{-- <div class="col-md-6 mb-5">
                                                             <label>মন্তব্য</label>
                                                             <textarea name="comments" class="form-control" id="comments" rows="3" spellcheck="false">{{ $case->comments ?? '' }}
-                                                    </textarea>
-                                                        </div>
+                                                            </textarea>
+                                                        </div> --}}
 
                                                     </div>
 
@@ -1747,7 +1746,7 @@
         });
     </script>
 
-    @include('gov_case.case_register.create_js')
+    {{-- @include('gov_case.case_register.create_js') --}}
     <script type="text/javascript">
         // $(document).ready(function() {
         //     addBadiRowFunc();

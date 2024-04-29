@@ -26,7 +26,7 @@
     }
 
     .header-content {
-        margin-top: 20px;
+        margin-top: 30px;
         margin-left: 25px;
         /* Adjust as needed */
     }
@@ -87,33 +87,34 @@
             <!-- Move this part into a separate div -->
             <div class="header-case-count">
                 <div class="header-content">
-                    <span class="font-weight-bolder" style="color: rgb(57, 241, 11); font-size: 15px;">
+                    <span class="font-weight-bolder" style="color: rgb(241, 230, 11); font-size: 15px;">
                         মোট এন্ট্রিকৃত মামলার সংখ্যা: <span class="count-numbers"><?= en2bn($total_case) ?></span>
                     </span>
 
                     <span class="count-item font-weight-bolder"
                         style="justify-content: space-between; align-items: center; font-size: 15px;">
                         <a href="{{ route('cabinet.case.highcourt') }}" class="hover-effect"
-                            style="text-decoration: none; color: rgb(57, 241, 11);">
-                           ( হাইকোর্ট বিভাগে মোট মামলা:
+                            style="text-decoration: none; color: rgb(241, 230, 11);">
+                            ( হাইকোর্ট বিভাগ:
                         </a>
                         <span class="count-numbers"
-                            style="margin-left: 1rem; color: rgb(57, 241, 11);">{{ en2bn($total_highcourt) }};</span>
+                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_highcourt) }};</span>
                     </span>
                     <span class="count-item font-weight-bolder"
                         style="justify-content: space-between; align-items: center; font-size: 15px;">
                         <a href="{{ route('cabinet.case.appellateDivision') }}"
-                            style="text-decoration: none; color: rgb(57, 241, 11);">
-                            আপিল বিভাগে মোট মামলা:
+                            style="text-decoration: none; color: rgb(241, 230, 11);">
+                            আপিল বিভাগ:
                         </a>
                         <span class="count-numbers"
-                            style="margin-left: 1rem; color: rgb(57, 241, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক ট্রাইব্যুনাল: ০০)</span>
+                            style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক
+                            ট্রাইব্যুনাল: ০০)</span>
                     </span>
                 </div>
                 <hr class="middle-line">
             </div>
             <!-- End of header-case-count -->
-            @elseif ($roleID == 45)
+        @elseif ($roleID == 45 || $roleID == 43)
             <!-- White space -->
             <div style="width: 100%; height: 20px;"></div>
         @endif

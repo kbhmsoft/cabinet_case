@@ -36,6 +36,7 @@
         }
         addFileRowFunc();
         addReplyFileRowFunc();
+        addAdalatReplyFileRowFunc();
         addSuspensionOrderFileRowFunc();
         addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
@@ -879,35 +880,73 @@
 
 
     // ============= Add Reply Attachment Row ========= start =========
-    $("#addReplyFileRow").click(function(e) {
-        addReplyFileRowFunc();
+    $("#addAdalatReplyFileRow").click(function(e) {
+      addAdalatReplyFileRowFunc();
     });
+
     //add row function
-    function addReplyFileRowFunc() {
-        var count = parseInt($('#reply_attachment_count').val());
+    function addAdalatReplyFileRowFunc() {
+        var count = parseInt($('#adalat_reply_attachment_count').val());
         var formType = $('#formType').val();
-        $('#reply_attachment_count').val(count + 1);
+        $('#adalat_reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="reply_file_type[]" id="customreplyFileName' + count +
-            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items += '<td><input type="text" name="adalat_reply_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="replyAttachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="adalat_reply_file_name[]" onChange="adalatReplyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customAdalatReplyFile' + count +
+            '" required/><label id="file_error' +
             count +
-            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
-            count + '" for="customReplyFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adalat-reply-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
-        $('#replyFileDiv tr:last').after(items);
+        $('#adalatReplyFileDiv tr:last').after(items);
 
         if (formType == 'edit') {
-            $(`#customReplyFile${count}`).attr('required', false);
-            $(`#customreplyFileName${count}`).attr('required', false);
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
         }
     }
 
+
+
+    // add adalat reply attachment
+
+
+    $("#addFinalOrderFileRow").click(function(e) {
+        addFinalOrderFileRowFunc();
+    });
+    //add row function
+    function addFinalOrderFileRowFunc() {
+        var count = parseInt($('#final_order_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#final_order_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="final_order_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFinalFile' + count +
+            '" required/><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#finalOrderFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
 
 
 

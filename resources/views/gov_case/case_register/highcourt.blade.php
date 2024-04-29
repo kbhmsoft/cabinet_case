@@ -165,29 +165,30 @@
                                     {{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
 
 
-                                    <td class="notice-popup">
-                                        <div class="product cardhoveritem">
-                                            <div class="product-image">
-                                                @if ($row->is_final_order == '1')
-                                                    <span class="indicator">নিষ্পত্তিকৃত মামলা</span>
-                                                @else
-                                                    <span class="indicator">মামলা চলমান</span>
-                                                @endif
-                                                <div class="product-text">
-                                                    <div class="card card-custom">
-                                                        <div class="card-body">
-                                                            <a href="#"
+                                <td class="notice-popup">
+                                    <div class="product cardhoveritem">
+                                        <div class="product-image">
+                                            @if ($row->is_final_order == '1')
+                                                <span class="indicator">নিষ্পত্তিকৃত মামলা</span>
+                                            @else
+                                                <span class="indicator">মামলা চলমান</span>
+                                            @endif
+                                            <div class="product-text">
+                                                <div class="card card-custom">
+                                                    <div class="card-body">
+                                                        <a href="#"
                                                             data-case-division-id="{{ $row->case_division_id }}"
-                                                            data-case-type-id="{{ $row->case_type_id }}" data-case-number="{{ $row->case_no }}"
+                                                            data-case-type-id="{{ $row->case_type_id }}"
+                                                            data-case-number="{{ $row->case_no }}"
                                                             data-case-year="{{ $row->year }}"
                                                             class="caseLinkSupremeCourt">শুনানির
-                                                                তারিখ/সংক্ষিপ্ত আদেশ দেখতে এখানে ক্লিক করুন</a>
-                                                        </div>
+                                                            তারিখ/সংক্ষিপ্ত আদেশ দেখতে এখানে ক্লিক করুন</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
+                                    </div>
+                                </td>
 
 
                                 <td style="text-align:center;">
@@ -207,6 +208,18 @@
                                             <?php
                                             $roleID = Auth()->user()->role_id;
                                             ?>
+
+
+                                            @can('highcourt_adalat_reply_sending')
+                                            @if ($row->adalat_reply_submit_have == null)
+                                            @if (empty($row->adalat_reply_sending_date))
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে জবাব দাখিল</a>
+                                            @endif
+                                            @endif
+                                            @endcan
+
+
                                             @can('highcoutr_send_answer')
                                                 @if ($row->is_final_order == 0)
                                                     @if (empty($row->result_sending_date))
@@ -292,9 +305,10 @@
                                         @endif
                                     </div>
                                     <div class="btn-group">
-                                        @if($roleID == 29 || $roleID == 31)
+                                        @if ($roleID == 29 || $roleID == 31)
                                             <input type="checkbox" id="important" name="important" value="1"
-                                                data-row-id="{{ $row->id }}" onchange="updateImportantCaseDatabase(this)"
+                                                data-row-id="{{ $row->id }}"
+                                                onchange="updateImportantCaseDatabase(this)"
                                                 {{ $row->important == 1 ? 'checked' : '' }}>
                                             <label class="checkbox-name" for="important">গুরুত্বপূর্ণ</label>
                                         @endif
@@ -366,39 +380,39 @@
                 });
             });
         </script>
-<script>
-    function updateImportantCaseDatabase(checkbox) {
+        <script>
+            function updateImportantCaseDatabase(checkbox) {
 
-        const rowId = checkbox.getAttribute("data-row-id");
-        const isChecked = checkbox.checked;
+                const rowId = checkbox.getAttribute("data-row-id");
+                const isChecked = checkbox.checked;
 
-        const importantValue = isChecked ? 1 : null;
-        const data = {
-            rowId: rowId,
-            important: importantValue
-        };
+                const importantValue = isChecked ? 1 : null;
+                const data = {
+                    rowId: rowId,
+                    important: importantValue
+                };
 
-        const routeUrl = "{{ route('cabinet.case.highcourtImportantSave') }}";
+                const routeUrl = "{{ route('cabinet.case.highcourtImportantSave') }}";
 
-        fetch(routeUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Data saved successfully.');
-                } else {
+                fetch(routeUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Data saved successfully.');
+                        } else {
 
-                    console.error('Failed to save data.');
-                }
-            })
-            .catch(error => {
+                            console.error('Failed to save data.');
+                        }
+                    })
+                    .catch(error => {
 
-                console.error('Error:', error);
-            });
-    }
-</script>
+                        console.error('Error:', error);
+                    });
+            }
+        </script>

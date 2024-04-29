@@ -126,7 +126,9 @@ class GovCaseRegister extends Model
         'postponed_interim_data_details',
         'soltrack_tracking_number',
         'sending_reply_have',
-        'sending_reply_person_unit'
+        'sending_reply_person_unit',
+        'adalat_reply_submit_have',
+        'adalat_reply_sending_date',
     ];
 
     public function users()

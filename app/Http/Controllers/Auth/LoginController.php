@@ -69,7 +69,6 @@ class LoginController extends BaseController
     {
         $userEmail = $request->email;
         $password = $request->password;
-
         if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
             $user = Auth::user();
             $success['user_id'] = $user->id;
@@ -89,14 +88,16 @@ class LoginController extends BaseController
 
     public function ndoptor_sso_callback(Request $request)
     {
+        // dd(1);
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
+        $token = '';
         if (!isset($data['token'])) {
-            // return redirect()->route('nothi.v2.login');
+            return redirect()->route('doptor.login');
         } else {
             $token = $data['token'];
         }
-
+   
         session(['bearerToken' => $token]);
 
         $curl = curl_init();
@@ -117,17 +118,12 @@ class LoginController extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
+   
 
         if ($response->status == 'success') {
-            $id = current($response->data->organogram_info)->id;
+            $id = end($response->data->organogram_info)->id;
             $userInformationa = $response->data;
             $organogramId = key($userInformationa->organogram_info);
-
-            // dd($organogramId);
-            //  $organogramKeys = array_keys($userData->organogram_info);
-            //  dd($organogramKeys);
-            //  $organogramId = $organogramKeys[0];
-            //  dd($organogramId);
 
             $organoGramUserInfo = DB::table('doptor_user_managements')
                 ->select('id', 'organogram_id', 'user_role')
@@ -137,22 +133,22 @@ class LoginController extends BaseController
             if ($id && $organoGramUserInfo && $organoGramUserInfo->user_role && $organoGramUserInfo->user_role != 42) {
                 $userInfo = $response->data->user;
                 $userEmployeeData = $response->data->employee_info;
-                $userOfficeInfo = $response->data->office_info;
-
+                $userOfficeInfo = end($response->data->office_info);
+      
                 $userData = [
                     'name' => $userEmployeeData->name_bng,
                     'username' => $userInfo->user_alias,
                     'mobile_no' => $userEmployeeData->personal_mobile,
                     'email' => $userEmployeeData->personal_email,
-                    'ministry' => $userOfficeInfo[0]->office_ministry_id,
+                    'ministry' => $userOfficeInfo->office_ministry_id,
                     'signature' => null,
                     'profile_image' => null,
                     'role_id' => $organoGramUserInfo->user_role,
-                    'office_id' => $userOfficeInfo[0]->office_id,
+                    'office_id' => $userOfficeInfo->office_id,
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-                    'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
-                    'designation' => $userOfficeInfo[0]->designation,
+                    'unit_name_bn' => $userOfficeInfo->unit_name_bn,
+                    'designation' => $userOfficeInfo->designation,
                     'organogram_id' => $organogramId ?? null,
                 ];
 
@@ -177,23 +173,23 @@ class LoginController extends BaseController
                 $userInfo = $response->data->user;
                 $userInformationa = $response->data;
                 $userEmployeeData = $response->data->employee_info;
-                $userOfficeInfo = $response->data->office_info;
+                $userOfficeInfo = end($response->data->office_info);
                 $organogramId = key($userInformationa->organogram_info);
-                // dd($userOfficeInfo[0]->designation);
+
                 $userData = [
                     'name' => $userEmployeeData->name_bng,
                     'username' => $userInfo->user_alias,
                     'mobile_no' => $userEmployeeData->personal_mobile,
                     'email' => $userEmployeeData->personal_email,
-                    'ministry' => $userOfficeInfo[0]->office_ministry_id,
+                    'ministry' => $userOfficeInfo->office_ministry_id,
                     'signature' => null,
                     'profile_image' => null,
                     'role_id' => 43,
-                    'office_id' => $userOfficeInfo[0]->office_id,
+                    'office_id' => $userOfficeInfo->office_id,
                     'is_gov' => 1,
                     'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-                    'unit_name_bn' => $userOfficeInfo[0]->unit_name_bn,
-                    'designation' => $userOfficeInfo[0]->designation,
+                    'unit_name_bn' => $userOfficeInfo->unit_name_bn,
+                    'designation' => $userOfficeInfo->designation,
                     'organogram_id' => $organogramId ?? null,
                 ];
 
@@ -314,7 +310,6 @@ class LoginController extends BaseController
         ));
 
         curl_exec($curl);
-
         curl_close($curl);
 
         return;

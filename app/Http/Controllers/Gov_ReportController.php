@@ -29,6 +29,7 @@ class Gov_ReportController extends Controller
         $data['ministry'] = DB::table('gov_case_office')->select('id', 'office_name_bn')->get();
 
         $officeID = Auth::user()->office_id;
+
         $childOfficeIds = [];
         $childOfficeQuery = DB::table('gov_case_office')
             ->select('id')
@@ -55,10 +56,11 @@ class Gov_ReportController extends Controller
 
         $data['page_title'] = 'সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট ফরম';
         $roleID = Auth::user()->role_id;
+
         if ($roleID != 27) {
             return view('gov_report.ministryWiseCaselist')->with($data);
         }
-        // return view('case.case_add', compact('page_title', 'case_type'));
+
         return view('gov_report.caselist')->with($data);
     }
 
@@ -79,6 +81,7 @@ class Gov_ReportController extends Controller
             $office_type = $request->office_type;
             // return $office_type;
             $dept_id = $request->ministry;
+
             // return $dept_id;
             if ($office_type != null && $dept_id != null) {
                 $data['officeData'] = [$office_type, $dept_id];
@@ -256,35 +259,36 @@ class Gov_ReportController extends Controller
         //     }
         // }
         if ($request->btnsubmit == 'pdf_num_ministry_office_wise') {
+
             $data['page_title'] = 'সরকারি মামলার তালিকা';
 
             $data['date_start'] = $request->date_start ? date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start))) : now();
             $data['date_end'] = $request->date_end ? date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end))) : now();
 
             $officeID = Auth::user()->office_id;
+
             $childOfficeIds = DB::table('gov_case_office')
-                ->select('id')
-                ->where('parent', $officeID)
-                ->pluck('id')
+                ->select('doptor_office_id', 'parent_office_id')
+                ->where('parent_office_id', $officeID)
+                ->pluck('doptor_office_id')
                 ->toArray();
 
             $finalOfficeIds = empty($childOfficeIds) ? [$officeID] : array_merge([$officeID], $childOfficeIds);
 
             $data['ministryWiseData'] = DB::table('gov_case_office')
-                ->whereIn('gov_case_office.parent', $finalOfficeIds)
-                ->orWhereIn('id', $finalOfficeIds)
-                ->get(['id', 'office_name_bn']);
+                ->orWhereIn('doptor_office_id', $finalOfficeIds)
+                ->get(['doptor_office_id', 'office_name_bn']);
 
             $data['ministryWiseData']->transform(function ($val) use ($data) {
-                $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->id, $data)->count();
-                $val->totalCase = $this->total_case_count_by_highCourt($val->id, $data)->count();
-                $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->id, $data)->count();
-                $val->againstGov = $this->done_against_gov_case_count_highCourt($val->id, $data)->count();
-                $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->id, $data);
-                $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->id, $data)->count();
-                $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_ministry_count($val->id, $data)->count();
+                $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
+                $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->doptor_office_id, $data)->count();
+                $val->totalCase = $this->total_case_count_by_highCourt($val->doptor_office_id, $data)->count();
+                $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
+                $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($val->doptor_office_id, $data)->count();
+                $val->againstGov = $this->done_against_gov_case_count_highCourt($val->doptor_office_id, $data)->count();
+                $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($val->doptor_office_id, $data);
+                $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
+                $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_ministry_count($val->doptor_office_id, $data)->count();
                 return $val;
             });
 
@@ -468,7 +472,8 @@ class Gov_ReportController extends Controller
                 $idArray = is_array($id) ? $id : [$id];
                 $totalCase->whereIn('respondent_id', $idArray)
                     ->where('is_main_bibadi', 1)
-                    ->groupBy('gov_case_id');})
+                    ->groupBy('gov_case_id');
+            })
             ->count();
 
         $completeCase = GovCaseRegister::whereBetween('date_issuing_rule_nishi', [$from, $to])
@@ -478,7 +483,8 @@ class Gov_ReportController extends Controller
                 $idArray = is_array($id) ? $id : [$id];
                 $completeCase->whereIn('respondent_id', $idArray)
                     ->where('is_main_bibadi', 1)
-                    ->groupBy('gov_case_id');})
+                    ->groupBy('gov_case_id');
+            })
             ->count();
 
         return $totalCase - $completeCase;
