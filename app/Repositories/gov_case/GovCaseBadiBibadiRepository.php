@@ -9,6 +9,7 @@ namespace App\Repositories\gov_case;
 
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseConcernPerson;
 
 class GovCaseBadiBibadiRepository
 {
@@ -125,6 +126,11 @@ class GovCaseBadiBibadiRepository
     public static function getOthersBibadiByCaseId($caseId)
     {
         $other_bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', null)->get();
+        return $other_bibadi;
+    }
+    public static function getConcernPersonByCaseId($caseId)
+    {
+        $other_bibadi = GovCaseConcernPerson::where('gov_case_id', $caseId)->get();
         return $other_bibadi;
     }
 
