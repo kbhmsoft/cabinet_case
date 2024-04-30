@@ -2653,6 +2653,7 @@ class GovCaseRegisterController extends Controller
             $caseId = GovCaseRegisterRepository::storeGovCase($request);
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
+            GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
             GovCaseLogRepository::storeGovCaseLog($caseId);
             if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -2772,6 +2773,8 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
+
+        // dd($request->all());
         try {
             $caseId = $request->caseId;
 
@@ -2786,7 +2789,9 @@ class GovCaseRegisterController extends Controller
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
 
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
+            GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
+
 
             if ($request->file_type && $_FILES["file_name"]['name']) {
 

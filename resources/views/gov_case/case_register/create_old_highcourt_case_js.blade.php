@@ -273,11 +273,8 @@
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
         var MainCount = $('#MainBibadiDiv tr').length;
-        // console.log(MainCount);
+
         $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-        /*if(MainCount ==3){
-            $('#MainBibadiDiv tr:last').after(Item(MainCount, 'main'));
-        }*/
 
         function Item(count, type = NULL) {
             var items = '';

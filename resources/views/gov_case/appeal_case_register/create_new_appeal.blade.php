@@ -23,9 +23,18 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
+
+    <style>
+        .form-short-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-top: -20px;
+            color: rgb(235, 58, 58);
+        }
+    </style>
     <!--begin::Row-->
     <div class="row">
 
@@ -34,6 +43,8 @@
         <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট মূল বিবাদী অফিস মামলার তথ্য এন্ট্রি
+                    করবে)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
@@ -873,8 +884,8 @@
     <script>
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
-              // Function to check case number when case year changes
-              $('#case_year').change(function() {
+            // Function to check case number when case year changes
+            $('#case_year').change(function() {
                 var caseNo = $('#case_no').val(); // Get the case number
                 var caseYear = $(this).val(); // Get the case year
 
