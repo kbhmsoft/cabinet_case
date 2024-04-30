@@ -2846,26 +2846,29 @@ class GovCaseRegisterController extends Controller
     {
         // dd($request->all());
         $caseNo = $request->case_no;
-        $previousMainRespondent = $request->input('previous_main_respondent');
         $mainRespondent = $request->input('main_respondent');
-
-        $previousMainRespondent = $previousMainRespondent[0];
+        // dd($mainRespondent[0]);
         $newMainRespondent = $mainRespondent[0];
-
+        
         $exists = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
         $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
         $id = $caseId->id;
+        
+        if($request->input('previous_main_respondent')){
 
-        if ($previousMainRespondent != $newMainRespondent && $exists) {
-            DB::table('main_respondent_notifications')->insert([
-                'gov_case_id' => $id,
-                'case_no' => $request->case_no,
-                'previous_office_id' => $previousMainRespondent,
-                'new_office_id' => $newMainRespondent,
-                'is_shown' => 0,
-            ]);
+            $previousMainRespondent = $request->input('previous_main_respondent');
+            $previousMainRespondent = $previousMainRespondent[0];
+            if ($previousMainRespondent != $newMainRespondent && $exists) {
+                DB::table('main_respondent_notifications')->insert([
+                    'gov_case_id' => $id,
+                    'case_no' => $request->case_no,
+                    'previous_office_id' => $previousMainRespondent,
+                    'new_office_id' => $newMainRespondent,
+                    'is_shown' => 0,
+                ]);
+            }
+            
         }
-
         // $request->validate(
         //     [
         //         'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
@@ -2875,9 +2878,11 @@ class GovCaseRegisterController extends Controller
         //     ]
         // );
 
-        try {
+        // try {
 
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+            GovCaseRegisterRepository::storeConcernPerson($request, $id);
+            // dd($caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $id);
             GovCaseBadiBibadiRepository::storeBibadiForChangingMainRespondent($request, $id);
 
@@ -2922,10 +2927,10 @@ class GovCaseRegisterController extends Controller
 
             // ========= Gov Case Activity Log  End ==========
 
-        } catch (\Exception $e) {
-            $flag = 'false';
-            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
-        }
+        // } catch (\Exception $e) {
+        //     $flag = 'false';
+        //     return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+        // }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
     }
 
@@ -4913,7 +4918,7 @@ class GovCaseRegisterController extends Controller
     {
         $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
             ->get();
-
+        // return $query;
         foreach ($query as $key => $val) {
             DB::table('gov_case_concern_persons')->insert([
                 'gov_case_id' => $val->id,

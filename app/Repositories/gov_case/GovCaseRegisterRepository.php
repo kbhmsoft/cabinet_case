@@ -19,6 +19,7 @@ class GovCaseRegisterRepository
     {
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
@@ -35,6 +36,7 @@ class GovCaseRegisterRepository
         $data = [
             'case' => $case,
             'caseBadi' => $caseBadi,
+            'caseLawers' => $caseLawers,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
@@ -523,7 +525,7 @@ class GovCaseRegisterRepository
 
     public static function storeGeneralInfo($caseInfo)
     {
-        // dd($caseInfo);
+        // dd($caseInfo['case_id']);
         try {
             $case = self::checkGovCaseExist($caseInfo['case_id']);
             $case->case_no = $caseInfo->case_no;
