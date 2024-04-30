@@ -10,6 +10,7 @@ namespace App\Repositories\gov_case;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
+use App\Models\gov_case\GovCaseHighcourtAdalat;
 
 class GovCaseBadiBibadiRepository
 {
@@ -40,11 +41,12 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
+  
 
     public static function storeMainBibadi($caseInfo, $govCaseId)
     {
         $officeID = userInfo()->office_id;
-                $bibadi = new GovCaseBibadi();;
+                $bibadi = new GovCaseBibadi();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $officeID;
                 $bibadi->is_main_bibadi = 1;

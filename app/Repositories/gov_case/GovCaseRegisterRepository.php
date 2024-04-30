@@ -2,16 +2,17 @@
 
 namespace App\Repositories\gov_case;
 
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Attachment;
 use App\Models\FinalAttachment;
+use App\Models\ReplyAttachment;
+use Illuminate\Support\Facades\DB;
+use App\Models\SuspensionAttachment;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseConcernPerson;
-use App\Models\ReplyAttachment;
-use App\Models\Role;
-use App\Models\SuspensionAttachment;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseHighcourtAdalat;
 
 class GovCaseRegisterRepository
 {
@@ -53,6 +54,20 @@ class GovCaseRegisterRepository
 
         return $data;
     }
+
+
+    public static function storeHighcourtAdalat($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->highcourt_adalat as $key => $val) {
+            if ($caseInfo->highcourt_adalat[$key] != null) {
+                $highcourtAdalat = new GovCaseHighcourtAdalat();
+                $highcourtAdalat->gov_case_id = $govCaseId;
+                $highcourtAdalat->highcourt_adalat = $caseInfo->highcourt_adalat[$key];
+                $highcourtAdalat->save();
+            }
+        }
+    }
+
     public static function storeGovCase($caseInfo)
     {
         $case = self::checkGovCaseExist($caseInfo['caseId']);
@@ -525,7 +540,6 @@ class GovCaseRegisterRepository
 
     public static function storeGeneralInfo($caseInfo)
     {
-        // dd($caseInfo['case_id']);
         try {
             $case = self::checkGovCaseExist($caseInfo['case_id']);
             $case->case_no = $caseInfo->case_no;
@@ -543,7 +557,6 @@ class GovCaseRegisterRepository
             // $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number;
-            $case->highcourt_adalat = $caseInfo->highcourt_adalat;
             $case->money_amount = $caseInfo->money_amount;
             $case->postponed_interim_have = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;

@@ -184,15 +184,16 @@
                                                     </div>
                                                 </div> --}}
 
-
-                                                <div class="col-lg-4 mb-5">
+                                                <div class="col-lg-4">
                                                     <table width="100%" border="1" id="highcourtAdalatDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম (Justice Name)
+                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম
+                                                                (Justice Name)
                                                             </th>
                                                             <th width="50">
-                                                                <a href="javascript:void();" id="addHighcourtAdalatRow"
+                                                                <a href="javascript:void();"
+                                                                    id="addHighcourtAdalatRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
@@ -201,7 +202,6 @@
                                                         <tr></tr>
                                                     </table>
                                                 </div>
-
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
@@ -213,6 +213,27 @@
                                                         not be empty</span>
                                                 </div>
 
+
+                                                {{-- <div class="col-lg-12 mb-5">
+                                                    <div class="col-lg-6">
+                                                        <table width="100%" border="1" id="highcourtAdalatDiv"
+                                                            class="mb-5" style="border:1px solid #dcd8d8;">
+                                                            <tr>
+                                                                <th class="other_bibadi_name other_respondent">আদালতের নাম
+                                                                    (Justice Name)
+                                                                </th>
+                                                                <th width="50">
+                                                                    <a href="javascript:void();"
+                                                                        id="addHighcourtAdalatRow"
+                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                        <i class="fas fa-plus-circle"></i>
+                                                                    </a>
+                                                                </th>
+                                                            </tr>
+                                                            <tr></tr>
+                                                        </table>
+                                                    </div>
+                                                </div> --}}
                                                 {{-- <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                             class="text-danger">*</span></label>
@@ -348,7 +369,8 @@
                                                         <table width="100%" border="1" id="bibadiDiv"
                                                             class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th class="other_bibadi_name other_respondent">অন্যান্য রেসপন্ডেন্টদের নাম
+                                                                <th class="other_bibadi_name other_respondent">অন্যান্য
+                                                                    রেসপন্ডেন্টদের নাম
                                                                 </th>
                                                                 <th width="50">
                                                                     <a href="javascript:void();" id="addBibadiRow"

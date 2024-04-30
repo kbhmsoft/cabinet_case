@@ -2773,11 +2773,8 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
-
-        // dd($request->all());
         try {
             $caseId = $request->caseId;
-
             $request->validate([
                 'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
             ], [
@@ -2787,9 +2784,10 @@ class GovCaseRegisterController extends Controller
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
 
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
-
+            GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
+
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
 
 
@@ -2849,11 +2847,11 @@ class GovCaseRegisterController extends Controller
         $mainRespondent = $request->input('main_respondent');
         // dd($mainRespondent[0]);
         $newMainRespondent = $mainRespondent[0];
-        
+
         $exists = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
         $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
         $id = $caseId->id;
-        
+
         if($request->input('previous_main_respondent')){
 
             $previousMainRespondent = $request->input('previous_main_respondent');
@@ -2867,7 +2865,7 @@ class GovCaseRegisterController extends Controller
                     'is_shown' => 0,
                 ]);
             }
-            
+
         }
         // $request->validate(
         //     [

@@ -2,15 +2,16 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\AppealAttachment;
-use App\Models\Attachment;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Attachment;
+use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseHearing;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseHighcourtAdalat;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class AppealGovCaseRegisterRepository
 {
@@ -104,9 +105,9 @@ class AppealGovCaseRegisterRepository
             if($caseInfo->case_number_origin){
 
                 $case->case_category_origin = $caseInfo->case_category_origin;
-                
+
                 $case->case_number_origin = $caseOriginNum;
-                
+
                 $case->case_origin_id = $caseInfo->case_number_origin;
             }else{
                  $case->case_number_origin = $caseInfo->case_number_origin_manual;
@@ -129,7 +130,10 @@ class AppealGovCaseRegisterRepository
         }
         return $caseId;
     }
-    
+
+
+   
+
 
     public static function storeConcernPerson($caseInfo, $govCaseId)
     {
