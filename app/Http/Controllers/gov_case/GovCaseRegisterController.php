@@ -4926,5 +4926,19 @@ class GovCaseRegisterController extends Controller
         }
         return "Data Inserted Successfully";
     }
+    public function getAllJustices()
+    {
+        $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
+            ->get();
+        // return $query;
+        foreach ($query as $key => $val) {
+            DB::table('gov_case_concern_persons')->insert([
+                'gov_case_id' => $val->id,
+                'concern_person_designation' => $val->concern_person_designation,
+                'concern_user_id' => $val->concern_user_id,
+            ]);
+        }
+        return "Data Inserted Successfully";
+    }
 
 }
