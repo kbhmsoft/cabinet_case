@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class NoticeController extends Controller
 {
-
-    // Display a listing of the resource.
-
     public function index(Request $request)
     {
         $query = Notice::query();
@@ -53,11 +50,6 @@ class NoticeController extends Controller
     }
 
 
-
-
-
-    // Show the form for creating a new resource.
-
     public function create()
     {
         // Assuming you have some default data to pass to the view
@@ -67,10 +59,6 @@ class NoticeController extends Controller
 
         return view('notice.create', compact('data'));
     }
-
-
-
-    // Store a newly created resource in storage.
 
     public function store(StoreNoticeRequest $request)
     {
@@ -98,8 +86,6 @@ class NoticeController extends Controller
     }
 
 
-    // Display the specified resource.
-
     public function show($id)
     {
         $notices = Notice::latest()->paginate(10);
@@ -108,8 +94,6 @@ class NoticeController extends Controller
     }
 
 
-    // Show the form for editing the specified resource.
-
     public function edit(Notice $notice)
     {
         $data = $notice;
@@ -117,7 +101,6 @@ class NoticeController extends Controller
     }
 
 
-    // Update the specified resource in storage.
 
     public function update(UpdateNoticeRequest $request, Notice $notice)
     {
@@ -151,12 +134,6 @@ class NoticeController extends Controller
         }
     }
 
-
-
-
-    // Remove the specified resource from storage.
-
-    // Remove the specified resource from storage.
     public function destroy($id)
     {
         $resource = Notice::findOrFail($id);

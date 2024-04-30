@@ -8,9 +8,12 @@
         <!--begin::Logo-->
         <a href="{{ url('dashboard') }}" class="brand-logo">
             <!-- <img alt="Logo" src="media/logos/logo-light.png" /> -->
-            <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
-                class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" />
+            {{-- <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
+                class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" /> --}}
             <!-- <span style="font-weight: bold; font-size: 25px; color: white;">Civil Suit</span> -->
+            <img src="{{ asset('uploads/IconeSCMS/logo.png') }}" alt width="200" height="50"
+                class="d-inline-block align-text-top p-0 m-0">
+
         </a>
         <!--end::Logo-->
         <!--begin::Toggle-->

@@ -35,6 +35,13 @@
         .lawyer_title {
             font-size: 18px;
         }
+
+        .form-short-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-top: -20px;
+            color: rgb(235, 58, 58);
+        }
     </style>
     <!--begin::Row-->
     <div class="row">
@@ -44,6 +51,8 @@
         <div style="width:100%" class="card gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট মূল বিবাদী অফিস মামলার তথ্য এন্ট্রি
+                    করবে)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
@@ -160,7 +169,7 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5">
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম (Justice Name)</label>
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
@@ -172,9 +181,27 @@
                                                                     {{ $value->name }} </option>
                                                             @endforeach
                                                         </select>
-
                                                     </div>
+                                                </div> --}}
+
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <table width="100%" border="1" id="highcourtAdalatDiv"
+                                                        class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম (Justice Name)
+                                                            </th>
+                                                            <th width="50">
+                                                                <a href="javascript:void();" id="addHighcourtAdalatRow"
+                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
+                                                    </table>
                                                 </div>
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
@@ -186,7 +213,78 @@
                                                         not be empty</span>
                                                 </div>
 
+                                                {{-- <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                            class="text-danger">*</span></label>
 
+                                                <div class="col-lg-12 mb-5">
+                                                    <table width="100%" border="1" id="advocateLawerDiv"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr>
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                            class="text-danger">*</span></label>
+
+                                                    <div class="" id="concernPersonNameDiv">
+                                                        <select name="concern_user_id" id="concern_user_id"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
+                                                </div> --}}
+
+                                                {{-- <div class="container">
+                                                    <div id="dynamicDivs">
+                                                        <!-- Initial divs -->
+                                                        <div class="row mb-3 dynamic-div">
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                        class="text-danger">*</span></label>
+                                                                <div class="concernPersonDesignationDiv">
+                                                                    <select name="concern_person_designation"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        <option value="">-- নির্বাচন করুন --</option>
+                                                                        <!-- Assuming $concern_person_desig is a PHP variable containing designations -->
+                                                                        @foreach ($concern_person_desig as $value)
+                                                                            <option value="{{ $value->id }}">
+                                                                                {{ $value->name_bn }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <span
+                                                                        class="text-danger d-none validation-message">This
+                                                                        field can not be empty</span>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
+                                                                        class="text-danger">*</span></label>
+                                                                <div class="concernPersonNameDiv">
+                                                                    <select name="concern_user_id"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        <option value="">-- নির্বাচন করুন --</option>
+                                                                    </select>
+                                                                    <span
+                                                                        class="text-danger d-none validation-message">This
+                                                                        field can not be empty</span>
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="col-lg-4 mb-5 align-self-end">
+                                                                <button class="btn btn-primary add-btn mb-1"><i
+                                                                        class="fas fa-plus-circle"></i></button>
+                                                                <button class="btn btn-danger remove-btn d-none"><i
+                                                                        class="fas fa-minus-circle"></i></button>
+                                                            </div> --}}
+                                                {{-- </div>
+                                                    </div> --}}
+                                                {{-- </div> --}}
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -206,6 +304,11 @@
                                                     </table>
                                                     <input type="hidden" id="survey_count" value="1">
                                                 </div>
+                                                <!-- jQuery -->
+                                                {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+
+
+
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
@@ -224,8 +327,9 @@
                                                     </table>
                                                 </div>
 
-                                                <div class="col-lg-12 mb-5">
-                                                    <div class="col-lg-4 mb-5">
+
+                                                <div class="col-lg-12" style="display: flex;">
+                                                    <div class="col-lg-5 mb-5">
                                                         <label>মোট পিটিশনারের সংখ্যা</label>
                                                         <select name="total_badi_number" id="total_badi_number"
                                                             class="form-control form-control-sm">
@@ -239,77 +343,23 @@
                                                         </select>
                                                         <input type="hidden" name="caseId" value="">
                                                     </div>
-                                                </div>
 
-                                                <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="MainBibadiDiv"
-                                                        class="mb-5" style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th style="height: 35px !IMPORTANT;">মূল রেসপন্ডেন্ট নাম <span
-                                                                    class="text-danger">*</span>
-                                                            </th>
-                                                            {{-- <select id="select2Dropdown" class="form-control">
-
-                                                            </select> --}}
-                                                            {{-- <th width="50">
-                                                                <a href="javascript:void();" id="addMainBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th> --}}
-                                                        </tr>
-                                                        <tr></tr>
-                                                        <input type="hidden" id="mainBibadi_count" value="1">
-                                                    </table>
-                                                </div>
-
-                                                {{-- <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম
-                                                            </th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                    </table>
-                                                </div> --}}
-
-                                                {{-- <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম</th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                    </table>
-                                                </div> --}}
-
-                                                <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="bibadiDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম</th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <!-- Initially, there are no rows -->
-                                                    </table>
+                                                    <div class="col-lg-7 mb-5">
+                                                        <table width="100%" border="1" id="bibadiDiv"
+                                                            class="mb-5" style="border:1px solid #dcd8d8;">
+                                                            <tr>
+                                                                <th class="other_bibadi_name other_respondent">অন্যান্য রেসপন্ডেন্টদের নাম
+                                                                </th>
+                                                                <th width="50">
+                                                                    <a href="javascript:void();" id="addBibadiRow"
+                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                        <i class="fas fa-plus-circle"></i>
+                                                                    </a>
+                                                                </th>
+                                                            </tr>
+                                                            <tr></tr>
+                                                        </table>
+                                                    </div>
                                                 </div>
 
 
@@ -913,7 +963,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">সরকারের
-                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
+                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা</label>
                                                         <div class="radio-inline">
                                                             <label class="radio">
                                                                 <input type="radio" name="is_appeal" id="is_appeal"
@@ -1463,7 +1513,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
-
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
 
@@ -1576,6 +1625,24 @@
             toggleSendingReplyDiv();
             solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
             lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Counter to keep track of added divs
+            var count = 1;
+
+            // Function to add more divs
+            $("#addDivBtn").click(function() {
+                count++;
+                var newDiv = $("#container").children().first().clone();
+                newDiv.find("select").each(function() {
+                    // Clear selected options
+                    $(this).val('');
+                });
+                $("#container").append(newDiv);
+            });
         });
     </script>
 @endsection

@@ -15,16 +15,31 @@
             color: black;
         }
 
-        @media (max-width: 768px) {
-
+        /* Responsive styles for 768px */
+        @media only screen and (max-width: 768px) {
             .card-body {
                 padding: 10px;
             }
+            .card {
+                max-width: none;
+            }
         }
 
-        @media (min-width: 768px) and (max-width: 992px) {
+        /* Responsive styles for 1440px */
+        @media (min-width: 768px) and (max-width: 1440px) {
             .card-body {
                 padding: 20px;
+            }
+        }
+
+        /* Responsive styles for 425px */
+        @media (max-width: 425px) {
+            .card-body {
+                padding: 15px;
+            }
+
+            .count-item a {
+                font-size: 14px;
             }
         }
     </style>
@@ -159,7 +174,7 @@
                 </div>
             </div>
             <!-- Card 1 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-sm-12 col-md-6 mb-4">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
                         style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
@@ -197,7 +212,7 @@
                 </div>
             </div>
             <!-- Card 2 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
                 <div class="card border-0" style=" background-color: #f5f5f5;;">
                     <div class="card-body"
                         style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
@@ -228,7 +243,7 @@
                 </div>
             </div>
             <!-- Card 3 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
                         style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
@@ -254,15 +269,15 @@
                 </div>
             </div>
             <!-- Card 4 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
                         style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}"
-                                    style="height: 50px; " alt="Logo" class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -303,15 +318,15 @@
                 </div>
             </div>
             <!-- Card 5 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12 ">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
                         style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}"
-                                    style="height: 50px; " alt="Logo" class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -354,15 +369,15 @@
                 </div>
             </div>
             <!-- Card 6 -->
-            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4 col-sm-12">
                 <div class="card border-0" style=" background-color: #f5f5f5;">
                     <div class="card-body"
                         style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/tribunal.png') }}"
-                                    style="height: 50px; " alt="Logo" class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/tribunal.png') }}" style="height: 50px; "
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
