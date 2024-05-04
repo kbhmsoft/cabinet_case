@@ -389,12 +389,21 @@
                             <i class="menu-arrow"></i>
 
                             @can('users_list_menu')
-                                <ul class="menu-subnav">
+                                {{-- <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management']) ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ url('cabinet/user-management') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
+                                        </a>
+                                    </li>
+                                </ul> --}}
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/office/wise/users']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/office/wise/users') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder"> ব্যবহারকারীর তালিকা</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -379,7 +379,7 @@
         addAdvocateLawerFunc();
     });
 
-
+    // Add row function
     function addAdvocateLawerFunc() {
         var count = parseInt($('#survey_count').val());
         $('#survey_count').val(count + 1);
@@ -406,15 +406,14 @@
         $('#concern_user_id_' + count).select2();
     }
 
+
     //remove row function
     function removeAdvocateLawerRow(id) {
         $(id).closest("tr").remove();
     }
 
-
     function getConcernPerName(id) {
         var desig = $(`#concernPersonDesignation_${id}`).val();
-
         jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
         if (desig) {
             jQuery.ajax({
@@ -434,51 +433,13 @@
                             '</option>');
                     });
                     jQuery('.loadersmall').remove();
-
-                    // Check if the designation is "45"
-                    if (desig === "45") {
-                        // Trigger pop-up message with tooltip
-                        alert(
-                            "প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নাম যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন"
-                        );
-                        // You can replace the alert with a tooltip library if you prefer.
-                    }
                 }
             });
         } else {
             $(`#concern_user_id_${id}`).empty();
         }
+
     }
-
-    // function getConcernPerName(id) {
-    //     var desig = $(`#concernPersonDesignation_${id}`).val();
-
-    //     jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-    //     if (desig) {
-    //         jQuery.ajax({
-    //             url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-    //                 desig,
-    //             type: "GET",
-    //             dataType: "json",
-    //             success: function(data) {
-    //                 jQuery(`#concern_user_id_${id}`).html(
-    //                     '<div class="loadersmall"></div>');
-
-    //                 jQuery(`#concern_user_id_${id}`).html(
-    //                     '<option value="">-- নির্বাচন করুন --</option>');
-    //                 jQuery.each(data, function(key, value) {
-    //                     jQuery(`#concern_user_id_${id}`).append(
-    //                         '<option value="' + key + '">' + value +
-    //                         '</option>');
-    //                 });
-    //                 jQuery('.loadersmall').remove();
-    //             }
-    //         });
-    //     } else {
-    //         $(`#concern_user_id_${id}`).empty();
-    //     }
-
-    // }
 </script>
 
 <script>

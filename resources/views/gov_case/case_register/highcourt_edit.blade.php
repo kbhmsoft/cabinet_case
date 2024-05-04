@@ -204,8 +204,8 @@
                                                         @foreach ($caseLawers as $key => $value)
                                                             <tr>
                                                                 <td>
-                                                                    <select name="concern_person_designation"
-                                                                        id="concern_person_designation"
+                                                                    <select name="concernPersonDesignation[]"
+                                                                        id="concernPersonDesignation"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
                                                                         @foreach ($concern_person_desig as $value)
@@ -217,7 +217,7 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    <select name="concern_user_id" id="concern_user_id"
+                                                                    <select name="concern_user_id[]" id="concern_user_id"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
                                                                         @foreach ($usersInfo as $value)
