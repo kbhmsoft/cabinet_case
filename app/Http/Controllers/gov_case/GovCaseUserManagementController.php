@@ -243,9 +243,9 @@ class GovCaseUserManagementController extends Controller
         } elseif ($roleID == 29 || $roleID == 31) {
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
-                ->whereNotIn('id', [1, 14, 15, 27, 29, 39, 42, 43])
+                ->whereIn('id', [32, 41, 45])
                 ->where('is_gov', 1)
-                ->orderBy('sort_order', 'ASC')
+                ->orderBy('id', 'ASC')
                 ->get();
 
             $data['offices'] = DB::table('gov_case_office')
@@ -353,6 +353,8 @@ class GovCaseUserManagementController extends Controller
             'email' => $request->email,
             'role_id' => $request->role_id,
             'office_id' => $request->office_id,
+            'unit_name_bn' => $request->unit_name_bn,
+            'designation' => $request->designation,
             'is_gov' => 1,
             'password' => Hash::make($request->password),
         ]);

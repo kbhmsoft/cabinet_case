@@ -69,6 +69,27 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
+                                    <label for="name" class=" form-control-label">শাখা <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="unit_name_bn" name="unit_name_bn" placeholder="ব্যবহার কারীর শাখা লিখুন"
+                                        class="form-control form-control-sm" required>
+                                    <span style="color: red">
+                                        {{ $errors->first('unit_name_bn') }}
+                                    </span>
+                                </div>
+                            </div><div class="col-4">
+                                <div class="form-group">
+                                    <label for="name" class=" form-control-label">পদবী <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="designation" name="designation" placeholder="ব্যবহার কারীর পদবী লিখুন"
+                                        class="form-control form-control-sm" required>
+                                    <span style="color: red">
+                                        {{ $errors->first('designation') }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
                                     <label for="email" class=" form-control-label">ইমেল</label>
                                     <input type="email" id="email" name="email" placeholder="ইমেল লিখুন"
                                         class="form-control form-control-sm">
