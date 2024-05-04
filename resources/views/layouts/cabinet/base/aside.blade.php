@@ -381,7 +381,7 @@
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management', 'cabinet/e-nothi-assigned-user-list']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যবহারকারী
                                 পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -453,7 +453,7 @@
                                         <a href="{{ route('cabinet.assignedENothiUserManagement') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">অনুমোদিত
-                                                ই-নথি ব্যাবহারকারী</span>
+                                                ই-নথি ব্যবহারকারী</span>
                                             </span>
                                         </a>
                                     </li>
@@ -469,7 +469,7 @@
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>দপ্তর ব্যাবহারকারী
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>দপ্তর ব্যবহারকারী
                                 পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -482,7 +482,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">দপ্তর ব্যাবহারকারী
+                                            <span class="menu-text font-weight-bolder">দপ্তর ব্যবহারকারী
                                                 পরিচালনা</span>
                                         </a>
                                     </li>

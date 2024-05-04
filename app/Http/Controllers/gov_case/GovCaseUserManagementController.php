@@ -118,7 +118,7 @@ class GovCaseUserManagementController extends Controller
         ///////// run script
         // return $data;
 
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.user_manage.index')
             ->with($data);
@@ -211,7 +211,7 @@ class GovCaseUserManagementController extends Controller
         ///////// run script
         // return $data['offices'];
 
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.user_manage.office_wise_users')
             ->with($data);
@@ -309,7 +309,7 @@ class GovCaseUserManagementController extends Controller
             ->select('gov_case_office_type.*')
             ->get();
 
-        $data['page_title'] = 'নতুন ব্যাবহারকারী এন্ট্রি ফরম';
+        $data['page_title'] = 'নতুন ব্যবহারকারী এন্ট্রি ফরম';
         // dd($data);
         return view('gov_case.user_manage.add')->with($data);
     }
@@ -391,7 +391,7 @@ class GovCaseUserManagementController extends Controller
             ->get();
 
         // dd($data['roles']);
-        $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
+        $data['page_title'] = 'ব্যবহারকারীর বিস্তারিত';
         return view('gov_case.user_manage.show')->with($data);
     }
 
@@ -557,7 +557,7 @@ class GovCaseUserManagementController extends Controller
         // dd($data);
 
         $data['page_title'] = 'অনুমোদিত
-        ই-নথি ব্যাবহারকারী তালিকা';
+        ই-নথি ব্যবহারকারী তালিকা';
 
         return view('gov_case.user_manage.e-nothi-assigned-user-index')
             ->with($data);
