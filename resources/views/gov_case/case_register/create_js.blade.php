@@ -281,20 +281,19 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
-            // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
-            // console.log(count);
+
             if (type == 'other') {
                 items +=
                     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             }
             items += '</tr>';
-            // console.log(items);
             return items;
         }
         $('.other_respondentCls').select2();
     }
+
 
     //remove row function
     function removeBibadiRow(id) {
@@ -320,7 +319,7 @@
             items += '<tr id="highcourt_adalat_' + (count) + '">';
             items +=
                 '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="highcourt_adalat_id[]" value="">';
+            items += '<input type="hidden" name="highcourt_adalat[]" value="">';
 
             if (type == 'other') {
                 items +=
@@ -373,8 +372,6 @@
         }
         return output.join('');
     }
-
-    // document.getElementById('r').textContent = replaceNumbers('count'); // comment on 07/11/2022 shahajahan
 </script>
 
 <script>
@@ -408,10 +405,6 @@
         $('#concernPersonDesignation_' + count).select2();
         $('#concern_user_id_' + count).select2();
     }
-
-
-
-
 
 
     //remove row function
@@ -629,18 +622,19 @@
                         $('#contemptCaseSaveBtn').removeClass("disable-button");
 
                     },
-                    error: function(data) {
-                        console.log(JSON.stringify(data['responseJSON']['errors']['case_no']
-                            [0]));
 
-                        Swal.fire(
-                            'Oops...!',
-                            data['responseJSON']['errors']['case_no'][0],
-                            'error'
-                        )
+                    error: function(xhr, status, error) {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
-
+                        if (xhr.status ===
+                            422) { // HTTP status code for Unprocessable Entity
+                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                        } else {
+                            console.log('Error occurred:', xhr, status, error);
+                            Swal.fire('সমস্যা...!',
+                                'An error occurred while saving the case information.',
+                                'error');
+                        }
                     }
                 });
             } else {
@@ -656,6 +650,69 @@
         })
 
     });
+
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             var formData = new FormData(this);
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success');
+    //                     console.log(data);
+    //                     $("#sending_reply_tab").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
+    //                     $('#sendingReplySaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                 },
+    //                 error: function(xhr, status, error) {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     if (xhr.status ===
+    //                         422) { // HTTP status code for Unprocessable Entity
+    //                         Swal.fire('Oops...!', xhr.responseJSON.error, 'error');
+    //                     } else {
+    //                         console.log('Error occurred:', xhr, status, error);
+    //                         Swal.fire('Oops...!',
+    //                             'An error occurred while saving the case information.',
+    //                             'error');
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //             $('#caseGeneralInfoSaveBtn').removeClass(
+    //             'spinner spinner-white spinner-right disabled');
+    //             Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+    //         }
+    //     });
+    // });
+
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//

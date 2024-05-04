@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
     /////************** Supream Court **************/////
 
+    Route::get('/getAllJustices', [GovCaseRegisterController::class, 'getAllJustices']);
+    Route::get('/getAllJusticesAppeal', [GovCaseRegisterController::class, 'getAllJusticesAppeal']);
     Route::get('/search/supremecourt/case', [SumpremCourtController::class, 'search_case']);
     Route::post('/search/supremecourt/case/post/value', [SumpremCourtController::class, 'search_case_post_function'])->name('supremecourt.case.search.post.value');
 
@@ -159,7 +161,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/origincasedetails/{id}', [GovCaseRegisterController::class, 'getOriginCaseDetails']);
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
-            Route::get('getAllAdvocates', [GovCaseRegisterController::class, 'getAllAdvocates']);
+
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');

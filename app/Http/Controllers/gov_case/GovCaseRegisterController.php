@@ -135,7 +135,7 @@ class GovCaseRegisterController extends Controller
         }
         $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
-        if ($roleID == 32 || $roleID == 33) {
+        if ($roleID == 32 || $roleID == 41) {
             $query->whereHas(
                 'bibadis',
                 function ($query) use ($officeID) {
@@ -2543,7 +2543,7 @@ class GovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
-        $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি ';
+        $data['page_title'] = 'হাইকোর্ট মামলা এন্ট্রি ';
 
         return view('gov_case.case_register.create_new')->with($data);
     }
@@ -2586,7 +2586,7 @@ class GovCaseRegisterController extends Controller
 
         $data['appealCourtAdalat'] = AppealAdalat::get();
 
-        $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
+        $data['page_title'] = 'আপিল মামলা এন্ট্রি ';
 
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
@@ -2652,6 +2652,7 @@ class GovCaseRegisterController extends Controller
         try {
             $caseId = GovCaseRegisterRepository::storeGovCase($request);
             GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
+            GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
             GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
@@ -2709,137 +2710,79 @@ class GovCaseRegisterController extends Controller
         // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
     }
 
-    // public function appealStore(Request $request)
-    // {
-    //     $caseId = $request->caseId;
-    //     $request->validate([
-    //         'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseId,
-    //     ],
-    //         [
-    //             'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-    //         ]);
-    //     try {
-    //         $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
-    //         // GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
-    //         // GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
-    //         GovCaseLogRepository::storeGovCaseLog($caseId);
-    //         if ($request->file_type && $_FILES["file_name"]['name']) {
-    //             AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
-    //         }
-    //         if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
-    //             AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
-    //         }
-    //         if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
-    //             AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
-    //         }
-    //         if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
-    //             AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
-    //         }
-    //         if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
-    //             AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
-    //         }
-
-    //         //========= Gov Case Activity Log -  start ============
-    //         $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
-    //         $caseRegisterData = array_merge($caseRegister, [
-    //             'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
-    //             'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
-    //             'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
-    //             'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
-    //         ]);
-
-    //         $cs_activity_data['case_register_id'] = $caseId;
-    //         if ($request->formType != 'edit') {
-    //             $cs_activity_data['activity_type'] = 'create';
-    //             $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
-    //         } else {
-    //             $cs_activity_data['activity_type'] = 'update';
-    //             $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
-    //         }
-    //         $cs_activity_data['old_data'] = null;
-    //         $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-    //         gov_case_activity_logs($cs_activity_data);
-    //         // ========= Gov Case Activity Log  End ==========
-
-    //     } catch (\Exception $e) {
-    //         // dd($e);
-    //         $flag = 'false';
-    //         return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
-    //     }
-    //     return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
-
-    //     // return redirect()->back()->with('success', 'তথ্য সফলভাবে সংরক্ষণ করা হয়েছে');
-    // }
-
     public function storeGeneralInfo(Request $request)
     {
 
-        // dd($request->all());
-        try {
-            $caseId = $request->caseId;
+        $exists = GovCaseRegister::where('case_no', $request->input('case_no'))
+            ->where('year', $request->input('case_year'))
+            ->where('case_type_id', $request->input('case_category_type'))
+            ->whereNull('deleted_at')
+            ->exists();
 
-            $request->validate([
-                'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
-            ], [
-                'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-            ]);
+        if ($exists) {
+                return response()->json(['error' => 'মামলা নং, বছর, এবং মামলার শ্রেণী/কেস-টাইপ এই তিনটি মান সম্বলিত মামলা ইতিমধ্যে বিদ্যমান আছে'], 422);
 
-            $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+        } else {
+            try {
+                $caseId = $request->caseId;
 
-            GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
+                  $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
 
-            GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
-            GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
-            GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
+                GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
+                GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
+                GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
+                GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
 
+                GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
 
-            if ($request->file_type && $_FILES["file_name"]['name']) {
+                if ($request->file_type && $_FILES["file_name"]['name']) {
 
-                AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
+                    AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
+                }
+                if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
+                    AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
+                }
+                if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
+                    AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
+                }
+                if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
+                    AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
+                }
+                if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
+                    AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
+                }
+                // DB::commit();
+                //========= Gov Case Activity Log -  start ============
+                $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
+
+                $caseRegisterData = array_merge($caseRegister, [
+                    'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                    'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                    'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+                ]);
+
+                $cs_activity_data['case_register_id'] = $caseId;
+
+                if ($request->formType != 'edit') {
+                    $cs_activity_data['activity_type'] = 'create';
+                    $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                } else {
+                    $cs_activity_data['activity_type'] = 'update';
+                    $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                }
+                $cs_activity_data['old_data'] = null;
+                $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+                gov_case_activity_logs($cs_activity_data);
+                // ========= Gov Case Activity Log  End ==========
+
+            } catch (\Exception $e) {
+                // DB::rollBack();
+                $flag = 'false';
+                return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
             }
-            if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
-                AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
-            }
-            if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
-                AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
-            }
-            if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
-                AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
-            }
-            if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
-                AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
-            }
-            // DB::commit();
-            //========= Gov Case Activity Log -  start ============
-            $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
-
-            $caseRegisterData = array_merge($caseRegister, [
-                'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
-                'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
-                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
-                'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
-            ]);
-
-            $cs_activity_data['case_register_id'] = $caseId;
-
-            if ($request->formType != 'edit') {
-                $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
-            } else {
-                $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
-            }
-            $cs_activity_data['old_data'] = null;
-            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-            gov_case_activity_logs($cs_activity_data);
-            // ========= Gov Case Activity Log  End ==========
-
-        } catch (\Exception $e) {
-            // DB::rollBack();
-            $flag = 'false';
-            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
         }
-        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
     }
 
     public function caseGeneralInfoForEdit(Request $request)
@@ -2849,12 +2792,12 @@ class GovCaseRegisterController extends Controller
         $mainRespondent = $request->input('main_respondent');
         // dd($mainRespondent[0]);
         $newMainRespondent = $mainRespondent[0];
-        
+
         $exists = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->exists();
         $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
         $id = $caseId->id;
-        
-        if($request->input('previous_main_respondent')){
+
+        if ($request->input('previous_main_respondent')) {
 
             $previousMainRespondent = $request->input('previous_main_respondent');
             $previousMainRespondent = $previousMainRespondent[0];
@@ -2867,7 +2810,7 @@ class GovCaseRegisterController extends Controller
                     'is_shown' => 0,
                 ]);
             }
-            
+
         }
         // $request->validate(
         //     [
@@ -2880,52 +2823,52 @@ class GovCaseRegisterController extends Controller
 
         // try {
 
-            $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
-            GovCaseRegisterRepository::storeConcernPerson($request, $id);
-            // dd($caseId);
-            GovCaseBadiBibadiRepository::storeBadi($request, $id);
-            GovCaseBadiBibadiRepository::storeBibadiForChangingMainRespondent($request, $id);
+        $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+        GovCaseRegisterRepository::storeConcernPerson($request, $id);
+        // dd($caseId);
+        GovCaseBadiBibadiRepository::storeBadi($request, $id);
+        GovCaseBadiBibadiRepository::storeBibadiForChangingMainRespondent($request, $id);
 
-            if ($request->file_type && $_FILES["file_name"]['name']) {
-                AttachmentRepository::storeAttachment('gov_case', $id, $request);
-            }
-            if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
-                AttachmentRepository::storeReplyAttachment('gov_case', $id, $request);
-            }
-            if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
-                AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $id, $request);
-            }
-            if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
-                AttachmentRepository::storeFinalOrderAttachment('gov_case', $id, $request);
-            }
-            if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
-                AttachmentRepository::storeContemptAttachment('gov_case', $id, $request);
-            }
+        if ($request->file_type && $_FILES["file_name"]['name']) {
+            AttachmentRepository::storeAttachment('gov_case', $id, $request);
+        }
+        if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
+            AttachmentRepository::storeReplyAttachment('gov_case', $id, $request);
+        }
+        if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
+            AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $id, $request);
+        }
+        if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
+            AttachmentRepository::storeFinalOrderAttachment('gov_case', $id, $request);
+        }
+        if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
+            AttachmentRepository::storeContemptAttachment('gov_case', $id, $request);
+        }
 
-            //========= Gov Case Activity Log -  start ============
-            $caseRegister = GovCaseRegister::findOrFail($id)->toArray();
+        //========= Gov Case Activity Log -  start ============
+        $caseRegister = GovCaseRegister::findOrFail($id)->toArray();
 
-            $caseRegisterData = array_merge($caseRegister, [
-                'badi' => GovCaseBadi::where('gov_case_id', $id)->get()->toArray(),
-                'bibadi' => GovCaseBibadi::where('gov_case_id', $id)->get()->toArray(),
-                'attachment' => Attachment::where('gov_case_id', $id)->get()->toArray(),
-                'log_data' => GovCaseLog::where('gov_case_id', $id)->get()->toArray(),
-            ]);
+        $caseRegisterData = array_merge($caseRegister, [
+            'badi' => GovCaseBadi::where('gov_case_id', $id)->get()->toArray(),
+            'bibadi' => GovCaseBibadi::where('gov_case_id', $id)->get()->toArray(),
+            'attachment' => Attachment::where('gov_case_id', $id)->get()->toArray(),
+            'log_data' => GovCaseLog::where('gov_case_id', $id)->get()->toArray(),
+        ]);
 
-            $cs_activity_data['case_register_id'] = $id;
+        $cs_activity_data['case_register_id'] = $id;
 
-            if ($request->formType != 'edit') {
-                $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
-            } else {
-                $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
-            }
-            $cs_activity_data['old_data'] = null;
-            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-            gov_case_activity_logs($cs_activity_data);
+        if ($request->formType != 'edit') {
+            $cs_activity_data['activity_type'] = 'create';
+            $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+        } else {
+            $cs_activity_data['activity_type'] = 'update';
+            $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+        }
+        $cs_activity_data['old_data'] = null;
+        $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+        gov_case_activity_logs($cs_activity_data);
 
-            // ========= Gov Case Activity Log  End ==========
+        // ========= Gov Case Activity Log  End ==========
 
         // } catch (\Exception $e) {
         //     $flag = 'false';
@@ -4229,22 +4172,32 @@ class GovCaseRegisterController extends Controller
 
     public function checkCaseNo(Request $request)
     {
-
         $caseNo = $request->input('case_no');
-        $caseYear = $request->input('case_year'); // Get the case year
+        $caseYear = $request->input('case_year');
+        $caseCategory = $request->input('case_category'); // Get the case category
 
+        // Use a single query to check for the existence of the case
         $exists = GovCaseRegister::where('case_no', $caseNo)
-            ->where('year', $caseYear) // Check for both case number and case year
-            ->where('deleted_at', null)
+            ->where('year', $caseYear)
+            ->where('case_type_id', $caseCategory) // Check for case category as well
+            ->whereNull('deleted_at')
             ->exists();
 
         if ($exists) {
-            $caseId = GovCaseRegister::where('case_no', $caseNo)
-                ->where('year', $caseYear) // Check for both case number and case year
-                ->where('deleted_at', null)
+            // Use a single query to fetch case details
+            $case = GovCaseRegister::where('case_no', $caseNo)
+                ->where('year', $caseYear)
+                ->where('case_type_id', $caseCategory)
+                ->whereNull('deleted_at')
                 ->first();
 
-            $officeId = GovCaseBibadi::where('gov_case_id', $caseId->id)
+            // Use joins for more efficient querying
+            // $office = GovCaseOffice::join('gov_case_bibadis', 'gov_case_offices.doptor_office_id', '=', 'gov_case_bibadis.respondent_id')
+            //     ->where('gov_case_bibadis.gov_case_id', $case->id)
+            //     ->where('gov_case_bibadis.is_main_bibadi', 1)
+            //     ->select('gov_case_offices.office_name_bn')
+            //     ->first();
+            $officeId = GovCaseBibadi::where('gov_case_id', $case->id)
                 ->where('is_main_bibadi', 1)
                 ->groupBy('gov_case_id')
                 ->first();
@@ -4254,8 +4207,7 @@ class GovCaseRegisterController extends Controller
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
 
-        return response()->json(['exists' => $exists]);
-
+        return response()->json(['exists' => false]);
     }
 
     public function ministriesId()
@@ -4929,16 +4881,30 @@ class GovCaseRegisterController extends Controller
         }
         return "Data Inserted Successfully";
     }
+
     public function getAllJustices()
     {
         $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
             ->get();
-        // return $query;
+
         foreach ($query as $key => $val) {
-            DB::table('gov_case_concern_persons')->insert([
+            DB::table('gov_case_highcourt_adalats')->insert([
                 'gov_case_id' => $val->id,
-                'concern_person_designation' => $val->concern_person_designation,
-                'concern_user_id' => $val->concern_user_id,
+                'highcourt_adalat' => $val->highcourt_adalat,
+            ]);
+        }
+        return "Data Inserted Successfully";
+    }
+
+    public function getAllJusticesAppeal()
+    {
+        $query = AppealGovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null)
+            ->get();
+
+        foreach ($query as $key => $val) {
+            DB::table('gov_case_appeal_adalats')->insert([
+                'gov_case_id' => $val->id,
+                'appeal_adalat' => $val->appeal_adalat,
             ]);
         }
         return "Data Inserted Successfully";
