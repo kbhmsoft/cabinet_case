@@ -33,6 +33,7 @@
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
+            addHighcourtAdalatRowFunc();
         }
         addFileRowFunc();
         addReplyFileRowFunc();
@@ -40,6 +41,7 @@
         addSuspensionOrderFileRowFunc();
         addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
+        // addHighcourtAdalatRowFunc();
         $('select').select2();
 
 
@@ -306,6 +308,43 @@
     });
 </script>
 
+
+
+/************************ //Add multiple HighCourt Adalat *************************/
+<script>
+    $("#addHighcourtAdalatRow").click(function(e) {
+        addHighcourtAdalatRowFunc();
+    });
+
+    //add row function
+    function addHighcourtAdalatRowFunc() {
+        var mk = $('#highcourtAdalatDiv tr').length;
+        var MainCount = $('#MainBibadiDiv tr').length;
+
+        $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+        function Item(count, type = NULL) {
+            var items = '';
+            items += '<tr id="highcourt_adalat_' + (count) + '">';
+            items +=
+                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+            items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+
+            if (type == 'other') {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
+            items += '</tr>';
+            return items;
+        }
+        $('.other_respondentCls').select2();
+    }
+
+    //remove row function
+    function removeHighcourtAdalatRow(id) {
+        $(id).closest("tr").remove();
+    }
+</script>
 
 
 
@@ -878,7 +917,7 @@
 
     // ============= Add Reply Attachment Row ========= start =========
     $("#addAdalatReplyFileRow").click(function(e) {
-      addAdalatReplyFileRowFunc();
+        addAdalatReplyFileRowFunc();
     });
 
     //add row function

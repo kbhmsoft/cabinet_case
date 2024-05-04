@@ -1265,6 +1265,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
+
         $caseNo = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseNo,
@@ -1276,7 +1277,7 @@ class AppealGovCaseRegisterController extends Controller
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
             AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
-
+            AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
             }

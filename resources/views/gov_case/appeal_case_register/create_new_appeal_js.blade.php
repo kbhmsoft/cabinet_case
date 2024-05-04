@@ -38,6 +38,7 @@
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
+            addAppealAdalatRowFunc();
         }
         addFileRowFunc();
         addFinalOrderFileRowFunc();
@@ -842,6 +843,8 @@
 
 
 
+
+
     // ============= Add Reply Attachment Row ========= start =========
     $("#addReplyFileRow").click(function(e) {
         addReplyFileRowFunc();
@@ -946,3 +949,43 @@
         }
     }
 </script>
+
+
+
+
+    /************************ //Add multiple HighCourt Adalat *************************/
+<script>
+    $("#addAppealAdalatRow").click(function(e) {
+        addAppealAdalatRowFunc();
+    });
+
+    //add row function
+    function addAppealAdalatRowFunc() {
+        var mk = $('#appealAdalatDiv tr').length;
+
+
+        $('#appealAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+        function Item(count, type = NULL) {
+            var items = '';
+            items += '<tr id="appeal_adalat_' + (count) + '">';
+            items +=
+                '<td><select name="appeal_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($appealCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+            items += '<input type="hidden" name="appeal_adalat[]" value="">';
+
+            if (type == 'other') {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAppealAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
+            items += '</tr>';
+            return items;
+        }
+        $('.other_respondentCls').select2();
+    }
+
+    //remove row function
+    function removeAppealAdalatRow(id) {
+        $(id).closest("tr").remove();
+    }
+</script>
+

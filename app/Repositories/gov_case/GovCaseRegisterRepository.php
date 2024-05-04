@@ -2,17 +2,17 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Attachment;
 use App\Models\FinalAttachment;
-use App\Models\ReplyAttachment;
-use Illuminate\Support\Facades\DB;
-use App\Models\SuspensionAttachment;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseConcernPerson;
+use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\ReplyAttachment;
+use App\Models\Role;
+use App\Models\SuspensionAttachment;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterRepository
 {
@@ -54,7 +54,6 @@ class GovCaseRegisterRepository
 
         return $data;
     }
-
 
     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
     {
@@ -190,7 +189,6 @@ class GovCaseRegisterRepository
             $in_favour_govt = 0;
         }
 
-
         if ($caseInfo->adalat_reply_sending_date != null && $caseInfo->adalat_reply_sending_date != '') {
             $adalat_reply_sending_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->adalat_reply_submit_have)));
         } else {
@@ -294,8 +292,8 @@ class GovCaseRegisterRepository
             $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
             $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
             $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
-            $case->total_badi_number = $caseInfo->total_badi_number;
-            $case->highcourt_adalat = $caseInfo->highcourt_adalat;
+            $case->total_badi_number = $caseInfo->total_badi_number ?? null;
+
             $case->money_amount = $caseInfo->money_amount;
             $case->postponed_interim_have = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
@@ -304,7 +302,7 @@ class GovCaseRegisterRepository
             $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
             $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
             $case->adalat_reply_sending_date = $adalat_reply_sending_date;
-            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
+            $case->adalat_reply_submit_have = $caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -588,8 +586,6 @@ class GovCaseRegisterRepository
         }
     }
 
-
-
     public static function storeSendingReply($caseInfo)
     {
         // dd($caseInfo['case_id']);
@@ -652,7 +648,7 @@ class GovCaseRegisterRepository
 
         try {
             $case->adalat_reply_sending_date = $adalat_reply_sending_date;
-            $case->adalat_reply_submit_have =$caseInfo->adalat_reply_submit_have;
+            $case->adalat_reply_submit_have = $caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -681,14 +677,13 @@ class GovCaseRegisterRepository
             $tamil_requesting_date = null;
         }
 
-        if($case->postponed_interim_have == 0){
+        if ($case->postponed_interim_have == 0) {
             $case->postponed_interim_have = $caseInfo->postponed_interim_have;
         }
 
-        if($case->postponed_interim_data_details == null){
+        if ($case->postponed_interim_data_details == null) {
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
         }
-
 
         // dd($caseInfo);
         try {

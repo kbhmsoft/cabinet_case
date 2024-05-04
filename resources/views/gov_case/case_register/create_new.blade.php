@@ -42,7 +42,47 @@
             margin-top: -20px;
             color: rgb(235, 58, 58);
         }
+
+        .product-image {
+            position: relative;
+        }
+
+        .product-text {
+            position: absolute;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-image:hover .product-text {
+            display: block;
+            opacity: 1;
+            /* Show tooltip */
+            bottom: 54px;
+            left: -79px;
+            z-index: 999;
+            width: 200px;
+        }
+
+        .indicator {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .indicator:hover::after {
+            content: '';
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 80%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            z-index: 999;
+        }
     </style>
+
     <!--begin::Row-->
     <div class="row">
 
@@ -51,8 +91,7 @@
         <div style="width:100%" class="card gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট মূল বিবাদী অফিস মামলার তথ্য এন্ট্রি
-                    করবে)*</h5>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা এন্ট্রি হতে বিরত থাকুন।)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
@@ -192,8 +231,7 @@
                                                                 (Justice Name)
                                                             </th>
                                                             <th width="50">
-                                                                <a href="javascript:void();"
-                                                                    id="addHighcourtAdalatRow"
+                                                                <a href="javascript:void();" id="addHighcourtAdalatRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
@@ -214,98 +252,7 @@
                                                 </div>
 
 
-                                                {{-- <div class="col-lg-12 mb-5">
-                                                    <div class="col-lg-6">
-                                                        <table width="100%" border="1" id="highcourtAdalatDiv"
-                                                            class="mb-5" style="border:1px solid #dcd8d8;">
-                                                            <tr>
-                                                                <th class="other_bibadi_name other_respondent">আদালতের নাম
-                                                                    (Justice Name)
-                                                                </th>
-                                                                <th width="50">
-                                                                    <a href="javascript:void();"
-                                                                        id="addHighcourtAdalatRow"
-                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                        <i class="fas fa-plus-circle"></i>
-                                                                    </a>
-                                                                </th>
-                                                            </tr>
-                                                            <tr></tr>
-                                                        </table>
-                                                    </div>
-                                                </div> --}}
-                                                {{-- <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                            class="text-danger">*</span></label>
 
-                                                <div class="col-lg-12 mb-5">
-                                                    <table width="100%" border="1" id="advocateLawerDiv"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div> --}}
-
-                                                {{-- <div class="container">
-                                                    <div id="dynamicDivs">
-                                                        <!-- Initial divs -->
-                                                        <div class="row mb-3 dynamic-div">
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                                        class="text-danger">*</span></label>
-                                                                <div class="concernPersonDesignationDiv">
-                                                                    <select name="concern_person_designation"
-                                                                        class="form-control form-control-sm"
-                                                                        required="required">
-                                                                        <option value="">-- নির্বাচন করুন --</option>
-                                                                        <!-- Assuming $concern_person_desig is a PHP variable containing designations -->
-                                                                        @foreach ($concern_person_desig as $value)
-                                                                            <option value="{{ $value->id }}">
-                                                                                {{ $value->name_bn }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    <span
-                                                                        class="text-danger d-none validation-message">This
-                                                                        field can not be empty</span>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                                        class="text-danger">*</span></label>
-                                                                <div class="concernPersonNameDiv">
-                                                                    <select name="concern_user_id"
-                                                                        class="form-control form-control-sm"
-                                                                        required="required">
-                                                                        <option value="">-- নির্বাচন করুন --</option>
-                                                                    </select>
-                                                                    <span
-                                                                        class="text-danger d-none validation-message">This
-                                                                        field can not be empty</span>
-                                                                </div>
-                                                            </div>
-                                                            {{-- <div class="col-lg-4 mb-5 align-self-end">
-                                                                <button class="btn btn-primary add-btn mb-1"><i
-                                                                        class="fas fa-plus-circle"></i></button>
-                                                                <button class="btn btn-danger remove-btn d-none"><i
-                                                                        class="fas fa-minus-circle"></i></button>
-                                                            </div> --}}
-                                                {{-- </div>
-                                                    </div> --}}
-                                                {{-- </div> --}}
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -327,9 +274,6 @@
                                                 </div>
                                                 <!-- jQuery -->
                                                 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-
-
-
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
@@ -365,12 +309,13 @@
                                                         <input type="hidden" name="caseId" value="">
                                                     </div>
 
-                                                    <div class="col-lg-7 mb-5">
+
+                                                    <div class="col-lg-7 mb-5 product-image">
                                                         <table width="100%" border="1" id="bibadiDiv"
                                                             class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th class="other_bibadi_name other_respondent">অন্যান্য
-                                                                    রেসপন্ডেন্টদের নাম
+                                                                <th class="other_bibadi_name other_respondent  ">অন্যান্য
+                                                                    রেসপন্ডেন্ট তালিকা
                                                                 </th>
                                                                 <th width="50">
                                                                     <a href="javascript:void();" id="addBibadiRow"
@@ -381,6 +326,13 @@
                                                             </tr>
                                                             <tr></tr>
                                                         </table>
+                                                        {{-- <div class="product-text">
+                                                            <div class="card card-custom">
+                                                                <div class="card-body">
+                                                                    <p>প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নাম যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন</p>
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
 
@@ -1535,23 +1487,26 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
+
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
 
-            // Function to check case number when case year changes
-            $('#case_year').change(function() {
+            // Function to trigger validation when any of the input fields change
+            $('#case_year, #case_no, #case_category_type').change(function() {
                 var caseNo = $('#case_no').val(); // Get the case number
-                var caseYear = $(this).val(); // Get the case year
+                var caseYear = $('#case_year').val(); // Get the case year
+                var caseCategory = $('#case_category_type').val(); // Get the case category
 
-                // Proceed with AJAX request only if both fields are filled
-                if (caseNo && caseYear) {
+                // Proceed with AJAX request only if all fields are filled
+                if (caseNo && caseYear && caseCategory) {
                     $.ajax({
                         url: "{{ route('cabinet.case.check-case-no') }}",
                         type: 'POST',
                         data: {
                             '_token': '{{ csrf_token() }}',
                             'case_no': caseNo,
-                            'case_year': caseYear
+                            'case_year': caseYear,
+                            'case_category': caseCategory
                         },
                         success: function(data) {
                             if (data.exists) {

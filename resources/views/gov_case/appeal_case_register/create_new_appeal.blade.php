@@ -23,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
 
@@ -136,22 +136,24 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম (Justice Name) <span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="" id="AdalatDiv">
-                                                        <select name="appeal_adalat" id="AppealAdalat"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($appealCourtAdalat as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('appeal_adalat') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
+
+                                                <div class="col-lg-4">
+                                                    <table width="100%" border="1" id="appealAdalatDiv"
+                                                        class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম
+                                                                (Justice Name)
+                                                            </th>
+                                                            <th width="50">
+                                                                <a href="javascript:void();"
+                                                                    id="addAppealAdalatRow"
+                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
+                                                    </table>
                                                 </div>
 
 

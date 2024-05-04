@@ -166,7 +166,7 @@
 
 
                                 <td class="notice-popup">
-                                    <div class="product cardhoveritem">
+                                    <div class="product">
                                         <div class="product-image">
                                             @if ($row->is_final_order == '1')
                                                 <span class="indicator">নিষ্পত্তিকৃত মামলা</span>
