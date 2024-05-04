@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('appeal-maintain', AdalatAppealController::class);
 
         /////************** User Management **************/////
+        Route::get('office/wise/users', [GovCaseUserManagementController::class, 'officeWiseUsers'])->name('office.wise');
         Route::resource('user-management', GovCaseUserManagementController::class);
         Route::get('/e-nothi-assigned-user-list', [GovCaseUserManagementController::class, 'assignedENothiUserManagement'])->name('assignedENothiUserManagement');
         /////************** Office Setting **************/////

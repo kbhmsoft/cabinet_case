@@ -124,6 +124,99 @@ class GovCaseUserManagementController extends Controller
             ->with($data);
     }
 
+    public function officeWiseUsers()
+    {
+        session()->forget('currentUrlPath');
+        session()->put('currentUrlPath', request()->path());
+
+        $role = array('1', '27');
+        $roleID = Auth::user()->role_id;
+        $officeInfo = user_office_info();
+        $officeID = userInfo()->office_id;
+        if($roleID == 27){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        }elseif($roleID == 29 || $roleID == 31){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        }elseif($roleID == 32 || $roleID == 41){
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
+        
+
+        // Parent office and corresponding child office
+        $childOfficeIds = [];
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
+
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $data['offices'] = DB::table('gov_case_office')->get();
+        //Add Conditions
+        if ($roleID == 27) {
+            $query = DB::table('users')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereNotIn('users.role_id', [42,43])
+                ->where('users.is_gov', 1)
+                ->orderBy('users.office_id', 'ASC');
+
+            // For Ministry Admin
+        } else {
+            $query = DB::table('users')
+                
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereIn('users.office_id', $finalOfficeIds)
+                ->whereNotIn('users.role_id', [27,42,43])
+                ->where('users.is_gov', 1)
+                ->orderBy('users.office_id', 'ASC');
+        }
+
+        if (!empty($_GET['office_id'])) {
+            $query->where('users.office_id', '=', $_GET['office_id']);
+        }
+        if (!empty($_GET['role'])) {
+            $query->where('users.role_id', '=', $_GET['role']);
+        }
+
+        // $data['users'] = $query->paginate(10)->withQueryString();
+        $data['users'] = $query->get();
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')
+            ->whereNotIn('id', $role)
+            ->where('is_gov', 1)
+            ->orderBy('sort_order', 'ASC')
+            ->get();
+
+        $data['ministries'] = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
+
+        ///////// start run script
+        // ***** assing role for all users
+        // $userItem = User::where('is_gov', 1)->get();
+        // foreach($userItem as $user){
+        //     $user->assignRole($user->role);
+        // }
+        ///////// run script
+        // return $data['offices'];
+
+        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+
+        return view('gov_case.user_manage.office_wise_users')
+            ->with($data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

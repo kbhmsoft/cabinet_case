@@ -302,10 +302,10 @@
     }
 
 
- /************************ //Add multiple HighCourt Adalat *************************/
+    /************************ //Add multiple HighCourt Adalat *************************/
 
- $("#addHighcourtAdalatRow").click(function(e) {
-    addHighcourtAdalatRowFunc();
+    $("#addHighcourtAdalatRow").click(function(e) {
+        addHighcourtAdalatRowFunc();
     });
 
     //add row function
@@ -378,111 +378,75 @@
 </script>
 
 <script>
-        /************************ Add multiple advocate  *************************/
-        // $("#addAdvocateLawer").click(function(e) {
-        //     addAdvocateLawerFunc();
-        //     // $('select').select2();
-        // });
+    $("#addAdvocateLawer").click(function(e) {
+        addAdvocateLawerFunc();
+    });
 
-        // //add row function
-        // function addAdvocateLawerFunc() {
+    // Add row function
+    function addAdvocateLawerFunc() {
+        var count = parseInt($('#survey_count').val());
+        $('#survey_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<input type="hidden" name="concern_person_id[]" value="">';
+        items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+            '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+            ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+        items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+            '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
-        //     var count = parseInt($('#survey_count').val());
-        //     $('#survey_count').val(count + 1);
-        //     var items = '';
-        //     items += '<tr>';
+        if (count != 1) {
+            items +=
+                '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+        }
 
-        //     items += '<input type="hidden" name="concern_person_id[]" value="">';
-        //     items +=
-        //         '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-        //         '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-        //         ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-        //     items +=
-        //         '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-        //         '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+        items += '</tr>';
 
-        //     if (count != 1) {
-        //         items +=
-        //             '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-        //     }
+        $('#advocateLawerDiv tr:last').after(items);
 
-        //     items += '</tr>';
-
-        //     $('#advocateLawerDiv tr:last').after(items);
-
-        //     $('.select2').select2();
-        //     //scout_id_select2_dd();
-        // }
-
-
-        $("#addAdvocateLawer").click(function(e) {
-    addAdvocateLawerFunc();
-});
-
-// Add row function
-function addAdvocateLawerFunc() {
-    var count = parseInt($('#survey_count').val());
-    $('#survey_count').val(count + 1);
-    var items = '';
-    items += '<tr>';
-    items += '<input type="hidden" name="concern_person_id[]" value="">';
-    items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-        '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-        ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-    items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-        '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
-
-    if (count != 1) {
-        items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+        // Initialize Select2 after adding new dropdowns
+        $('#concernPersonDesignation_' + count).select2();
+        $('#concern_user_id_' + count).select2();
     }
 
-    items += '</tr>';
-
-    $('#advocateLawerDiv tr:last').after(items);
-
-    // Initialize Select2 after adding new dropdowns
-    $('#concernPersonDesignation_' + count).select2();
-    $('#concern_user_id_' + count).select2();
-}
 
 
 
 
 
+    //remove row function
+    function removeAdvocateLawerRow(id) {
+        $(id).closest("tr").remove();
+    }
 
-        //remove row function
-        function removeAdvocateLawerRow(id) {
-            $(id).closest("tr").remove();
+    function getConcernPerName(id) {
+        var desig = $(`#concernPersonDesignation_${id}`).val();
+        jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
+        if (desig) {
+            jQuery.ajax({
+                url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                    desig,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<div class="loadersmall"></div>');
+
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key, value) {
+                        jQuery(`#concern_user_id_${id}`).append(
+                            '<option value="' + key + '">' + value +
+                            '</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                }
+            });
+        } else {
+            $(`#concern_user_id_${id}`).empty();
         }
 
-        function getConcernPerName(id) {
-            var desig = $(`#concernPersonDesignation_${id}`).val();
-            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-            if (desig) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        desig,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery(`#concern_user_id_${id}`).append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $(`#concern_user_id_${id}`).empty();
-            }
-
-        }
+    }
 </script>
 
 <script>
