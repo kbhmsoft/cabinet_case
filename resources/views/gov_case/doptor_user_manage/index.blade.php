@@ -64,29 +64,28 @@
                         @endforeach
                     </select>
                 </div>
-                @if(Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
+                @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
+                    <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
+                        <select name="ministry" id="ministry" class="form-control">
+                            <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
+                            @foreach ($ministries as $value)
+                                <option
+                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    {{ $value->office_name_bn }} </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
-                    <select name="ministry" id="ministry" class="form-control">
-                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                        @foreach ($ministries as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
-                    <select name="divOffice" id="divOffice" class="form-control">
-                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
-                        @foreach ($divOffices as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
+                        <select name="divOffice" id="divOffice" class="form-control">
+                            <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
+                            @foreach ($divOffices as $value)
+                                <option
+                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    {{ $value->office_name_bn }} </option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endif
                 <div class="form-group mb-2 mr-2">
                     <select name="office_id" id="office_id" class="form-control">
@@ -122,6 +121,8 @@
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
 
 
 {{-- Includable CSS Related Page --}}
@@ -131,7 +132,6 @@
 
 {{-- Scripts Section Related Page --}}
 @section('scripts')
-   
     <!--end::Page Scripts-->
 
     @if (request()->get('office_type'))
@@ -173,7 +173,7 @@
     @endif
 
 
-    
+
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -218,32 +218,43 @@
             }
 
             // Level Wise Office
-            jQuery('select[name="office_type"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                console.log(dataID);
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            console.log(data);
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
+
+            jQuery(document).ready(function($) {
+                // Your existing change event handler
+                $('select[name="office_type"]').on('change', function() {
+                    var dataID = $(this).val();
+                    console.log(dataID);
+                    $("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        $.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentoffice/' +
+                                dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                console.log(data);
+                                $('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>'
+                                );
+                                $.each(data, function(key, value) {
+                                    $('select[name="office_id"]').append(
+                                        '<option value="' + key + '">' +
+                                        value + '</option>');
+                                });
+                                $('.loadersmall').remove();
+
+                                // Initialize Select2 for the office_id select element
+                                $('select[name="office_id"]').select2();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty()
+                            .select2(); // Clear options and reset Select2
+                    }
+                });
+
+                // Initialize Select2 for the initial state
+                $('select[name="office_id"]').select2();
             });
 
             // Ministry Wise Office
@@ -392,50 +403,49 @@
         });
     </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    var timerInterval;
-    $(document).ready(function () {
-        $('#doptorOfficeForm').submit(function (e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            Swal.fire({
-                title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
-                html: `<h4>অপেক্ষা করুন...</h4>`,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector("b");
-                    timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                    }, 100);
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('doptor.user.manage') }}",
-                        data: formData,
-                        success: function (response) {
-                            clearInterval(timerInterval);
-                            Swal.close();
-                            console.log('Response:', response);
-                            $('#tableBody').append(response.tableHtml);
-                        },
-                        error: function () {
-                            clearInterval(timerInterval);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                            });
-                            console.error('Error fetching data.');
-                        }
-                    });
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var timerInterval;
+        $(document).ready(function() {
+            $('#doptorOfficeForm').submit(function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                Swal.fire({
+                    title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
+                    html: `<h4>অপেক্ষা করুন...</h4>`,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('doptor.user.manage') }}",
+                            data: formData,
+                            success: function(response) {
+                                clearInterval(timerInterval);
+                                Swal.close();
+                                console.log('Response:', response);
+                                $('#tableBody').append(response.tableHtml);
+                            },
+                            error: function() {
+                                clearInterval(timerInterval);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                });
+                                console.error('Error fetching data.');
+                            }
+                        });
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
             });
         });
-    });
-</script>
-
+    </script>
 @endsection

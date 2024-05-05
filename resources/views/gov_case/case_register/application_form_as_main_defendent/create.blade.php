@@ -102,8 +102,8 @@
                             </div>
 
                             <div class="col-lg-12 mt-5">
-                                <label for="main_defendant_pdf" style="font-weight: bold; font-size: 1.5em;">মূল বিবাদী
-                                    হিসেবে অন্তর্ভুক্তির (PDF ফাইল) <span class="text-danger">*</span> <sub
+                                <label for="main_defendant_pdf" style="font-weight: bold; font-size: 1.5em;">রুল/সম্পূরক
+                                    রুলের কপি (PDF ফাইল) <span class="text-danger">*</span> <sub
                                         class="text-danger">(PDF, সর্বোচ্চ সাইজ :5MB)</sub> </label>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="main_defendant_pdf"
