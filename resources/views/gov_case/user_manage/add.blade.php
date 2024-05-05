@@ -69,6 +69,30 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
+                                    <label for="name" class=" form-control-label">শাখা <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="unit_name_bn" name="unit_name_bn"
+                                        placeholder="ব্যবহার কারীর শাখা লিখুন" class="form-control form-control-sm"
+                                        required>
+                                    <span style="color: red">
+                                        {{ $errors->first('unit_name_bn') }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="name" class=" form-control-label">পদবী <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="designation" name="designation"
+                                        placeholder="ব্যবহার কারীর পদবী লিখুন" class="form-control form-control-sm"
+                                        required>
+                                    <span style="color: red">
+                                        {{ $errors->first('designation') }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
                                     <label for="email" class=" form-control-label">ইমেল</label>
                                     <input type="email" id="email" name="email" placeholder="ইমেল লিখুন"
                                         class="form-control form-control-sm">
@@ -143,14 +167,26 @@
                                 <div class="form-group mb-4 col-lg-4 ">
                                     <label>অফিস</label>
                                     <select name="office_id" id="office_id" class="form-control">
-                                        <option value="">- অফিস নির্বাচন করুন-</option>3
+                                        <option value="">- অফিস নির্বাচন করুন-</option>
                                     </select>
                                     <span style="color: red">
                                         {{ $errors->first('office_id') }}
                                     </span>
                                 </div>
                             @elseif (Auth::user()->role_id == 29 || Auth::user()->role_id == 32)
-                            <input type="hidden" name="office_id" id="office_id" value="{{Auth::user()->office_id}}">
+                                <div class="form-group mb-4 col-lg-4 ">
+                                    <label>অফিস</label>
+                                    <select name="office_id" id="office_id" class="form-control">
+                                        <option value="">- অফিস নির্বাচন করুন-</option>3
+                                        @foreach ($offices as $value)
+                                            <option value="{{ $value->doptor_office_id }}"> {{ $value->office_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span style="color: red">
+                                        {{ $errors->first('office_id') }}
+                                    </span>
+                                </div>
                             @endif
 
                             <div class="col-4">
@@ -235,16 +271,16 @@
     </div>
     <style>
         /* .select2-container .select2-selection--single {
-                                                        height: 37px !important;
-                                                    }
+                                                                height: 37px !important;
+                                                            }
 
-                                                    .select2-container--default .select2-selection--single .select2-selection__arrow {
-                                                        top: 5px !important;
-                                                    }
+                                                            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                                                                top: 5px !important;
+                                                            }
 
-                                                    .select2-container--default .select2-selection--single .select2-selection__rendered {
-                                                        line-height: 25px !important;
-                                                    } */
+                                                            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                                                                line-height: 25px !important;
+                                                            } */
     </style>
 @endsection
 @section('scripts')
@@ -359,17 +395,37 @@
             var officeID = 0;
         </script>
     @endif
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
+    @if (Auth::user()->role_id == 27)
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
 
-            $('#ministry').select2();
-            $('#divOffice').select2();
-            // $('#office_id').select2();
+                $('#ministry').select2();
+                $('#divOffice').select2();
+                // $('#office_id').select2();
 
 
-            jQuery('select[name="office_type"]').on('change', function() {
-                var officeType = jQuery(this).val();
-                // alert(officeType);
+                jQuery('select[name="office_type"]').on('change', function() {
+                    var officeType = jQuery(this).val();
+                    // alert(officeType);
+                    if (officeType == 2) {
+                        $('#selectMinDiv').show();
+                        $('#selectDivisionDiv').hide();
+                        $('#divOffice').val('');
+                    } else if (officeType == 4) {
+                        $('#selectDivisionDiv').show();
+                        $('#selectMinDiv').hide();
+                        $('#ministry').val('');
+                    } else {
+                        $('#selectDivisionDiv').hide();
+                        $('#selectMinDiv').hide();
+                        $('#ministry').val('');
+                        $('#divOffice').val('');
+                    }
+                });
+
+
+                const searchParams = new URLSearchParams(window.location.search);
+                var officeType = searchParams.get('office_type')
                 if (officeType == 2) {
                     $('#selectMinDiv').show();
                     $('#selectDivisionDiv').hide();
@@ -378,50 +434,115 @@
                     $('#selectDivisionDiv').show();
                     $('#selectMinDiv').hide();
                     $('#ministry').val('');
+
                 } else {
-                    $('#selectDivisionDiv').hide();
-                    $('#selectMinDiv').hide();
                     $('#ministry').val('');
                     $('#divOffice').val('');
+                    $('#selectDivisionDiv').hide();
+                    $('#selectMinDiv').hide();
                 }
-            });
-
-
-            const searchParams = new URLSearchParams(window.location.search);
-            var officeType = searchParams.get('office_type')
-            if (officeType == 2) {
-                $('#selectMinDiv').show();
-                $('#selectDivisionDiv').hide();
-                $('#divOffice').val('');
-            } else if (officeType == 4) {
-                $('#selectDivisionDiv').show();
-                $('#selectMinDiv').hide();
-                $('#ministry').val('');
-
-            } else {
-                $('#ministry').val('');
-                $('#divOffice').val('');
-                $('#selectDivisionDiv').hide();
-                $('#selectMinDiv').hide();
-            }
 
 
 
 
 
-            //   console.log(searchParams.get('office_type')); // true
+                //   console.log(searchParams.get('office_type')); // true
 
 
-            // Level Wise Office
-            // if (Auth::user() - > role_id != 29) {
+                // Level Wise Office
+                // if (Auth::user() - > role_id != 29) {
 
 
-            jQuery('select[name="office_type"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
+                jQuery('select[name="office_type"]').on('change', function() {
+                    var dataID = jQuery(this).val();
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        jQuery.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                jQuery('select[name="office_id"]').html(
+                                    '<div class="loadersmall"></div>');
+                                jQuery('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                                jQuery.each(data, function(key, value) {
+                                    jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                });
+                                jQuery('.loadersmall').remove();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty();
+                    }
+                });
+
+                // Ministry Wise Office
+                jQuery('select[name="ministry"]').on('change', function() {
+                    var dataID = jQuery(this).val();
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        jQuery.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                jQuery('select[name="office_id"]').html(
+                                    '<div class="loadersmall"></div>');
+                                jQuery('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                                jQuery.each(data, function(key, value) {
+                                    jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                });
+                                jQuery('.loadersmall').remove();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty();
+                    }
+                });
+
+                // }
+
+                // DivisionOffice Wise Office
+                jQuery('select[name="divOffice"]').on('change', function() {
+                    var dataID = jQuery(this).val();
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+                    if (dataID) {
+                        jQuery.ajax({
+                            url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                jQuery('select[name="office_id"]').html(
+                                    '<div class="loadersmall"></div>');
+                                jQuery('select[name="office_id"]').html(
+                                    '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                                jQuery.each(data, function(key, value) {
+                                    jQuery('select[name="office_id"]').append(
+                                        '<option value="' + key +
+                                        '">' + value + '</option>');
+                                    //
+                                });
+                                jQuery('.loadersmall').remove();
+                            }
+                        });
+                    } else {
+                        $('select[name="office_id"]').empty();
+                    }
+                });
+
+
+
+                var officeTypeID = $('#office_type').find(":selected").val();
+
+                if (officeTypeID !== "undefined") {
                     jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -430,25 +551,26 @@
                             jQuery('select[name="office_id"]').html(
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
+                                if (officeID == key) {
+                                    var selected = 'selected';
+                                } else {
+                                    var selected = ' ';
+                                }
                                 jQuery('select[name="office_id"]').append(
                                     '<option value="' + key +
-                                    '">' + value + '</option>');
+                                    '"' + selected + '>' + value + '</option>');
                             });
                             jQuery('.loadersmall').remove();
                         }
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন--</option>');
                 }
-            });
-
-            // Ministry Wise Office
-            jQuery('select[name="ministry"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
+                console.log(minId);
+                if (minId !== 0) {
                     jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + minId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -457,27 +579,26 @@
                             jQuery('select[name="office_id"]').html(
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
+                                if (officeID == key) {
+                                    var selected = 'selected';
+                                } else {
+                                    var selected = ' ';
+                                }
                                 jQuery('select[name="office_id"]').append(
                                     '<option value="' + key +
-                                    '">' + value + '</option>');
+                                    '"' + selected + '>' + value + '</option>');
                             });
                             jQuery('.loadersmall').remove();
                         }
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
-            });
 
-            // }
-
-            // DivisionOffice Wise Office
-            jQuery('select[name="divOffice"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
+                if (dicOfficeID !== 0) {
                     jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dicOfficeID,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -486,111 +607,29 @@
                             jQuery('select[name="office_id"]').html(
                                 '<option value="">-- অফিস নির্বাচন করুন --</option>');
                             jQuery.each(data, function(key, value) {
+                                if (officeID == key) {
+                                    var selected = 'selected';
+                                } else {
+                                    var selected = ' ';
+                                }
                                 jQuery('select[name="office_id"]').append(
                                     '<option value="' + key +
-                                    '">' + value + '</option>');
-                                //
+                                    '"' + selected + '>' + value + '</option>');
                             });
                             jQuery('.loadersmall').remove();
                         }
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
+
+
+
+
+
             });
+        </script>
+    @endif
 
-
-
-            var officeTypeID = $('#office_type').find(":selected").val();
-
-            if (officeTypeID !== "undefined") {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="office_id"]').html(
-                            '<div class="loadersmall"></div>');
-                        jQuery('select[name="office_id"]').html(
-                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
-            }
-            console.log(minId);
-            if (minId !== 0) {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + minId,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="office_id"]').html(
-                            '<div class="loadersmall"></div>');
-                        jQuery('select[name="office_id"]').html(
-                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
-            }
-
-            if (dicOfficeID !== 0) {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dicOfficeID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="office_id"]').html(
-                            '<div class="loadersmall"></div>');
-                        jQuery('select[name="office_id"]').html(
-                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
-            }
-
-
-
-
-
-        });
-    </script>
 @endsection

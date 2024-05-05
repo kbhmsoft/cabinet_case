@@ -138,7 +138,7 @@ class UserManagementController extends Controller
             ->get()->first();
         // dd($userManagement);
 
-        $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
+        $data['page_title'] = 'ব্যবহারকারীর বিস্তারিত';
         return view('user_manage.show')->with($data);
     }
 

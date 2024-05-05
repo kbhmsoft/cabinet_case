@@ -34,7 +34,7 @@
                 <i class="fa fas fa-layer-group text-white"></i>
                 <span class="count-numbers"><?= en2bn($total_ministry) ?></span>
                 <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">মোট
-                    ব্যাবহারকারী মন্ত্রণালয়</span>
+                    ব্যবহারকারী মন্ত্রণালয়</span>
             </div>
         </a>
     </div>
@@ -56,7 +56,7 @@
                 <i class="fa fas fa-layer-group text-white"></i>
                 <span class="count-numbers"><?= en2bn($total_division) ?></span>
                 <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                    ব্যাবহারকারী বিভাগীয় প্রশাসন</span>
+                    ব্যবহারকারী বিভাগীয় প্রশাসন</span>
             </div>
         </a>
     </div>
@@ -67,7 +67,7 @@
                 <i class="fa fas fa-layer-group text-white"></i>
                 <span class="count-numbers"><?= en2bn($total_district) ?></span>
                 <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                    ব্যাবহারকারী জেলা প্রশাসন</span>
+                    ব্যবহারকারী জেলা প্রশাসন</span>
             </div>
         </a>
     </div>

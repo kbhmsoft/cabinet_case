@@ -42,14 +42,14 @@ class GovCaseUserManagementController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $officeID = userInfo()->office_id;
-        if($roleID == 27){
+        if ($roleID == 27) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-        }elseif($roleID == 29 || $roleID == 31){
+        } elseif ($roleID == 29 || $roleID == 31) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
-        }elseif($roleID == 32 || $roleID == 41){
+        } elseif ($roleID == 32 || $roleID == 41) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
-        
+
 
         // Parent office and corresponding child office
         $childOfficeIds = [];
@@ -86,7 +86,7 @@ class GovCaseUserManagementController extends Controller
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
                 ->whereIn('users.office_id', $finalOfficeIds)
-                ->whereNotIn('users.role_id', [27,42])
+                ->whereNotIn('users.role_id', [27, 42])
                 ->where('users.is_gov', 1);
         }
 
@@ -118,7 +118,7 @@ class GovCaseUserManagementController extends Controller
         ///////// run script
         // return $data;
 
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.user_manage.index')
             ->with($data);
@@ -133,14 +133,14 @@ class GovCaseUserManagementController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         $officeID = userInfo()->office_id;
-        if($roleID == 27){
+        if ($roleID == 27) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-        }elseif($roleID == 29 || $roleID == 31){
+        } elseif ($roleID == 29 || $roleID == 31) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
-        }elseif($roleID == 32 || $roleID == 41){
+        } elseif ($roleID == 32 || $roleID == 41) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
-        
+
 
         // Parent office and corresponding child office
         $childOfficeIds = [];
@@ -166,19 +166,19 @@ class GovCaseUserManagementController extends Controller
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
-                ->whereNotIn('users.role_id', [42,43])
+                ->whereNotIn('users.role_id', [42, 43])
                 ->where('users.is_gov', 1)
                 ->orderBy('users.office_id', 'ASC');
 
             // For Ministry Admin
         } else {
             $query = DB::table('users')
-                
+
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
                 ->whereIn('users.office_id', $finalOfficeIds)
-                ->whereNotIn('users.role_id', [27,42,43])
+                ->whereNotIn('users.role_id', [27, 42, 43])
                 ->where('users.is_gov', 1)
                 ->orderBy('users.office_id', 'ASC');
         }
@@ -211,7 +211,7 @@ class GovCaseUserManagementController extends Controller
         ///////// run script
         // return $data['offices'];
 
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.user_manage.office_wise_users')
             ->with($data);
@@ -243,18 +243,33 @@ class GovCaseUserManagementController extends Controller
         } elseif ($roleID == 29 || $roleID == 31) {
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
-                ->whereNotIn('id', [1, 14, 15, 27, 29, 39, 42, 43])
+                ->whereIn('id', [32, 41, 45])
                 ->where('is_gov', 1)
-                ->orderBy('sort_order', 'ASC')
+                ->orderBy('id', 'ASC')
                 ->get();
+            $childOfficeIds = [];
+            $childOfficeQuery = DB::table('gov_case_office')
+                ->select('id', 'doptor_office_id')
+                ->where('parent_office_id', $officeId)->get();
+            // dd($childOfficeQuery);
+            foreach ($childOfficeQuery as $childOffice) {
+                $childOfficeIds[] = $childOffice->doptor_office_id;
+            }
 
+            $finalOfficeIds = [];
+            if (empty($childOfficeIds)) {
+                $finalOfficeIds[] = $officeId;
+            } else {
+                $finalOfficeIds[] = $officeId;
+                $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            }
             $data['offices'] = DB::table('gov_case_office')
                 ->select('gov_case_office.*')
-                ->where('parent_office_id', $officeId)
+                ->whereIn('doptor_office_id', $finalOfficeIds)
                 ->get();
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
         } else {
-            
+
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
                 ->whereIn('id', [45])
@@ -309,8 +324,8 @@ class GovCaseUserManagementController extends Controller
             ->select('gov_case_office_type.*')
             ->get();
 
-        $data['page_title'] = 'নতুন ব্যাবহারকারী এন্ট্রি ফরম';
-        // dd($data);
+        $data['page_title'] = 'নতুন ব্যবহারকারী এন্ট্রি ফরম';
+        // return $data;
         return view('gov_case.user_manage.add')->with($data);
     }
 
@@ -353,6 +368,8 @@ class GovCaseUserManagementController extends Controller
             'email' => $request->email,
             'role_id' => $request->role_id,
             'office_id' => $request->office_id,
+            'unit_name_bn' => $request->unit_name_bn,
+            'designation' => $request->designation,
             'is_gov' => 1,
             'password' => Hash::make($request->password),
         ]);
@@ -391,7 +408,7 @@ class GovCaseUserManagementController extends Controller
             ->get();
 
         // dd($data['roles']);
-        $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
+        $data['page_title'] = 'ব্যবহারকারীর বিস্তারিত';
         return view('gov_case.user_manage.show')->with($data);
     }
 
@@ -557,7 +574,7 @@ class GovCaseUserManagementController extends Controller
         // dd($data);
 
         $data['page_title'] = 'অনুমোদিত
-        ই-নথি ব্যাবহারকারী তালিকা';
+        ই-নথি ব্যবহারকারী তালিকা';
 
         return view('gov_case.user_manage.e-nothi-assigned-user-index')
             ->with($data);
