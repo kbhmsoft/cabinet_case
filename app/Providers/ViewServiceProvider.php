@@ -78,7 +78,7 @@ class ViewServiceProvider extends AppServiceProvider
                 $total_case = $total_highcourt + $total_appeal;
             }
 
-            if ($roleID == 27) {
+            if ($roleID == 27 || $roleID==39) {
 
                 $total_highcourt = GovCaseRegister::where('deleted_at', null)
                     ->count();
@@ -133,7 +133,7 @@ class ViewServiceProvider extends AppServiceProvider
             $officeInfo = user_office_info();
             $roleID = Auth::user()->role_id;
 
-            if ($roleID == 29 || $roleID == 31 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45 || $roleID == 39) {
                 $authUserOfficeId = Auth()->user()->office_id;
                 $case_swap = MainRespondentNotification::
                     where('previous_office_id', $authUserOfficeId)
@@ -183,7 +183,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
 
-            } elseif ($roleID == 27 || $roleID == 28) {
+            } elseif ($roleID == 27 || $roleID == 28 || $roleID==39) {
                 $CaseResultCount = DB::table('gov_case_registers')
                     ->where('status', '!=', 1)
                     ->get()

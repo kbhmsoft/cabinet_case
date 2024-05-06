@@ -167,7 +167,7 @@
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($ministrys as $value)
                                                                 <option value="{{ $value->doptor_office_id }}"
-                                                                    {{ old('appeal_office') == $value->doptor_office_id ? 'selected' : '' }}>
+                                                                    {{ old('appeal_office') == $value->doptor_office_id  }}>
                                                                     {{ $value->office_name_bn }} </option>
                                                             @endforeach
                                                         </select>

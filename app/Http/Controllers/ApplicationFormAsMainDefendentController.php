@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreApplicationFormAsMainDefendentRequest;
+use App\Http\Requests\UpdateApplicationFormAsMainDefendentRequest;
+use App\Models\ApplicationFormAsMainDefendent;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseRegister;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Support\Facades\Storage;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\ApplicationFormAsMainDefendent;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Http\Requests\StoreApplicationFormAsMainDefendentRequest;
-use App\Http\Requests\UpdateApplicationFormAsMainDefendentRequest;
 
 // use Illuminate\Routing\Route;
 
@@ -54,13 +55,12 @@ class ApplicationFormAsMainDefendentController extends Controller
             ->orderBy('id', 'DESC');
         $data['ministrys'] = GovCaseOffice::get();
         $data['users'] = $query->paginate(10)->withQueryString();
-    //   dd($data['users']);
+        //   dd($data['users']);
         $data['page_title'] = 'আপিল মামলা তালিকা';
 
         return view('gov_case.case_register.application_form_as_main_defendent.appeal_index')
             ->with($data);
     }
-
 
     public function createApplicationForm($caseNo)
     {
@@ -68,6 +68,8 @@ class ApplicationFormAsMainDefendentController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['ministrys'] = GovCaseOffice::get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['govCaseData'] = GovCaseRegister::where('case_no', $caseNo)
+        ->first();
 
         $GovCaseDivisionCategoryType = GovCaseDivisionCategoryType::all();
         $data['GovCaseDivisionCategoryType'] = $GovCaseDivisionCategoryType;
@@ -76,7 +78,7 @@ class ApplicationFormAsMainDefendentController extends Controller
 
         return view('gov_case.case_register.application_form_as_main_defendent.create')->with($data);
     }
-   
+
     public function storeApplicationForm(StoreApplicationFormAsMainDefendentRequest $request)
     {
         $validatedData = $request->validated();
