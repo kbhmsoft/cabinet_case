@@ -603,17 +603,17 @@
 
                 @endcan
 
-                @can('message_menu')
+                {{-- @can('message_menu')
                     <li class="menu-item {{ request()->is('cabinet/notice/list', 'cabinet/messages', 'cabinet/messages/*', 'cabinet/messages_recent', 'cabinet/messages_request') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-envelope" aria-hidden="true"></i>
                                 বার্তা</span>
-                            {{-- @if ($Ncount != 0)
+                            @if ($Ncount != 0)
                                 <span class="menu-label">
                                     <span class="label label-rounded label-danger">{{ $Ncount }}</span>
                                 </span>
-                            @endif --}}
+                            @endif
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="menu-submenu">
@@ -625,17 +625,17 @@
                                         <a href="{{ route('cabinet.messages_recent') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">সাম্প্রতিক বার্তা</span>
-                                            {{-- @if ($NewMessagesCount != 0)
+                                            @if ($NewMessagesCount != 0)
                                                 <span class="menu-label">
                                                     <span
                                                         class="label label-rounded label-danger">{{ $NewMessagesCount }}</span>
                                                 </span>
-                                            @endif --}}
+                                            @endif
                                         </a>
                                     </li>
                                 @endcan
 
-                                {{-- @if ($msg_request_count != 0)
+                                @if ($msg_request_count != 0)
                                     <li class="menu-item {{ request()->is('cabinet/messages_request') ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.messages_request') }}" class="menu-link">
@@ -647,7 +647,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                @endif --}}
+                                @endif
 
                                 @can('notice_menu')
                                     <li class="menu-item {{ request()->is('cabinet/notice/list') ? 'hilightMenu' : '' }}"
@@ -671,7 +671,7 @@
                             </ul>
                         </div>
                     </li>
-                @endcan
+                @endcan --}}
                 @php
                     $supremeCourtCaseCout = DB::select(
                         DB::raw(
@@ -766,11 +766,11 @@
                 @endcan
 
 
-                @can('maintain_main_respondent_included')
+                {{-- @can('maintain_main_respondent_included')
                     <li class="menu-item mt-2 has-treeview {{ request()->is('cabinet/case/highcourt/indexApplications*', 'cabinet/case/appeal/indexApplications*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল বিবাদি
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল রেসপন্ডেন্ট 
                                 হিসেবে অন্তর্ভুক্তির আবেদন</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -801,7 +801,7 @@
                             @endcan
                         </div>
                     </li>
-                @endcan
+                @endcan --}}
 
                 {{-- <ul class="menu-nav">
                     <li class="menu-item has-treeview " aria-haspopup="true" data-menu-toggle="hover">

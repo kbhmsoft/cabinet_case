@@ -159,12 +159,8 @@
                                                 </button>
                                             </div>
                                         </form>
-
-
                                     @endif
                                 </td>
-
-
 
                                 {{-- <td>
                                     @if (auth()->user()->can('show_user_details'))

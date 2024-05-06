@@ -298,6 +298,9 @@ class GovCaseUserManagementController extends Controller
             ->get();
 
         // dd($data['roles']);
+
+        $data['name'] = User::table('names')->where('level', 1)->count();
+
         $data['page_title'] = 'ব্যাবহারকারীর বিস্তারিত';
         return view('gov_case.user_manage.show')->with($data);
     }
