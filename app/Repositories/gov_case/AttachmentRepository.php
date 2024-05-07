@@ -15,6 +15,8 @@ use App\Models\ContemptAttachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\SuspensionAttachment;
+use App\Models\SuspensionTamilAttachment;
+use App\Models\SuspensionAppealAttachment;
 use App\Models\LeaveToAppealAttachment;
 use Illuminate\Support\Facades\Session;
 use App\Models\AppealFinalOrderAttachment;
@@ -162,6 +164,50 @@ class AttachmentRepository
                     $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new SuspensionAttachment();
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_name = $filePath . $otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
+    public static function storeSuspentionOrderTamilAttachment($appName, $caseId, $request)
+    {
+        if ($request->file_name != null) {
+            foreach ($request->file_type as $key => $val) {
+                $filePath = "uploads/" . $appName . "/suspension_order_tamil_attachment/";
+                if ($request->file_name[$key] != null) {
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
+                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                }
+                $attachment = new SuspensionTamilAttachment();
+                $attachment->gov_case_id = $caseId;
+                $attachment->file_type = $request->file_type[$key];
+                $attachment->file_name = $filePath . $otherfileName;
+                $attachment->file_submission_date = date('Y-m-d H:i:s');
+                $attachment->created_at = date('Y-m-d H:i:s');
+                $attachment->created_by = userInfo()->id;
+                $attachment->updated_at = date('Y-m-d H:i:s');
+                $attachment->updated_by = userInfo()->id;
+                $attachment->save();
+            }
+        }
+    }
+    public static function storeSuspentionOrderAgainstAppealAttachment($appName, $caseId, $request)
+    {
+        if ($request->file_name != null) {
+            foreach ($request->file_type as $key => $val) {
+                $filePath = "uploads/" . $appName . "/suspension_order_appeal_attachment/";
+                if ($request->file_name[$key] != null) {
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
+                    $request->file_name[$key]->move(public_path($filePath), $otherfileName);
+                }
+                $attachment = new SuspensionAppealAttachment();
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type[$key];
                 $attachment->file_name = $filePath . $otherfileName;
