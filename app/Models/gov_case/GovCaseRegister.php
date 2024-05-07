@@ -185,4 +185,13 @@ class GovCaseRegister extends Model
         return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
     }
 
+    public function caseCategory()
+    {
+        return $this->belongsTo(GovCaseDivisionCategory::class, 'case_category_id', 'id');
+    }
+
+    public function caseCategoryType()
+    {
+        return $this->belongsTo(GovCaseDivisionCategoryType::class, 'case_type_id', 'id');
+    }
 }
