@@ -1,112 +1,11 @@
 <style>
-    .notification-container {
-        position: relative;
-        display: inline-block;
-    }
+    .nav-link.active {
+        color: #6D318D !important;
+        background-color: transparent !important;
+        border-color: transparent !important;
 
-    .notification {
-        background-color: #6D308D;
-        color: white;
-        text-decoration: none;
-        padding: 5px 10px;
-        position: relative;
-        display: inline-block;
-        border-radius: 3px;
-        margin-top: 1rem;
-    }
-
-    .notification:hover {
-        background: rgb(255, 255, 255);
-    }
-
-    .notification .badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        padding: 5px 10px;
-        border-radius: 50%;
-        background: red;
-        /* color: white; */
-    }
-
-    .menu-dropdown {
-        display: none;
-        position: absolute;
-        top: calc(20% + 5px);
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
-
-    .menu-item {
-        padding: 10px;
-    }
-
-    .menu-item a {
-        color: #333;
-    }
-
-    .menu-item:hover {
-        background-color: #f5f5f5;
-    }
-
-    .message-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .message {
-        background-color: #6D308D;
-        color: white;
-        text-decoration: none;
-        padding: 5px 10px;
-        position: relative;
-        display: inline-block;
-        border-radius: 3px;
-        margin-top: 1rem;
-    }
-
-    .message:hover {
-        background: rgb(255, 255, 255);
-    }
-
-    .message .badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        padding: 5px 10px;
-        border-radius: 50%;
-        background: red;
-        /* color: white; */
-    }
-
-    .menu-dropdown-two {
-        display: none;
-        position: absolute;
-        top: calc(20% + 5px);
-        left: 200;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
-
-    .menu-item-two {
-        padding: 10px;
-    }
-
-    .menu-item-two a {
-        color: #333;
-    }
-
-    .menu-item-two:hover {
-        background-color: #f5f5f5;
     }
 </style>
-
-
-
-
 <div class="dropdown">
 
     <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
@@ -135,101 +34,82 @@
     <div class="dropdown-menu mb-5 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg ">
         <form>
 
-            <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top"
-                style="background-color: #6D308D" {{-- style="background-image: url({{ asset('media/misc/bg-1.jpg') }})" --}}>
+            <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top"
+                style="background-color: #ffffff" {{-- style="background-image: url({{ asset('media/misc/bg-1.jpg') }})" --}}>
                 {{-- <h4 class="d-flex flex-center rounded-top">
-                    <span class="text-white">User Notifications</span>
+                    <span class="text-black">User Notifications</span>
                     <span class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">23 new</span>
                 </h4> --}}
-                <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8"
-                    role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a id="mainTab" class="nav-link active show" data-toggle="tab"
-                            href="#topbar_notifications_notifications">
-                            মূল রেসপন্ডেন্ট হিসেবে অন্তর্ভুক্তির আবেদন
-                        </a>
-
-                        <div id="dropdownMenu" class="menu-dropdown" style="display: none;">
-                            <ul class="menu">
-                                <li class="menu-item">
-                                    <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
-                                        <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
-                                        <span class="menu-text font-weight-bolder">আপিল বিভাগ</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <a class="nav-link active" id="respondent-tab" data-toggle="tab" href="#respondent"
+                            role="tab" aria-controls="respondent" aria-selected="true">মূল রেসপন্ডেন্ট হিসেবে
+                            অন্তর্ভুক্তির আবেদন</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#topbar_notifications_events">বার্তা</a>
-                        <div class="menu-dropdown-two">
-                            <ul class="menu-subnav">
-                                @can('recent_messages')
-                                    <li class="menu-item {{ request()->is('cabinet/messages_recent') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.messages_recent') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">সাম্প্রতিক বার্তা</span>
-                                            {{-- @if ($NewMessagesCount != 0)
-                                                <span class="menu-label">
-                                                    <span
-                                                        class="label label-rounded label-danger">{{ $NewMessagesCount }}</span>
-                                                </span>
-                                            @endif --}}
-                                        </a>
-                                    </li>
-                                @endcan
-
-                                {{-- @if ($msg_request_count != 0)
-                                    <li class="menu-item {{ request()->is('cabinet/messages_request') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.messages_request') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নতুন বার্তা অনুরোধ</span>
-                                            <span class="menu-label">
-                                                <span
-                                                    class="label label-rounded label-danger">{{ $msg_request_count }}</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                @endif --}}
-
-                                @can('notice_menu')
-                                    <li class="menu-item {{ request()->is('cabinet/notice/list') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.notice.list') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নোটিশ</span>
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('notice_users_list')
-                                    <li class="menu-item {{ request()->is('cabinet/messages') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.messages') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">ব্যবহারকারীর
-                                                তালিকা</span>
-                                        </a>
-                                    </li>
-                                @endcan
-
-                            </ul>
-                        </div>
+                        <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab"
+                            aria-controls="message" aria-selected="false">বার্তা</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs">Logs</a>
-                    </li> --}}
                 </ul>
+
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="respondent" role="tabpanel"
+                        aria-labelledby="respondent-tab">
+                        <ul class="menu">
+                            <li class="menu-item">
+                                <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder">আপিল বিভাগ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+                        <ul class="menu-subnav">
+                            @can('recent_messages')
+                                <li class="menu-item {{ request()->is('cabinet/messages_recent') ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.messages_recent') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">সাম্প্রতিক বার্তা</span>
+
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('notice_menu')
+                                <li class="menu-item {{ request()->is('cabinet/notice/list') ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.notice.list') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">নোটিশ</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('notice_users_list')
+                                <li class="menu-item {{ request()->is('cabinet/messages') ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.messages') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">ব্যবহারকারীর
+                                            তালিকা</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                        </ul>
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="tab-content">
+            {{-- <div class="tab-content">
 
                 <div class="tab-pane active show p-8" id="topbar_notifications_notifications" role="tabpanel">
 
@@ -268,78 +148,8 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --}}
 
         </form>
     </div>
-
 </div>
-
-
-
-<script>
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     const notificationContainer = document.querySelector('.notification-container');
-    //     const menuDropdown = document.querySelector('.menu-dropdown');
-
-    //     notificationContainer.addEventListener('click', function(event) {
-    //         menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
-    //         event.stopPropagation();
-    //     });
-    //     document.addEventListener('click', function(event) {
-    //         if (!notificationContainer.contains(event.target)) {
-    //             menuDropdown.style.display = 'none';
-    //         }
-    //     });
-    // });
-
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const mainTab = document.getElementById('mainTab');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        mainTab.addEventListener('click', function(event) {
-            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Hide dropdown menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!mainTab.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-            }
-        });
-    });
-
-
-
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     const messageContainer = document.querySelector('.message-container');
-    //     const menuDropdownTwo = document.querySelector('.menu-dropdown-two');
-
-    //     messageContainer.addEventListener('click', function(event) {
-    //         menuDropdownTwo.style.display = menuDropdownTwo.style.display === 'block' ? 'none' :
-    //         'block';
-    //         event.stopPropagation();
-    //     });
-    //     document.addEventListener('click', function(event) {
-    //         if (!messageContainer.contains(event.target)) {
-    //             menuDropdownTwo.style.display = 'none';
-    //         }
-    //     });
-    // });
-    document.addEventListener("DOMContentLoaded", function() {
-        const tabLink = document.querySelector('a[data-toggle="tab"][href="#topbar_notifications_events"]');
-        const dropdownMenu = document.querySelector('.menu-dropdown-two');
-
-        tabLink.addEventListener('click', function(event) {
-            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Hide dropdown menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!tabLink.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-            }
-        });
-    });
-</script>

@@ -33,6 +33,7 @@
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
+            addHighcourtAdalatRowFunc();
         }
         addFileRowFunc();
         addReplyFileRowFunc();
@@ -42,6 +43,8 @@
         addContemptFileRowFunc();
         addFinalOrderFileRowFunc();
         addAdvocateLawerFunc();
+        addBibadiRowFunc();
+
         $('select').select2();
 
         //===========caseType================//
@@ -225,9 +228,9 @@
     }
     /************************ Add multiple Main bibadi *************************/
 
-    $("#addMainBibadiRow").click(function(e) {
-        addMainBibadiRowFunc();
-    });
+    // $("#addMainBibadiRow").click(function(e) {
+    //     addMainBibadiRowFunc();
+    // });
 
     //add row function
     function addMainBibadiRowFunc() {
@@ -237,7 +240,7 @@
         var MainCount = $('#MainBibadiDiv tr').length;
         $('#MainBibadiDiv tr:last').after(ItemMain(mk_main + 1, 'other'));
 
-        
+
         function ItemMain(count, type = NULL) {
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
@@ -265,74 +268,75 @@
 
     $("#addBibadiRow").click(function(e) {
         addBibadiRowFunc();
-
     });
 
-    //add row function
-    // function addBibadiRowFunc() {
-    //     var mk = $('#bibadiDiv tr').length;
-    //     var MainCount = $('#MainBibadiDiv tr').length;
-    //     // console.log(MainCount);
-    //     $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-    //     /*if(MainCount ==3){
-    //         $('#MainBibadiDiv tr:last').after(Item(MainCount, 'main'));
-    //     }*/
-
-    //     function Item(count, type = NULL) {
-    //         var items = '';
-    //         items += '<tr id="bibadi_' + (count) + '">';
-    //         items +=
-    //             '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
-
-    //         items += '<input type="hidden" name="bibadi_id[]" value="">';
-    //         if (type == 'other') {
-    //             items +=
-    //                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-    //         }
-    //         items += '</tr>';
-
-    //         return items;
-    //     }
-
-    //     $('.other_respondentCls2').select2();
-    // }
-
-    // Event delegation for adding row function
-    // $(document).on("click", "#addBibadiRow", function(e) {
-    //     addBibadiRowFunc();
-    // });
-    $(document).on("click", "#addBibadiRow", function(e) {
-        addBibadiRowFunc();
-    });
-
-    // Add row function
+ //   add row function
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
-        // Create a new row
-        var newRow = '<tr id="bibadi_' + mk + '">';
-        newRow +=
-            '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls2"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}">{{ $value->office_name_bn }}</option>@endforeach</select></td>';
-        newRow += '<input type="hidden" name="bibadi_id[]" value="">';
-        newRow +=
-            '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-        newRow += '</tr>';
+        var MainCount = $('#MainBibadiDiv tr').length;
 
-        // Append the new row to the table
-        $('#bibadiDiv tr:last').after(newRow);
+        $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
 
-        // Initialize select2 for the new select element
-        $('#bibadi_' + mk + ' .other_respondentCls2').select2();
+        function Item(count, type = NULL) {
+            var items = '';
+            items += '<tr id="bibadi_' + (count) + '">';
+            items +=
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+            items += '<input type="hidden" name="bibadi_id[]" value="">';
 
-        // Reset the value of the newly added select element to default
-        $('#bibadi_' + mk + ' select').val('').trigger('change');
+            if (type == 'other') {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
+            items += '</tr>';
+            return items;
+        }
+        $('.other_respondentCls').select2();
     }
-
-
 
     //remove row function
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+
+    /************************ //Add multiple HighCourt Adalat *************************/
+    $("#addHighcourtAdalatRow").click(function(e) {
+        addHighcourtAdalatRowFunc();
+    });
+
+    //add row function
+    function addHighcourtAdalatRowFunc() {
+        var mk = $('#highcourtAdalatDiv tr').length;
+        var MainCount = $('#MainBibadiDiv tr').length;
+
+        $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+        function Item(count, type = NULL) {
+            var items = '';
+            items += '<tr id="highcourt_adalat_' + (count) + '">';
+            items +=
+                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+            items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+
+            if (type == 'other') {
+                items +=
+                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            }
+            items += '</tr>';
+            return items;
+        }
+        $('.other_respondentCls').select2();
+    }
+
+    //remove row function
+    function removeHighcourtAdalatRow(id) {
+        $(id).closest("tr").remove();
+    }
+
+
+
+
+
 
     /************************ Add multiple survey *************************/
     $("#addSurveyRow").click(function(e) {
@@ -365,79 +369,74 @@
         }
         return output.join('');
     }
-
-    // document.getElementById('r').textContent = replaceNumbers('count'); // comment on 07/11/2022 shahajahan
 </script>
 
 <script>
-        /************************ Add multiple advocate  *************************/
-        $("#addAdvocateLawer").click(function(e) {
-            addAdvocateLawerFunc();
-            // $('select').select2();
-        });
+    $("#addAdvocateLawer").click(function(e) {
+        addAdvocateLawerFunc();
+    });
 
-        //add row function
-        function addAdvocateLawerFunc() {
+    // Add row function
+    function addAdvocateLawerFunc() {
+        var count = parseInt($('#survey_count').val());
+        $('#survey_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<input type="hidden" name="concern_person_id[]" value="">';
+        items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+            '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+            ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+        items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+            '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
-            var count = parseInt($('#survey_count').val());
-            $('#survey_count').val(count + 1);
-            var items = '';
-            items += '<tr>';
-
-            items += '<input type="hidden" name="concern_person_id[]" value="">';
+        if (count != 1) {
             items +=
-                '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-                ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-            items +=
-                '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
-
-            if (count != 1) {
-                items +=
-                    '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-            }
-            items += '</tr>';
-
-            $('#advocateLawerDiv tr:last').after(items);
-
-            $('.select2').select2();
-            //scout_id_select2_dd();
+                '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
         }
 
-        //remove row function
-        function removeAdvocateLawerRow(id) {
-            $(id).closest("tr").remove();
+        items += '</tr>';
+
+        $('#advocateLawerDiv tr:last').after(items);
+
+        // Initialize Select2 after adding new dropdowns
+        $('#concernPersonDesignation_' + count).select2();
+        $('#concern_user_id_' + count).select2();
+    }
+
+
+    //remove row function
+    function removeAdvocateLawerRow(id) {
+        $(id).closest("tr").remove();
+    }
+
+    function getConcernPerName(id) {
+        var desig = $(`#concernPersonDesignation_${id}`).val();
+        jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
+        if (desig) {
+            jQuery.ajax({
+                url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                    desig,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<div class="loadersmall"></div>');
+
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key, value) {
+                        jQuery(`#concern_user_id_${id}`).append(
+                            '<option value="' + key + '">' + value +
+                            '</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                }
+            });
+        } else {
+            $(`#concern_user_id_${id}`).empty();
         }
 
-        function getConcernPerName(id) {
-            var desig = $(`#concernPersonDesignation_${id}`).val();
-            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-            if (desig) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        desig,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery(`#concern_user_id_${id}`).append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $(`#concern_user_id_${id}`).empty();
-            }
-
-        }
+    }
 </script>
 
 <script>
@@ -620,18 +619,19 @@
                         $('#contemptCaseSaveBtn').removeClass("disable-button");
 
                     },
-                    error: function(data) {
-                        console.log(JSON.stringify(data['responseJSON']['errors']['case_no']
-                            [0]));
 
-                        Swal.fire(
-                            'Oops...!',
-                            data['responseJSON']['errors']['case_no'][0],
-                            'error'
-                        )
+                    error: function(xhr, status, error) {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
-
+                        if (xhr.status ===
+                            422) { // HTTP status code for Unprocessable Entity
+                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                        } else {
+                            console.log('Error occurred:', xhr, status, error);
+                            Swal.fire('সমস্যা...!',
+                                'An error occurred while saving the case information.',
+                                'error');
+                        }
                     }
                 });
             } else {
@@ -647,6 +647,69 @@
         })
 
     });
+
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             var formData = new FormData(this);
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success');
+    //                     console.log(data);
+    //                     $("#sending_reply_tab").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
+    //                     $('#sendingReplySaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false).removeClass(
+    //                         "disable-button");
+    //                 },
+    //                 error: function(xhr, status, error) {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     if (xhr.status ===
+    //                         422) { // HTTP status code for Unprocessable Entity
+    //                         Swal.fire('Oops...!', xhr.responseJSON.error, 'error');
+    //                     } else {
+    //                         console.log('Error occurred:', xhr, status, error);
+    //                         Swal.fire('Oops...!',
+    //                             'An error occurred while saving the case information.',
+    //                             'error');
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //             $('#caseGeneralInfoSaveBtn').removeClass(
+    //             'spinner spinner-white spinner-right disabled');
+    //             Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+    //         }
+    //     });
+    // });
+
     // ================================Case General Info save==================================
 
     // ================================Sending Replay Save==================================//

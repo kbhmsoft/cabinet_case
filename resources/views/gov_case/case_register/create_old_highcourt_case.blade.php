@@ -162,25 +162,27 @@
                                                         </div>
 
 
-                                                        <div class="col-lg-4 mb-5">
-                                                            <label>আদালতের নাম (Justice Name) <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="" id="AdalatDiv">
-                                                                <select name="highcourt_adalat" id="HighCourtAdalat"
-                                                                    class="form-control form-control-sm"
-                                                                    required="required">
-                                                                    <option value="">-- নির্বাচন করুন --</option>
-                                                                    @foreach ($highCourtAdalat as $value)
-                                                                        <option value="{{ $value->id }}"
-                                                                            {{ old('highcourt_adalat') == $value->id ? 'selected' : '' }}>
-                                                                            {{ $value->name }} </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <span class="text-danger d-none vallidation-message">This
-                                                                    field
-                                                                    can not be empty</span>
-                                                            </div>
+                                                        <div class="col-lg-4">
+                                                            <table width="100%" border="1" id="highcourtAdalatDiv"
+                                                                class="mb-5" style="border:1px solid #dcd8d8;">
+                                                                <tr>
+                                                                    <th class="other_bibadi_name other_respondent">আদালতের
+                                                                        নাম
+                                                                        (Justice Name)
+                                                                    </th>
+                                                                    <th width="50">
+                                                                        <a href="javascript:void();"
+                                                                            id="addHighcourtAdalatRow"
+                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                            <i class="fas fa-plus-circle"></i>
+                                                                        </a>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr></tr>
+                                                            </table>
                                                         </div>
+
+
 
                                                         <div class="col-lg-4 mb-5">
                                                             <label for="case_date">রুল ইস্যুর তারিখ <span
@@ -237,157 +239,143 @@
                                                                 </tr>
                                                                 {{-- <tr></tr> --}}
                                                             </table>
+
+
+
+
+
+
+                                                            <div class="col-lg-12" style="display: flex;">
+                                                                <div class="col-lg-5 mb-5">
+                                                                    <label>মোট পিটিশনারের সংখ্যা</label>
+                                                                    <select name="total_badi_number"
+                                                                        id="total_badi_number"
+                                                                        class="form-control form-control-sm">
+                                                                        <option value="">মোট পিটিশনারের সংখ্যা
+                                                                            নির্বাচন করুন</option>
+                                                                        <?php
+                                                                        for ($i = 1; $i <= 1000; $i++) {
+                                                                            echo "<option value='$i'>$i</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                    <input type="hidden" name="caseId" value="">
+                                                                </div>
+                                                                <div class="col-lg-7 mb-5">
+                                                                    <table width="100%" border="1" id="bibadiDiv"
+                                                                        class="mb-5" style="border:1px solid #dcd8d8;">
+                                                                        <tr>
+                                                                            <th class="other_bibadi_name other_respondent">
+                                                                                অন্যান্য রেসপন্ডেন্ট নাম সমূহ
+                                                                            </th>
+                                                                            <th width="50">
+                                                                                <a href="javascript:void();"
+                                                                                    id="addBibadiRow"
+                                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                                    <i class="fas fa-plus-circle"></i>
+                                                                                </a>
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr></tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-12 mb-5">
+                                                            <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
+                                                            <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
+                                                        </div>
+
+                                                        <div class="col-lg-6 mb-5">
+                                                            <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ
+                                                            থাকে
+                                                            বা সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির
+                                                            সম্ভাব্য মূল্য ইত্যাদি)
+
+                                                            <input name="money_amount" class="form-control"
+                                                                id="money_amount" rows="1"
+                                                                spellcheck="false"></input>
                                                         </div>
 
                                                         <div class="col-lg-12 mb-5">
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>মোট পিটিশনারের সংখ্যা</label>
-                                                                <select name="total_badi_number" id="total_badi_number"
-                                                                    class="form-control form-control-sm"
-                                                                    required="required">
-                                                                    <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন
-                                                                        করুন
-                                                                    </option>
-                                                                    <?php
-                                                                    for ($i = 1; $i <= 1000; $i++) {
-                                                                        echo "<option value='$i'>$i</option>";
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                                <input type="hidden" name="caseId" value="">
+                                                            <div class="col-md-6">
+                                                                <label
+                                                                    class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন
+                                                                    আদেশ প্রদান করা হয়েছে কিনা
+                                                                </label>
+                                                                <div class="radio-inline">
+                                                                    <label class="radio">
+                                                                        <input type="radio"
+                                                                            name="postponed_interim_have"
+                                                                            id="postponed_interim_have" value="1" />
+                                                                        <span></span>হ্যাঁ</label>
+                                                                    <label class="radio">
+                                                                        <input type="radio"
+                                                                            name="postponed_interim_have"
+                                                                            id="postponed_interim_have_not" value="0"
+                                                                            checked />
+                                                                        <span></span>না</label>
+                                                                </div>
+                                                            </div>
 
+                                                            <div class="p-5" id="postponed_interim_data_details">
+                                                                <div class="col-md-12 mb-5">
+                                                                    <label>স্থগিতাদেশের সংক্ষিপ্ত
+                                                                        বিবরণ</label>
+                                                                    <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details"
+                                                                        rows="3" spellcheck="false"></textarea>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6 mb-5">
-                                                            <table width="100%" border="1" id="MainBibadiDiv"
-                                                                class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        {{-- starting সংযুক্তি  --}}
+                                                        <div id="thirdrequriedfields" class="form-group row">
 
-                                                                <tr>
-                                                                    <th class="main_babadi_name main_respondent">মূল
-                                                                        রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                                    </th>
-                                                                    {{-- <th width="50">
-                                                                        <a href="javascript:void();" id="addMainBibadiRow"
-                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                            <i class="fas fa-plus-circle"></i>
-                                                                        </a>
-                                                                    </th> --}}
-                                                                </tr>
-                                                                <tr></tr>
-                                                                <input type="hidden" id="mainBibadi_count"
-                                                                    value="1">
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-lg-6 mb-5">
-                                                            <table width="100%" border="1" id="bibadiDiv"
-                                                                class="mb-5" style="border:1px solid #dcd8d8;">
-
-                                                                <tr>
-                                                                    <th class="other_bibadi_name other_respondent">অন্যান্য
-                                                                        রেসপন্ডেন্ট নাম
-
-                                                                    </th>
-                                                                    <th width="50">
-                                                                        <a href="javascript:void();" id="addBibadiRow"
-                                                                            class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                            <i class="fas fa-plus-circle"></i>
-                                                                        </a>
-                                                                    </th>
-                                                                </tr>
-                                                                <tr></tr>
-                                                            </table>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-lg-12 mb-5">
-                                                        <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
-                                                        <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
-                                                    </div>
-
-                                                    <div class="col-lg-6 mb-5">
-                                                        <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে
-                                                        বা সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির
-                                                        সম্ভাব্য মূল্য ইত্যাদি)
-
-                                                        <input name="money_amount" class="form-control" id="money_amount"
-                                                            rows="1" spellcheck="false"></input>
-                                                    </div>
-
-                                                    <div class="col-lg-12 mb-5">
-                                                        <div class="col-md-6">
-                                                            <label
-                                                                class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন
-                                                                আদেশ প্রদান করা হয়েছে কিনা
-                                                            </label>
-                                                            <div class="radio-inline">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="postponed_interim_have"
-                                                                        id="postponed_interim_have" value="1" />
-                                                                    <span></span>হ্যাঁ</label>
-                                                                <label class="radio">
-                                                                    <input type="radio" name="postponed_interim_have"
-                                                                        id="postponed_interim_have_not" value="0"
-                                                                        checked />
-                                                                    <span></span>না</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="p-5" id="postponed_interim_data_details">
-                                                            <div class="col-md-12 mb-5">
-                                                                <label>স্থগিতাদেশের সংক্ষিপ্ত
-                                                                    বিবরণ</label>
-                                                                <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details"
-                                                                    rows="3" spellcheck="false"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {{-- starting সংযুক্তি  --}}
-                                                    <div id="thirdrequriedfields" class="form-group row">
-
-                                                        <div class="col-md-12">
-                                                            <fieldset class="">
-                                                                <div
-                                                                    class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                            <div class="col-md-12">
+                                                                <fieldset class="">
                                                                     <div
-                                                                        class="d-flex align-items-center mr-2 py-2 file_type">
-                                                                        <th class="mb-0 mr-8 ">রুলের কপি সংযুক্ত করুন
-                                                                            <span class="text-danger">*</span>
-                                                                        </th>
-                                                                    </div>
+                                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                        <div
+                                                                            class="d-flex align-items-center mr-2 py-2 file_type">
+                                                                            <th class="mb-0 mr-8 ">রুলের কপি সংযুক্ত করুন
+                                                                                <span class="text-danger">*</span>
+                                                                            </th>
+                                                                        </div>
 
-                                                                    <div class="symbol-group symbol-hover py-2">
-                                                                        <div class="symbol symbol-30 symbol-light-primary"
-                                                                            data-toggle="tooltip" data-placement="top"
-                                                                            title="" role="button"
-                                                                            data-original-title="ফাইল যুক্ত করুণ">
+                                                                        <div class="symbol-group symbol-hover py-2">
+                                                                            <div class="symbol symbol-30 symbol-light-primary"
+                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                title="" role="button"
+                                                                                data-original-title="ফাইল যুক্ত করুণ">
 
-                                                                            <div id="addFileRow">
-                                                                                <span
-                                                                                    class="symbol-label font-weight-bold bg-success">
-                                                                                    <i
-                                                                                        class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                                </span>
+                                                                                <div id="addFileRow">
+                                                                                    <span
+                                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                                        <i
+                                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                    </span>
+                                                                                </div>
                                                                             </div>
+
                                                                         </div>
 
                                                                     </div>
-
-                                                                </div>
-                                                                <div class="mt-3 px-5">
-                                                                    <table width="100%" class="border-0 px-5"
-                                                                        id="fileDiv" style="border:1px solid #dcd8d8;">
-                                                                        <tr></tr>
-                                                                    </table>
-                                                                    <input type="hidden" id="other_attachment_count"
-                                                                        value="1">
-                                                                </div>
-                                                            </fieldset>
+                                                                    <div class="mt-3 px-5">
+                                                                        <table width="100%" class="border-0 px-5"
+                                                                            id="fileDiv"
+                                                                            style="border:1px solid #dcd8d8;">
+                                                                            <tr></tr>
+                                                                        </table>
+                                                                        <input type="hidden" id="other_attachment_count"
+                                                                            value="1">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    {{-- end সংযুক্তি --}}
+                                                        {{-- end সংযুক্তি --}}
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </fieldset>
                                         {{-- </div> --}}
 
@@ -1479,50 +1467,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        // $(document).ready(function() {
-        //     $('#case_no').blur(function() {
-        //         // $('#case_no').on('input', function () {
-        //         var caseNo = $(this).val();
-        //         $.ajax({
-        //             url: "{{ route('cabinet.case.check-case-no') }}",
-        //             type: 'POST',
-        //             data: {
-        //                 '_token': '{{ csrf_token() }}',
-        //                 'case_no': caseNo
-        //             },
-        //             success: function(data) {
-        //                 if (data.exists) {
-        //                     Swal.fire({
-        //                         icon: 'error',
-        //                         title: 'দুঃখিত...',
-        //                         html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-        //                             data.officeName +
-        //                             '</span> কর্তৃক মূল বিবাদি হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল বিবাদি হয়ে থাকলে সুপার অ্যাডমিনের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন.</strong>',
-        //                     });
-        //                 }
-        //             }
-        //         });
-        //     });
-        // });
-
-
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
-
-            // Function to check case number when case year changes
-            $('#case_year').change(function() {
+            // Function to trigger validation when any of the input fields change
+            $('#case_year, #case_no, #case_category_type').change(function() {
                 var caseNo = $('#case_no').val(); // Get the case number
-                var caseYear = $(this).val(); // Get the case year
+                var caseYear = $('#case_year').val(); // Get the case year
+                var caseCategory = $('#case_category_type').val(); // Get the case category
 
-                // Proceed with AJAX request only if both fields are filled
-                if (caseNo && caseYear) {
+                // Proceed with AJAX request only if all fields are filled
+                if (caseNo && caseYear && caseCategory) {
                     $.ajax({
                         url: "{{ route('cabinet.case.check-case-no') }}",
                         type: 'POST',
                         data: {
                             '_token': '{{ csrf_token() }}',
                             'case_no': caseNo,
-                            'case_year': caseYear
+                            'case_year': caseYear,
+                            'case_category': caseCategory
                         },
                         success: function(data) {
                             if (data.exists) {

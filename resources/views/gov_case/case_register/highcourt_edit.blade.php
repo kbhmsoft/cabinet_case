@@ -7,6 +7,16 @@
 @section('content')
 
     @php
+        $concernPersonDesig = '<option value="">-- নির্বাচন করুন --</option>';
+
+        for ($i = 0; $i < sizeof($concern_person_desig); $i++) {
+            $concernPersonDesig .=
+                '<option value="' .
+                $concern_person_desig[$i]->id .
+                '">' .
+                $concern_person_desig[$i]->name_bn .
+                '</option>';
+        }
         $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
@@ -72,7 +82,7 @@
 
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
                             aria-labelledby="home-tab">
-                            <form id="caseGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"
+                            <form id="caseGeneralInfoFormForEdit" action="javascript:void(0)" class="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
@@ -83,6 +93,8 @@
                                             <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
+                                                <input type="hidden" id="" name="case_id"
+                                                    value="{{ $case->id }}">
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
@@ -143,7 +155,8 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>আদালতের নাম (Justice Name) <span class="text-danger">*</span></label>
+                                                    <label>আদালতের নাম (Justice Name) <span
+                                                            class="text-danger">*</span></label>
 
                                                     <div class="" id="AdalatDiv">
                                                         <select name="highcourt_adalat" id="HighCourtAdalat"
@@ -172,45 +185,65 @@
                                                         not be empty</span>
                                                 </div>
 
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
-                                                            class="text-danger">*</span></label>
+                                                <div class="col-lg-12 mb-5">
+                                                    <table width="100%" border="1" id="advocateLawerDiv"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr>
 
-                                                    <div class="" id="concernPersonDesignationDiv">
-                                                        <select name="concern_person_designation"
-                                                            id="concern_person_designation"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($concern_person_desig as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th width="30">
+                                                                <a href="javascript:void(0);" id="addAdvocateLawer"
+                                                                    class="btn btn-sm btn-primary pr-2"><i
+                                                                        class="fas fa-plus-circle"></i></a>
+                                                            </th>
+
+                                                        </tr>
+                                                        @foreach ($caseLawers as $key => $value)
+                                                            <tr>
+                                                                <td>
+                                                                    <select name="concernPersonDesignation[]"
+                                                                        id="concernPersonDesignation"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        @foreach ($concern_person_desig as $value)
+                                                                            <option value="{{ $value->id }}"
+                                                                                {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
+                                                                                {{ $value->name_bn }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+
+                                                                <td>
+                                                                    <select name="concern_user_id[]" id="concern_user_id"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        @foreach ($usersInfo as $value)
+                                                                            <option value="{{ $value->id }}"
+                                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
+                                                                                {{ $value->name }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $value->id }}"
+                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                                <input type="hidden" name="concern_person_id[]"
+                                                                    value="{{ $value->id }}">
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                    <input type="hidden" id="survey_count" value="{{ $key + 1 }}">
                                                 </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<span
-                                                            class="text-danger">*</span></label>
-
-                                                    <div class="" id="concernPersonNameDiv">
-                                                        <select name="concern_user_id" id="concern_user_id"
-                                                            class="form-control form-control-sm" required="required">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($usersInfo as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
-                                                </div>
-
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -297,25 +330,27 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
+                                                                                           
                                                                         @foreach ($ministrys as $item)
-                                                                            <option value="{{ $item->doptor_office_id }}"
-                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                                {{ $item->office_name_bn ?? '' }} </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </td>
-                                                                <input type="hidden" name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
-                                                                <td>
-                                                                    @if ($key > 0)
-                                                                        <a href="javascript:void();"
-                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->doptor_office_id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                            <i class="fas fa-minus-circle"></i>
-                                                                        </a>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
+                                                                        <option value="{{ $item->doptor_office_id }}"
+                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                            {{ $item->office_name_bn ?? '' }} </option>
+                                                        @endforeach
+                                                        </select>
+                                                        </td>
+                                                        <input type="hidden"
+                                                            name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
+                                                        <td>
+                                                            @if ($key > 0)
+                                                                <a href="javascript:void();"
+                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                    data-id="{{ $value->doptor_office_id }}"
+                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                    <i class="fas fa-minus-circle"></i>
+                                                                </a>
+                                                            @endif
+                                                        </td>
+                                                        </tr>
                                                         @endforeach
                                                     </table>
                                                 </div>
@@ -341,6 +376,7 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
+                                                                                                       
                                                                                        @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
@@ -444,7 +480,7 @@
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-                                                                @foreach ($files as $key => $value)
+                                                                {{-- @foreach ($files as $key => $value)
                                                                     <tr>
                                                                         <td>
                                                                             <input type="text" name="file_type[]"
@@ -477,8 +513,50 @@
                                                                             </div>
                                                                         </td>
                                                                     </tr>
+                                                                @endforeach --}}
+                                                                @foreach ($files as $row)
+                                                                <div class="form-group mb-2" id="deleteFile{{ $row->id }}">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <button class="btn bg-success-o-75" type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
+                                                                        </div>
+                                                                        {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
+                                                                        <input readonly type="text" class="form-control" value="{{ $row->file_category ?? '' }}" />
+                                                                        <div class="input-group-append">
+                                                                            <a href="{{ asset($row->file_path . $row->file_name) }}" target="_blank" class="btn btn-sm btn-success font-size-h5 float-left">
+                                                                                <i class="fa fas fa-file-pdf"></i>
+                                                                                <b>দেখুন</b>
+                                                                                {{-- <embed src="{{ asset('uploads/sf_report/'.$data[0]['case_register'][0]['sf_report']) }}" type="application/pdf" width="100%" height="600px" />  --}}
+                                                                             </a>
+                                                                            {{-- <a href="minarkhan.com" class="btn btn-success" type="button">দেখুন </a> --}}
+                                                                        </div>
+                                                                        <div class="input-group-append">
+                                                                            <a href="javascript:void(0);" id="" onclick="deleteFile({{ $row->id }} )" class="btn btn-danger">
+                                                                                <i class="fas fa-trash-alt"></i>
+                                                                                <b>মুছুন</b>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                {{-- <tr>
+                                                                    <td>
+                                                                        <input type="text" name="file_type[]" value="{{ $value->file_type }}"
+                                                                            class="form-control form-control-sm" placeholder="" disabled>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="file_name[]" value="{{ $value->file_name }}"
+                                                                            class="form-control form-control-sm" placeholder=""disabled>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0);"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $value->id }}" onclick="removeRowFileFunc(this)">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    <input type="hidden" name="hide_file_id[]" value="{{ $value->id }}">
+                                                                </tr> --}}
                                                                 @endforeach
-                                                                <tr></tr>
                                                             </table>
                                                             <input type="hidden" id="other_attachment_count"
                                                                 value="1">
@@ -1747,6 +1825,76 @@
             $('#select2Dropdown').select2();
         });
     </script>
+    <script>
+        /************************ Add multiple advocate  *************************/
+        $("#addAdvocateLawer").click(function(e) {
+            addAdvocateLawerFunc();
+            // $('select').select2();
+        });
+
+        //add row function
+        function addAdvocateLawerFunc() {
+
+            var count = parseInt($('#survey_count').val());
+            $('#survey_count').val(count + 1);
+            var items = '';
+            items += '<tr>';
+
+            items += '<input type="hidden" name="concern_person_id[]" value="">';
+            items +=
+                '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+                ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+            items +=
+                '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+
+            if (count > 0) {
+                items +=
+                    '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+            }
+            items += '</tr>';
+
+            $('#advocateLawerDiv tr:last').after(items);
+
+            $('.select2').select2();
+            //scout_id_select2_dd();
+        }
+
+        //remove row function
+        function removeAdvocateLawerRow(id) {
+            $(id).closest("tr").remove();
+        }
+
+        function getConcernPerName(id) {
+            var desig = $(`#concernPersonDesignation_${id}`).val();
+            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
+            if (desig) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                        desig,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery(`#concern_user_id_${id}`).html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery(`#concern_user_id_${id}`).html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery(`#concern_user_id_${id}`).append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $(`#concern_user_id_${id}`).empty();
+            }
+
+        }
+    </script>
 
     {{-- @include('gov_case.case_register.create_js') --}}
     <script type="text/javascript">
@@ -1873,5 +2021,542 @@
                 });
             });
         });
+    </script>
+    <script>
+        // ===========================Button Disable=========================//
+        // var caseIDForAnswer = $('#caseIDForAnswer').val();
+        // if (!(caseIDForAnswer)) {
+        //     $('#sendingReplySaveBtn').prop('disabled', true);
+        //     $('#sendingReplySaveBtn').addClass("disable-button");
+        // }
+
+        // var caseIDForSuspention = $('#caseIDForSuspention').val();
+        // if (!(caseIDForSuspention)) {
+        //     $('#suspensionOrderSaveBtn').prop('disabled', true);
+        //     $('#suspensionOrderSaveBtn').addClass("disable-button");
+        // }
+
+        // var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
+        // if (!(caseIDForFinalOrder)) {
+        //     $('#finalOrderSaveBtn').prop('disabled', true);
+        //     $('#finalOrderSaveBtn').addClass("disable-button");
+        // }
+
+        // var caseIDForContempt = $('#caseIDForContempt').val();
+        // if (!(caseIDForContempt)) {
+        //     $('#contemptCaseSaveBtn').prop('disabled', true);
+        //     $('#contemptCaseSaveBtn').addClass("disable-button");
+        // }
+        // ===========================Button Disable=========================//
+
+
+
+        // ================================Case General Info save==================================
+
+        $(document).ready(function() {
+            $('#caseGeneralInfoFormForEdit').submit(function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'আপনি কি মামলার তথ্য সংরক্ষণ করতে চান?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'হ্যাঁ',
+                    cancelButtonText: 'না'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var formData = new FormData(this);
+                        console.log(formData);
+
+                        $.ajax({
+                            url: "{{ route('cabinet.case.caseGeneralInfoForEdit') }}",
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function(response) {
+                                $('#caseGeneralInfoSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled');
+                                $orderData = response;
+                                Swal.fire(
+                                    'Saved!',
+                                    'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                    'success'
+                                )
+                                console.log(response);
+
+                                $("#sending_reply_tab").click();
+                                $("#caseIDForAnswer").val(response.caseId);
+                                $("#caseIDForSuspention").val(response.caseId);
+                                $("#caseIDForFinalOrder").val(response.caseId);
+                                $("#caseIDForContempt").val(response.caseId);
+
+                                $('#sendingReplySaveBtn').prop('disabled', false);
+                                $('#sendingReplySaveBtn').removeClass("disable-button");
+                                $('#suspensionOrderSaveBtn').prop('disabled', false);
+                                $('#suspensionOrderSaveBtn').removeClass(
+                                    "disable-button");
+                                $('#finalOrderSaveBtn').prop('disabled', false);
+                                $('#finalOrderSaveBtn').removeClass("disable-button");
+                                $('#contemptCaseSaveBtn').prop('disabled', false);
+                                $('#contemptCaseSaveBtn').removeClass("disable-button");
+                                console.log(response);
+
+                                if (response.redirect) {
+                                    window.location.href = response.redirect;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // $('#caseGeneralInfoForm').submit(function(e) {
+        //     e.preventDefault();
+        //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        //     Swal.fire({
+        //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#d33',
+        //         confirmButtonText: 'Yes'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+
+        //             var formData = new FormData(this);
+        //             $.ajax({
+
+        //                 type: 'POST',
+        //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
+        //                 data: formData,
+        //                 cache: false,
+        //                 contentType: false,
+        //                 processData: false,
+
+        //                 success: (data) => {
+        //                     $('#caseGeneralInfoSaveBtn').removeClass(
+        //                         'spinner spinner-white spinner-right disabled');
+        //                     $orderData = data;
+        //                     Swal.fire(
+        //                         'Saved!',
+        //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+        //                         'success'
+        //                     )
+        //                     console.log(data);
+
+        //                     $("#sending_reply_tab").click();
+        //                     $("#caseIDForAnswer").val(data.caseId);
+        //                     $("#caseIDForSuspention").val(data.caseId);
+        //                     $("#caseIDForFinalOrder").val(data.caseId);
+        //                     $("#caseIDForContempt").val(data.caseId);
+
+        //                     $('#sendingReplySaveBtn').prop('disabled', false);
+        //                     $('#sendingReplySaveBtn').removeClass("disable-button");
+        //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+        //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+        //                     $('#finalOrderSaveBtn').prop('disabled', false);
+        //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+        //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+        //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+        //                 },
+        //                 error: function(data) {
+        //                     console.log(JSON.stringify(data['responseJSON']['errors']['case_no']
+        //                         [0]));
+
+        //                     Swal.fire(
+        //                         'Oops...!',
+        //                         data['responseJSON']['errors']['case_no'][0],
+        //                         'error'
+        //                     )
+        //                     $('#caseGeneralInfoSaveBtn').removeClass(
+        //                         'spinner spinner-white spinner-right disabled');
+
+        //                 }
+        //             });
+        //         } else {
+        //             $('#caseGeneralInfoSaveBtn').removeClass(
+        //                 'spinner spinner-white spinner-right disabled');
+        //             Swal.fire(
+        //                 'Canceled!',
+        //                 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+        //                 'info'
+        //             );
+        //         }
+
+        //     })
+
+        // });
+        // ================================Case General Info save==================================
+
+        // ================================Sending Replay Save==================================//
+        $('#sendingReplyForm').submit(function(e) {
+            // alert(1);
+            e.preventDefault();
+            $('#sendingReplySaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+            Swal.fire({
+                title: 'আপনি কি মামলার জবাব প্রেরনের তথ্য সংরক্ষণ করতে চান?',
+                // text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.sendingReplyStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#sendingReplySaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            )
+                            console.log(data);
+                            // console.log(data.caseId);
+                            $("#suspension_order").click();
+                            $("#caseIDForSuspention").val(data.caseId);
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $("#caseIDForContempt").val(data.caseId);
+                            $('#sendingReplySaveBtn').prop('disabled', false);
+                            $('#sendingReplySaveBtn').removeClass("disable-button");
+                            $('#suspensionOrderSaveBtn').prop('disabled', false);
+                            $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                            $('#contemptCaseSaveBtn').prop('disabled', false);
+                            $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            $('#sendingReplySaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                } else {
+                    $('#sendingReplySaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire(
+                        'Canceled!',
+                        'মামলার জবাব প্রেরনের তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                        'info'
+                    );
+                }
+            })
+
+        });
+        // ================================Sending Replay Save==================================//
+
+
+        // ================================Sending Replay Save==================================//
+        $('#adalatReplySubmitForm').submit(function(e) {
+            e.preventDefault();
+            $('#adalatReplySubmitSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+            Swal.fire({
+                title: 'আপনি কি মামলার আদালতে জবাব দাখিলের তথ্য সংরক্ষণ করতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.adalatReplySubmitStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#adalatReplySubmitSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            )
+                            console.log(data);
+                            // console.log(data.caseId);
+                            $("#suspension_order").click();
+                            $("#caseIDForSuspention").val(data.caseId);
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $("#caseIDForContempt").val(data.caseId);
+                            $('#adalatReplySubmitSaveBtn').prop('disabled', false);
+                            $('#adalatReplySubmitSaveBtn').removeClass("disable-button");
+                            $('#suspensionOrderSaveBtn').prop('disabled', false);
+                            $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                            $('#contemptCaseSaveBtn').prop('disabled', false);
+                            $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            $('#adalatReplySubmitSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                } else {
+                    $('#adalatReplySubmitSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire(
+                        'Canceled!',
+                        'মামলার আদালতে জবাব দাখিল সংরক্ষণ বাতিল করা হয়েছে',
+                        'info'
+                    );
+                }
+            })
+
+        });
+        // ================================Sending Replay Save==================================//
+
+
+
+        // ================================Suspention Order Save ======================//
+
+
+
+        $('#suspensionOrderForm').submit(function(e) {
+            // alert(1);
+            e.preventDefault();
+            $('#suspensionOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+            Swal.fire({
+                title: 'আপনি কি মামলার স্থগিতাদেশ অন্তর্বর্তীকালীন তথ্য সংরক্ষণ করতে চান?',
+                // text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.suspensionOrderStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#suspensionOrderSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            )
+                            console.log(data);
+                            // console.log(data.caseId);
+                            $("#final_order").click();
+                            $("#caseIDForSuspention").val(data.caseId);
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $("#caseIDForContempt").val(data.caseId);
+                            $('#sendingReplySaveBtn').prop('disabled', false);
+                            $('#sendingReplySaveBtn').removeClass("disable-button");
+                            $('#suspensionOrderSaveBtn').prop('disabled', false);
+                            $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                            $('#contemptCaseSaveBtn').prop('disabled', false);
+                            $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            $('#suspensionOrderSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                } else {
+                    $('#suspensionOrderSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire(
+                        'Canceled!',
+                        'মামলার স্থগিতাদেশ অন্তর্বর্তীকালীন সংরক্ষণ বাতিল করা হয়েছে',
+                        'info'
+                    );
+                }
+            })
+
+        });
+        // ================================Suspention Order Save==================================//
+
+        // ================================Final Order Save==================================//
+
+
+
+        $('#finalOrderForm').submit(function(e) {
+            // alert(1);
+            e.preventDefault();
+            $('#finalOrderSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+            Swal.fire({
+                title: 'আপনি কি মামলার চূড়ান্ত আদেশ তথ্য সংরক্ষণ করতে চান?',
+                // text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.finalOrderStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#finalOrderSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            )
+                            console.log(data);
+                            // console.log(data.caseId);
+                            $("#contempt_case").click();
+                            $("#caseIDForSuspention").val(data.caseId);
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $("#caseIDForContempt").val(data.caseId);
+                            $('#sendingReplySaveBtn').prop('disabled', false);
+                            $('#sendingReplySaveBtn').removeClass("disable-button");
+                            $('#suspensionOrderSaveBtn').prop('disabled', false);
+                            $('#suspensionOrderSaveBtn').removeClass("disable-button");
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                            $('#contemptCaseSaveBtn').prop('disabled', false);
+                            $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            $('#finalOrderSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                } else {
+                    $('#finalOrderSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire(
+                        'Canceled!',
+                        'মামলার চূড়ান্ত আদেশ সংরক্ষণ বাতিল করা হয়েছে',
+                        'info'
+                    );
+                }
+            })
+
+        });
+        // ================================Final Order Save==================================//
+
+        // ================================Final Order Save==================================//
+
+
+
+        $('#contemptCaseForm').submit(function(e) {
+            e.preventDefault();
+            $('#contemptCaseSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+            Swal.fire({
+                title: 'আপনি কি কনটেম্প্ট মামলা তথ্য সংরক্ষণ করতে চান?',
+                // text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var formData = new FormData(this);
+                    $.ajax({
+
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.contemptCaseStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+
+                        success: (data) => {
+                            $('#contemptCaseSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            $orderData = data;
+                            Swal.fire(
+                                'Saved!',
+                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success'
+                            )
+                            console.log(data);
+                            // console.log(data.caseId);
+                            // $("#contempt_case").click();
+                            $("#caseIDForSuspention").val(data.caseId);
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $("#caseIDForContempt").val(data.caseId);
+
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            $('#contemptCaseSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+
+                        }
+                    });
+                } else {
+                    $('#contemptCaseSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire(
+                        'Canceled!',
+                        'মামলার কনটেম্প্ট মামলা সংরক্ষণ বাতিল করা হয়েছে',
+                        'info'
+                    );
+                }
+            })
+
+        });
+        // ================================Final Order Save==================================//
     </script>
 @endsection

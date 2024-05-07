@@ -9,6 +9,8 @@ namespace App\Repositories\gov_case;
 
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseConcernPerson;
+use App\Models\gov_case\GovCaseHighcourtAdalat;
 
 class GovCaseBadiBibadiRepository
 {
@@ -39,9 +41,22 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
+  
+
+    public static function storeMainBibadi($caseInfo, $govCaseId)
+    {
+        $officeID = userInfo()->office_id;
+                $bibadi = new GovCaseBibadi();
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->respondent_id = $officeID;
+                $bibadi->is_main_bibadi = 1;
+                $bibadi->save();
+    }
+
     public static function storeBibadi($caseInfo, $govCaseId)
     {
-        // dd($caseInfo);
+        $officeID = userInfo()->office_id;
+
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
                 $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
@@ -50,15 +65,7 @@ class GovCaseBadiBibadiRepository
                 $bibadi->save();
             }
         }
-        foreach ($caseInfo->main_respondent as $key => $val) {
-            if ($caseInfo->main_respondent[$key] != null) {
-                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
-                $bibadi->gov_case_id = $govCaseId;
-                $bibadi->respondent_id = $caseInfo->main_respondent[$key];
-                $bibadi->is_main_bibadi = 1;
-                $bibadi->save();
-            }
-        }
+
     }
 
     public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
@@ -125,6 +132,11 @@ class GovCaseBadiBibadiRepository
     public static function getOthersBibadiByCaseId($caseId)
     {
         $other_bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', null)->get();
+        return $other_bibadi;
+    }
+    public static function getConcernPersonByCaseId($caseId)
+    {
+        $other_bibadi = GovCaseConcernPerson::where('gov_case_id', $caseId)->get();
         return $other_bibadi;
     }
 

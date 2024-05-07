@@ -2,15 +2,16 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\AppealAttachment;
-use App\Models\Attachment;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Attachment;
+use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseHearing;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseAppealAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class AppealGovCaseRegisterRepository
 {
@@ -70,10 +71,9 @@ class AppealGovCaseRegisterRepository
     {
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
         $caseOriginNum = '';
-        if($caseInfo->case_number_origin){
+        if ($caseInfo->case_number_origin) {
             $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
         }
-        // dd($caseInfo);
 
         try {
             $case->case_no = $caseInfo->case_no;
@@ -81,9 +81,7 @@ class AppealGovCaseRegisterRepository
             $case->case_type_id = $caseInfo->case_category_type;
             $case->year = $caseInfo->case_year;
             $case->appeal_office_id = $caseInfo->appeal_office;
-            $case->concern_new_appeal_person_designation = $caseInfo->concern_new_appeal_person_designation;
-            $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->appeal_adalat = $caseInfo->appeal_adalat;
+     
 
             $case->case_division_id = 1;
 
@@ -101,19 +99,19 @@ class AppealGovCaseRegisterRepository
                 $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
             }
             $case->postponed_details = $caseInfo->postponed_details ?? '';
-            if($caseInfo->case_number_origin){
+            if ($caseInfo->case_number_origin) {
 
                 $case->case_category_origin = $caseInfo->case_category_origin;
-                
+
                 $case->case_number_origin = $caseOriginNum;
-                
+
                 $case->case_origin_id = $caseInfo->case_number_origin;
-            }else{
-                 $case->case_number_origin = $caseInfo->case_number_origin_manual;
-                 $case->writ_petitioner_name = $caseInfo->writ_petitioner_name;
-                 $case->subject_matter = $caseInfo->subject_matter;
-                 $case->case_order_date = $caseInfo->case_order_date;
-                 $case->case_order_details = $caseInfo->case_order_details;
+            } else {
+                $case->case_number_origin = $caseInfo->case_number_origin_manual;
+                $case->writ_petitioner_name = $caseInfo->writ_petitioner_name;
+                $case->subject_matter = $caseInfo->subject_matter;
+                $case->case_order_date = $caseInfo->case_order_date;
+                $case->case_order_details = $caseInfo->case_order_details;
             }
             $case->is_appeal = 1;
 
@@ -129,7 +127,18 @@ class AppealGovCaseRegisterRepository
         }
         return $caseId;
     }
-    
+
+    public static function storeAppealAdalat($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->appeal_adalat as $key => $val) {
+            if ($caseInfo->appeal_adalat[$key] != null) {
+                $appealadalat = new GovCaseAppealAdalat();
+                $appealadalat->gov_case_id = $govCaseId;
+                $appealadalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
+                $appealadalat->save();
+            }
+        }
+    }
 
     public static function storeConcernPerson($caseInfo, $govCaseId)
     {

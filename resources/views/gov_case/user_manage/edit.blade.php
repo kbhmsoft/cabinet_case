@@ -57,7 +57,7 @@
                 @method('PUT')
                 <div class="card-body">
                     <fieldset>
-                        <legend>ব্যাবহারকারীর তথ্য</legend>
+                        <legend>ব্যবহারকারীর তথ্য</legend>
                         <div class=" col-12 row">
                             <div class="col-4">
                                 <div class="form-group">

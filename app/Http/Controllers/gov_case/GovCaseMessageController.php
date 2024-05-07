@@ -100,7 +100,7 @@ class GovCaseMessageController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
         // return $data;
-        $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
         return view('gov_case.messages.list')
             ->with($data);

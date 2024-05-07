@@ -1,6 +1,5 @@
 @extends('layouts.cabinet.cab_default')
 
-
 @section('content')
     <style type="text/css">
         #appRowDiv td {
@@ -19,23 +18,33 @@
             width: 250px;
         }
 
-
         .select2-container .select2-selection--single {
             box-sizing: border-box;
             height: 41px;
             font-size: 1.2rem
         }
+
+        .no-users-message {
+            text-align: center;
+            color: red;
+            font-size: 24px;
+            margin-top: 20px;
+        }
     </style>
     <!--begin::Card-->
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
     <div class="card card-custom">
 
         <div class="card-header flex-wrap py-5">
             <div class="card-title">
                 <h2> {{ $page_title }} </h2>
             </div>
-            {{-- <div class="card-toolbar">
+            <div class="card-toolbar">
                 @if (auth()->user()->can('create_new_user'))
-                    <a href="{{ route('cabinet.user-management.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
+                    <a href="{{ route('cabinet.user-management.create') }}"
+                        class="btn btn-sm btn-primary font-weight-bolder">
                         <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
                     </a>
                 @else
@@ -43,7 +52,7 @@
                         <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
                     </a>
                 @endif
-            </div> --}}
+            </div>
         </div>
 
         <div class="card-body">
@@ -53,7 +62,7 @@
                 </div>
             @endif
 
-            <form class="form-inline" method="POST" id="doptorOfficeForm">
+            <form class="form-inline" method="GET">
                 <div class="form-group mb-2 mr-2">
                     <select name="office_type" id="office_type" class="form-control">
                         <option value="">-বিভাগ নির্বাচন করুন-</option>3
@@ -75,7 +84,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
                         <select name="divOffice" id="divOffice" class="form-control">
                             <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
@@ -93,37 +101,110 @@
 
                     </select>
                 </div>
-
-                <button type="submit" class="btn btn-success" id="doptorOfficeSearch">অনুসন্ধান করুন</button>
+                <div class="form-group mb-2">
+                    <select name="role" class="form-control w-100">
+                        <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
+                        @foreach ($user_role as $value)
+                            <option value="{{ $value->id }}"
+                                {{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
+                                {{ $value->name_bn }} </option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
             </form>
 
+            @if ($users && $users->isEmpty())
+                <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
+            @else
+                <table id="userTable" class="table table-hover mb-6 font-size-h6">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th scope="col" width="30">#</th>
+                            <th scope="col">অফিসের নাম</th>
+                            <th scope="col">নাম</th>
+                            <th scope="col">ইউজার রোল</th>
+                            <th scope="col">মোবাইল</th>
+                            <th scope="col">ইমেইল এড্রেস</th>
+                            <th scope="col">আইিড-ধরণ</th>
+                            <th scope="col" width="150">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col" width="30">#</th>
-                        <th scope="col" style="text-align:center;">পদবি</th>
-                        <th scope="col" style="text-align:center;">শাখা</th>
-                        <th scope="col" style="text-align:center;">বর্তমান কর্মকর্তার নাম</th>
-                        <th scope="col" style="text-align:center;">রোল</th>
-                        <th scope="col" width="150" style="text-align:center;">স্ট্যাটাস</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
+                        @foreach ($users as $key => $row)
+                            <tr>
+                                {{-- <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th> --}}
+                                <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
+                                <td>{{ $row->office_name_bn }}</td>
+                                <td>{{ $row->name }}</td>
 
-                </tbody>
+                                <td>{{ $row->roleName }}</td>
+                                <td>{{ $row->mobile_no ? en2bn($row->mobile_no) : '-' }}</td>
+                                <td>{{ $row->email }}</td>
+                                <td>
+                                    @if ($row->doptor_user_id)
+                                        নথি লগইন
+                                    @else
+                                        সাধারণ লগইন
+                                    @endif
+                                </td>
 
-            </table>
+                                <td>
+                                    <a href="{{ route('cabinet.user-management.show', $row->id) }}"
+                                        class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
+                                            title="বিস্তারিত"></i></a>
+                                    <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                        class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
+                                            title="সংশোধন"></i></a>
+                                    @if (Auth::user()->role_id == 27)
+                                        <form method="post"
+                                            action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                    class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"
+                                                    onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
+                                                    title="মুছে ফেলুন">
+                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}"
+                                                        style="height: 20px; width: auto;" alt="Logo" class="mr-2">
+                                                </button>
+                                            </div>
+                                        </form>
+                                    @endif
+                                </td>
 
+
+
+                                {{-- <td>
+                                    @if (auth()->user()->can('show_user_details'))
+                                        <a href="{{ route('cabinet.user-management.show', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            বিস্তারিত
+                                        </a>
+                                    @endif
+                                    @if (auth()->user()->can('update_user_info'))
+                                        <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            সংশোধন
+                                        </a>
+                                    @endif
+                                </td> --}}
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{-- {!! $users->links() !!} --}}
+            @endif
         </div>
     </div>
     <!--end::Card-->
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
-
 
 {{-- Includable CSS Related Page --}}
 @section('styles')
@@ -171,14 +252,36 @@
             var officeID = 0;
         </script>
     @endif
-
-
-
     <script type="text/javascript">
-        $(document).ready(function() {
+        jQuery(document).ready(function() {
 
+            new DataTable('#userTable', {
+                layout: {
+                    topStart: {
+                        buttons: [{
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5]
+                                }
+                            },
+
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+
+                            'colvis'
+                        ]
+                    }
+                }
+            });
             $('#ministry').select2();
             $('#divOffice').select2();
+            $('#office_id').select2();
+
+
             jQuery('select[name="office_type"]').on('change', function() {
                 var officeType = jQuery(this).val();
                 // alert(officeType);
@@ -217,51 +320,39 @@
                 $('#selectMinDiv').hide();
             }
 
-            // Level Wise Office
 
-            jQuery(document).ready(function($) {
-                // Your existing change event handler
-                $('select[name="office_type"]').on('change', function() {
-                    var dataID = $(this).val();
-                    console.log(dataID);
-                    $("#office_id").after('<div class="loadersmall"></div>');
-                    if (dataID) {
-                        $.ajax({
-                            url: '/cabinet/office/dropdownlist/getdependentoffice/' +
-                                dataID,
-                            type: "GET",
-                            dataType: "json",
-                            success: function(data) {
-                                console.log(data);
-                                $('select[name="office_id"]').html(
-                                    '<option value="">-- অফিস নির্বাচন করুন --</option>'
-                                );
-                                $.each(data, function(key, value) {
-                                    $('select[name="office_id"]').append(
-                                        '<option value="' + key + '">' +
-                                        value + '</option>');
-                                });
-                                $('.loadersmall').remove();
+            jQuery('select[name="office_type"]').on('change', function() {
 
-                                // Initialize Select2 for the office_id select element
-                                $('select[name="office_id"]').select2();
-                            }
-                        });
-                    } else {
-                        $('select[name="office_id"]').empty()
-                            .select2(); // Clear options and reset Select2
-                    }
-                });
-
-                // Initialize Select2 for the initial state
-                $('select[name="office_id"]').select2();
+                var dataID = jQuery(this).val();
+                // alert(dataID);
+                jQuery("#office_id").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            // alert(data);
+                            jQuery('select[name="office_id"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id"]').html(
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id"]').append(
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id"]').empty();
+                }
             });
 
             // Ministry Wise Office
             jQuery('select[name="ministry"]').on('change', function() {
-
                 var dataID = jQuery(this).val();
-                // alert(dataID);
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -290,7 +381,7 @@
             // DivisionOffice Wise Office
             jQuery('select[name="divOffice"]').on('change', function() {
                 var dataID = jQuery(this).val();
-
+                // alert(dataID);
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -316,7 +407,10 @@
                 }
             });
 
+
+
             var officeTypeID = $('#office_type').find(":selected").val();
+
             if (officeTypeID !== "undefined") {
                 jQuery.ajax({
                     url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
@@ -400,52 +494,7 @@
                 $('select[name="office_id"]').empty();
                 jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
-        });
-    </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        var timerInterval;
-        $(document).ready(function() {
-            $('#doptorOfficeForm').submit(function(e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                Swal.fire({
-                    title: `<h3 class="text-center text-success font-weight-bolder">লোডিং হচ্ছে...</h3>`,
-                    html: `<h4>অপেক্ষা করুন...</h4>`,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector("b");
-                        timerInterval = setInterval(() => {
-                            timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 100);
-                        $.ajax({
-                            type: 'POST',
-                            url: "{{ route('doptor.user.manage') }}",
-                            data: formData,
-                            success: function(response) {
-                                clearInterval(timerInterval);
-                                Swal.close();
-                                console.log('Response:', response);
-                                $('#tableBody').append(response.tableHtml);
-                            },
-                            error: function() {
-                                clearInterval(timerInterval);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Something went wrong!',
-                                });
-                                console.error('Error fetching data.');
-                            }
-                        });
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
-                    }
-                });
-            });
         });
     </script>
 @endsection

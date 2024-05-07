@@ -445,7 +445,7 @@
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যবহারকারী
                                 পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>

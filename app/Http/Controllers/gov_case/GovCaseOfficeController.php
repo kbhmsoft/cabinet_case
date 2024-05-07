@@ -88,7 +88,7 @@ class GovCaseOfficeController extends Controller
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
         // dd($officeInfo);
-        $data['page_title'] = 'ব্যাবহারকারী মন্ত্রণালয়ের তালিকা';
+        $data['page_title'] = 'ব্যবহারকারী মন্ত্রণালয়ের তালিকা';
         // $data['offices'] = GovCaseOffice::orderby('id','DESC')->paginate(10)->withQueryString();
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
@@ -178,7 +178,7 @@ class GovCaseOfficeController extends Controller
 
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        $data['page_title'] = 'ব্যাবহারকারী বিভাগীয় প্রশাসন তালিকা';
+        $data['page_title'] = 'ব্যবহারকারী বিভাগীয় প্রশাসন তালিকা';
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
         $query = GovCaseOffice::orderby('id', 'ASC')->where('level', 3);
 
@@ -218,7 +218,7 @@ class GovCaseOfficeController extends Controller
 
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        $data['page_title'] = 'ব্যাবহারকারী জেলা প্রশাসন তালিকা';
+        $data['page_title'] = 'ব্যবহারকারী জেলা প্রশাসন তালিকা';
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
 
         $query = GovCaseOffice::orderby('id', 'ASC')->where('level', 4);
@@ -615,7 +615,7 @@ class GovCaseOfficeController extends Controller
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
         $data['organoGram'] = '';
-        $data['page_title'] = 'দপ্তর ব্যাবহারকারী তালিকা';
+        $data['page_title'] = 'দপ্তর ব্যবহারকারী তালিকা';
         // return $data;
         return view('gov_case.doptor_user_manage.index')
             ->with($data);
@@ -673,7 +673,7 @@ class GovCaseOfficeController extends Controller
     //     $data['ministries'] = GovCaseOffice::where('level', 1)->get();
     //     $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
-    //     $data['page_title'] = 'ব্যাবহারকারীর তালিকা';
+    //     $data['page_title'] = 'ব্যবহারকারীর তালিকা';
     //    return $data;
     //     return view('gov_case.doptor_user_manage.index')
     //         ->with($data);
@@ -734,7 +734,7 @@ class GovCaseOfficeController extends Controller
 
         // $data['users'] = $data['organoGram']->paginate(10)->withQueryString();
 
-        $data['page_title'] = 'দপ্তর ব্যাবহারকারী তালিকা';
+        $data['page_title'] = 'দপ্তর ব্যবহারকারী তালিকা';
 
         $tableHtml = view('gov_case.doptor_user_manage.doptor_table')->with($data)->render();
         // $tableHtml = view('gov_case.doptor_user_manage.doptor_table')->with($data)->render();

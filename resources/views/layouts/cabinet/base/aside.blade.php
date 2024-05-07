@@ -8,11 +8,11 @@
         <!--begin::Logo-->
         <a href="{{ url('dashboard') }}" class="brand-logo">
             <!-- <img alt="Logo" src="media/logos/logo-light.png" /> -->
-            {{-- <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
-                class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" /> --}}
+            <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
+                class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" />
             <!-- <span style="font-weight: bold; font-size: 25px; color: white;">Civil Suit</span> -->
-            <img src="{{ asset('uploads/IconeSCMS/logo.png') }}" alt width="200" height="50"
-                class="d-inline-block align-text-top p-0 m-0">
+            {{-- <img src="{{ asset('uploads/IconeSCMS/logo.png') }}" alt width="200" height="50"
+                class="d-inline-block align-text-top p-0 m-0"> --}}
 
         </a>
         <!--end::Logo-->
@@ -381,7 +381,7 @@
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management', 'cabinet/user-role-management', 'cabinet/user-permissions', 'cabinet/user-permission-management', 'cabinet/e-nothi-assigned-user-list']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/user-management') }}" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যাবহারকারী
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i> ব্যবহারকারী
                                 পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -389,12 +389,21 @@
                             <i class="menu-arrow"></i>
 
                             @can('users_list_menu')
-                                <ul class="menu-subnav">
+                                {{-- <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management']) ? 'hilightMenu' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ url('cabinet/user-management') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
+                                        </a>
+                                    </li>
+                                </ul> --}}
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/office/wise/users']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/office/wise/users') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder"> ব্যবহারকারীর তালিকা</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -444,7 +453,7 @@
                                         <a href="{{ route('cabinet.assignedENothiUserManagement') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">অনুমোদিত
-                                                ই-নথি ব্যাবহারকারী</span>
+                                                ই-নথি ব্যবহারকারী</span>
                                             </span>
                                         </a>
                                     </li>
@@ -460,7 +469,7 @@
                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/doptor/user-management']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true">
                         <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>দপ্তর ব্যাবহারকারী
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-users"></i>দপ্তর ব্যবহারকারী
                                 পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -473,7 +482,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ url('cabinet/doptor/user-management') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">দপ্তর ব্যাবহারকারী
+                                            <span class="menu-text font-weight-bolder">দপ্তর ব্যবহারকারী
                                                 পরিচালনা</span>
                                         </a>
                                     </li>

@@ -61,11 +61,7 @@ class ApplicationFormAsMainDefendentController extends Controller
             ->with($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function createApplicationForm($caseNo)
     {
         $data = [];
@@ -80,12 +76,7 @@ class ApplicationFormAsMainDefendentController extends Controller
 
         return view('gov_case.case_register.application_form_as_main_defendent.create')->with($data);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreApplicationFormAsMainDefendentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function storeApplicationForm(StoreApplicationFormAsMainDefendentRequest $request)
     {
         $validatedData = $request->validated();
