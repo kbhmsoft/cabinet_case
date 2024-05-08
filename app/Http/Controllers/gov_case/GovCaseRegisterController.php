@@ -4197,12 +4197,6 @@ class GovCaseRegisterController extends Controller
                 ->whereNull('deleted_at')
                 ->first();
 
-            // Use joins for more efficient querying
-            // $office = GovCaseOffice::join('gov_case_bibadis', 'gov_case_offices.doptor_office_id', '=', 'gov_case_bibadis.respondent_id')
-            //     ->where('gov_case_bibadis.gov_case_id', $case->id)
-            //     ->where('gov_case_bibadis.is_main_bibadi', 1)
-            //     ->select('gov_case_offices.office_name_bn')
-            //     ->first();
             $officeId = GovCaseBibadi::where('gov_case_id', $case->id)
                 ->where('is_main_bibadi', 1)
                 ->groupBy('gov_case_id')
@@ -4266,73 +4260,7 @@ class GovCaseRegisterController extends Controller
             $office->save();
         }
 
-        // foreach ($response as $officeData) {
-
-        //     $id = $officeData['id'];
-        //     $nameBng = $officeData['nameBn'];
-        //     $nameEng = $officeData['name'];
-        //     $nameShort = $officeData['nameShort'];
-        //     $nameReference = $officeData['reference'];
-        //     $nameType = $officeData['type'];
-
-        //     $dataToSave = [
-        //         'doptor_office_id' => $id,
-        //         'level' => 1,
-        //         'parent' => null,
-        //         'parent_doptor_id' => null,
-        //         'parent_layer_id' => null,
-        //         'parent_name' => null,
-        //         'office_name_bn' => $nameBng,
-        //         'office_name_en' => $nameEng,
-        //         'status' => 1,
-        //         'reference' => $nameReference,
-        //         'type' => $nameType,
-        //     ];
-
-        //     GovOffice::create($dataToSave);
-
-        // }
-
-        // $ministriesInfo = GovOffice::get();
-
-        // foreach ($ministriesInfo as $officeData) {
-        //     $tableId = $officeData->id;
-        //     $doptorId = $officeData->doptor_office_id;
-
-        //     // $ministryLayerId = $this->ministryLayerOffices($doptorId);
-        //     $ministryOrganogram = $this->ministryOraganogram($doptorId);
-        //     $responseMinistryLayer = json_decode($ministryOrganogram, true);
-
-        //     foreach ($responseMinistryLayer as $ministryLayer) {
-
-        //         if (is_array($ministryLayer)) {
-        //         $ministryLayerId = $ministryLayer['id'];
-        //         $parentId = $ministryLayer['parent'];
-        //         $sequence = $ministryLayer['sequence'];
-        //         $ministry = $ministryLayer['ministry'];
-        //         $level = $ministryLayer['level'];
-        //         $nameBn = $ministryLayer['nameBn'];
-        //         $nameEn = $ministryLayer['name'];
-
-        //         $dataToSave = [
-        //             'doptor_office_id' => $ministryLayerId,
-        //             'level' => $level,
-        //             'parent' => $tableId,
-        //             'sequence' => $sequence,
-        //             'parent_doptor_id' => $ministry,
-        //             'parent_layer_id' => null,
-        //             'parent_name' => null,
-        //             'office_name_bn' => $nameBn,
-        //             'office_name_en' => $nameEn,
-        //             'doptor_parent_id' => $parentId,
-        //             'status' => 1,
-        //         ];
-
-        //         GovOffice::create($dataToSave);
-        //     }
-        // }
-        // }
-        //  }
+       
 
     }
 

@@ -22,9 +22,10 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
 {{-- <link rel="icon" type="image/png" href="public/logo/bangladesh-govt-logo.png"> --}}
+{{-- @dd($govCaseData->case_category_type); --}}
 <div class="card">
     <div class="card-body">
-        <h3 class="card-title h2 font-weight-bolder">মূল বিবাদী হিসেবে অন্তর্ভুক্তির আবেদন ফরম </h3>
+        <h3 class="card-title h2 font-weight-bolder">মূল রেসপন্ডেন্ট হিসেবে অন্তর্ভুক্তির আবেদন ফরম </h3>
         <div class="table-responsive ajax-data-container pt-3">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane active" id="case_general_information" role="tabpanel" aria-labelledby="home-tab">
@@ -48,62 +49,87 @@
                                 <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                             </div>
 
-                            <div class="col-lg-4 mb-5">
+                            {{-- <div class="col-lg-4 mb-5">
                                 <label style="font-weight: bold; font-size: 1.5em;">মামলার ক্যাটেগরি <span
                                         class="text-danger">*</span></label>
-
                                 <div class="" id="CaseCategorDiv">
                                     <select name="case_category" id="CaseCategory" class="form-control form-control-sm"
                                         required="required">
                                         <option value="">-- নির্বাচন করুন --</option>
                                         @foreach ($GovCaseDivisionCategory as $value)
                                             <option value="{{ $value->id }}"
-                                                {{ old('case_category') == $value->id ? 'selected' : '' }}>
+                                                {{ old('case_category') == $value->id || $govCaseData->case_category_id == $value->id ? 'selected' : '' }}>
                                                 {{ $value->name_bn }} </option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger d-none vallidation-message">This field
                                         can not be empty</span>
                                 </div>
+                            </div> --}}
+
+                            <div class="col-lg-4 mb-5">
+                                <label style="font-weight: bold; font-size: 1.5em;">মামলার ক্যাটেগরি <span
+                                        class="text-danger">*</span></label>
+                                <div>
+                                    {{-- {{ $govCaseData->case_category->name_bn }} --}}
+                                    <input type="text" name="case_category" id="CaseCategory"
+                                        class="form-control form-control-sm" placeholder=" "
+                                        value="{{ $govCaseData->case_category->name_bn ?? '' }}" readonly>
+                                    <span class="text-danger d-none vallidation-message">This field can not be
+                                        empty</span>
+                                </div>
+                            </div>
+                            {{-- @dd($govCaseData->case_category_type->name_bn) --}}
+                            <div class="col-lg-4 mb-5">
+                                <label style="font-weight: bold; font-size: 1.5em;">মামলার শ্রেণী/কেস-টাইপ<span
+                                        class="text-danger">*</span></label>
+                                <div>
+                                    <input type="text" name="case_category_type" id="case_category_type"
+                                        class="form-control form-control-sm" placeholder=" "
+                                        value="{{ $govCaseData->caseCategoryType->name_bn ?? '' }}" readonly>
+                                    <span class="text-danger d-none vallidation-message">This field can not be
+                                        empty</span>
+                                </div>
                             </div>
 
-                            <div class="col-lg-4 mb-3">
+
+                            {{-- <div class="col-lg-4 mb-3">
                                 <label style="font-weight: bold; font-size: 1.5em;">মামলার শ্রেণী/কেস-টাইপ <span
                                         class="text-danger">*</span></label>
                                 <div class="" id="CaseCategorDiv">
                                     <select name="case_category_type" id="case_category_type"
                                         class="form-control form-control-sm" required="required">
                                         <option value="">-- নির্বাচন করুন --</option>
-                                        @foreach ($GovCaseDivisionCategoryType as $categoryType)
-                                            <option value="{{ $categoryType->id }}">{{ $categoryType->name_bn }}
-                                            </option>
+                                        @foreach ($GovCaseDivisionCategoryType as $value)
+                                            <option value="{{ $value->id }}"
+                                                {{ old('case_category_type') == $value->id || $govCaseData->case_type_id == $value->id ? 'selected' : '' }}>
+                                                {{ $value->name_bn }} </option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger d-none vallidation-message">This field can not be
                                         empty</span>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-lg-4 mb-3">
                                 <label for="case_no" style="font-weight: bold; font-size: 1.5em;">মামলা নং <span
                                         class="text-danger">*</span></label>
                                 <input type="text" name="case_no" id="case_no" class="form-control form-control-sm"
-                                    placeholder="(type digits in English)" required="required"
-                                    onkeypress="return allowBanglaAndEnglishNumerals(event)">
-                                <input type="hidden" name="caseId" value="">
+                                    placeholder="মামলা নং " value="{{ $govCaseData->case_no ?? '' }}" readonly>
+                                <input type="hidden" name="caseId" value="{{ $govCaseData->id ?? '' }}">
                                 <span class="text-danger d-none vallidation-message">This field can not be empty</span>
                             </div>
 
                             <div class="col-lg-12 mt-5">
                                 <label for="main_defendant_comments" style="font-weight: bold; font-size: 1.5em;">মূল
-                                    বিবাদী হিসেবে অন্তর্ভুক্তির কারণ <span class="text-danger">*</span> </label>
+                                    রেসপন্ডেন্ট হিসেবে অন্তর্ভুক্তির কারণ <span class="text-danger">*</span> </label>
                                 <textarea name="main_defendant_comments" class="form-control" id="main_defendant_comments" rows="3"
                                     spellcheck="false"></textarea>
                             </div>
 
                             <div class="col-lg-12 mt-5">
-                                <label for="main_defendant_pdf" style="font-weight: bold; font-size: 1.5em;">মূল বিবাদী
-                                    হিসেবে অন্তর্ভুক্তির (PDF ফাইল) <span class="text-danger">*</span> <sub
+                                <label for="main_defendant_pdf" style="font-weight: bold; font-size: 1.5em;">রুল/সম্পূরক
+                                    রুলের কপি (PDF ফাইল) <span class="text-danger">*</span> <sub
                                         class="text-danger">(PDF, সর্বোচ্চ সাইজ :5MB)</sub> </label>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="main_defendant_pdf"

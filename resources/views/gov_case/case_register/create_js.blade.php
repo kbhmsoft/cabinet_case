@@ -270,7 +270,7 @@
         addBibadiRowFunc();
     });
 
-    //add row function
+ //   add row function
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
         var MainCount = $('#MainBibadiDiv tr').length;
@@ -294,15 +294,12 @@
         $('.other_respondentCls').select2();
     }
 
-
     //remove row function
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
 
-
     /************************ //Add multiple HighCourt Adalat *************************/
-
     $("#addHighcourtAdalatRow").click(function(e) {
         addHighcourtAdalatRowFunc();
     });

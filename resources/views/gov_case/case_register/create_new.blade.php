@@ -43,43 +43,37 @@
             color: rgb(235, 58, 58);
         }
 
-        .product-image {
+        /* Tooltip container */
+        .tooltip-icon {
             position: relative;
+            display: inline-block;
+        }
+        .tooltip-button{
+            color: #d80517;
         }
 
-        .product-text {
-            position: absolute;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .product-image:hover .product-text {
-            display: block;
-            opacity: 1;
-            /* Show tooltip */
-            bottom: 54px;
-            left: -79px;
-            z-index: 999;
+        /* Tooltip text */
+        .tooltip-text {
+            visibility: hidden;
             width: 200px;
-        }
-
-        .indicator {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .indicator:hover::after {
-            content: '';
+            background-color: rgb(237, 232, 232);
+            color: black;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
             position: absolute;
-            top: calc(100% + 5px);
-            left: 80%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 10px;
-            background-color: black;
-            border-radius: 50%;
-            z-index: 999;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip-icon:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 
@@ -91,7 +85,9 @@
         <div style="width:100%" class="card gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা এন্ট্রি হতে বিরত থাকুন।)*</h5>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা
+                    এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা
+                    এন্ট্রি হতে বিরত থাকুন।)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
@@ -253,7 +249,7 @@
 
 
 
-                                                <div class="col-lg-12 mb-5">
+                                                {{-- <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
@@ -271,7 +267,32 @@
                                                         <tr></tr>
                                                     </table>
                                                     <input type="hidden" id="survey_count" value="1">
+                                                </div> --}}
+                                                <div class="col-lg-12 mb-5">
+                                                    <table width="100%" border="1" id="advocateLawerDiv"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
+                                                                    class="text-danger">*</span>
+                                                                <!-- Information icon button -->
+                                                                <span class="tooltip-icon">
+                                                                    <i class="fas fa-info-circle tooltip-button"></i>
+                                                                    <span class="tooltip-text">প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন।</span>
+                                                                </span>
+                                                            </th>
+                                                            <th width="30">
+                                                                <a href="javascript:void(0);" id="addAdvocateLawer"
+                                                                    class="btn btn-sm btn-primary pr-2"><i
+                                                                        class="fas fa-plus-circle"></i></a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
+                                                    </table>
+                                                    <input type="hidden" id="survey_count" value="1">
                                                 </div>
+
                                                 <!-- jQuery -->
                                                 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
@@ -314,8 +335,12 @@
                                                         <table width="100%" border="1" id="bibadiDiv"
                                                             class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th class="other_bibadi_name other_respondent  ">অন্যান্য
+                                                                <th class="other_bibadi_name other_respondent  ">
                                                                     রেসপন্ডেন্ট তালিকা
+                                                                    {{-- <span class="tooltip-icon">
+                                                                        <i class="fas fa-info-circle tooltip-button"></i>
+                                                                        <span class="tooltip-text">প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন।</span>
+                                                                    </span> --}}
                                                                 </th>
                                                                 <th width="50">
                                                                     <a href="javascript:void();" id="addBibadiRow"
@@ -326,13 +351,6 @@
                                                             </tr>
                                                             <tr></tr>
                                                         </table>
-                                                        {{-- <div class="product-text">
-                                                            <div class="card card-custom">
-                                                                <div class="card-body">
-                                                                    <p>প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নাম যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন</p>
-                                                                </div>
-                                                            </div>
-                                                        </div> --}}
                                                     </div>
                                                 </div>
 
@@ -1487,10 +1505,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
-
         $(document).ready(function() {
             var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
-
             // Function to trigger validation when any of the input fields change
             $('#case_year, #case_no, #case_category_type').change(function() {
                 var caseNo = $('#case_no').val(); // Get the case number
