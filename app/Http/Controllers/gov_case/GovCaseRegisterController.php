@@ -3075,7 +3075,7 @@ class GovCaseRegisterController extends Controller
 
     public function suspensionOrderStore(Request $request)
     {
-        dd($request);
+        // dd($request);
         $caseId = $request->case_id;
         $request->validate(
             [
@@ -3090,11 +3090,11 @@ class GovCaseRegisterController extends Controller
             if ($request->file_type && $_FILES["file_name"]['name']) {
                 AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
             }
-            if ($request->file_type_order_tamil && $_FILES["file_name"]['name']) {
+            if ($request->file_type_order_tamil && $_FILES["file_name_order_tamil"]['name']) {
                 AttachmentRepository::storeSuspentionOrderTamilAttachment('gov_case', $caseId, $request);
             }
-            if ($request->file_type_appeal_request && $_FILES["file_name"]['name']) {
-                AttachmentRepository::storeSuspentionOrderTamilAttachment('gov_case', $caseId, $request);
+            if ($request->file_type_appeal_request && $_FILES["file_name_appeal_request"]['name']) {
+                AttachmentRepository::storeSuspentionOrderAgainstAppealAttachment('gov_case', $caseId, $request);
             }
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
