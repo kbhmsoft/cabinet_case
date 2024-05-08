@@ -220,7 +220,7 @@
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox"
                                                                 value="1" id="solicitor_checkbox"
-                                                                name="sending_reply_person_solicitor">
+                                                                name="sending_request_for_appeal_against_intreim_person_solicitor">
                                                             <label class="form-check-label lawyer_title"
                                                                 for="solicitor_checkbox">
                                                                 সলিসিটর বরাবর
@@ -229,7 +229,7 @@
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox"
                                                                 value="1" id="law_officer_checkbox"
-                                                                name="sending_reply_person_law_officer">
+                                                                name="sending_request_for_appeal_against_intreim_person_law_officer">
                                                             <label class="form-check-label lawyer_title"
                                                                 for="law_officer_checkbox">
                                                                 আইন কর্মকর্তা/প্যানেল আইনজীবী বরাবর
@@ -308,7 +308,7 @@
                                                                 <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা
                                                                     হলে
                                                                     ট্র্যাকিং নম্বর প্রদান করুন</label>
-                                                                <input type="text" name="soltrack_tracking_number"
+                                                                <input type="text" name="soltrack_tracking_number_for_appeal_against_intreim_order"
                                                                     class="form-control">
                                                             </div>
                                                         </div>
