@@ -48,7 +48,8 @@
             position: relative;
             display: inline-block;
         }
-        .tooltip-button{
+
+        .tooltip-button {
             color: #d80517;
         }
 
@@ -279,7 +280,9 @@
                                                                 <!-- Information icon button -->
                                                                 <span class="tooltip-icon">
                                                                     <i class="fas fa-info-circle tooltip-button"></i>
-                                                                    <span class="tooltip-text">প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন।</span>
+                                                                    <span class="tooltip-text">প্যানেল আইনজীবীর নাম তালিকায়
+                                                                        না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি
+                                                                        সৃজন করুন।</span>
                                                                 </span>
                                                             </th>
                                                             <th width="30">
@@ -359,12 +362,20 @@
                                                     <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
-
+                                                {{--
                                                 <div class="col-lg-6 mb-5">
                                                     <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা
                                                     সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য
                                                     মূল্য ইত্যাদি)
 
+                                                    <input name="money_amount" class="form-control" id="money_amount"
+                                                        rows="1" spellcheck="false"></input>
+                                                </div> --}}
+
+                                                <div class="col-lg-6 mb-5">
+                                                    <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা
+                                                    সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য
+                                                    মূল্য ইত্যাদি)
                                                     <input name="money_amount" class="form-control" id="money_amount"
                                                         rows="1" spellcheck="false"></input>
                                                 </div>

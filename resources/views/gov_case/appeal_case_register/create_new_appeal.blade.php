@@ -43,8 +43,7 @@
         <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট মূল বিবাদী অফিস মামলার তথ্য এন্ট্রি
-                    করবে)*</h5>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা এন্ট্রি হতে বিরত থাকুন।)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())

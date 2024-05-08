@@ -550,6 +550,7 @@ class GovCaseUserManagementController extends Controller
             ->join('gov_case_office', 'doptor_user_managements.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('doptor_user_managements.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
             ->where('doptor_user_managements.status', 1)
+            ->where('doptor_user_managements.user_role','!=', 42)
             ->orderby('id', 'DESC');
 
         if (!empty($_GET['office_id'])) {

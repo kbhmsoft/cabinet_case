@@ -1476,3 +1476,20 @@
         });
     });
 </script>
+
+<script>
+    // when writing about money about case
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function removeCommas(x) {
+        return x.replace(/,/g, '');
+    }
+
+    document.getElementById('money_amount').addEventListener('input', function() {
+        var value = this.value;
+        value = removeCommas(value);
+        this.value = numberWithCommas(value);
+    });
+</script>

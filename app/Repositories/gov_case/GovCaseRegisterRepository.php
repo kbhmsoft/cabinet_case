@@ -555,7 +555,9 @@ class GovCaseRegisterRepository
             // $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
-            $case->money_amount = $caseInfo->money_amount;
+
+            $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
+
             $case->postponed_interim_have = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
 
