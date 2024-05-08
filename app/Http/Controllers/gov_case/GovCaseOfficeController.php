@@ -351,17 +351,11 @@ class GovCaseOfficeController extends Controller
      */
     public function create()
     {
-
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-        //
-        $roleID = Auth::user()->role_id;
-        $officeInfo = user_office_info();
-        //
         $data['offices'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
-            // ->where('level', 1)
             ->get();
 
         $data['ministries'] = DB::table('gov_case_office')
@@ -385,7 +379,6 @@ class GovCaseOfficeController extends Controller
             ->get();
 
         $data['page_title'] = 'নতুন অফিস এন্ট্রি ফরম';
-        // dd($data);
 
         return view('gov_case.office.add')->with($data);
     }
@@ -398,9 +391,7 @@ class GovCaseOfficeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // dd($request->all());
-        // return $request;
+
         $roleID = Auth::user()->role_id;
 
         $validator = $request->validate([
@@ -418,7 +409,7 @@ class GovCaseOfficeController extends Controller
             'level' => $request->office_lavel,
             'office_name_bn' => $request->office_name,
             'status' => $request->status,
-            'parent' => $parentID,
+            'parent_office_id' => $parentID,
             'level' => $request->level,
         ]);
         return redirect()->route('cabinet.office')
@@ -780,7 +771,6 @@ class GovCaseOfficeController extends Controller
         curl_setopt_array($curl, array(
 
             CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/v1/empoffice?office=' . $id,
-
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -816,11 +806,6 @@ class GovCaseOfficeController extends Controller
 
         $userRole = Role::find($roleId);
         $userDetails = '';
-
-        // $user = User::find($userId);
-
-        //     //// assign role to a user
-        // $user->assignRole($user->role);
 
         if ($userRole) {
             $existingUserRole = DoptorUserManagement::where('organogram_id', $organoGramId)->first();

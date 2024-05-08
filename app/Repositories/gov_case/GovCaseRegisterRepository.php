@@ -554,7 +554,7 @@ class GovCaseRegisterRepository
             // $case->concern_person_designation = $caseInfo->concern_person_designation;
             // $case->concern_user_id = $caseInfo->concern_user_id;
             $case->subject_matter = $caseInfo->subject_matter;
-            $case->total_badi_number = $caseInfo->total_badi_number;
+            $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
             $case->money_amount = $caseInfo->money_amount;
             $case->postponed_interim_have = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
@@ -671,6 +671,11 @@ class GovCaseRegisterRepository
         } else {
             $appeal_against_postpond_interim_order_date = null;
         }
+        if ($caseInfo->appeal_submission_requesting_date != null && $caseInfo->appeal_submission_requesting_date != '') {
+            $appeal_submission_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_submission_requesting_date)));
+        } else {
+            $appeal_against_postpond_interim_order_date = null;
+        }
         if ($caseInfo->tamil_requesting_date != null && $caseInfo->tamil_requesting_date != '') {
             $tamil_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->tamil_requesting_date)));
         } else {
@@ -687,7 +692,16 @@ class GovCaseRegisterRepository
 
         // dd($caseInfo);
         try {
+            $case->adesh_tamil_decision_taken = $caseInfo->adesh_tamil_decision_taken;
+            $case->adesh_tamil_decision_data_details = $caseInfo->adesh_tamil_decision_data_details;
+            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;
+            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
+            $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
+            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
             $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
+            $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
             $case->postponed_order = $caseInfo->postponed_order;
             $case->appeal_against_postpond_interim_order = $caseInfo->appeal_against_postpond_interim_order;
             $case->postponed_details = $caseInfo->postponed_details;

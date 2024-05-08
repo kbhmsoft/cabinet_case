@@ -113,7 +113,7 @@
                                     </span>
                                 </div>
                             </div>
-                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 32)
+                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31 && Auth::user()->role_id != 32 && Auth::user()->role_id != 41)
 
                                 <div class="col-4 mb-4">
                                     <div class="form-group">
@@ -173,7 +173,7 @@
                                         {{ $errors->first('office_id') }}
                                     </span>
                                 </div>
-                            @elseif (Auth::user()->role_id == 29 || Auth::user()->role_id == 32)
+                            @elseif (Auth::user()->role_id == 29 || Auth::user()->role_id == 31)
                                 <div class="form-group mb-4 col-lg-4 ">
                                     <label>অফিস</label>
                                     <select name="office_id" id="office_id" class="form-control">
@@ -187,6 +187,8 @@
                                         {{ $errors->first('office_id') }}
                                     </span>
                                 </div>
+                            @elseif (Auth::user()->role_id == 32 || Auth::user()->role_id == 41)
+                                <input type="hidden" name="office_id" value="{{ Auth::user()->office_id }}">
                             @endif
 
                             <div class="col-4">

@@ -842,10 +842,10 @@
         $('#reply_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="file_type_appeal_request[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder=""></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="replyAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_appeal_request[]" onChange="replyAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
@@ -876,10 +876,10 @@
         $('#adesh_tamil_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="file_type_order_tamil[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="adeshTamilAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_order_tamil[]" onChange="adeshTamilAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
             '" /><label id="file_error' +
             count +
