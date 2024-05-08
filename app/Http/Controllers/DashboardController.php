@@ -7,6 +7,8 @@ use App\Models\Dashboard;
 use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\User;
+use App\Models\gov_case\DoptorUserManagement;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,6 +156,7 @@ class DashboardController extends Controller
                 ->orderBy('id', 'DESC')
                 ->count();
 
+
             $data['highcourt_not_against_gov'] = GovCaseRegister::where('is_final_order', 1)
                 ->where('result', 1)
                 ->whereNull('deleted_at')
@@ -211,7 +214,11 @@ class DashboardController extends Controller
 
             $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
             // return view('dashboard.cabinet.cabinet_admin')->with($data);
-            return view('dashboard.cabinet_new.super_admin')->with($data);
+
+            $doptorLoginCount = DoptorUserManagement::whereNotNull('office_id')->count();
+            $generalLoginCount = User::whereNull('doptor_user_id')->count();
+
+            return view('dashboard.cabinet_new.super_admin')->with($data + compact('doptorLoginCount', 'generalLoginCount'));
         } elseif ($roleID == 28) {
 
             $data['total_case'] = GovCaseRegister::count();
@@ -1425,8 +1432,7 @@ class DashboardController extends Controller
                 ->whereNull('deleted_at')
                 ->count();
 
-            $data['appeal_against_gov'] = AppealGovCaseRegister::
-                whereNull('deleted_at')
+            $data['appeal_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
                 ->where('is_final_order', 1)
                 ->where('result', 2)
                 ->count();
@@ -1442,8 +1448,7 @@ class DashboardController extends Controller
                 ->where('most_important', 1)
                 ->count();
 
-            $data['appeal_not_against_gov'] = AppealGovCaseRegister::
-                whereNull('deleted_at')
+            $data['appeal_not_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
                 ->where('is_final_order', 1)
                 ->where('result', 1)
                 ->count();

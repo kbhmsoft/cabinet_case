@@ -108,7 +108,7 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
+                <button type="submit" class="btn btn-success mb-2 ml-3">অনুসন্ধান করুন</button>
             </form>
 
             @if ($users && $users->isEmpty())

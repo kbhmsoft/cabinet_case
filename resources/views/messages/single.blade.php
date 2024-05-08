@@ -1,80 +1,72 @@
 @php
-$roleID = Auth::user()->role_id;
-$officeInfo = user_office_info();
+    $roleID = Auth::user()->role_id;
+    $officeInfo = user_office_info();
 @endphp
 
 >@extends('layouts.cabinet.cab_default')
 
 
 @section('content')
+    <style>
+        header {
+            font-family: 'Lobster', cursive;
+            text-align: center;
+            font-size: 25px;
+        }
 
-<style>
-header
-{
-	font-family: 'Lobster', cursive;
-	text-align: center;
-	font-size: 25px;
-}
+        #info {
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-#info
-{
-	font-size: 18px;
-	color: #555;
-	text-align: center;
-	margin-bottom: 25px;
-}
+        a {
+            color: #074E8C;
+        }
 
-a{
-	color: #074E8C;
-}
+        .scrollbar {
+            /* margin-left: 30px; */
+            float: left;
+            height: 300px;
+            /* width: 65px; */
+            width: 100%;
+            /* background: #F5F5F5; */
+            overflow-y: scroll;
+            overflow-x: hidden;
+            /* margin-bottom: 25px; */
+        }
 
-.scrollbar
-{
-	/* margin-left: 30px; */
-	float: left;
-	height: 300px;
-	/* width: 65px; */
-	width: 100%;
-	/* background: #F5F5F5; */
-	overflow-y: scroll;
-    overflow-x: hidden;
-	/* margin-bottom: 25px; */
-}
+        .force-overflow {
+            min-height: 100%;
+            ;
+        }
 
-.force-overflow
-{
-	min-height: 100%;;
-}
+        #wrapper {
+            text-align: center;
+            width: 500px;
+            margin: auto;
+        }
 
-#wrapper
-{
-	text-align: center;
-	width: 500px;
-	margin: auto;
-}
-#style-1::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	/* border-radius: 10px; */
-	background-color: #F5F5F5;
-}
+        #style-1::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            /* border-radius: 10px; */
+            background-color: #F5F5F5;
+        }
 
-#style-1::-webkit-scrollbar
-{
-	width: 12px;
-	height: 12px;
-	background-color: #F5F5F5;
-}
+        #style-1::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+            background-color: #F5F5F5;
+        }
 
-#style-1::-webkit-scrollbar-thumb
-{
-	/* border-radius: 10px; */
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	/* background-color: #555; */
-	background-color: #949494;
-}
-
-</style>
+        #style-1::-webkit-scrollbar-thumb {
+            /* border-radius: 10px; */
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            /* background-color: #555; */
+            background-color: #949494;
+        }
+    </style>
 
 
     <!--begin::Card-->
@@ -120,7 +112,8 @@ a{
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary font-weight-bold mr-2">প্রেরণ করুন</button>
+                                        <button type="submit" class="btn btn-primary font-weight-bold mr-2">প্রেরণ
+                                            করুন</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -133,19 +126,21 @@ a{
                                             <th>
                                                 @if ($user->profile_pic != null)
                                                     <img style="width: 40px; border-radius: 60%;"
-                                                        src="{{ url('/') }}/uploads/profile/{{ $user->profile_pic }}" alt="">
+                                                        src="{{ url('/') }}/uploads/profile/{{ $user->profile_pic }}"
+                                                        alt="">
                                                 @else
-                                                @php
-                                                    $str = $user->username;
-                                                @endphp
-                                                <span class="badge badge-danger rounded-circle text-capitalize h3 mr-3">{{ substr($str, 0, 1) }}</span>
+                                                    @php
+                                                        $str = $user->username;
+                                                    @endphp
+                                                    <span
+                                                        class="badge badge-danger rounded-circle text-capitalize h3 mr-3">{{ substr($str, 0, 1) }}</span>
                                                     {{-- <img style="width: 40px; border-radius: 60%;"
                                                         src="{{ url('/') }}/uploads/profile/default.jpg" alt=""> --}}
                                                 @endif
                                                 {{ $user->name }},
                                                 <span class="text-primary">{{ $user->role->name }}</span>
                                             </th>
-                                            <th><a id="refresh" class="btn btn-sm btn-primary right" >Refresh</a></th>
+                                            <th><a id="refresh" class="btn btn-sm btn-primary right">Refresh</a></th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -159,25 +154,29 @@ a{
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-md-10">
-                                                                        @if($row->msg_remove != 1)
+                                                                        @if ($row->msg_remove != 1)
                                                                             {{-- @if (strlen($row->messages) < 50) --}}
-                                                                            <p class="d-inline-flex"><span class="bg-primary text-light rounded-left px-2 p-1">
-                                                                                {!! nl2br($row->messages) !!}
-                                                                            </span></p>
+                                                                            <p class="d-inline-flex"><span
+                                                                                    class="bg-primary text-light rounded-left px-2 p-1">
+                                                                                    {!! nl2br($row->messages) !!}
+                                                                                </span></p>
                                                                             {{-- @else
                                                                             <p class="d-inline-flex bg-primary text-light rounded-left px-2 p-1">
                                                                                 {{ $row->messages }}
                                                                             </p>
                                                                             @endif --}}
                                                                         @else
-                                                                            <p><span class="text-muted text-light rounded border px-2 p-1">
-                                                                                <em>Message Removed </em>
-                                                                            </span></p>
+                                                                            <p><span
+                                                                                    class="text-muted text-light rounded border px-2 p-1">
+                                                                                    <em>Message Removed </em>
+                                                                                </span></p>
                                                                         @endif
                                                                         <p class="h6 text-muted">
-                                                                            @if($row->msg_remove != 1)
+                                                                            @if ($row->msg_remove != 1)
                                                                                 <em>
-                                                                                    <a class="text-muted" onclick="return confirm('Are you want to remove this message?')" href="{{ route('messages_remove', $row->id)}}">Remove</a>
+                                                                                    <a class="text-muted"
+                                                                                        onclick="return confirm('Are you want to remove this message?')"
+                                                                                        href="{{ route('messages_remove', $row->id) }}">Remove</a>
                                                                                 </em>
                                                                                 |
                                                                             @endif
@@ -193,10 +192,11 @@ a{
                                                                                 src="{{ url('/') }}/uploads/profile/{{ Auth::user()->profile_pic }}"
                                                                                 alt="">
                                                                         @else
-                                                                        @php
-                                                                            $str = $user->username;
-                                                                        @endphp
-                                                                        <span class="badge badge-danger rounded-circle text-capitalize h1 mr-3">{{ substr($str, 0, 1) }}</span>
+                                                                            @php
+                                                                                $str = $user->username;
+                                                                            @endphp
+                                                                            <span
+                                                                                class="badge badge-danger rounded-circle text-capitalize h1 mr-3">{{ substr($str, 0, 1) }}</span>
 
                                                                             {{-- <img style="width: 50px; border-radius: 50%;"
                                                                                 src="{{ url('/') }}/uploads/profile/default.jpg" alt=""> --}}
@@ -214,27 +214,28 @@ a{
                                                                             <img style="width: 50px; border-radius: 50%;"
                                                                                 src="{{ url('/') }}/uploads/profile/{{ $user->profile_pic }}"
                                                                                 alt="">
-
                                                                         @else
-                                                                        @php
-                                                                            $str = $user->username;
-                                                                        @endphp
-                                                                        <span class="badge badge-danger rounded-circle text-capitalize h1 mr-3">{{ substr($str, 0, 1) }}</span>
+                                                                            @php
+                                                                                $str = $user->username;
+                                                                            @endphp
+                                                                            <span
+                                                                                class="badge badge-danger rounded-circle text-capitalize h1 mr-3">{{ substr($str, 0, 1) }}</span>
 
                                                                             {{-- <img style="width: 50px; border-radius: 50%;"
                                                                                 src="{{ url('/') }}/uploads/profile/default.jpg" alt=""> --}}
                                                                         @endif
                                                                     </div>
                                                                     <div class="col-md-10 col-sm-10">
-                                                                        @if($row->msg_remove != 1)
+                                                                        @if ($row->msg_remove != 1)
                                                                             {!! nl2br($row->messages) !!}
                                                                         @else
-                                                                            <p><span class="text-muted text-light rounded border px-2 p-1">
-                                                                                <em>Message Removed </em>
-                                                                            </span></p>
+                                                                            <p><span
+                                                                                    class="text-muted text-light rounded border px-2 p-1">
+                                                                                    <em>Message Removed </em>
+                                                                                </span></p>
                                                                         @endif
                                                                         <p class="h6 text-muted"><em>
-                                                                            {{ en2bn($row->created_at) }}</em>
+                                                                                {{ en2bn($row->created_at) }}</em>
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -272,7 +273,7 @@ a{
                                                         <td>
                                                             <div class="row">
                                                                 <div class="col-md-10">
-                                                                    @if($row->msg_remove != 1)
+                                                                    @if ($row->msg_remove != 1)
                                                                         @if (strlen($row->messages) < 50)
                                                                         <p><span class="bg-primary text-light rounded-left px-2 p-1">
                                                                             {{ $row->messages }}
@@ -288,7 +289,7 @@ a{
                                                                         </span></p>
                                                                     @endif
                                                                     <p class="h6 text-muted">
-                                                                        @if($row->msg_remove != 1)
+                                                                        @if ($row->msg_remove != 1)
                                                                             <em>
                                                                                 <a class="text-muted" onclick="return confirm('Are you want to remove this message?')" href="{{ route('messages_remove', $row->id)}}">Remove</a>
                                                                             </em>
@@ -339,7 +340,7 @@ a{
                                                                     @endif
                                                                 </div>
                                                                 <div class="col-md-10 col-sm-10">
-                                                                    @if($row->msg_remove != 1)
+                                                                    @if ($row->msg_remove != 1)
                                                                         {{ $row->messages }}
                                                                     @else
                                                                         <p><span class="text-muted text-light rounded border px-2 p-1">
@@ -479,32 +480,32 @@ a{
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
     <script>
-
         var pages = '{{ $messages->LastPage() }}';
         var count = 1;
         var scrollFlag = true;
         var user_id = $('#user_id').val();
-        $('#style-1').scroll(function () {
-            if (scrollFlag && pages > 1 && this.scrollHeight - $(this).scrollTop() - $(this).offset().top - $(this).height() <= 0) {
+        $('#style-1').scroll(function() {
+            if (scrollFlag && pages > 1 && this.scrollHeight - $(this).scrollTop() - $(this).offset().top - $(this)
+                .height() <= 0) {
                 $('#mk').html('<td class="text-center"><div class="loadersmall"></div></td>');
                 scrollFlag = false;
                 count++;
                 $.ajax({
-                  url : '{{url("/")}}/messages/' + user_id +'?page=' + count,
-                  type : "GET",
-                  dataType : "json",
-                  success:function(data)
-                  {
-                    setTimeout(function (){
-                        console.log(count);
-                        console.log('{{url("/")}}/messages/ajaxMsg/' + user_id +'?page=' + count);
-                        $("#tableBody").append(data);
-                        scrollFlag = true;
-                        if (count >= pages) scrollFlag = false;
-                        $('.loadersmall').remove();
-                    }, 200);
-                  }
-               });
+                    url: '{{ url('/') }}/messages/' + user_id + '?page=' + count,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        setTimeout(function() {
+                            console.log(count);
+                            console.log('{{ url('/') }}/messages/ajaxMsg/' + user_id +
+                                '?page=' + count);
+                            $("#tableBody").append(data);
+                            scrollFlag = true;
+                            if (count >= pages) scrollFlag = false;
+                            $('.loadersmall').remove();
+                        }, 200);
+                    }
+                });
 
             }
         });
@@ -514,7 +515,7 @@ a{
             location.reload();
         });
         //for Message scrollbar inteface change
-        $(document).ready(function () {
+        $(document).ready(function() {
             if (!$.browser.webkit) {
                 $('.wrapper').html('<p>Sorry! Non webkit users. :(</p>');
             }
@@ -522,7 +523,6 @@ a{
         //scroll from bottom
         var element = $("#style-1");
         element.scrollTop = element.scrollHeight;
-
     </script>
 @endsection
 {{-- <!--end::Page Scripts--> --}}

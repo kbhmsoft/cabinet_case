@@ -96,8 +96,7 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.messages') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">ব্যবহারকারীর
-                                            তালিকা</span>
+                                        <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
                                     </a>
                                 </li>
                             @endcan

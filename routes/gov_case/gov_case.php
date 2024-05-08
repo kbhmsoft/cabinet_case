@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
         /////************** User Management **************/////
         Route::get('office/wise/users', [GovCaseUserManagementController::class, 'officeWiseUsers'])->name('office.wise');
+        Route::get('office/wise/users/external', [GovCaseUserManagementController::class, 'officeWiseUsersExternal'])->name('wiseExternal');
         Route::resource('user-management', GovCaseUserManagementController::class);
         Route::get('/e-nothi-assigned-user-list', [GovCaseUserManagementController::class, 'assignedENothiUserManagement'])->name('assignedENothiUserManagement');
         /////************** Office Setting **************/////

@@ -281,7 +281,8 @@
                                                                     <i class="fas fa-info-circle tooltip-button"></i>
                                                                     <span class="tooltip-text">প্যানেল আইনজীবীর নাম তালিকায় না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি সৃজন করুন।</span>
                                                                 </span>
-                                                            </th>
+                                                            </th> 
+                                                            
                                                             <th width="30">
                                                                 <a href="javascript:void(0);" id="addAdvocateLawer"
                                                                     class="btn btn-sm btn-primary pr-2"><i

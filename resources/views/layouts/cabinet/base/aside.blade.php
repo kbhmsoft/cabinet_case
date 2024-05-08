@@ -1,4 +1,3 @@
-
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
@@ -406,6 +405,7 @@
                                 </ul>
                             @endcan
 
+
                             @can('manage_role_menu')
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-role-management']) ? 'hilightMenu' : '' }}"
@@ -456,7 +456,26 @@
                                     </li>
                                 </ul>
                             @endcan
-
+                            @can('users_list_menu')
+                                {{-- <ul class="menu-subnav">
+                                <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/user-management']) ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ url('cabinet/user-management') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
+                                    </a>
+                                </li>
+                            </ul> --}}
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/office/wise/users/external']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/office/wise/users/external') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder"> ই-নথি বহির্ভুত আইডি ব্যবহারকারীর</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
 
                         </div>
                     </li>
@@ -849,4 +868,3 @@
     </div> <!--end::Aside Menu-->
 </div> <!-- /aside-left -->
 </div> <!-- /aside-left -->
-

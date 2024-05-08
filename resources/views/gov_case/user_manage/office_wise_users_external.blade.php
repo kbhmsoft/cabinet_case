@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
     <div class="card card-custom">
 
-        <div class="card-header flex-wrap py-5">
+        {{-- <div class="card-header flex-wrap py-5">
             <div class="card-title">
                 <h2> {{ $page_title }} </h2>
             </div>
@@ -53,16 +53,16 @@
                     </a>
                 @endif
             </div>
-        </div>
+        </div> --}}
 
         <div class="card-body">
-            @if ($message = Session::get('success'))
+            {{-- @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     <p>{{ $message }}</p>
                 </div>
-            @endif
+            @endif --}}
 
-            <form class="form-inline" method="GET">
+            {{-- <form class="form-inline" method="GET">
                 <div class="form-group mb-2 mr-2">
                     <select name="office_type" id="office_type" class="form-control">
                         <option value="">-বিভাগ নির্বাচন করুন-</option>3
@@ -112,7 +112,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success ml-3 mb-2">অনুসন্ধান করুন</button>
-            </form>
+            </form> --}}
 
             @if ($users && $users->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
@@ -136,19 +136,43 @@
                             <tr>
                                 {{-- <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th> --}}
                                 <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
-                                <td>{{ $row->office_name_bn }}</td>
-                                <td>{{ $row->name }}</td>
-
-                                <td>{{ $row->roleName }}</td>
-                                <td>{{ $row->mobile_no ? en2bn($row->mobile_no) : '-' }}</td>
-                                <td>{{ $row->email }}</td>
                                 <td>
-                                    @if ($row->doptor_user_id)
-                                        নথি লগইন
-                                    @else
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->office_name_bn }}
+                                    @endif
+                                </td>
+                                
+                                <td>
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->name }}
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->roleName }}
+                                    @endif
+                                </td>
+                                
+                                <td>
+                                    @if (!is_null($row->mobile_no))
+                                        {{ en2bn($row->mobile_no) }}
+                                    @endif
+                                </td>
+                                
+                                <td>
+                                    @if (!is_null($row->email))
+                                        {{ $row->email }}
+                                    @endif
+                                </td>
+                                
+                                
+                                <td>
+                                    @if (is_null($row->doptor_user_id))
                                         সাধারণ লগইন
                                     @endif
                                 </td>
+                                
 
                                 <td>
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"

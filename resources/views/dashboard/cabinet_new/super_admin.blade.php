@@ -155,17 +155,16 @@
                                 <div class="case-info">
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
-                                        <a href="{{ route('user-management') }}"
-                                            style="text-decoration: none; color: black;">
+                                        <a href="{{ route('cabinet.assignedENothiUserManagement') }}" style="text-decoration: none; color: black;">
                                             ই-নথি আইডি</a>
-                                        {{-- <span class="count-numbers" style="margin-left:10rem; color: black">{{ en2bn($name) }}</span> --}}
+                                        <span class="count-numbers" style="margin-left:10rem; color: black">{{ en2bn($doptorLoginCount) }}</span>
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
-                                        <a href="{{ route('cabinet.user-management.index') }}"
+                                        <a href="{{ url('cabinet/office/wise/users/external') }}"
                                             style="text-decoration: none; color: black;"> ই-নথি বহির্ভুত আইডি</a>
                                         <span class="count-numbers"
-                                        {{-- style="margin-left:10rem; color: black">{{ en2bn($name) }}</span> --}}
+                                        style="margin-left:10rem; color: black">{{ en2bn($generalLoginCount) }}</span>
                                     </span>
                                 </div>
                             </div>
