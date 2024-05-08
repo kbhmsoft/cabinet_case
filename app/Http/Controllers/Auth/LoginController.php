@@ -45,26 +45,6 @@ class LoginController extends BaseController
         $this->middleware('guest')->except('logout');
     }
 
-    /*public function index()
-    {
-    $user = Auth::user();
-    dd($user);
-
-    dd(Auth::user()->role_id);
-    if(Auth::user()->role_id == 1){
-    // Superadmi dashboard
-    return view('dashboard.superadmin');
-
-    }elseif(Auth::user()->role_id == 5){
-    // DC office assistant dashboard
-    return view('dashboard.do_asst');
-    }
-    }
-     */
-    //  public function showLoginForm(){
-    //     return 'aaa';
-    //  }
-
     public function doptorLogin(Request $request)
     {
         $userEmail = $request->email;
@@ -88,7 +68,6 @@ class LoginController extends BaseController
 
     public function ndoptor_sso_callback(Request $request)
     {
-        // dd(1);
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
         $token = '';
@@ -118,13 +97,16 @@ class LoginController extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
-
+        // dd($response->data->user->employee_record_id);
+        $employeData = $response->data->user->employee_record_id;
+        // dd($employeData);
+        $doptoEmployeeUserImage = $this->doptorUserImage($employeData);
+        $data['doptoEmployeeUserImage'] = json_decode($doptoEmployeeUserImage);
+// dd($data['doptoEmployeeUserImage']->data[0]->image);
         if ($response->status == 'success') {
             if (end($response->data->organogram_info)) {
                 $id = end($response->data->organogram_info)->id;
             } else {
-                // return redirect()->route('sso.logout');
-              
                 return redirect()->route('sso.logout')->with('message', 'Information not found.');
             }
 
@@ -148,7 +130,7 @@ class LoginController extends BaseController
                     'email' => $userEmployeeData->personal_email,
                     'ministry' => $userOfficeInfo->office_ministry_id,
                     'signature' => null,
-                    'profile_image' => null,
+                    'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
                     'role_id' => $organoGramUserInfo->user_role,
                     'office_id' => $userOfficeInfo->office_id,
                     'is_gov' => 1,
@@ -156,6 +138,7 @@ class LoginController extends BaseController
                     'unit_name_bn' => $userOfficeInfo->unit_name_bn,
                     'designation' => $userOfficeInfo->designation,
                     'organogram_id' => $organogramId ?? null,
+                    'employee_record_id' => $userInfo->employee_record_id ?? null,
                 ];
 
                 User::updateOrInsert(
@@ -169,8 +152,7 @@ class LoginController extends BaseController
                     $role = Role::find($organoGramUserInfo->user_role);
                     $user->assignRole($role);
                 }
-                // $role = Role::find($organoGramUserInfo->user_role);
-                // $user->assignRole($role);
+
                 Auth::loginUsingId($user->id);
                 return redirect()->route('dashboard');
 
@@ -189,7 +171,7 @@ class LoginController extends BaseController
                     'email' => $userEmployeeData->personal_email,
                     'ministry' => $userOfficeInfo->office_ministry_id,
                     'signature' => null,
-                    'profile_image' => null,
+                    'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
                     'role_id' => 43,
                     'office_id' => $userOfficeInfo->office_id,
                     'is_gov' => 1,
@@ -197,6 +179,7 @@ class LoginController extends BaseController
                     'unit_name_bn' => $userOfficeInfo->unit_name_bn,
                     'designation' => $userOfficeInfo->designation,
                     'organogram_id' => $organogramId ?? null,
+                    'employee_record_id' => $userInfo->employee_record_id ?? null,
                 ];
 
                 User::updateOrInsert(
@@ -216,87 +199,6 @@ class LoginController extends BaseController
             }
         }
     }
-
-    // public function initiateSSOLoginURL()
-    // {
-    //     // $ssoLoginUrl = 'https://n-doptor-accounts-stage.nothi.gov.bd/login';
-    //     $ssoLoginUrl = 'https://api-training.doptor.gov.bd/v2/login';
-    //     $clientAppUrl = 'https://api-training.doptor.gov.bd/v2/';
-    //     $base64ClientAppUrl = base64_encode($clientAppUrl);
-
-    //     return redirect()->to("{$ssoLoginUrl}?referer={$base64ClientAppUrl}");
-
-    // }
-
-    // public function verifyUser(Request $request)
-    // {
-    //     $username = $request->email;
-    //     $password = $request->password;
-    //     $userToken = $this->tokenGenerate($username);
-    //     // return $userToken;
-    //     $curl = curl_init();
-    //     $apiUrl = 'https://apigw-stage.doptor.gov.bd/api/user/verify';
-    //     $postData = json_encode(['username' => $username, 'password' => $password]);
-    //     // return $postData;
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL => $apiUrl,
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_ENCODING => '',
-    //         CURLOPT_MAXREDIRS => 10,
-    //         CURLOPT_TIMEOUT => 0,
-    //         CURLOPT_FOLLOWLOCATION => true,
-    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //         CURLOPT_CUSTOMREQUEST => 'POST',
-    //         CURLOPT_POSTFIELDS => $postData,
-    //         CURLOPT_HTTPHEADER => array(
-    //             'Accept: application/json',
-    //             'Content-Type: application/json',
-    //             'api-version: 1',
-    //             'apikey: 8XI1PI',
-    //             'Authorization: ' . $userToken,
-    //         ),
-    //     ));
-
-    //     $response = curl_exec($curl);
-
-    //     if (curl_errno($curl)) {
-    //         $errorResponse = json_encode(["status" => "error", "message" => "cURL error: " . curl_error($curl)]);
-    //         return response()->json($errorResponse, 500);
-    //     }
-
-    //     curl_close($curl);
-    //     $responsData = json_decode($response);
-
-    //     return $responsData;
-    // }
-    // public function tokenGenerate($user_id)
-    // {
-
-    //     $curl = curl_init();
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/client/login',
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_ENCODING => '',
-    //         CURLOPT_MAXREDIRS => 10,
-    //         CURLOPT_TIMEOUT => 0,
-    //         CURLOPT_FOLLOWLOCATION => true,
-    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //         CURLOPT_CUSTOMREQUEST => 'POST',
-    //         CURLOPT_POSTFIELDS => array('username' => $user_id, 'password' => '8XI1PI12W', 'client_id' => '8XI1PI'),
-    //         CURLOPT_HTTPHEADER => array(
-    //             'apiKey: 8XI1PI  ',
-    //         ),
-    //     ));
-
-    //     $response = curl_exec($curl);
-
-    //     curl_close($curl);
-
-    //     $responsData = json_decode($response);
-    //     // dd($responsData);
-    //     return $responsData->data->token;
-
-    // }
 
     public static function logout_doptor()
     {
@@ -320,4 +222,39 @@ class LoginController extends BaseController
 
         return;
     }
+
+    public function doptorUserImage($employeeRecordId)
+    {
+        $curl = curl_init();
+        $token = session('bearerToken');
+        $employee_record_ids = $employeeRecordId;
+        curl_setopt_array($curl, array(
+
+            CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/user/images',
+
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array('employee_record_ids' => $employee_record_ids)), // Encode array to JSON
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-version: 1',
+                'apikey: 8XI1PI',
+                'Authorization: Bearer ' . $token,
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $response;
+
+    }
+
 }

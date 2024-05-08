@@ -82,7 +82,7 @@
                                     <select name="parentMinID" id="parentMinID"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($ministries as $value)
-                                          <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
+                                          <option value="{{ $value->doptor_office_id }}"> {{ $value->office_name_bn }} </option>
                                           @endforeach
                                        </select>
                                 </div>
@@ -93,7 +93,7 @@
                                     <select name="parentDivID" id="parentDivID"  class="form-control w-100">
                                           <option value="">-- নির্বাচন করুন --</option>
                                           @foreach ($divisions as $value)
-                                          <option value="{{ $value->id }}"> {{ $value->office_name_bn }} </option>
+                                          <option value="{{ $value->doptor_office_id }}"> {{ $value->office_name_bn }} </option>
                                           @endforeach
                                        </select>
                                 </div>

@@ -270,7 +270,7 @@
         addBibadiRowFunc();
     });
 
- //   add row function
+    //   add row function
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
         var MainCount = $('#MainBibadiDiv tr').length;
@@ -629,7 +629,7 @@
                         } else {
                             console.log('Error occurred:', xhr, status, error);
                             Swal.fire('সমস্যা...!',
-                                'An error occurred while saving the case information.',
+                                'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
                                 'error');
                         }
                     }
