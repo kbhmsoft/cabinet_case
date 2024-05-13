@@ -75,12 +75,17 @@ class AppealGovCaseRegisterRepository
             $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
         }
 
+        $petitioner_name ='';
+        if( $caseInfo->appeal_office == 0){
+            $petitioner_name =$caseInfo->appeal_petitioner_name;
+        }
+
         try {
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
             $case->year = $caseInfo->case_year;
-            $case->appeal_office_id = $caseInfo->appeal_office;
+            $case->appeal_petitioner_name = $petitioner_name;
      
 
             $case->case_division_id = 1;
@@ -208,9 +213,9 @@ class AppealGovCaseRegisterRepository
             $case->result_date = $result_date;
             $case->result_copy_asking_date = $result_copy_asking_date ?? '';
             $case->result_copy_receiving_date = $result_copy_receiving_date ?? '';
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
-            $case->appeal_requesting_date = $appeal_requesting_date ?? '';
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
+            // $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
+            // $case->appeal_requesting_date = $appeal_requesting_date ?? '';
+            // $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
 
             if ($case->save()) {
                 $caseId = $case->id;

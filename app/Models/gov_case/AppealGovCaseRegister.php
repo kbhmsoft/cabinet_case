@@ -22,6 +22,7 @@ class AppealGovCaseRegister extends Model
         'case_type_id',
         'year',
         'appeal_office_id',
+        'appeal_petitioner_name',
         'concern_new_appeal_person_designation',
         'concern_user_id',
         'postpond_date',
@@ -55,7 +56,7 @@ class AppealGovCaseRegister extends Model
 
     public function highcourtCaseDetail()
     {
-        return $this->hasOne(GovCaseRegister::class, 'case_no', 'case_number_origin');
+        return $this->hasOne(GovCaseRegister::class, 'id', 'case_origin_id');
     }
     public function office()
     {
@@ -66,4 +67,8 @@ class AppealGovCaseRegister extends Model
         return $this->hasOne(GovCaseBadi::class, 'gov_case_id', 'case_origin_id');
     }
 
+    public function case_origin()
+    {
+        return $this->hasOne(GovCaseRegister::class, 'id', 'case_origin_id');
+    }
 }

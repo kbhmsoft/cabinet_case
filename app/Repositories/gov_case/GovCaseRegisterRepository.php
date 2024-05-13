@@ -18,6 +18,7 @@ class GovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
+        dd($caseId);                                                                                            
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);

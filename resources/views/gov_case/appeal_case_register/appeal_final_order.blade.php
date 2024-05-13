@@ -40,7 +40,8 @@
                     <div class="tab-content" id="myTabContent">
 
 
-                        <div class="tab-pane" id="final_order" role="tabpanel" aria-labelledby="home-tab">
+                        {{-- ------------- start জবাব প্রেরণ ------------- --}}
+                        <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
                             <form id="finalOrderForm" action="javascript:void(0)" class="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -62,9 +63,18 @@
 
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
+                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
+
+
+                                                    <div class="col-lg-6 mb-5">
+                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
+                                                        <input type="text" name="result_date"
+                                                            class="form-control form-control-sm  common_datepicker"
+                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                    </div>
+
                                                     <div class="col-md-6 mb-5">
-                                                        {{-- {{dd($appealCaseData->id)}} --}}
-                                                        <input type="hidden" name="case_id" value="{{$appealCaseData->id}}">
+
                                                         <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                         </label>
                                                         <div class="radio-inline">
@@ -78,194 +88,35 @@
                                                                 <span></span>সরকারের বিপক্ষে</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+
+
+                                                    
+
+                                                    <div class="col-md-12 mb-5">
                                                         <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
-                                                        <textarea name="result_short_details" class="form-control" id="result_short_details" rows="3"
-                                                            spellcheck="false"></textarea>
+                                                        <textarea name="result_short_details" class="form-control" id="result_short_details" rows="3" spellcheck="false"></textarea>
                                                     </div>
 
-                                                    {{-- <div class="col-md-6">
-                                                        <label class="form-group font-weight-bolder font-size-h5">সরকারের
-                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
-                                                        <div class="radio-inline">
-                                                            <label class="radio">
-                                                                <input type="radio" name="is_appeal" id="is_appeal"
-                                                                    value="1" />
-                                                                <span></span>হ্যাঁ </label>
-                                                            <label class="radio">
-                                                                <input type="radio" name="is_appeal" id="is_appeal"
-                                                                    value="2" checked="checke" />
-                                                                <span></span>না</label>
-                                                        </div>
-                                                    </div> --}}
 
-                                                    <div class="col-lg-4">
-                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
-                                                        <input type="text" name="result_date"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
+
+
+                                                    <div class="col-lg-6 mb-5">
                                                         <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
                                                                 class="text-danger"></span></label>
                                                         <input type="text" name="result_copy_asking_date"
                                                             class="form-control form-control-sm  common_datepicker"
                                                             placeholder="দিন/মাস/বছর" autocomplete="off">
                                                     </div>
-                                                    <div class="col-lg-4 mb-5">
+                                                    <div class="col-lg-6 mb-5">
                                                         <label>রায়ের নকল প্রাপ্তির তারিখ<span
                                                                 class="text-danger"></span></label>
                                                         <input type="text" name="result_copy_receiving_date"
                                                             class="form-control form-control-sm  common_datepicker"
                                                             placeholder="দিন/মাস/বছর" autocomplete="off">
                                                     </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের স্মারক <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="appeal_requesting_memorial"
-                                                            id="appeal_requesting_memorial"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের তারিখ <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="appeal_requesting_date"
-                                                            id="appeal_requesting_date"
-                                                            class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>আপিল/রিভিউ দায়ের না করার সিদ্বান্ত হলে তার কারণ <span
-                                                                class="text-danger"></span></label>
-                                                        <textarea name="reason_of_not_appealing" class="form-control" id="reason_of_not_appealing" rows="3"
-                                                            spellcheck="false">
-                                                                </textarea>
-
-                                                    </div>
+                                                    
                                                 </div>
-                                                <div class="form-group row" id="civilRevisionDiv">
-                                                    <div class="col-lg-4">
-                                                        <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="contents_of_proposal_civil_revision"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যে মোকদ্দমার পরিপ্রেক্ষিতে প্রস্তাব প্রেরণ (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text"
-                                                            name="sending_motions_in_view_of_that_litigation_civil_revision"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব তারিখ(বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_date_civil_revision"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব স্মারক নম্বর <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_memorial_civil_revision"
-                                                            id="proposal_memorial_civil_revision"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="email" name="contact_email_civil_revision"
-                                                            id="contact_email_civil_revision"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের নাম (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_name_civil_revision"
-                                                            id="focal_person_name_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text"
-                                                            name="focal_person_designation_civil_revision"
-                                                            id="focal_person_designation_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_mobile_civil_revision"
-                                                            id="focal_person_mobile_civil_revision"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row" id="writDiv">
-                                                    <div class="col-lg-4">
-                                                        <label>প্রস্তাবের বিষয়বস্তু (বাংলায়)<span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="contents_of_proposal_writ"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>রিট মোকাদ্দমা নং<span class="text-danger"></span></label>
-                                                        <input type="text" name="case_number_writ"
-                                                            class="form-control form-control-sm" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব তারিখ(বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_date_writ"
-                                                            class="form-control form-control-sm common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রস্তাব স্মারক নম্বর <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="proposal_memorial_writ"
-                                                            id="proposal_memorial_writ"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>যোগাযোগের ইমেইল (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="email" name="contact_email_writ"
-                                                            id="contact_email_writ"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের নাম (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_name_writ"
-                                                            id="focal_person_name_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের পদবী (বাংলায়) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_designation_writ"
-                                                            id="focal_person_designation_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>ফোকাল পার্সনের মোবাইল নম্বর (ইংরেজিতে) <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="focal_person_mobile_writ"
-                                                            id="focal_person_mobile_writ"
-                                                            class="form-control form-control-sm "autocomplete="off">
-                                                    </div>
-                                                </div>
-
+                                               
                                                 {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
                                                     <fieldset class="">
@@ -319,8 +170,7 @@
                                 </div>
                             </form>
                         </div>
-
-
+                        {{-- ------------- end জবাব প্রেরণ ------------- --}}
 
                     </div>
                 </div>
