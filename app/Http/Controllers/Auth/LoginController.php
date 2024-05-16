@@ -47,7 +47,7 @@ class LoginController extends BaseController
 
     public function doptorLogin(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $userEmail = $request->email;
         $password = $request->password;
         if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
