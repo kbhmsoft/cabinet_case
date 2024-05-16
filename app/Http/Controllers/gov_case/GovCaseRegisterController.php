@@ -3464,6 +3464,11 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
+        if($roleID != 27){
+            $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->where('office_id', $officeID)->get();
+        }else{
+            $data['lawerInfo'] = User::whereIn('id', [14, 15, 33, 36, 45])->all();
+        }
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 

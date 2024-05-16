@@ -208,9 +208,9 @@
                                                             <tr>
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
-                                                                        id="concernPersonDesignation"
+                                                                        id="concernPersonDesignation_{{ $key+1 }}"
                                                                         class="form-control form-control-sm"
-                                                                        required="required">
+                                                                        required="required" onchange="getConcernPerName({{ $key+1 }})">
                                                                         @foreach ($concern_person_desig as $data)
                                                                             <option value="{{ $data->id }}"
                                                                                 {{ old('concern_person_designation') == $data->id || $value->concern_person_designation == $data->id ? 'selected' : '' }}>
@@ -220,10 +220,10 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    <select name="concern_user_id[]" id="concern_user_id"
+                                                                    <select name="concern_user_id[]" id="concern_user_id_{{ $key+1 }}"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
-                                                                        @foreach ($usersInfo as $data)
+                                                                        @foreach ($lawerInfo as $data)
                                                                             <option value="{{ $data->id }}"
                                                                                 {{ old('concern_user_id') == $data->id || $value->concern_user_id == $data->id ? 'selected' : '' }}>
                                                                                 {{ $data->name }} </option>
@@ -244,7 +244,7 @@
                                                                     value="{{ $value->id }}">
                                                             </tr>
                                                             <input type="hidden" id="survey_count"
-                                                                value="{{ $key + 1 }}">
+                                                                value="{{ $key + 2 }}">
                                                         @endforeach
                                                     </table>
                                                 </div>
@@ -1881,6 +1881,7 @@
         function addAdvocateLawerFunc() {
 
             var count = parseInt($('#survey_count').val());
+            alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';
