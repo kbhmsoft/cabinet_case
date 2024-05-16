@@ -281,6 +281,7 @@ class GovCaseUserManagementController extends Controller
                 ->select('gov_case_office.*')
                 ->where('parent_office_id', $officeId)
                 ->get();
+          
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
 

@@ -161,7 +161,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/origincasedetails/{id}', [GovCaseRegisterController::class, 'getOriginCaseDetails']);
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
-
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
             Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');
@@ -222,6 +221,7 @@ Route::middleware('auth')->group(function () {
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('adalatReplySubmitStore', [GovCaseRegisterController::class, 'adalatReplySubmitStore'])->name('adalatReplySubmitStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
+            Route::post('orderTakenStore', [GovCaseRegisterController::class, 'orderTakenStore'])->name('orderTakenStore');
             Route::post('finalOrderStore', [GovCaseRegisterController::class, 'finalOrderStore'])->name('finalOrderStore');
             Route::post('leaveToAppealStore', [GovCaseRegisterController::class, 'leaveToAppealStore'])->name('leaveToAppealStore');
             Route::post('leaveToAppealAnswerStore', [GovCaseRegisterController::class, 'leaveToAppealAnswerStore'])->name('leaveToAppealAnswerStore');
@@ -236,6 +236,7 @@ Route::middleware('auth')->group(function () {
             Route::get('adalat/reply-sending/{id}', [GovCaseRegisterController::class, 'adalatReplySending'])->name('adalatReplySending');
             Route::get('suspension/order/{id}', [GovCaseRegisterController::class, 'suspensionOrderEdit'])->name('suspensionOrderEdit');
             Route::get('final/order/{id}', [GovCaseRegisterController::class, 'finalOrderEdit'])->name('finalOrderEdit');
+            Route::get('against-gov/order-taken/{id}', [GovCaseRegisterController::class, 'againstGovOrderTaken'])->name('againstGovOrderTaken');
             Route::get('contemptCaseIssue/{id}', [GovCaseRegisterController::class, 'contemptCaseIssue'])->name('contemptCaseIssue');
             Route::get('leave-to-appeal/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealCreate'])->name('leaveToAppealCreate');
             Route::get('leave-to-appeal-answer/create/{id}', [GovCaseRegisterController::class, 'leaveToAppealAnswerCreate'])->name('leaveToAppealAnswerCreate');

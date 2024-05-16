@@ -211,12 +211,13 @@
 
 
                                             @can('highcourt_adalat_reply_sending')
-                                            @if ($row->adalat_reply_submit_have == null)
-                                            @if (empty($row->adalat_reply_sending_date))
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে জবাব দাখিল</a>
-                                            @endif
-                                            @endif
+                                                @if ($row->adalat_reply_submit_have == null)
+                                                    @if (empty($row->adalat_reply_sending_date))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে
+                                                            জবাব দাখিল</a>
+                                                    @endif
+                                                @endif
                                             @endcan
 
 
@@ -235,6 +236,10 @@
                                                     <a class="dropdown-item"
                                                         href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
                                                         চূড়ান্ত আদেশ</a>
+
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('cabinet.case.againstGovOrderTaken', $row->id) }}">
+                                                        সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
                                                 @elseif ($row->is_final_order == 1)
                                                     @if ($row->result == 2)
                                                         @if (empty($row->leave_to_appeal_no))
