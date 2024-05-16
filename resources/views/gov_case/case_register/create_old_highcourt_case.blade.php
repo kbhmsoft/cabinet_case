@@ -686,27 +686,259 @@
                                         <fieldset>
 
                                             <div class="form-group row">
+
+
                                                 <div class="col-md-6">
-                                                    <label class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশের
+                                                    <label class="form-group font-weight-bolder font-size-h5">
+                                                        স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন আদেশ প্রদান করা হয়েছে
+                                                        কিনা
                                                     </label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
-                                                            <input type="radio" name="postponed_order"
-                                                                id="postponed_order_have" value="1" />
-                                                            <span></span>আছে</label>
+                                                            <input type="radio" name="postponed_interim_have"
+                                                                id="postponed_interim_have" value="1">
+                                                            <span></span>হ্যাঁ</label>
                                                         <label class="radio">
-                                                            <input type="radio" name="postponed_order"
-                                                                id="postponed_order_not" value="0" checked />
-                                                            <span></span>নেই</label>
+                                                            <input type="radio" name="postponed_interim_have"
+                                                                id="postponed_interim_have_not" value="0">
+                                                            <span></span>না</label>
                                                     </div>
                                                 </div>
 
 
+                                                <div class="col-md-6" id="postponed_interim_data_details">
+                                                    <div class="col-md-12 mb-5">
+                                                        <label>স্থগিতাদেশের সংক্ষিপ্ত বিবরণ</label>
+                                                        <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details"
+                                                            rows="5" spellcheck="false"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12 mb-5">
+                                                    <div class="col-md-6">
+                                                        <label class="form-group font-weight-bolder font-size-h5">আদেশ
+                                                            তামিল/বাস্তবায়নের সিদ্ধান্ত গ্রহণ করা হয়েছে
+                                                        </label>
+                                                        <div class="radio-inline">
+                                                            <label class="radio">
+                                                                <input type="radio" name="adesh_tamil_decision_taken"
+                                                                    id="adesh_tamil_decision_taken" value="1" />
+                                                                <span></span>হ্যাঁ</label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="adesh_tamil_decision_taken"
+                                                                    id="adesh_tamil_decision_taken_not" value="0"
+                                                                    checked />
+                                                                <span></span>না</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="adesh_tamil_decision_div">
+                                                        <div class="form-group row">
+                                                            <div class="p-5" id="adesh_tamil_decision_data_details">
+                                                                <div class="col-md-12 mb-5">
+                                                                    <label>বাস্তবায়নে গৃহীত ব্যবস্থার সংক্ষিপ্ত
+                                                                        বিবরণ</label>
+                                                                    <textarea name="adesh_tamil_decision_data_details" class="form-control" id="adesh_tamil_decision_data_details"
+                                                                        rows="5" spellcheck="false"></textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- starting সংযুক্তি  --}}
+                                                            <div class="col-md-12 mt-8">
+                                                                <fieldset class="">
+                                                                    <div
+                                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                        <div class="d-flex align-items-center mr-2 py-2">
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (বাস্তবায়নে
+                                                                                গৃহীত
+                                                                                ব্যবস্থার কপি সংযুক্ত
+                                                                                করুন)
+                                                                                <sub class="text-danger">(PDF, সর্বোচ্চ
+                                                                                    সাইজ:
+                                                                                    5MB)</sub>
+                                                                            </h3>
+                                                                        </div>
+
+                                                                        <div class="symbol-group symbol-hover py-2">
+                                                                            <div class="symbol symbol-30 symbol-light-primary"
+                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                title="" role="button"
+                                                                                data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                                <div id="adeshTamilDecisionFileRow">
+                                                                                    <span
+                                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                                        <i
+                                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-3 px-5">
+                                                                        <table width="100%" class="border-0 px-5"
+                                                                            id="adeshTamilDecisionFileDiv"
+                                                                            style="border:1px solid #dcd8d8;">
+                                                                            <tr></tr>
+                                                                        </table>
+                                                                        <input type="hidden"
+                                                                            id="adesh_tamil_attachment_count"
+                                                                            value="1">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-group font-weight-bolder font-size-h5">আদেশের
+                                                            বিরুদ্ধে আপিলের সিদ্ধান্ত গ্রহণ করা হয়েছে
+                                                        </label>
+                                                        <div class="radio-inline">
+                                                            <label class="radio">
+                                                                <input type="radio"
+                                                                    name="appeal_against_adesh_decision_taken"
+                                                                    id="appeal_against_adesh_decision_taken"
+                                                                    value="1" />
+                                                                <span></span>হ্যাঁ</label>
+                                                            <label class="radio">
+                                                                <input type="radio"
+                                                                    name="appeal_against_adesh_decision_taken"
+                                                                    id="appeal_against_adesh_decision_taken_not"
+                                                                    value="0" checked />
+                                                                <span></span>না</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="adesh_tamil_decision_yes_taken_div">
+                                                        <div class="col-md-6">
+                                                            <label class="form-group font-weight-bolder font-size-h5">আপিল
+                                                                দায়েরের জন্য অনুরোধ করা হয়েছে কিনা
+                                                            </label>
+                                                            <div class="radio-inline">
+                                                                <label class="radio">
+                                                                    <input type="radio"
+                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        id="adesh_tamil_decision_yes_taken"
+                                                                        value="1" />
+                                                                    <span></span>হ্যাঁ</label>
+                                                                <label class="radio">
+                                                                    <input type="radio"
+                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        id="adesh_tamil_decision_yes_taken_not"
+                                                                        value="0" checked />
+                                                                    <span></span>না</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="p-5" id="suspension_order_data_details">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="1" id="suspension_order_solicitor_checkbox"
+                                                                name="sending_request_for_appeal_against_intreim_person_solicitor">
+                                                            <label class="form-check-label lawyer_title"
+                                                                for="suspension_order_solicitor_checkbox">
+                                                                সলিসিটর বরাবর
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="1" id="suspension_order_law_officer_checkbox"
+                                                                name="sending_request_for_appeal_against_intreim_person_law_officer">
+                                                            <label class="form-check-label lawyer_title"
+                                                                for="law_officer_checkbox">
+                                                                আইন কর্মকর্তা/প্যানেল আইনজীবী বরাবর
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="suspension_order_div">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-6 mb-5 mt-8">
+                                                                <label>আপিল দায়েরের অনুরোধের তারিখ
+                                                                </label>
+                                                                <input type="text"
+                                                                    name="appeal_submission_requesting_date"
+                                                                    id="appeal_submission_requesting_date"
+                                                                    class="form-control form-control-sm  common_datepicker"
+                                                                    placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                            </div>
+
+                                                            <div class="col-lg-6 mb-5 mt-8">
+                                                                <label>আপিল দায়েরের অনুরোধের স্মারক
+                                                                </label>
+                                                                <input type="text"
+                                                                    name="appeal_submission_requesting_memorial"
+                                                                    id="appeal_submission_requesting_memorial"
+                                                                    class="form-control form-control-sm" placeholder=""
+                                                                    autocomplete="off">
+                                                            </div>
+
+                                                            {{-- starting সংযুক্তি  --}}
+                                                            <div class="col-md-12 mt-8">
+                                                                <fieldset class="">
+                                                                    <div
+                                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                                        <div class="d-flex align-items-center mr-2 py-2">
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (আপিল দায়েরের
+                                                                                অনুরোধ কপি
+                                                                                সংযুক্ত
+                                                                                করুন)
+                                                                                <sub class="text-danger">(PDF, সর্বোচ্চ
+                                                                                    সাইজ:
+                                                                                    5MB)</sub>
+                                                                            </h3>
+                                                                        </div>
+
+                                                                        <div class="symbol-group symbol-hover py-2">
+                                                                            <div class="symbol symbol-30 symbol-light-primary"
+                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                title="" role="button"
+                                                                                data-original-title="ফাইল যুক্ত করুণ">
+
+                                                                                <div id="appealSubmissionFileRow">
+                                                                                    <span
+                                                                                        class="symbol-label font-weight-bold bg-success">
+                                                                                        <i
+                                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-3 px-5">
+                                                                        <table width="100%" class="border-0 px-5"
+                                                                            id="appealSubmissionFileDiv"
+                                                                            style="border:1px solid #dcd8d8;">
+                                                                            <tr></tr>
+                                                                        </table>
+                                                                        <input type="hidden" id="appeal_submission_attachment_count"
+                                                                            value="1">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+
+                                                            {{-- end সংযুক্তি --}}
+                                                            <div class="col-md-8 mb-5 mt-6"
+                                                                id="suspensionOrderTrackingNumberField"
+                                                                style="display: none;">
+                                                                <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা
+                                                                    হলে
+                                                                    ট্র্যাকিং নম্বর প্রদান করুন</label>
+                                                                <input type="text"
+                                                                    name="soltrack_tracking_number_for_appeal_against_intreim_order"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="row p-5" id="postponed_order_details">
-
-
-
                                                     <div class="col-lg-6 mb-5">
                                                         <label>স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিরুদ্ধে<br> আপিল
                                                         </label>
@@ -750,39 +982,10 @@
                                                             id="tamil_requesting_date"
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
-
-
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <label
-                                                        class="form-group font-weight-bolder font-size-h5">অন্তর্বর্তীকালীন
-                                                        আদেশ </label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" name="interim_order"
-                                                                id="interim_order_have" value="1" />
-                                                            <span></span>আছে</label>
-                                                        <label class="radio">
-                                                            <input type="radio" name="interim_order"
-                                                                id="interim_order_not" value="0" checked />
-                                                            <span></span>নেই</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 mb-5" id="interim_order_details_div">
-                                                    <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
-                                                </div>
-
-
                                             </div>
 
-
-
                                             {{-- starting সংযুক্তি  --}}
-
-
                                             <div class="col-md-12">
                                                 <fieldset class="">
                                                     <div
@@ -852,19 +1055,26 @@
                                         <input type="hidden" id="caseIDForFinalOrder" name="case_id">
                                         <fieldset class="mb-8">
                                             {{-- <legend> মামলার ফলাফল</legend> --}}
-                                            {{-- <div class="form-group row">
+                                            <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
-                                                        value="1">
+                                                        value="1" onclick="showAlert()">
                                                     <label for="is_final_order"> মামলার রায়/চুড়ান্ত আদেশ
                                                         হয়ে থাকলে সিলেক্ট করুন</label><br>
                                                 </div>
-                                            </div> --}}
-                                            <input type="hidden" id="is_final_order" name="is_final_order"
-                                                value="1">
+                                            </div>
+
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
+                                                    <div class="col-lg-4">
+                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
+                                                        <input type="text" name="result_date"
+                                                            class="form-control form-control-sm  common_datepicker"
+                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                    </div>
+
                                                     <div class="col-md-6 mb-5">
+
                                                         <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                         </label>
                                                         <div class="radio-inline">
@@ -878,32 +1088,12 @@
                                                                 <span></span>সরকারের বিপক্ষে</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+
+                                                    <div class="col-md-12">
                                                         <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
-                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
-                                                            spellcheck="false"></textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-group font-weight-bolder font-size-h5">সরকারের
-                                                            বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
-                                                        <div class="radio-inline">
-                                                            <label class="radio">
-                                                                <input type="radio" name="is_appeal" id="is_appeal"
-                                                                    value="1" />
-                                                                <span></span>হ্যাঁ </label>
-                                                            <label class="radio">
-                                                                <input type="radio" name="is_appeal" id="is_appeal"
-                                                                    value="2" checked="checke" />
-                                                                <span></span>না</label>
-                                                        </div>
+                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3" spellcheck="false"></textarea>
                                                     </div>
 
-                                                    <div class="col-lg-4">
-                                                        <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
-                                                        <input type="text" name="result_date"
-                                                            class="form-control form-control-sm  common_datepicker"
-                                                            placeholder="দিন/মাস/বছর" autocomplete="off">
-                                                    </div>
                                                     <div class="col-lg-4 mb-5">
                                                         <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
                                                                 class="text-danger"></span></label>
@@ -918,40 +1108,18 @@
                                                             class="form-control form-control-sm  common_datepicker"
                                                             placeholder="দিন/মাস/বছর" autocomplete="off">
                                                     </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের স্মারক <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="appeal_requesting_memorial"
-                                                            id="appeal_requesting_memorial"
-                                                            class="form-control form-control-sm"autocomplete="off">
-                                                    </div>
-
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>প্রযোজ্য ক্ষেত্রে আপিল দায়েরের জন্য অনুরোধের তারিখ <span
-                                                                class="text-danger"></span></label>
-                                                        <input type="text" name="appeal_requesting_date"
-                                                            id="appeal_requesting_date"
-                                                            class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-5">
-                                                        <label>আপিল/রিভিউ দায়ের না করার সিদ্বান্ত হলে তার কারণ <span
-                                                                class="text-danger"></span></label>
-                                                        <textarea name="reason_of_not_appealing" class="form-control" id="reason_of_not_appealing" rows="3"
-                                                            spellcheck="false">
-                                                                </textarea>
-
-                                                    </div>
                                                 </div>
 
-                                                {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                    (চূড়ান্ত আদেশ/রায় সম্পর্কিত)
-                                                                    <span class="text-danger">*</span>
+                                                                    (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
+
+                                                                    <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ:
+                                                                        5MB)</sub>
                                                                 </h3>
                                                             </div>
 
@@ -1249,17 +1417,17 @@
             $('#civilSuitDiv').hide();
             $('#writDiv').hide();
             $('#leaveToAppealDiv').hide();
-            // $('#finalOrderDiv').hide();
+            $('#finalOrderDiv').hide();
 
-            // $('input[id="is_final_order"]').click(function() {
-            //     if ($(this).prop("checked") == true) {
-            //         $('#finalOrderDiv').show();
-            //         console.log("Checkbox is checked.");
-            //     } else if ($(this).prop("checked") == false) {
-            //         $('#finalOrderDiv').hide();
-            //         console.log("Checkbox is unchecked.");
-            //     }
-            // });
+            $('input[id="is_final_order"]').click(function() {
+                if ($(this).prop("checked") == true) {
+                    $('#finalOrderDiv').show();
+                    console.log("Checkbox is checked.");
+                } else if ($(this).prop("checked") == false) {
+                    $('#finalOrderDiv').hide();
+                    console.log("Checkbox is unchecked.");
+                }
+            });
 
             // ============JS For Next & Prev Btn==============//
             $('#caseGeneralInfoNextBtn').on("click", function() {
@@ -1538,4 +1706,28 @@
             });
         });
     </script>
+
+<script>
+    function showAlert() {
+        Swal.fire({
+            title: "আপনি কি নিশ্চিত?",
+            text: "আপনি কি মামলার রায়ের অবস্থা পরিবর্তন করতে চান?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "হ্যাঁ",
+            cancelButtonText: "না",
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+            } else {
+
+                document.getElementById('is_final_order').checked = false;
+                console.log("aoyon");
+                $('#finalOrderDiv').hide();
+            }
+        });
+    }
+</script>
 @endsection

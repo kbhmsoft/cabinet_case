@@ -34,14 +34,17 @@
         if (formType != 'edit') {
             addMainBibadiRowFunc();
             addHighcourtAdalatRowFunc();
+            addFinalOrderFileRowFunc();
+            adeshTamilDecisionFileRowFunc();
+            appealSubmissionFileRowFunc();
+            addReplyFileRowFunc();
+            addAdalatReplyFileRowFunc();
+            addSuspensionOrderFileRowFunc();
         }
         addFileRowFunc();
-        addReplyFileRowFunc();
-        addAdalatReplyFileRowFunc();
-        addSuspensionOrderFileRowFunc();
-        addFinalOrderFileRowFunc();
         addContemptFileRowFunc();
         // addHighcourtAdalatRowFunc();
+
         $('select').select2();
 
 
@@ -913,7 +916,66 @@
     }
 
 
+    //// ================////////////////////////////
+    $("#adeshTamilDecisionFileRow").click(function(e) {
+        adeshTamilDecisionFileRowFunc();
+    });
+    //add row function
+    function adeshTamilDecisionFileRowFunc() {
+        var count = parseInt($('#adesh_tamil_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#adesh_tamil_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_order_tamil[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_order_tamil[]" onChange="adeshTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adesh-tamil-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#adeshTamilDecisionFileDiv tr:last').after(items);
 
+        // if (formType == 'edit') {
+        //     $(`#customFile${count}`).attr('required', false);
+        //     $(`#customFileName${count}`).attr('required', false);
+        // }
+    }
+
+
+    $("#appealSubmissionFileRow").click(function(e) {
+        appealSubmissionFileRowFunc();
+    });
+    //add row function
+    function appealSubmissionFileRowFunc() {
+        var count = parseInt($('#reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_appeal_request[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_appeal_request[]" onChange="replyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#appealSubmissionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
 
     // ============= Add Reply Attachment Row ========= start =========
     $("#addAdalatReplyFileRow").click(function(e) {
@@ -1024,34 +1086,34 @@
 
 
     // ============= Add Final Order Attachment Row ========= start =========
-    $("#addFinalOrderFileRow").click(function(e) {
-        addFinalOrderFileRowFunc();
-    });
-    //add row function
-    function addFinalOrderFileRowFunc() {
-        var count = parseInt($('#final_order_attachment_count').val());
-        var formType = $('#formType').val();
-        $('#final_order_attachment_count').val(count + 1);
-        var items = '';
-        items += '<tr>';
-        items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
-            '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
-            count +
-            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
-            count + '" for="customFinalFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
-        items +=
-            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-        items += '</tr>';
-        $('#finalOrderFileDiv tr:last').after(items);
+    // $("#addFinalOrderFileRow").click(function(e) {
+    //     addFinalOrderFileRowFunc();
+    // });
+    // //add row function
+    // function addFinalOrderFileRowFunc() {
+    //     var count = parseInt($('#final_order_attachment_count').val());
+    //     var formType = $('#formType').val();
+    //     $('#final_order_attachment_count').val(count + 1);
+    //     var items = '';
+    //     items += '<tr>';
+    //     items += '<td><input type="text" name="final_order_file_type[]" id="customFinalOrderFileName' + count +
+    //         '" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+    //     items +=
+    //         '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
+    //         count + ',this)" class="custom-file-input" id="customFinalFile' + count + '" /><label id="file_error' +
+    //         count +
+    //         '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
+    //         count + '" for="customFinalFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+    //     items +=
+    //         '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //     items += '</tr>';
+    //     $('#finalOrderFileDiv tr:last').after(items);
 
-        if (formType == 'edit') {
-            $(`#customFinalFile${count}`).attr('required', false);
-            $(`#customFinalOrderFileName${count}`).attr('required', false);
-        }
-    }
+    //     if (formType == 'edit') {
+    //         $(`#customFinalFile${count}`).attr('required', false);
+    //         $(`#customFinalOrderFileName${count}`).attr('required', false);
+    //     }
+    // }
 
 
 
@@ -1322,6 +1384,80 @@
         var solicitorCheckbox = document.getElementById("solicitor_checkbox");
         var lawOfficerCheckbox = document.getElementById("law_officer_checkbox");
         var sendingReplyDiv = document.querySelector(".sending_reply_div");
+
+        function toggleSendingReplyDiv() {
+            if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                sendingReplyDiv.style.display = "block";
+            } else {
+                sendingReplyDiv.style.display = "none";
+            }
+        }
+
+        toggleSendingReplyDiv();
+        solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_div').hide();
+        $('input[name="adesh_tamil_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="adesh_tamil_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_div').show();
+            } else {
+                $('.adesh_tamil_decision_div').hide();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_yes_taken_div').hide();
+        $('input[name="appeal_against_adesh_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="appeal_against_adesh_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_yes_taken_div').show();
+            } else {
+                $('.adesh_tamil_decision_yes_taken_div').hide();
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#suspension_order_data_details').hide();
+        $('#suspensionOrderTrackingNumberField').hide();
+        $('input[name="adesh_tamil_decision_yes_taken"]').change(function() {
+            if ($(this).val() == '1') {
+
+                $('#suspension_order_data_details').show();
+            } else {
+
+                $('#suspension_order_data_details').hide();
+                $('#suspensionOrderTrackingNumberField').hide();
+                $('.sending_reply_div').hide();
+                $('#suspension_order_data_details input').val('');
+                $('.sending_reply_div input').val('');
+                $('#suspension_order_data_details input[type="checkbox"]').prop('checked', false);
+            }
+        });
+
+        $('#suspension_order_solicitor_checkbox').change(function() {
+            if ($(this).is(':checked')) {
+
+                $('#suspensionOrderTrackingNumberField').show();
+            } else {
+                $('#suspensionOrderTrackingNumberField').hide();
+            }
+        });
+
+        var solicitorCheckbox = document.getElementById("suspension_order_solicitor_checkbox");
+        var lawOfficerCheckbox = document.getElementById("suspension_order_law_officer_checkbox");
+        var sendingReplyDiv = document.querySelector(".suspension_order_div");
 
         function toggleSendingReplyDiv() {
             if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
