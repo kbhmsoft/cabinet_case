@@ -391,7 +391,8 @@ class GovCaseOfficeController extends Controller
      */
     public function store(Request $request)
     {
-
+        // return date(now());
+        // return $request;
         $roleID = Auth::user()->role_id;
 
         $validator = $request->validate([
@@ -405,12 +406,17 @@ class GovCaseOfficeController extends Controller
         } else {
             $parentID = '';
         }
+        $refrence_id = mt_rand( 100000, 999999 );
         DB::table('gov_case_office')->insert([
-            'level' => $request->office_lavel,
+            // 'level' => $request->office_lavel,
+            'doptor_office_id' => $refrence_id,
             'office_name_bn' => $request->office_name,
             'status' => $request->status,
             'parent_office_id' => $parentID,
             'level' => $request->level,
+            'is_general_office' => 1,
+            'created_at' => date(now()),
+            'created_by' => Auth::user()->id,
         ]);
         return redirect()->route('cabinet.office')
             ->with('success', 'অফিস সফলভাবে সংরক্ষণ করা হয়েছে');

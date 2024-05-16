@@ -159,16 +159,19 @@
                                                             class="text-danger">*</span></label>
 
                                                     <div class="" id="AdalatDiv">
-                                                        <select name="highcourt_adalat" id="HighCourtAdalat"
-                                                            class="form-control form-control-sm">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($highCourtAdalat as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('highcourt_adalat') == $value->id || $case->highcourt_adalat == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
+                                                        @foreach ($caseCourts as $row)
+                                                            <select name="highcourt_adalat" id="HighCourtAdalat"
+                                                                class="form-control form-control-sm">
+                                                                <option value="">-- নির্বাচন করুন --</option>
+                                                                @foreach ($highCourtAdalat as $value)
+                                                                    <option value="{{ $value->id }}"
+                                                                        {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
+                                                                        {{ $value->name }} </option>
+                                                                @endforeach
 
-                                                        </select>
+                                                            </select>
+                                                        @endforeach
+
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
@@ -208,10 +211,10 @@
                                                                         id="concernPersonDesignation"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
-                                                                        @foreach ($concern_person_desig as $value)
-                                                                            <option value="{{ $value->id }}"
-                                                                                {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
-                                                                                {{ $value->name_bn }} </option>
+                                                                        @foreach ($concern_person_desig as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_person_designation') == $data->id || $value->concern_person_designation == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name_bn }} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -220,10 +223,10 @@
                                                                     <select name="concern_user_id[]" id="concern_user_id"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
-                                                                        @foreach ($usersInfo as $value)
-                                                                            <option value="{{ $value->id }}"
-                                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
-                                                                                {{ $value->name }} </option>
+                                                                        @foreach ($usersInfo as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_user_id') == $data->id || $value->concern_user_id == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name }} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -240,9 +243,10 @@
                                                                 <input type="hidden" name="concern_person_id[]"
                                                                     value="{{ $value->id }}">
                                                             </tr>
+                                                            <input type="hidden" id="survey_count"
+                                                                value="{{ $key + 1 }}">
                                                         @endforeach
                                                     </table>
-                                                    <input type="hidden" id="survey_count" value="{{ $key + 1 }}">
                                                 </div>
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
@@ -330,8 +334,8 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                                           
-                                                                        @foreach ($ministrys as $item)
+                                                                                                   
+                                                                                  @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -376,8 +380,9 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                                                       
-                                                                                       @foreach ($ministrys as $item)
+                                                                                                               
+                                                                                               
+                                                                             @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -466,7 +471,7 @@
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
-                                                                    <div id="addFileRow">
+                                                                    <div id="addMainFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
                                                                             <i
@@ -515,30 +520,39 @@
                                                                     </tr>
                                                                 @endforeach --}}
                                                                 @foreach ($files as $row)
-                                                                <div class="form-group mb-2" id="deleteFile{{ $row->id }}">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn bg-success-o-75" type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
-                                                                        </div>
-                                                                        {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
-                                                                        <input readonly type="text" class="form-control" value="{{ $row->file_category ?? '' }}" />
-                                                                        <div class="input-group-append">
-                                                                            <a href="{{ asset($row->file_path . $row->file_name) }}" target="_blank" class="btn btn-sm btn-success font-size-h5 float-left">
-                                                                                <i class="fa fas fa-file-pdf"></i>
-                                                                                <b>দেখুন</b>
-                                                                                {{-- <embed src="{{ asset('uploads/sf_report/'.$data[0]['case_register'][0]['sf_report']) }}" type="application/pdf" width="100%" height="600px" />  --}}
-                                                                             </a>
-                                                                            {{-- <a href="minarkhan.com" class="btn btn-success" type="button">দেখুন </a> --}}
-                                                                        </div>
-                                                                        <div class="input-group-append">
-                                                                            <a href="javascript:void(0);" id="" onclick="deleteFile({{ $row->id }} )" class="btn btn-danger">
-                                                                                <i class="fas fa-trash-alt"></i>
-                                                                                <b>মুছুন</b>
-                                                                            </a>
+                                                                    <div class="form-group mb-2"
+                                                                        id="deleteFile{{ $row->id }}">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <button class="btn bg-success-o-75"
+                                                                                    type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
+                                                                            </div>
+                                                                            {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
+                                                                            <input readonly type="text"
+                                                                                class="form-control"
+                                                                                value="{{ $row->file_category ?? '' }}" />
+                                                                            <div class="input-group-append">
+                                                                                <a href="{{ asset($row->file_path . $row->file_name) }}"
+                                                                                    target="_blank"
+                                                                                    class="btn btn-sm btn-success font-size-h5 float-left">
+                                                                                    <i class="fa fas fa-file-pdf"></i>
+                                                                                    <b>দেখুন</b>
+                                                                                    {{-- <embed src="{{ asset('uploads/sf_report/'.$data[0]['case_register'][0]['sf_report']) }}" type="application/pdf" width="100%" height="600px" />  --}}
+                                                                                </a>
+                                                                                {{-- <a href="minarkhan.com" class="btn btn-success" type="button">দেখুন </a> --}}
+                                                                            </div>
+                                                                            <div class="input-group-append">
+                                                                                <a href="javascript:void(0);"
+                                                                                    id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                    onclick="deleteRuleFile({{ $row->id }} )"
+                                                                                    class="btn btn-danger">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                    <b>মুছুন</b>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                {{-- <tr>
+                                                                    {{-- <tr>
                                                                     <td>
                                                                         <input type="text" name="file_type[]" value="{{ $value->file_type }}"
                                                                             class="form-control form-control-sm" placeholder="" disabled>
@@ -558,7 +572,7 @@
                                                                 </tr> --}}
                                                                 @endforeach
                                                             </table>
-                                                            <input type="hidden" id="other_attachment_count"
+                                                            <input type="hidden" id="other_main_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
@@ -1785,6 +1799,37 @@
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
     <script>
+        function deleteRuleFile(id) {
+            // alert(id);
+            Swal.fire({
+                title: 'আপনি কি মামলার রুল কপি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteRuleFileBtn_'+id).addClass('loadersmall')
+                    jQuery.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/ruleFile/delete/' +
+                            id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            Swal.fire(
+                                    'সফল!',
+                                    data.message,
+                                    'success'
+                                )
+                                addMainFileRowFunc();
+                            $('#deleteFile'+id).remove();
+                            
+                        }
+                    });
+                }
+            });
+        }
+
         $(document).ready(function() {
             $('.tab-content .tab-pane:first-child').addClass('active');
             $('.myTab a').click(function(e) {
@@ -2192,6 +2237,49 @@
         //     })
 
         // });
+
+
+
+        
+    // ============= Add Attachment Row ========= start =========
+    $("#addMainFileRow").click(function(e) {
+        addMainFileRowFunc();
+    });
+    //add row function
+    function addMainFileRowFunc() {
+        var count = parseInt($('#other_main_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#other_main_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#fileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+
+
+
+
+
+
+
+
         // ================================Case General Info save==================================
 
         // ================================Sending Replay Save==================================//

@@ -155,7 +155,7 @@
                     </li>
                 @endcan
                 @can('appeal_division')
-                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*', 'cabinet/case/attorney/*') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/appellateDivision', 'cabinet/case/appellateDivision/*', 'cabinet/case/attorney/*', 'cabinet/case/appeal/*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>আপিল

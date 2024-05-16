@@ -791,7 +791,7 @@ class GovCaseRegisterController extends Controller
             $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
             array_push($arrayd, $val);
         }
-// return $arrayd;
+        // return $arrayd;
         // $data['ministry'] = $ministry->groupBy('gov_case_office.id')
         //     ->paginate(10);
         // return $data['ministry'];
@@ -2557,9 +2557,9 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        $data['caseRegister'] = GovCaseRegister::all();
+        // $data['caseRegister'] = GovCaseRegister::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -2587,7 +2587,7 @@ class GovCaseRegisterController extends Controller
         $data['appealCourtAdalat'] = AppealAdalat::get();
 
         $data['page_title'] = 'আপিল মামলা এন্ট্রি ';
-
+        // return $data;
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 
@@ -2600,7 +2600,7 @@ class GovCaseRegisterController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['caseRegister'] = GovCaseRegister::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -2731,7 +2731,6 @@ class GovCaseRegisterController extends Controller
 
         if ($exists) {
             return response()->json(['error' => 'মামলা নং, বছর, এবং মামলার শ্রেণী/কেস-টাইপ এই তিনটি মান সম্বলিত মামলা ইতিমধ্যে বিদ্যমান আছে'], 422);
-
         } else {
             try {
                 $caseId = $request->caseId;
@@ -2820,7 +2819,6 @@ class GovCaseRegisterController extends Controller
                     'is_shown' => 0,
                 ]);
             }
-
         }
         // $request->validate(
         //     [
@@ -2912,7 +2910,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'জবাব প্রেরণ';
 
@@ -2944,7 +2942,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'আদালতে জবাব দাখিল';
 
@@ -3076,7 +3074,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিষয়ে ব্যাবস্থা';
 
@@ -3226,6 +3224,11 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
+        // return $data['usersInfo'];
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
+        // return $data['concern_person_desig'];
+
+
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
         $data['page_title'] = 'সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন/ আপিল দায়ের সংক্রান্ত';
@@ -3261,6 +3264,7 @@ class GovCaseRegisterController extends Controller
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
+
         $data['page_title'] = 'চূড়ান্ত আদেশ';
 
         return view('gov_case.case_register._inc.final_order_edit')->with($data);
@@ -3291,7 +3295,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'কনটেম্প্ট মামলা / অন্যান্য';
 
@@ -3461,7 +3465,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -3503,7 +3507,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -3535,7 +3539,7 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -3656,7 +3660,6 @@ class GovCaseRegisterController extends Controller
             if ($request->leave_to_appeal_file_type && $_FILES["leave_to_appeal_file_name"]['name']) {
                 // AttachmentRepository::storeLeaveToAppealAttachment('gov_case', $caseId, $request);
                 AttachmentRepository::storeLeaveToAppealAnswerAttachment('gov_case', $caseId, $request);
-
             }
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -3754,9 +3757,9 @@ class GovCaseRegisterController extends Controller
     {
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-        //     ->where('is_final_order', 1)
-        // // ->pluck("case_no", "id", "year");
-        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
+            //     ->where('is_final_order', 1)
+            // // ->pluck("case_no", "id", "year");
+            //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -3792,7 +3795,6 @@ class GovCaseRegisterController extends Controller
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
             return view('gov_case.case_register.appealRegister')->with($data);
         }
-
     }
 
     public function show($id)
@@ -3800,7 +3802,7 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
         $data['usersInfo'] = User::all();
 
         if ($data['case']->case_division_id == 2) {
@@ -3819,7 +3821,7 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
         $data['usersInfo'] = User::all();
 
         if ($data['case']->case_division_id == 2) {
@@ -3840,14 +3842,12 @@ class GovCaseRegisterController extends Controller
 
         if ($data['case']->case_division_id == 2) {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলা সম্পর্কিত রেজিস্টার';
-
         } else {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলা সম্পর্কিত রেজিস্টার';
-
         }
         //  return $data;
         $html = view('gov_case.case_register.showHighcourtRegisterPdf')->with($data);
-// return $html;
+        // return $html;
         $this->generatePDF($html);
     }
     public function generatePDF($html)
@@ -3918,10 +3918,8 @@ class GovCaseRegisterController extends Controller
         // dd($id);
         if ($id != 45) {
             $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
-
         } else {
             $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
-
         }
         return json_encode($getdependentUser);
     }
@@ -4275,8 +4273,8 @@ class GovCaseRegisterController extends Controller
     {
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
             ->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-            $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-        })->get();
+                $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+            })->get();
         return $query;
     }
 
@@ -4363,7 +4361,6 @@ class GovCaseRegisterController extends Controller
             $office->status = 1;
             $office->save();
         }
-
     }
 
     public function ministryLayerId($id)
@@ -4514,7 +4511,6 @@ class GovCaseRegisterController extends Controller
 
     public function ministryOraganogram()
     {
-
     }
 
     public function highcourtNotAgainstGov()
@@ -4946,4 +4942,20 @@ class GovCaseRegisterController extends Controller
         return "Data Inserted Successfully";
     }
 
+
+    function ruleFileDelete($id)
+    {
+        $data = [
+            'deleted_at' => date(now()),
+            'deleted_by' => Auth()->user()->id,
+            'is_deleted' => 1,
+
+        ];
+        $Value = DB::table('attachments')
+            ->where('id', $id)
+            ->update($data);
+        // dd($Value);
+
+        return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
+    }
 }

@@ -1148,7 +1148,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
-
+        return $data;
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 
@@ -1265,7 +1265,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
-
+        // dd($request);
         $caseNo = $request->caseId;
         $request->validate([
             'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseNo,
@@ -1346,6 +1346,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealFinalOrderStore(Request $request)
     {
+        // dd($request);
         $caseId = $request->case_id;
 
         $request->validate([
@@ -1579,12 +1580,16 @@ class AppealGovCaseRegisterController extends Controller
     public function appealFinalOrderEdit($id)
     {
         $roleID = userInfo()->role_id;
-
+        
         $officeID = userInfo()->office_id;
+        
+        $data['case'] = AppealGovCaseRegister::findOrFail($id);
+        $data['appealCourtAdalat'] = AppealAdalat::get();
 
-        $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
-
-        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCaseData']->case_number_origin);
+        // dd($data['appealCaseData']);
+        // $hichCouertCaseId = $data['appealCaseData']->case_number_origin;
+        // dd($data['appealCaseData']->case_number_origin);
+        // $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($hichCouertCaseId);
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
         $data['ministrys'] = GovCaseOffice::get();
 

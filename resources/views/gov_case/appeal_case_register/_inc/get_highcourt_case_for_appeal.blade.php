@@ -98,12 +98,20 @@
                 class="form-control form-control-sm" placeholder="" autocomplete="off" disabled
                 value="{{ $concernpersondesig->name ?? ''}}">
         </div>
+        
 
         <div class="col-lg-6 mb-5">
             <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)<span class="text-danger"></span></label>
             <input type="text" name="appeal_concern_user_id" id="appeal_concern_user_id"
                 class="form-control form-control-sm" placeholder="" autocomplete="off" disabled
                 value="{{ $concernPersonName->name ?? ''}}">
+        </div>
+
+        <div class="col-lg-6 mb-5">
+            <label>মামলা সংশ্লিষ্ট অর্থের পরিমান<br> (ধরনর মামলা উদ্ভূত)<span class="text-danger"></span></label>
+            <input type="text" name="money_amount" id="money_amount"
+                class="form-control form-control-sm" placeholder="" autocomplete="off" disabled
+                value="{{ en2bn($case->money_amount) ?? ''}}">
         </div>
 
 
