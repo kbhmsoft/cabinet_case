@@ -18,10 +18,11 @@ class GovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
-        dd($caseId);                                                                                            
+        // dd($caseId);                                                                                            
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
+        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
@@ -39,6 +40,7 @@ class GovCaseRegisterRepository
             'case' => $case,
             'caseBadi' => $caseBadi,
             'caseLawers' => $caseLawers,
+            'caseCourts' => $caseCourts,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,

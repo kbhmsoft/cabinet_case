@@ -229,6 +229,7 @@ Route::middleware('auth')->group(function () {
             Route::post('contemptCaseStoreActionButton', [GovCaseRegisterController::class, 'contemptCaseStoreActionButton'])->name('contemptCaseStoreActionButton');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
+            Route::get('highcourt/ruleFile/delete/{id}', [GovCaseRegisterController::class, 'ruleFileDelete'])->name('highcourt.ruleFile.delete');
             Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
             Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
             Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');

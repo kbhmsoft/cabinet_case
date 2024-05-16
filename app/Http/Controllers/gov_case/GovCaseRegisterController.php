@@ -2557,9 +2557,9 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        $data['caseRegister'] = GovCaseRegister::all();
+        // $data['caseRegister'] = GovCaseRegister::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -2587,7 +2587,7 @@ class GovCaseRegisterController extends Controller
         $data['appealCourtAdalat'] = AppealAdalat::get();
 
         $data['page_title'] = 'আপিল মামলা এন্ট্রি ';
-
+        // return $data;
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 
@@ -2600,7 +2600,7 @@ class GovCaseRegisterController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['caseRegister'] = GovCaseRegister::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -2902,7 +2902,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'জবাব প্রেরণ';
 
@@ -2934,7 +2934,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'আদালতে জবাব দাখিল';
 
@@ -3066,7 +3066,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের বিষয়ে ব্যাবস্থা';
 
@@ -3153,7 +3153,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
         // return $data['usersInfo'];
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
         // return $data['concern_person_desig'];
         $data['page_title'] = 'চূড়ান্ত আদেশ';
         // return $data['concern_person_desig'] ;
@@ -3186,7 +3186,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'কনটেম্প্ট মামলা / অন্যান্য';
 
@@ -3356,7 +3356,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -3398,7 +3398,7 @@ class GovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['usersInfo'] = User::all();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
@@ -3430,7 +3430,7 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
@@ -3696,7 +3696,7 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
         $data['usersInfo'] = User::all();
 
         if ($data['case']->case_division_id == 2) {
@@ -3715,7 +3715,7 @@ class GovCaseRegisterController extends Controller
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
         $data['usersInfo'] = User::all();
 
         if ($data['case']->case_division_id == 2) {
@@ -4842,6 +4842,21 @@ class GovCaseRegisterController extends Controller
             ]);
         }
         return "Data Inserted Successfully";
+    }
+
+    function ruleFileDelete($id){
+        $data= [
+            'deleted_at' => date(now()),
+            'deleted_by' => Auth()->user()->id,
+            'is_deleted' => 1,
+            
+        ];
+        $Value = DB::table('attachments')
+        ->where('id', $id)
+        ->update($data);
+        // dd($Value);
+
+        return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
 
 }

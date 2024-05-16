@@ -1148,7 +1148,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান আপিল মামলা এন্ট্রি ';
-
+        return $data;
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 

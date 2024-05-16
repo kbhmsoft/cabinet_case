@@ -139,5 +139,9 @@ class GovCaseBadiBibadiRepository
         $other_bibadi = GovCaseConcernPerson::where('gov_case_id', $caseId)->get();
         return $other_bibadi;
     }
-
+    public static function getJusticeNameByCaseId($caseId)
+    {
+        $justices = GovCaseHighcourtAdalat::where('gov_case_id', $caseId)->get();
+        return $justices;
+    }
 }
