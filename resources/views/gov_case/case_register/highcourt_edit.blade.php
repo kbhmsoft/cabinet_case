@@ -1881,7 +1881,7 @@
         function addAdvocateLawerFunc() {
 
             var count = parseInt($('#survey_count').val());
-            alert(count)
+            // alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';

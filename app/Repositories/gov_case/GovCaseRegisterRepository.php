@@ -30,7 +30,7 @@ class GovCaseRegisterRepository
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->get();
+        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted',0)->get();
         $replyFiles = ReplyAttachment::where('gov_case_id', $caseId)->get();
         $suspensionFiles = SuspensionAttachment::where('gov_case_id', $caseId)->get();
         $finalFiles = FinalAttachment::where('gov_case_id', $caseId)->get();
