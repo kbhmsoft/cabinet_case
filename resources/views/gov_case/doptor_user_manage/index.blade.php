@@ -56,7 +56,7 @@
             <form class="form-inline" method="POST" id="doptorOfficeForm">
                 <div class="form-group mb-2 mr-2">
                     <select name="office_type" id="office_type" class="form-control">
-                        <option value="">-বিভাগ নির্বাচন করুন-</option>3
+                        <option value="">-দপ্তরের ধরন নির্বাচন করুন-</option>3
                         @foreach ($office_types as $value)
                             <option
                                 value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
