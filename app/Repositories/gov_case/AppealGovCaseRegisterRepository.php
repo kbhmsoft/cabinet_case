@@ -17,21 +17,27 @@ class AppealGovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
+        // dd($caseId);
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
+        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->get();
+        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted',0)->get();
+      
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
         $data = [
             'case' => $case,
             'caseBadi' => $caseBadi,
+            'caseLawers' => $caseLawers,
+            'caseCourts' => $caseCourts,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
@@ -39,6 +45,9 @@ class AppealGovCaseRegisterRepository
             'caseLogs' => $caseLog,
             'hearings' => $hearings,
             'files' => $files,
+            'replyFiles' => $replyFiles,
+            'suspensionFiles' => $suspensionFiles,
+            'finalFiles' => $finalFiles,
             'concernpersondesig' => $concernpersondesig,
             'concernPersonName' => $concernPersonName,
         ];
@@ -86,7 +95,7 @@ class AppealGovCaseRegisterRepository
             $case->case_type_id = $caseInfo->case_category_type;
             $case->year = $caseInfo->case_year;
             $case->appeal_petitioner_name = $petitioner_name;
-     
+
 
             $case->case_division_id = 1;
 

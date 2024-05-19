@@ -125,17 +125,18 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>বেঞ্চ/আদালতের নাম <span class="text-danger">*</span></label>
+                                                    <label>
+                                                        আদালতের নাম (Court Name) <span class="text-danger">*</span></label>
 
                                                     <div class="" id="AdalatDiv">
                                                         <select name="appeal_adalat" id="AppealAdalat"
                                                             class="form-control form-control-sm">
                                                             <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($appealCourtAdalat as $value)
+                                                            {{-- @foreach ($appealCourtAdalat as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('appeal_adalat') == $value->id || $case->appeal_adalat == $value->id ? 'selected' : '' }}>
                                                                     {{ $value->name }} </option>
-                                                            @endforeach
+                                                            @endforeach --}}
 
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
@@ -163,9 +164,15 @@
                                                     </div>
                                                 </div>
 
-
-
                                                 <div class="col-lg-4 mb-5">
+                                                    <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span
+                                                            class="text-danger"></span></label>
+                                                    <input type="text" name="postpond_date" id="postpond_date"
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        value="{{ $appealCaseData->postpond_date ?? '' }}">
+                                                </div>
+
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                             class="text-danger">*</span></label>
 
@@ -204,15 +211,67 @@
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
+                                                <div class="col-lg-12 mb-5">
+                                                    <table width="100%" border="1" id="advocateLawerDiv"
+                                                        style="border:1px solid #dcd8d8;">
+                                                        <tr>
 
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>স্থগিতাদেশের তারিখ(প্রযোজ্য ক্ষেত্রে)<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="postpond_date" id="postpond_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
-                                                        value="{{ $appealCaseData->postpond_date ?? '' }}">
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th width="30">
+                                                                <a href="javascript:void(0);" id="addAdvocateLawer"
+                                                                    class="btn btn-sm btn-primary pr-2"><i
+                                                                        class="fas fa-plus-circle"></i></a>
+                                                            </th>
+
+                                                        </tr>
+                                                        @foreach ($caseLawers as $key => $value)
+                                                            <tr>
+                                                                <td>
+                                                                    <select name="concernPersonDesignation[]"
+                                                                        id="concernPersonDesignation_{{ $key+1 }}"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required" onchange="getConcernPerName({{ $key+1 }})">
+                                                                        @foreach ($concern_person_desig as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_person_designation') == $data->id || $value->concern_person_designation == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name_bn }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+
+                                                                <td>
+                                                                    <select name="concern_user_id[]" id="concern_user_id_{{ $key+1 }}"
+                                                                        class="form-control form-control-sm"
+                                                                        required="required">
+                                                                        @foreach ($lawerInfo as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_user_id') == $data->id || $value->concern_user_id == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void();"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $value->id }}"
+                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                                <input type="hidden" name="concern_person_id[]"
+                                                                    value="{{ $value->id }}">
+                                                            </tr>
+                                                            <input type="hidden" id="survey_count"
+                                                                value="{{ $key + 2 }}">
+                                                        @endforeach
+                                                    </table>
                                                 </div>
 
 

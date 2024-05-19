@@ -204,6 +204,7 @@
                                                             </th>
 
                                                         </tr>
+                                                        {{-- @dd($caseLawers) --}}
                                                         @foreach ($caseLawers as $key => $value)
                                                             <tr>
                                                                 <td>
@@ -248,6 +249,8 @@
                                                         @endforeach
                                                     </table>
                                                 </div>
+
+
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -334,7 +337,7 @@
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
-                                                                                                   
+
                                                                                   @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
@@ -380,8 +383,8 @@
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
 
 
-                                                                                                               
-                                                                                               
+
+
                                                                              @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
@@ -1774,7 +1777,7 @@
                                 )
                                 addMainFileRowFunc();
                             $('#deleteFile'+id).remove();
-                            
+
                         }
                     });
                 }
@@ -2192,7 +2195,7 @@
 
 
 
-        
+
     // ============= Add Attachment Row ========= start =========
     $("#addMainFileRow").click(function(e) {
         addMainFileRowFunc();

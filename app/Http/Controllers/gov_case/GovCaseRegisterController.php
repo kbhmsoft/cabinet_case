@@ -2557,7 +2557,6 @@ class GovCaseRegisterController extends Controller
 
         $data['ministrys'] = GovCaseOffice::get();
 
-        // $data['caseRegister'] = GovCaseRegister::all();
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
@@ -2587,7 +2586,7 @@ class GovCaseRegisterController extends Controller
         $data['appealCourtAdalat'] = AppealAdalat::get();
 
         $data['page_title'] = 'আপিল মামলা এন্ট্রি ';
-        // return $data;
+
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
 
@@ -3753,6 +3752,7 @@ class GovCaseRegisterController extends Controller
 
     public function getDependentCaseCategoryType($id)
     {
+ 
         $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
     }
@@ -4963,4 +4963,5 @@ class GovCaseRegisterController extends Controller
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
+
 }

@@ -23,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
 
@@ -186,7 +186,6 @@
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                                     class="text-danger">*</span></th>
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
@@ -386,7 +385,7 @@
                                                     </div>
 
 
-                                                    
+
 
                                                     <div class="col-md-12 mb-5">
                                                         <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
@@ -410,9 +409,9 @@
                                                             class="form-control form-control-sm  common_datepicker"
                                                             placeholder="দিন/মাস/বছর" autocomplete="off">
                                                     </div>
-                                                    
+
                                                 </div>
-                                               
+
                                                 {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
                                                     <fieldset class="">
