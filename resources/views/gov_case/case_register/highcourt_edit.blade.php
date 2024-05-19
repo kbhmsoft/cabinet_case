@@ -483,42 +483,10 @@
                                                         </div>
 
                                                         <div class="mt-3 px-5">
-                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                            <table width="100%" class="border-0 px-5" id="mainFileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-                                                                {{-- @foreach ($files as $key => $value)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="text" name="file_type[]"
-                                                                                id="customFileName"
-                                                                                class="form-control form-control-sm"
-                                                                                value="{{ old('file_type', $value->file_type) }}">
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="custom-file">
-
-                                                                                @if ($value->file_name)
-                                                                                    <a target="_blank"
-                                                                                        class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
-                                                                                        href="{{ asset($value->file_name) }}">সংযুক্তি
-                                                                                        কপি</a><br>
-                                                                                @else
-                                                                                    <input type="file"
-                                                                                        accept="application/pdf"
-                                                                                        name="file_name[]"
-                                                                                        onChange="attachmentTitle(this)"
-                                                                                        class="custom-file-input"
-                                                                                        id="customFile" />
-                                                                                    <label id="file_error"
-                                                                                        class="text-danger font-weight-bolder mt-2 mb-2"></label>
-                                                                                    <label
-                                                                                        class="custom-file-label custom-input"
-                                                                                        for="customFile">
-                                                                                    </label>
-                                                                                @endif
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach --}}
+                                                               
+                                                                <tr>
                                                                 @foreach ($files as $row)
                                                                     <div class="form-group mb-2"
                                                                         id="deleteFile{{ $row->id }}">
@@ -530,7 +498,7 @@
                                                                             {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
                                                                             <input readonly type="text"
                                                                                 class="form-control"
-                                                                                value="{{ $row->file_category ?? '' }}" />
+                                                                                value="{{ $row->file_type ?? '' }}" />
                                                                             <div class="input-group-append">
                                                                                 <a href="{{ asset($row->file_path . $row->file_name) }}"
                                                                                     target="_blank"
@@ -552,32 +520,15 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    {{-- <tr>
-                                                                    <td>
-                                                                        <input type="text" name="file_type[]" value="{{ $value->file_type }}"
-                                                                            class="form-control form-control-sm" placeholder="" disabled>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="file_name[]" value="{{ $value->file_name }}"
-                                                                            class="form-control form-control-sm" placeholder=""disabled>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="javascript:void(0);"
-                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->id }}" onclick="removeRowFileFunc(this)">
-                                                                            <i class="fas fa-minus-circle"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <input type="hidden" name="hide_file_id[]" value="{{ $value->id }}">
-                                                                </tr> --}}
-                                                                @endforeach
+                                                                    @endforeach
+                                                                </tr> 
                                                             </table>
                                                             <input type="hidden" id="other_main_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
                                                 </div>
-
+                                                
                                                 {{-- end সংযুক্তি --}}
                                             </div>
                                         </fieldset>
@@ -1942,7 +1893,7 @@
         }
     </script>
 
-    {{-- @include('gov_case.case_register.create_js') --}}
+    @include('gov_case.case_register.create_js')
     <script type="text/javascript">
         // $(document).ready(function() {
         //     addBadiRowFunc();
@@ -2249,7 +2200,9 @@
     //add row function
     function addMainFileRowFunc() {
         var count = parseInt($('#other_main_attachment_count').val());
+        
         var formType = $('#formType').val();
+        // alert(formType);
         $('#other_main_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
@@ -2265,12 +2218,13 @@
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
-        $('#fileDiv tr:last').after(items);
+        $('#mainFileDiv tr:last').after(items);
+        console.log(items);
 
-        if (formType == 'edit') {
-            $(`#customFile${count}`).attr('required', false);
-            $(`#customFileName${count}`).attr('required', false);
-        }
+        // if (formType == 'edit') {
+        //     $(`#customFile${count}`).attr('required', false);
+        //     $(`#customFileName${count}`).attr('required', false);
+        // }
     }
 
 
