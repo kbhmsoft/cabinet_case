@@ -7,24 +7,25 @@
  */
 namespace App\Repositories\gov_case;
 
+use App\Models\Attachment;
 use App\Models\FinalAttachment;
 use App\Models\ReplyAttachment;
 use App\Models\AppealAttachment;
 use App\Models\ContemptAttachment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Log;
+use App\Models\OrderTakenAttachment;
 use App\Models\SuspensionAttachment;
 use App\Models\LeaveToAppealAttachment;
 use Illuminate\Support\Facades\Session;
+use App\Models\OrderTakenFinalAttachment;
 use App\Models\SuspensionTamilAttachment;
 use App\Models\AppealFinalOrderAttachment;
+use App\Models\OrderTakenAppealAttachment;
 use App\Models\SuspensionAppealAttachment;
 use App\Models\AdalatReplySendingAttachment;
-use App\Models\OrderTakenAttachment;
 use App\Models\LeaveToAppealAnswerAttachment;
-use App\Models\OrderTakenFinalAttachment;
-use App\Models\OrderTakenAppealAttachment;
 
 class AttachmentRepository
 {

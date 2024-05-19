@@ -914,7 +914,8 @@
                                                                             style="border:1px solid #dcd8d8;">
                                                                             <tr></tr>
                                                                         </table>
-                                                                        <input type="hidden" id="appeal_submission_attachment_count"
+                                                                        <input type="hidden"
+                                                                            id="appeal_submission_attachment_count"
                                                                             value="1">
                                                                     </div>
                                                                 </fieldset>
@@ -1084,7 +1085,8 @@
 
                                                     <div class="col-md-12">
                                                         <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
-                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3" spellcheck="false"></textarea>
+                                                        <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
+                                                            spellcheck="false"></textarea>
                                                     </div>
 
                                                     <div class="col-lg-4 mb-5">
@@ -1305,7 +1307,38 @@
             });
         });
     </script>
+    <script>
+        //===========caseType================//
+        jQuery('select[name="case_category"]').on('change', function() {
+            var dataID = jQuery(this).val();
 
+            jQuery("#case_category_type").after('<div class="loadersmall"></div>');
+
+            if (dataID) {
+                jQuery.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
+                        dataID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="case_category_type"]').html(
+                            '<div class="loadersmall"></div>');
+
+                        jQuery('select[name="case_category_type"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="case_category_type"]').append(
+                                '<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
+                });
+            } else {
+                $('select[name="case_category_type"]').empty();
+            }
+        });
+    </script>
 
     @include('gov_case.case_register.create_js')
 
