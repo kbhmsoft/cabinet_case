@@ -1896,7 +1896,7 @@
         }
     </script>
 
-    @include('gov_case.case_register.create_js')
+    {{-- @include('gov_case.case_register.create_js') --}}
     <script type="text/javascript">
         // $(document).ready(function() {
         //     addBadiRowFunc();
@@ -1905,6 +1905,9 @@
         var count = parseInt($('#other_attachment_count').val());
     </script>
     <script type="text/javascript">
+    function removeBibadiRow(id) {
+        $(id).closest("tr").remove();
+    }
         // dynamically change high court / appeal court
         $(document).ready(function() {
             $('#appeal_hide_show_3').hide();
