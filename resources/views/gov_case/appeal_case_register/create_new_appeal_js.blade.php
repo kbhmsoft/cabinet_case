@@ -48,7 +48,7 @@
         //===========caseType================//
         jQuery('select[name="appeal_office"]').on('change', function() {
             var dataID = jQuery(this).val();
-            alert(dataID);
+            console.log(dataID);
             if(dataID == 0){
                 $('#appeal_petitioner_name').removeClass('d-none');
             }else{
@@ -586,8 +586,6 @@
                     processData: false,
 
                     success: (data) => {
-                        console.log('hi');
-                        console.log(data);
                         $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;

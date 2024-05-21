@@ -299,7 +299,7 @@
                                                     </div>
 
 
-                                                    <div class="col-lg-7 mb-5 product-image">
+                                                    {{-- <div class="col-lg-7 mb-5 product-image">
                                                         <table width="100%" border="1" id="bibadiDiv"
                                                             class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
@@ -316,7 +316,27 @@
                                                             </tr>
                                                             <tr></tr>
                                                         </table>
+                                                    </div> --}}
+
+                                                    <div class="col-lg-7 mb-5 product-image">
+                                                        <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                            <tr>
+                                                                <th class="other_bibadi_name other_respondent">
+                                                                    অন্যান্য রেসপন্ডেন্টর তালিকা
+                                                                </th>
+                                                                <th width="50">
+                                                                    <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                        <i class="fas fa-plus-circle"></i>
+                                                                    </a>
+                                                                </th>
+                                                            </tr>
+                                                            <tr></tr>
+                                                        </table>
                                                     </div>
+
+                                                    <!-- Hidden input for "অন্যান্য" -->
+                                                    <input type="text" name="other_respondent_manual_name" id="other_respondent_manual_name" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন">
+
                                                 </div>
 
 
@@ -1341,15 +1361,6 @@
     </script>
 
     @include('gov_case.case_register.create_js')
-
-    <script type="text/javascript">
-        // $(document).ready(function() {
-        //     addBadiRowFunc();
-        //     addBibadiRowFunc();
-
-        //     // $('select').select2();
-        // });
-    </script>
     <script type="text/javascript">
         // dynamically change high court / appeal court
         $(document).ready(function() {
@@ -1643,4 +1654,6 @@
             });
         });
     </script>
+
+
 @endsection

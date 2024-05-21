@@ -19,7 +19,7 @@ class GovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
-        // dd($caseId);                                                                                            
+        // dd($caseId);
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
@@ -34,8 +34,6 @@ class GovCaseRegisterRepository
         $replyFiles = ReplyAttachment::where('gov_case_id', $caseId)->get();
         $suspensionFiles = SuspensionAttachment::where('gov_case_id', $caseId)->get();
         $finalFiles = FinalAttachment::where('gov_case_id', $caseId)->get();
-        $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
-        $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
         $data = [
             'case' => $case,
@@ -52,8 +50,7 @@ class GovCaseRegisterRepository
             'replyFiles' => $replyFiles,
             'suspensionFiles' => $suspensionFiles,
             'finalFiles' => $finalFiles,
-            'concernpersondesig' => $concernpersondesig,
-            'concernPersonName' => $concernPersonName,
+     
         ];
 
         return $data;
