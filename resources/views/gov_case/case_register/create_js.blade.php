@@ -4,6 +4,18 @@
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<style>
+    /* .short-select {
+        width: 30%;
+        display: inline-block;
+    }
+
+    .long-input {
+        width: 70%;
+        display: inline-block;
+    } */
+</style>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -50,7 +62,7 @@
 
         $('select').select2();
 
-       
+
 
 
 
@@ -237,38 +249,70 @@
     }
     /************************ //Add multiple Main bibadi *************************/
 
+
+
+    // Event delegation for the "অন্যান্য রেসপন্ডেন্টর" dropdown
+    $(document).on('change', 'select[name="other_respondent[]"]', function() {
+        var dataID = $(this).val();
+        var options = $('select[name="other_respondent[]"]').find('option:selected').data('id');
+        console.log(options);
+        var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
+        if (dataID == 0) {
+            $inputField.removeClass('d-none').addClass('long-input');
+            $(this).addClass('short-select');
+        } else {
+            $inputField.addClass('d-none').removeClass('long-input');
+            $(this).removeClass('short-select');
+        }
+    });
+
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
     $("#addBibadiRow").click(function(e) {
         addBibadiRowFunc();
     });
 
-    //   add row function
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
-        var MainCount = $('#MainBibadiDiv tr').length;
+        $('#bibadiDiv tr:last').after(Item(mk + 1));
 
-        $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-
-        function Item(count, type = NULL) {
+        function Item(count) {
             var items = '';
-            items += '<tr id="bibadi_' + (count) + '">';
+            items += '<tr id="bibadi_' + count + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
-
-            if (type == 'other') {
-                items +=
-                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            }
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hellp-id="' +
+                count + '">';
+            items += '<option value="">-- নির্বাচন করুন --</option>';
+            items +=
+                '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+            items += '<option value="0">অন্যান্য</option>';
+            items += '</select></td>';
+            items +=
+                '<td><input type="text" name="other_respondent_manual_name[]" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন"></td>';
+            items +=
+                '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             return items;
         }
+
+        // Initialize select2 for the newly added select element
         $('.other_respondentCls').select2();
     }
 
-    //remove row function
+    // Function to remove a row
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+
+
+
+
+
+
+    /// ************ Other Respondent *************
+
+
+
 
     /************************ //Add multiple HighCourt Adalat *************************/
     $("#addHighcourtAdalatRow").click(function(e) {
@@ -510,9 +554,6 @@
     });
 </script>
 <script>
-
-
-
     // ================================Case General Info save==================================
 
     $('#caseGeneralInfoForm').submit(function(e) {

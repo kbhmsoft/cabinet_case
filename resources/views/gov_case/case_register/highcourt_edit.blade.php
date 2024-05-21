@@ -488,7 +488,7 @@
                                                                                 <button class="btn bg-success-o-75"
                                                                                     type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
                                                                             </div>
-                                                                            {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
+
                                                                             <input readonly type="text"
                                                                                 class="form-control"
                                                                                 value="{{ $row->file_type ?? '' }}" />
@@ -498,9 +498,9 @@
                                                                                     class="btn btn-sm btn-success font-size-h5 float-left">
                                                                                     <i class="fa fas fa-file-pdf"></i>
                                                                                     <b>দেখুন</b>
-                                                                                    {{-- <embed src="{{ asset('uploads/sf_report/'.$data[0]['case_register'][0]['sf_report']) }}" type="application/pdf" width="100%" height="600px" />  --}}
+
                                                                                 </a>
-                                                                                {{-- <a href="minarkhan.com" class="btn btn-success" type="button">দেখুন </a> --}}
+
                                                                             </div>
                                                                             <div class="input-group-append">
                                                                                 <a href="javascript:void(0);"
@@ -521,8 +521,6 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-
-                                                {{-- end সংযুক্তি --}}
                                             </div>
                                         </fieldset>
                                         {{-- </div> --}}

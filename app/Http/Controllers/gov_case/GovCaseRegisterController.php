@@ -2735,13 +2735,13 @@ class GovCaseRegisterController extends Controller
                 $caseId = $request->caseId;
 
                 $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
-
+                GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
                 GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
                 GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
                 GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
 
-                GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
+
 
                 if ($request->file_type && $_FILES["file_name"]['name']) {
 
@@ -3443,7 +3443,7 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-
+      
         $data['ministrys'] = GovCaseOffice::get();
 
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
@@ -3752,7 +3752,7 @@ class GovCaseRegisterController extends Controller
 
     public function getDependentCaseCategoryType($id)
     {
- 
+
         $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
     }
@@ -4959,7 +4959,6 @@ class GovCaseRegisterController extends Controller
         $Value = DB::table('attachments')
             ->where('id', $id)
             ->update($data);
-        // dd($Value);
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
