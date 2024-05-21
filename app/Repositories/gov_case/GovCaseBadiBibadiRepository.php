@@ -115,7 +115,7 @@ class GovCaseBadiBibadiRepository
 
     public static function getBadiByCaseId($caseId)
     {
-        $badi = GovCaseBadi::where('gov_case_id', $caseId)->get();
+        $badi = GovCaseBadi::where('gov_case_id', $caseId)->first();
         return $badi;
     }
 

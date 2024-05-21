@@ -258,39 +258,29 @@
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
-                                                            <th width="50">
+                                                            {{-- <th width="50">
                                                                 <a href="javascript:void();" id="addBadiRow"
                                                                     class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
-                                                            </th>
+                                                            </th> --}}
                                                         </tr>
-                                                        @foreach ($caseBadi as $key => $value)
+                                                        
                                                             <tr>
                                                                 <td>
                                                                     <input type="text" name="badi_name[]"
                                                                         class="form-control form-control-sm"
-                                                                        value="{{ $value->name }}" placeholder="">
+                                                                        value="{{ $caseBadi->name ?? '' }}" placeholder="">
                                                                 </td>
 
                                                                 <td>
                                                                     <input type="text" name="badi_address[]"
                                                                         class="form-control form-control-sm"
-                                                                        value="{{ $value->address }}" placeholder="">
+                                                                        value="{{ $caseBadi->address }}" placeholder="">
                                                                 </td>
-                                                                <td>
-                                                                    @if ($key > 0)
-                                                                        <a href="javascript:void();"
-                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
-                                                                            <i class="fas fa-minus-circle"></i>
-                                                                        </a>
-                                                                    @endif
-                                                                </td>
+                                                                
                                                                 <input type="hidden" name="badi_id[]"
-                                                                    value="{{ $value->id }}">
+                                                                    value="{{ $caseBadi->id }}">
                                                             </tr>
-                                                        @endforeach
                                                     </table>
                                                 </div>
 
@@ -488,7 +478,7 @@
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="mainFileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-                                                               
+
                                                                 <tr>
                                                                 @foreach ($files as $row)
                                                                     <div class="form-group mb-2"
@@ -524,14 +514,14 @@
                                                                         </div>
                                                                     </div>
                                                                     @endforeach
-                                                                </tr> 
+                                                                </tr>
                                                             </table>
                                                             <input type="hidden" id="other_main_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                
+
                                                 {{-- end সংযুক্তি --}}
                                             </div>
                                         </fieldset>
@@ -1905,9 +1895,6 @@
         var count = parseInt($('#other_attachment_count').val());
     </script>
     <script type="text/javascript">
-    function removeBibadiRow(id) {
-        $(id).closest("tr").remove();
-    }
         // dynamically change high court / appeal court
         $(document).ready(function() {
             $('#appeal_hide_show_3').hide();
@@ -2206,7 +2193,7 @@
     //add row function
     function addMainFileRowFunc() {
         var count = parseInt($('#other_main_attachment_count').val());
-        
+
         var formType = $('#formType').val();
         // alert(formType);
         $('#other_main_attachment_count').val(count + 1);
