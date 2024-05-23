@@ -254,7 +254,7 @@
     // Event delegation for the "অন্যান্য রেসপন্ডেন্টর" dropdown
     $(document).on('change', 'select[name="other_respondent[]"]', function() {
         var dataID = $(this).val();
-        var options = $('select[name="other_respondent[]"]').find('option:selected').data('id');
+        var options = $('select[name="other_respondent[]"]').find('option:selected').hello('id');
         console.log(options);
         var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
         if (dataID == 0) {
@@ -280,7 +280,7 @@
             var items = '';
             items += '<tr id="bibadi_' + count + '">';
             items +=
-                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hellp-id="' +
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hello-id="' +
                 count + '">';
             items += '<option value="">-- নির্বাচন করুন --</option>';
             items +=
@@ -590,7 +590,7 @@
                         )
                         console.log(data);
 
-                        $("#sending_reply_tab").click();
+                        $("# a").click();
                         $("#caseIDForAnswer").val(data.caseId);
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
@@ -1543,7 +1543,7 @@
     });
 </script>
 
-<script></script>
+
 
 
 

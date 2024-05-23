@@ -372,11 +372,11 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="p-5" id="postponed_interim_data_details">
+                                                    <div class="p-5" id="postponed_interim_data_details_create_new">
                                                         <div class="col-md-12 mb-5">
                                                             <label>স্থগিতাদেশের সংক্ষিপ্ত
                                                                 বিবরণ</label>
-                                                            <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details"
+                                                            <textarea name="postponed_interim_data_details" class="form-control"
                                                                 rows="3" spellcheck="false"></textarea>
                                                         </div>
                                                     </div>
@@ -1292,6 +1292,19 @@
             $('#select2Dropdown').select2();
         });
     </script>
+    <script>
+        $(document).ready(function() {
+               $('#postponed_interim_data_details_create_new').hide();
+               $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
+               $('input[name="postponed_interim_have"]').change(function() {
+                   if ($(this).val() == '1') {
+                       $('#postponed_interim_data_details_create_new').show();
+                   } else {
+                       $('#postponed_interim_data_details_create_new').hide();
+                   }
+               });
+           });
+   </script>
     <script>
         function showAlert() {
             Swal.fire({
