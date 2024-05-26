@@ -271,13 +271,9 @@
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
                                                             <th>পিটিশনারের ঠিকানা <span class="text-danger"></span></th>
-                                                            {{-- <th width="50">
-                                                                <a href="javascript:void();" id="addBadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
-                                                                        class="fas fa-plus-circle"></i></a>
-                                                            </th> --}}
+
                                                         </tr>
-                                                        {{-- <tr></tr> --}}
+                                                   
                                                     </table>
                                                 </div>
 

@@ -104,23 +104,53 @@
         addBadiRowFunc();
     });
 
-    //add row function
+    // add row function
     function addBadiRowFunc() {
         var items = '';
         items += '<tr>';
         items +=
-            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none validation-message">অনুগ্রহ করে পিটিশনারের নাম লিখুন</span></td>';
         items += '<input type="hidden" name="badi_id[]" value="">';
-
         items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        // items +=
-        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""></td>';
         items += '</tr>';
         $('#badiDiv tr:last').after(items);
-
-
     }
+
+    // $('#badiDiv input[type="text"]').blur(function() {
+    //     validateInputField($(this));
+    // });
+
+    //     function addBadiRowFunc() {
+    //     var items = '';
+    //     items += '<tr>';
+    //     items +=
+    //         '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
+    //     items += '<input type="hidden" name="badi_id[]" value="">';
+
+    //     items +=
+    //         '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
+    //     items += '</tr>';
+    //     $('#badiDiv tbody').append(items);
+
+    //     $('#badiDiv tbody tr:last input[type="text"]').blur(function() {
+    //         validateInputField($(this));
+    //     });
+    // }
+
+
+    // function validateInputField(inputField) {
+    //     var value = inputField.val().trim();
+    //     if (value === '') {
+    //         inputField.next('.validation-message').removeClass('d-none');
+    //     } else {
+    //         inputField.next('.validation-message').addClass('d-none');
+    //     }
+    // }
+
+
+
+
 
     function removeRowBadiBibadiFunc(id, url) {
         var dataId = $(id).attr("data-id");
@@ -558,6 +588,25 @@
 
     $('#caseGeneralInfoForm').submit(function(e) {
         e.preventDefault();
+
+        // Validation check
+        var isValid = true;
+        $('input[name="badi_name[]"]').each(function() {
+            var value = $(this).val().trim();
+            if (value === "") {
+                $(this).next('.validation-message').removeClass('d-none');
+                $(this).focus();
+                isValid = false;
+                return false; // Exit each loop
+            } else {
+                $(this).next('.validation-message').addClass('d-none');
+            }
+        });
+
+        if (!isValid) {
+            return; // Exit if validation fails
+        }
+
         $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
         Swal.fire({
             title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
@@ -568,17 +617,14 @@
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-
                 var formData = new FormData(this);
                 $.ajax({
-
                     type: 'POST',
                     url: "{{ route('cabinet.case.storeGeneralInfo') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
                     processData: false,
-
                     success: (data) => {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
@@ -604,9 +650,7 @@
                         $('#finalOrderSaveBtn').removeClass("disable-button");
                         $('#contemptCaseSaveBtn').prop('disabled', false);
                         $('#contemptCaseSaveBtn').removeClass("disable-button");
-
                     },
-
                     error: function(xhr, status, error) {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
@@ -615,25 +659,101 @@
                             Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
                         } else {
                             console.log('Error occurred:', xhr, status, error);
-                            Swal.fire('সমস্যা...!',
-                                'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
                                 'error');
                         }
                     }
                 });
             } else {
                 $('#caseGeneralInfoSaveBtn').removeClass(
-                    'spinner spinner-white spinner-right disabled');
+                'spinner spinner-white spinner-right disabled');
                 Swal.fire(
                     'Canceled!',
                     'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
                     'info'
                 );
             }
-
-        })
-
+        });
     });
+
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+
+    //             var formData = new FormData(this);
+    //             $.ajax({
+
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
+
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     $orderData = data;
+    //                     Swal.fire(
+    //                         'Saved!',
+    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success'
+    //                     )
+    //                     console.log(data);
+
+    //                     $("# a").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
+
+    //                     $('#sendingReplySaveBtn').prop('disabled', false);
+    //                     $('#sendingReplySaveBtn').removeClass("disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false);
+    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+    //                 },
+
+    //                 error: function(xhr, status, error) {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     if (xhr.status ===
+    //                         422) { // HTTP status code for Unprocessable Entity
+    //                         Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+    //                     } else {
+    //                         console.log('Error occurred:', xhr, status, error);
+    //                         Swal.fire('সমস্যা...!',
+    //                             'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+    //                             'error');
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //             $('#caseGeneralInfoSaveBtn').removeClass(
+    //                 'spinner spinner-white spinner-right disabled');
+    //             Swal.fire(
+    //                 'Canceled!',
+    //                 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+    //                 'info'
+    //             );
+    //         }
+
+    //     })
+
+    // });
 
     // $('#caseGeneralInfoForm').submit(function(e) {
     //     e.preventDefault();
@@ -1129,14 +1249,14 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder="" ></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '"/><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count +
-            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+            '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';

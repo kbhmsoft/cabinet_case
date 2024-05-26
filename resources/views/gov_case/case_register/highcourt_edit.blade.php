@@ -179,49 +179,42 @@
                                                 </div> --}}
 
 
-                                                     <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="highcourtAdalatDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
-
+                                                <div class="col-lg-4 mb-5">
+                                                    <table width="100%" border="1" id="highcourtAdalatDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span>
-                                                            </th>
+                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span></th>
                                                             <th width="50">
-                                                                <a href="javascript:void();" id="addHighcourtAdalatRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                <a href="javascript:void(0);" id="addHighcourtAdalatRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
 
-                                                        @foreach ($caseCourts as $row)
+                                                        @foreach ($caseCourts as $key => $row)
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                    <select {{ request('red') ? 'disabled' : '' }} name="highcourt_adalat[]" id="ministry_id" class="form-control form-control-sm">
                                                                         @foreach ($highCourtAdalat as $value)
-                                                                        <option value="{{ $value->id }}"
-                                                                            {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
-                                                                            {{ $value->name }}</option>
-                                                        @endforeach
-                                                        </select>
-                                                        </td>
-                                                        <input type="hidden" name="bibadi_id[]"
-                                                            value="{{ $value->id }}">
-                                                        <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
-                                                            @endif
-                                                        </td>
-                                                        </tr>
+                                                                            <option value="{{ $value->id }}" {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
+                                                                                {{ $value->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <input type="hidden" name="highcourt_adalat[]" value="{{ $row->id }}">
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" data-id="{{ $row->id }}" onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                     </table>
                                                 </div>
+
 
 
                                                 <div class="col-lg-4 mb-5">
@@ -1853,7 +1846,44 @@
 
 </script>
 
+<script>
+    /************************ //Add multiple HighCourt Adalat *************************/
+$("#addHighcourtAdalatRow").click(function(e) {
+    addHighcourtAdalatRowFunc();
+});
 
+//add row function
+function addHighcourtAdalatRowFunc() {
+    var mk = $('#highcourtAdalatDiv tr').length;
+    var MainCount = $('#MainBibadiDiv tr').length;
+
+    $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+    function Item(count, type = null) {
+        var items = '';
+        items += '<tr id="highcourt_adalat_' + (count) + '">';
+        items += '<td><select name="highcourt_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>';
+        @foreach ($highCourtAdalat as $value)
+            items += '<option value="{{ $value->id }}" {{ old('highcourt_adalat') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>';
+        @endforeach
+        items += '</select></td>';
+        items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+
+        if (type == 'other') {
+            items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        }
+        items += '</tr>';
+        return items;
+    }
+    $('.other_respondentCls').select2();
+}
+
+//remove row function
+function removeHighcourtAdalatRow(id) {
+    $(id).closest("tr").remove();
+}
+
+</script>
 
     <script>
         $(document).ready(function() {
