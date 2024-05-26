@@ -175,26 +175,6 @@
                                     @endif
                                 </td>
 
-
-
-                                {{-- <td>
-                                    @if (auth()->user()->can('show_user_details'))
-                                        <a href="{{ route('cabinet.user-management.show', $row->id) }}"
-                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                                    @else
-                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                            বিস্তারিত
-                                        </a>
-                                    @endif
-                                    @if (auth()->user()->can('update_user_info'))
-                                        <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
-                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
-                                    @else
-                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                            সংশোধন
-                                        </a>
-                                    @endif
-                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -252,9 +232,16 @@
             var officeID = 0;
         </script>
     @endif
+    {{-- <script src="https://cdn.datatables.net/2.0.3/js/jquery.dataTables.min.j
+     --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js"></script> --}}
     <script type="text/javascript">
         jQuery(document).ready(function() {
-
             new DataTable('#userTable', {
                 layout: {
                     topStart: {
@@ -264,19 +251,20 @@
                                     columns: [0, 1, 2, 3, 4, 5]
                                 }
                             },
-
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
                                     columns: ':visible'
                                 }
                             },
-
                             'colvis'
                         ]
                     }
-                }
+                },
+                pageLength: 10,
+                lengthMenu: [[10, 30, 50], [10, 30, 50]]
             });
+
             $('#ministry').select2();
             $('#divOffice').select2();
             $('#office_id').select2();

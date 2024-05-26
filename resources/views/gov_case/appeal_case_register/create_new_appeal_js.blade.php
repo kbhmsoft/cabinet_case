@@ -46,7 +46,15 @@
         // addAppealFinalOrderFileRowFunc();
 
         //===========caseType================//
-
+        jQuery('select[name="appeal_office"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            console.log(dataID);
+            if(dataID == 0){
+                $('#appeal_petitioner_name').removeClass('d-none');
+            }else{
+                $('#appeal_petitioner_name').addClass('d-none');
+            }
+        });
 
         jQuery('select[name="case_category"]').on('change', function() {
             var dataID = jQuery(this).val();
@@ -578,8 +586,6 @@
                     processData: false,
 
                     success: (data) => {
-                        console.log('hi');
-                        console.log(data);
                         $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
                         $orderData = data;
@@ -953,7 +959,7 @@
 
 
 
-    /************************ //Add multiple HighCourt Adalat *************************/
+{{-- /************************ //Add multiple HighCourt Adalat *************************/ --}}
 <script>
     $("#addAppealAdalatRow").click(function(e) {
         addAppealAdalatRowFunc();
@@ -988,4 +994,3 @@
         $(id).closest("tr").remove();
     }
 </script>
-

@@ -11,6 +11,7 @@ use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class GovCaseBadiBibadiRepository
 {
@@ -41,11 +42,12 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
-  
+
 
     public static function storeMainBibadi($caseInfo, $govCaseId)
     {
         $officeID = userInfo()->office_id;
+
                 $bibadi = new GovCaseBibadi();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $officeID;
@@ -55,17 +57,14 @@ class GovCaseBadiBibadiRepository
 
     public static function storeBibadi($caseInfo, $govCaseId)
     {
-        $officeID = userInfo()->office_id;
-
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
-                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
+                $bibadi = new GovCaseBibadi();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $caseInfo->other_respondent[$key];
                 $bibadi->save();
             }
         }
-
     }
 
     public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
@@ -73,7 +72,6 @@ class GovCaseBadiBibadiRepository
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
                 $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->first();
-
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $caseInfo->other_respondent[$key];
                 $bibadi->save();
@@ -115,7 +113,7 @@ class GovCaseBadiBibadiRepository
 
     public static function getBadiByCaseId($caseId)
     {
-        $badi = GovCaseBadi::where('gov_case_id', $caseId)->get();
+        $badi = GovCaseBadi::where('gov_case_id', $caseId)->first();
         return $badi;
     }
 
@@ -140,4 +138,14 @@ class GovCaseBadiBibadiRepository
         return $other_bibadi;
     }
 
+    public static function getAppealConcernPersonByCaseId($caseId)
+    {
+        $other_bibadi = AppealGovCaseConcernPerson::where('gov_case_id', $caseId)->get();
+        return $other_bibadi;
+    }
+    public static function getJusticeNameByCaseId($caseId)
+    {
+        $justices = GovCaseHighcourtAdalat::where('gov_case_id', $caseId)->get();
+        return $justices;
+    }
 }

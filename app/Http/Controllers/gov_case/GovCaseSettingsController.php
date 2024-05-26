@@ -13,16 +13,10 @@ use Illuminate\Http\Request;
 
 class GovCaseSettingsController extends Controller
 {
-
-
     public function __construct(){
         $this->middleware('permission:case_categories_menu', ['only' => ['div_category_index']]);
-         
+
     }
-
-
-
-
 
    public function div_category_index(){
 

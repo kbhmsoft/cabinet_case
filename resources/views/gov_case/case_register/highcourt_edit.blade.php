@@ -4,6 +4,7 @@
 
 <!-- Include SweetAlert JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 @section('content')
 
     @php
@@ -154,25 +155,67 @@
 
 
 
-                                                <div class="col-lg-4 mb-5">
+                                                {{-- <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম (Justice Name) <span
                                                             class="text-danger">*</span></label>
 
-                                                    <div class="" id="AdalatDiv">
-                                                        <select name="highcourt_adalat" id="HighCourtAdalat"
-                                                            class="form-control form-control-sm">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            @foreach ($highCourtAdalat as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('highcourt_adalat') == $value->id || $case->highcourt_adalat == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach
+                                                    <div id="AdalatDiv">
+                                                        @foreach ($caseCourts as $row)
+                                                            <select name="highcourt_adalat" id="HighCourtAdalat"
+                                                                class="form-control form-control-sm">
+                                                                <option value="">-- নির্বাচন করুন --</option>
+                                                                @foreach ($highCourtAdalat as $value)
+                                                                    <option value="{{ $value->id }}"
+                                                                        {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
+                                                                        {{ $value->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        @endforeach
 
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
+                                                        <span class="text-danger d-none validation-message">This field
+                                                            cannot be empty</span>
                                                     </div>
+                                                </div> --}}
+
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <table width="100%" border="1" id="highcourtAdalatDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span></th>
+                                                            <th width="50">
+                                                                <a href="javascript:void(0);" id="addHighcourtAdalatRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
+
+                                                        @foreach ($caseCourts as $key => $row)
+                                                            <tr id="bibadi_10{{ $key }}">
+                                                                <td>
+                                                                    <select {{ request('red') ? 'disabled' : '' }} name="highcourt_adalat[]" id="ministry_id" class="form-control form-control-sm">
+                                                                        @foreach ($highCourtAdalat as $value)
+                                                                            <option value="{{ $value->id }}" {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
+                                                                                {{ $value->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <input type="hidden" name="highcourt_adalat[]" value="{{ $row->id }}">
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" data-id="{{ $row->id }}" onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
                                                 </div>
+
+
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>রুল ইস্যুর তারিখ <span class="text-danger">*</span></label>
@@ -201,29 +244,32 @@
                                                             </th>
 
                                                         </tr>
+
                                                         @foreach ($caseLawers as $key => $value)
                                                             <tr>
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
-                                                                        id="concernPersonDesignation"
+                                                                        id="concernPersonDesignation_{{ $key + 1 }}"
                                                                         class="form-control form-control-sm"
-                                                                        required="required">
-                                                                        @foreach ($concern_person_desig as $value)
-                                                                            <option value="{{ $value->id }}"
-                                                                                {{ old('concern_person_designation') == $value->id || $case->concern_person_designation == $value->id ? 'selected' : '' }}>
-                                                                                {{ $value->name_bn }} </option>
+                                                                        required="required"
+                                                                        onchange="getConcernPerName({{ $key + 1 }})">
+                                                                        @foreach ($concern_person_desig as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_person_designation') == $data->id || $value->concern_person_designation == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name_bn }} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
 
                                                                 <td>
-                                                                    <select name="concern_user_id[]" id="concern_user_id"
+                                                                    <select name="concern_user_id[]"
+                                                                        id="concern_user_id_{{ $key + 1 }}"
                                                                         class="form-control form-control-sm"
                                                                         required="required">
-                                                                        @foreach ($usersInfo as $value)
-                                                                            <option value="{{ $value->id }}"
-                                                                                {{ old('concern_user_id') == $value->id || $case->concern_user_id == $value->id ? 'selected' : '' }}>
-                                                                                {{ $value->name }} </option>
+                                                                        @foreach ($lawerInfo as $data)
+                                                                            <option value="{{ $data->id }}"
+                                                                                {{ old('concern_user_id') == $data->id || $value->concern_user_id == $data->id ? 'selected' : '' }}>
+                                                                                {{ $data->name }} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -240,10 +286,13 @@
                                                                 <input type="hidden" name="concern_person_id[]"
                                                                     value="{{ $value->id }}">
                                                             </tr>
+                                                            <input type="hidden" id="survey_count"
+                                                                value="{{ $key + 2 }}">
                                                         @endforeach
                                                     </table>
-                                                    <input type="hidden" id="survey_count" value="{{ $key + 1 }}">
                                                 </div>
+
+
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -251,39 +300,25 @@
                                                             <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
 
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addBadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2"><i
-                                                                        class="fas fa-plus-circle"></i></a>
-                                                            </th>
                                                         </tr>
-                                                        @foreach ($caseBadi as $key => $value)
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="text" name="badi_name[]"
-                                                                        class="form-control form-control-sm"
-                                                                        value="{{ $value->name }}" placeholder="">
-                                                                </td>
 
-                                                                <td>
-                                                                    <input type="text" name="badi_address[]"
-                                                                        class="form-control form-control-sm"
-                                                                        value="{{ $value->address }}" placeholder="">
-                                                                </td>
-                                                                <td>
-                                                                    @if ($key > 0)
-                                                                        <a href="javascript:void();"
-                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
-                                                                            <i class="fas fa-minus-circle"></i>
-                                                                        </a>
-                                                                    @endif
-                                                                </td>
-                                                                <input type="hidden" name="badi_id[]"
-                                                                    value="{{ $value->id }}">
-                                                            </tr>
-                                                        @endforeach
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="badi_name[]"
+                                                                    class="form-control form-control-sm"
+                                                                    value="{{ $caseBadi->name ?? '' }}" placeholder="">
+                                                            </td>
+
+                                                            <td>
+                                                                <input type="text" name="badi_address[]"
+                                                                    class="form-control form-control-sm"
+                                                                    value="{{ $caseBadi->address ?? '' }}"
+                                                                    placeholder="">
+                                                            </td>
+
+                                                            <input type="hidden" name="badi_id[]"
+                                                                value="{{ $caseBadi->id ?? '' }}">
+                                                        </tr>
                                                     </table>
                                                 </div>
 
@@ -306,54 +341,6 @@
                                                 </div>
 
 
-
-                                                <div class="col-lg-6 mb-5">
-                                                    <table width="100%" border="1" id="MainBibadiDiv"
-                                                        class="mb-5" style="border:1px solid #dcd8d8;">
-
-                                                        <tr>
-                                                            <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                            </th>
-                                                            {{-- <th width="50">
-                                                                <a href="javascript:void();" id="addMainBibadiRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th> --}}
-                                                        </tr>
-                                                        <tr></tr>
-                                                        @php
-                                                            $department = '';
-                                                        @endphp
-                                                        @foreach ($mainBibadi as $key => $val)
-                                                            <tr id="bibadi_10{{ $key }}">
-                                                                <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }} " name="main_respondent[]" id="ministry_id" class="form-control form-control-sm">
-
-                                                                                           
-                                                                        @foreach ($ministrys as $item)
-                                                                        <option value="{{ $item->doptor_office_id }}"
-                                                                            {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                            {{ $item->office_name_bn ?? '' }} </option>
-                                                        @endforeach
-                                                        </select>
-                                                        </td>
-                                                        <input type="hidden"
-                                                            name="bibadi_id[]"value="{{ $val->doptor_office_id }}">
-                                                        <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->doptor_office_id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
-                                                            @endif
-                                                        </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </table>
-                                                </div>
                                                 <div class="col-lg-6 mb-5">
                                                     <table width="100%" border="1" id="bibadiDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
@@ -374,10 +361,7 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
                                                                     <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm">
-
-
-                                                                                                       
-                                                                                       @foreach ($ministrys as $item)
+                                                                           @foreach ($ministrys as $item)
                                                                         <option value="{{ $item->doptor_office_id }}"
                                                                             {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                             {{ $item->office_name_bn ?? '' }} </option>
@@ -417,7 +401,7 @@
                                                         value="{{ $case->money_amount ?? '' }}">
                                                     </input>
                                                 </div>
-
+                                                {{--
                                                 <div class="col-lg-12 mb-5">
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">
@@ -446,7 +430,43 @@
                                                                 rows="3" spellcheck="false">{{ $case->postponed_interim_data_details }}</textarea>
                                                         </div>
                                                     </div>
+                                                </div> --}}
+
+
+
+                                                <div class="col-lg-12 mb-5">
+                                                    <div class="col-md-6">
+                                                        <label class="form-group font-weight-bolder font-size-h5">
+                                                            স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন আদেশ প্রদান করা হয়েছে
+                                                            কিনা
+                                                        </label>
+                                                        <div class="radio-inline">
+                                                            <label class="radio">
+                                                                <input type="radio" name="postponed_interim_have"
+                                                                    id="postponed_interim_have_yes" value="1"
+                                                                    {{ $case->postponed_interim_have == 1 ? 'checked' : '' }}>
+                                                                <span></span>হ্যাঁ
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="postponed_interim_have"
+                                                                    id="postponed_interim_have_no" value="0"
+                                                                    {{ $case->postponed_interim_have == 0 ? 'checked' : '' }}>
+                                                                <span></span>না
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="p-5" id="postponed_interim_data_details"
+                                                        style="{{ $case->postponed_interim_have == 1 ? '' : 'display:none;' }}">
+                                                        <div class="col-md-12 mb-5">
+                                                            <label>স্থগিতাদেশের সংক্ষিপ্ত বিবরণ</label>
+                                                            <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details_textarea"
+                                                                rows="3" spellcheck="false">{{ $case->postponed_interim_data_details }}</textarea>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+
 
 
 
@@ -466,7 +486,7 @@
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
-                                                                    <div id="addFileRow">
+                                                                    <div id="addMainFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
                                                                             <i
@@ -478,104 +498,59 @@
                                                         </div>
 
                                                         <div class="mt-3 px-5">
-                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                            <table width="100%" class="border-0 px-5" id="mainFileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-                                                                {{-- @foreach ($files as $key => $value)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="text" name="file_type[]"
-                                                                                id="customFileName"
-                                                                                class="form-control form-control-sm"
-                                                                                value="{{ old('file_type', $value->file_type) }}">
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="custom-file">
 
-                                                                                @if ($value->file_name)
-                                                                                    <a target="_blank"
-                                                                                        class="text-center font-weight-bolder text-primary text-decoration-none d-block w-100 p-2 mb-2 rounded bg-light "
-                                                                                        href="{{ asset($value->file_name) }}">সংযুক্তি
-                                                                                        কপি</a><br>
-                                                                                @else
-                                                                                    <input type="file"
-                                                                                        accept="application/pdf"
-                                                                                        name="file_name[]"
-                                                                                        onChange="attachmentTitle(this)"
-                                                                                        class="custom-file-input"
-                                                                                        id="customFile" />
-                                                                                    <label id="file_error"
-                                                                                        class="text-danger font-weight-bolder mt-2 mb-2"></label>
-                                                                                    <label
-                                                                                        class="custom-file-label custom-input"
-                                                                                        for="customFile">
-                                                                                    </label>
-                                                                                @endif
+
+                                                                <tr>
+                                                                    @foreach ($files as $row)
+                                                                        <div class="form-group mb-2"
+                                                                            id="deleteFile{{ $row->id }}">
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <button class="btn bg-success-o-75"
+                                                                                        type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
+                                                                                </div>
+
+                                                                                <input readonly type="text"
+                                                                                    class="form-control"
+                                                                                    value="{{ $row->file_type ?? '' }}" />
+                                                                                <div class="input-group-append">
+                                                                                    <a href="{{ asset($row->file_path . $row->file_name) }}"
+                                                                                        target="_blank"
+                                                                                        class="btn btn-sm btn-success font-size-h5 float-left">
+                                                                                        <i class="fa fas fa-file-pdf"></i>
+                                                                                        <b>দেখুন</b>
+
+                                                                                    </a>
+
+                                                                                </div>
+                                                                                <div class="input-group-append">
+                                                                                    <a href="javascript:void(0);"
+                                                                                        id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                        onclick="deleteRuleFile({{ $row->id }} )"
+                                                                                        class="btn btn-danger">
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <b>মুছুন</b>
+                                                                                    </a>
+                                                                                </div>
                                                                             </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach --}}
-                                                                @foreach ($files as $row)
-                                                                <div class="form-group mb-2" id="deleteFile{{ $row->id }}">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn bg-success-o-75" type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
                                                                         </div>
-                                                                        {{-- <input readonly type="text" class="form-control" value="{{ asset($row->file_path . $row->file_name) }}" /> --}}
-                                                                        <input readonly type="text" class="form-control" value="{{ $row->file_category ?? '' }}" />
-                                                                        <div class="input-group-append">
-                                                                            <a href="{{ asset($row->file_path . $row->file_name) }}" target="_blank" class="btn btn-sm btn-success font-size-h5 float-left">
-                                                                                <i class="fa fas fa-file-pdf"></i>
-                                                                                <b>দেখুন</b>
-                                                                                {{-- <embed src="{{ asset('uploads/sf_report/'.$data[0]['case_register'][0]['sf_report']) }}" type="application/pdf" width="100%" height="600px" />  --}}
-                                                                             </a>
-                                                                            {{-- <a href="minarkhan.com" class="btn btn-success" type="button">দেখুন </a> --}}
-                                                                        </div>
-                                                                        <div class="input-group-append">
-                                                                            <a href="javascript:void(0);" id="" onclick="deleteFile({{ $row->id }} )" class="btn btn-danger">
-                                                                                <i class="fas fa-trash-alt"></i>
-                                                                                <b>মুছুন</b>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                {{-- <tr>
-                                                                    <td>
-                                                                        <input type="text" name="file_type[]" value="{{ $value->file_type }}"
-                                                                            class="form-control form-control-sm" placeholder="" disabled>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="file_name[]" value="{{ $value->file_name }}"
-                                                                            class="form-control form-control-sm" placeholder=""disabled>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="javascript:void(0);"
-                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                            data-id="{{ $value->id }}" onclick="removeRowFileFunc(this)">
-                                                                            <i class="fas fa-minus-circle"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <input type="hidden" name="hide_file_id[]" value="{{ $value->id }}">
-                                                                </tr> --}}
-                                                                @endforeach
+                                                                    @endforeach
+                                                                </tr>
                                                             </table>
-                                                            <input type="hidden" id="other_attachment_count"
+                                                            <input type="hidden" id="other_main_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
                                                 </div>
 
-                                                {{-- end সংযুক্তি --}}
                                             </div>
-                                        </fieldset>
-                                        {{-- </div> --}}
-
-                                        <!--end::Card-->
                                     </div>
-                                </div>
-                                <div class="form-footer" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="caseGeneralInfoSaveBtn"
-                                        class="submit-button">সংরক্ষণ</button>
-                                </div>
+                                    <div class="form-footer" style="display: flex;justify-content: center;">
+                                        <button type="submit" id="caseGeneralInfoSaveBtn"
+                                            class="submit-button">সংরক্ষণ</button>
+                                    </div>
                             </form>
                         </div>
                         {{-- ---------- end মামলার সাধারণ তথ্য----------- --}}
@@ -1785,6 +1760,37 @@
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
     <script>
+        function deleteRuleFile(id) {
+            // alert(id);
+            Swal.fire({
+                title: 'আপনি কি মামলার রুল কপি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteRuleFileBtn_' + id).addClass('loadersmall')
+                    jQuery.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/ruleFile/delete/' +
+                            id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            )
+                            addMainFileRowFunc();
+                            $('#deleteFile' + id).remove();
+
+                        }
+                    });
+                }
+            });
+        }
+
         $(document).ready(function() {
             $('.tab-content .tab-pane:first-child').addClass('active');
             $('.myTab a').click(function(e) {
@@ -1796,6 +1802,108 @@
         });
     </script>
 
+
+
+<script>
+      // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+      $("#addBibadiRow").click(function(e) {
+        addBibadiRowFunc();
+    });
+
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+    function addBibadiRowFunc() {
+        var mk = $('#bibadiDiv tr').length;
+        $('#bibadiDiv tr:last').after(Item(mk + 1));
+
+        function Item(count) {
+            var items = '';
+            items += '<tr id="bibadi_' + count + '">';
+            items +=
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hello-id="' +
+                count + '">';
+            items += '<option value="">-- নির্বাচন করুন --</option>';
+            items +=
+                '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+            items += '<option value="0">অন্যান্য</option>';
+            items += '</select></td>';
+            items +=
+                '<td><input type="text" name="other_respondent_manual_name[]" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন"></td>';
+            items +=
+                '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            items += '</tr>';
+            return items;
+        }
+
+        // Initialize select2 for the newly added select element
+        $('.other_respondentCls').select2();
+    }
+
+    // Function to remove a row
+    function removeBibadiRow(id) {
+        $(id).closest("tr").remove();
+    }
+
+
+</script>
+
+<script>
+    /************************ //Add multiple HighCourt Adalat *************************/
+$("#addHighcourtAdalatRow").click(function(e) {
+    addHighcourtAdalatRowFunc();
+});
+
+//add row function
+function addHighcourtAdalatRowFunc() {
+    var mk = $('#highcourtAdalatDiv tr').length;
+    var MainCount = $('#MainBibadiDiv tr').length;
+
+    $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+    function Item(count, type = null) {
+        var items = '';
+        items += '<tr id="highcourt_adalat_' + (count) + '">';
+        items += '<td><select name="highcourt_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>';
+        @foreach ($highCourtAdalat as $value)
+            items += '<option value="{{ $value->id }}" {{ old('highcourt_adalat') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>';
+        @endforeach
+        items += '</select></td>';
+        items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+
+        if (type == 'other') {
+            items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        }
+        items += '</tr>';
+        return items;
+    }
+    $('.other_respondentCls').select2();
+}
+
+//remove row function
+function removeHighcourtAdalatRow(id) {
+    $(id).closest("tr").remove();
+}
+
+</script>
+
+    <script>
+        $(document).ready(function() {
+            function togglePostponedInterimDataDetails() {
+                if ($('#postponed_interim_have_yes').is(':checked')) {
+                    $('#postponed_interim_data_details').show();
+                } else {
+                    $('#postponed_interim_data_details').hide();
+                }
+            }
+
+            // Call the function on page load to set the correct initial state
+            togglePostponedInterimDataDetails();
+
+            // Add change event listeners to the radio buttons
+            $('input[name="postponed_interim_have"]').change(function() {
+                togglePostponedInterimDataDetails();
+            });
+        });
+    </script>
     <script>
         function showAlert() {
             Swal.fire({
@@ -1836,6 +1944,7 @@
         function addAdvocateLawerFunc() {
 
             var count = parseInt($('#survey_count').val());
+            // alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';
@@ -1896,12 +2005,7 @@
         }
     </script>
 
-    {{-- @include('gov_case.case_register.create_js') --}}
     <script type="text/javascript">
-        // $(document).ready(function() {
-        //     addBadiRowFunc();
-        //     addBibadiRowFunc();
-        // });
         var count = parseInt($('#other_attachment_count').val());
     </script>
     <script type="text/javascript">
@@ -2023,31 +2127,7 @@
         });
     </script>
     <script>
-        // ===========================Button Disable=========================//
-        // var caseIDForAnswer = $('#caseIDForAnswer').val();
-        // if (!(caseIDForAnswer)) {
-        //     $('#sendingReplySaveBtn').prop('disabled', true);
-        //     $('#sendingReplySaveBtn').addClass("disable-button");
-        // }
 
-        // var caseIDForSuspention = $('#caseIDForSuspention').val();
-        // if (!(caseIDForSuspention)) {
-        //     $('#suspensionOrderSaveBtn').prop('disabled', true);
-        //     $('#suspensionOrderSaveBtn').addClass("disable-button");
-        // }
-
-        // var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
-        // if (!(caseIDForFinalOrder)) {
-        //     $('#finalOrderSaveBtn').prop('disabled', true);
-        //     $('#finalOrderSaveBtn').addClass("disable-button");
-        // }
-
-        // var caseIDForContempt = $('#caseIDForContempt').val();
-        // if (!(caseIDForContempt)) {
-        //     $('#contemptCaseSaveBtn').prop('disabled', true);
-        //     $('#contemptCaseSaveBtn').addClass("disable-button");
-        // }
-        // ===========================Button Disable=========================//
 
 
 
@@ -2115,83 +2195,52 @@
             });
         });
 
-        // $('#caseGeneralInfoForm').submit(function(e) {
-        //     e.preventDefault();
-        //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        //     Swal.fire({
-        //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#3085d6',
-        //         cancelButtonColor: '#d33',
-        //         confirmButtonText: 'Yes'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
 
-        //             var formData = new FormData(this);
-        //             $.ajax({
 
-        //                 type: 'POST',
-        //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
-        //                 data: formData,
-        //                 cache: false,
-        //                 contentType: false,
-        //                 processData: false,
 
-        //                 success: (data) => {
-        //                     $('#caseGeneralInfoSaveBtn').removeClass(
-        //                         'spinner spinner-white spinner-right disabled');
-        //                     $orderData = data;
-        //                     Swal.fire(
-        //                         'Saved!',
-        //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-        //                         'success'
-        //                     )
-        //                     console.log(data);
 
-        //                     $("#sending_reply_tab").click();
-        //                     $("#caseIDForAnswer").val(data.caseId);
-        //                     $("#caseIDForSuspention").val(data.caseId);
-        //                     $("#caseIDForFinalOrder").val(data.caseId);
-        //                     $("#caseIDForContempt").val(data.caseId);
+        // ============= Add Attachment Row ========= start =========
+        $("#addMainFileRow").click(function(e) {
+            addMainFileRowFunc();
+        });
+        //add row function
+        function addMainFileRowFunc() {
+            var count = parseInt($('#other_main_attachment_count').val());
 
-        //                     $('#sendingReplySaveBtn').prop('disabled', false);
-        //                     $('#sendingReplySaveBtn').removeClass("disable-button");
-        //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
-        //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
-        //                     $('#finalOrderSaveBtn').prop('disabled', false);
-        //                     $('#finalOrderSaveBtn').removeClass("disable-button");
-        //                     $('#contemptCaseSaveBtn').prop('disabled', false);
-        //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+            var formType = $('#formType').val();
+            // alert(formType);
+            $('#other_main_attachment_count').val(count + 1);
+            var items = '';
+            items += '<tr>';
+            items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+                '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            items +=
+                '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+                count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+                count +
+                '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+                count + '" for="customFile' + count +
+                '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+            items +=
+                '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            items += '</tr>';
+            $('#mainFileDiv tr:last').after(items);
+            console.log(items);
 
-        //                 },
-        //                 error: function(data) {
-        //                     console.log(JSON.stringify(data['responseJSON']['errors']['case_no']
-        //                         [0]));
+            // if (formType == 'edit') {
+            //     $(`#customFile${count}`).attr('required', false);
+            //     $(`#customFileName${count}`).attr('required', false);
+            // }
+        }
 
-        //                     Swal.fire(
-        //                         'Oops...!',
-        //                         data['responseJSON']['errors']['case_no'][0],
-        //                         'error'
-        //                     )
-        //                     $('#caseGeneralInfoSaveBtn').removeClass(
-        //                         'spinner spinner-white spinner-right disabled');
 
-        //                 }
-        //             });
-        //         } else {
-        //             $('#caseGeneralInfoSaveBtn').removeClass(
-        //                 'spinner spinner-white spinner-right disabled');
-        //             Swal.fire(
-        //                 'Canceled!',
-        //                 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
-        //                 'info'
-        //             );
-        //         }
 
-        //     })
 
-        // });
+
+
+
+
+
         // ================================Case General Info save==================================
 
         // ================================Sending Replay Save==================================//

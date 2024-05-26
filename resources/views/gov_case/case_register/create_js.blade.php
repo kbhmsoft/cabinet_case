@@ -4,6 +4,18 @@
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<style>
+    /* .short-select {
+        width: 30%;
+        display: inline-block;
+    }
+
+    .long-input {
+        width: 70%;
+        display: inline-block;
+    } */
+</style>
 <script>
     // common datepicker
     $('.common_datepicker').datepicker({
@@ -44,42 +56,13 @@
         addFinalOrderFileRowFunc();
         addAdvocateLawerFunc();
         addBibadiRowFunc();
+        adeshTamilDecisionFileRowFunc();
+        addAppealSubmissionFileRowFunc();
+        appealSubmissionFileRowFunc();
 
         $('select').select2();
 
-        //===========caseType================//
 
-
-        jQuery('select[name="case_category"]').on('change', function() {
-            var dataID = jQuery(this).val();
-            jQuery("#case_category_type").after('<div class="loadersmall"></div>');
-
-            if (dataID) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
-                        dataID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="case_category_type"]').html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery('select[name="case_category_type"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery('select[name="case_category_type"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                        // $('select[name="mouja"] .overlay').remove();
-                        // $("#loading").hide();
-                    }
-                });
-            } else {
-                $('select[name="case_category_type"]').empty();
-            }
-        });
 
 
 
@@ -121,23 +104,53 @@
         addBadiRowFunc();
     });
 
-    //add row function
+    // add row function
     function addBadiRowFunc() {
         var items = '';
         items += '<tr>';
         items +=
-            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none validation-message">অনুগ্রহ করে পিটিশনারের নাম লিখুন</span></td>';
         items += '<input type="hidden" name="badi_id[]" value="">';
-
         items +=
-            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-        // items +=
-        //     '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""></td>';
         items += '</tr>';
         $('#badiDiv tr:last').after(items);
-
-
     }
+
+    // $('#badiDiv input[type="text"]').blur(function() {
+    //     validateInputField($(this));
+    // });
+
+    //     function addBadiRowFunc() {
+    //     var items = '';
+    //     items += '<tr>';
+    //     items +=
+    //         '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
+    //     items += '<input type="hidden" name="badi_id[]" value="">';
+
+    //     items +=
+    //         '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
+    //     items += '</tr>';
+    //     $('#badiDiv tbody').append(items);
+
+    //     $('#badiDiv tbody tr:last input[type="text"]').blur(function() {
+    //         validateInputField($(this));
+    //     });
+    // }
+
+
+    // function validateInputField(inputField) {
+    //     var value = inputField.val().trim();
+    //     if (value === '') {
+    //         inputField.next('.validation-message').removeClass('d-none');
+    //     } else {
+    //         inputField.next('.validation-message').addClass('d-none');
+    //     }
+    // }
+
+
+
+
 
     function removeRowBadiBibadiFunc(id, url) {
         var dataId = $(id).attr("data-id");
@@ -266,38 +279,70 @@
     }
     /************************ //Add multiple Main bibadi *************************/
 
+
+
+    // Event delegation for the "অন্যান্য রেসপন্ডেন্টর" dropdown
+    $(document).on('change', 'select[name="other_respondent[]"]', function() {
+        var dataID = $(this).val();
+        var options = $('select[name="other_respondent[]"]').find('option:selected').hello('id');
+        console.log(options);
+        var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
+        if (dataID == 0) {
+            $inputField.removeClass('d-none').addClass('long-input');
+            $(this).addClass('short-select');
+        } else {
+            $inputField.addClass('d-none').removeClass('long-input');
+            $(this).removeClass('short-select');
+        }
+    });
+
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
     $("#addBibadiRow").click(function(e) {
         addBibadiRowFunc();
     });
 
-    //   add row function
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
-        var MainCount = $('#MainBibadiDiv tr').length;
+        $('#bibadiDiv tr:last').after(Item(mk + 1));
 
-        $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-
-        function Item(count, type = NULL) {
+        function Item(count) {
             var items = '';
-            items += '<tr id="bibadi_' + (count) + '">';
+            items += '<tr id="bibadi_' + count + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
-
-            if (type == 'other') {
-                items +=
-                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            }
+                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hello-id="' +
+                count + '">';
+            items += '<option value="">-- নির্বাচন করুন --</option>';
+            items +=
+                '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+            items += '<option value="0">অন্যান্য</option>';
+            items += '</select></td>';
+            items +=
+                '<td><input type="text" name="other_respondent_manual_name[]" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন"></td>';
+            items +=
+                '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             return items;
         }
+
+        // Initialize select2 for the newly added select element
         $('.other_respondentCls').select2();
     }
 
-    //remove row function
+    // Function to remove a row
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+
+
+
+
+
+
+    /// ************ Other Respondent *************
+
+
+
 
     /************************ //Add multiple HighCourt Adalat *************************/
     $("#addHighcourtAdalatRow").click(function(e) {
@@ -539,38 +584,29 @@
     });
 </script>
 <script>
-    // ===========================Button Disable=========================//
-    // var caseIDForAnswer = $('#caseIDForAnswer').val();
-    // if (!(caseIDForAnswer)) {
-    //     $('#sendingReplySaveBtn').prop('disabled', true);
-    //     $('#sendingReplySaveBtn').addClass("disable-button");
-    // }
-
-    // var caseIDForSuspention = $('#caseIDForSuspention').val();
-    // if (!(caseIDForSuspention)) {
-    //     $('#suspensionOrderSaveBtn').prop('disabled', true);
-    //     $('#suspensionOrderSaveBtn').addClass("disable-button");
-    // }
-
-    // var caseIDForFinalOrder = $('#caseIDForFinalOrder').val();
-    // if (!(caseIDForFinalOrder)) {
-    //     $('#finalOrderSaveBtn').prop('disabled', true);
-    //     $('#finalOrderSaveBtn').addClass("disable-button");
-    // }
-
-    // var caseIDForContempt = $('#caseIDForContempt').val();
-    // if (!(caseIDForContempt)) {
-    //     $('#contemptCaseSaveBtn').prop('disabled', true);
-    //     $('#contemptCaseSaveBtn').addClass("disable-button");
-    // }
-    // ===========================Button Disable=========================//
-
-
-
     // ================================Case General Info save==================================
 
     $('#caseGeneralInfoForm').submit(function(e) {
         e.preventDefault();
+
+        // Validation check
+        var isValid = true;
+        $('input[name="badi_name[]"]').each(function() {
+            var value = $(this).val().trim();
+            if (value === "") {
+                $(this).next('.validation-message').removeClass('d-none');
+                $(this).focus();
+                isValid = false;
+                return false; // Exit each loop
+            } else {
+                $(this).next('.validation-message').addClass('d-none');
+            }
+        });
+
+        if (!isValid) {
+            return; // Exit if validation fails
+        }
+
         $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
         Swal.fire({
             title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
@@ -581,17 +617,14 @@
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-
                 var formData = new FormData(this);
                 $.ajax({
-
                     type: 'POST',
                     url: "{{ route('cabinet.case.storeGeneralInfo') }}",
                     data: formData,
                     cache: false,
                     contentType: false,
                     processData: false,
-
                     success: (data) => {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
@@ -603,7 +636,7 @@
                         )
                         console.log(data);
 
-                        $("#sending_reply_tab").click();
+                        $("# a").click();
                         $("#caseIDForAnswer").val(data.caseId);
                         $("#caseIDForSuspention").val(data.caseId);
                         $("#caseIDForFinalOrder").val(data.caseId);
@@ -617,9 +650,7 @@
                         $('#finalOrderSaveBtn').removeClass("disable-button");
                         $('#contemptCaseSaveBtn').prop('disabled', false);
                         $('#contemptCaseSaveBtn').removeClass("disable-button");
-
                     },
-
                     error: function(xhr, status, error) {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
@@ -628,25 +659,101 @@
                             Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
                         } else {
                             console.log('Error occurred:', xhr, status, error);
-                            Swal.fire('সমস্যা...!',
-                                'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
                                 'error');
                         }
                     }
                 });
             } else {
                 $('#caseGeneralInfoSaveBtn').removeClass(
-                    'spinner spinner-white spinner-right disabled');
+                'spinner spinner-white spinner-right disabled');
                 Swal.fire(
                     'Canceled!',
                     'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
                     'info'
                 );
             }
-
-        })
-
+        });
     });
+
+    // $('#caseGeneralInfoForm').submit(function(e) {
+    //     e.preventDefault();
+    //     $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    //     Swal.fire({
+    //         title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+
+    //             var formData = new FormData(this);
+    //             $.ajax({
+
+    //                 type: 'POST',
+    //                 url: "{{ route('cabinet.case.storeGeneralInfo') }}",
+    //                 data: formData,
+    //                 cache: false,
+    //                 contentType: false,
+    //                 processData: false,
+
+    //                 success: (data) => {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     $orderData = data;
+    //                     Swal.fire(
+    //                         'Saved!',
+    //                         'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+    //                         'success'
+    //                     )
+    //                     console.log(data);
+
+    //                     $("# a").click();
+    //                     $("#caseIDForAnswer").val(data.caseId);
+    //                     $("#caseIDForSuspention").val(data.caseId);
+    //                     $("#caseIDForFinalOrder").val(data.caseId);
+    //                     $("#caseIDForContempt").val(data.caseId);
+
+    //                     $('#sendingReplySaveBtn').prop('disabled', false);
+    //                     $('#sendingReplySaveBtn').removeClass("disable-button");
+    //                     $('#suspensionOrderSaveBtn').prop('disabled', false);
+    //                     $('#suspensionOrderSaveBtn').removeClass("disable-button");
+    //                     $('#finalOrderSaveBtn').prop('disabled', false);
+    //                     $('#finalOrderSaveBtn').removeClass("disable-button");
+    //                     $('#contemptCaseSaveBtn').prop('disabled', false);
+    //                     $('#contemptCaseSaveBtn').removeClass("disable-button");
+
+    //                 },
+
+    //                 error: function(xhr, status, error) {
+    //                     $('#caseGeneralInfoSaveBtn').removeClass(
+    //                         'spinner spinner-white spinner-right disabled');
+    //                     if (xhr.status ===
+    //                         422) { // HTTP status code for Unprocessable Entity
+    //                         Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+    //                     } else {
+    //                         console.log('Error occurred:', xhr, status, error);
+    //                         Swal.fire('সমস্যা...!',
+    //                             'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+    //                             'error');
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //             $('#caseGeneralInfoSaveBtn').removeClass(
+    //                 'spinner spinner-white spinner-right disabled');
+    //             Swal.fire(
+    //                 'Canceled!',
+    //                 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+    //                 'info'
+    //             );
+    //         }
+
+    //     })
+
+    // });
 
     // $('#caseGeneralInfoForm').submit(function(e) {
     //     e.preventDefault();
@@ -1142,14 +1249,14 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder="" ></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '" required/><label id="file_error' +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '"/><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count +
-            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+            '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -1197,6 +1304,37 @@
     }
 
 
+
+    $("#appealSubmissionFileRow").click(function(e) {
+        appealSubmissionFileRowFunc();
+    });
+    //add row function
+    function appealSubmissionFileRowFunc() {
+        var count = parseInt($('#reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_appeal_request[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_appeal_request[]" onChange="replyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customReplyFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#appealSubmissionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
+
+
     // =================== Adalat Reply Submit =============
     // ============= Add Reply Attachment Row ========= start =========
     $("#addAdalatReplyFileRow").click(function(e) {
@@ -1231,16 +1369,47 @@
         }
     }
 
+    //// ================////////////////////////////
+    $("#adeshTamilDecisionFileRow").click(function(e) {
+        adeshTamilDecisionFileRowFunc();
+    });
+    //add row function
+    function adeshTamilDecisionFileRowFunc() {
+        var count = parseInt($('#adesh_tamil_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#adesh_tamil_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_order_tamil[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_order_tamil[]" onChange="adeshTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adesh-tamil-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#adeshTamilDecisionFileDiv tr:last').after(items);
+
+        // if (formType == 'edit') {
+        //     $(`#customFile${count}`).attr('required', false);
+        //     $(`#customFileName${count}`).attr('required', false);
+        // }
+    }
+
 
 
     // ============= Add Suspention Order Attachment Row ========= start =========
     $("#addSuspensionOrderFileRow").click(function(e) {
         addSuspensionOrderFileRowFunc();
     });
-    $("#addSuspensionOrderFileRowTwo").click(function(e) {
-        console.log("two");
-        addSuspensionOrderFileRowFuncTwo();
-    });
+    // $("#addSuspensionOrderFileRowTwo").click(function(e) {
+    //     console.log("two");
+    //     addSuspensionOrderFileRowFuncTwo();
+    // });
     //add row function
     function addSuspensionOrderFileRowFunc() {
         var count = parseInt($('#suspension_order_attachment_count').val());
@@ -1249,15 +1418,15 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="suspension_file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder=""></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="suspension_file_name[]" onChange="suspensionAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customSuspensionFile' + count +
-            '" required/><label id="file_error' +
+            '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-suspension-input' +
             count + '" for="customFile' + count +
-            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+            '">ফাইল নির্বাচন করুন</label></div></td>';
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -1419,36 +1588,66 @@
     }
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_div').hide();
+        $('input[name="adesh_tamil_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="adesh_tamil_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_div').show();
+            } else {
+                $('.adesh_tamil_decision_div').hide();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_yes_taken_div').hide();
+        $('input[name="appeal_against_adesh_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="appeal_against_adesh_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_yes_taken_div').show();
+            } else {
+                $('.adesh_tamil_decision_yes_taken_div').hide();
+            }
+        });
+    });
+</script>
 
 
 <script>
     $(document).ready(function() {
-        $('#sending_reply_data_details').hide();
-        $('#trackingNumberField').hide();
-        $('input[name="sending_reply_have"]').change(function() {
+        $('#suspension_order_data_details').hide();
+        $('#suspensionOrderTrackingNumberField').hide();
+        $('input[name="adesh_tamil_decision_yes_taken"]').change(function() {
             if ($(this).val() == '1') {
-                $('#sending_reply_data_details').show();
+
+                $('#suspension_order_data_details').show();
             } else {
-                $('#sending_reply_data_details').hide();
-                $('#trackingNumberField').hide();
+
+                $('#suspension_order_data_details').hide();
+                $('#suspensionOrderTrackingNumberField').hide();
                 $('.sending_reply_div').hide();
-                $('#sending_reply_data_details input').val('');
+                $('#suspension_order_data_details input').val('');
                 $('.sending_reply_div input').val('');
-                $('#sending_reply_data_details input[type="checkbox"]').prop('checked', false);
+                $('#suspension_order_data_details input[type="checkbox"]').prop('checked', false);
             }
         });
 
-        $('#solicitor_checkbox').change(function() {
+        $('#suspension_order_solicitor_checkbox').change(function() {
             if ($(this).is(':checked')) {
-                $('#trackingNumberField').show();
+
+                $('#suspensionOrderTrackingNumberField').show();
             } else {
-                $('#trackingNumberField').hide();
+                $('#suspensionOrderTrackingNumberField').hide();
             }
         });
 
-        var solicitorCheckbox = document.getElementById("solicitor_checkbox");
-        var lawOfficerCheckbox = document.getElementById("law_officer_checkbox");
-        var sendingReplyDiv = document.querySelector(".sending_reply_div");
+        var solicitorCheckbox = document.getElementById("suspension_order_solicitor_checkbox");
+        var lawOfficerCheckbox = document.getElementById("suspension_order_law_officer_checkbox");
+        var sendingReplyDiv = document.querySelector(".suspension_order_div");
 
         function toggleSendingReplyDiv() {
             if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
@@ -1463,16 +1662,25 @@
         lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
     });
 </script>
+
+
+
+
+
+
 <script>
-    $(document).ready(function() {
-        $('#postponed_interim_data_details').hide();
-        $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
-        $('input[name="postponed_interim_have"]').change(function() {
-            if ($(this).val() == '1') {
-                $('#postponed_interim_data_details').show();
-            } else {
-                $('#postponed_interim_data_details').hide();
-            }
-        });
+    // when writing about money about case
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function removeCommas(x) {
+        return x.replace(/,/g, '');
+    }
+
+    document.getElementById('money_amount').addEventListener('input', function() {
+        var value = this.value;
+        value = removeCommas(value);
+        this.value = numberWithCommas(value);
     });
 </script>

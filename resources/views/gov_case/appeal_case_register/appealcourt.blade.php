@@ -141,9 +141,20 @@
                         $roleID = Auth()->user()->role_id;
                         ?>
                         @foreach ($cases as $key => $row)
+
+                        
                             <tr>
+
                                 <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
-                                <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
+                                <td style="width: 10px;">
+                                    {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}
+                                    <br>
+                                    @if ($row->case_origin)
+
+                                    ( {{  en2bn($row->case_origin->case_no) }}/{{  en2bn($row->case_origin->year) }} নং {{ $row->case_origin->case_category->name_bn }} হতে উদ্ভূত)
+                                    @endif
+
+                                </td>
 
                                 <td style="text-align:center;">
                                     @foreach ($gov_case_division_category_type as $value)

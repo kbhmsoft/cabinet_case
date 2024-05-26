@@ -54,20 +54,7 @@
                                         <fieldset>
 
                                             <div class="form-group row">
-                                                {{-- <div class="col-md-6">
-                                                    <label class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশের
-                                                    </label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" name="postponed_order"
-                                                                id="postponed_order_have" value="1" />
-                                                            <span></span>আছে</label>
-                                                        <label class="radio">
-                                                            <input type="radio" name="postponed_order"
-                                                                id="postponed_order_not" value="0" checked />
-                                                            <span></span>নেই</label>
-                                                    </div>
-                                                </div> --}}
+
 
                                                 <div class="col-md-6">
                                                     <label class="form-group font-weight-bolder font-size-h5">
@@ -361,30 +348,7 @@
                                                             class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                     </div>
                                                 </div>
-
-                                                {{-- <div class="col-md-6">
-                                                    <label
-                                                        class="form-group font-weight-bolder font-size-h5">অন্তর্বর্তীকালীন
-                                                        আদেশ </label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" name="interim_order"
-                                                                id="interim_order_have" value="1" />
-                                                            <span></span>আছে</label>
-                                                        <label class="radio">
-                                                            <input type="radio" name="interim_order"
-                                                                id="interim_order_not" value="0" checked />
-                                                            <span></span>নেই</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 mb-5" id="interim_order_details_div">
-                                                    <label>অন্তর্বর্তীকালীন আদেশের বিবরণ</label>
-                                                    <textarea name="interim_order_details" class="form-control" id="interim_order" rows="3" spellcheck="false"></textarea>
-                                                </div> --}}
                                             </div>
-
-
 
                                             {{-- starting সংযুক্তি  --}}
                                             <div class="col-md-12">

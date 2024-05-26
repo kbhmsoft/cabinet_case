@@ -2,36 +2,42 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Attachment;
 use App\Models\AppealAttachment;
-use Illuminate\Support\Facades\DB;
+use App\Models\Attachment;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseAppealAdalat;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\GovCaseAppealAdalat;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AppealGovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
-        $case = GovCaseRegister::findOrFail($caseId);
+
+        $case = AppealGovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        $appealCaseLawers = GovCaseBadiBibadiRepository::getAppealConcernPersonByCaseId($caseId);
+        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->get();
+        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
+
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
         $data = [
             'case' => $case,
             'caseBadi' => $caseBadi,
+            'caseLawers' => $appealCaseLawers,
+            'caseCourts' => $caseCourts,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
@@ -69,10 +75,16 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppeal($caseInfo)
     {
+
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
         $caseOriginNum = '';
         if ($caseInfo->case_number_origin) {
             $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
+        }
+
+        $petitioner_name = '';
+        if ($caseInfo->appeal_office == 0) {
+            $petitioner_name = $caseInfo->appeal_petitioner_name;
         }
 
         try {
@@ -80,8 +92,8 @@ class AppealGovCaseRegisterRepository
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
             $case->year = $caseInfo->case_year;
+            $case->appeal_petitioner_name = $petitioner_name;
             $case->appeal_office_id = $caseInfo->appeal_office;
-     
 
             $case->case_division_id = 1;
 
@@ -142,7 +154,7 @@ class AppealGovCaseRegisterRepository
 
     public static function storeConcernPerson($caseInfo, $govCaseId)
     {
-        // dd($caseInfo);
+
         if ($caseInfo->concernPersonDesignation) {
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
@@ -208,9 +220,9 @@ class AppealGovCaseRegisterRepository
             $case->result_date = $result_date;
             $case->result_copy_asking_date = $result_copy_asking_date ?? '';
             $case->result_copy_receiving_date = $result_copy_receiving_date ?? '';
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
-            $case->appeal_requesting_date = $appeal_requesting_date ?? '';
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
+            // $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? '';
+            // $case->appeal_requesting_date = $appeal_requesting_date ?? '';
+            // $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? '';
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -650,7 +662,6 @@ class AppealGovCaseRegisterRepository
 
     public static function storeLeaveToAppealAnswerInfo($caseInfo)
     {
-        // dd($caseInfo['case_id']);
         $case = self::checkGovCaseExist($caseInfo['case_id']);
 
         if ($caseInfo->leave_to_appeal_order_date != null && $caseInfo->leave_to_appeal_order_date != '') {
