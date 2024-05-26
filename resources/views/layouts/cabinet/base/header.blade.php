@@ -136,7 +136,7 @@
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <!--begin::Header Menu Wrapper-->
-        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 ||  $roleID == 39)
+        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 39)
             <!-- Move this part into a separate div -->
             <div class="header-case-count">
                 <div class="header-content">
@@ -228,6 +228,15 @@
                             <span class="custom-span d-none d-md-inline">{{ Auth::user()->unit_name_bn ?? '' }},
                                 {{ Auth::user()->govOffice->office_name_bn ?? '' }}</span>
                         </div>
+                        @if ($total_case > 0)
+                            @php
+                                $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
+                            @endphp
+                            <span class="badge badge-danger"
+                                style="position: absolute !important; top: 20px; left: 730px;">{{ en2bn($totalApplicationsCount) }}</span>
+                        @endif
+
+                        <span class="pulse-ring"></span>
                     </div>
                 </div>
             </div>

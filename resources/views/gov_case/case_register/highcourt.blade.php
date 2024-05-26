@@ -211,12 +211,13 @@
 
 
                                             @can('highcourt_adalat_reply_sending')
-                                            @if ($row->adalat_reply_submit_have == null)
-                                            @if (empty($row->adalat_reply_sending_date))
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে জবাব দাখিল</a>
-                                            @endif
-                                            @endif
+                                                @if ($row->adalat_reply_submit_have == null)
+                                                    @if (empty($row->adalat_reply_sending_date))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে
+                                                            জবাব দাখিল</a>
+                                                    @endif
+                                                @endif
                                             @endcan
 
 
@@ -318,9 +319,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
             @endif
-
             <div class="d-flex justify-content-center">
                 {!! $cases->links() !!}
             </div>

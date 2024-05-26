@@ -8,8 +8,10 @@ use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseOffice;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\User;
+use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\DoptorUserManagement;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\ApplicationFormAsMainDefendent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -217,6 +219,10 @@ class DashboardController extends Controller
 
             $doptorLoginCount = DoptorUserManagement::whereNotNull('office_id')->count();
             $generalLoginCount = User::whereNull('doptor_user_id')->count();
+
+            // Count users where the 'doptor_user_id' column is null
+            // $generalLoginCount = User::where('doptor_user_id', null)->count();
+
 
             return view('dashboard.cabinet_new.super_admin')->with($data + compact('doptorLoginCount', 'generalLoginCount'));
         } elseif ($roleID == 28) {
@@ -831,6 +837,21 @@ class DashboardController extends Controller
                 ->where('doptor_office_id', $officeID)
                 ->paginate(10);
 
+            // $caseCount = GovCaseConcernPerson::join('gov_case_registers', 'gov_case_concern_persons.gov_case_id', '=', 'gov_case_registers.id')
+            //     ->where('gov_case_concern_persons.concern_user_id') //define concern_user_id here
+            //     ->where('gov_case_registers.is_final_order', 0)
+            //     ->distinct()
+            //     ->count('gov_case_concern_persons.gov_case_id');
+            // return $caseCount;
+
+
+            $userId = Auth::id();
+
+            $caseCountPanelLawyer = GovCaseConcernPerson::where('concern_user_id', $userId)
+                ->distinct('gov_case_id')
+                ->count('gov_case_id');
+            //panel lawyer dashboard case count
+
             $arrayd = [];
             foreach ($data['ministry'] as $key => $val) {
                 $doptorOfficeId = $val->doptor_office_id;
@@ -848,7 +869,7 @@ class DashboardController extends Controller
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             $data['page_title'] = 'প্যানেল আইনজীবীর ড্যাশবোর্ড';
 
-            return view('dashboard.cabinet_new.panel_lawyer')->with($data);
+            return view('dashboard.cabinet_new.panel_lawyer')->with($data + ['caseCountPanelLawyer' => $caseCountPanelLawyer]);
         } elseif ($roleID == 32) {
             $data['total_highcourt'] = GovCaseRegister::whereHas(
                 'mainBibadis',
@@ -2114,5 +2135,21 @@ class DashboardController extends Controller
         $zoom_join_url = DOPTOR_ENDPOINT() . '/logout?' . 'referer=' . base64_encode($callbackurl);
         // $zoom_join_url = 'https://api-training.doptor.gov.bd' . '/logout?' . 'referer=' . base64_encode($callbackurl);
         return redirect()->away($zoom_join_url);
+    }
+
+    public function showNotifications()
+    {
+        $highCourtApplicationsCount = ApplicationFormAsMainDefendent::where('court', 2)->distinct('case_no')->count('case_no');
+        $appealApplicationsCount = ApplicationFormAsMainDefendent::where('court', 1)->distinct('case_no')->count('case_no');
+        $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
+
+        return view('notifications', compact('highCourtApplicationsCount', 'appealApplicationsCount', 'totalApplicationsCount'));
+    }
+
+    public function en2bn($number)
+    {
+        $bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        return str_replace($en, $bn, $number);
     }
 }

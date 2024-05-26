@@ -206,7 +206,7 @@ class GovCaseUserManagementController extends Controller
         // ***** assing role for all users
         // $userItem = User::where('is_gov', 1)->get();
         // foreach($userItem as $user){
-        //     $user->assignRole($user->role);
+        //     $user->assignRole($user->role);  
         // }
         ///////// run script
         // return $data['offices'];
@@ -303,7 +303,7 @@ class GovCaseUserManagementController extends Controller
         ///////// run script
         // return $data['offices'];
 
-        $data['page_title'] = 'ব্যবহারকারীর তালিকা';
+        $data['page_title'] = 'অনুমোদিত ই-নথি বহির্ভূত ব্যবহারকারী তালিকা';
 
         return view('gov_case.user_manage.office_wise_users_external')
             ->with($data);

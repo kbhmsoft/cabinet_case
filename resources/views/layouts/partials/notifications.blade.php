@@ -3,29 +3,17 @@
         color: #6D318D !important;
         background-color: transparent !important;
         border-color: transparent !important;
-
     }
+    
 </style>
+
 <div class="dropdown">
 
     <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
-        <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary">
+        <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary" style="background-color: #ffffff">
             <span class="svg-icon svg-icon-xl svg-icon-primary">
-                <!--begin::Svg Icon | path:media/svg/icons/Code/Compiling.svg-->
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                    height="24px" viewBox="0 0 24 24" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect x="0" y="0" width="24" height="24" />
-                        <path
-                            d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z"
-                            fill="#000000" opacity="0.3" />
-                        <path
-                            d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z"
-                            fill="#000000" />
-                    </g>
-                </svg>
-
-            </span>
+                <i class="fas fa-bell"></i>
+            </span>            
             <span class="pulse-ring"></span>
         </div>
     </div>
@@ -57,16 +45,38 @@
                     <div class="tab-pane fade show active" id="respondent" role="tabpanel"
                         aria-labelledby="respondent-tab">
                         <ul class="menu">
-                            <li class="menu-item">
+
+                            <li class="menu-item mt-2">
                                 <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
-                                    <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ</span>
+                                    <h5 class="menu-text font-weight-bolder mt-2">হাইকোর্ট বিভাগ 
+                                        <?php
+                                            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->distinct('case_no')->count('case_no');
+                                        ?>
+                                        @if($highCourtApplicationsCount > 0)
+                                            <span class="badge badge-danger float-right">{{ en2bn($highCourtApplicationsCount) }}</span>
+                                        @else
+                                            <span class="badge badge-danger float-right">{{ en2bn(0) }}</span>
+                                        @endif
+                                    </h5>
                                 </a>
                             </li>
-                            <li class="menu-item">
+                        
+                            
+                            <li class="menu-item mt-2">
                                 <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
-                                    <span class="menu-text font-weight-bolder">আপিল বিভাগ</span>
+                                    <h5 class="menu-text font-weight-bolder mt-2">আপিল বিভাগ
+                                        <?php
+                                            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->distinct('case_no')->count('case_no');
+                                        ?>
+                                        @if($appealApplicationsCount > 0)
+                                            <span class="badge badge-danger float-right">{{ en2bn($appealApplicationsCount) }}</span>
+                                        @else
+                                            <span class="badge badge-danger float-right">{{ en2bn(0) }}</span>
+                                        @endif
+                                    </h5>
                                 </a>
                             </li>
+                            
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
@@ -96,7 +106,8 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('cabinet.messages') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span>
+                                        {{-- <span class="menu-text font-weight-bolder">ব্যবহারকারীর তালিকা</span> --}}
+                                        <span class="menu-text font-weight-bolder">বার্তা প্রেরন </span>
                                     </a>
                                 </li>
                             @endcan

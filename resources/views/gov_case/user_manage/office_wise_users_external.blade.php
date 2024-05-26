@@ -56,6 +56,9 @@
         </div> --}}
 
         <div class="card-body">
+            <div class="card-title">
+                <h2> {{ $page_title }} </h2>
+            </div>
             {{-- @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     <p>{{ $message }}</p>
@@ -125,9 +128,9 @@
                             <th scope="col">নাম</th>
                             <th scope="col">ইউজার রোল</th>
                             <th scope="col">মোবাইল</th>
-                            <th scope="col">ইমেইল এড্রেস</th>
+                            <th scope="col" class="tg-bn text-center ">ইমেইল এড্রেস</th>
                             <th scope="col">আইিড-ধরণ</th>
-                            <th scope="col" width="150">অ্যাকশন</th>
+                            {{-- <th scope="col" width="150">অ্যাকশন</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -141,7 +144,7 @@
                                         {{ $row->office_name_bn }}
                                     @endif
                                 </td>
-                                
+
                                 <td>
                                     @if (is_null($row->doptor_user_id))
                                         {{ $row->name }}
@@ -153,28 +156,28 @@
                                         {{ $row->roleName }}
                                     @endif
                                 </td>
-                                
+
                                 <td>
                                     @if (!is_null($row->mobile_no))
                                         {{ en2bn($row->mobile_no) }}
                                     @endif
                                 </td>
-                                
-                                <td>
+
+                                <td class="text-center">
                                     @if (!is_null($row->email))
                                         {{ $row->email }}
                                     @endif
                                 </td>
-                                
-                                
+
+
                                 <td>
                                     @if (is_null($row->doptor_user_id))
                                         সাধারণ লগইন
                                     @endif
                                 </td>
-                                
 
-                                <td>
+
+                                {{-- <td>
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
                                             title="বিস্তারিত"></i></a>
@@ -197,7 +200,7 @@
                                             </div>
                                         </form>
                                     @endif
-                                </td>
+                                </td> --}}
 
 
 
