@@ -543,8 +543,23 @@ class GovCaseOfficeController extends Controller
             return json_encode($subcategories);
         }
 
+        
+
         return json_encode($subcategories);
     }
+
+    public function getOfficeNames(Request $request)
+    {
+        $officeType = $request->input('office_type');
+
+        // Fetch office names based on the selected office type
+        $offices = GovCaseOffice::where('level', $officeType)
+            ->pluck('office_name_bn', 'doptor_office_id')
+            ->toArray();
+
+        return response()->json($offices);
+    }
+
     public function getDependentChildOffice($id)
     {
         $roleID = Auth::user()->role_id;
@@ -574,9 +589,9 @@ class GovCaseOfficeController extends Controller
         $officeInfo = user_office_info();
         if ($roleID == 27) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
-        }elseif($roleID == 29 || $roleID == 31) {
+        } elseif ($roleID == 29 || $roleID == 31) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
-        }else{
+        } else {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
 

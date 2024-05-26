@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
     <div class="card card-custom">
 
-        <div class="card-header flex-wrap py-5">
+        {{-- <div class="card-header flex-wrap py-5">
             <div class="card-title">
                 <h2> {{ $page_title }} </h2>
             </div>
@@ -53,16 +53,19 @@
                     </a>
                 @endif
             </div>
-        </div>
+        </div> --}}
 
         <div class="card-body">
-            @if ($message = Session::get('success'))
+            <div class="card-title">
+                <h2> {{ $page_title }} </h2>
+            </div>
+            {{-- @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     <p>{{ $message }}</p>
                 </div>
-            @endif
+            @endif --}}
 
-            <form class="form-inline" method="GET">
+            {{-- <form class="form-inline" method="GET">
                 <div class="form-group mb-2 mr-2">
                     <select name="office_type" id="office_type" class="form-control">
                         <option value="">-বিভাগ নির্বাচন করুন-</option>3
@@ -112,7 +115,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success ml-3 mb-2">অনুসন্ধান করুন</button>
-            </form>
+            </form> --}}
 
             @if ($users && $users->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
@@ -125,9 +128,9 @@
                             <th scope="col">নাম</th>
                             <th scope="col">ইউজার রোল</th>
                             <th scope="col">মোবাইল</th>
-                            <th scope="col">ইমেইল এড্রেস</th>
+                            <th scope="col" class="tg-bn text-center ">ইমেইল এড্রেস</th>
                             <th scope="col">আইিড-ধরণ</th>
-                            <th scope="col" width="150">অ্যাকশন</th>
+                            {{-- <th scope="col" width="150">অ্যাকশন</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -136,21 +139,45 @@
                             <tr>
                                 {{-- <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th> --}}
                                 <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
-                                <td>{{ $row->office_name_bn }}</td>
-                                <td>{{ $row->name }}</td>
-
-                                <td>{{ $row->roleName }}</td>
-                                <td>{{ $row->mobile_no ? en2bn($row->mobile_no) : '-' }}</td>
-                                <td>{{ $row->email }}</td>
                                 <td>
-                                    @if ($row->doptor_user_id)
-                                        নথি লগইন
-                                    @else
-                                        সাধারণ লগইন
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->office_name_bn }}
                                     @endif
                                 </td>
 
                                 <td>
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->name }}
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if (is_null($row->doptor_user_id))
+                                        {{ $row->roleName }}
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if (!is_null($row->mobile_no))
+                                        {{ en2bn($row->mobile_no) }}
+                                    @endif
+                                </td>
+
+                                <td class="text-center">
+                                    @if (!is_null($row->email))
+                                        {{ $row->email }}
+                                    @endif
+                                </td>
+
+
+                                <td>
+                                    @if (is_null($row->doptor_user_id))
+                                        সাধারণ লগইন
+                                    @endif
+                                </td>
+
+
+                                {{-- <td>
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
                                             title="বিস্তারিত"></i></a>
@@ -173,8 +200,28 @@
                                             </div>
                                         </form>
                                     @endif
-                                </td>
+                                </td> --}}
 
+
+
+                                {{-- <td>
+                                    @if (auth()->user()->can('show_user_details'))
+                                        <a href="{{ route('cabinet.user-management.show', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            বিস্তারিত
+                                        </a>
+                                    @endif
+                                    @if (auth()->user()->can('update_user_info'))
+                                        <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
+                                    @else
+                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
+                                            সংশোধন
+                                        </a>
+                                    @endif
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -232,16 +279,9 @@
             var officeID = 0;
         </script>
     @endif
-    {{-- <script src="https://cdn.datatables.net/2.0.3/js/jquery.dataTables.min.j
-     --}}
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.3/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js"></script> --}}
     <script type="text/javascript">
         jQuery(document).ready(function() {
+
             new DataTable('#userTable', {
                 layout: {
                     topStart: {
@@ -251,20 +291,19 @@
                                     columns: [0, 1, 2, 3, 4, 5]
                                 }
                             },
+
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
                                     columns: ':visible'
                                 }
                             },
+
                             'colvis'
                         ]
                     }
-                },
-                pageLength: 10,
-                lengthMenu: [[10, 30, 50], [10, 30, 50]]
+                }
             });
-
             $('#ministry').select2();
             $('#divOffice').select2();
             $('#office_id').select2();

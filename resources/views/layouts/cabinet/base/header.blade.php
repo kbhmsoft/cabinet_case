@@ -36,7 +36,60 @@
         /* Adjust as needed */
         border: none;
         height: 1px;
+    }
 
+
+
+    .notification-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .notification {
+        background-color: #6D308D;
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+        position: relative;
+        display: inline-block;
+        border-radius: 3px;
+        margin-top: 1rem;
+    }
+
+    .notification:hover {
+        background: rgb(255, 255, 255);
+    }
+
+    .notification .badge {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background: red;
+        /* color: white; */
+    }
+
+    .menu-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .menu-item {
+        padding: 10px;
+    }
+
+    .menu-item a {
+        color: #333;
+    }
+
+    .menu-item:hover {
+        background-color: #f5f5f5;
     }
 </style>
 
@@ -83,7 +136,7 @@
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <!--begin::Header Menu Wrapper-->
-        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 ||  $roleID == 39)
+        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 39)
             <!-- Move this part into a separate div -->
             <div class="header-case-count">
                 <div class="header-content">
@@ -119,6 +172,37 @@
             <div style="width: 100%; height: 20px;"></div>
         @endif
 
+        <!-- Header Section -->
+        {{-- <header>
+            <!-- Notification Button -->
+            <div class="notification-container">
+                <a href="#" class="notification">
+                    <span
+                        class="font-weight-bolder font-size-base font-size-h5 d-none d-md-inline mr-3 text-dark-100 notification-text ">মূল
+                        রেসপন্ডেন্ট হিসেবে অন্তর্ভুক্তির আবেদন</span>
+                    <span class="badge">300</span>
+                </a>
+                <!-- Dropdown Menu -->
+                <div class="menu-dropdown">
+                    <ul class="menu">
+                        <li class="menu-item">
+                            <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
+                                <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
+                                <span class="menu-text font-weight-bolder">আপিল বিভাগ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header> --}}
+
+
+
+
 
         <!--end::Header Menu Wrapper-->
 
@@ -144,6 +228,15 @@
                             <span class="custom-span d-none d-md-inline">{{ Auth::user()->unit_name_bn ?? '' }},
                                 {{ Auth::user()->govOffice->office_name_bn ?? '' }}</span>
                         </div>
+                        @if ($total_case > 0)
+                            @php
+                                $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
+                            @endphp
+                            <span class="badge badge-danger"
+                                style="position: absolute !important; top: 20px; left: 730px;">{{ en2bn($totalApplicationsCount) }}</span>
+                        @endif
+
+                        <span class="pulse-ring"></span>
                     </div>
                 </div>
             </div>
@@ -153,3 +246,21 @@
     </div>
     <!--end::Container-->
 </div>
+
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const notificationContainer = document.querySelector('.notification-container');
+        const menuDropdown = document.querySelector('.menu-dropdown');
+
+        notificationContainer.addEventListener('click', function(event) {
+            menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+            event.stopPropagation();
+        });
+        document.addEventListener('click', function(event) {
+            if (!notificationContainer.contains(event.target)) {
+                menuDropdown.style.display = 'none';
+            }
+        });
+    });
+</script> --}}

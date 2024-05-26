@@ -27,6 +27,7 @@ use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class GovCaseRegisterController extends Controller
 {
@@ -161,6 +162,18 @@ class GovCaseRegisterController extends Controller
                 }
             );
         }
+
+        $userId = Auth::id();
+        if ($roleID == 45) {
+            $query->whereHas(
+                'concernPersons',
+                function ($query) use ($userId) {
+                    $query->where('concern_user_id', $userId);
+                }
+            );
+            // dd($cases);
+        };
+
 
         if (!empty($_GET['case_category_type'])) {
             $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
@@ -1446,6 +1459,9 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+
+
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas(
                 'bibadis',
@@ -1492,6 +1508,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'সরকারের বিপক্ষে আপিলের জন্য
         পেন্ডিং মামলার তালিকা';
+
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -3733,9 +3750,9 @@ class GovCaseRegisterController extends Controller
     {
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-        //     ->where('is_final_order', 1)
-        // // ->pluck("case_no", "id", "year");
-        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
+            //     ->where('is_final_order', 1)
+            // // ->pluck("case_no", "id", "year");
+            //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -4246,8 +4263,8 @@ class GovCaseRegisterController extends Controller
     {
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
             ->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-            $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-        })->get();
+                $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+            })->get();
         return $query;
     }
 
@@ -4914,7 +4931,6 @@ class GovCaseRegisterController extends Controller
         }
         return "Data Inserted Successfully";
     }
-
     public function ruleFileDelete($id)
     {
         $data = [
@@ -4929,5 +4945,4 @@ class GovCaseRegisterController extends Controller
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
-
 }

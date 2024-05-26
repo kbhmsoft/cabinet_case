@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use App\Models\CaseRegister;
 use Illuminate\Support\Arr;
 
+
 class MessageController extends Controller
 {
     public function messages()

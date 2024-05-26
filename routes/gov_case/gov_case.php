@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
         /////************** User Management **************/////
         Route::get('office/wise/users', [GovCaseUserManagementController::class, 'officeWiseUsers'])->name('office.wise');
+        Route::get('office/wise/users/external', [GovCaseUserManagementController::class, 'officeWiseUsersExternal'])->name('wiseExternal');
         Route::resource('user-management', GovCaseUserManagementController::class);
         Route::get('/e-nothi-assigned-user-list', [GovCaseUserManagementController::class, 'assignedENothiUserManagement'])->name('assignedENothiUserManagement');
         /////************** Office Setting **************/////
@@ -65,7 +66,10 @@ Route::middleware('auth')->group(function () {
         route::post('/office/update', [GovCaseOfficeController::class, 'update'])->name('office.update');
         route::get('/office/dropdownlist/getdependentdistrict/{id}', [GovCaseOfficeController::class, 'getDependentDistrict']);
         route::get('/office/dropdownlist/getdependentupazila/{id}', [GovCaseOfficeController::class, 'getDependentUpazila']);
+
         route::get('/office/dropdownlist/getdependentoffice/{id}', [GovCaseOfficeController::class, 'getDependentOffice']);
+        route::get('/office/dropdownlist/getOfficeNames/{id}', [GovCaseOfficeController::class, 'getOfficeNames']);
+
         route::get('/office/dropdownlist/getdependentchildoffice/{id}', [GovCaseOfficeController::class, 'getDependentChildOffice']);
         /////************** //Office Setting **************/////
         //=================== Message Start ================
@@ -76,6 +80,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/messages_remove/{id}', [GovCaseMessageController::class, 'messages_remove'])->name('messages_remove');
         Route::post('/messages/send', [GovCaseMessageController::class, 'messages_send'])->name('messages_send');
         Route::get('/messages_group', [GovCaseMessageController::class, 'messages_group'])->name('messages_group');
+        Route::get('/fetchoffices', [GovCaseMessageController::class, 'fetchoffices'])->name('fetchoffices');
+        Route::get('/filter-users', [GovCaseMessageController::class, 'filterUsers'])->name('filterUsers');
+
+
+
         Route::get('/hearing_date', [GovCaseUserNotificationController::class, 'hearing_date'])->name('hearing_date');
         Route::get('/results_completed', [GovCaseUserNotificationController::class, 'results_completed'])->name('results_completed');
         Route::get('/notice/list', [GovCaseNoticeController::class, 'index'])->name('notice.list');
@@ -162,7 +171,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
-            Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+            Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');  
             Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');
             Route::get('totalHighcourt', [GovCaseRegisterController::class, 'totalHighcourt'])->name('totalHighcourt');
             Route::get('totalHighcourtRunning', [GovCaseRegisterController::class, 'totalHighcourtRunning'])->name('totalHighcourtRunning');

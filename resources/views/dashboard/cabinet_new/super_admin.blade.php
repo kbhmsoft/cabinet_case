@@ -113,7 +113,7 @@
                             <div style="margin-top: 2rem">
                                 <h5 class="card-title font-weight-bolder" style="color: black;">
                                     মোট এন্ট্রিকৃত মামলার সংখ্যা (<span
-                                        class="count-numbers"><?= en2bn($total_case) ?></span>)
+                                        class="count-numbers"> <?= en2bn($total_case) ?> </span>)
                                 </h5>
                                 <div class="case-info">
                                     <span class="count-item"
@@ -155,17 +155,16 @@
                                 <div class="case-info">
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
-                                        <a href="{{ route('user-management') }}"
-                                            style="text-decoration: none; color: black;">
+                                        <a href="{{ route('cabinet.assignedENothiUserManagement') }}" style="text-decoration: none; color: black;">
                                             ই-নথি আইডি</a>
-                                        {{-- <span class="count-numbers" style="margin-left:10rem; color: black">{{ en2bn($total_high_court_case) }}</span> --}}
+                                        <span class="count-numbers" style="margin-left:10rem; color: black">{{ en2bn($doptorLoginCount) }}</span>
                                     </span>
                                     <span class="count-item"
                                         style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
-                                        <a href="{{ route('cabinet.user-management.index') }}"
+                                        <a href="{{ url('cabinet/office/wise/users/external') }}"
                                             style="text-decoration: none; color: black;"> ই-নথি বহির্ভুত আইডি</a>
-                                        {{-- <span class="count-numbers"
-                                        style="margin-left:10rem; color: black">{{ en2bn($total_appeal_case) }}</span> --}}
+                                        <span class="count-numbers"
+                                        style="margin-left:10rem; color: black">{{ en2bn($generalLoginCount) }}</span>
                                     </span>
                                 </div>
                             </div>

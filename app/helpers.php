@@ -170,6 +170,15 @@ if (!function_exists('convertToBanglaDate')) {
         // Return the converted Bangla date
         return $banglaDate;
     }
+
+	if (!function_exists('en2bn')) {
+		function en2bn($number)
+		{
+			$bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+			$en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+			return str_replace($en, $bn, $number);
+		}
+	}
 }
 
 

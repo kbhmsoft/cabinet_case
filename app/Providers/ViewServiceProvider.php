@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\MainRespondentNotification;
+use App\Models\ApplicationFormAsMainDefendent;
 use App\Models\Message;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
@@ -78,7 +79,7 @@ class ViewServiceProvider extends AppServiceProvider
                 $total_case = $total_highcourt + $total_appeal;
             }
 
-            if ($roleID == 27 || $roleID==39) {
+            if ($roleID == 27 || $roleID == 39) {
 
                 $total_highcourt = GovCaseRegister::where('deleted_at', null)
                     ->count();
@@ -89,12 +90,19 @@ class ViewServiceProvider extends AppServiceProvider
                 $total_case = $total_highcourt + $total_appeal;
             }
 
+            // Query to get the count of distinct case numbers for high court applications
+            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->distinct('case_no')->count('case_no');
+
+            // Query to get the count of distinct case numbers for appeal applications
+            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->distinct('case_no')->count('case_no');
+
             $view->with([
                 'total_highcourt' => $total_highcourt,
                 'total_appeal' => $total_appeal,
                 'total_case' => $total_case,
+                'highCourtApplicationsCount' => $highCourtApplicationsCount,
+                'appealApplicationsCount' => $appealApplicationsCount,
             ]);
-
         });
 
         view()->composer('messages.inc.search', function ($view) {
@@ -109,7 +117,6 @@ class ViewServiceProvider extends AppServiceProvider
             if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13 || $roleID == 16) {
                 $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', null)->get();
                 $upazilas = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
-
             } elseif ($roleID == 9 || $roleID == 10 || $roleID == 11 || $roleID == 12) {
                 $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', null)->get();
             }
@@ -123,7 +130,6 @@ class ViewServiceProvider extends AppServiceProvider
                 'gp_users' => $gp_users,
                 'user_role' => $user_role,
             ]);
-
         });
 
         view()->composer('layouts.cabinet.base.aside', function ($view) {
@@ -135,18 +141,16 @@ class ViewServiceProvider extends AppServiceProvider
 
             if ($roleID == 29 || $roleID == 31 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45 || $roleID == 39) {
                 $authUserOfficeId = Auth()->user()->office_id;
-                $case_swap = MainRespondentNotification::
-                    where('previous_office_id', $authUserOfficeId)
+                $case_swap = MainRespondentNotification::where('previous_office_id', $authUserOfficeId)
                     ->where('is_shown', 0)
                     ->get();
 
-                $notificationCount = MainRespondentNotification::
-                    where('previous_office_id', $authUserOfficeId)
+                $notificationCount = MainRespondentNotification::where('previous_office_id', $authUserOfficeId)
                     ->where('is_shown', 0)
                     ->count();
             }
 
-            if ($roleID == 29 || $roleID == 31 || $roleID==45 || $roleID == 43) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 45 || $roleID == 43) {
                 // ===============Ministry Admin===============//
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
@@ -174,7 +178,6 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('gov_case_registers.selected_main_dept_id', '=', $officeInfo->office_id)
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
-
             } elseif ($roleID == 34 || $roleID == 35 || $roleID == 36) {
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))
@@ -182,8 +185,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->groupBy('gov_case_registers.case_status_id')
                     ->where('gov_case_registers.action_user_role_id', $roleID)
                     ->get();
-
-            } elseif ($roleID == 27 || $roleID == 28 || $roleID==39) {
+            } elseif ($roleID == 27 || $roleID == 28 || $roleID == 39) {
                 $CaseResultCount = DB::table('gov_case_registers')
                     ->where('status', '!=', 1)
                     ->get()
@@ -204,7 +206,6 @@ class ViewServiceProvider extends AppServiceProvider
             } else {
 
                 $rm_case_status = '';
-
             }
             if ($roleID != 14 && $roleID != 15 && $roleID != 33 && $roleID != 34) {
 
@@ -215,7 +216,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('msg_reqest', 0)
                     ->count();
                 $msg_request_count = Message::orderby('id', 'DESC')
-                // ->select('user_sender', 'user_receiver', 'msg_reqest')
+                    // ->select('user_sender', 'user_receiver', 'msg_reqest')
                     ->Where('user_receiver', [Auth::user()->id])
                     ->Where('msg_reqest', 1)
                     ->groupby('user_sender')
@@ -231,13 +232,10 @@ class ViewServiceProvider extends AppServiceProvider
                     'notificationCount' => $notificationCount,
                 ]);
             }
-
         });
-
     }
     public function register()
     {
         //
     }
-
 }
