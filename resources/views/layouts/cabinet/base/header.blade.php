@@ -209,7 +209,17 @@
         <!--begin::Topbar-->
         <div class="topbar">
             <!--begin::Notifications-->
-            @include('layouts.partials.notifications')
+            <div class="notifications-container" style="position: relative; margin-top: 10px">
+                @include('layouts.partials.notifications')
+                @if ($total_case > 0)
+                    @php
+                        $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
+                    @endphp
+                    <span class="badge badge-danger" style="position: absolute; top: 0; right: 0; z-index: 1;">
+                        {{ en2bn($totalApplicationsCount) }}
+                    </span>
+                @endif
+            </div>
             <!--end::Notifications-->
             <!--begin::User-->
             <div class="topbar-item">
@@ -228,13 +238,7 @@
                             <span class="custom-span d-none d-md-inline">{{ Auth::user()->unit_name_bn ?? '' }},
                                 {{ Auth::user()->govOffice->office_name_bn ?? '' }}</span>
                         </div>
-                        @if ($total_case > 0)
-                            @php
-                                $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
-                            @endphp
-                            <span class="badge badge-danger"
-                                style="position: absolute !important; top: 20px; left: 730px;">{{ en2bn($totalApplicationsCount) }}</span>
-                        @endif
+
 
                         <span class="pulse-ring"></span>
                     </div>
