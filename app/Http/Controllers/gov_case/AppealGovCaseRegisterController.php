@@ -1954,7 +1954,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['ministry'] = $ministry->groupBy('gov_case_office.id')
             ->paginate(10);
-// return $data['ministry'];
+        // return $data['ministry'];
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];

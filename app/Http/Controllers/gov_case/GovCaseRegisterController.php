@@ -2719,6 +2719,7 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
+        //   dd($request->all());
         $exists = GovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -2815,7 +2816,9 @@ class GovCaseRegisterController extends Controller
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-        GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
+        if (userInfo()->role_id != 27) {
+            GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
+        }
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -3733,9 +3736,9 @@ class GovCaseRegisterController extends Controller
     {
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-        //     ->where('is_final_order', 1)
-        // // ->pluck("case_no", "id", "year");
-        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
+            //     ->where('is_final_order', 1)
+            // // ->pluck("case_no", "id", "year");
+            //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -4246,8 +4249,8 @@ class GovCaseRegisterController extends Controller
     {
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
             ->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-            $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-        })->get();
+                $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+            })->get();
         return $query;
     }
 
@@ -4929,5 +4932,4 @@ class GovCaseRegisterController extends Controller
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
-
 }

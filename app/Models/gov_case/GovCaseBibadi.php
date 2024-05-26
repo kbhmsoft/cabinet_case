@@ -19,6 +19,7 @@ class GovCaseBibadi extends Model
         'respondent_id',
         'department_id',
         'is_main_bibadi',
+        'other_respondent_manual_name',
 	];
 
     public function ministry(){

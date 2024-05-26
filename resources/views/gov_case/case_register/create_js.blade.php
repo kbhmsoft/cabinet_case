@@ -259,7 +259,6 @@
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
                 '<td><select name="main_respondent[]" class="form-control form-control-sm main_respondent" required><option value="">-- নির্বাচন করুন --</option>@foreach ($mainRespondentMinistrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('main_ministry') == $value->doptor_office_id ? 'selected' : '' }}>{{ $value->office_name_bn }}</option>@endforeach</select><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
 
             if (countVal != 1) {
                 items +=
@@ -282,19 +281,19 @@
 
 
     // Event delegation for the "অন্যান্য রেসপন্ডেন্টর" dropdown
-    $(document).on('change', 'select[name="other_respondent[]"]', function() {
-        var dataID = $(this).val();
-        var options = $('select[name="other_respondent[]"]').find('option:selected').hello('id');
-        console.log(options);
-        var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
-        if (dataID == 0) {
-            $inputField.removeClass('d-none').addClass('long-input');
-            $(this).addClass('short-select');
-        } else {
-            $inputField.addClass('d-none').removeClass('long-input');
-            $(this).removeClass('short-select');
-        }
-    });
+    // $(document).on('change', 'select[name="other_respondent[]"]', function() {
+    //     var dataID = $(this).val();
+    //     var options = $('select[name="other_respondent[]"]').find('option:selected').hello('id');
+    //     console.log(options);
+    //     var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
+    //     if (dataID == 0) {
+    //         $inputField.removeClass('d-none').addClass('long-input');
+    //         $(this).addClass('short-select');
+    //     } else {
+    //         $inputField.addClass('d-none').removeClass('long-input');
+    //         $(this).removeClass('short-select');
+    //     }
+    // });
 
     // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
     $("#addBibadiRow").click(function(e) {
@@ -310,15 +309,14 @@
             var items = '';
             items += '<tr id="bibadi_' + count + '">';
             items +=
-                '<td><select name="other_respondent[]" class="form-control form-control-sm other_respondentCls" hello-id="' +
-                count + '">';
+                '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName('+count+')" id="other_respondent_'+count+'" class="form-control form-control-sm other_respondentCls">';
             items += '<option value="">-- নির্বাচন করুন --</option>';
             items +=
                 '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
             items += '<option value="0">অন্যান্য</option>';
-            items += '</select></td>';
-            items +=
-                '<td><input type="text" name="other_respondent_manual_name[]" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন"></td>';
+            items += '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_'+count+'" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
+            items += '<input type="hidden" name="bibadi_id[]" value="">';
+           
             items +=
                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
@@ -336,7 +334,20 @@
 
 
 
-
+    function getManualOtherRespondentName(data){
+        var other_respondent_manual_name_ = $('#other_respondent_manual_name_'+data);
+        var selectID = $('#other_respondent_'+data).val();
+        if(selectID == 0){
+            $('#other_respondent_manual_name_'+data).show();
+            $('#other_respondent_manual_name_'+data).addClass("w-100");
+        } 
+        if(selectID != 0){
+            $('#other_respondent_manual_name_'+data).hide();
+        } 
+        console.log(selectID);
+        
+        // alert(details);
+    }
 
 
     /// ************ Other Respondent *************

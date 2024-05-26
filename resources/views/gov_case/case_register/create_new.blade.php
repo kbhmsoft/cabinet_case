@@ -331,7 +331,6 @@
                                                     </div>
 
                                                     <!-- Hidden input for "অন্যান্য" -->
-                                                    <input type="text" name="other_respondent_manual_name" id="other_respondent_manual_name" class="form-control form-control-sm d-none" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন">
 
                                                 </div>
 
