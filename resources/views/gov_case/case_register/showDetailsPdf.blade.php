@@ -398,14 +398,14 @@
                     </tr>
                 <tbody>
                     @php $k = 1; @endphp
-                    @foreach ($caseBadi as $badi)
+                        @if($caseBadi->name)
                         <tr>
                             <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                            <td class="tg-nluh">{{ $badi->name }}</td>
-                            <td class="tg-nluh">{{ $badi->address }}</td>
+                            <td class="tg-nluh">{{ $caseBadi->name }}</td>
+                            <td class="tg-nluh">{{ $caseBadi->address ?? '-'}}</td>
                         </tr>
                         @php $k++; @endphp
-                    @endforeach
+                         @endif
                 </tbody>
                 </thead>
             </table>

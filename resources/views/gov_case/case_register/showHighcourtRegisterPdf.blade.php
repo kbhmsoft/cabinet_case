@@ -228,14 +228,14 @@
                         <th class="tg-19u4">পিটিশনারের নাম ও ঠিকানা</th>
                         <td class="tg-nluh">
                             {{-- {{dd($case)}} --}}
-                            @if($caseBadi)
-                            @foreach ($caseBadi as $key => $badi)
-                                @if ($badi->name && $case->total_badi_number > 1)
-                                    {{ $badi->name . ' ও অন্যান্য' }},{{ $badi->address }}
-                                @elseif ($badi->name)
-                                    {{ $badi->name }}, {{ $badi->address }}
+                            @if($caseBadi->name)
+
+                                @if ($caseBadi->name && $case->total_badi_number > 1)
+                                    {{ $caseBadi->name . ' ও অন্যান্য' }},{{ $caseBadi->address }}
+                                @elseif ($caseBadi->name)
+                                    {{ $caseBadi->name }}, {{ $caseBadi->address }}
                                 @endif
-                            @endforeach
+
                             @endif
                         </td>
                     </tr>

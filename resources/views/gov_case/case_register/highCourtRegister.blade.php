@@ -69,14 +69,14 @@
                             <tr>
                                 <td>{{ $case->case_no ?? '-' }}/{{ $case->case_category->name_bn ?? '-' }}</td>
                                 <td>
-                                    @foreach ($caseBadi as $key => $badi)
-                                        {{ en2bn($key + 1) }}. {{ $badi->name }} ,{{ $badi->address }}<br>
-                                    @endforeach
+                                   @if($caseBadi->name)
+                                        {{ $caseBadi->name ?? '-'}} ,{{ $caseBadi->address ?? '-'}}<br>
+                                   @endif
 
                                 </td>
                                 <td>
                                     @foreach ($caseMainBibadi as $key => $bibadi)
-                                        {{ en2bn($key + 1) }}.{{ $bibadi->ministry->office_name_bn ?? '-' }}<br>
+                                        {{ $bibadi->ministry->office_name_bn ?? '-' }}<br>
                                     @endforeach
                                 </td>
                                 <td>{{ $case->subject_matter ?? '-'}}</td>

@@ -605,17 +605,18 @@
         $('input[name="badi_name[]"]').each(function() {
             var value = $(this).val().trim();
             if (value === "") {
+                
                 $(this).next('.validation-message').removeClass('d-none');
                 $(this).focus();
                 isValid = false;
-                return false; // Exit each loop
+                return false;
             } else {
                 $(this).next('.validation-message').addClass('d-none');
             }
         });
 
         if (!isValid) {
-            return; // Exit if validation fails
+            return;
         }
 
         $('#caseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
