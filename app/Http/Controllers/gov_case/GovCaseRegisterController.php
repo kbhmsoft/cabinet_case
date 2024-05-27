@@ -2737,7 +2737,6 @@ class GovCaseRegisterController extends Controller
     public function storeGeneralInfo(Request $request)
     {
 
-        // dd($request->all());
         $exists = GovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -2834,7 +2833,9 @@ class GovCaseRegisterController extends Controller
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-        GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
+        if (userInfo()->role_id != 27) {
+            GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
+        }
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {

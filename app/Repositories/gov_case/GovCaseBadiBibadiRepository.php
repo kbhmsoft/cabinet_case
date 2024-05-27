@@ -47,7 +47,7 @@ class GovCaseBadiBibadiRepository
     public static function storeMainBibadi($caseInfo, $govCaseId)
     {
         $officeID = userInfo()->office_id;
-
+        
                 $bibadi = new GovCaseBibadi();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $officeID;
@@ -57,11 +57,13 @@ class GovCaseBadiBibadiRepository
 
     public static function storeBibadi($caseInfo, $govCaseId)
     {
+        // dd($caseInfo->other_respondent_manual_name);
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
-                $bibadi = new GovCaseBibadi();
+                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $caseInfo->other_respondent[$key];
+                $bibadi->other_respondent_manual_name = $caseInfo->other_respondent_manual_name[$key];
                 $bibadi->save();
             }
         }
@@ -96,6 +98,7 @@ class GovCaseBadiBibadiRepository
         } else {
             $bibadi = new GovCaseBibadi();
         }
+        // dd($bibadi);
         return $bibadi;
     }
 
