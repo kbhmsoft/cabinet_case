@@ -59,7 +59,7 @@ class GovCaseRegisterRepository
     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->highcourt_adalat as $key => $val) {
-
+         
             if ($caseInfo->highcourt_adalat[$key] != null) {
                 $highcourtAdalat = new GovCaseHighcourtAdalat();
                 $highcourtAdalat->gov_case_id = $govCaseId;
@@ -596,10 +596,11 @@ class GovCaseRegisterRepository
 
     public static function storeConcernPerson($caseInfo, $govCaseId)
     {
-        // dd($caseInfo);
+
         if ($caseInfo->concernPersonDesignation) {
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
+
                     $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);
                     $concernPrerson->gov_case_id = $govCaseId;
                     $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
