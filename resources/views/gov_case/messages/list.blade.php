@@ -221,6 +221,9 @@
         .office-list-scrollable li label {
             user-select: text;
         }
+
+
+
     </style>
 @endsection
 
@@ -229,12 +232,8 @@
 @section('content')
     <form>
 
-        <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff"
-            {{-- style="background-image: url({{ asset('media/misc/bg-1.jpg') }})" --}}>
-            {{-- <h4 class="d-flex flex-center rounded-top">
-                    <span class="text-black">User Notifications</span>
-                    <span class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">23 new</span>
-                </h4> --}}
+        <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff">
+            <!-- Tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active text-dark" id="respondentAll-tab" data-toggle="tab" href="#respondentAll"
@@ -245,11 +244,10 @@
                         role="tab" aria-controls="messageOffice" aria-selected="false">অফিসওয়ারী পাঠান</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  text-dark" id="messageOne-tab" data-toggle="tab" href="#messageOne" role="tab"
+                    <a class="nav-link text-dark" id="messageOne-tab" data-toggle="tab" href="#messageOne" role="tab"
                         aria-controls="messageOne" aria-selected="false">পার্সনওয়ারী পাঠান</a>
                 </li>
             </ul>
-
             {{-- -------------------------- start সকলকে পাঠান ---------------------------------- --}}
 
             <div class="tab-content" id="myTabContent">
