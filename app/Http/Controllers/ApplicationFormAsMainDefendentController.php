@@ -41,9 +41,18 @@ class ApplicationFormAsMainDefendentController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
 
+
+        // Counting the number of unique case numbers
+        $highCourtApplicationsCount = $query->distinct('case_no')->count('case_no');
+        // Passing the count to the view
+        $data['highCourtApplicationsCount'] = $highCourtApplicationsCount;
+
+
         return view('gov_case.case_register.application_form_as_main_defendent.index')
             ->with($data);
     }
+
+
 
     public function appealIndexApplications(Request $request)
     {
@@ -58,6 +67,13 @@ class ApplicationFormAsMainDefendentController extends Controller
         //   dd($data['users']);
         $data['page_title'] = 'আপিল মামলা তালিকা';
 
+
+        // Counting the number of unique case numbers
+        $appealCourtApplicationCount = $query->distinct('case_no')->count('case_no');
+        // Passing the count to the view
+        $data['appealCourtApplicationCount'] = $appealCourtApplicationCount;
+        
+
         return view('gov_case.case_register.application_form_as_main_defendent.appeal_index')
             ->with($data);
     }
@@ -69,7 +85,7 @@ class ApplicationFormAsMainDefendentController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['govCaseData'] = GovCaseRegister::where('case_no', $caseNo)
-        ->first();
+            ->first();
 
         $GovCaseDivisionCategoryType = GovCaseDivisionCategoryType::all();
         $data['GovCaseDivisionCategoryType'] = $GovCaseDivisionCategoryType;
@@ -185,5 +201,4 @@ class ApplicationFormAsMainDefendentController extends Controller
 
         return $options;
     }
-
 }

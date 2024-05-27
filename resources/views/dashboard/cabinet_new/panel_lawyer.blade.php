@@ -65,7 +65,7 @@
             </div> --}}
 
             <!-- Card 2 -->
-            <div class="col-md-4 mb-4">
+            {{-- <div class="col-md-4 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5; height:194px;">
                     <div class="card-body"
                         style="margin-bottom: 1.2rem; background-color: #f5f5f5; border-radius: 1rem;">
@@ -105,22 +105,20 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
 
             <!-- Card 3 -->
-            <div class="col-md-4 mb-4">
+            {{-- <div class="col-md-4 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
-                    {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(155, 229, 240);"> --}}
-                    {{-- <div class="card-body" style="margin-bottom: 1.5rem; background-color: rgb(155, 229, 240); border-radius: 1rem;"> --}}
+                    
                     <div class="card-body"
                         style="margin-bottom: 2.5rem; background-color: #f5f5f5;; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
-                                {{-- <i class="fas fa-exclamation-circle text-danger fa-fw mb-md-0 mr-3"
-                                        style="font-size: 4rem;"></i> --}}
+                                
                                 <img src="{{ asset('uploads/IconeSCMS/danger.png') }}"
                                     style=" height: 60px; width: 100%; margin-top: 2rem; " alt="Logo"
                                     class="brand-image">
@@ -143,20 +141,19 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Card 4 -->
-            <div class="col-md-4 mb-4">
-                {{-- <div class="card" style="border-radius: 1rem; background-color: rgb(215, 227, 89);"> --}}
+            {{-- <div class="col-md-4 mb-4">
+                
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;;">
-                    {{-- <div class="card-body" style="margin-bottom: 3.5rem; background-color: rgb(215, 227, 89); border-radius: 1rem;"> --}}
+                    
                     <div class="card-body"
                         style="margin-bottom: 1.8rem; background-color: #f5f5f5;; border-radius: 1rem;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem;">
-                                {{-- <i class="fas fa-calendar-alt text-primary fa-fw mb-md-0 mr-3"
-                                        style="font-size: 4rem;"></i> --}}
+                                
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
                                     style=" height: 50px; width: 80%; margin-top: 4rem; " alt="Logo"
                                     class="brand-image">
@@ -177,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-md-4 mb-4">
                 <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
@@ -187,8 +184,7 @@
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 1.5rem;">
                                 <img src="{{ asset('uploads/IconeSCMS/courthouse.png') }}"
-                                    style="height: 50px; width: 100%; " alt="Logo"
-                                    class="brand-image">
+                                    style="height: 50px; width: 100%; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -238,9 +234,8 @@
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 1.5rem; margin-right: 1.5rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}"
-                                    style="height: 50px; width: 100%;" alt="Logo"
-                                    class="brand-image">
+                                <img src="{{ asset('uploads/IconeSCMS/law.png') }}" style="height: 50px; width: 100%;"
+                                    alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -293,8 +288,7 @@
                                 {{-- <i class="fas fa-calendar-alt text-primary fa-fw mb-md-0 mr-3"
                                         style="font-size: 4rem;"></i> --}}
                                 <img src="{{ asset('uploads/IconeSCMS/1320101.webp') }}"
-                                    style=" height: 50px; width: 80%; " alt="Logo"
-                                    class="brand-image">
+                                    style=" height: 50px; width: 80%; " alt="Logo" class="brand-image">
                             </div>
                             <!-- Content -->
                             <div>
@@ -336,6 +330,47 @@
                     </div>
                 </div>
             </div> --}}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class=" mb-4">
+                            <div class="card" style="background-color: #f5f5f5;">
+                                <div class="card-body">
+                                    <a href=" {{ route('cabinet.case.highcourt') }}" class="card-title font-weight-bolder">
+                                        পদক্ষেপ নিতে হবে এমন মামলাসমূহ
+                                        <span class="badge badge-danger float-right">{{ en2bn($caseCountPanelLawyer) }}</span>
+                                    </a>
+                                    
+                                    {{-- <p class="card-text">
+                                        <a href="#"><i class="fas fa-arrow-circle-right"></i> সহকারী কমিশনার (ভূমি) এর
+                                            নিকট এস এফ রিভিউর জন্য প্রেরণ</a>
+                                    </p> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="col-md-6">
+                    <div class="card">
+                        <div class=" mb-4">
+                            <div class="card" style="background-color: #f5f5f5;">
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bolder">
+                                        পদক্ষেপ নিতে হবে এমন মামলাসমূহ
+                                        <span class="badge badge-danger float-right">{{ en2bn($caseCount) }}</span>
+                                    </h5>
+                                    <p class="card-text">
+                                        <a href="#"><i class="fas fa-arrow-circle-right"></i> সহকারী কমিশনার (ভূমি) এর
+                                            নিকট এস এফ রিভিউর জন্য প্রেরণ</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+            </div>
+            
 
         <div class="row mt-4">
             <!-- Card 7 -->

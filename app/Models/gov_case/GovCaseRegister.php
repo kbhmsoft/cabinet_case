@@ -194,4 +194,8 @@ class GovCaseRegister extends Model
     {
         return $this->belongsTo(GovCaseDivisionCategoryType::class, 'case_type_id', 'id');
     }
+    public function concernPersons()
+    {
+        return $this->hasMany(GovCaseConcernPerson::class, 'gov_case_id', 'id')->where('concern_user_id', auth()->id());
+    }
 }

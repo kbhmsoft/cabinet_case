@@ -22,7 +22,6 @@ class GovCaseMessageController extends Controller
     public function __construct()
     {
         $this->middleware('permission:recent_messages', ['only' => ['messages_recent']]);
-
     }
 
     public function messages()
@@ -91,7 +90,7 @@ class GovCaseMessageController extends Controller
 
         $data['users'] = $query->paginate(10)->withQueryString();
 
-        $data['user_role'] = DB::table('roles')->select('id', 'name')
+        $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')
             ->whereNotIn('id', $role)
             ->where('is_gov', 1)
             ->orderBy('sort_order', 'ASC')
@@ -102,10 +101,187 @@ class GovCaseMessageController extends Controller
         // return $data;
         $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
-        return view('gov_case.messages.list')
-            ->with($data);
 
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        $query = GovCaseOffice::orderby('id', 'ASC');
+
+        // Applying conditions to the query
+        if (!empty($_GET['office_type'])) {
+            $query->where('gov_case_office.level', '=', $_GET['office_type']);
+        }
+        if (!empty($_GET['ministry'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['ministry']);
+        }
+        if (!empty($_GET['divOffice'])) {
+            $query->where('gov_case_office.parent', '=', $_GET['divOffice']);
+        }
+        if (!empty($_GET['office_name'])) {
+            $query->where('gov_case_office.office_name_bn', 'LIKE', '%' . $_GET['office_name'] . '%');
+        }
+
+        // Paginating the results and preserving query parameters
+        $data['offices'] = $query->paginate(10)->withQueryString();
+        // dd($data['offices']);
+        // dd($offices);
+
+        // Fetching ministries, division offices, upazilas, and divisions
+
+        $data['upazilas'] = null;
+        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
+
+        // Adding specific condition for certain roles
+        if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13) {
+            $data['upazilas'] = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
+        }
+
+        // /////////////////////////////////////////////////////////////////////////
+        $officeID = userInfo()->office_id;
+        $childOfficeIds = [];
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
+
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $data['offices'] = DB::table('gov_case_office')->get();
+        //Add Conditions
+        if ($roleID == 27) {
+            $query = DB::table('users')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereNotIn('users.role_id', [42, 43])
+                ->where('users.is_gov', 1)
+                ->orderBy('users.office_id', 'ASC');
+
+            // For Ministry Admin
+        } else {
+            $query = DB::table('users')
+
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereIn('users.office_id', $finalOfficeIds)
+                ->whereNotIn('users.role_id', [27, 42, 43])
+                ->where('users.is_gov', 1)
+                ->orderBy('users.office_id', 'ASC');
+        }
+
+        if (!empty($_GET['office_id'])) {
+            $query->where('users.office_id', '=', $_GET['office_id']);
+        }
+        if (!empty($_GET['role'])) {
+            $query->where('users.role_id', '=', $_GET['role']);
+        }
+
+        // $data['users'] = $query->paginate(10)->withQueryString();
+        $data['users'] = $query->get();
+
+
+
+
+
+        // Returning the view with data
+        return view('gov_case.messages.list', $data);
     }
+
+
+    public function fetchOffices(Request $request)
+    {
+        // dd($request->all());
+
+        $query = GovCaseOffice::orderBy('id', 'ASC');
+
+        if (!empty($request->office_type)) {
+            $query->where('gov_case_office.level', '=', $request->office_type);
+        }
+        if (!empty($request->office_type_pw)) {
+            $query->where('gov_case_office.level', '=', $request->office_type_pw);
+        }
+        if (!empty($request->ministry)) {
+            // dd($request->ministry);
+            $query->where('gov_case_office.parent_office_id', '=', $request->ministry);
+        }
+        if (!empty($request->ministry_pw)) {
+            // dd($request->ministry);
+            $query->where('gov_case_office.parent_office_id', '=', $request->ministry_pw);
+        }
+        if (!empty($request->divOffice)) {
+            $query->where('gov_case_office.parent_office_id', '=', $request->divOffice);
+        }
+        if (!empty($request->divOffice_pw)) {
+            $query->where('gov_case_office.parent_office_id', '=', $request->divOffice_pw);
+        }
+
+        $offices = $query->get();
+        // dd($offices);
+        $ministries = GovCaseOffice::where('level', 1)->get();
+        $divOffices = GovCaseOffice::where('level', 3)->get();
+
+        return response()->json([
+            'offices' => $offices,
+            'ministries' => $ministries,
+            'divOffices' => $divOffices,
+        ]);
+    }
+
+    public function filterUsers(Request $request)
+    {
+        $query = GovCaseOffice::orderBy('id', 'ASC');
+
+        if (!empty($request->office_type_pw)) {
+            $query->where('gov_case_office.level', '=', $request->office_type_pw);
+        }
+
+        if (!empty($request->ministry_pw)) {
+            $query->where('gov_case_office.parent_office_id', '=', $request->ministry_pw);
+        }
+
+        if (!empty($request->divOffice_pw)) {
+            $query->where('gov_case_office.parent_office_id', '=', $request->divOffice_pw);
+        }
+
+        if (!empty($request->office_id_pw)) {
+            $query->where('gov_case_office.doptor_office_id', '=', $request->office_id_pw);
+        }
+
+        $offices = $query->get();
+
+        $userQuery = User::orderBy('id', 'DESC');
+        if (!empty($request->role)) {
+            $userQuery->where('role_id', '=', $request->role)->where('office_id', '=', $request->office_id_pw);
+        }
+
+        $users = $userQuery->get();
+
+        $ministries = GovCaseOffice::where('level', 1)->get();
+        $divOffices = GovCaseOffice::where('level', 3)->get();
+
+
+        return response()->json([
+            'offices'       => $offices,
+            'users'         => $users,
+
+
+            'ministries'    => $ministries,
+            'divOffices'    => $divOffices
+        ]);
+    }
+
+
+
+
     public function messages_recent()
     {
 
@@ -127,7 +303,7 @@ class GovCaseMessageController extends Controller
         // ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
         // ->where('users.is_gov', 1);
 
-// return  $msgs;
+        // return  $msgs;
 
         $arr = [];
         foreach ($msgs as $mes) {
@@ -159,7 +335,7 @@ class GovCaseMessageController extends Controller
     public function messages_request()
     {
         $data['msg_request'] = Message::orderby('id', 'DESC')
-        // ->select('user_sender', 'user_receiver', 'msg_reqest')
+            // ->select('user_sender', 'user_receiver', 'msg_reqest')
             ->Where('user_receiver', [Auth::user()->id])
             ->Where('msg_reqest', 1)
             ->groupby('user_sender')
@@ -221,12 +397,15 @@ class GovCaseMessageController extends Controller
     public function messages_send(Request $request)
     {
         // return $request->all();
-        $validator = Validator::make($request->all(), [
-            'messages' => 'required',
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'messages' => 'required',
+            ],
             [
                 'messages.required' => 'বার্তা তৈরী করুন!',
-            ]);
+            ]
+        );
 
         if ($validator->fails()) {
             return redirect()->back()->with(['error' => $validator->errors()->first()]);

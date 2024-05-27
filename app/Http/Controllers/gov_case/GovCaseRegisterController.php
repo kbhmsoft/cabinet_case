@@ -27,6 +27,7 @@ use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class GovCaseRegisterController extends Controller
 {
@@ -161,6 +162,18 @@ class GovCaseRegisterController extends Controller
                 }
             );
         }
+
+        $userId = Auth::id();
+        if ($roleID == 45) {
+            $query->whereHas(
+                'concernPersons',
+                function ($query) use ($userId) {
+                    $query->where('concern_user_id', $userId);
+                }
+            );
+            // dd($cases);
+        };
+
 
         if (!empty($_GET['case_category_type'])) {
             $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
@@ -1446,6 +1459,9 @@ class GovCaseRegisterController extends Controller
             );
         }
 
+
+
+
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas(
                 'bibadis',
@@ -1492,6 +1508,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'সরকারের বিপক্ষে আপিলের জন্য
         পেন্ডিং মামলার তালিকা';
+
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -4917,7 +4934,6 @@ class GovCaseRegisterController extends Controller
         }
         return "Data Inserted Successfully";
     }
-
     public function ruleFileDelete($id)
     {
         $data = [

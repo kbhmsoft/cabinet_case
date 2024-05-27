@@ -432,24 +432,6 @@
                                     <div class="col-md-12" id="showHighCourtCaseDiv">
                                         <fieldset>
                                             <div class="form-group row">
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    {{-- <label>সিএমপি নং <span class="text-danger">*</span></label>
-                                                    <input type="text" name="cmp_no" id="cmp_no"
-                                                        class="form-control form-control-sm" placeholder="মামলা নং "
-                                                        required="required"
-                                                        value="{{ $govCaseRegister['case']->leave_to_appeal_no }}"
-                                                        disabled> --}}
-                                                </div>
-
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    {{-- <label>লিভ টু আপীল নং <span class="text-danger">*</span></label>
-                                                    <input type="text" name="leave_to_appeal_no"
-                                                        id="leave_to_appeal_no" class="form-control form-control-sm"
-                                                        placeholder="মামলা নং " required="required"
-                                                        value="{{ $govCaseRegister['case']->leave_to_appeal_no }}"
-                                                        disabled> --}}
-
-                                                </div>
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table class="table mb-5" width="100%" border="1"
@@ -459,14 +441,11 @@
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                         </tr>
                                                         <tbody>
-
                                                                 <tr>
                                                                     <td>{{ $caseBadi->name ?? '-'}}</td>
                                                                     <td>{{ $caseBadi->address ?? '-'}}</td>
                                                                 </tr>
-                                                     
                                                         </tbody>
-
                                                     </table>
                                                 </div>
 

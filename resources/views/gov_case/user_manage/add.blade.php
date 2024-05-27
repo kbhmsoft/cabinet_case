@@ -117,9 +117,7 @@
 
                                 <div class="col-4 mb-4">
                                     <div class="form-group">
-
                                         <label for="office_type" class=" form-control-label">অফিস লেভেল</label>
-
                                         <select name="office_type" id="office_type" class="form-control">
                                             <option value="">-বিভাগ নির্বাচন করুন-</option>3
                                             @foreach ($office_types as $value)
