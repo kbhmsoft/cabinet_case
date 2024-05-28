@@ -512,13 +512,14 @@ class GovCaseUserManagementController extends Controller
      */
     public function edit($id)
     {
+        // return ($id);
         $data['userManagement'] = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
             ->where('users.id', $id)
             ->get()->first();
-        // dd($userManagement);
+        // dd($data['userManagement']);
         $data['roles'] = DB::table('roles')
             ->select('id', 'name')
             ->get();
@@ -530,6 +531,7 @@ class GovCaseUserManagementController extends Controller
 
         $data['offices'] = GovCaseOffice::get();
         $data['page_title'] = 'ইউজার ইনফর্মেশন সংশোধন ফরম';
+        // return $data;
         return view('gov_case.user_manage.edit')->with($data);
         // return view('gov_case.user_manage.edit', compact('userManagement'));
     }
@@ -543,6 +545,7 @@ class GovCaseUserManagementController extends Controller
      */
     public function update(Request $request, $id = '')
     {
+        // return $request->all();
         $request->validate(
             [
                 'name' => 'required',
