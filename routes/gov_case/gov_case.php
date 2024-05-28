@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         /////************** //Office Setting **************/////
         //=================== Message Start ================
         Route::get('/messages', [GovCaseMessageController::class, 'messages'])->name('messages');
+        Route::post('/storeMessage', [GovCaseMessageController::class, 'storeMessage'])->name('storeMessage');
         Route::get('/messages_recent', [GovCaseMessageController::class, 'messages_recent'])->name('messages_recent');
         Route::get('/messages_request', [GovCaseMessageController::class, 'messages_request'])->name('messages_request');
         Route::get('/messages/{id}', [GovCaseMessageController::class, 'messages_single'])->name('messages_single');
@@ -171,7 +172,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/highcourtcasedetails/{id}', [GovCaseRegisterController::class, 'getHighCourtCaseDetails']);
 
             Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
-            Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');  
+            Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
             Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');
             Route::get('totalHighcourt', [GovCaseRegisterController::class, 'totalHighcourt'])->name('totalHighcourt');
             Route::get('totalHighcourtRunning', [GovCaseRegisterController::class, 'totalHighcourtRunning'])->name('totalHighcourtRunning');
