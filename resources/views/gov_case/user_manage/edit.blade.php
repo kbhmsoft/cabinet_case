@@ -138,7 +138,8 @@
                                     <option value="">-বিভাগ নির্বাচন করুন-</option>3
                                     @foreach ($office_types as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ $value->id == $userManagement->office_type ? 'selected' : '' }}>
+                                            value="{{ $value->id }}"
+                                            {{ $value->id == $userManagement->office_type ? 'selected' : '' }}>
                                             {{ $value->type_name_bn }}
 
                                         </option>
@@ -183,7 +184,7 @@
                                     {{-- <option value="">-- নির্বাচন করুন --</option> --}}
                                     @foreach ($offices as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ $value->id == $userManagement->office_id ? 'selected' : '' }}>
+                                            value="{{ $value->doptor_office_id }}"{{ $value->doptor_office_id == $userManagement->office_id ? 'selected' : '' }}>
                                             {{ $value->office_name_bn }} </option>
                                     @endforeach
                                 </select>
