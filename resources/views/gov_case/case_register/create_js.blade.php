@@ -46,6 +46,7 @@
         if (formType != 'edit') {
             addMainBibadiRowFunc();
             addHighcourtAdalatRowFunc();
+            addBibadiRowFunc();
         }
         addFileRowFunc();
         addReplyFileRowFunc();
@@ -55,7 +56,7 @@
         addContemptFileRowFunc();
         addFinalOrderFileRowFunc();
         addAdvocateLawerFunc();
-        addBibadiRowFunc();
+
         adeshTamilDecisionFileRowFunc();
         addAppealSubmissionFileRowFunc();
         appealSubmissionFileRowFunc();
@@ -296,11 +297,75 @@
     // });
 
     // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-    $("#addBibadiRow").click(function(e) {
-        addBibadiRowFunc();
-    });
+    // $("#addBibadiRow").click(function(e) {
+    //     addBibadiRowFunc();
+    // });
 
     // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+
+   // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+// Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
+// function addBibadiRowFunc() {
+//     var mk = $('#bibadiDiv tr').length; // Get the total number of rows including the header row
+//     $('#bibadiDiv tr:last').after(Item(mk));
+
+//     function Item(count) {
+//         // The count should reflect the actual number of rows minus the header row
+//         var rowIndex = count - 1;
+//         var banglaNumber = convertToBanglaNumber(rowIndex);
+//         var items = '';
+//         items += '<tr id="bibadi_' + rowIndex + '">';
+//         items += '<td style="display: flex; align-items: center;">'; // Flexbox for horizontal alignment
+//         items += '<span class="bangla-count" style="margin-right: 10px;">' + banglaNumber + '. </span>'; // Display Bangla count
+//         items += '<select name="other_respondent[]" onChange="getManualOtherRespondentName(' + rowIndex + ')" id="other_respondent_' + rowIndex + '" class="form-control form-control-sm other_respondentCls">';
+//         items += '<option value="">-- নির্বাচন করুন --</option>';
+//         items += '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+//         items += '<option value="0">অন্যান্য</option>';
+//         items += '</select>';
+//         items += '<br>';
+//         items += '<input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' + rowIndex + '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none; margin-top: 5px;">';
+//         items += '</td>';
+//         items += '<input type="hidden" name="bibadi_id[]" value="">';
+//         items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+//         items += '</tr>';
+//         return items;
+//     }
+
+//     // Initialize select2 for the newly added select element
+//     $('.other_respondentCls').select2();
+//     updateBibadiCount(); // Update count after adding a new row
+// }
+
+// // Function to convert numbers to Bangla
+// function convertToBanglaNumber(number) {
+//     var banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+//     return number.toString().split('').map(function(digit) {
+//         return banglaNumbers[digit];
+//     }).join('');
+// }
+
+// // Function to update the count of selected users
+// function updateBibadiCount() {
+//     $('#bibadiDiv tr').each(function(index) {
+//         if (index > 0) {
+//             var banglaNumber = convertToBanglaNumber(index);
+//             $(this).find('span.bangla-count').text(banglaNumber + '. ');
+//         }
+//     });
+// }
+
+
+// function removeBibadiRow(element) {
+//     $(element).closest('tr').remove();
+//     updateBibadiCount();
+// }
+
+
+// $("#addBibadiRow").click(function(e) {
+//         addBibadiRowFunc();
+//     });
+
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
         $('#bibadiDiv tr:last').after(Item(mk + 1));
@@ -316,36 +381,34 @@
             items += '<option value="0">অন্যান্য</option>';
             items += '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_'+count+'" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
-           
+
             items +=
                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             return items;
         }
 
-        // Initialize select2 for the newly added select element
+
         $('.other_respondentCls').select2();
     }
 
-    // Function to remove a row
+
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
 
-
-
-    function getManualOtherRespondentName(data){
-        var other_respondent_manual_name_ = $('#other_respondent_manual_name_'+data);
-        var selectID = $('#other_respondent_'+data).val();
-        if(selectID == 0){
-            $('#other_respondent_manual_name_'+data).show();
-            $('#other_respondent_manual_name_'+data).addClass("w-100");
-        } 
-        if(selectID != 0){
-            $('#other_respondent_manual_name_'+data).hide();
-        } 
+    function getManualOtherRespondentName(data) {
+        var other_respondent_manual_name_ = $('#other_respondent_manual_name_' + data);
+        var selectID = $('#other_respondent_' + data).val();
+        if (selectID == 0) {
+            $('#other_respondent_manual_name_' + data).show();
+            $('#other_respondent_manual_name_' + data).addClass("w-100");
+        }
+        if (selectID != 0) {
+            $('#other_respondent_manual_name_' + data).hide();
+        }
         console.log(selectID);
-        
+
         // alert(details);
     }
 
@@ -605,7 +668,7 @@
         $('input[name="badi_name[]"]').each(function() {
             var value = $(this).val().trim();
             if (value === "") {
-                
+
                 $(this).next('.validation-message').removeClass('d-none');
                 $(this).focus();
                 isValid = false;
@@ -678,7 +741,7 @@
                 });
             } else {
                 $('#caseGeneralInfoSaveBtn').removeClass(
-                'spinner spinner-white spinner-right disabled');
+                    'spinner spinner-white spinner-right disabled');
                 Swal.fire(
                     'Canceled!',
                     'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',

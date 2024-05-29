@@ -59,7 +59,7 @@ class GovCaseRegisterRepository
     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->highcourt_adalat as $key => $val) {
-         
+
             if ($caseInfo->highcourt_adalat[$key] != null) {
                 $highcourtAdalat = new GovCaseHighcourtAdalat();
                 $highcourtAdalat->gov_case_id = $govCaseId;

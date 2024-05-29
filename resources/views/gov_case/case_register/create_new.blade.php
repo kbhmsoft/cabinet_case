@@ -249,8 +249,8 @@
                                                                         না থাকলে তার নামে যুক্ত করার জন্য নতুন ইউজার আইডি
                                                                         সৃজন করুন।</span>
                                                                 </span>
-                                                            </th> 
-                                                            
+                                                            </th>
+
                                                             <th width="30">
                                                                 <a href="javascript:void(0);" id="addAdvocateLawer"
                                                                     class="btn btn-sm btn-primary pr-2"><i
@@ -274,7 +274,7 @@
                                                             <th>পিটিশনারের ঠিকানা <span class="text-danger"></span></th>
 
                                                         </tr>
-                                                   
+
                                                     </table>
                                                 </div>
 
@@ -295,34 +295,15 @@
                                                         <input type="hidden" name="caseId" value="">
                                                     </div>
 
-
-                                                    {{-- <div class="col-lg-7 mb-5 product-image">
-                                                        <table width="100%" border="1" id="bibadiDiv"
-                                                            class="mb-5" style="border:1px solid #dcd8d8;">
-                                                            <tr>
-                                                                <th class="other_bibadi_name other_respondent  ">
-                                                                    অন্যান্য রেসপন্ডেন্টর তালিকা
-
-                                                                </th>
-                                                                <th width="50">
-                                                                    <a href="javascript:void();" id="addBibadiRow"
-                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                        <i class="fas fa-plus-circle"></i>
-                                                                    </a>
-                                                                </th>
-                                                            </tr>
-                                                            <tr></tr>
-                                                        </table>
-                                                    </div> --}}
-
                                                     <div class="col-lg-7 mb-5 product-image">
+
                                                         <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
                                                                 <th class="other_bibadi_name other_respondent">
-                                                                    অন্যান্য রেসপন্ডেন্টর তালিকা
+                                                                    রেসপন্ডেন্ট তালিকা
                                                                 </th>
                                                                 <th width="50">
-                                                                    <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                    <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2" onclick="addBibadiRowFunc()">
                                                                         <i class="fas fa-plus-circle"></i>
                                                                     </a>
                                                                 </th>
@@ -330,6 +311,7 @@
                                                             <tr></tr>
                                                         </table>
                                                     </div>
+
 
                                                     <!-- Hidden input for "অন্যান্য" -->
 
@@ -372,8 +354,7 @@
                                                         <div class="col-md-12 mb-5">
                                                             <label>স্থগিতাদেশের সংক্ষিপ্ত
                                                                 বিবরণ</label>
-                                                            <textarea name="postponed_interim_data_details" class="form-control"
-                                                                rows="3" spellcheck="false"></textarea>
+                                                            <textarea name="postponed_interim_data_details" class="form-control" rows="3" spellcheck="false"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -385,7 +366,7 @@
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">রুলের কপি সংযুক্ত করুন
-                                                                    <span class="text-danger">*</span>
+                                                                   
                                                                     <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ :
                                                                         5MB)</sub>
                                                                 </h3>
@@ -1290,17 +1271,17 @@
     </script>
     <script>
         $(document).ready(function() {
-               $('#postponed_interim_data_details_create_new').hide();
-               $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
-               $('input[name="postponed_interim_have"]').change(function() {
-                   if ($(this).val() == '1') {
-                       $('#postponed_interim_data_details_create_new').show();
-                   } else {
-                       $('#postponed_interim_data_details_create_new').hide();
-                   }
-               });
-           });
-   </script>
+            $('#postponed_interim_data_details_create_new').hide();
+            $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
+            $('input[name="postponed_interim_have"]').change(function() {
+                if ($(this).val() == '1') {
+                    $('#postponed_interim_data_details_create_new').show();
+                } else {
+                    $('#postponed_interim_data_details_create_new').hide();
+                }
+            });
+        });
+    </script>
     <script>
         function showAlert() {
             Swal.fire({
@@ -1663,6 +1644,4 @@
             });
         });
     </script>
-
-
 @endsection

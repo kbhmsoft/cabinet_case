@@ -225,6 +225,7 @@
         .custom-radio {
             display: none;
         }
+
         .custom-label {
             position: relative;
             padding-left: 35px;
@@ -233,6 +234,7 @@
             font-size: 16px;
             user-select: none;
         }
+
         .custom-label::before {
             content: "";
             position: absolute;
@@ -245,7 +247,8 @@
             border: 2px solid #007bff;
             border-radius: 50%;
         }
-        .custom-radio:checked + .custom-label::after {
+
+        .custom-radio:checked+.custom-label::after {
             content: "";
             position: absolute;
             top: 50%;
@@ -263,23 +266,25 @@
 
 @section('content')
 
-        <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff">
-            <div class="container">
-                <div class="form-check form-check-inline">
-                    <input class="custom-radio" type="radio" name="tabOptions" id="respondentAllUser" value="respondentAll" checked>
-                    <label class="custom-label" for="respondentAllUser">সকলকে পাঠান</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="custom-radio" type="radio" name="tabOptions" id="respondentOfficeUser" value="messageOffice">
-                    <label class="custom-label" for="respondentOfficeUser">অফিসওয়ারী পাঠান</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="custom-radio" type="radio" name="tabOptions" id="respondentPersonUser" value="messageOne">
-                    <label class="custom-label" for="respondentPersonUser">পার্সনওয়ারী পাঠান</label>
-                </div>
+    <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff">
+        <div class="container">
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentAllUser" value="respondentAll"
+                    checked>
+                <label class="custom-label" for="respondentAllUser">সকলকে পাঠান</label>
             </div>
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentOfficeUser"
+                    value="messageOffice">
+                <label class="custom-label" for="respondentOfficeUser">অফিসওয়ারী পাঠান</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentPersonUser" value="messageOne">
+                <label class="custom-label" for="respondentPersonUser">পার্সনওয়ারী পাঠান</label>
+            </div>
+        </div>
 
-            {{-- -------------------------- start সকলকে পাঠান ---------------------------------- --}}
+        {{-- -------------------------- start সকলকে পাঠান ---------------------------------- --}}
         <form id="messageSendingForm" action="javascript:void(0)" class="form" method="POST">
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -318,10 +323,11 @@
 
                     <div class="d-flex justify-space-between mb-15">
                         <div class="form-group mb-2 mr-2">
-                            <select name="office_type_officeWise" id="office_type" class="form-control">
+                            <select name="office_type" id="office_type" class="form-control">
                                 <option value="">-বিভাগ নির্বাচন করুন-</option>
                                 @foreach ($office_types as $value)
-                                    <option value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
+                                    <option
+                                        value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
                                         {{ $value->type_name_bn }}
                                     </option>
                                 @endforeach
@@ -332,7 +338,8 @@
                             <select name="ministry" id="ministry" class="form-control">
                                 <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
                                 @foreach ($ministries as $value)
-                                    <option value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    <option
+                                        value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                         {{ $value->office_name_bn }}
                                     </option>
                                 @endforeach
@@ -343,7 +350,8 @@
                             <select name="divOffice" id="divOffice" class="form-control">
                                 <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
                                 @foreach ($divOffices as $value)
-                                    <option value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    <option
+                                        value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
                                         {{ $value->office_name_bn }}
                                     </option>
                                 @endforeach
@@ -406,8 +414,11 @@
                                 <ul class="list-unstyled" id="office_list">
                                     @foreach ($offices as $office)
                                         <li class="office-list-item">
-                                            <input type="checkbox" name="selected_office_ids[]" id="office_id_{{ $office->doptor_office_id }}" value="{{ $office->doptor_office_id }}"{{ (isset($_GET['office_id']) ? $_GET['office_id'] : '') == $office->doptor_office_id ? 'checked' : '' }}>
-                                            <label for="office_id_{{ $office->doptor_office_id }}">{{ $office->office_name_bn }}</label>
+                                            <input type="checkbox" name="selected_office_ids[]"
+                                                id="office_id_{{ $office->doptor_office_id }}"
+                                                value="{{ $office->doptor_office_id }}"{{ (isset($_GET['office_id']) ? $_GET['office_id'] : '') == $office->doptor_office_id ? 'checked' : '' }}>
+                                            <label
+                                                for="office_id_{{ $office->doptor_office_id }}">{{ $office->office_name_bn }}</label>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -421,7 +432,8 @@
                             <div class=" col-12 row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="name" class=" form-control-label">বার্তা তৈরি করুন <span class="text-danger">*</span></label>
+                                        <label for="name" class=" form-control-label">বার্তা তৈরি করুন <span
+                                                class="text-danger">*</span></label>
                                         <textarea name="messages_office" id="" class="form-control form-control-sm" rows="10"></textarea>
                                         <span style="color: red">
                                             {{ $errors->first('messages_office') }}
@@ -446,57 +458,57 @@
                             </div>
                         @endif
 
-                            <div class="form-group mb-2 mr-2">
-                                <select name="office_type_personwise" id="office_type_pw" class="form-control">
-                                    <option value="">-বিভাগ নির্বাচন করুন-</option>
-                                    @foreach ($office_types as $value)
+                        <div class="form-group mb-2 mr-2">
+                            <select name="office_type_personwise" id="office_type_pw" class="form-control">
+                                <option value="">-বিভাগ নির্বাচন করুন-</option>
+                                @foreach ($office_types as $value)
+                                    <option
+                                        value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
+                                        {{ $value->type_name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
+                            <div class="form-group mb-2 mr-2" id="selectMinDiv_pw" style="display: none;">
+                                <select name="ministry_persionwise" id="ministry_pw" class="form-control">
+                                    <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
+                                    @foreach ($ministries as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
-                                            {{ $value->type_name_bn }}
+                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                            {{ $value->office_name_bn }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
-                                <div class="form-group mb-2 mr-2" id="selectMinDiv_pw" style="display: none;">
-                                    <select name="ministry" id="ministry_pw" class="form-control">
-                                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
-                                        @foreach ($ministries as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group mb-2 mr-2" id="selectDivisionDiv_pw" style="display: none;">
-                                    <select name="divOffice" id="divOffice_pw" class="form-control">
-                                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
-                                        @foreach ($divOffices as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                            <div class="form-group mb-2 mr-2">
-                                <select name="office_id" id="office_id_pw" class="form-control">
-                                    <option value="">- অফিস নির্বাচন করুন-</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-2">
-                                <select name="role" class="form-control w-100" id="role">
-                                    <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
-                                    @foreach ($user_role as $value)
+                            <div class="form-group mb-2 mr-2" id="selectDivisionDiv_pw" style="display: none;">
+                                <select name="divOffice_persionwise" id="divOffice_pw" class="form-control">
+                                    <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
+                                    @foreach ($divOffices as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
-                                            {{ $value->name_bn }}
+                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                            {{ $value->office_name_bn }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+                        @endif
+                        <div class="form-group mb-2 mr-2">
+                            <select name="office_id_persionwise" id="office_id_pw" class="form-control">
+                                <option value="">- অফিস নির্বাচন করুন-</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <select name="role_persionwise" class="form-control w-100" id="role">
+                                <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
+                                @foreach ($user_role as $value)
+                                    <option
+                                        value="{{ $value->id }}"{{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
+                                        {{ $value->name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
 
                         <div class="table-container mt-5 border p-3 rounded mb-5 bg-white shadow ">
@@ -520,7 +532,7 @@
                                                             value="{{ $row->id }}">
                                                         <span class="checkmark"></span>
                                                     </label>
-                                                 </td>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -623,7 +635,7 @@
             </div>
         </form>
 
-        </div>
+    </div>
 
 @endsection
 
@@ -752,6 +764,36 @@
                 $('#selectMinDiv').hide();
                 $('#selectMinDiv_pw').hide();
             }
+
+
+            jQuery('select[name="office_type_personwise"]').on('change', function() {
+
+                var dataID = jQuery(this).val();
+
+                jQuery("#office_id_pw").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            // alert(data);
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id_persionwise"]').append(
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id"]').empty();
+                }
+            });
 
 
             jQuery('select[name="office_type"]').on('change', function() {
@@ -968,26 +1010,33 @@
                             contentType: false,
                             processData: false,
                             success: (data) => {
-                                $('#messageSendingSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
-                                Swal.fire('Saved!', 'বার্তা সফলভাবে প্রেরণ করা হয়েছে', 'success');
+                                $('#messageSendingSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled');
+                                Swal.fire('Saved!', 'বার্তা সফলভাবে প্রেরণ করা হয়েছে',
+                                    'success');
                             },
                             error: function(xhr, status, error) {
-                                $('#messageSendingSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
+                                $('#messageSendingSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled');
                                 if (xhr.status === 422) {
-                                    Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                                    Swal.fire('সমস্যা...!', xhr.responseJSON.error,
+                                        'error');
                                 } else {
                                     console.log('Error occurred:', xhr, status, error);
-                                    Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন', 'error');
+                                    Swal.fire('সমস্যা...!',
+                                        'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                                        'error');
                                 }
                             }
                         });
                     } else {
-                        $('#messageSendingSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
-                        Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+                        $('#messageSendingSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                            'info');
                     }
                 });
             });
         });
-        </script>
-
+    </script>
 @endsection

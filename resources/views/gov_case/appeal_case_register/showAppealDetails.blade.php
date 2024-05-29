@@ -240,15 +240,15 @@
                         </thead>
                         <tbody>
 
-                            @php $k = 1; @endphp
-                            @foreach ($govCaseRegister['caseBadi'] as $badi)
+
+                            {{-- @foreach ($govCaseRegister['caseBadi'] as $badi) --}}
                                 <tr>
-                                    <td>{{ en2bn($k) }}.</td>
-                                    <td class="text-center">{{ $badi->name }}</td>
-                                    <td class="text-center">{{ $badi->address }}</td>
+
+                                    <td class="text-center">{{ $caseBadi->name ?? '' }}</td>
+                                    <td class="text-center">{{ $caseBadi->address ?? '' }}</td>
                                 </tr>
-                                @php $k++; @endphp
-                            @endforeach
+
+                            {{-- @endforeach --}}
                         </tbody>
                     </table>
 

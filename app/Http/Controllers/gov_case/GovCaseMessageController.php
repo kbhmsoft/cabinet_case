@@ -10,6 +10,7 @@ use App\Models\CaseRegister;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gov_case\GovCaseOffice;
@@ -437,37 +438,50 @@ class GovCaseMessageController extends Controller
 
     public function storeMessage(Request $request)
     {
-         if($request->messages_persons != null && $request->messages_office == null){
-              $message = $request->messages_persons;
-         }
-         elseif($request->messages == null && $request->messages_office != null){
-             $message = $request->messages_office;
-         }
-         else{
-             $message = $request->messages;
-         }
+        $message = null;
+        $officeType = null;
+        $ministry = null;
+        $divOffice = null;
+        $officeId = null;
 
+        // Conditional logic to assign variables
+        if ($request->messages_persons != null && $request->office_type_personwise != null && $request->ministry_persionwise != null && $request->divOffice_persionwise != null && $request->office_id_persionwise != null) {
+            $message = $request->messages_persons;
+            $officeType = $request->office_type_personwise;
+            $ministry = $request->ministry_persionwise;
+            $divOffice = $request->divOffice_persionwise;
+            $officeId = $request->office_id_persionwise;
+        }
+         elseif ($request->messages_office != null && $request->office_type != null && $request->ministry != null) {
+            $message = $request->messages_office;
+            $officeType = $request->office_type;
+            $ministry = $request->ministry;
+            $divOffice = $request->divOffice; 
+        } else {
+            $message = $request->messages;
+        }
 
+        if ($message === null || $officeType === null || $ministry === null) {
+            return response()->json(['error' => 'Missing required fields'], 400);
+        }
 
-
-        dd($request->all());
-            try {
-                $govCaseMessage = new GovCaseMessage();
-                $govCaseMessage->office_type = $request->office_type;
-                $govCaseMessage->ministry = $request->ministry;
-                $govCaseMessage->div_office = $request->div_office;
-                $govCaseMessage->messages = $message;
-                $govCaseMessage->office_id = $request->office_id;
-                $govCaseMessage->role = $request->role;
-                $govCaseMessage->selected_office_ids = $request->selected_office_ids;
-                $govCaseMessage->selected_user_ids = $request->selected_user_ids;
-                $govCaseMessage->save();
-
-            } catch (\Exception $e) {
-
-                return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
-            }
+        try {
+            $govCaseMessage = new GovCaseMessage();
+            $govCaseMessage->office_type = $officeType;
+            $govCaseMessage->ministry = $ministry;
+            $govCaseMessage->div_office = $divOffice;
+            $govCaseMessage->messages = $message;
+            $govCaseMessage->office_id = $officeId;  // Can be null
+            $govCaseMessage->role = $request->role;
+            $govCaseMessage->selected_office_ids = $request->selected_office_ids;
+            $govCaseMessage->selected_user_ids = $request->selected_user_ids;
+            $govCaseMessage->save();
 
             return response()->json(['success' => 'বার্তা সফলভাবে প্রেরণ করা হয়েছে']);
+        } catch (\Exception $e) {
+            // Log the exception message for debugging
+            Log::error('Failed to save GovCaseMessage: '.$e->getMessage());
+            return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি'], 500);
         }
     }
+}
