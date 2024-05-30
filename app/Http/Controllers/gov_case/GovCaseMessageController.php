@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Models\User;
-use App\Models\Office;
-use App\Models\Message;
-use App\Models\District;
+use App\Http\Controllers\Controller;
 use App\Models\CaseRegister;
+use App\Models\District;
+use App\Models\gov_case\GovCaseMessage;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseOfficeType;
+use App\Models\Message;
+use App\Models\Office;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseMessage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\gov_case\GovCaseOfficeType;
 
 class GovCaseMessageController extends Controller
 {
@@ -28,7 +28,6 @@ class GovCaseMessageController extends Controller
 
     public function messages()
     {
-
 
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
@@ -65,8 +64,6 @@ class GovCaseMessageController extends Controller
         // return $data;
         $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
-
-
         ///////////////////////////////////////////////////////////////////////////
 
         $query = GovCaseOffice::orderby('id', 'ASC');
@@ -87,7 +84,6 @@ class GovCaseMessageController extends Controller
 
         // Paginating the results and preserving query parameters
         $data['offices'] = $query->paginate(10)->withQueryString();
-
 
         $data['upazilas'] = null;
         $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
@@ -149,14 +145,9 @@ class GovCaseMessageController extends Controller
         // $data['users'] = $query->paginate(10)->withQueryString();
         $data['users'] = $query->get();
 
-
-
-
-
         // Returning the view with data
         return view('gov_case.messages.list', $data);
     }
-
 
     public function fetchOffices(Request $request)
     {
@@ -229,19 +220,14 @@ class GovCaseMessageController extends Controller
         $ministries = GovCaseOffice::where('level', 1)->get();
         $divOffices = GovCaseOffice::where('level', 3)->get();
 
-
         return response()->json([
-            'offices'       => $offices,
-            'users'         => $users,
+            'offices' => $offices,
+            'users' => $users,
 
-
-            'ministries'    => $ministries,
-            'divOffices'    => $divOffices
+            'ministries' => $ministries,
+            'divOffices' => $divOffices,
         ]);
     }
-
-
-
 
     public function messages_recent()
     {
@@ -282,9 +268,9 @@ class GovCaseMessageController extends Controller
         $data['users'] = DB::table('users')
             ->whereIn('id', $arr)
             ->orderByRaw(DB::raw('FIELD(id,' . implode(",", $arr) . ')'))
-            // ->join('roles', 'users.role_id', '=', 'roles.id')
-            // ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-            // ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
+        // ->join('roles', 'users.role_id', '=', 'roles.id')
+        // ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+        // ->select('users.*', 'roles.name as roleName', 'gov_case_office.office_name_bn')
             ->paginate(15);
         //    return $data['users'];
         $data['page_title'] = 'সাম্প্রতিক বার্তা';
@@ -296,7 +282,7 @@ class GovCaseMessageController extends Controller
     public function messages_request()
     {
         $data['msg_request'] = Message::orderby('id', 'DESC')
-            // ->select('user_sender', 'user_receiver', 'msg_reqest')
+        // ->select('user_sender', 'user_receiver', 'msg_reqest')
             ->Where('user_receiver', [Auth::user()->id])
             ->Where('msg_reqest', 1)
             ->groupby('user_sender')
@@ -445,24 +431,19 @@ class GovCaseMessageController extends Controller
         $officeId = null;
 
         // Conditional logic to assign variables
-        if ($request->messages_persons != null && $request->office_type_personwise != null && $request->ministry_persionwise != null && $request->divOffice_persionwise != null && $request->office_id_persionwise != null) {
+        if ($request->messages_persons != null && $request->office_type_personwise != null && $request->ministry_persionwise != null || $request->divOffice_persionwise != null &&$request->office_id_persionwise != null) {
             $message = $request->messages_persons;
             $officeType = $request->office_type_personwise;
             $ministry = $request->ministry_persionwise;
             $divOffice = $request->divOffice_persionwise;
             $officeId = $request->office_id_persionwise;
-        }
-         elseif ($request->messages_office != null && $request->office_type != null && $request->ministry != null) {
+        } elseif ($request->messages_office != null && $request->office_type != null && $request->ministry != null) {
             $message = $request->messages_office;
             $officeType = $request->office_type;
             $ministry = $request->ministry;
-            $divOffice = $request->divOffice; 
+            $divOffice = $request->divOffice;
         } else {
             $message = $request->messages;
-        }
-
-        if ($message === null || $officeType === null || $ministry === null) {
-            return response()->json(['error' => 'Missing required fields'], 400);
         }
 
         try {
@@ -471,16 +452,16 @@ class GovCaseMessageController extends Controller
             $govCaseMessage->ministry = $ministry;
             $govCaseMessage->div_office = $divOffice;
             $govCaseMessage->messages = $message;
-            $govCaseMessage->office_id = $officeId;  // Can be null
+            $govCaseMessage->office_id = $officeId;
             $govCaseMessage->role = $request->role;
             $govCaseMessage->selected_office_ids = $request->selected_office_ids;
-            $govCaseMessage->selected_user_ids = $request->selected_user_ids;
+            $govCaseMessage->selected_user_ids = $request->user;
             $govCaseMessage->save();
 
             return response()->json(['success' => 'বার্তা সফলভাবে প্রেরণ করা হয়েছে']);
         } catch (\Exception $e) {
-            // Log the exception message for debugging
-            Log::error('Failed to save GovCaseMessage: '.$e->getMessage());
+
+            Log::error('Failed to save GovCaseMessage: ' . $e->getMessage());
             return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি'], 500);
         }
     }
