@@ -299,7 +299,7 @@
 
                                                         <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th class="other_bibadi_name other_respondent">
+                                                                <th class="other_bibadi_name other_respondent" colspan="2">
                                                                     রেসপন্ডেন্ট তালিকা
                                                                 </th>
                                                                 <th width="50">
@@ -308,7 +308,6 @@
                                                                     </a>
                                                                 </th>
                                                             </tr>
-                                                            <tr></tr>
                                                         </table>
                                                     </div>
 

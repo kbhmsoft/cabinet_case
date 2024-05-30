@@ -286,10 +286,11 @@
         $('#bibadiDiv tr:last').after(Item(mk + 1));
 
         function Item(count) {
+            // alert(count);
             var items = '';
             items += '<tr id="bibadi_' + count + '">';
-            items +=
-                '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName('+count+')" id="other_respondent_'+count+'" class="form-control form-control-sm other_respondentCls">';
+            items +='<td> <span class="form-control form-control-sm">'+count+'</span></td>'
+            items += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName('+count+')" id="other_respondent_'+count+'" class="form-control form-control-sm other_respondentCls">';
             items += '<option value="">-- নির্বাচন করুন --</option>';
             items +=
                 '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
@@ -1242,11 +1243,10 @@
             '" class="form-control form-control-sm" placeholder="" ></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-            count + ',this)" class="custom-file-input" id="customFile' + count + '"/><label id="file_error' +
-            count +
+            count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
-            count + '" for="customFile' + count +
-            '">ফাইল নির্বাচন করুন</label></div></td>';
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
@@ -1539,7 +1539,8 @@
 
     //Attachment Title Change  && vallidation
     function attachmentTitle(id, selectObject) {
-            var fileType = document.getElementById('file_type' + id).value;
+            // var fileType = document.getElementById('file_type' + id).value;
+            var fileType = $('#customFile'+id).val();
             if (fileType != '') {
 
                 //===================For CSS Change of Duynamic File Name =============//
@@ -1559,6 +1560,7 @@
 
                     var size = parseFloat(fileData.files[0].size / 1024).toFixed(2);
                     if (size > 5120) {
+                    // alert('Invalid file type');
                         document.getElementById('customFile' + id).value = '';
                         $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
                         $('.custom-input' + id).css("border-color", "#FF0000");
