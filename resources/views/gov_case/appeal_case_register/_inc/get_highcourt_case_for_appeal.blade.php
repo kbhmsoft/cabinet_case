@@ -26,12 +26,10 @@
                     <th>ঠিকানা <span class="text-danger">*</span></th>
                 </tr>
                 <tbody>
-                    @foreach ($caseBadi as $badi)
                         <tr>
-                            <td>{{ $badi->name }}</td>
-                            <td>{{ $badi->address }}</td>
+                            <td>{{ $caseBadi->name }}</td>
+                            <td>{{ $caseBadi->address }}</td>
                         </tr>
-                    @endforeach
                 </tbody>
 
             </table>
