@@ -226,17 +226,19 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealCaseShow($id)
     {
-        //    dd($id);
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
-        // dd($data['appealCase']);
-        $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($data['appealCase']->case_number_origin);
-        dd($data['govCaseRegister']);
+        $data['govCaseNumber'] = GovCaseRegister::where('case_no',$data['appealCase']->case_number_origin)->first();
+        $govCaseId = $data['govCaseNumber']->id;
+        if($govCaseId){
+           $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
+        }
+
+
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
 
         $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
 
         return view('gov_case.appeal_case_register.showAppealDetails')->with($data);
-
     }
 
     public function appealDetailsPdf($id)

@@ -276,7 +276,7 @@
                                                     <label>রায়/আদেশ প্রদানের তারিখ: <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="case_order_date" id="case_order_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off" required="required">
                                                 </div>
                                                 <div class="col-lg-8 mb-5">
                                                     <label>রায়/আদেশের বিবরণ:<small class="text-danger">

@@ -222,103 +222,143 @@
             user-select: text;
         }
 
+        .custom-radio {
+            display: none;
+        }
 
+        .custom-label {
+            position: relative;
+            padding-left: 35px;
+            margin-right: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+        }
 
+        .custom-label::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 22px;
+            width: 23px;
+            background-color: #ffffff;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+        }
+
+        .custom-radio:checked+.custom-label::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 7px;
+            transform: translateY(-50%);
+            height: 10px;
+            width: 10px;
+            background-color: #007bff;
+            border-radius: 50%;
+        }
     </style>
 @endsection
 
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
-    <form>
 
-        <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff">
-            <!-- Tabs -->
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active text-dark" id="respondentAll-tab" data-toggle="tab" href="#respondentAll"
-                        role="tab" aria-controls="respondentAll" aria-selected="true">সকলকে পাঠান</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" id="messageOffice-tab" data-toggle="tab" href="#messageOffice"
-                        role="tab" aria-controls="messageOffice" aria-selected="false">অফিসওয়ারী পাঠান</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" id="messageOne-tab" data-toggle="tab" href="#messageOne" role="tab"
-                        aria-controls="messageOne" aria-selected="false">পার্সনওয়ারী পাঠান</a>
-                </li>
-            </ul>
-            {{-- -------------------------- start সকলকে পাঠান ---------------------------------- --}}
+    <div class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top" style="background-color: #ffffff">
+        <div class="container">
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentAllUser" value="respondentAll"
+                    checked>
+                <label class="custom-label" for="respondentAllUser">সকলকে পাঠান</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentOfficeUser"
+                    value="messageOffice">
+                <label class="custom-label" for="respondentOfficeUser">অফিসওয়ারী পাঠান</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="custom-radio" type="radio" name="tabOptions" id="respondentPersonUser" value="messageOne">
+                <label class="custom-label" for="respondentPersonUser">পার্সনওয়ারী পাঠান</label>
+            </div>
+        </div>
+
+        {{-- -------------------------- start সকলকে পাঠান ---------------------------------- --}}
+        <form id="messageSendingForm" action="javascript:void(0)" class="form" method="POST">
+
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="respondentAll" role="tabpanel"
-                    aria-labelledby="respondentAll-tab">
+                <div class="tab-pane fade show active" id="respondentAll" role="tabpanel">
+                    <!-- Content for সকলকে পাঠান -->
                     <div class="col-md-12">
                         <fieldset>
                             <legend class="font-weight-bold text-center">বার্তা প্রেরণ</legend>
-                            <div class=" col-12 row">
+                            <div class="col-12 row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="name" class=" form-control-label">বার্তা তৈরি করুন <span
+                                        <label for="name" class="form-control-label">বার্তা তৈরি করুন <span
                                                 class="text-danger">*</span></label>
                                         <textarea name="messages" id="" class="form-control form-control-sm" rows="10"></textarea>
-                                        <span style="color: red">
-                                            {{ $errors->first('message') }}
-                                        </span>
+                                        <span style="color: red">{{ $errors->first('messages') }}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            {{-- <div class="col-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary font-weight-bold mr-2">প্রেরণ
                                         করুন</button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </fieldset>
                     </div>
                 </div>
+
                 {{-- ------------------------------- End সকলকে পাঠান ------------------------------------- --}}
 
                 {{-- ------------------------------- Strat অফিসওয়ারী পাঠান ------------------------------------- --}}
 
                 <div class="tab-pane fade" id="messageOffice" role="tabpanel" aria-labelledby="messageOffice-tab">
-                    <form class="form-inline" method="GET">
-                        <div class="d-flex justify-space-between mb-15">
-                            <div class="form-group mb-2 mr-2">
-                                <select name="office_type" id="office_type" class="form-control">
-                                    <option value="">-বিভাগ নির্বাচন করুন-</option>
-                                    @foreach ($office_types as $value)
-                                        <option
-                                            value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
-                                            {{ $value->type_name_bn }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
-                                <select name="ministry" id="ministry" class="form-control">
-                                    <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
-                                    @foreach ($ministries as $value)
-                                        <option
-                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                            {{ $value->office_name_bn }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
-                                <select name="divOffice" id="divOffice" class="form-control">
-                                    <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
-                                    @foreach ($divOffices as $value)
-                                        <option
-                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                            {{ $value->office_name_bn }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                    <div class="d-flex justify-space-between mb-15">
+                        <div class="form-group mb-2 mr-2">
+                            <select name="office_type" id="office_type" class="form-control">
+                                <option value="">-বিভাগ নির্বাচন করুন-</option>
+                                @foreach ($office_types as $value)
+                                    <option
+                                        value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
+                                        {{ $value->type_name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                    </form>
+
+                        <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
+                            <select name="ministry" id="ministry" class="form-control">
+                                <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
+                                @foreach ($ministries as $value)
+                                    <option
+                                        value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                        {{ $value->office_name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
+                            <select name="divOffice" id="divOffice" class="form-control">
+                                <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
+                                @foreach ($divOffices as $value)
+                                    <option
+                                        value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                        {{ $value->office_name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="{{ asset('js/custom-script.js') }}"></script>
                     <script>
@@ -345,7 +385,7 @@
                                             $.each(data.offices, function(index, office) {
                                                 $('#office_list').append(
                                                     '<li class="office-list-item ">' +
-                                                    '<input type="checkbox" name="office_id[]" id="office_id_' +
+                                                    '<input type="checkbox" name="selected_office_ids[]" id="office_id_' +
                                                     office.id + '" value="' + office.id + '">' +
                                                     '<label for="office_id_' + office.id + '">' + office
                                                     .office_name_bn + '</label>' +
@@ -374,10 +414,11 @@
                                 <ul class="list-unstyled" id="office_list">
                                     @foreach ($offices as $office)
                                         <li class="office-list-item">
-                                            <input type="radio" name="office_id" id="office_id_{{ $office->id }}"
-                                                value="{{ $office->id }}"{{ (isset($_GET['office_id']) ? $_GET['office_id'] : '') == $office->id ? 'checked' : '' }}>
+                                            <input type="checkbox" name="selected_office_ids[]"
+                                                id="office_id_{{ $office->doptor_office_id }}"
+                                                value="{{ $office->doptor_office_id }}"{{ (isset($_GET['office_id']) ? $_GET['office_id'] : '') == $office->doptor_office_id ? 'checked' : '' }}>
                                             <label
-                                                for="office_id_{{ $office->id }}">{{ $office->office_name_bn }}</label>
+                                                for="office_id_{{ $office->doptor_office_id }}">{{ $office->office_name_bn }}</label>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -393,23 +434,19 @@
                                     <div class="form-group">
                                         <label for="name" class=" form-control-label">বার্তা তৈরি করুন <span
                                                 class="text-danger">*</span></label>
-                                        <textarea name="messages" id="" class="form-control form-control-sm" rows="10"></textarea>
+                                        <textarea name="messages_office" id="" class="form-control form-control-sm" rows="10"></textarea>
                                         <span style="color: red">
-                                            {{ $errors->first('message') }}
+                                            {{ $errors->first('messages_office') }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary font-weight-bold mr-2">প্রেরণ
-                                        করুন</button>
-                                </div>
-                            </div>
+
                         </fieldset>
                     </div>
                     {{-- ------------------------------- End অফিসওয়ারী পাঠান ------------------------------------- --}}
                 </div>
+
 
                 {{-- ------------------------------- Strat পার্সনওয়ারী পাঠান ------------------------------------- --}}
 
@@ -421,59 +458,59 @@
                             </div>
                         @endif
 
-                        <form class="form-inline" method="GET">
-                            <div class="form-group mb-2 mr-2">
-                                <select name="office_type" id="office_type_pw" class="form-control">
-                                    <option value="">-বিভাগ নির্বাচন করুন-</option>
-                                    @foreach ($office_types as $value)
+                        <div class="form-group mb-2 mr-2">
+                            <select name="office_type_personwise" id="office_type_pw" class="form-control">
+                                <option value="">-বিভাগ নির্বাচন করুন-</option>
+                                @foreach ($office_types as $value)
+                                    <option
+                                        value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
+                                        {{ $value->type_name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
+                            <div class="form-group mb-2 mr-2" id="selectMinDiv_pw" style="display: none;">
+                                <select name="ministry_persionwise" id="ministry_pw" class="form-control">
+                                    <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
+                                    @foreach ($ministries as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
-                                            {{ $value->type_name_bn }}
+                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                            {{ $value->office_name_bn }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31)
-                                <div class="form-group mb-2 mr-2" id="selectMinDiv_pw" style="display: none;">
-                                    <select name="ministry" id="ministry_pw" class="form-control">
-                                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
-                                        @foreach ($ministries as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group mb-2 mr-2" id="selectDivisionDiv_pw" style="display: none;">
-                                    <select name="divOffice" id="divOffice_pw" class="form-control">
-                                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
-                                        @foreach ($divOffices as $value)
-                                            <option
-                                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                                {{ $value->office_name_bn }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                            <div class="form-group mb-2 mr-2">
-                                <select name="office_id" id="office_id_pw" class="form-control">
-                                    <option value="">- অফিস নির্বাচন করুন-</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-2">
-                                <select name="role" class="form-control w-100" id="role">
-                                    <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
-                                    @foreach ($user_role as $value)
+                            <div class="form-group mb-2 mr-2" id="selectDivisionDiv_pw" style="display: none;">
+                                <select name="divOffice_persionwise" id="divOffice_pw" class="form-control">
+                                    <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
+                                    @foreach ($divOffices as $value)
                                         <option
-                                            value="{{ $value->id }}"{{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
-                                            {{ $value->name_bn }}
+                                            value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                            {{ $value->office_name_bn }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                        </form>
+                        @endif
+                        <div class="form-group mb-2 mr-2">
+                            <select name="office_id_persionwise" id="office_id_pw" class="form-control">
+                                <option value="">- অফিস নির্বাচন করুন-</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <select name="role" class="form-control w-100" id="role">
+                                <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
+                                @foreach ($user_role as $value)
+                                    <option
+                                        value="{{ $value->id }}"{{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
+                                        {{ $value->name_bn }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
 
                         <div class="table-container mt-5 border p-3 rounded mb-5 bg-white shadow ">
                             <label for="office_id" class="office-item text-primary font-size-h5 mb-3 ml-3"
@@ -492,7 +529,7 @@
                                                 <td>
                                                     <label class="checkbox-container">
                                                         {{ $row->name }}
-                                                        <input type="checkbox" name="user[]"
+                                                        <input type="checkbox" name="selected_user_ids[]"
                                                             value="{{ $row->id }}">
                                                         <span class="checkmark"></span>
                                                     </label>
@@ -513,19 +550,14 @@
                                         <div class="form-group">
                                             <label for="name" class="form-control-label">বার্তা তৈরি করুন <span
                                                     class="text-danger">*</span></label>
-                                            <textarea name="messages" id="" class="form-control form-control-sm" rows="10"></textarea>
+                                            <textarea name="messages_persons" id="" class="form-control form-control-sm" rows="10"></textarea>
                                             <span style="color: red">
-                                                {{ $errors->first('message') }}
+                                                {{ $errors->first('messages_persons') }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary font-weight-bold mr-2">প্রেরণ
-                                            করুন</button>
-                                    </div>
-                                </div>
+
                             </fieldset>
                         </div>
                     </div>
@@ -599,8 +631,13 @@
                 </script>
                 {{-- ------------------------------- End পার্সনওয়ারী পাঠান ------------------------------------- --}}
             </div>
-        </div>
-    </form>
+            <div class="container mt-4">
+                <button type="submit" id="messageSendingSaveBtn" class="btn btn-primary">প্রেরণ করুন</button>
+            </div>
+        </form>
+
+    </div>
+
 @endsection
 
 
@@ -677,7 +714,36 @@
 
             jQuery('select[name="office_type"]').on('change', function() {
                 var officeType = jQuery(this).val();
-                // alert(officeType);
+
+                if (officeType == 2) {
+                    $('#selectMinDiv').show();
+                    $('#selectMinDiv_pw').show();
+                    $('#selectDivisionDiv').hide();
+                    $('#selectDivisionDiv_pw').hide();
+                    $('#divOffice').val('');
+                    $('#divOffice_pw').val('');
+                } else if (officeType == 4) {
+                    $('#selectDivisionDiv').show();
+                    $('#selectDivisionDiv_pw').show();
+                    $('#selectMinDiv').hide();
+                    $('#selectMinDiv_pw').hide();
+                    $('#ministry').val('');
+                    $('#ministry_pw').val('');
+                } else {
+                    $('#selectDivisionDiv_pw').hide();
+                    $('#selectMinDiv').hide();
+                    $('#selectMinDiv_pw').hide();
+                    $('#ministry').val('');
+                    $('#ministry_pw').val('');
+                    $('#divOffice').val('');
+                    $('#divOffice_pw').val('');
+                }
+            });
+
+
+            jQuery('select[name="office_type_personwise"]').on('change', function() {
+                var officeType = jQuery(this).val();
+
                 if (officeType == 2) {
                     $('#selectMinDiv').show();
                     $('#selectMinDiv_pw').show();
@@ -730,10 +796,36 @@
             }
 
 
-            jQuery('select[name="office_type"]').on('change', function() {
-
+            // persion wise office category wise type office
+            jQuery('select[name="office_type_personwise"]').on('change', function() {
                 var dataID = jQuery(this).val();
-                // alert(dataID);
+                jQuery("#office_id_pw").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id_persionwise"]').append(
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id_persionwise"]').empty();
+                }
+            });
+
+        // office wise office category wise type office
+            jQuery('select[name="office_type"]').on('change', function() {
+                var dataID = jQuery(this).val();
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -741,7 +833,7 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            // alert(data);
+
                             jQuery('select[name="office_id"]').html(
                                 '<div class="loadersmall"></div>');
                             jQuery('select[name="office_id"]').html(
@@ -758,6 +850,7 @@
                     $('select[name="office_id"]').empty();
                 }
             });
+
 
             // Ministry Wise Office
             jQuery('select[name="ministry"]').on('change', function() {
@@ -787,10 +880,40 @@
             });
 
 
+               // persion wise Ministry Wise Office
+               jQuery('select[name="ministry_persionwise"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                // alert(dataID);
+                jQuery("#office_id_persionwise").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id_persionwise"]').append(
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id_persionwise"]').empty();
+                }
+            });
+
+
+
             // DivisionOffice Wise Office
             jQuery('select[name="divOffice"]').on('change', function() {
                 var dataID = jQuery(this).val();
-                // alert(dataID);
+
                 jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
                     jQuery.ajax({
@@ -806,7 +929,7 @@
                                 jQuery('select[name="office_id"]').append(
                                     '<option value="' + key +
                                     '">' + value + '</option>');
-                                //
+
                             });
                             jQuery('.loadersmall').remove();
                         }
@@ -816,10 +939,36 @@
                 }
             });
 
+           // Persion wise DivisionOffice Wise Office
+         jQuery('select[name="divOffice_persionwise"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                //  alert(dataID);
+                jQuery("#office_id_persionwise").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="office_id_persionwise"]').html(
+                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="office_id_persionwise"]').append(
+                                    '<option value="' + key +
+                                    '">' + value + '</option>');
 
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    $('select[name="office_id_persionwise"]').empty();
+                }
+            });
 
             var officeTypeID = $('#office_type').find(":selected").val();
-
             if (officeTypeID !== "undefined") {
                 jQuery.ajax({
                     url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
@@ -904,6 +1053,80 @@
                 jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
             }
 
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('input[name="tabOptions"]').on('change', function() {
+                var selectedTab = $(this).val();
+                console.log(selectedTab);
+                $('.tab-pane').removeClass('show active');
+                $('#' + selectedTab).addClass('show active');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#messageSendingForm').submit(function(e) {
+                e.preventDefault();
+
+                $('#messageSendingSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+                Swal.fire({
+                    title: 'আপনি কি বার্তা প্রেরণ করতে চান?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'হ্যাঁ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var formData = new FormData(this);
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('cabinet.storeMessage') }}",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: (data) => {
+                                $('#messageSendingSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled');
+                                Swal.fire('Saved!', 'বার্তা সফলভাবে প্রেরণ করা হয়েছে',
+                                    'success');
+
+                                // Reset form fields
+                                $('#messageSendingForm')[0].reset();
+
+                                // Alternative method: Manually clear input fields
+                                $('#messageSendingForm').find('input, textarea, select')
+                                    .val('');
+
+                                // Debugging: Log to console to verify reset
+                                console.log('Form reset successfully');
+                            },
+                            error: function(xhr, status, error) {
+                                $('#messageSendingSaveBtn').removeClass(
+                                    'spinner spinner-white spinner-right disabled');
+                                if (xhr.status === 422) {
+                                    Swal.fire('সমস্যা...!', xhr.responseJSON.error,
+                                        'error');
+                                } else {
+                                    console.log('Error occurred:', xhr, status, error);
+                                    Swal.fire('সমস্যা...!',
+                                        'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                                        'error');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#messageSendingSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
+                            'info');
+                    }
+                });
+            });
         });
     </script>
 @endsection
