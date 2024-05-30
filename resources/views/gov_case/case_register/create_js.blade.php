@@ -281,91 +281,6 @@
 
 
 
-    // Event delegation for the "অন্যান্য রেসপন্ডেন্টর" dropdown
-    // $(document).on('change', 'select[name="other_respondent[]"]', function() {
-    //     var dataID = $(this).val();
-    //     var options = $('select[name="other_respondent[]"]').find('option:selected').hello('id');
-    //     console.log(options);
-    //     var $inputField = $(this).closest('tr').find('input[name="other_respondent_manual_name[]"]');
-    //     if (dataID == 0) {
-    //         $inputField.removeClass('d-none').addClass('long-input');
-    //         $(this).addClass('short-select');
-    //     } else {
-    //         $inputField.addClass('d-none').removeClass('long-input');
-    //         $(this).removeClass('short-select');
-    //     }
-    // });
-
-    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-    // $("#addBibadiRow").click(function(e) {
-    //     addBibadiRowFunc();
-    // });
-
-    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-    // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-
-   // Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-// Function to add a new row for "অন্যান্য রেসপন্ডেন্টর"
-// function addBibadiRowFunc() {
-//     var mk = $('#bibadiDiv tr').length; // Get the total number of rows including the header row
-//     $('#bibadiDiv tr:last').after(Item(mk));
-
-//     function Item(count) {
-//         // The count should reflect the actual number of rows minus the header row
-//         var rowIndex = count - 1;
-//         var banglaNumber = convertToBanglaNumber(rowIndex);
-//         var items = '';
-//         items += '<tr id="bibadi_' + rowIndex + '">';
-//         items += '<td style="display: flex; align-items: center;">'; // Flexbox for horizontal alignment
-//         items += '<span class="bangla-count" style="margin-right: 10px;">' + banglaNumber + '. </span>'; // Display Bangla count
-//         items += '<select name="other_respondent[]" onChange="getManualOtherRespondentName(' + rowIndex + ')" id="other_respondent_' + rowIndex + '" class="form-control form-control-sm other_respondentCls">';
-//         items += '<option value="">-- নির্বাচন করুন --</option>';
-//         items += '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
-//         items += '<option value="0">অন্যান্য</option>';
-//         items += '</select>';
-//         items += '<br>';
-//         items += '<input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' + rowIndex + '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none; margin-top: 5px;">';
-//         items += '</td>';
-//         items += '<input type="hidden" name="bibadi_id[]" value="">';
-//         items += '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-//         items += '</tr>';
-//         return items;
-//     }
-
-//     // Initialize select2 for the newly added select element
-//     $('.other_respondentCls').select2();
-//     updateBibadiCount(); // Update count after adding a new row
-// }
-
-// // Function to convert numbers to Bangla
-// function convertToBanglaNumber(number) {
-//     var banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-//     return number.toString().split('').map(function(digit) {
-//         return banglaNumbers[digit];
-//     }).join('');
-// }
-
-// // Function to update the count of selected users
-// function updateBibadiCount() {
-//     $('#bibadiDiv tr').each(function(index) {
-//         if (index > 0) {
-//             var banglaNumber = convertToBanglaNumber(index);
-//             $(this).find('span.bangla-count').text(banglaNumber + '. ');
-//         }
-//     });
-// }
-
-
-// function removeBibadiRow(element) {
-//     $(element).closest('tr').remove();
-//     updateBibadiCount();
-// }
-
-
-// $("#addBibadiRow").click(function(e) {
-//         addBibadiRowFunc();
-//     });
-
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
         $('#bibadiDiv tr:last').after(Item(mk + 1));
@@ -1620,15 +1535,62 @@
     //     // $('.main_respondent').select2();
     //     $('#ministry_id').select2();
     // });
-    //Attachment Title Change
-    function attachmentTitle(id) {
-        // var value = $('#customFile' + id).val();
-        var value = $('#customFile' + id)[0].files[0];
-        $('.custom-input' + id).text(value['name']);
-    }
+
+
+    //Attachment Title Change  && vallidation
+    function attachmentTitle(id, selectObject) {
+            var fileType = document.getElementById('file_type' + id).value;
+            if (fileType != '') {
+
+                //===================For CSS Change of Duynamic File Name =============//
+                $('#file_type' + id).css("background-color", "FFFFFF");
+                $('#file_type_error' + id).hide();
+                $('#file_type' + id).css("border-color", "#FFFFFF");
+
+                console.log(selectObject.value);
+                var value = $('#customFile' + id)[0].files[0];
+                $('.custom-input' + id).text(value['name']);
+
+                var filePath = selectObject.value;
+                var fileData = selectObject;
+                if (typeof(fileData.files) != "undefined") {
+                    $('#file_error' + id).hide();
+                    $('.custom-input' + id).css("border-color", "#FFFFFF");
+
+                    var size = parseFloat(fileData.files[0].size / 1024).toFixed(2);
+                    if (size > 5120) {
+                        document.getElementById('customFile' + id).value = '';
+                        $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
+                        $('.custom-input' + id).css("border-color", "#FF0000");
+                        $('#file_error' + id).show();
+                        $('#file_error' + id).html('ফাইলের আকার 5MB এর বেশি');
+                        return false;
+                    }
+                } else {
+                    alert("This browser does not support HTML5.");
+                }
+
+                // Allowing file type
+                var allowedExtensions = /(\.pdf)$/i;
+
+                if (!allowedExtensions.exec(filePath)) {
+                    // alert('Invalid file type');
+                    document.getElementById('customFile' + id).value = '';
+                    $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
+                    $('.custom-input' + id).css("border-color", "#FF0000");
+                    $('#file_error' + id).show();
+                    $('#file_error' + id).html("পিডিএফ ফাইল নির্বাচন করুন");
+                    return false;
+                }
+            } else {
+                $('#file_type' + id).css("border-color", "#FF0000");
+                $('#file_type_error' + id).show();
+                $('#file_type_error' + id).html('ফাইলের নাম লিখুন');
+            }
+
+        }
     //Attachment Title Change
     function replyAttachmentTitle(id) {
-        // var value = $('#customFile' + id).val();
         var value = $('#customReplyFile' + id)[0].files[0];
         $('.custom-reply-input' + id).text(value['name']);
     }
