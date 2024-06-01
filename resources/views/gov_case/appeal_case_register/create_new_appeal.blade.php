@@ -141,7 +141,7 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th class="other_bibadi_name other_respondent">আদালতের নাম
-                                                                (Court Name)
+                                                                (Court Name)<span class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addAppealAdalatRow"

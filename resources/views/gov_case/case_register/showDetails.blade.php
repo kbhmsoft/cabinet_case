@@ -138,10 +138,6 @@
                                 </tr>
                             @endif
 
-                            {{-- <tr>
-                                <th scope="row">মামলা নং</th>
-                                <td>{{ $case->case_no ?? '-' }}</td>
-                            </tr> --}}
                             <tr>
                                 <th scope="row">মামলা নং</th>
                                 <td>{{ $case->case_no ?? '-' }}</td>

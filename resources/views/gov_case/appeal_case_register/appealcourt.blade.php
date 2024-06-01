@@ -141,10 +141,7 @@
                         $roleID = Auth()->user()->role_id;
                         ?>
                         @foreach ($cases as $key => $row)
-
-                        
                             <tr>
-
                                 <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                                 <td style="width: 10px;">
                                     {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}

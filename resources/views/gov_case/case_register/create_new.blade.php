@@ -28,7 +28,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -211,7 +211,7 @@
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th class="other_bibadi_name other_respondent">আদালতের নাম
-                                                                (Justice Name)
+                                                                (Justice Name)<span class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addHighcourtAdalatRow"
@@ -297,13 +297,23 @@
 
                                                     <div class="col-lg-7 mb-5 product-image">
 
-                                                        <table width="100%" border="1" id="bibadiDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <table width="100%" border="1" id="bibadiDiv"
+                                                            class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th class="other_bibadi_name other_respondent" colspan="2">
+                                                                <th class="other_bibadi_name other_respondent"
+                                                                    colspan="2">
                                                                     রেসপন্ডেন্ট তালিকা
+                                                                    <span class="tooltip-icon">
+                                                                        <i class="fas fa-info-circle tooltip-button"></i>
+                                                                        <span class="tooltip-text">ড্রপডাউন থেকে অফিস
+                                                                            সিলেক্ট করুণ। কোন অফিস না পেলে অন্যান্য সিলেক্ট
+                                                                            করে নাম লিখুন</span>
+                                                                    </span>
                                                                 </th>
                                                                 <th width="50">
-                                                                    <a href="javascript:void();" id="addBibadiRow" class="btn btn-sm btn-primary font-weight-bolder pr-2" onclick="addBibadiRowFunc()">
+                                                                    <a href="javascript:void();" id="addBibadiRow"
+                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2"
+                                                                        onclick="addBibadiRowFunc()">
                                                                         <i class="fas fa-plus-circle"></i>
                                                                     </a>
                                                                 </th>
@@ -365,7 +375,7 @@
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">রুলের কপি সংযুক্ত করুন
-                                                                   
+
                                                                     <sub class="text-danger">(PDF, সর্বোচ্চ সাইজ :
                                                                         5MB)</sub>
                                                                 </h3>

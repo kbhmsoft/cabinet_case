@@ -600,10 +600,17 @@
                         $('#finalOrderSaveBtn').prop('disabled', false);
                         $('#finalOrderSaveBtn').removeClass("disable-button");
                     },
-                    error: function(data) {
-                        console.log(data);
+                    error: function(xhr, status, error) {
                         $('#appealCaseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
+                        if (xhr.status ===
+                            422) { 
+                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                        } else {
+                            console.log('Error occurred:', xhr, status, error);
+                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                                'error');
+                        }
                     }
                 });
             } else {
@@ -976,7 +983,7 @@
             var items = '';
             items += '<tr id="appeal_adalat_' + (count) + '">';
             items +=
-                '<td><select name="appeal_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($appealCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+                '<td><select name="appeal_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($appealCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="appeal_adalat[]" value="">';
 
             if (type == 'other') {

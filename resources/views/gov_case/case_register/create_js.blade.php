@@ -350,7 +350,7 @@
             var items = '';
             items += '<tr id="highcourt_adalat_' + (count) + '">';
             items +=
-                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="highcourt_adalat[]" value="">';
 
             if (type == 'other') {
@@ -1246,7 +1246,7 @@
             count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' + count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
             count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
-        
+
         items +=
             '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';

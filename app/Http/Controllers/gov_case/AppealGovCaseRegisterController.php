@@ -229,11 +229,12 @@ class AppealGovCaseRegisterController extends Controller
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
         $data['govCaseNumber'] = GovCaseRegister::where('case_no',$data['appealCase']->case_number_origin)->first();
         $govCaseId = $data['govCaseNumber']->id;
+
         if($govCaseId){
            $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
         }
-
-
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
 
         $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
@@ -1267,32 +1268,34 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
-        $caseNo = $request->caseId;
-        $request->validate([
-            'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseNo,
-        ],
-            [
-                'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-            ]);
+        $exists = AppealGovCaseRegister::where('case_no', $request->input('case_no'))
+            ->where('year', $request->input('case_year'))
+            ->where('case_type_id', $request->input('case_category_type'))
+            ->whereNull('deleted_at')
+            ->exists();
 
-        try {
-            $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
-            AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
-            AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
-            if ($request->file_type && $_FILES["file_name"]['name']) {
-                AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
+        if ($exists) {
+            return response()->json(['error' => 'মামলা নং, বছর, এবং মামলার শ্রেণী/কেস-টাইপ এই তিনটি মান সম্বলিত মামলা ইতিমধ্যে বিদ্যমান আছে'], 422);
+        } else {
+            DB::beginTransaction();
+
+            try {
+                $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
+                AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
+                AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
+                if ($request->file_type && $_FILES["file_name"]['name']) {
+                    AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
+                }
+
+
+                // ========= Gov Case Activity Log  End ==========
+            } catch (\Exception $e) {
+                dd($e);
+                $flag = 'false';
+                return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
             }
-
-
-            // ========= Gov Case Activity Log  End ==========
-        } catch (\Exception $e) {
-            // return "appealError";
-            dd($e);
-            $flag = 'false';
-            return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
+            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
         }
-        return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
-
     }
 
     public function appealEditStore(Request $request)
@@ -1733,7 +1736,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
 
-        // dd($data['cases']);
+
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
@@ -1750,7 +1753,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appellateDivisionMostImportantCase()
     {
-
         session()->forget('currentUrlPath');
 
         $officeInfo = user_office_info();
