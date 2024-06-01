@@ -3,7 +3,7 @@
     <a href="{{ url('dashboard') }}">
         {{-- <img height="40" alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" /> --}}
         <!-- <span style="font-weight: bold;color: white;">Civil Suit</span> -->
-        <img src="{{ asset('uploads/IconeSCMS/logo.png') }}" alt width="250" height="50"
+        <img src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" alt width="250" height="50"
             class="d-inline-block align-text-top p-0 m-0">
 
     </a>
