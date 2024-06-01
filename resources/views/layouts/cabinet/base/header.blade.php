@@ -25,6 +25,13 @@
         align-items: center;
     }
 
+    @media screen and (max-width: 600px) {
+        .header-case-count {
+            display: none;
+            
+        }
+    }
+
     .header-content {
         margin-top: 30px;
         margin-left: 25px;
@@ -138,7 +145,7 @@
         <!--begin::Header Menu Wrapper-->
         @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 39)
             <!-- Move this part into a separate div -->
-            <div class="header-case-count">
+            <div class="header-case-count ">
                 <div class="header-content">
                     <span class="font-weight-bolder" style="color: rgb(241, 230, 11); font-size: 15px;">
                         মোট এন্ট্রিকৃত মামলার সংখ্যা: <span class="count-numbers"><?= en2bn($total_case) ?></span>
@@ -228,7 +235,7 @@
                     <div class="row header-department-name">
                         <div class="col-12">
                             <span
-                                class="font-weight-bolder font-size-base font-size-h4 d-none d-md-inline mr-3 text-dark-100">{{ Auth::user()->name }}</span>
+                                class="font-weight-bolder font-size-base font-size-h4 d-md-inline mr-3 text-dark-100">{{ Auth::user()->name }}</span>
                             <span
                                 class="label label-lg label-danger label-pill label-inline"><?= auth()->user()->role->name_bn ?></span>
                         </div>
