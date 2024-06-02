@@ -138,10 +138,6 @@
                                 </tr>
                             @endif
 
-                            {{-- <tr>
-                                <th scope="row">মামলা নং</th>
-                                <td>{{ $case->case_no ?? '-' }}</td>
-                            </tr> --}}
                             <tr>
                                 <th scope="row">মামলা নং</th>
                                 <td>{{ $case->case_no ?? '-' }}</td>
@@ -298,7 +294,7 @@
                                 <tr>
                                     <td>{{ en2bn($k) }}.</td>
                                     <td class="text-center">
-                                        @if($caseBadi->name)
+                                        @if(isset($caseBadi->name))
                                         @if ($caseBadi->name && $case->total_badi_number > 1)
                                             {{ $caseBadi->name . ' ও অন্যান্য' }}
                                         @elseif ($caseBadi->name)

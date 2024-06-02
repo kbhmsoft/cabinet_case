@@ -2736,6 +2736,8 @@ class GovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
+
+        // dd($request->all());
         $exists = GovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -2751,8 +2753,9 @@ class GovCaseRegisterController extends Controller
                 $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
                 GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
-                GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
                 GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
+                GovCaseRegisterRepository::storeHighcourtAdalat($request, $caseId);
+
                 GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
 
                 if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -2813,20 +2816,6 @@ class GovCaseRegisterController extends Controller
 
         $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
         $id = $caseId->id;
-
-        // if ($request->input('previous_main_respondent')) {
-        //     $previousMainRespondent = $request->input('previous_main_respondent');
-        //     $previousMainRespondent = $previousMainRespondent[0];
-        //     if ($previousMainRespondent != $newMainRespondent && $exists) {
-        //         DB::table('main_respondent_notifications')->insert([
-        //             'gov_case_id' => $id,
-        //             'case_no' => $request->case_no,
-        //             'previous_office_id' => $previousMainRespondent,
-        //             'new_office_id' => $newMainRespondent,
-        //             'is_shown' => 0,
-        //         ]);
-        //     }
-        // }
 
         $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
@@ -3802,10 +3791,9 @@ class GovCaseRegisterController extends Controller
         } else {
             $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
         }
-        // dd($data['files'],$data['replyFiles']);
-        //  return $data;
+
         return view('gov_case.case_register.showDetails')->with($data);
-        // return $data;
+
     }
 
     public function highcourtDetailsPdf($id)

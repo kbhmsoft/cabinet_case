@@ -49,7 +49,8 @@
             text-align: right;
             vertical-align: top
         }
-          .details-pdf-button{
+
+        .details-pdf-button {
             width: 95%;
             text-align: right;
         }
@@ -67,14 +68,14 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                          @if (Auth::user()->role_id == 2)
+                                  @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                        </div> -->
+                                </div> -->
                 </div>
             </div>
             {{-- {{dd($appealCase)}} --}}
-            <table class="details-pdf-button">
+            {{-- <table class="details-pdf-button">
                 <tr align="right">
                     <th>
                         &nbsp;
@@ -84,12 +85,9 @@
                         </a>
                     </th>
                 </tr>
-            </table>
+            </table> --}}
             {{-- </div> --}}
-            {{-- @if (Auth::user()->role_id == 5 ||
-                    Auth::user()->role_id == 21 ||
-                    Auth::user()->role_id == 22 ||
-                    Auth::user()->role_id == 24)
+            {{-- @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 21 || Auth::user()->role_id == 22 || Auth::user()->role_id == 24)
                 @if ($case->action_user_role_id == Auth::user()->role_id)
                     @if ($case->status == 1)
                         <div class="card-toolbar">
@@ -102,6 +100,8 @@
                 @endif
             @endif --}}
         </div>
+
+
         <div class="card-body">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -118,6 +118,40 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                            @if ($appealCase->case_category_id)
+                                <tr>
+                                    <th scope="row">মামলার ক্যাটেগরি</th>
+                                    @php
+                                        // Find the matched category based on case_category_id
+                                        $matchedCategory = $GovCaseDivisionCategory
+                                            ->where('id', $appealCase->case_category_id)
+                                            ->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedCategory)
+                                            {{ $matchedCategory->name_bn }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+
+                            @if ($appealCase->case_type_id)
+                                <tr>
+                                    <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
+                                    @php
+                                        // Find the matched category based on case_type_id
+                                        $matchedDivisionCategory = $GovCaseDivisionCategoryType
+                                            ->where('id', $appealCase->case_type_id)
+                                            ->first();
+                                    @endphp
+                                    <td>
+                                        @if ($matchedDivisionCategory)
+                                            {{ $matchedDivisionCategory->name_bn }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                             <tr>
                                 <th scope="row">মামলা নং</th>
                                 <td>{{ $appealCase->case_no ?? '-' }}</td>
@@ -126,11 +160,12 @@
                                 <th scope="row">বছর</th>
                                 <td>{{ en2bn($appealCase->year) ?? '-' }}</td>
                             </tr>
+
                             <tr>
-                                <th scope="row">বিষয়বস্তু(সংক্ষিপ্ত)</th>
-                                <td>{{ $govCaseRegister['case']->subject_matter }}</td>
+                                <th scope="row">মামলা দায়েরের তারিখ</th>
+                                <td>{{ en2bn($appealCase->case_entry_date) ?? '-' }}</td>
                             </tr>
-                            {{-- $govCaseRegister['caseBadi'] --}}
+
                             @if ($appealCase->postponed_details)
                                 <tr>
                                     <th scope="row">স্থগিতাদেশের বিবরণ</th>
@@ -142,8 +177,10 @@
                                     <th scope="row">পূর্বের মামলা নং </th>
                                     <td>
                                         @if (auth()->user()->can('show_details_info'))
-                                            <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
-                                                target="_blank">{{ $appealCase->case_number_origin }}</a>
+                                            {{-- <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
+                                                target="_blank"> --}}
+                                            {{ $appealCase->case_number_origin }}
+                                            {{-- </a> --}}
                                         @else
                                             <a href="#">{{ $appealCase->case_number_origin }}</a>
                                         @endif
@@ -170,9 +207,9 @@
                                 <th scope="row">ফলাফল</th>
                                 <td>
                                     @if ($appealCase->result == '1')
-                                    সরকারের পক্ষে!
+                                        সরকারের পক্ষে!
                                     @elseif($appealCase->result == '2')
-                                    সরকারের বিপক্ষে!
+                                        সরকারের বিপক্ষে!
                                     @endif
                                 </td>
                                 {{-- @dd($case->result) --}}
@@ -225,35 +262,37 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="col-md-6">
                     <table class="table table-striped border">
                         <thead>
-                            <tr>
-                                <th class="h3" scope="col" colspan="4">বাদীর বিবরণ</th>
-                            </tr>
-                            <tr class="bg-light-primary">
-                                <th scope="row" width="10">ক্রম</th>
-                                <th scope="row" class="text-center" width="200">নাম</th>
-                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th> --}}
-                                <th scope="row" class="text-center">ঠিকানা</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                            @if (isset($govCaseRegister['caseBadi']))
+                                <table class="table table-striped border">
+                                    <thead>
+                                        <tr>
+                                            <th class="h3" scope="col" colspan="4">বাদীর বিবরণ</th>
+                                        </tr>
+                                        <tr class="bg-light-primary">
 
+                                            <th scope="row" class="text-center" width="200">নাম</th>
 
-                            {{-- @foreach ($govCaseRegister['caseBadi'] as $badi) --}}
-                                <tr>
+                                            <th scope="row" class="text-center">ঠিকানা</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">{{ $govCaseRegister['caseBadi']->name ?? '' }}</td>
+                                            <td class="text-center">{{ $govCaseRegister['caseBadi']->address ?? '' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @endif
 
-                                    <td class="text-center">{{ $caseBadi->name ?? '' }}</td>
-                                    <td class="text-center">{{ $caseBadi->address ?? '' }}</td>
-                                </tr>
-
-                            {{-- @endforeach --}}
-                        </tbody>
                     </table>
 
 
                     <br>
+                    @if(isset($govCaseRegister['caseBibadi']) && count($govCaseRegister['caseBibadi']) > 0 || isset($govCaseRegister['mainBibadi']) && count($govCaseRegister['mainBibadi']) > 0)
                     <table class="table table-striped border">
                         <thead>
                             <tr>
@@ -262,40 +301,37 @@
                             <tr class="bg-light-primary">
                                 <th scope="row" width="10">ক্রম</th>
                                 <th scope="row" class="text-center" width="200">নাম</th>
-                                {{-- <th scope="row" class="text-center">পিতা/স্বামীর নাম</th>--}}
                                 <th scope="row" class="text-center">ধরন</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @php $k = 1; @endphp
-                            @foreach ($caseBibadi as $bibadi)
-                                <tr>
-                                    <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                                    <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                    <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td>
-                                    <td class="tg-nluh">
-                                        {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
-                                </tr>
-                                @php $k++; @endphp
+                            @foreach ($govCaseRegister['caseBibadi'] as $bibadi)
+                            <tr>
+                                <td class="tg-nluh text-center">{{ en2bn($k) }}.</td>
+                                <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                {{-- <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td> --}}
+                                <td class="tg-nluh text-center">
+                                    {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী ' : 'অন্যান্য বিবাদী' }}
+                                </td>
+                            </tr>
+                            @php $k++; @endphp
                             @endforeach
-                        </tbody> --}}
+                        </tbody>
                         <tbody>
                             @php $k = 1; @endphp
                             @foreach ($govCaseRegister['mainBibadi'] as $bibadi)
-                                <tr>
-                                    {{-- {{dd($bibadi)}} --}}
-                                    <td>{{ en2bn($k) }}.</td>
-                                    <td class="tg-nluh text-center">
-                                        {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                    {{-- <td>{{ $badi->spouse_name }}</td>
-                                    <td>{{ $badi->address }}</td> --}}
-                                    <td class="tg-nluh text-center">
-                                        {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}</td>
-                                </tr>
-                                @php $k++; @endphp
+                            <tr>
+                                <td>{{ en2bn($k) }}.</td>
+                                <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                <td class="tg-nluh text-center">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী   ' : 'অন্যান্য বিবাদী' }}</td>
+                            </tr>
+                            @php $k++; @endphp
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
+
 
 
                 </div>
@@ -431,10 +467,9 @@
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bolder font-size-h3"
-                                                id="exampleModalLabel">{{ $file->file_type }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
+                                            <h5 class="modal-title font-weight-bolder font-size-h3" id="exampleModalLabel">
+                                                {{ $file->file_type }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <i aria-hidden="true" class="ki ki-close"></i>
                                             </button>
                                         </div>

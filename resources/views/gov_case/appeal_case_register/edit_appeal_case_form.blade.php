@@ -1265,6 +1265,48 @@
     </script>
 
 
+<script>
+    /************************ //Add multiple HighCourt Adalat *************************/
+    // $("#addHighcourtAdalatRow").click(function(e) {
+    //     addHighcourtAdalatRowFunc();
+    // });
+
+    // //add row function
+    // function addHighcourtAdalatRowFunc() {
+    //     var mk = $('#AdalatDiv tr').length;
+    //     var MainCount = $('#MainBibadiDiv tr').length;
+
+    //     $('#AdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+    //     function Item(count, type = null) {
+    //         var items = '';
+    //         items += '<tr id="appeal_adalat_' + (count) + '">';
+    //         items += '<td><select name="appeal_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>';
+    //         @foreach($highCourtAdalat as $value)
+    //         items += '<option value="{{ $value->id }}" {{ old('
+    //         highcourt_adalat ') == $value->id ? '
+    //         selected ' : '
+    //         ' }}> {{ $value->name }} </option>';
+    //         @endforeach
+    //         items += '</select></td>';
+    //         items += '<input type="hidden" name="appeal_adalat[]" value="">';
+
+    //         if (type == 'other') {
+    //             items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //         }
+    //         items += '</tr>';
+    //         return items;
+    //     }
+    //     $('.other_respondentCls').select2();
+    // }
+
+    // //remove row function
+    // function removeHighcourtAdalatRow(id) {
+    //     $(id).closest("tr").remove();
+    // }
+</script>
+
+
     @include('gov_case.appeal_case_register.create_new_appeal_js')
     <script type="text/javascript">
         $(document).ready(function() {

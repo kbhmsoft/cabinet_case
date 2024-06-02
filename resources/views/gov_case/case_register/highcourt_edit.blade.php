@@ -177,7 +177,7 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <input type="hidden" name="highcourt_adalat[]" value="{{ $row->id }}">
+                                                    {{-- <input type="hidden" name="highcourt_adalat_id[]" value="{{ $row->highcourt_adalat }}"> --}}
                                                     <td>
                                                         @if ($key > 0)
                                                         <a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" data-id="{{ $row->id }}" onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
@@ -346,34 +346,6 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
                                             <input name="money_amount" class="form-control" id="money_amount" rows="1" spellcheck="false" value="{{ $case->money_amount ?? '' }}">
                                             </input>
                                         </div>
-                                        {{--
-                                                <div class="col-lg-12 mb-5">
-                                                    <div class="col-md-6">
-                                                        <label class="form-group font-weight-bolder font-size-h5">
-                                                            স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন আদেশ প্রদান করা হয়েছে
-                                                            কিনা
-                                                        </label>
-                                                        <div class="radio-inline">
-                                                            <label class="radio">
-                                                                <input type="radio" name="postponed_interim_have"
-                                                                    id="postponed_interim_have" value="1"
-                                                                    {{ $case->postponed_interim_have == 1 ? 'checked' : '' }}>
-                                        <span></span>হ্যাঁ</label>
-                                        <label class="radio">
-                                            <input type="radio" name="postponed_interim_have" id="postponed_interim_have_not" value="0" {{ $case->postponed_interim_have == 0 ? 'checked' : '' }}>
-                                            <span></span>না</label>
-                                    </div>
-                            </div>
-
-                            <div class="p-5" id="postponed_interim_data_details" style="{{ $case->postponed_interim_have == 1 ? '' : 'display:none;' }}">
-                                <div class="col-md-12 mb-5">
-                                    <label>স্থগিতাদেশের সংক্ষিপ্ত বিবরণ</label>
-                                    <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details" rows="3" spellcheck="false">{{ $case->postponed_interim_data_details }}</textarea>
-                                </div>
-                            </div>
-                        </div> --}}
-
-
 
                         <div class="col-lg-12 mb-5">
                             <div class="col-md-6">
@@ -400,10 +372,6 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
                                 </div>
                             </div>
                         </div>
-
-
-
-
 
 
                         {{-- starting সংযুক্তি  --}}
@@ -1319,7 +1287,7 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
         @endsection
 
         @section('scripts')
-        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
 
         <script>
             function deleteRuleFile(id) {
@@ -1424,6 +1392,7 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
         <script>
             /************************ //Add multiple HighCourt Adalat *************************/
             $("#addHighcourtAdalatRow").click(function(e) {
+                alert('hi');
                 addHighcourtAdalatRowFunc();
             });
 
@@ -1445,7 +1414,7 @@ for ($i = 0; $i < sizeof($concern_person_desig); $i++) { $concernPersonDesig .='
                     ' }}> {{ $value->name }} </option>';
                     @endforeach
                     items += '</select></td>';
-                    items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+                    items += '<input type="hidden" name="highcourt_adalat_id[]" value="">';
 
                     if (type == 'other') {
                         items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
