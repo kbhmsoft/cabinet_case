@@ -2,16 +2,17 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\AppealAttachment;
-use App\Models\Attachment;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseAppealAdalat;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Attachment;
+use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\gov_case\GovCaseHearing;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\GovCaseAppealAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class AppealGovCaseRegisterRepository
 {
@@ -94,6 +95,8 @@ class AppealGovCaseRegisterRepository
             $case->year = $caseInfo->case_year;
             $case->appeal_petitioner_name = $petitioner_name;
             $case->appeal_office_id = $caseInfo->appeal_office;
+            $case->created_by = Auth::user()->id;
+            $case->created_by_office = Auth::user()->office_id;
 
             $case->case_division_id = 1;
 
