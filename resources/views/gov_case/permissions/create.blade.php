@@ -1,21 +1,21 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
-  
+
   <!--begin::Card-->
 <div class="card card-custom">
    <div class="card-header flex-wrap py-5">
       <div class="card-title">
          <h2>অনুমতি পরিচালনা </h2>
       </div>
-      <div class="card-toolbar">        
+      <div class="card-toolbar">
          <button type="button" data-toggle="modal" data-target="#parentPermissionNameModal" class="btn btn-sm btn-success mr-3 font-weight-bolder">
             <i class="la la-plus"></i>পেরেন্ট অনুমতি নামে তৈরি
-         </button>  
+         </button>
 
          <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-sm btn-primary font-weight-bolder">
             <i class="la la-plus"></i>অনুমতি তৈরি করুন
-         </button>                
+         </button>
       </div>
 
    </div>
@@ -35,7 +35,7 @@
          <p>{{ $message }}</p>
       </div>
       @endif
- 
+
             <div class="row">
                <div class="offset-md-2 col-md-6 form-group mb-2 mr-2">
                   <select name="parent_name" id="parent_name_for_search" class="form-control">
@@ -43,11 +43,11 @@
                      <option value="123123">সকল অনুমতির তালিকা</option>
                      @foreach($parentPermissions as $parent)
                      <option value="{{$parent->id}}">{{$parent->name}}</option>
-                     @endforeach 
+                     @endforeach
                   </select>
                </div>
             </div>
-            
+
             <div id="updateAjaxData">
 
       <table class="table table-hover mb-6 font-size-h6">
@@ -67,7 +67,7 @@
                $i = (($permissions->currentPage() -1) * $permissions->perPage() + 1);
             ?>
             @foreach ($permissions as $permission)
- 
+
             <?php
                 $parentName = App\Models\ParentPermissionName::find($permission->parent_permission_name_id);
                 $user = App\Models\User::find($permission->user_id);
@@ -86,16 +86,16 @@
                      <span class="badge badge-secondary">নিশক্রিয়</span>
                   @endif
                </td>
-               
+
                <td class="text-center">
-                  <button type="button" onclick="updatePermissionModal('{{$permission->id}}', '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+                  {{-- <button type="button" onclick="updatePermissionModal('{{$permission->id}}', '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button> --}}
                   <a href="{{ route('cabinet.permissionItemDelete', $permission->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
             @endforeach
-           
+
          </tbody>
-      </table>      
+      </table>
         {{ $permissions->links() }}
    </div>
    </div>
@@ -125,7 +125,7 @@
                   <div class="form-group">
                       <label for="update_displayname" class=" form-control-label">পদর্শনী নাম (বাংলা)<span class="text-danger">*</span></label>
                       <input type="text" id="update_displayname" name="display_name" placeholder="অনুমতির পদর্শনী নাম লিখুন" class="form-control form-control-sm" required>
-                     
+
                   </div>
                   <div class="form-group">
                       <label for="name" class=" form-control-label">অবস্থা<span class="text-danger">*</span></label>
@@ -134,7 +134,7 @@
                           <option class="status2" value="0">নিশক্রিয়</option>
                        </select>
                   </div>
-                
+
                   </div>
                </div>
             <div class="modal-footer">
@@ -150,7 +150,7 @@
 <!-- update Modal -->
 
 
- 
+
 
 <!-- create Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -180,13 +180,13 @@
                   <div class="form-group">
                       <label for="name" class=" form-control-label">পদর্শনী নাম (বাংলা)<span class="text-danger">*</span></label>
                       <input type="text" id="display_name" name="display_name" placeholder="অনুমতির পদর্শনী নাম লিখুন" class="form-control form-control-sm" required>
-                     
+
                   </div>
-                
+
                   <div class="form-group">
                       <label for="name" class=" form-control-label">অনুমতি নাম (ইংরেজি)<span class="text-danger">*</span></label>
                       <input type="text" id="name" name="name" placeholder="Enter permission name" class="form-control form-control-sm" required>
-                     
+
                   </div>
             </div>
          </div>
@@ -199,7 +199,7 @@
   </div>
 </div>
 
- 
+
 <!-- parent permission name Modal -->
 <div class="modal fade" id="parentPermissionNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -217,9 +217,9 @@
                   <div class="form-group">
                       <label for="name" class=" form-control-label">প্যারেন্ট নাম <span class="text-danger">*</span></label>
                       <input type="text" id="name" name="name" placeholder="প্যারেন্ট অনুমতির নাম লিখুন" class="form-control form-control-sm" required>
-                     
+
                   </div>
-                
+
             </div>
          </div>
       <div class="modal-footer">
@@ -239,7 +239,7 @@
 @section('styles')
 <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles-->
-@endsection     
+@endsection
 
 <!-- {{-- Scripts Section Related Page--}} -->
 @section('scripts')

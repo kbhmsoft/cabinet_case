@@ -2,24 +2,21 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Attachment;
 use App\Models\FinalAttachment;
-use App\Models\ReplyAttachment;
-use Illuminate\Support\Facades\DB;
-use App\Models\SuspensionAttachment;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\GovCaseOrderTaken;
 use App\Models\gov_case\GovCaseConcernPerson;
+use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
+use App\Models\gov_case\GovCaseOrderTaken;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\ReplyAttachment;
+use App\Models\SuspensionAttachment;
+use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
-        // dd($caseId);
         $case = GovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
@@ -30,7 +27,7 @@ class GovCaseRegisterRepository
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
         $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted',0)->get();
+        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
         $replyFiles = ReplyAttachment::where('gov_case_id', $caseId)->get();
         $suspensionFiles = SuspensionAttachment::where('gov_case_id', $caseId)->get();
         $finalFiles = FinalAttachment::where('gov_case_id', $caseId)->get();
@@ -56,17 +53,43 @@ class GovCaseRegisterRepository
         return $data;
     }
 
+//     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
+//     {
+// dd($caseInfo->highcourt_adalat);
+//         foreach ($caseInfo->highcourt_adalat as $key => $val) {
+//             if ($caseInfo->highcourt_adalat[$key] != null) {
+//                 $concernPerson = self::checkHighcourtAdalatExist($caseInfo->highcourt_adalat[$key]);
+//                 $concernPerson->gov_case_id = $govCaseId;
+//                 $concernPerson->highcourt_adalat = $caseInfo->highcourt_adalat[$key];
+//                 $concernPerson->save();
+//             }
+//         }
+//     }
+
     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
     {
-        foreach ($caseInfo->highcourt_adalat as $key => $val) {
 
+        foreach ($caseInfo->highcourt_adalat as $key => $val) {
             if ($caseInfo->highcourt_adalat[$key] != null) {
-                $highcourtAdalat = new GovCaseHighcourtAdalat();
+                $highcourtAdalat = self::checkHighcourtAdalatExist($caseInfo->highcourt_adalat_id[$key]);
                 $highcourtAdalat->gov_case_id = $govCaseId;
                 $highcourtAdalat->highcourt_adalat = $caseInfo->highcourt_adalat[$key];
                 $highcourtAdalat->save();
             }
         }
+    }
+
+    public static function checkHighcourtAdalatExist($highcourtAdalatId)
+    {
+        if (isset($highcourtAdalatId)) {
+
+            $highcourtAdalat = GovCaseHighcourtAdalat::find($highcourtAdalatId);
+        } else {
+
+            $highcourtAdalat = new GovCaseHighcourtAdalat();
+        }
+
+        return $highcourtAdalat;
     }
 
     public static function storeGovCase($caseInfo)
@@ -351,10 +374,8 @@ class GovCaseRegisterRepository
     {
         $case = self::checkGovCaseExist($caseInfo['caseId']);
         $oldcase = self::checkGovCaseExist($id);
-        // dd($oldcase->case_no);
 
         try {
-
             $case->case_no = $caseInfo->case_no;
             $case->court_id = $caseInfo->court;
             $case->action_user_id = userInfo()->id;
@@ -397,17 +418,6 @@ class GovCaseRegisterRepository
         return $case;
     }
 
-
-    // public static function creatingObjectModel($caseId)
-    // {
-    //     if ($caseId != null) {
-    //     //     $case = GovCaseRegister::find($caseId);
-    //     // } else {
-    //         $case = new GovCaseOrderTaken();
-    //     }
-    //     return $case;
-    // }
-
     public static function updateGovCaseAsFoward($request)
     {
         if ($request->main_min_id) {
@@ -449,9 +459,6 @@ class GovCaseRegisterRepository
 
         $case_status = $query->groupBy('case_status_id')->get();
 
-        // 'ministry_id',
-        // 'department_id',
-        // dd($case_status);
         return $case_status;
     }
     public static function againestGovCases()

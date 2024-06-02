@@ -308,10 +308,10 @@
                             @php $k = 1; @endphp
                             @foreach ($govCaseRegister['caseBibadi'] as $bibadi)
                             <tr>
-                                <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                                <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                <td class="tg-nluh text-center">{{ en2bn($k) }}.</td>
+                                <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
                                 {{-- <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td> --}}
-                                <td class="tg-nluh">
+                                <td class="tg-nluh text-center">
                                     {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী ' : 'অন্যান্য বিবাদী' }}
                                 </td>
                             </tr>
