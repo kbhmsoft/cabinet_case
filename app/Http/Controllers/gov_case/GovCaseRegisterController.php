@@ -2810,12 +2810,13 @@ class GovCaseRegisterController extends Controller
 
     public function caseGeneralInfoForEdit(Request $request)
     {
-
+        
         $caseNo = $request->case_no;
         $mainRespondent = $request->input('main_respondent');
-
-        $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
-        $id = $caseId->id;
+        
+        $id = $request->case_id;
+        // dd($id);
+        // dd($request->all());
 
         $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
@@ -3442,20 +3443,17 @@ class GovCaseRegisterController extends Controller
             $data['depatments'] = Office::where('level', 12)->get();
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
-        $data['usersInfo'] = User::all();
 
-        if ($roleID != 27) {
-            $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->where('office_id', $officeID)->get();
-        } else {
-            $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-        }
+        
+        $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
+       
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
         $data['page_title'] = 'মামলা সংশোধন';
-
+        // return $data;
         return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
