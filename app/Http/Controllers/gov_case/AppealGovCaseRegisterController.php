@@ -370,15 +370,15 @@ class AppealGovCaseRegisterController extends Controller
             ->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->whereIn('appeal_office_id', $finalOfficeIds);
+            $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereIn('appeal_office_id', $officeID);
+            $query->whereIn('created_by_office', $officeID);
         }
 
         if ($roleID == 44) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
@@ -451,15 +451,15 @@ class AppealGovCaseRegisterController extends Controller
             ->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereIn('appeal_office_id', $finalOfficeIds);
+            $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
         if ($roleID == 44) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
@@ -1707,11 +1707,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
@@ -1765,11 +1765,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -1823,11 +1823,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -1874,7 +1874,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $ministry = DB::table('gov_case_office')
             ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
-                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.appeal_office_id = gov_case_office.id AND agcr.deleted_at IS NULL) AS total_appeal_case')
+                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND agcr.deleted_at IS NULL) AS total_appeal_case')
             )
             ->whereIn('gov_case_office.level', [1, 3]);
 
@@ -1951,7 +1951,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $ministry = DB::table('gov_case_office')
             ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
-                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.appeal_office_id = gov_case_office.id AND
+                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND
                 agcr.is_final_order = 0 AND agcr.deleted_at IS NULL) AS total_running_appeal_case')
             )
             ->whereIn('gov_case_office.level', [1, 3]);
@@ -2026,7 +2026,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $ministry = DB::table('gov_case_office')
             ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
-                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.appeal_office_id = gov_case_office.id AND
+                DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND
                 agcr.is_final_order = "1" AND agcr.deleted_at IS NULL) AS total_complete_appeal_case')
             )
             ->whereIn('gov_case_office.level', [1, 3]);
@@ -2111,11 +2111,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -2469,7 +2469,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function store_appeal(Request $request, $id = '')
     {
-        // return $request;
+
         $caseId = $request->caseId;
         // dd($caseId);
         // 'email' => 'unique:users,email_address,'.$user->id
@@ -2634,11 +2634,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -2690,11 +2690,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -2748,11 +2748,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -2803,11 +2803,11 @@ class AppealGovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_id'])) {
@@ -2855,7 +2855,7 @@ class AppealGovCaseRegisterController extends Controller
             $officeId = AppealGovCaseRegister::where('id', $id)
                 ->where('deleted_at', null)->first();
 
-            $officeName = GovCaseOffice::where('doptor_office_id', $officeId->appeal_office_id)->first();
+            $officeName = GovCaseOffice::where('doptor_office_id', $officeId->created_by_office)->first();
 
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
@@ -2972,15 +2972,15 @@ class AppealGovCaseRegisterController extends Controller
             ->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereIn('appeal_office_id', $finalOfficeIds);
+            $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
         if ($roleID == 44) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
@@ -3052,15 +3052,15 @@ class AppealGovCaseRegisterController extends Controller
             ->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereIn('appeal_office_id', $finalOfficeIds);
+            $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
         if ($roleID == 44) {
-            $query->where('appeal_office_id', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if (!empty($_GET['case_category_type'])) {
