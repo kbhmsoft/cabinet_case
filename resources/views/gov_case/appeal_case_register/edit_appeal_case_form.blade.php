@@ -317,7 +317,7 @@
                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                         <div class="d-flex align-items-center mr-2 py-2">
                                             <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
-                                                <span class="text-danger">*</span>
+                                              
                                             </h3>
                                         </div>
                                         <div class="symbol-group symbol-hover py-2">
@@ -1267,43 +1267,7 @@
 
 <script>
     /************************ //Add multiple HighCourt Adalat *************************/
-    // $("#addHighcourtAdalatRow").click(function(e) {
-    //     addHighcourtAdalatRowFunc();
-    // });
 
-    // //add row function
-    // function addHighcourtAdalatRowFunc() {
-    //     var mk = $('#AdalatDiv tr').length;
-    //     var MainCount = $('#MainBibadiDiv tr').length;
-
-    //     $('#AdalatDiv tr:last').after(Item(mk + 1, 'other'));
-
-    //     function Item(count, type = null) {
-    //         var items = '';
-    //         items += '<tr id="appeal_adalat_' + (count) + '">';
-    //         items += '<td><select name="appeal_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>';
-    //         @foreach($highCourtAdalat as $value)
-    //         items += '<option value="{{ $value->id }}" {{ old('
-    //         highcourt_adalat ') == $value->id ? '
-    //         selected ' : '
-    //         ' }}> {{ $value->name }} </option>';
-    //         @endforeach
-    //         items += '</select></td>';
-    //         items += '<input type="hidden" name="appeal_adalat[]" value="">';
-
-    //         if (type == 'other') {
-    //             items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-    //         }
-    //         items += '</tr>';
-    //         return items;
-    //     }
-    //     $('.other_respondentCls').select2();
-    // }
-
-    // //remove row function
-    // function removeHighcourtAdalatRow(id) {
-    //     $(id).closest("tr").remove();
-    // }
 </script>
 
 

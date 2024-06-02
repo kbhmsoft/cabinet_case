@@ -2286,7 +2286,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
         $data['appealCourtAdalat'] = AppealAdalat::get();
-
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
+        // dd($data);
         $data['page_title'] = 'আপিল বিভাগ মামলা সংশোধন';
 
 
@@ -2302,10 +2303,10 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $data['ministrys'] = GovCaseOffice::get();
-        // $data['ministrys'] = DB::table('gov_case_office')->get();
 
-        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
-        // return $data['concern_person_desig'];
+
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36,45])->get();
+
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
