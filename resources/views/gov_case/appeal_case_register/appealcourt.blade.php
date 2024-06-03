@@ -162,6 +162,7 @@
                                 </td>
 
                                 <td style="text-align:center;">
+                                    @if($row->appeal_office_id != 0)
                                     @php
                                         $govCaseOffice = App\Models\gov_case\GovCaseOffice::where(
                                             'doptor_office_id',
@@ -169,6 +170,10 @@
                                         )->first();
                                     @endphp
                                     {{ $govCaseOffice->office_name_bn ?? '' }}
+                                    @else
+                                    {{ $row->appeal_petitioner_name ?? '' }}
+
+                                    @endif
                                 </td>
 
                                 {{-- <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td> --}}
