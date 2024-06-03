@@ -98,7 +98,7 @@
 
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category" id="CaseCategory"
-                                                            class="form-control form-control-sm">
+                                                            class="form-control form-control-sm select_2">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($GovCaseDivisionCategory as $value)
                                                                 <option value="{{ $value->id }}"
@@ -117,7 +117,7 @@
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category_type" id="case_category_type"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm select_2" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($GovCaseDivisionCategoryType as $value)
                                                                 <option value="{{ $value->id }}"
@@ -171,9 +171,9 @@
                                                         @foreach ($caseCourts as $key => $row)
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 <td>
-                                                                    <select {{ request('red') ? 'disabled' : '' }}
-                                                                        name="highcourt_adalat[]" id="ministry_id"
-                                                                        class="form-control form-control-sm">
+                                                                    <select 
+                                                                        name="highcourt_adalat[]"
+                                                                        class="form-control form-control-sm select_2">
                                                                         @foreach ($highCourtAdalat as $value)
                                                                             <option value="{{ $value->id }}"
                                                                                 {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
@@ -233,7 +233,7 @@
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
                                                                         id="concernPersonDesignation_{{ $key + 1 }}"
-                                                                        class="form-control form-control-sm"
+                                                                        class="form-control form-control-sm select_2"
                                                                         required="required"
                                                                         onchange="getConcernPerName({{ $key + 1 }})">
                                                                         @foreach ($concern_person_desig as $data)
@@ -248,7 +248,7 @@
                                                                 <td>
                                                                     <select name="concern_user_id[]"
                                                                         id="concern_user_id_{{ $key + 1 }}"
-                                                                        class="form-control form-control-sm"
+                                                                        class="form-control form-control-sm select_2"
                                                                         required="required">
                                                                         @foreach ($lawerInfo as $data)
                                                                             <option value="{{ $data->id }}"
@@ -312,7 +312,7 @@
 
                                                     <label>মোট পিটিশনারের সংখ্যা</label>
                                                     <select name="total_badi_number" id="total_badi_number"
-                                                        class="form-control form-control-sm">
+                                                        class="form-control form-control-sm select_2">
                                                         <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
                                                         </option>
                                                         @for ($i = 1; $i <= 1000; $i++)
@@ -345,7 +345,7 @@
                                                             <tr id="bibadi_10{{ $key }}">
                                                                 @if ($val->respondent_id != 0)
                                                                     <td>
-                                                                        <select {{ request('red') ? 'disabled' : '' }} " name=" other_respondent[]" id="ministry_id" class="form-control form-control-sm">
+                                                                        <select {{ request('red') ? 'disabled' : '' }} " name=" other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
                                                                      @foreach ($ministrys as
                                                                             $item)
                                                                             <option value="{{ $item->doptor_office_id }}"
@@ -1737,6 +1737,12 @@
 @endsection
 
 @section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#select2Dropdown').select2();
+        $('.select_2').select2();
+    });
+</script>
     <script>
         function deleteRuleFile(id) {
             // alert(id);
@@ -1919,11 +1925,7 @@
         }
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#select2Dropdown').select2();
-        });
-    </script>
+    
     <script>
         /************************ Add multiple advocate  *************************/
         $("#addAdvocateLawer").click(function(e) {
