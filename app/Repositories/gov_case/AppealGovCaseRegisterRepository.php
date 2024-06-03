@@ -16,20 +16,18 @@ use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class AppealGovCaseRegisterRepository
 {
-    public static function GovCaseAllDetails($caseId)
+    public static function AppealGovCaseAllDetails($caseId)
     {
 
         $case = AppealGovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $appealCaseLawers = GovCaseBadiBibadiRepository::getAppealConcernPersonByCaseId($caseId);
-        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
+
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-        $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
-        $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
+
 
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
@@ -38,20 +36,20 @@ class AppealGovCaseRegisterRepository
             'case' => $case,
             'caseBadi' => $caseBadi,
             'caseLawers' => $appealCaseLawers,
-            'caseCourts' => $caseCourts,
+
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
             'otherBibadi' => $otherBibadi,
-            'caseLogs' => $caseLog,
-            'hearings' => $hearings,
-            'files' => $files,
+
             'concernpersondesig' => $concernpersondesig,
             'concernPersonName' => $concernPersonName,
         ];
 
         return $data;
     }
+
+
 
     public static function AppealCaseAllDetails($caseId)
     {
@@ -78,11 +76,7 @@ class AppealGovCaseRegisterRepository
     {
 
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-        $caseOriginNum = '';
-        if ($caseInfo->case_number_origin) {
-            $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
-        }
-
+      
         $petitioner_name = '';
         if ($caseInfo->appeal_office == 0) {
             $petitioner_name = $caseInfo->appeal_petitioner_name;
@@ -118,7 +112,7 @@ class AppealGovCaseRegisterRepository
 
                 $case->case_category_origin = $caseInfo->case_category_origin;
 
-                $case->case_number_origin = $caseOriginNum;
+                $case->case_number_origin = $caseInfo->case_number_origin;
 
                 $case->case_origin_id = $caseInfo->case_number_origin;
             } else {
@@ -143,16 +137,30 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
+
     public static function storeAppealAdalat($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->appeal_adalat as $key => $val) {
             if ($caseInfo->appeal_adalat[$key] != null) {
-                $appealadalat = new GovCaseAppealAdalat();
-                $appealadalat->gov_case_id = $govCaseId;
-                $appealadalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
-                $appealadalat->save();
+                $appealAdalat = self::checkHighcourtAdalatExist($caseInfo->appeal_adalat_id[$key]);
+                $appealAdalat->gov_case_id = $govCaseId;
+                $appealAdalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
+                $appealAdalat->save();
             }
         }
+    }
+
+    public static function checkHighcourtAdalatExist($appealAdalatId)
+    {
+        if (isset($appealAdalatId)) {
+
+            $appealAdalat = GovCaseAppealAdalat::find($appealAdalatId);
+        } else {
+
+            $appealAdalat = new GovCaseAppealAdalat();
+        }
+
+        return $appealAdalat;
     }
 
     public static function storeConcernPerson($caseInfo, $govCaseId)

@@ -2810,14 +2810,11 @@ class GovCaseRegisterController extends Controller
 
     public function caseGeneralInfoForEdit(Request $request)
     {
-        
+
         $caseNo = $request->case_no;
         $mainRespondent = $request->input('main_respondent');
-        
-        $id = $request->case_id;
-        // dd($id);
-        // dd($request->all());
 
+        $id = $request->case_id;
         $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
@@ -3444,9 +3441,9 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
-        
+
         $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-       
+
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 

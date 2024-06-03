@@ -560,71 +560,58 @@
 
 
     // ================================Case General Info save==================================
-
     $('#appealCaseGeneralInfoForm').submit(function(e) {
-        // alert(1);
-        e.preventDefault();
-        $('#appealCaseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        Swal.fire({
-            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
+    e.preventDefault();
 
-                var formData = new FormData(this);
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.appealStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+    $('#appealCaseGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+    Swal.fire({
+        title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var formData = new FormData(this);
+            console.log([...formData.entries()]); // Log form data for debugging
 
-                    success: (data) => {
-                        $('#appealCaseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
-                        Swal.fire(
-                            'Saved!',
-                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                            'success'
-                        )
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('cabinet.case.appealStore') }}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    console.log('Success response:', data); // Log success response
 
-                        $("#final_order").click();
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                    },
-                    error: function(xhr, status, error) {
-                        $('#appealCaseGeneralInfoSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        if (xhr.status ===
-                            422) { 
-                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
-                        } else {
-                            console.log('Error occurred:', xhr, status, error);
-                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
-                                'error');
-                        }
+                    $('#appealCaseGeneralInfoSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
+                    Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'success');
+
+                    $("#final_order").click();
+                    $("#caseIDForFinalOrder").val(data.caseId);
+                    $('#finalOrderSaveBtn').prop('disabled', false);
+                    $('#finalOrderSaveBtn').removeClass("disable-button");
+                },
+                error: (xhr, status, error) => {
+                    console.log('Error response:', xhr, status, error);
+
+                    $('#appealCaseGeneralInfoSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
+                    if (xhr.status === 422) {
+                        Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                    } else {
+                        Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন', 'error');
                     }
-                });
-            } else {
-                $('#appealCaseGeneralInfoSaveBtn').removeClass(
-                    'spinner spinner-white spinner-right disabled');
-                Swal.fire(
-                    'Canceled!',
-                    'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে',
-                    'info'
-                );
-            }
-        })
-
+                }
+            });
+        } else {
+            $('#appealCaseGeneralInfoSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
+            Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+        }
     });
+});
+
     // ================================Case General Info save==================================
     // ================================Final Order Save==================================//
 
@@ -984,7 +971,7 @@
             items += '<tr id="appeal_adalat_' + (count) + '">';
             items +=
                 '<td><select name="appeal_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($appealCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="appeal_adalat[]" value="">';
+            items += '<input type="hidden" name="appeal_adalat_id[]" value="">';
 
             if (type == 'other') {
                 items +=
