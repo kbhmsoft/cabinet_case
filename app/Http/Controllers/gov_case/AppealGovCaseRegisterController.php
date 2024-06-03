@@ -228,8 +228,11 @@ class AppealGovCaseRegisterController extends Controller
     {
         $data['appealCase'] = AppealGovCaseRegister::findOrFail($id);
         $data['govCaseNumber'] = GovCaseRegister::where('case_no',$data['appealCase']->case_number_origin)->first();
+    if(!empty($data['govCaseNumber'])){
         $govCaseId = $data['govCaseNumber']->id;
-
+    }else{
+        $govCaseId = '';
+    }
         if($govCaseId){
            $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
         }
