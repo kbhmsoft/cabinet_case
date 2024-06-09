@@ -117,7 +117,8 @@
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category_type" id="case_category_type"
-                                                            class="form-control form-control-sm select_2" required="required">
+                                                            class="form-control form-control-sm select_2"
+                                                            required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($GovCaseDivisionCategoryType as $value)
                                                                 <option value="{{ $value->id }}"
@@ -161,7 +162,8 @@
                                                             <th>আদালতের নাম (Justice Name) <span
                                                                     class="text-danger">*</span></th>
                                                             <th width="30">
-                                                                <a href="javascript:void(0);" id="addNewHighcourtAdalatRow"
+                                                                <a href="javascript:void(0);"
+                                                                    id="addNewHighcourtAdalatRow"
                                                                     class="btn btn-sm btn-primary pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
                                                             </th>
@@ -169,32 +171,34 @@
                                                         <tr></tr>
 
                                                         @foreach ($caseCourts as $key => $row)
-                                                            <tr id="bibadi_10{{ $key }}">
+                                                            <tr id="adalat_{{ $row->id }}">
                                                                 <td>
-                                                                    <select 
-                                                                        name="highcourt_adalat[]"
+                                                                    <select name="highcourt_adalat[]"
                                                                         class="form-control form-control-sm select_2">
                                                                         @foreach ($highCourtAdalat as $value)
                                                                             <option value="{{ $value->id }}"
                                                                                 {{ old('highcourt_adalat') == $value->id || $row->highcourt_adalat == $value->id ? 'selected' : '' }}>
                                                                                 {{ $value->name }}
                                                                             </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        <input type="hidden" name="highcourt_adalat_id[]" value="{{ $row->id }}">
-                                                                    </td>
-                                                                    <td>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <input type="hidden" name="highcourt_adalat_id[]"
+                                                                        value="{{ $row->id }}">
+                                                                </td>
+                                                                <td>
                                                                     @if ($key > 0)
                                                                         <a href="javascript:void(0);"
                                                                             class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $row->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            id="deleteAdalatBtn_{{ $row->id }}"
+                                                                            onclick="deleteAdalat({{ $row->id }})">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
                                                                     @endif
                                                                 </td>
                                                             </tr>
                                                         @endforeach
+
                                                     </table>
                                                 </div>
 
@@ -229,7 +233,7 @@
                                                         </tr>
 
                                                         @foreach ($caseLawers as $key => $value)
-                                                            <tr>
+                                                            <tr id="advocate_{{ $value->id }}">
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
                                                                         id="concernPersonDesignation_{{ $key + 1 }}"
@@ -263,7 +267,8 @@
                                                                         <a href="javascript:void();"
                                                                             class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $value->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
+                                                                            id="deleteAdvocateBtn_{{ $value->id }}"
+                                                                            onclick="deleteAdvocate({{ $value->id }})">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
                                                                     @endif
@@ -342,12 +347,12 @@
                                                         <tr></tr>
 
                                                         @foreach ($otherBibadi as $key => $val)
-                                                            <tr id="bibadi_10{{ $key }}">
+                                                            <tr id="other_bibadi_{{ $val->id }}">
                                                                 @if ($val->respondent_id != 0)
                                                                     <td>
                                                                         <select {{ request('red') ? 'disabled' : '' }} " name=" other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
-                                                                     @foreach ($ministrys as
-                                                                            $item)
+
+                                                                            @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->doptor_office_id }}"
                                                                                 {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }}
@@ -376,7 +381,8 @@
                                                                 <a href="javascript:void();"
                                                                     class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                     data-id="{{ $value->doptor_office_id }}"
-                                                                    onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                    id="deleteOtherBibadiBtn_{{ $val->id }}"
+                                                                    onclick="deleteOtherBibadi({{ $val->id }})">
                                                                     <i class="fas fa-minus-circle"></i>
                                                                 </a>
                                                             @endif
@@ -468,7 +474,7 @@
 
 
                                                                 <tr>
-                                                                    @foreach ($files as $key=>$row)
+                                                                    @foreach ($files as $key => $row)
                                                                         <div class="form-group mb-2"
                                                                             id="deleteFile{{ $row->id }}">
                                                                             <div class="input-group">
@@ -1363,8 +1369,8 @@
                                                                 বিপক্ষে হলে আপিল করা হয়েছে কিনা </label>
                                                             <div class="radio-inline">
                                                                 <label class="radio">
-                                                                    <input type="radio" name="is_appeal" id="is_appeal"
-                                                                        value="1"
+                                                                    <input type="radio" name="is_appeal"
+                                                                        id="is_appeal" value="1"
                                                                         {{ $case->is_appeal == '1' ? 'checked' : '' }} />
                                                                     <span></span>হ্যাঁ </label>
                                                                 <label class="radio">
@@ -1737,15 +1743,17 @@
 @endsection
 
 @section('scripts')
-<script>
-    $(document).ready(function() {
-        $('#select2Dropdown').select2();
-        $('.select_2').select2();
-    });
-</script>
     <script>
+        $(document).ready(function() {
+            $('#select2Dropdown').select2();
+            $('.select_2').select2();
+        });
+    </script>
+    <script>
+        //////////////////------- for সংযুক্তি  delete button   -----------////////////
+
+
         function deleteRuleFile(id) {
-            // alert(id);
             Swal.fire({
                 title: 'আপনি কি মামলার রুল কপি মুছে ফেলতে চান?',
                 icon: 'warning',
@@ -1754,26 +1762,144 @@
                 cancelButtonText: 'না'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#deleteRuleFileBtn_' + id).addClass('loadersmall')
-                    jQuery.ajax({
-                        url: '{{ url(' / ') }}/cabinet/case/highcourt/ruleFile/delete/' +
+                    $('#deleteRuleFileBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/ruleFile/delete/' +
                             id,
-                        type: "GET",
+                        type: "post",
                         dataType: "json",
                         success: function(data) {
                             Swal.fire(
                                 'সফল!',
                                 data.message,
                                 'success'
-                            )
+                            );
                             addMainFileRowFunc();
                             $('#deleteFile' + id).remove();
-
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                            // Handle the error appropriately, e.g., display an error message to the user
                         }
                     });
                 }
             });
         }
+
+        /////// For Adalat Delete ----------///////////////////
+
+        function deleteAdalat(id) {
+            Swal.fire({
+                title: 'আপনি কি মামলার আদালতটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteAdalatBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/adalat/delete/' + id,
+                        type: "post",
+                        dataType: "json",
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                // Remove the corresponding row
+                                $('#adalat_' + id).remove();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+        /////// For Advocate Delete ----------///////////////////
+
+        function deleteAdvocate(id) {
+            Swal.fire({
+                title: 'আপনি কি মামলার সংশ্লিষ্ট আইন কর্মকর্তাটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteAdvocateBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/advocate/delete/' + id,
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                // Remove the corresponding row
+                                $('#advocate_' + id).remove();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+          /////// -------- For Others Bibadi Delete ----------///////////////////
+
+          function deleteOtherBibadi(id) {
+            Swal.fire({
+                title: 'আপনি কি মামলার অন্যান্য রেসপন্ডেন্টটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteOtherBibadiBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourt/otherbibadi/delete/' + id,
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                // Remove the corresponding row
+                                $('#other_bibadi_' + id).remove();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            });
+        }
+
+
 
         $(document).ready(function() {
             $('.tab-content .tab-pane:first-child').addClass('active');
@@ -1809,8 +1935,8 @@
                     count + ')">';
                 items += '<option value="">-- নির্বাচন করুন --</option>';
                 items +=
-                    '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('
-                                        ministry ') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+                    '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry ') ==
+                        $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
                 items += '<option value="0">অন্যান্য</option>';
                 items +=
                     '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_edit_' +
@@ -1834,7 +1960,7 @@
         }
 
         function getManualOtherRespondentName(data) {
-            alert(data);
+  
             var selectID = $('#other_respondent_' + data).val();
             if (selectID == 0) {
                 $('#other_respondent_manual_name_edit_' + data).removeClass("d-none");
@@ -1846,7 +1972,7 @@
             console.log(selectID);
             // alert(details);
         }
-    
+
         /************************ //Add multiple HighCourt Adalat *************************/
         $("#addNewHighcourtAdalatRow").click(function(e) {
             addHighcourtAdalatRowFunc();
@@ -1866,7 +1992,7 @@
                     '<td><select name="highcourt_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" > {{ $value->name }} </option>@endforeach</select></td>';
                 items += '<input type="hidden" name="highcourt_adalat_id[]" value="">';
 
-                if (type == 'other') {
+                if (count > 1) {
                     items +=
                         '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
                 }
@@ -1878,6 +2004,7 @@
 
         //remove row function
         function removeHighcourtAdalatRow(id) {
+            console.log(id);
             $(id).closest("tr").remove();
         }
     </script>
@@ -1925,7 +2052,7 @@
         }
     </script>
 
-    
+
     <script>
         /************************ Add multiple advocate  *************************/
         $("#addAdvocateLawer").click(function(e) {

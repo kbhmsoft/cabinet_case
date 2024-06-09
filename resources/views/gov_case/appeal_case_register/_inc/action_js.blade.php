@@ -2,6 +2,7 @@
     $department = '';
 @endphp --}}
 <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -17,22 +18,18 @@
         startView: 'years',
         minViewMode: 'years',
         orientation: "bottom left",
-        // format: "dd/mm/yyyy",
-        // todayHighlight: true,
-        // viewMode: 'years',
     });
 </script>
 
 <script type="text/javascript">
-    // $('form').submit(function() {
-    //     $('[disabled]').removeAttr('disabled');
-    // })
     $(document).ready(function() {
         // addBadiRowFunc();
-
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
+            orderTamilDecisionFileRowFunc();
+            addAppealSubmissionRequestFileRowFunc();
+            addOrderTakenDecisionFileRowFunc();
         }
         addFileRowFunc();
         addReplyFileRowFunc();
@@ -263,6 +260,106 @@
     function removeMainBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+
+    /****************** Add Multiple বাস্তবায়নে গৃহীত ব্যবস্থার কপি সংযুক্ত করুন  *********/
+
+    $("#orderTamilDecisionFileRow").click(function(e) {
+        orderTamilDecisionFileRowFunc();
+    });
+    //add row function
+    function orderTamilDecisionFileRowFunc() {
+        var count = parseInt($('#order_tamil_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#order_tamil_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" ></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="adeshTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adesh-tamil-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#orderTamilDecisionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+
+    /****************** Add Multiple আপিল দায়েরের অনুরোধ কপি *********/
+
+
+    $("#addAppealSubmissionRequestFileRow").click(function(e) {
+
+        addAppealSubmissionRequestFileRowFunc();
+    });
+
+    function addAppealSubmissionRequestFileRowFunc() {
+        var count = parseInt($('#appeal_submission_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#appeal_submission_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_appeal_request[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_appeal_request[]" onChange="appealRequestAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="appealRequestFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#addAppealSubmissionRequestFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
+
+
+
+    /////////============ add appeal submission files ================
+
+    $("#addOrderTakenDecisionFileRow").click(function(e) {
+        addOrderTakenDecisionFileRowFunc();
+    });
+    //add row function
+    function addOrderTakenDecisionFileRowFunc() {
+        var count = parseInt($('#order_taken_decision_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#order_taken_decision_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type_order_tamil[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name_order_tamil[]" onChange="orderTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="orderTamilFile' + count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#orderTakenDecisionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
+
+
     /************************ //Add multiple Main bibadi *************************/
 
     $("#addBibadiRow").click(function(e) {
@@ -549,7 +646,8 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         ).then(function() {
-                            window.location = "{{ route('cabinet.case.highcourt') }}";
+                            window.location =
+                                "{{ route('cabinet.case.highcourt') }}";
                         });
                         console.log(data);
                         // console.log(data.caseId);
@@ -608,10 +706,11 @@
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
                         ).then(function() {
-                            window.location = "{{ route('cabinet.case.highcourt') }}";
+                            window.location =
+                                "{{ route('cabinet.case.highcourt') }}";
                         });
                         console.log(data);
-                      
+
 
                     },
                     error: function(data) {
@@ -990,4 +1089,56 @@
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
+</script>
+
+<script>
+    $('#AppealOrderTakenForm').submit(function(e) {
+        e.preventDefault();
+        $('#appealOrderTakenSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+
+        Swal.fire({
+            title: 'আপনি কি মামলার সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন/ আপিল দায়ের তথ্য সংরক্ষণ করতে চান?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'হ্যাঁ',
+            cancelButtonText: 'না'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.appealOrderTakenStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: (data) => {
+                        $('#appealOrderTakenSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        ).then(function() {
+                            window.location =
+                                "{{ route('cabinet.case.appellateDivision') }}";
+                        });
+                        console.log(data);
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        $('#appealOrderTakenSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                    }
+                });
+            } else {
+                $('#appealOrderTakenSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+            }
+        });
+    });
 </script>

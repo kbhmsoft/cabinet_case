@@ -238,6 +238,10 @@
                                                         href="{{ route('cabinet.case.appealFinalOrderEdit', $row->id) }}">
                                                         চূড়ান্ত আদেশ</a>
                                                 @endif
+
+                                                <a class="dropdown-item"
+                                                href="{{ route('cabinet.case.appealAgainstGovOrderTaken', $row->id) }}">
+                                                সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
                                             </div>
                                         </div>
 

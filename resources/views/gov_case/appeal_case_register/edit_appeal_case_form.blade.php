@@ -143,25 +143,21 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <table width="100%" border="1" id="AppealAdalatDiv" class="mb-5"
-                                                        style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="AppealAdalatDiv" class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th>আদালতের নাম (Justice Name) <span
-                                                                    class="text-danger">*</span></th>
+                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span></th>
                                                             <th width="30">
-                                                                <a href="javascript:void(0);" id="AppealAdalatRow"
-                                                                    class="btn btn-sm btn-primary pr-2"><i
-                                                                        class="fas fa-plus-circle"></i></a>
+                                                                <a href="javascript:void(0);" id="AppealAdalatRow" class="btn btn-sm btn-primary pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
 
                                                         @foreach ($caseCourts as $key => $row)
-                                                            <tr id="bibadi_10{{ $key }}">
+                                                            <tr id="adalat_{{ $row->id }}">
                                                                 <td>
-                                                                    <select
-                                                                        name="appeal_adalat[]" id="ministry_id"
-                                                                        class="form-control form-control-sm">
+                                                                    <select name="appeal_adalat[]" id="ministry_id_{{ $key }}" class="form-control form-control-sm">
                                                                         @foreach ($appealCourtAdalat as $value)
                                                                             <option value="{{ $value->id }}"
                                                                                 {{ old('appeal_adalat') == $value->id || $row->appeal_adalat == $value->id ? 'selected' : '' }}>
@@ -169,15 +165,15 @@
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <input type="hidden" name="appeal_adalat_id[]"
-                                                                        value="{{ $row->id }}">
+                                                                    <input type="hidden" name="appeal_adalat_id[]" value="{{ $row->id }}">
                                                                 </td>
                                                                 <td>
                                                                     @if ($key > 0)
                                                                         <a href="javascript:void(0);"
                                                                             class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $row->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_bibadi_del')">
+                                                                            id="deleteAdalatBtn_{{ $row->id }}"
+                                                                            onclick="deleteAdalat({{ $row->id }})">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
                                                                     @endif
@@ -186,6 +182,7 @@
                                                         @endforeach
                                                     </table>
                                                 </div>
+
 
 
 
@@ -206,7 +203,10 @@
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
 
-                                                            <input type="text" name="appeal_petitioner_name" id="appeal_petitioner_name" class="form-control form-control-sm d-none" placeholder="আপিলকারীর নাম লিখুন">
+                                                        <input type="text" name="appeal_petitioner_name"
+                                                            id="appeal_petitioner_name"
+                                                            class="form-control form-control-sm d-none"
+                                                            placeholder="আপিলকারীর নাম লিখুন">
                                                     </div>
                                                 </div>
 
@@ -221,7 +221,6 @@
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                                     class="text-danger">*</span></th>
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
@@ -231,10 +230,9 @@
                                                                     class="btn btn-sm btn-primary pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
                                                             </th>
-
                                                         </tr>
                                                         @foreach ($caseLawers as $key => $value)
-                                                            <tr>
+                                                            <tr id="advocate_{{ $value->id }}">
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
                                                                         id="concernPersonDesignation_{{ $key + 1 }}"
@@ -266,7 +264,8 @@
                                                                         <a href="javascript:void();"
                                                                             class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $value->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
+                                                                            id="deleteAdvocateBtn_{{ $value->id }}"
+                                                                            onclick="deleteAdvocate({{ $value->id }})">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
                                                                     @endif
@@ -290,119 +289,118 @@
                                                 </div>
 
 
-                                            {{-- starting সংযুক্তি  --}}
-                                            <div class="col-md-12">
-                                                <fieldset class="">
-                                                    <div
-                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                        <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+                                                {{-- starting সংযুক্তি  --}}
+                                                <div class="col-md-12">
+                                                    <fieldset class="">
+                                                        <div
+                                                            class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
+                                                            <div class="d-flex align-items-center mr-2 py-2">
+                                                                <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
 
-                                                            </h3>
-                                                        </div>
-                                                        <div class="symbol-group symbol-hover py-2">
-                                                            <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="" role="button"
-                                                                data-original-title="ফাইল যুক্ত করুণ">
-                                                                <div id="addFileRow">
-                                                                    <span
-                                                                        class="symbol-label font-weight-bold bg-success">
-                                                                        <i
-                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                    </span>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="symbol-group symbol-hover py-2">
+                                                                <div class="symbol symbol-30 symbol-light-primary"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="" role="button"
+                                                                    data-original-title="ফাইল যুক্ত করুণ">
+                                                                    <div id="addFileRow">
+                                                                        <span
+                                                                            class="symbol-label font-weight-bold bg-success">
+                                                                            <i
+                                                                                class="text-white fa flaticon2-plus font-size-sm"></i>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5" id="fileDiv"
-                                                            style="border:1px solid #dcd8d8;">
+                                                        <div class="mt-3 px-5">
+                                                            <table width="100%" class="border-0 px-5" id="fileDiv"
+                                                                style="border:1px solid #dcd8d8;">
+                                                                <tr>
+                                                                    @foreach ($appealAttachment as $row)
+                                                                        <div class="form-group mb-2"
+                                                                            id="deleteFile{{ $row->id }}">
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <button class="btn bg-success-o-75"
+                                                                                        type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
+                                                                                </div>
 
-                                                            <tr>
-                                                                @foreach ($appealAttachment as $row)
-                                                                    <div class="form-group mb-2"
-                                                                        id="deleteFile{{ $row->id }}">
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-prepend">
-                                                                                <button class="btn bg-success-o-75"
-                                                                                    type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
-                                                                            </div>
+                                                                                <input readonly type="text"
+                                                                                    class="form-control"
+                                                                                    value="{{ $row->file_type ?? '' }}" />
+                                                                                <div class="input-group-append">
+                                                                                    <a href="{{ asset($row->file_path . $row->file_name) }}"
+                                                                                        target="_blank"
+                                                                                        class="btn btn-sm btn-success font-size-h5 float-left">
+                                                                                        <i class="fa fas fa-file-pdf"></i>
+                                                                                        <b>দেখুন</b>
 
-                                                                            <input readonly type="text"
-                                                                                class="form-control"
-                                                                                value="{{ $row->file_type ?? '' }}" />
-                                                                            <div class="input-group-append">
-                                                                                <a href="{{ asset($row->file_path . $row->file_name) }}"
-                                                                                    target="_blank"
-                                                                                    class="btn btn-sm btn-success font-size-h5 float-left">
-                                                                                    <i class="fa fas fa-file-pdf"></i>
-                                                                                    <b>দেখুন</b>
+                                                                                    </a>
 
-                                                                                </a>
-
-                                                                            </div>
-                                                                            <div class="input-group-append">
-                                                                                <a href="javascript:void(0);"
-                                                                                    id="deleteRuleFileBtn_({{ $row->id }}"
-                                                                                    onclick="deleteRuleFile({{ $row->id }} )"
-                                                                                    class="btn btn-danger">
-                                                                                    <i class="fas fa-trash-alt"></i>
-                                                                                    <b>মুছুন</b>
-                                                                                </a>
+                                                                                </div>
+                                                                                <div class="input-group-append">
+                                                                                    <a href="javascript:void(0);"
+                                                                                        id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                        onclick="deleteRuleFile({{ $row->id }} )"
+                                                                                        class="btn btn-danger">
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <b>মুছুন</b>
+                                                                                    </a>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </tr>
-                                                        </table>
-                                                        <input type="hidden" id="other_attachment_count"
-                                                            value="1">
+                                                                    @endforeach
+                                                                </tr>
+                                                            </table>
+                                                            <input type="hidden" id="other_attachment_count"
+                                                                value="1">
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+
+                                                <div class="col-lg-6 mt-5 mb-5">
+                                                    <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
+
+                                                    <div class="" id="CaseCategorOriginDiv">
+                                                        <select name="case_category_origin" id="CaseCategory"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($GovCaseDivisionCategoryHighcourt as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('case_category_origin') == $value->id || $case->case_category_origin == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->name_bn }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
                                                     </div>
-                                                </fieldset>
-                                            </div>
-
-
-
-                                            <div class="col-lg-6 mt-5 mb-5">
-                                                <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
-
-                                                <div class="" id="CaseCategorOriginDiv">
-                                                    <select name="case_category_origin" id="CaseCategory"
-                                                        class="form-control form-control-sm" required="required">
-                                                        <option value="">-- নির্বাচন করুন --</option>
-                                                        @foreach ($GovCaseDivisionCategoryHighcourt as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                {{ old('case_category_origin') == $value->id || $case->case_category_origin == $value->id ? 'selected' : '' }}>
-                                                                {{ $value->name_bn }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger d-none vallidation-message">This field
-                                                        can not be empty</span>
                                                 </div>
-                                            </div>
 
 
-                                            <div class="col-lg-6 mt-5 mb-5">
-                                                <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-6 mt-5 mb-5">
+                                                    <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
 
-                                                <div class="" id="CaseCategorOriginDiv">
-                                                    <select name="case_number_origin" id="case_number_origin"
-                                                        class="form-control form-control-sm" required="required">
-                                                        <option value="">-- নির্বাচন করুন --</option>
-                                                        {{-- {{dd($caseNumberOrigin)}} --}}
-                                                        @foreach ($originCaseNumber as $value)
-                                                            <option value="{{ $value->case_no }}"
-                                                                {{ old('case_number_origin') == $value->case_no || $case->case_number_origin == $value->case_no ? 'selected' : '' }}>
-                                                                {{ $value->case_no }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger d-none vallidation-message">This field
-                                                        can not be empty</span>
+                                                    <div class="" id="CaseCategorOriginDiv">
+                                                        <select name="case_number_origin" id="case_number_origin"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            {{-- {{dd($caseNumberOrigin)}} --}}
+                                                            @foreach ($originCaseNumber as $value)
+                                                                <option value="{{ $value->case_no }}"
+                                                                    {{ old('case_number_origin') == $value->case_no || $case->case_number_origin == $value->case_no ? 'selected' : '' }}>
+                                                                    {{ $value->case_no }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
                                         </fieldset>
                                         {{-- </div> --}}
@@ -1160,6 +1158,96 @@
 @section('styles')
 @endsection
 
+<script>
+    /////// For Adalat Delete ----------///////////////////
+
+    function deleteAdalat(id) {
+    Swal.fire({
+        title: 'আপনি কি মামলার আদালতটি মুছে ফেলতে চান?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'হ্যাঁ',
+        cancelButtonText: 'না'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var deleteButton = $('#deleteAdalatBtn_' + id);
+            deleteButton.addClass('loadersmall');
+            $.ajax({
+                url: '{{ url('/') }}/cabinet/case/appeal/adalat/delete/' + id,
+                type: "post",
+                dataType: "json",
+                success: function(data) {
+                    Swal.fire(
+                        'সফল!',
+                        data.message,
+                        'success'
+                    ).then(() => {
+                        $('#adalat_' + id).remove();
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
+                    Swal.fire(
+                        'ব্যর্থ!',
+                        'কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+                        'error'
+                    );
+                },
+                complete: function() {
+                    // Remove the loader class after the request completes
+                    deleteButton.removeClass('loadersmall');
+                }
+            });
+        }
+    });
+}
+
+
+  /////// For Advocate Delete ----------///////////////////
+
+  function deleteAdvocate(id) {
+            Swal.fire({
+                title: 'আপনি কি মামলার সংশ্লিষ্ট আইন কর্মকর্তাটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteAdvocateBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/appeal/advocate/delete/' + id,
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                // Remove the corresponding row
+                                $('#advocate_' + id).remove();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+
+
+</script>
+
+
 @section('scripts')
     <script>
         $(document).ready(function() {
@@ -1244,10 +1332,10 @@
         }
     </script>
 
-<script>
-     /************************ //Add multiple HighCourt Adalat *************************/
-     $("#AppealAdalatRow").click(function(e) {
-        AppealAdalatRowFunc();
+    <script>
+        /************************ //Add multiple HighCourt Adalat *************************/
+        $("#AppealAdalatRow").click(function(e) {
+            AppealAdalatRowFunc();
         });
 
         //add row function
@@ -1278,25 +1366,25 @@
         function removeHighcourtAdalatRow(id) {
             $(id).closest("tr").remove();
         }
-</script>
+    </script>
 
-<script>
-    $('select').select2();
-    jQuery('select[name="appeal_office"]').on('change', function() {
+    <script>
+        $('select').select2();
+        jQuery('select[name="appeal_office"]').on('change', function() {
             var dataID = jQuery(this).val();
             console.log(dataID);
-            if(dataID == 0){
+            if (dataID == 0) {
                 $('#appeal_petitioner_name').removeClass('d-none');
-            }else{
+            } else {
                 $('#appeal_petitioner_name').addClass('d-none');
             }
         });
-</script>
+    </script>
 
-<script>
-      // ============= Add Attachment Row ========= start =========
-      $("#addFileRow").click(function(e) {
-        addFileRowFunc();
+    <script>
+        // ============= Add Attachment Row ========= start =========
+        $("#addFileRow").click(function(e) {
+            addFileRowFunc();
         });
         //add row function
         function addFileRowFunc() {
@@ -1322,7 +1410,7 @@
             $('#fileDiv tr:last').after(items);
             console.log(items);
         }
-</script>
+    </script>
 
     <script>
         $('#appealCaseGeneralInfoForm').submit(function(e) {
@@ -1500,9 +1588,9 @@
                 if (result.isConfirmed) {
                     $('#deleteRuleFileBtn_' + id).addClass('loadersmall')
                     jQuery.ajax({
-                        url: '{{ url('/') }}/cabinet/case/highcourt/ruleFile/delete/' +
+                        url: '{{ url('/') }}/cabinet/case/appeal/ruleFile/delete/' +
                             id,
-                        type: "GET",
+                        type: "post",
                         dataType: "json",
                         success: function(data) {
                             Swal.fire(

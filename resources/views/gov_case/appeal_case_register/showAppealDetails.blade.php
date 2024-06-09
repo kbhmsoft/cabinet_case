@@ -264,6 +264,38 @@
                 </div>
 
                 <div class="col-md-6">
+
+
+                    <table class="table table-striped border">
+                        <thead>
+                            @if (isset($appealAdalat))
+                            <table class="table table-striped border">
+                                <thead>
+                                    <tr>
+                                        <th class="h3" scope="col" colspan="4">আদালত (Justice)</th>
+                                    </tr>
+                                    <tr class="bg-light-primary">
+                                        <th scope="row" class="text-center" width="50">#</th>
+                                        <th scope="row" class="text-center" width="200">নাম</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($appealAdalat as $adalat)
+                                        <tr>
+                                            <td class="tg-nluh text-center">{{ $loop->iteration }}</td>
+                                            <td class="tg-nluh text-center">{{ $adalat->appealAdalat->name ?? '-' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+
+
+                            @endif
+
+                    </table>
+
+
                     <table class="table table-striped border">
                         <thead>
                             @if (isset($govCaseRegister['caseBadi']))

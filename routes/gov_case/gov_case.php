@@ -84,8 +84,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/fetchoffices', [GovCaseMessageController::class, 'fetchoffices'])->name('fetchoffices');
         Route::get('/filter-users', [GovCaseMessageController::class, 'filterUsers'])->name('filterUsers');
 
-
-
         Route::get('/hearing_date', [GovCaseUserNotificationController::class, 'hearing_date'])->name('hearing_date');
         Route::get('/results_completed', [GovCaseUserNotificationController::class, 'results_completed'])->name('results_completed');
         Route::get('/notice/list', [GovCaseNoticeController::class, 'index'])->name('notice.list');
@@ -239,8 +237,16 @@ Route::middleware('auth')->group(function () {
             Route::post('contemptCaseStoreActionButton', [GovCaseRegisterController::class, 'contemptCaseStoreActionButton'])->name('contemptCaseStoreActionButton');
             Route::post('store_appeal/{id}', [GovCaseRegisterController::class, 'store_appeal'])->name('appeal_store');
             Route::get('highcourt/edit/{id}', [GovCaseRegisterController::class, 'highcourt_edit'])->name('highcourt_edit');
-            Route::get('highcourt/ruleFile/delete/{id}', [GovCaseRegisterController::class, 'ruleFileDelete'])->name('highcourt.ruleFile.delete');
-            Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
+            Route::post('highcourt/ruleFile/delete/{id}', [GovCaseRegisterController::class, 'ruleFileDelete'])->name('highcourt.ruleFile.delete');
+            Route::post('highcourt/adalat/delete/{id}', [GovCaseRegisterController::class, 'adalatDelete'])->name('highcourt.adalat.delete');
+            Route::post('highcourt/advocate/delete/{id}', [GovCaseRegisterController::class, 'advocateDelete'])->name('highcourt.advocate.delete');
+            Route::post('highcourt/otherbibadi/delete/{id}', [GovCaseRegisterController::class, 'otherBibadiDelete'])->name('highcourt.otherbibadi.delete');
+
+            Route::post('appeal/ruleFile/delete/{id}', [AppealGovCaseRegisterController::class, 'appealRuleFileDelete'])->name('appeal.ruleFile.delete'); Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
+            Route::post('appeal/adalat/delete/{id}', [AppealGovCaseRegisterController::class, 'adalatDelete'])->name('appeal.adalat.delete');
+            Route::post('appeal/advocate/delete/{id}', [AppealGovCaseRegisterController::class, 'advocateDelete'])->name('appeal.advocate.delete');
+            Route::post('appeal/otherbibadi/delete/{id}', [AppealGovCaseRegisterController::class, 'otherBibadiDelete'])->name('appeal.otherbibadi.delete');
+
             Route::get('highcourt_case_delete/{id}', [GovCaseRegisterController::class, 'highcourt_case_delete'])->name('highcourt_case_delete');
             Route::get('appeal_case_delete/{id}', [AppealGovCaseRegisterController::class, 'appeal_case_delete'])->name('appeal_case_delete');
             Route::get('sending/reply/{id}', [GovCaseRegisterController::class, 'sendingReplyEdit'])->name('sendingReplyEdit');
@@ -277,6 +283,8 @@ Route::middleware('auth')->group(function () {
             Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
             Route::post('completeAppealCaseStore', [AppealGovCaseRegisterController::class, 'completeAppealCaseStore'])->name('completeAppealCaseStore');
             Route::get('editAppealCaseForm/{id}', [AppealGovCaseRegisterController::class, 'editAppealCaseForm'])->name('editAppealCaseForm');
+            Route::get('appeal/against-gov/order-taken/{id}', [AppealGovCaseRegisterController::class, 'appealAgainstGovOrderTaken'])->name('appealAgainstGovOrderTaken');
+
             Route::get('ministryWiseData/{ministry_id}', [DashboardController::class, 'ministryWiseData'])->name('ministryWiseData');
             // Route::get('highcourt/five_years_running', [GovCaseRegisterController::class, 'fiveYearsRunningHighCourt'])->name('fiveYearsRunningHighCourt');
             Route::get('totalAppellateDivision', [AppealGovCaseRegisterController::class, 'totalAppellateDivision'])->name('totalAppellateDivision');
@@ -292,6 +300,7 @@ Route::middleware('auth')->group(function () {
             Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
             Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
             Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
+            Route::post('appealOrderTakenStore', [AppealGovCaseRegisterController::class, 'appealOrderTakenStore'])->name('appealOrderTakenStore');
 
             Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                 Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

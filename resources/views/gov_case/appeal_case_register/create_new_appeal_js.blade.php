@@ -570,7 +570,8 @@
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
+        confirmButtonText: 'হ্যাঁ',
+        cancelButtonText: 'না'
     }).then((result) => {
         if (result.isConfirmed) {
             var formData = new FormData(this);
