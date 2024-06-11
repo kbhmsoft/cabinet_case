@@ -25,7 +25,7 @@
             margin: 0;
         }
 
-        /* .footer-section {
+        .footer-section {
             background-color: rgb(168, 220, 203);
             color: rgb(0, 0, 0);
             padding: 2% 5%;
@@ -35,7 +35,7 @@
 
         .footer-widget-heading {
             margin-bottom: 1rem;
-        } */
+        }
 
         .main-section {
             display: flex;
@@ -73,12 +73,6 @@
             text-decoration: none;
         }
 
-        .notice {
-            width: 500px;
-            height: 250px;
-            background-color: #F3F3F3
-        }
-
         @media (max-width: 768px) {
             .main-section {
                 flex-direction: column;
@@ -89,59 +83,10 @@
                 padding: 0;
             }
 
-            .notice {
-                width: 250px;
-                height: 250px;
-                background-color: #F3F3F3
-            }
-
-            /* .card {
-                width: 100%;
-            } */
-        }
-
-        footer {
-            background-color: rgb(168, 220, 203);
-            color: rgb(0, 0, 0);
-            padding: 20px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            padding: 10px;
-        }
-
-        .footer-widget {
-            flex: 1 1 200px;
-            margin: 10px;
-            text-align: center;
-        }
-
-        .footer-widget-heading {
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .footer-widget {
-                margin-bottom: 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .footer-widget {
+            .card {
                 width: 100%;
             }
         }
-
     </style>
 
     <script>
@@ -193,15 +138,15 @@
 
 
         <!-- Inside the "নোটিশ বোর্ড" div -->
-        <div class="right-section" style="margin-left: 1.5rem">
-            <div class="card shadow p-3 rounded notice">
+        <div class="right-section" style="margin-left: 3rem">
+            <div class="card shadow p-3 rounded " style="width: 500px; height: 250px; background-color: #F3F3F3">
                 <img src="{{ asset('uploads/IconeSCMS/bg_notice_board.png') }}" alt="Image"
                     style="position: absolute; top: 0; left: 0; width: 52px; height: 54px; z-index: 1;">
                 <?php
                 $latestNotices = \App\Models\Notice::latest()->take(5)->get();
                 ?>
                 @if ($latestNotices->isNotEmpty())
-                    <h5 class="font-weight-bolder" style="padding: 1.5rem">নোটিশ বোর্ড </h5>
+                    <h5 class="font-weight-bolder" style="margin-left: 3rem">নোটিশ বোর্ড </h5>
                     <ul style="list-style-type: none; padding-left: 0; margin-top: 10px">
                         @foreach ($latestNotices as $key => $notice)
                             <li style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -220,7 +165,7 @@
 
         </div>
 
-        <div class="" style="margin-left: 1.5rem;">
+        <div class="" style="margin-left: 3rem;">
             <div class="card shadow p-3 rounded"
                 style="width: 250px; height: 250px; margin-top: 20px; background-color: #F3F3F3; ">
                 <small class="text-muted d-block mx-auto mb-3 mt-3" style="font-size: 20px">স্মার্ট কেস ম্যানেজমেন্ট
@@ -235,23 +180,29 @@
     <footer class="footer-section">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-widget">
-                    <div class="footer-widget-heading">
-                        <h5>পরিকল্পনা ও বাস্তবায়নে</h5>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="footer-widget text-start mb-3 mb-lg-0">
+                            <div class="footer-widget-heading">
+                                <h5>পরিকল্পনা ও বাস্তবায়নে</h5>
+                            </div>
+                            <a href="https://minland.gov.bd/" target="_blank">
+                                <img src="images/logo1.png" alt=""
+                                    style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
+                            </a>
+                        </div>
                     </div>
-                    <a href="https://cabinet.gov.bd/" target="_blank">
-                        <img src="images/logo1.png" alt=""
-                             style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
-                    </a>
-                </div>
-                <div class="footer-widget">
-                    <div class="footer-widget-heading">
-                        <h5>কারিগরি সহায়তায়</h5>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="footer-widget text-end">
+                            <div class="footer-widget-heading">
+                                <h5>কারিগরি সহায়তায়</h5>
+                            </div>
+                            <a href="http://mysoftheaven.com" target="_blank">
+                                <img src="https://ldtax.gov.bd/assets/images/auto.png" alt=""
+                                    style="width: 150px; height: auto;">
+                            </a>
+                        </div>
                     </div>
-                    <a href="http://mysoftheaven.com" target="_blank">
-                        <img src="https://ldtax.gov.bd/assets/images/auto.png" alt=""
-                             style="width: 150px; height: auto;">
-                    </a>
                 </div>
             </div>
         </div>
