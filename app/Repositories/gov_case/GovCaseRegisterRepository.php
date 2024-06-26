@@ -570,6 +570,7 @@ class GovCaseRegisterRepository
     {
         try {
             $case = self::checkGovCaseExist($caseInfo['case_id']);
+           
             $case->case_no = $caseInfo->case_no;
             $case->case_type = $caseInfo->case_type;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
@@ -599,6 +600,42 @@ class GovCaseRegisterRepository
             $caseId = null;
         }
         return $caseId;
+    }
+
+
+    public static function storeMainRespondentChangingGeneralInfo($caseInfo,$caseId)
+    {
+        try {
+            $case = GovCaseRegister::find($caseId);
+            $case->case_no = $caseInfo->case_no;
+            $case->case_type = $caseInfo->case_type;
+            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+            // $case->action_user_id = userInfo()->id;
+            // $case->action_user_role_id = userInfo()->role_id;
+            // $case->create_by = userInfo()->id;
+            $case->year = $caseInfo->case_year;
+            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+            $case->case_division_id = $caseInfo->court;
+            $case->case_category_id = $caseInfo->case_category;
+            $case->case_type_id = $caseInfo->case_category_type;
+            // $case->concern_person_designation = $caseInfo->concern_person_designation;
+            // $case->concern_user_id = $caseInfo->concern_user_id;
+            $case->subject_matter = $caseInfo->subject_matter;
+            $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
+
+            $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
+
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
+
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+
     }
 
     public static function storeConcernPerson($caseInfo, $govCaseId)

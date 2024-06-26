@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
 <meta charset="utf-8"/>
 <title>লগইন | {{ config('app.name') }}</title>
     <style>
@@ -112,7 +113,10 @@
         .container .info span .fa {
             color: #EF3B3A;
         }
-
+        .small-text-danger {
+            color: red;
+            font-size: 12px; /* Adjust the font size as needed */
+        }
         /* body {
             background: #76b852;
             /* fallback for old browsers */
@@ -134,48 +138,57 @@
                 <img src="{{ asset('images/logo.png') }}" style="width: 100%;" alt="" />
             </a>
         </div>
-       
-            <form method="POST" action="{{ route('doptor.login') }}">
+        <form method="POST" action="{{ route('doptor.login') }}">
             @csrf
-            <!-- <div class="text-danger font-lg msgBox"> ব্যবহারকারীর আই ডি, পাসওয়ার্ড ও ওটিপি সঠিক ভাবে দিন </div> -->
             <div class="form-group otp-hidden">
-                 {{-- <label class="control-label visible-ie8 visible-ie9">ব্যবহারকারীর আই ডি</label> --}}
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
-                    <input id="email" type="text"
-                        class="form-control placeholder-no-fix @error('email') is-invalid @enderror" name="email"
-                        placeholder="ব্যবহারকারী" value="{{ old('email') }}" required autocomplete="email"
-                        autofocus />
-
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
+                    <input id="login" type="text"
+                           class="form-control placeholder-no-fix @error('login') is-invalid @enderror" name="login"
+                           placeholder="ইমেইল অথবা ফোন নম্বর" value="{{ old('login') }}" required autofocus />
+                    @error('login')
+                        <span class="small-text-danger" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
             </div>
             <div class="form-group otp-hidden">
-                {{-- <label class="control-label visible-ie8 visible-ie9">পাসওয়ার্ড</label> --}}
                 <div class="input-icon">
                     <i class="fa fa-lock"></i>
                     <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required
-                        autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password"
-                        name="password" />
+                           autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password"
+                           name="password" />
                     @error('password')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="small-text-danger" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
             </div>
             <div class="form-actions otp-hidden submit_loader">
-
                 <button type="submit" id="submit" class="btn pull-right" onclick="buttonDisable()">
-                    <i class="a2i_gn_login2 "></i> লগইন করুণ
+                    <i class="a2i_gn_login2"></i> লগইন করুণ
                 </button>
             </div>
-
         </form>
+
+
+        {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
+
+
+
+
+
+
     </div>
     </div>
     <script src="{{ asset('/login_assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>

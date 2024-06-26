@@ -70,34 +70,34 @@
         //===========GetConsernPersonByDesignation================//
 
 
-        jQuery('select[name="concern_person_designation"]').on('change', function() {
-            var dataID = jQuery(this).val();
-            jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
+        // jQuery('select[name="concern_person_designation"]').on('change', function() {
+        //     var dataID = jQuery(this).val();
+        //     jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
 
-            if (dataID) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        dataID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="concern_user_id"]').html(
-                            '<div class="loadersmall"></div>');
+        //     if (dataID) {
+        //         jQuery.ajax({
+        //             url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+        //                 dataID,
+        //             type: "GET",
+        //             dataType: "json",
+        //             success: function(data) {
+        //                 jQuery('select[name="concern_user_id"]').html(
+        //                     '<div class="loadersmall"></div>');
 
-                        jQuery('select[name="concern_user_id"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery('select[name="concern_user_id"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="concern_user_id"]').empty();
-            }
-        });
+        //                 jQuery('select[name="concern_user_id"]').html(
+        //                     '<option value="">-- নির্বাচন করুন --</option>');
+        //                 jQuery.each(data, function(key, value) {
+        //                     jQuery('select[name="concern_user_id"]').append(
+        //                         '<option value="' + key + '">' + value +
+        //                         '</option>');
+        //                 });
+        //                 jQuery('.loadersmall').remove();
+        //             }
+        //         });
+        //     } else {
+        //         $('select[name="concern_user_id"]').empty();
+        //     }
+        // });
     });
 
     /*********************** Add multiple badi *************************/
@@ -118,36 +118,7 @@
         $('#badiDiv tr:last').after(items);
     }
 
-    // $('#badiDiv input[type="text"]').blur(function() {
-    //     validateInputField($(this));
-    // });
-
-    //     function addBadiRowFunc() {
-    //     var items = '';
-    //     items += '<tr>';
-    //     items +=
-    //         '<td><input type="text" name="badi_name[]" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
-    //     items += '<input type="hidden" name="badi_id[]" value="">';
-
-    //     items +=
-    //         '<td><input type="text" name="badi_address[]" class="form-control form-control-sm" placeholder=""><span class="text-danger d-none validation-message">This field cannot be empty or whitespace only</span></td>';
-    //     items += '</tr>';
-    //     $('#badiDiv tbody').append(items);
-
-    //     $('#badiDiv tbody tr:last input[type="text"]').blur(function() {
-    //         validateInputField($(this));
-    //     });
-    // }
-
-
-    // function validateInputField(inputField) {
-    //     var value = inputField.val().trim();
-    //     if (value === '') {
-    //         inputField.next('.validation-message').removeClass('d-none');
-    //     } else {
-    //         inputField.next('.validation-message').addClass('d-none');
-    //     }
-    // }
+    
 
 
 
@@ -667,7 +638,7 @@
         });
     });
 
-   
+
 
     // ================================Case General Info save==================================
 

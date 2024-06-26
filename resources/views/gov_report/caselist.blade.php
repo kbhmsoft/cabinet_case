@@ -17,20 +17,14 @@
          <div class="card-header">
             <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             <div class="card-toolbar">
-               <!-- <div class="example-tools justify-content-center">
-                  <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
-                  <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
-               </div> -->
+
             </div>
          </div>
         <?php
          $roleID = Auth::user()->role_id;
 
         ?>
-         <!-- <div class="loadersmall"></div> -->
 
-         <!--begin::Form-->
-         <!-- <form class="form" method="GET"> -->
          <form action="{{ url('govcase/report/pdf') }}" class="form" method="POST" target="_blank">
             @csrf
             <div class="card-body">
@@ -140,7 +134,7 @@
    // Doptor Dropdown
       jQuery('select[name="office_type"]').on('change',function(){
          var dataID = jQuery(this).val();
-            // var category_id = jQuery('#category_id option:selected').val();
+            // alert(dataID);
             jQuery("#ministry_id").after('<div class="loadersmall"></div>');
             if(dataID)
             {

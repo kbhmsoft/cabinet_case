@@ -23,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
 
@@ -43,7 +43,9 @@
         <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা এন্ট্রি হতে বিরত থাকুন।)*</h5>
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা
+                    এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা
+                    এন্ট্রি হতে বিরত থাকুন।)*</h5>
             </div>
             <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
@@ -95,7 +97,8 @@
                                                             @foreach ($GovCaseDivisionCategory as $value)
                                                                 <option value="{{ $value->id }}"
                                                                     {{ old('case_category') == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name_bn }} </option>
+                                                                    {{ $value->name_bn }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
@@ -172,7 +175,10 @@
                                                         </select>
                                                         <span class="text-danger d-none vallidation-message">This field
                                                             can not be empty</span>
-                                                        <input type="text" name="appeal_petitioner_name" id="appeal_petitioner_name" class="form-control form-control-sm d-none" placeholder="আপিলকারীর নাম লিখুন">
+                                                        <input type="text" name="appeal_petitioner_name"
+                                                            id="appeal_petitioner_name"
+                                                            class="form-control form-control-sm d-none"
+                                                            placeholder="আপিলকারীর নাম লিখুন">
                                                     </div>
                                                 </div>
 
@@ -276,7 +282,8 @@
                                                     <label>রায়/আদেশ প্রদানের তারিখ: <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="case_order_date" id="case_order_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off" required="required">
+                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                        required="required">
                                                 </div>
                                                 <div class="col-lg-8 mb-5">
                                                     <label>রায়/আদেশের বিবরণ:<small class="text-danger">
@@ -389,7 +396,8 @@
 
                                                     <div class="col-md-12 mb-5">
                                                         <label>মামলার রায়ের সংক্ষিপ্ত বিবরণ</label>
-                                                        <textarea name="result_short_details" class="form-control" id="result_short_details" rows="3" spellcheck="false"></textarea>
+                                                        <textarea name="result_short_details" class="form-control" id="result_short_details" rows="3"
+                                                            spellcheck="false"></textarea>
                                                     </div>
 
 

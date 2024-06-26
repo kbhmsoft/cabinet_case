@@ -41,9 +41,9 @@
                             </a>
                         </div>
                         <!-- <div class="example-tools justify-content-center">
-                                <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
-                                <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
-                            </div> -->
+                                    <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                                    <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
+                                </div> -->
                     </div>
                 </div>
                 @if ($errors->any())
@@ -69,32 +69,36 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @if($offices->level == 2)
+                                    <div class="col-lg-4 mb-5" id="parentMinDiv">
+                                        <label>মন্ত্রণালয় / বিভাগ</label><br>
 
-                                        <div class="col-lg-4 mb-5" id="parentMinDiv" style="display: none;">
-                                            <label>মন্ত্রণালয় / বিভাগ</label><br>
+                                        <select name="parentMinID" id="parentMinID" class="form-control w-100">
+                                            <option value="">-- নির্বাচন করুন --</option>
+                                            @foreach ($ministries as $value)
+                                                <option value="{{ $value->id }}"
+                                                    {{ $offices->parent_office_id == $value->id ? 'selected' : '' }}>
+                                                    {{ $value->office_name_bn }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @elseif($offices->level == 4)
+                                    
+                                    <div class="col-lg-4 mb-5" id="DivisionalParentDiv" style="">
+                                        <label>বিভাগীয় প্রশাসন</label>
 
-                                            <select name="parentMinID" id="parentMinID" class="form-control w-100">
-                                                <option value="">-- নির্বাচন করুন --</option>
-                                                @foreach ($ministries as $value)
-                                                    <option value="{{ $value->id }}"
-                                                        {{ $offices->parent == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="col-lg-4 mb-5" id="DivisionalParentDiv" style="">
-                                            <label>বিভাগীয় প্রশাসন</label>
-
-                                            <select name="parentDivID" id="parentDivID" class="form-control w-100">
-                                                <option value="">-- নির্বাচন করুন --</option>
-                                                @foreach ($divisions as $value)
-                                                    <option value="{{ $value->id }}"{{ $offices->parent == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
+                                        <select name="parentDivID" id="parentDivID" class="form-control w-100">
+                                            <option value="">-- নির্বাচন করুন --</option>
+                                            @foreach ($divisions as $value)
+                                                <option
+                                                    value="{{ $value->id }}"{{ $offices->parent_office_id == $value->id ? 'selected' : '' }}>
+                                                    {{ $value->office_name_bn }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
                                     <div class="form-group col-lg-8">
                                         <label for="office_name" class=" form-control-label">অফিসের নাম <span
                                                 class="text-danger">*</span></label>
@@ -198,106 +202,107 @@
 
 {{-- Scripts Section Related Page --}}
 @section('scripts')
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  {{-- <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script type="text/javascript">
     $('#level').select2();
 </script> --}}
-  <script type="text/javascript">
-      jQuery(document).ready(function ()
-      {
-        $('#parentMinID').select2();
-        $('#parentDivID').select2();
-        jQuery('select[name="division"]').on('change',function(){
-        var dataID = jQuery(this).val();
-        jQuery("#district_id").after('<div class="loadersmall"></div>');
-        if(dataID)
-        {
-            jQuery.ajax({
-                url : '{{url("/")}}/case/dropdownlist/getdependentdistrict/' +dataID,
-                type : "GET",
-                dataType : "json",
-                success:function(data)
-                {
-                    jQuery('select[name="district"]').html('<div class="loadersmall"></div>');
-                    jQuery('select[name="district"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                    jQuery.each(data, function(key,value){
-                    jQuery('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            $('#parentMinID').select2();
+            $('#parentDivID').select2();
+            jQuery('select[name="division"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                jQuery("#district_id").after('<div class="loadersmall"></div>');
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '{{ url('/') }}/case/dropdownlist/getdependentdistrict/' +
+                            dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            jQuery('select[name="district"]').html(
+                                '<div class="loadersmall"></div>');
+                            jQuery('select[name="district"]').html(
+                                '<option value="">-- নির্বাচন করুন --</option>');
+                            jQuery.each(data, function(key, value) {
+                                jQuery('select[name="district"]').append(
+                                    '<option value="' + key + '">' + value +
+                                    '</option>');
+                            });
+                            jQuery('.loadersmall').remove();
+                        }
                     });
-                    jQuery('.loadersmall').remove();
+                } else {
+                    $('select[name="district"]').empty();
                 }
             });
-        }
-        else
-        {
-            $('select[name="district"]').empty();
-        }
-        });
 
-        jQuery('select[name="district"]').on('change',function(){
-            var dataID = jQuery(this).val();
+            jQuery('select[name="district"]').on('change', function() {
+                var dataID = jQuery(this).val();
 
-            jQuery("#upazila_id").after('<div class="loadersmall"></div>');
+                jQuery("#upazila_id").after('<div class="loadersmall"></div>');
 
                 jQuery.ajax({
-                url : '{{url("/")}}/case/dropdownlist/getdependentupazila/' +dataID,
-                type : "GET",
-                dataType : "json",
-                success:function(data)
-                {
-                jQuery('select[name="upazila"]').html('<div class="loadersmall"></div>');
+                    url: '{{ url('/') }}/case/dropdownlist/getdependentupazila/' + dataID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="upazila"]').html(
+                        '<div class="loadersmall"></div>');
 
-                    jQuery('select[name="upazila"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                    jQuery.each(data, function(key,value){
-                        jQuery('select[name="upazila"]').append('<option value="'+ key +'">'+ value +'</option>');
-                    });
-                    jQuery('.loadersmall').remove();
-                }
+                        jQuery('select[name="upazila"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="upazila"]').append('<option value="' +
+                                key + '">' + value + '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
                 });
 
-            var courtID = jQuery(this).val();
-            jQuery("#court_id").after('<div class="loadersmall"></div>');
+                var courtID = jQuery(this).val();
+                jQuery("#court_id").after('<div class="loadersmall"></div>');
 
                 jQuery.ajax({
-                url : '{{url("/")}}/court/dropdownlist/getdependentcourt/' +courtID,
-                type : "GET",
-                dataType : "json",
-                success:function(data)
-                {
-                    jQuery('select[name="court"]').html('<div class="loadersmall"></div>');
+                    url: '{{ url('/') }}/court/dropdownlist/getdependentcourt/' + courtID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        jQuery('select[name="court"]').html('<div class="loadersmall"></div>');
 
-                    jQuery('select[name="court"]').html('<option value="">-- নির্বাচন করুন --</option>');
-                    jQuery.each(data, function(key,value){
-                        jQuery('select[name="court"]').append('<option value="'+ key +'">'+ value +'</option>');
-                    });
-                    jQuery('.loadersmall').remove();
-                }
+                        jQuery('select[name="court"]').html(
+                            '<option value="">-- নির্বাচন করুন --</option>');
+                        jQuery.each(data, function(key, value) {
+                            jQuery('select[name="court"]').append('<option value="' +
+                                key + '">' + value + '</option>');
+                        });
+                        jQuery('.loadersmall').remove();
+                    }
                 });
 
+            });
+
+
+
+            jQuery('select[name="level"]').on('change', function() {
+                var levelID = jQuery(this).val();
+                // alert(levelID);
+                if (levelID == 2) {
+                    $('#parentMinDiv').show();
+                    $('#DivisionalParentDiv').hide();
+                } else if (levelID == 4) {
+                    $('#DivisionalParentDiv').show();
+                    $('#parentMinDiv').hide();
+                } else {
+                    $('#DivisionalParentDiv').hide();
+                    $('#parentMinDiv').hide();
+                    $('#parentMinID').val('');
+                    $('#parentDivID').val('');
+                }
+            });
         });
-
-
-
-        jQuery('select[name="level"]').on('change',function(){
-            var levelID = jQuery(this).val();
-            // alert(levelID);
-            if (levelID == 2) {
-                $('#parentMinDiv').show();
-                $('#DivisionalParentDiv').hide();
-            }else if (levelID == 4) {
-                $('#DivisionalParentDiv').show();
-                $('#parentMinDiv').hide();
-            }else{
-                $('#DivisionalParentDiv').hide();
-                $('#parentMinDiv').hide();
-                $('#parentMinID').val('');
-                $('#parentDivID').val('');
-            }
-        });
-   });
-</script>
+    </script>
 
     <script src="{{ asset('js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
     <script>

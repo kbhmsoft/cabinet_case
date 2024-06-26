@@ -492,7 +492,7 @@ class GovCaseOfficeController extends Controller
             'level' => $request->office_lavel,
             'office_name_bn' => $request->office_name,
             'status' => $request->status,
-            'parent' => $parentID,
+            'parent_office_id' => $parentID,
             'level' => $request->level,
         ];
 
@@ -543,7 +543,7 @@ class GovCaseOfficeController extends Controller
             return json_encode($subcategories);
         }
 
-        
+
 
         return json_encode($subcategories);
     }
@@ -753,37 +753,6 @@ class GovCaseOfficeController extends Controller
 
         return response()->json(['tableHtml' => $tableHtml]);
     }
-
-    // public function tokenGenerate($user_id)
-    // {
-    //     $curl = curl_init();
-    //     $url="https://apigw.doptor.gov.bd/api/client/login";
-
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL => $url,
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_ENCODING => '',
-    //         CURLOPT_MAXREDIRS => 10,
-    //         CURLOPT_TIMEOUT => 0,
-    //         CURLOPT_FOLLOWLOCATION => true,
-    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //         CURLOPT_CUSTOMREQUEST => 'POST',
-    //         CURLOPT_POSTFIELDS => array('username' => $user_id, 'password' => '8XI1PI12W', 'client_id' => '8XI1PI'),
-    //         CURLOPT_HTTPHEADER => array(
-    //             'apiKey: 8XI1PI  ',
-    //         ),
-    //     ));
-
-    //     $response = curl_exec($curl);
-
-    //     curl_close($curl);
-
-    //     $responsData = json_decode($response);
-
-    //     return $responsData->data->token;
-
-    // }
-
 
 
     public function organoGramId($id)

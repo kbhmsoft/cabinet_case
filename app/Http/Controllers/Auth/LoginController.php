@@ -45,17 +45,51 @@ class LoginController extends BaseController
         $this->middleware('guest')->except('logout');
     }
 
+    // public function doptorLogin(Request $request)
+    // {
+
+    //     $userEmail = $request->email;
+    //     $password = $request->password;
+    //     if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
+    //         $user = Auth::user();
+    //         $success['user_id'] = $user->id;
+    //         return redirect()->route('dashboard');
+    //     } else {
+    //         return redirect()->back()->with('error', '!! User Credential Not Matched !!');
+    //     }
+    // }
+
     public function doptorLogin(Request $request)
     {
-        // dd($request->all());
-        $userEmail = $request->email;
-        $password = $request->password;
-        if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
-            $user = Auth::user();
-            $success['user_id'] = $user->id;
+        // Validate the form data
+        $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Retrieve the input data
+        $login = $request->input('login');
+        $password = $request->input('password');
+
+        // Determine if the login is an email or phone number
+        $loginType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_no';
+
+        // Check if the user exists
+        $userExists = \App\Models\User::where($loginType, $login)->exists();
+
+        if (!$userExists) {
+            // If the user doesn't exist, return a specific error message
+            $error = ['login' => 'আপনি ভুল ইমেইল/ফোন নম্বর দিয়েছেন'];
+            return redirect()->back()->withErrors($error)->withInput($request->only('login', 'password'));
+        }
+
+        // Attempt to log the user in
+        if (Auth::attempt([$loginType => $login, 'password' => $password])) {
             return redirect()->route('dashboard');
         } else {
-            return redirect()->back()->with('error', '!! User Credential Not Matched !!');
+            // If login fails due to incorrect password
+            $error = ['password' => 'আপনি ভুল পাসওয়ার্ড দিয়েছেন'];
+            return redirect()->back()->withErrors($error)->withInput($request->only('login', 'password'));
         }
     }
 
@@ -98,12 +132,12 @@ class LoginController extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
-        // dd($response->data->user->employee_record_id);
+
         $employeData = $response->data->user->employee_record_id;
-        // dd($employeData);
+
         $doptoEmployeeUserImage = $this->doptorUserImage($employeData);
         $data['doptoEmployeeUserImage'] = json_decode($doptoEmployeeUserImage);
-// dd($data['doptoEmployeeUserImage']->data[0]->image);
+
         if ($response->status == 'success') {
             if (end($response->data->organogram_info)) {
                 $id = end($response->data->organogram_info)->id;

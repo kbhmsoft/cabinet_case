@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                  @if (Auth::user()->role_id == 2)
+                                          @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                </div> -->
+                                        </div> -->
                 </div>
             </div>
             {{-- {{dd($appealCase)}} --}}
@@ -269,28 +269,26 @@
                     <table class="table table-striped border">
                         <thead>
                             @if (isset($appealAdalat))
-                            <table class="table table-striped border">
-                                <thead>
-                                    <tr>
-                                        <th class="h3" scope="col" colspan="4">আদালত (Justice)</th>
-                                    </tr>
-                                    <tr class="bg-light-primary">
-                                        <th scope="row" class="text-center" width="50">#</th>
-                                        <th scope="row" class="text-center" width="200">নাম</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($appealAdalat as $adalat)
+                                <table class="table table-striped border">
+                                    <thead>
                                         <tr>
-                                            <td class="tg-nluh text-center">{{ $loop->iteration }}</td>
-                                            <td class="tg-nluh text-center">{{ $adalat->appealAdalat->name ?? '-' }}</td>
+                                            <th class="h3" scope="col" colspan="4">আদালত (Justice)</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-
-
+                                        <tr class="bg-light-primary">
+                                            <th scope="row" class="text-center" width="50">#</th>
+                                            <th scope="row" class="text-center" width="200">নাম</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($appealAdalat as $adalat)
+                                            <tr>
+                                                <td class="tg-nluh text-center">{{ $loop->iteration }}</td>
+                                                <td class="tg-nluh text-center">{{ $adalat->appealAdalat->name ?? '-' }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             @endif
 
                     </table>
@@ -324,44 +322,47 @@
 
 
                     <br>
-                    @if(isset($govCaseRegister['caseBibadi']) && count($govCaseRegister['caseBibadi']) > 0 || isset($govCaseRegister['mainBibadi']) && count($govCaseRegister['mainBibadi']) > 0)
-                    <table class="table table-striped border">
-                        <thead>
-                            <tr>
-                                <th class="h3" scope="col" colspan="4">বিবাদীর বিবরণ</th>
-                            </tr>
-                            <tr class="bg-light-primary">
-                                <th scope="row" width="10">ক্রম</th>
-                                <th scope="row" class="text-center" width="200">নাম</th>
-                                <th scope="row" class="text-center">ধরন</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $k = 1; @endphp
-                            @foreach ($govCaseRegister['caseBibadi'] as $bibadi)
-                            <tr>
-                                <td class="tg-nluh text-center">{{ en2bn($k) }}.</td>
-                                <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                {{-- <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td> --}}
-                                <td class="tg-nluh text-center">
-                                    {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী ' : 'অন্যান্য বিবাদী' }}
-                                </td>
-                            </tr>
-                            @php $k++; @endphp
-                            @endforeach
-                        </tbody>
-                        <tbody>
-                            @php $k = 1; @endphp
-                            @foreach ($govCaseRegister['mainBibadi'] as $bibadi)
-                            <tr>
-                                <td>{{ en2bn($k) }}.</td>
-                                <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                <td class="tg-nluh text-center">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী   ' : 'অন্যান্য বিবাদী' }}</td>
-                            </tr>
-                            @php $k++; @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @if (
+                        (isset($govCaseRegister['caseBibadi']) && count($govCaseRegister['caseBibadi']) > 0) ||
+                            (isset($govCaseRegister['mainBibadi']) && count($govCaseRegister['mainBibadi']) > 0))
+                        <table class="table table-striped border">
+                            <thead>
+                                <tr>
+                                    <th class="h3" scope="col" colspan="4">বিবাদীর বিবরণ</th>
+                                </tr>
+                                <tr class="bg-light-primary">
+                                    <th scope="row" width="10">ক্রম</th>
+                                    <th scope="row" class="text-center" width="200">নাম</th>
+                                    <th scope="row" class="text-center">ধরন</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $k = 1; @endphp
+                                @foreach ($govCaseRegister['caseBibadi'] as $bibadi)
+                                    <tr>
+                                        <td class="tg-nluh text-center">{{ en2bn($k) }}.</td>
+                                        <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                        {{-- <td class="tg-nluh">{{ $bibadi->department->office_name_bn ?? '-' }}</td> --}}
+                                        <td class="tg-nluh text-center">
+                                            {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী ' : 'অন্যান্য বিবাদী' }}
+                                        </td>
+                                    </tr>
+                                    @php $k++; @endphp
+                                @endforeach
+                            </tbody>
+                            <tbody>
+                                @php $k = 1; @endphp
+                                @foreach ($govCaseRegister['mainBibadi'] as $bibadi)
+                                    <tr>
+                                        <td>{{ en2bn($k) }}.</td>
+                                        <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                        <td class="tg-nluh text-center">
+                                            {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী   ' : 'অন্যান্য বিবাদী' }}</td>
+                                    </tr>
+                                    @php $k++; @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
                     @endif
 
 

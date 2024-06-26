@@ -2545,20 +2545,13 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        if ($roleID != 33) {
-            $data['depatments'] = Office::where('parent', $officeID)->get();
-        } else {
-            $data['depatments'] = Office::where('level', 12)->get();
-        }
+
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
-        $data['case_types'] = DB::table('case_type')->select('id', 'ct_name')->get();
-        $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
-        $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
+
 
         $data['page_title'] = 'হাইকোর্ট মামলা এন্ট্রি ';
 
@@ -2581,12 +2574,7 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        if ($roleID != 33) {
-            $data['depatments'] = Office::where('parent', $officeID)->get();
-        } else {
-            $data['depatments'] = Office::where('level', 12)->get();
-        }
+
 
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
@@ -2622,12 +2610,7 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-        $data['divisions'] = DB::table('division')->select('id', 'division_name_bn')->get();
-        if ($roleID != 33) {
-            $data['depatments'] = Office::where('parent', $officeID)->get();
-        } else {
-            $data['depatments'] = Office::where('level', 12)->get();
-        }
+
 
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
@@ -2810,7 +2793,7 @@ class GovCaseRegisterController extends Controller
 
     public function caseGeneralInfoForEdit(Request $request)
     {
-
+// dd($request->all());
         $caseNo = $request->case_no;
         $mainRespondent = $request->input('main_respondent');
 
@@ -2819,9 +2802,7 @@ class GovCaseRegisterController extends Controller
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-        // if (userInfo()->role_id != 27) {
-        //     GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
-        // }
+       
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -3466,13 +3447,14 @@ class GovCaseRegisterController extends Controller
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
+
         $data['ministrys'] = GovCaseOffice::get();
 
+        $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
+
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
-
-        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
@@ -3484,13 +3466,16 @@ class GovCaseRegisterController extends Controller
             $data['depatments'] = Office::where('level', 12)->get();
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
-        $data['usersInfo'] = User::all();
+
+
+        $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
+
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
-        $data['page_title'] = 'মামলা সংশোধন';
+        $data['page_title'] = '	মূল বিবাদী হিসেবে অন্তর্ভুক্তির মামলা সংশোধন';
 
         return view('gov_case.case_register.application_form_as_main_defendent.highcourt_edit')->with($data);
     }
@@ -3725,7 +3710,6 @@ class GovCaseRegisterController extends Controller
 
     public function getDependentCaseCategoryType($id)
     {
-
         $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
     }
@@ -3883,18 +3867,18 @@ class GovCaseRegisterController extends Controller
     }
     public function getdependentMinDept($id)
     {
-        $getdependentDoptor = GovCaseOffice::where('level', $id)->pluck("office_name_bn", "id");
+        $getdependentDoptor = GovCaseOffice::where('level', $id)->pluck("office_name_bn", "doptor_office_id");
         return json_encode($getdependentDoptor);
     }
     public function getDependentConcernPerson($id)
     {
         $officeID = userInfo()->office_id;
-        // dd($id);
-        if ($id != 45) {
+
+        // if ($id != 45) {
             $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
-        } else {
-            $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
-        }
+        // } else {
+        //     $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
+        // }
         return json_encode($getdependentUser);
     }
 

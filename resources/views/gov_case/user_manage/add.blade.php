@@ -62,9 +62,10 @@
 
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার </label>
+                                    <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার <span
+                                        class="text-danger">*</span></label>
                                     <input type="text" name="mobile_no" id="mobile_no" placeholder="মোবাইল নাম্বার লিখুন"
-                                        class="form-control form-control-sm">
+                                        class="form-control form-control-sm" required>
                                 </div>
                             </div>
                             <div class="col-4">

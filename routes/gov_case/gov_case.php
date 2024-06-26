@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
         //// ************** Doptor User List **************/////
 
         // ++++++++++++++>>>>>>>>>> custom ACL routes <<<<<<<<<<<<++++++++++++
+        
 
         Route::group(['prefix' => 'settings/', 'as' => 'settings.'], function () {
             Route::get('/category/list', [GovCaseSettingsController::class, 'div_category_index'])->name('category.list');
@@ -159,7 +160,7 @@ Route::middleware('auth')->group(function () {
             Route::get('appeal/indexApplications', [ApplicationFormAsMainDefendentController::class, 'appealIndexApplications'])->name('appealIndexApplications');
 
             Route::get('/editApplications/{id}/edit', [ApplicationFormAsMainDefendentController::class, 'editApplications'])->name('editApplications');
-
+            Route::post('case-MainRespondent-FormEdit', [ApplicationFormAsMainDefendentController::class, 'caseMainRespondentFormForEdit'])->name('caseMainRespondentFormForEdit');
             // Route::get('/main-defendent', 'MainDefendentController@index')->name('main-defendent.index');
 
             route::get('/dropdownlist/getdependentmindept/{id}', [GovCaseRegisterController::class, 'getdependentMinDept']);
@@ -226,6 +227,7 @@ Route::middleware('auth')->group(function () {
             Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
             Route::post('storeGeneralInfo', [GovCaseRegisterController::class, 'storeGeneralInfo'])->name('storeGeneralInfo');
             Route::post('caseGeneralInfoForEdit', [GovCaseRegisterController::class, 'caseGeneralInfoForEdit'])->name('caseGeneralInfoForEdit');
+
             Route::post('sendingReplyStore', [GovCaseRegisterController::class, 'sendingReplyStore'])->name('sendingReplyStore');
             Route::post('adalatReplySubmitStore', [GovCaseRegisterController::class, 'adalatReplySubmitStore'])->name('adalatReplySubmitStore');
             Route::post('suspensionOrderStore', [GovCaseRegisterController::class, 'suspensionOrderStore'])->name('suspensionOrderStore');
@@ -242,7 +244,8 @@ Route::middleware('auth')->group(function () {
             Route::post('highcourt/advocate/delete/{id}', [GovCaseRegisterController::class, 'advocateDelete'])->name('highcourt.advocate.delete');
             Route::post('highcourt/otherbibadi/delete/{id}', [GovCaseRegisterController::class, 'otherBibadiDelete'])->name('highcourt.otherbibadi.delete');
 
-            Route::post('appeal/ruleFile/delete/{id}', [AppealGovCaseRegisterController::class, 'appealRuleFileDelete'])->name('appeal.ruleFile.delete'); Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
+            Route::post('appeal/ruleFile/delete/{id}', [AppealGovCaseRegisterController::class, 'appealRuleFileDelete'])->name('appeal.ruleFile.delete');
+            Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
             Route::post('appeal/adalat/delete/{id}', [AppealGovCaseRegisterController::class, 'adalatDelete'])->name('appeal.adalat.delete');
             Route::post('appeal/advocate/delete/{id}', [AppealGovCaseRegisterController::class, 'advocateDelete'])->name('appeal.advocate.delete');
             Route::post('appeal/otherbibadi/delete/{id}', [AppealGovCaseRegisterController::class, 'otherBibadiDelete'])->name('appeal.otherbibadi.delete');

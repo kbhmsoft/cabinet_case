@@ -132,13 +132,7 @@ if (!function_exists('gov_case_activity_logs')) {
 			return "https://n-doptor-api.nothi.gov.bd";
 		}
 	}
-	// if(!function_exists('DOPTOR_OFFICE_ORGANOGRAM')){
-	//     function DOPTOR_OFFICE_ORGANOGRAM()
-	//     {
-	//     //    return "https://api-training.doptor.gov.bd";
-	//        return "https://n-doptor-api.nothi.gov.bd";
-	//     }
-	// }
+
 }
 
 if (!function_exists('convertToBanglaDate')) {
@@ -180,6 +174,3 @@ if (!function_exists('convertToBanglaDate')) {
 		}
 	}
 }
-
-
-

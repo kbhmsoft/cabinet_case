@@ -205,7 +205,7 @@ class GovCaseUserManagementController extends Controller
         // ***** assing role for all users
         // $userItem = User::where('is_gov', 1)->get();
         // foreach($userItem as $user){
-        //     $user->assignRole($user->role);  
+        //     $user->assignRole($user->role);
         // }
         ///////// run script
         // return $data['offices'];
@@ -272,7 +272,7 @@ class GovCaseUserManagementController extends Controller
                 ->whereNull('users.doptor_user_id') // Only include users where doptor_user_id is null
                 ->orderBy('users.office_id', 'ASC');
         }
-        
+
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -420,7 +420,6 @@ class GovCaseUserManagementController extends Controller
         // return $data;
         return view('gov_case.user_manage.add')->with($data);
     }
-
     public function store(Request $request)
     {
         $request->validate(
@@ -431,6 +430,7 @@ class GovCaseUserManagementController extends Controller
                 'div_office' => 'nullable',
                 'role_id' => 'required',
                 'email' => 'required|unique:users,email',
+                'mobile_no' => 'required|unique:users,mobile_no',
                 'office_id' => 'required',
                 'password' => [
                     'required',
@@ -445,6 +445,7 @@ class GovCaseUserManagementController extends Controller
                 'name.required' => 'পুরো নাম লিখুন',
                 'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
                 'email.required' => 'ইমেইল লিখুন',
+                'mobile_no.unique' => 'মোবাইল নাম্বারটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
                 'role_id.required' => 'ভূমিকা নির্বাচন করুন',
                 'office_id.required' => 'অফিস নির্বাচন করুন',
                 'password.required' => 'পাসওয়ার্ড লিখুন',
@@ -466,7 +467,6 @@ class GovCaseUserManagementController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-
         if ($user) {
             $role = Role::find($request->role_id);
             if ($role) {
@@ -474,9 +474,9 @@ class GovCaseUserManagementController extends Controller
             }
         }
 
-
         return redirect()->route('cabinet.user-management.index')->with('success', 'সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
     }
+
 
     /**
      * Display the specified resource.

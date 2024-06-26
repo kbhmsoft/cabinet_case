@@ -7,11 +7,11 @@
  */
 namespace App\Repositories\gov_case;
 
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class GovCaseBadiBibadiRepository
 {
@@ -42,17 +42,24 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
-
-
     public static function storeMainBibadi($caseInfo, $govCaseId)
     {
         $officeID = userInfo()->office_id;
+        $bibadi = new GovCaseBibadi();
+        $bibadi->gov_case_id = $govCaseId;
+        $bibadi->respondent_id = $officeID;
+        $bibadi->is_main_bibadi = 1;
+        $bibadi->save();
+    }
 
-                $bibadi = new GovCaseBibadi();
-                $bibadi->gov_case_id = $govCaseId;
-                $bibadi->respondent_id = $officeID;
-                $bibadi->is_main_bibadi = 1;
-                $bibadi->save();
+    public static function storeChangingMainBibadi($caseInfo, $govCaseId)
+    {
+        // dd($caseInfo);
+        $bibadi = GovCaseBibadi::where('gov_case_id', $govCaseId)->where('is_main_bibadi', 1)->first();
+        $bibadi->gov_case_id = $govCaseId;
+        $bibadi->respondent_id = $caseInfo->main_respondent;
+        $bibadi->is_main_bibadi = 1;
+        $bibadi->save();
     }
 
     public static function storeBibadi($caseInfo, $govCaseId)
@@ -66,13 +73,14 @@ class GovCaseBadiBibadiRepository
                 $bibadi->save();
             }
         }
+
     }
 
     public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->other_respondent as $key => $val) {
             if ($caseInfo->other_respondent[$key] != null) {
-                $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->first();
+                $bibadi = GovCaseBibadi::where('gov_case_id', $govCaseId)->first();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $caseInfo->other_respondent[$key];
                 $bibadi->save();
@@ -81,7 +89,7 @@ class GovCaseBadiBibadiRepository
 
         foreach ($caseInfo->main_respondent as $key => $val) {
             if ($caseInfo->main_respondent[$key] != null) {
-                $bibadi = GovCaseBibadi::where('gov_case_id',$govCaseId)->where('is_main_bibadi',1)->first();
+                $bibadi = GovCaseBibadi::where('gov_case_id', $govCaseId)->where('is_main_bibadi', 1)->first();
                 $bibadi->gov_case_id = $govCaseId;
                 $bibadi->respondent_id = $caseInfo->main_respondent[$key];
                 $bibadi->is_main_bibadi = 1;
@@ -100,7 +108,6 @@ class GovCaseBadiBibadiRepository
         // dd($bibadi);
         return $bibadi;
     }
-
 
     public static function checkBibadiExistForChangingMainRespondent($bibadiId)
     {

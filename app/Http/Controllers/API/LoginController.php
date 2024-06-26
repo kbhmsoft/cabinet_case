@@ -62,7 +62,7 @@ class LoginController extends BaseController
             $officeInfo = DB::table('office')->select('office_name_bn', 'division_id', 'district_id', 'upazila_id')->where('id', $user->office_id)
                 ->first();
             // Results
-            dd($officeInfo);
+            // dd($officeInfo);
             $success['user_id'] = $user->id;
             $success['name'] = $user->name;
             $success['email'] = $user->email;

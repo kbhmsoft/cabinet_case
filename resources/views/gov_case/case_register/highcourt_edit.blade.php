@@ -22,7 +22,8 @@
         $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
-    } @endphp @include('gov_case.case_register.create_css') <!--begin::Row-->
+    } @endphp
+    @include('gov_case.case_register.create_css') <!--begin::Row-->
     <div class="row">
 
         {{-- <div class="col-md-12"> --}}
@@ -84,10 +85,9 @@
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        {{-- <div class="step" id=""> --}}
+
                                         <fieldset class="mb-8">
-                                            <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
+
                                             <div class="form-group row">
                                                 <input type="hidden" name="court" id="court" value="2">
                                                 <input type="hidden" id="" name="case_id"
@@ -350,9 +350,9 @@
                                                             <tr id="other_bibadi_{{ $val->id }}">
                                                                 @if ($val->respondent_id != 0)
                                                                     <td>
-                                                                        <select {{ request('red') ? 'disabled' : '' }} " name=" other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
+                                                                        <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
 
-                                                                            @foreach ($ministrys as $item)
+                                                                                 @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->doptor_office_id }}"
                                                                                 {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }}
@@ -366,7 +366,7 @@
                                                                     value="{{ $val->id }}">
                                                             @else
                                                                 <td>
-                                                                    <input type="hidden" name=" other_respondent[]"
+                                                                    <input type="hidden" name="other_respondent[]"
                                                                         value="0">
                                                                     <input class="form-control form-control-sm"
                                                                         type="text"
@@ -1862,9 +1862,9 @@
 
 
 
-          /////// -------- For Others Bibadi Delete ----------///////////////////
+        /////// -------- For Others Bibadi Delete ----------///////////////////
 
-          function deleteOtherBibadi(id) {
+        function deleteOtherBibadi(id) {
             Swal.fire({
                 title: 'আপনি কি মামলার অন্যান্য রেসপন্ডেন্টটি মুছে ফেলতে চান?',
                 icon: 'warning',
@@ -1929,14 +1929,12 @@
                 var items = '';
                 items += '<tr id="bibadi_' + count + '">';
 
-                items +=
-                    '<td><select name="other_respondent[]" id="other_respondent_' + count +
+                items += '<td><select name="other_respondent[]" id="other_respondent_' + count +
                     '" class="form-control form-control-sm other_respondentCls" onChange="getManualOtherRespondentName(' +
                     count + ')">';
                 items += '<option value="">-- নির্বাচন করুন --</option>';
                 items +=
-                    '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry ') ==
-                        $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+                    '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry ') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
                 items += '<option value="0">অন্যান্য</option>';
                 items +=
                     '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_edit_' +
@@ -1954,13 +1952,14 @@
             $('.other_respondentCls').select2();
         }
 
+
         // Function to remove a row
         function removeBibadiRow(id) {
             $(id).closest("tr").remove();
         }
 
         function getManualOtherRespondentName(data) {
-  
+
             var selectID = $('#other_respondent_' + data).val();
             if (selectID == 0) {
                 $('#other_respondent_manual_name_edit_' + data).removeClass("d-none");
