@@ -492,7 +492,7 @@ class GovCaseOfficeController extends Controller
             'level' => $request->office_lavel,
             'office_name_bn' => $request->office_name,
             'status' => $request->status,
-            'parent' => $parentID,
+            'parent_office_id' => $parentID,
             'level' => $request->level,
         ];
 
