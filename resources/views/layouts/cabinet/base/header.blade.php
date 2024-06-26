@@ -28,7 +28,7 @@
     @media screen and (max-width: 600px) {
         .header-case-count {
             display: none;
-            
+
         }
     }
 
@@ -179,33 +179,6 @@
             <div style="width: 100%; height: 20px;"></div>
         @endif
 
-        <!-- Header Section -->
-        {{-- <header>
-            <!-- Notification Button -->
-            <div class="notification-container">
-                <a href="#" class="notification">
-                    <span
-                        class="font-weight-bolder font-size-base font-size-h5 d-none d-md-inline mr-3 text-dark-100 notification-text ">মূল
-                        রেসপন্ডেন্ট হিসেবে অন্তর্ভুক্তির আবেদন</span>
-                    <span class="badge">300</span>
-                </a>
-                <!-- Dropdown Menu -->
-                <div class="menu-dropdown">
-                    <ul class="menu">
-                        <li class="menu-item">
-                            <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
-                                <span class="menu-text font-weight-bolder">হাইকোর্ট বিভাগ</span>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
-                                <span class="menu-text font-weight-bolder">আপিল বিভাগ</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </header> --}}
 
 
 
@@ -216,6 +189,7 @@
         <!--begin::Topbar-->
         <div class="topbar">
             <!--begin::Notifications-->
+            @if ($roleID == 27)
             <div class="notifications-container" style="position: relative; margin-top: 10px">
                 @include('layouts.partials.notifications')
                 @if ($total_case > 0)
@@ -227,6 +201,7 @@
                     </span>
                 @endif
             </div>
+            @endif
             <!--end::Notifications-->
             <!--begin::User-->
             <div class="topbar-item">

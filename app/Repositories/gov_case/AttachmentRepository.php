@@ -7,25 +7,24 @@
  */
 namespace App\Repositories\gov_case;
 
-use App\Models\Attachment;
-use App\Models\FinalAttachment;
-use App\Models\ReplyAttachment;
-use App\Models\AppealAttachment;
-use App\Models\ContemptAttachment;
-use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Log;
-use App\Models\OrderTakenAttachment;
-use App\Models\SuspensionAttachment;
-use App\Models\LeaveToAppealAttachment;
-use Illuminate\Support\Facades\Session;
-use App\Models\OrderTakenFinalAttachment;
-use App\Models\SuspensionTamilAttachment;
-use App\Models\AppealFinalOrderAttachment;
-use App\Models\OrderTakenAppealAttachment;
-use App\Models\SuspensionAppealAttachment;
 use App\Models\AdalatReplySendingAttachment;
+use App\Models\AppealAttachment;
+use App\Models\AppealFinalOrderAttachment;
+use App\Models\Attachment;
+use App\Models\ContemptAttachment;
+use App\Models\FinalAttachment;
+use App\Models\gov_case\AppealOrderTakenAppealAttachment;
+use App\Models\gov_case\AppealOrderTakenAttachment;
+use App\Models\gov_case\AppealOrderTakenFinalAttachment;
 use App\Models\LeaveToAppealAnswerAttachment;
+use App\Models\LeaveToAppealAttachment;
+use App\Models\ReplyAttachment;
+use App\Models\SuspensionAppealAttachment;
+use App\Models\SuspensionAttachment;
+use App\Models\SuspensionTamilAttachment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class AttachmentRepository
 {
@@ -390,12 +389,12 @@ class AttachmentRepository
 
         if ($request->file_name != null) {
             foreach ($request->file_type as $key => $val) {
-                $filePath = "uploads/" . $appName . "/orderTaken_attachment/";
+                $filePath = "uploads/" . $appName . "/appeal_orderTaken_attachment/";
                 if ($request->file_name[$key] != null) {
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
                     $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
-                $attachment = new OrderTakenAttachment();
+                $attachment = new AppealOrderTakenAttachment();
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type[$key];
                 $attachment->file_name = $filePath . $otherfileName;
@@ -409,22 +408,20 @@ class AttachmentRepository
         }
     }
 
-
-
     public static function storeOrderTakenAppealAttachment($appName, $caseId, $request)
     {
 
         //  dd($request->file_name_appeal_request);
         if ($request->file_name_appeal_request != null) {
             foreach ($request->file_type_appeal_request as $key => $val) {
-                $filePath = "uploads/" . $appName . "/orderTakenAppeal_attachment/";
+                $filePath = "uploads/" . $appName . "/appeal_orderTakenAppeal_attachment/";
 
                 if ($request->file_name_appeal_request[$key] != null) {
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name_appeal_request[$key]->extension();
                     $request->file_name_appeal_request[$key]->move(public_path($filePath), $otherfileName);
                 }
 
-                $attachment = new OrderTakenAppealAttachment();
+                $attachment = new AppealOrderTakenAppealAttachment();
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type_appeal_request[$key];
                 $attachment->file_name = $filePath . $otherfileName;
@@ -438,19 +435,17 @@ class AttachmentRepository
         }
     }
 
-
-
     public static function storeOrderTakenFinalAttachment($appName, $caseId, $request)
     {
         if ($request->file_name_order_tamil != null) {
             foreach ($request->file_type_order_tamil as $key => $val) {
-                $filePath = "uploads/" . $appName . "/orderTakenFinal_attachment/";
+                $filePath = "uploads/" . $appName . "/appeal_orderTakenFinal_attachment/";
 
                 if ($request->file_name_order_tamil[$key] != null) {
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name_order_tamil[$key]->extension();
                     $request->file_name_order_tamil[$key]->move(public_path($filePath), $otherfileName);
                 }
-                $attachment = new OrderTakenFinalAttachment();
+                $attachment = new AppealOrderTakenFinalAttachment();
                 $attachment->gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type_order_tamil[$key];
                 $attachment->file_name = $filePath . $otherfileName;

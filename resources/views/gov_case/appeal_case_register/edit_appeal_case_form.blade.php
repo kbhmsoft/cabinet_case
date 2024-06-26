@@ -74,12 +74,12 @@
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        {{-- <div class="step" id=""> --}}
-                                        <fieldset class="mb-8">
-                                            <!-- <legend> মামলার সাধারণ তথ্য</legend> -->
-                                            <div class="form-group row">
 
+                                        <fieldset class="mb-8">
+
+                                            <div class="form-group row">
+                                                <input type="hidden" id="" name="case_id"
+                                                    value="{{ $case->id }}">
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
 
@@ -140,32 +140,57 @@
                                                         not be empty</span>
                                                 </div>
 
+
+
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>
-                                                        আদালতের নাম (Court Name) <span class="text-danger">*</span></label>
+                                                    <table width="100%" border="1" id="AppealAdalatDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                        <tr>
+                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span></th>
+                                                            <th width="30">
+                                                                <a href="javascript:void(0);" id="AppealAdalatRow" class="btn btn-sm btn-primary pr-2">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </a>
+                                                            </th>
+                                                        </tr>
+                                                        <tr></tr>
 
-                                                    <div class="" id="AdalatDiv">
-                                                        <select name="appeal_adalat" id="AppealAdalat"
-                                                            class="form-control form-control-sm">
-                                                            <option value="">-- নির্বাচন করুন --</option>
-                                                            {{-- @foreach ($appealCourtAdalat as $value)
-                                                                <option value="{{ $value->id }}"
-                                                                    {{ old('appeal_adalat') == $value->id || $case->appeal_adalat == $value->id ? 'selected' : '' }}>
-                                                                    {{ $value->name }} </option>
-                                                            @endforeach --}}
-
-                                                        </select>
-                                                        <span class="text-danger d-none vallidation-message">This field
-                                                            can not be empty</span>
-                                                    </div>
+                                                        @foreach ($caseCourts as $key => $row)
+                                                            <tr id="adalat_{{ $row->id }}">
+                                                                <td>
+                                                                    <select name="appeal_adalat[]" id="ministry_id_{{ $key }}" class="form-control form-control-sm">
+                                                                        @foreach ($appealCourtAdalat as $value)
+                                                                            <option value="{{ $value->id }}"
+                                                                                {{ old('appeal_adalat') == $value->id || $row->appeal_adalat == $value->id ? 'selected' : '' }}>
+                                                                                {{ $value->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <input type="hidden" name="appeal_adalat_id[]" value="{{ $row->id }}">
+                                                                </td>
+                                                                <td>
+                                                                    @if ($key > 0)
+                                                                        <a href="javascript:void(0);"
+                                                                            class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                            data-id="{{ $row->id }}"
+                                                                            id="deleteAdalatBtn_{{ $row->id }}"
+                                                                            onclick="deleteAdalat({{ $row->id }})">
+                                                                            <i class="fas fa-minus-circle"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
                                                 </div>
+
 
 
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আপিলকারী <span class="text-danger">*</span></label>
                                                     <div id="appeallateOffice">
-                                                        <select name="appeal_office" id="appeallateOffice" class="form-control form-control-sm" required="required">
+                                                        <select name="appeal_office" id="appeallateOffice"
+                                                            class="form-control form-control-sm" required="required">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($ministrys as $value)
                                                                 <option value="{{ $value->doptor_office_id }}"
@@ -173,8 +198,15 @@
                                                                     {{ $value->office_name_bn }}
                                                                 </option>
                                                             @endforeach
+                                                            <option value="0">অন্যান্য</option>
                                                         </select>
-                                                        <span class="text-danger d-none vallidation-message">This field can not be empty</span>
+                                                        <span class="text-danger d-none vallidation-message">This field can
+                                                            not be empty</span>
+
+                                                        <input type="text" name="appeal_petitioner_name"
+                                                            id="appeal_petitioner_name"
+                                                            class="form-control form-control-sm d-none"
+                                                            placeholder="আপিলকারীর নাম লিখুন">
                                                     </div>
                                                 </div>
 
@@ -189,7 +221,6 @@
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                                     class="text-danger">*</span></th>
                                                             <th class="col-lg-6">সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
@@ -199,10 +230,9 @@
                                                                     class="btn btn-sm btn-primary pr-2"><i
                                                                         class="fas fa-plus-circle"></i></a>
                                                             </th>
-
                                                         </tr>
                                                         @foreach ($caseLawers as $key => $value)
-                                                            <tr>
+                                                            <tr id="advocate_{{ $value->id }}">
                                                                 <td>
                                                                     <select name="concernPersonDesignation[]"
                                                                         id="concernPersonDesignation_{{ $key + 1 }}"
@@ -234,7 +264,8 @@
                                                                         <a href="javascript:void();"
                                                                             class="btn btn-sm btn-danger font-weight-bolder pr-2"
                                                                             data-id="{{ $value->id }}"
-                                                                            onclick="removeRowBadiBibadiFunc(this, 'ajax_badi_del')">
+                                                                            id="deleteAdvocateBtn_{{ $value->id }}"
+                                                                            onclick="deleteAdvocate({{ $value->id }})">
                                                                             <i class="fas fa-minus-circle"></i>
                                                                         </a>
                                                                     @endif
@@ -259,23 +290,20 @@
 
 
                                                 {{-- starting সংযুক্তি  --}}
-
-                                                {{-- <div class="col-md-12">
+                                                <div class="col-md-12">
                                                     <fieldset class="">
                                                         <div
                                                             class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                             <div class="d-flex align-items-center mr-2 py-2">
-                                                                <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                    <span class="text-danger">*</span>
+                                                                <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
+
                                                                 </h3>
                                                             </div>
-
                                                             <div class="symbol-group symbol-hover py-2">
                                                                 <div class="symbol symbol-30 symbol-light-primary"
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="" role="button"
                                                                     data-original-title="ফাইল যুক্ত করুণ">
-
                                                                     <div id="addFileRow">
                                                                         <span
                                                                             class="symbol-label font-weight-bold bg-success">
@@ -284,103 +312,53 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
                                                         </div>
+
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-                                                                @foreach ($appealAttachment as $key => $value)
                                                                 <tr>
-                                                                    <td>
-                                                                        <input type="text" name="file_type[]"
-                                                                            id="customFileName"
-                                                                            class="form-control form-control-sm"
-                                                                            value="{{ old('file_type', $value->file_type) }}">
-                                                                    </td>
+                                                                    @foreach ($appealAttachment as $row)
+                                                                        <div class="form-group mb-2"
+                                                                            id="deleteFile{{ $row->id }}">
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <button class="btn bg-success-o-75"
+                                                                                        type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
+                                                                                </div>
+
+                                                                                <input readonly type="text"
+                                                                                    class="form-control"
+                                                                                    value="{{ $row->file_type ?? '' }}" />
+                                                                                <div class="input-group-append">
+                                                                                    <a href="{{ asset($row->file_path . $row->file_name) }}"
+                                                                                        target="_blank"
+                                                                                        class="btn btn-sm btn-success font-size-h5 float-left">
+                                                                                        <i class="fa fas fa-file-pdf"></i>
+                                                                                        <b>দেখুন</b>
+
+                                                                                    </a>
+
+                                                                                </div>
+                                                                                <div class="input-group-append">
+                                                                                    <a href="javascript:void(0);"
+                                                                                        id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                        onclick="deleteRuleFile({{ $row->id }} )"
+                                                                                        class="btn btn-danger">
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <b>মুছুন</b>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
                                                                 </tr>
-                                                            @endforeach
-                                                                <tr></tr>
                                                             </table>
                                                             <input type="hidden" id="other_attachment_count"
                                                                 value="1">
                                                         </div>
                                                     </fieldset>
-                                                </div> --}}
-
-
-                                {{-- starting সংযুক্তি  --}}
-                                <div class="col-md-12">
-                                <fieldset class="">
-                                    <div
-                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                        <div class="d-flex align-items-center mr-2 py-2">
-                                            <h3 class="mb-0 mr-8">সংযুক্তি (রুল কপি সংযুক্ত করুন)
-                                                <span class="text-danger">*</span>
-                                            </h3>
-                                        </div>
-                                        <div class="symbol-group symbol-hover py-2">
-                                            <div class="symbol symbol-30 symbol-light-primary"
-                                                data-toggle="tooltip" data-placement="top"
-                                                title="" role="button"
-                                                data-original-title="ফাইল যুক্ত করুণ">
-                                                <div id="addFileRow">
-                                                    <span
-                                                        class="symbol-label font-weight-bold bg-success">
-                                                        <i
-                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-3 px-5">
-                                        <table width="100%" class="border-0 px-5" id="fileDiv"
-                                            style="border:1px solid #dcd8d8;">
-
-                                            <tr>
-                                            @foreach ($appealAttachment as $row)
-                                                <div class="form-group mb-2"
-                                                    id="deleteFile{{ $row->id }}">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn bg-success-o-75"
-                                                                type="button">{{ en2bn(++$key) . ' - নম্বর :' }}</button>
-                                                        </div>
-
-                                                        <input readonly type="text"
-                                                            class="form-control"
-                                                            value="{{ $row->file_type ?? '' }}" />
-                                                        <div class="input-group-append">
-                                                            <a href="{{ asset($row->file_path . $row->file_name) }}"
-                                                                target="_blank"
-                                                                class="btn btn-sm btn-success font-size-h5 float-left">
-                                                                <i class="fa fas fa-file-pdf"></i>
-                                                                <b>দেখুন</b>
-
-                                                            </a>
-
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <a href="javascript:void(0);"
-                                                                id="deleteRuleFileBtn_({{ $row->id }}"
-                                                                onclick="deleteRuleFile({{ $row->id }} )"
-                                                                class="btn btn-danger">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                                <b>মুছুন</b>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </tr>
-                                        </table>
-                                        <input type="hidden" id="other_attachment_count"
-                                            value="1">
-                                    </div>
-                                </fieldset>
                                                 </div>
 
 
@@ -441,10 +419,10 @@
                                                             <th>ঠিকানা <span class="text-danger">*</span></th>
                                                         </tr>
                                                         <tbody>
-                                                                <tr>
-                                                                    <td>{{ $caseBadi->name ?? '-'}}</td>
-                                                                    <td>{{ $caseBadi->address ?? '-'}}</td>
-                                                                </tr>
+                                                            <tr>
+                                                                <td>{{ $caseBadi->name ?? '-' }}</td>
+                                                                <td>{{ $caseBadi->address ?? '-' }}</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -603,7 +581,7 @@
                                     </div>
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
-                                    <button type="submit" id="appealCaseGeneralInfoSaveBtn"
+                                    <button type="submit" id="appealCaseGeneralInfoEditSaveBtn"
                                         class="submit-button">সংরক্ষণ</button>
                                 </div>
                             </form>
@@ -1180,6 +1158,96 @@
 @section('styles')
 @endsection
 
+<script>
+    /////// For Adalat Delete ----------///////////////////
+
+    function deleteAdalat(id) {
+    Swal.fire({
+        title: 'আপনি কি মামলার আদালতটি মুছে ফেলতে চান?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'হ্যাঁ',
+        cancelButtonText: 'না'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var deleteButton = $('#deleteAdalatBtn_' + id);
+            deleteButton.addClass('loadersmall');
+            $.ajax({
+                url: '{{ url('/') }}/cabinet/case/appeal/adalat/delete/' + id,
+                type: "post",
+                dataType: "json",
+                success: function(data) {
+                    Swal.fire(
+                        'সফল!',
+                        data.message,
+                        'success'
+                    ).then(() => {
+                        $('#adalat_' + id).remove();
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
+                    Swal.fire(
+                        'ব্যর্থ!',
+                        'কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+                        'error'
+                    );
+                },
+                complete: function() {
+                    // Remove the loader class after the request completes
+                    deleteButton.removeClass('loadersmall');
+                }
+            });
+        }
+    });
+}
+
+
+  /////// For Advocate Delete ----------///////////////////
+
+  function deleteAdvocate(id) {
+            Swal.fire({
+                title: 'আপনি কি মামলার সংশ্লিষ্ট আইন কর্মকর্তাটি মুছে ফেলতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteAdvocateBtn_' + id).addClass('loadersmall');
+                    $.ajax({
+                        url: '{{ url('/') }}/cabinet/case/appeal/advocate/delete/' + id,
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            Swal.fire(
+                                'সফল!',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                // Remove the corresponding row
+                                $('#advocate_' + id).remove();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+
+
+</script>
+
+
 @section('scripts')
     <script>
         $(document).ready(function() {
@@ -1264,50 +1332,147 @@
         }
     </script>
 
+    <script>
+        /************************ //Add multiple HighCourt Adalat *************************/
+        $("#AppealAdalatRow").click(function(e) {
+            AppealAdalatRowFunc();
+        });
 
-<script>
-    /************************ //Add multiple HighCourt Adalat *************************/
-    // $("#addHighcourtAdalatRow").click(function(e) {
-    //     addHighcourtAdalatRowFunc();
-    // });
-
-    // //add row function
-    // function addHighcourtAdalatRowFunc() {
-    //     var mk = $('#AdalatDiv tr').length;
-    //     var MainCount = $('#MainBibadiDiv tr').length;
-
-    //     $('#AdalatDiv tr:last').after(Item(mk + 1, 'other'));
-
-    //     function Item(count, type = null) {
-    //         var items = '';
-    //         items += '<tr id="appeal_adalat_' + (count) + '">';
-    //         items += '<td><select name="appeal_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>';
-    //         @foreach($highCourtAdalat as $value)
-    //         items += '<option value="{{ $value->id }}" {{ old('
-    //         highcourt_adalat ') == $value->id ? '
-    //         selected ' : '
-    //         ' }}> {{ $value->name }} </option>';
-    //         @endforeach
-    //         items += '</select></td>';
-    //         items += '<input type="hidden" name="appeal_adalat[]" value="">';
-
-    //         if (type == 'other') {
-    //             items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-    //         }
-    //         items += '</tr>';
-    //         return items;
-    //     }
-    //     $('.other_respondentCls').select2();
-    // }
-
-    // //remove row function
-    // function removeHighcourtAdalatRow(id) {
-    //     $(id).closest("tr").remove();
-    // }
-</script>
+        //add row function
+        function AppealAdalatRowFunc() {
+            var mk = $('#AppealAdalatDiv tr').length;
 
 
-    @include('gov_case.appeal_case_register.create_new_appeal_js')
+            $('#AppealAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+
+            function Item(count, type = null) {
+                var items = '';
+                items += '<tr id="appeal_adalat_' + (count) + '">';
+                items +=
+                    '<td><select name="appeal_adalat[]" class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($appealCourtAdalat as $value)<option value="{{ $value->id }}" > {{ $value->name }} </option>@endforeach</select></td>';
+                items += '<input type="hidden" name="appeal_adalat_id[]" value="">';
+
+                if (type == 'other') {
+                    items +=
+                        '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+                }
+                items += '</tr>';
+                return items;
+            }
+            $('.other_respondentCls').select2();
+        }
+
+        //remove row function
+        function removeHighcourtAdalatRow(id) {
+            $(id).closest("tr").remove();
+        }
+    </script>
+
+    <script>
+        $('select').select2();
+        jQuery('select[name="appeal_office"]').on('change', function() {
+            var dataID = jQuery(this).val();
+            console.log(dataID);
+            if (dataID == 0) {
+                $('#appeal_petitioner_name').removeClass('d-none');
+            } else {
+                $('#appeal_petitioner_name').addClass('d-none');
+            }
+        });
+    </script>
+
+    <script>
+        // ============= Add Attachment Row ========= start =========
+        $("#addFileRow").click(function(e) {
+            addFileRowFunc();
+        });
+        //add row function
+        function addFileRowFunc() {
+            var count = parseInt($('#other_attachment_count').val());
+
+            var formType = $('#formType').val();
+            // alert(formType);
+            $('#other_attachment_count').val(count + 1);
+            var items = '';
+            items += '<tr>';
+            items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+                '" class="form-control form-control-sm" placeholder="" ></td>';
+            items +=
+                '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
+                count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' +
+                count +
+                '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
+                count + '" for="customFile' + count +
+                '">ফাইল নির্বাচন করুন</label></div></td>';
+            items +=
+                '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+            items += '</tr>';
+            $('#fileDiv tr:last').after(items);
+            console.log(items);
+        }
+    </script>
+
+    <script>
+        $('#appealCaseGeneralInfoForm').submit(function(e) {
+            e.preventDefault();
+
+            $('#appealCaseGeneralInfoEditSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+            Swal.fire({
+                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var formData = new FormData(this);
+                    console.log([...formData.entries()]);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.appealEditStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: (data) => {
+                            console.log('Success response:', data);
+
+                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                'success');
+
+                            $("#final_order").click();
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                        },
+                        error: (xhr, status, error) => {
+                            console.log('Error response:', xhr, status, error);
+
+                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            if (xhr.status === 422) {
+                                Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                            } else {
+                                Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                                    'error');
+                            }
+                        }
+                    });
+                } else {
+                    $('#appealCaseGeneralInfoSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+                }
+            });
+        });
+    </script>
+
+
+    {{-- @include('gov_case.appeal_case_register.create_new_appeal_js') --}}
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
@@ -1411,7 +1576,7 @@
     </script>
 
     <script>
-         function deleteRuleFile(id) {
+        function deleteRuleFile(id) {
             // alert(id);
             Swal.fire({
                 title: 'আপনি কি মামলার রুল কপি মুছে ফেলতে চান?',
@@ -1421,20 +1586,20 @@
                 cancelButtonText: 'না'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#deleteRuleFileBtn_'+id).addClass('loadersmall')
+                    $('#deleteRuleFileBtn_' + id).addClass('loadersmall')
                     jQuery.ajax({
-                        url: '{{ url('/') }}/cabinet/case/highcourt/ruleFile/delete/' +
+                        url: '{{ url('/') }}/cabinet/case/appeal/ruleFile/delete/' +
                             id,
-                        type: "GET",
+                        type: "post",
                         dataType: "json",
                         success: function(data) {
                             Swal.fire(
-                                    'সফল!',
-                                    data.message,
-                                    'success'
-                                )
-                                addMainFileRowFunc();
-                            $('#deleteFile'+id).remove();
+                                'সফল!',
+                                data.message,
+                                'success'
+                            )
+                            addMainFileRowFunc();
+                            $('#deleteFile' + id).remove();
 
                         }
                     });

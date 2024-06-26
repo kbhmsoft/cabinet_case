@@ -140,8 +140,8 @@
                                                     <table width="100%" border="1" id="appealAdalatDiv" class="mb-5"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম
-                                                                (Court Name)<span class="text-danger">*</span>
+                                                            <th class="other_bibadi_name other_respondent">
+                                                                আদালতের নাম (Justice Name)<span class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addAppealAdalatRow"
@@ -249,7 +249,7 @@
 
                                     <div class="col-md-12" id="showHighCourtCaseManualDiv">
                                         <fieldset class="mb-8">
-                                            <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্টি না হয়ে থাকলে নিম্নের
+                                            <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে নিম্নের
                                                 কলামসমুহ পুরণ করুণঃ</legend>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">

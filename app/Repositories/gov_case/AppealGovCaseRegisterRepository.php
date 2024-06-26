@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealOrderTaken;
 use App\Models\gov_case\GovCaseAppealAdalat;
 use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\AppealGovCaseOrderTaken;
 use App\Models\gov_case\AppealGovCaseConcernPerson;
 
 class AppealGovCaseRegisterRepository
 {
-    public static function GovCaseAllDetails($caseId)
+    public static function AppealGovCaseAllDetails($caseId)
     {
 
         $case = AppealGovCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
         $appealCaseLawers = GovCaseBadiBibadiRepository::getAppealConcernPersonByCaseId($caseId);
-        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
+
         $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-        $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
-        $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
+
 
         $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         $concernPersonName = User::where('id', $case->concern_user_id)->first();
@@ -38,20 +38,20 @@ class AppealGovCaseRegisterRepository
             'case' => $case,
             'caseBadi' => $caseBadi,
             'caseLawers' => $appealCaseLawers,
-            'caseCourts' => $caseCourts,
+
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
             'otherBibadi' => $otherBibadi,
-            'caseLogs' => $caseLog,
-            'hearings' => $hearings,
-            'files' => $files,
+
             'concernpersondesig' => $concernpersondesig,
             'concernPersonName' => $concernPersonName,
         ];
 
         return $data;
     }
+
+
 
     public static function AppealCaseAllDetails($caseId)
     {
@@ -78,10 +78,6 @@ class AppealGovCaseRegisterRepository
     {
 
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
-        $caseOriginNum = '';
-        if ($caseInfo->case_number_origin) {
-            $caseOriginNum = GovCaseRegister::where('id', $caseInfo->case_number_origin)->first()->case_no;
-        }
 
         $petitioner_name = '';
         if ($caseInfo->appeal_office == 0) {
@@ -118,7 +114,7 @@ class AppealGovCaseRegisterRepository
 
                 $case->case_category_origin = $caseInfo->case_category_origin;
 
-                $case->case_number_origin = $caseOriginNum;
+                $case->case_number_origin = $caseInfo->case_number_origin;
 
                 $case->case_origin_id = $caseInfo->case_number_origin;
             } else {
@@ -143,16 +139,30 @@ class AppealGovCaseRegisterRepository
         return $caseId;
     }
 
+
     public static function storeAppealAdalat($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->appeal_adalat as $key => $val) {
             if ($caseInfo->appeal_adalat[$key] != null) {
-                $appealadalat = new GovCaseAppealAdalat();
-                $appealadalat->gov_case_id = $govCaseId;
-                $appealadalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
-                $appealadalat->save();
+                $appealAdalat = self::checkHighcourtAdalatExist($caseInfo->appeal_adalat_id[$key]);
+                $appealAdalat->gov_case_id = $govCaseId;
+                $appealAdalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
+                $appealAdalat->save();
             }
         }
+    }
+
+    public static function checkHighcourtAdalatExist($appealAdalatId)
+    {
+        if (isset($appealAdalatId)) {
+
+            $appealAdalat = GovCaseAppealAdalat::find($appealAdalatId);
+        } else {
+
+            $appealAdalat = new GovCaseAppealAdalat();
+        }
+
+        return $appealAdalat;
     }
 
     public static function storeConcernPerson($caseInfo, $govCaseId)
@@ -343,44 +353,65 @@ class AppealGovCaseRegisterRepository
         return $updatedVal;
     }
 
-    // public static function storeAppealGovCase($caseInfo, $id)
-    // {
-    //     $case = self::checkGovCaseExist($caseInfo['caseId']);
-    //     $oldcase = self::checkGovCaseExist($id);
-    //     // dd($oldcase->case_no);
+    public static function storeAppealOrderTaken($caseInfo)
+    {
+        // $case = self::creatingObjectModel($caseInfo['case_id']);
+        $goveCaseId = ($caseInfo['case_id']);
+        $case = new AppealOrderTaken();
 
-    //     try {
-    //         $case->case_no = $caseInfo->case_no;
-    //         $case->court_id = $caseInfo->court;
-    //         $case->action_user_id = userInfo()->id;
-    //         $case->action_user_role_id = userInfo()->role_id;
-    //         $case->create_by = userInfo()->id;
-    //         $case->year = $caseInfo->case_year;
-    //         $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-    //         $case->case_division_id = $caseInfo->case_department;
-    //         $case->case_category_id = $caseInfo->case_category;
-    //         $case->concern_person_designation = $caseInfo->concern_person_designation;
-    //         $case->concern_user_id = $caseInfo->concern_user_id;
-    //         $case->subject_matter = $caseInfo->subject_matter;
-    //         $case->postponed_details = $caseInfo->postponed_details;
-    //         $case->interim_order = $caseInfo->interim_order;
-    //         $case->important_cause = $caseInfo->important_cause;
-    //         $case->arji_file = null;
-    //         $case->status = 1;
-    //         $case->gov_case_ref_id = $id;
-    //         $case->ref_gov_case_no = $oldcase->case_no;
-    //         $case->case_status_id = 43;
-    //         if ($case->save()) {
-    //             $caseId = $case->id;
-    //             $oldcase->is_appeal = 1;
-    //             $oldcase->save();
-    //         }
-    //     } catch (\Exception $e) {
-    //         dd($e);
-    //         $caseId = null;
-    //     }
-    //     return $caseId;
-    // }
+        // if ($caseInfo->appeal_submission_requesting_date != null && $caseInfo->appeal_submission_requesting_date != '') {
+        //     $appeal_against_postpond_interim_order_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_against_postpond_interim_order_date)));
+        // } else {
+        //     $appeal_against_postpond_interim_order_date = null;
+        // }
+        if ($caseInfo->appeal_submission_requesting_date != null && $caseInfo->appeal_submission_requesting_date != '') {
+            $appeal_submission_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_submission_requesting_date)));
+        } else {
+            $appeal_submission_requesting_date = null;
+        }
+        if ($caseInfo->tamil_requesting_date != null && $caseInfo->tamil_requesting_date != '') {
+            $tamil_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->tamil_requesting_date)));
+        } else {
+            $tamil_requesting_date = null;
+        }
+
+        // if ($case->postponed_interim_have == 0) {
+        //     $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+        // }
+
+        // if ($case->postponed_interim_data_details == null) {
+        //     $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
+        // }
+
+        try {
+            $case->order_tamil_decision_taken = $caseInfo->order_tamil_decision_taken;
+            $case->order_tamil_decision_data_details = $caseInfo->order_tamil_decision_data_details;
+            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;
+            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
+            $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
+            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
+            // $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
+            $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
+            // $case->postponed_order = $caseInfo->postponed_order;
+            // $case->appeal_against_postpond_interim_order = $caseInfo->appeal_against_postpond_interim_order;
+            // $case->postponed_details = $caseInfo->postponed_details;
+            // $case->appeal_against_postpond_interim_order_details = $caseInfo->appeal_against_postpond_interim_order_details;
+            // $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial;
+            // $case->tamil_requesting_date = $tamil_requesting_date;
+            // $case->interim_order = $caseInfo->interim_order;
+            // $case->interim_order_details = $caseInfo->interim_order_details;
+            $case->gov_case_id = $goveCaseId;
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
 
     public static function checkAppealGovCaseExist($caseId)
     {

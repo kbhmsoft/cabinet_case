@@ -2810,21 +2810,18 @@ class GovCaseRegisterController extends Controller
 
     public function caseGeneralInfoForEdit(Request $request)
     {
-        
+
         $caseNo = $request->case_no;
         $mainRespondent = $request->input('main_respondent');
-        
-        $id = $request->case_id;
-        // dd($id);
-        // dd($request->all());
 
+        $id = $request->case_id;
         $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-        if (userInfo()->role_id != 27) {
-            GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
-        }
+        // if (userInfo()->role_id != 27) {
+        //     GovCaseBadiBibadiRepository::storeMainBibadi($request, $id);
+        // }
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -3122,7 +3119,6 @@ class GovCaseRegisterController extends Controller
     public function orderTakenStore(Request $request)
     {
 
-        // dd($request->all());
         $caseId = $request->case_id;
         $request->validate(
             [
@@ -3444,16 +3440,16 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
-        
+
         $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-       
+
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
         $data['page_title'] = 'মামলা সংশোধন';
-        // return $data;
+
         return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
@@ -4932,5 +4928,33 @@ class GovCaseRegisterController extends Controller
             ->update($data);
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
+    }
+
+
+    public function adalatDelete($id)
+    {
+        $Value = DB::table('gov_case_highcourt_adalats')
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json(['message' => 'সফল ভাবে মুছে ফেলা হয়েছে']);
+    }
+
+    public function advocateDelete($id)
+    {
+        $Value = DB::table('gov_case_concern_persons')
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json(['message' => 'সফল ভাবে মুছে ফেলা হয়েছে']);
+    }
+
+    public function otherBibadiDelete($id)
+    {
+        $Value = DB::table('gov_case_bibadis')
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json(['message' => 'সফল ভাবে মুছে ফেলা হয়েছে']);
     }
 }

@@ -58,10 +58,10 @@ class ViewServiceProvider extends AppServiceProvider
                 ->where('deleted_at', null)
                 ->count();
 
-            $total_appeal = AppealGovCaseRegister::whereIn('appeal_office_id', $finalOfficeIds)
+            $total_appeal = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
                 ->where('deleted_at', null)
                 ->count();
-
+          
             $total_case = $total_highcourt + $total_appeal;
 
             if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {
@@ -72,7 +72,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->where('deleted_at', null)
                     ->count();
 
-                $total_appeal = AppealGovCaseRegister::where('appeal_office_id', $officeID)
+                $total_appeal = AppealGovCaseRegister::where('created_by_office', $officeID)
                     ->where('deleted_at', null)
                     ->count();
 
