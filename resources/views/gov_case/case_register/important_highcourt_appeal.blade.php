@@ -127,7 +127,7 @@
                                 <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
                                 <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td>
                                 <td style="text-align:center;">
-                                    {{ App\Models\gov_case\GovCaseOffice::find($row->appeal_office_id)->office_name_bn }}
+                                   {{ $row->govOffice ? $row->govOffice->office_name_bn : '' }}
                                 </td>
 
                                 <?php
