@@ -63,6 +63,9 @@ Route::get('/view-clear', function () {
     return '<h1>View cache cleared</h1>';
 });
 
+Route::middleware('prevent-back-history')->group(function () {
+
+
 Route::post('/login', [LoginController::class, 'doptorLogin'])->name('doptor.login');
 Route::get('/doptor/login', [LoginController::class, 'initiateSSOLogin'])->name('sso.login');
 Route::any('/nothi/callback', [LoginController::class, 'ndoptor_sso_callback']);
@@ -194,4 +197,6 @@ Route::middleware('auth')->group(function () {
 
     // Route::post('storeApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'store'])
     //     ->name('storeApplicationForm.store');
+});
+
 });
