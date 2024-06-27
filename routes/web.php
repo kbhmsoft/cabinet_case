@@ -63,7 +63,7 @@ Route::get('/view-clear', function () {
     return '<h1>View cache cleared</h1>';
 });
 
-Route::middleware('prevent-back-history')->group(function () {
+
 
 
 Route::post('/login', [LoginController::class, 'doptorLogin'])->name('doptor.login');
@@ -83,6 +83,7 @@ Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('noti
 Route::get('all-notice', [NoticeController::class, 'show'])->name('notices.details');
 Route::resource('notices', NoticeController::class);
 
+Route::middleware('prevent-back-history')->group(function () {
 Route::middleware('auth')->group(function () {
     // setting
     Route::get('site_setting', [SiteSettingController::class, 'edit'])->name('app.setting.index');
