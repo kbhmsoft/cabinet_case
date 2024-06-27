@@ -80,7 +80,7 @@
                         &nbsp;
                         <a href="{{ route('cabinet.case.highcourtDetailsPdf', $case->id) }}"
                             class="btn btn-sm btn-primary font-weight-bolder" target="_blank">
-                            <i class="la la-plus"></i>পিডিএফ দেখুন
+                            <i class="fas fa-file-pdf"></i>পিডিএফ দেখুন
                         </a>
                     </th>
                 </tr>
