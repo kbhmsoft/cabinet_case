@@ -19,7 +19,7 @@ use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('preventBackHistory')->group(function () {
+Route::middleware('prevent-back-history')->group(function () {
 
     Route::middleware('auth')->group(function () {
 
