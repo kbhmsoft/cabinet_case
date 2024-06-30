@@ -2802,7 +2802,7 @@ class GovCaseRegisterController extends Controller
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-       
+
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -3396,6 +3396,7 @@ class GovCaseRegisterController extends Controller
 
     public function highcourt_edit($id)
     {
+
         $roleID = userInfo()->role_id;
 
         $officeID = userInfo()->office_id;

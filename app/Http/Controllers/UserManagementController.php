@@ -58,7 +58,7 @@ class UserManagementController extends Controller
             ->select('id', 'name')
             ->whereNotIn('id', $role)
             ->get();
-    
+
         if ($roleID == 1 || $roleID == 2 || $roleID == 3 || $roleID == 4) {
             $data['offices'] = DB::table('office')
                 ->leftJoin('district', 'office.district_id', '=', 'district.id')
@@ -90,11 +90,12 @@ class UserManagementController extends Controller
         // dd($request->all());
         $request->validate([
             'name' => 'required',
-            'role_id' => 'required', 'unique:users',
+            'role_id' => 'required',
             'office_id' => 'required',
             /*'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
             'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users', */
             'password' => 'required',
+            'mobile_no' => 'required', 'unique:users',
         ],
             [
                 'name.required' => 'পুরো নাম লিখুন',
@@ -102,12 +103,13 @@ class UserManagementController extends Controller
                 'role_id.required' => 'ভূমিকা নির্বাচন করুন',
                 'office_id.required' => 'অফিস নির্বাচন করুন',
                 'password.required' => 'পাসওয়ার্ড লিখুন',
+                'mobile_no.required' => 'মোবাইল নাম্বার লিখুন',
             ]);
 
         DB::table('users')->insert([
             'name' => $request->name,
             'mobile_no' => $request->mobile_no,
-            'email' => $request->email,
+            'email' => $request->email ?? null,
             'role_id' => $request->role_id,
             'office_id' => $request->office_id,
             'is_gov' => 1,

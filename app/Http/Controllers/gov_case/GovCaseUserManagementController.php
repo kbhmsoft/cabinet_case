@@ -429,7 +429,7 @@ class GovCaseUserManagementController extends Controller
                 'ministry' => 'nullable',
                 'div_office' => 'nullable',
                 'role_id' => 'required',
-                'email' => 'required|unique:users,email',
+                'email' => 'nullable|unique:users,email',
                 'mobile_no' => 'required|unique:users,mobile_no',
                 'office_id' => 'required',
                 'password' => [
@@ -444,7 +444,7 @@ class GovCaseUserManagementController extends Controller
             [
                 'name.required' => 'পুরো নাম লিখুন',
                 'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
-                'email.required' => 'ইমেইল লিখুন',
+                // 'email.required' => 'ইমেইল লিখুন',
                 'mobile_no.unique' => 'মোবাইল নাম্বারটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
                 'role_id.required' => 'ভূমিকা নির্বাচন করুন',
                 'office_id.required' => 'অফিস নির্বাচন করুন',
