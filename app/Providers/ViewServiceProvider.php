@@ -61,7 +61,7 @@ class ViewServiceProvider extends AppServiceProvider
             $total_appeal = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
                 ->where('deleted_at', null)
                 ->count();
-          
+
             $total_case = $total_highcourt + $total_appeal;
 
             if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {
@@ -91,10 +91,10 @@ class ViewServiceProvider extends AppServiceProvider
             }
 
             // Query to get the count of distinct case numbers for high court applications
-            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->distinct('case_no')->count('case_no');
+            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->where('is_answered',null)->count();
 
             // Query to get the count of distinct case numbers for appeal applications
-            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->distinct('case_no')->count('case_no');
+            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->where('is_answered',null)->count();
 
             $view->with([
                 'total_highcourt' => $total_highcourt,

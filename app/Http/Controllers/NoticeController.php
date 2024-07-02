@@ -86,7 +86,7 @@ class NoticeController extends Controller
     }
 
 
-    public function show($id)
+    public function show()
     {
         $notices = Notice::latest()->paginate(10);
 

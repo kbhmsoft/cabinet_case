@@ -2574,8 +2574,6 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-
-
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
