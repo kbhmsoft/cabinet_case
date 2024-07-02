@@ -20,7 +20,8 @@ class ApplicationFormAsMainDefendent extends Model
         'case_category_type',
         'main_defendant_comments',
         'main_defendant_pdf',
-        'office_id'
+        'office_id',
+        'is_answered'
     ];
 
     public function category(){
