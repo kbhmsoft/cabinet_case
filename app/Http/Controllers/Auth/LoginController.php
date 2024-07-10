@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends BaseController
 {
@@ -103,10 +104,15 @@ class LoginController extends BaseController
 
     public function ndoptor_sso_callback(Request $request)
     {
+        // Log the initial request for debugging
+        Log::info('ndoptor_sso_callback called with data: ' . $request->data);
+
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
         $token = '';
+
         if (!isset($data['token'])) {
+            Log::warning('Token not found in the callback data');
             return redirect()->route('doptor.login');
         } else {
             $token = $data['token'];
@@ -114,8 +120,8 @@ class LoginController extends BaseController
 
         session(['bearerToken' => $token]);
 
+        // Initialize cURL
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/user/me',
             CURLOPT_RETURNTRANSFER => true,
@@ -128,112 +134,217 @@ class LoginController extends BaseController
             CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Accept: application/json', 'api-version: 1', 'Authorization: Bearer ' . $token],
         ));
 
+        // Execute cURL request
         $response = curl_exec($curl);
-
+        if (curl_errno($curl)) {
+            Log::error('cURL error: ' . curl_error($curl));
+            curl_close($curl);
+            return redirect()->route('doptor.login')->with('error', 'Failed to retrieve user information.');
+        }
         curl_close($curl);
-        $response = json_decode($response);
-      
-        $employeData = $response->data->user->employee_record_id;
 
+        $response = json_decode($response);
+        if (!isset($response->status) || $response->status != 'success') {
+            Log::warning('API response status not successful: ' . json_encode($response));
+            return redirect()->route('doptor.login')->with('error', 'Invalid response from the API.');
+        }
+
+        $employeData = $response->data->user->employee_record_id;
         $doptoEmployeeUserImage = $this->doptorUserImage($employeData);
         $data['doptoEmployeeUserImage'] = json_decode($doptoEmployeeUserImage);
 
-        if ($response->status == 'success') {
-            if (end($response->data->organogram_info)) {
-                $id = end($response->data->organogram_info)->id;
-            } else {
-                return redirect()->route('sso.logout')->with('message', 'Information not found.');
-            }
-
-            $userInformationa = $response->data;
-            $organogramId = key($userInformationa->organogram_info);
-
-            $organoGramUserInfo = DB::table('doptor_user_managements')
-                ->select('id', 'organogram_id', 'user_role')
-                ->where('doptor_user_managements.organogram_id', $id)
-                ->first();
-
-            if ($id && $organoGramUserInfo && $organoGramUserInfo->user_role && $organoGramUserInfo->user_role != 42) {
-                $userInfo = $response->data->user;
-                $userEmployeeData = $response->data->employee_info;
-                $userOfficeInfo = end($response->data->office_info);
-
-                $userData = [
-                    'name' => $userEmployeeData->name_bng,
-                    'username' => $userInfo->user_alias,
-                    'mobile_no' => $userEmployeeData->personal_mobile,
-                    'email' => $userEmployeeData->personal_email,
-                    'ministry' => $userOfficeInfo->office_ministry_id,
-                    'signature' => null,
-                    'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
-                    'role_id' => $organoGramUserInfo->user_role,
-                    'office_id' => $userOfficeInfo->office_id,
-                    'is_gov' => 1,
-                    'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-                    'unit_name_bn' => $userOfficeInfo->unit_name_bn,
-                    'designation' => $userOfficeInfo->designation,
-                    'organogram_id' => $organogramId ?? null,
-                    'employee_record_id' => $userInfo->employee_record_id ?? null,
-                ];
-
-                User::updateOrInsert(
-                    ['doptor_user_id' => $userInfo->id],
-                    $userData
-                );
-
-                $user = User::where('doptor_user_id', $userInfo->id)->first();
-                if ($organoGramUserInfo->user_role) {
-                    $user->syncRoles([]);
-                    $role = Role::find($organoGramUserInfo->user_role);
-                    $user->assignRole($role);
-                }
-
-                Auth::loginUsingId($user->id);
-                return redirect()->route('dashboard');
-
-            } else if ($id && (!$organoGramUserInfo || !$organoGramUserInfo->user_role)) {
-
-                $userInfo = $response->data->user;
-                $userInformationa = $response->data;
-                $userEmployeeData = $response->data->employee_info;
-                $userOfficeInfo = end($response->data->office_info);
-                $organogramId = key($userInformationa->organogram_info);
-
-                $userData = [
-                    'name' => $userEmployeeData->name_bng,
-                    'username' => $userInfo->user_alias,
-                    'mobile_no' => $userEmployeeData->personal_mobile,
-                    'email' => $userEmployeeData->personal_email,
-                    'ministry' => $userOfficeInfo->office_ministry_id,
-                    'signature' => null,
-                    'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
-                    'role_id' => 43,
-                    'office_id' => $userOfficeInfo->office_id,
-                    'is_gov' => 1,
-                    'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
-                    'unit_name_bn' => $userOfficeInfo->unit_name_bn,
-                    'designation' => $userOfficeInfo->designation,
-                    'organogram_id' => $organogramId ?? null,
-                    'employee_record_id' => $userInfo->employee_record_id ?? null,
-                ];
-
-                User::updateOrInsert(
-                    ['doptor_user_id' => $userInfo->id],
-                    $userData
-                );
-
-                // Retrieve the user after update/insert
-                $user = User::where('doptor_user_id', $userInfo->id)->first();
-                if ($organoGramUserInfo && $organoGramUserInfo->user_role) {
-                    $role = Role::find($organoGramUserInfo->user_role);
-                    $user->assignRole($role);
-                }
-                Auth::loginUsingId($user->id);
-
-                return redirect()->route('dashboard');
-            }
+        if (end($response->data->organogram_info)) {
+            $id = end($response->data->organogram_info)->id;
+        } else {
+            return redirect()->route('sso.logout')->with('message', 'Information not found.');
         }
+
+        $userInformationa = $response->data;
+        $organogramId = key($userInformationa->organogram_info);
+
+        $organoGramUserInfo = DB::table('doptor_user_managements')
+            ->select('id', 'organogram_id', 'user_role')
+            ->where('doptor_user_managements.organogram_id', $id)
+            ->first();
+
+        // Check if office_info is an array and access its elements correctly
+        $officeInfo = end($response->data->office_info);
+        if (is_array($officeInfo)) {
+            $officeMinistryId = $officeInfo['office_ministry_id'];
+            $officeId = $officeInfo['office_id'];
+            $unitNameBn = $officeInfo['unit_name_bn'];
+            $designation = $officeInfo['designation'];
+        } else {
+            $officeMinistryId = $officeInfo->office_ministry_id;
+            $officeId = $officeInfo->office_id;
+            $unitNameBn = $officeInfo->unit_name_bn;
+            $designation = $officeInfo->designation;
+        }
+
+        $userData = [
+            'name' => $response->data->employee_info->name_bng,
+            'username' => $response->data->user->user_alias,
+            'mobile_no' => $response->data->employee_info->personal_mobile,
+            'email' => $response->data->employee_info->personal_email,
+            'ministry' => $officeMinistryId,
+            'signature' => null,
+            'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
+            'role_id' => $organoGramUserInfo->user_role ?? 43,
+            'office_id' => $officeId,
+            'is_gov' => 1,
+            'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+            'unit_name_bn' => $unitNameBn,
+            'designation' => $designation,
+            'organogram_id' => $organogramId ?? null,
+            'employee_record_id' => $response->data->user->employee_record_id ?? null,
+        ];
+
+        User::updateOrInsert(['doptor_user_id' => $response->data->user->id], $userData);
+
+        $user = User::where('doptor_user_id', $response->data->user->id)->first();
+        if ($organoGramUserInfo && $organoGramUserInfo->user_role) {
+            $user->syncRoles([]);
+            $role = Role::find($organoGramUserInfo->user_role);
+            $user->assignRole($role);
+        }
+
+        Auth::loginUsingId($user->id);
+        return redirect()->route('dashboard');
     }
+
+    // public function ndoptor_sso_callback(Request $request)
+    // {
+    //     $data_get_method = $request->data;
+    //     $data = json_decode(base64_decode($request->data), true);
+    //     $token = '';
+    //     if (!isset($data['token'])) {
+    //         return redirect()->route('doptor.login');
+    //     } else {
+    //         $token = $data['token'];
+    //     }
+
+    //     session(['bearerToken' => $token]);
+
+    //     $curl = curl_init();
+
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/user/me',
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING => '',
+    //         CURLOPT_MAXREDIRS => 10,
+    //         CURLOPT_TIMEOUT => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //         CURLOPT_CUSTOMREQUEST => 'POST',
+    //         CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Accept: application/json', 'api-version: 1', 'Authorization: Bearer ' . $token],
+    //     ));
+
+    //     $response = curl_exec($curl);
+
+    //     curl_close($curl);
+    //     $response = json_decode($response);
+
+    //     $employeData = $response->data->user->employee_record_id;
+
+    //     $doptoEmployeeUserImage = $this->doptorUserImage($employeData);
+    //     $data['doptoEmployeeUserImage'] = json_decode($doptoEmployeeUserImage);
+
+    //     if ($response->status == 'success') {
+    //         if (end($response->data->organogram_info)) {
+    //             $id = end($response->data->organogram_info)->id;
+    //         } else {
+    //             return redirect()->route('sso.logout')->with('message', 'Information not found.');
+    //         }
+
+    //         $userInformationa = $response->data;
+    //         $organogramId = key($userInformationa->organogram_info);
+
+    //         $organoGramUserInfo = DB::table('doptor_user_managements')
+    //             ->select('id', 'organogram_id', 'user_role')
+    //             ->where('doptor_user_managements.organogram_id', $id)
+    //             ->first();
+
+    //         if ($id && $organoGramUserInfo && $organoGramUserInfo->user_role && $organoGramUserInfo->user_role != 42) {
+    //             $userInfo = $response->data->user;
+    //             $userEmployeeData = $response->data->employee_info;
+    //             $userOfficeInfo = end($response->data->office_info);
+
+    //             $userData = [
+    //                 'name' => $userEmployeeData->name_bng,
+    //                 'username' => $userInfo->user_alias,
+    //                 'mobile_no' => $userEmployeeData->personal_mobile,
+    //                 'email' => $userEmployeeData->personal_email,
+    //                 'ministry' => $userOfficeInfo->office_ministry_id,
+    //                 'signature' => null,
+    //                 'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
+    //                 'role_id' => $organoGramUserInfo->user_role,
+    //                 'office_id' => $userOfficeInfo->office_id,
+    //                 'is_gov' => 1,
+    //                 'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+    //                 'unit_name_bn' => $userOfficeInfo->unit_name_bn,
+    //                 'designation' => $userOfficeInfo->designation,
+    //                 'organogram_id' => $organogramId ?? null,
+    //                 'employee_record_id' => $userInfo->employee_record_id ?? null,
+    //             ];
+
+    //             User::updateOrInsert(
+    //                 ['doptor_user_id' => $userInfo->id],
+    //                 $userData
+    //             );
+
+    //             $user = User::where('doptor_user_id', $userInfo->id)->first();
+    //             if ($organoGramUserInfo->user_role) {
+    //                 $user->syncRoles([]);
+    //                 $role = Role::find($organoGramUserInfo->user_role);
+    //                 $user->assignRole($role);
+    //             }
+
+    //             Auth::loginUsingId($user->id);
+    //             return redirect()->route('dashboard');
+
+    //         } else if ($id && (!$organoGramUserInfo || !$organoGramUserInfo->user_role)) {
+
+    //             $userInfo = $response->data->user;
+    //             $userInformationa = $response->data;
+    //             $userEmployeeData = $response->data->employee_info;
+    //             $userOfficeInfo = end($response->data->office_info);
+    //             $organogramId = key($userInformationa->organogram_info);
+
+    //             $userData = [
+    //                 'name' => $userEmployeeData->name_bng,
+    //                 'username' => $userInfo->user_alias,
+    //                 'mobile_no' => $userEmployeeData->personal_mobile,
+    //                 'email' => $userEmployeeData->personal_email,
+    //                 'ministry' => $userOfficeInfo->office_ministry_id,
+    //                 'signature' => null,
+    //                 'profile_image' => $data['doptoEmployeeUserImage']->data[0]->image ?? null,
+    //                 'role_id' => 43,
+    //                 'office_id' => $userOfficeInfo->office_id,
+    //                 'is_gov' => 1,
+    //                 'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+    //                 'unit_name_bn' => $userOfficeInfo->unit_name_bn,
+    //                 'designation' => $userOfficeInfo->designation,
+    //                 'organogram_id' => $organogramId ?? null,
+    //                 'employee_record_id' => $userInfo->employee_record_id ?? null,
+    //             ];
+
+    //             User::updateOrInsert(
+    //                 ['doptor_user_id' => $userInfo->id],
+    //                 $userData
+    //             );
+
+    //             // Retrieve the user after update/insert
+    //             $user = User::where('doptor_user_id', $userInfo->id)->first();
+    //             if ($organoGramUserInfo && $organoGramUserInfo->user_role) {
+    //                 $role = Role::find($organoGramUserInfo->user_role);
+    //                 $user->assignRole($role);
+    //             }
+    //             Auth::loginUsingId($user->id);
+
+    //             return redirect()->route('dashboard');
+    //         }
+    //     }
+    // }
 
     public static function logout_doptor()
     {
