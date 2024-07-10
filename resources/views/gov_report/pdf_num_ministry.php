@@ -191,13 +191,13 @@
                 <div class="col-12 text-center float-left">
 
                     <?php
-                        if (isset($officeData) && !empty($officeData)) {
-                            echo $officeName . ',';
-                        }
-                        // else {
-                        //     echo auth()->user()->govOffice->office_name_bn;
-                        // }
-                        ?>
+if (isset($officeData) && !empty($officeData)) {
+    echo $officeName . ',';
+}
+// else {
+//     echo auth()->user()->govOffice->office_name_bn;
+// }
+?>
                     গণপ্রজাতন্ত্রী বাংলাদেশ সরকার<br></p>
                 </div>
 
@@ -225,7 +225,7 @@
                         <th class="text-center">বিবেচ্য সময়কালে<br> দায়েরকৃত মামলার সংখ্যা</th>
                         <th class="text-center">বিবেচ্য সময়কালের <br>পূর্ব পর্যন্ত অনিস্পন্ন<br> মামলার সংখ্যা</th>
                         <th class="text-center">মামলার মোট সংখ্যা</th>
-                        <th class="text-center">বিবেচ্য সময়কালে<br> নিস্পত্তিকৃত মামলার সংখ্যা</th>
+                        <th class="text-center">বিবেচ্য সময়কালে<br> নিষ্পত্তিকৃত মামলার সংখ্যা</th>
                         <th class="text-center">সরকারের পক্ষে <br>রায়/আদেশ প্রদানকৃত মামলার সংখ্যা</th>
                         <th class="text-center">সরকারের বিপক্ষে <br>রায়/আদেশ প্রদানকৃত মামলার সংখ্যা</th>
                         <th class="text-center">সরকারের পক্ষ হতে<br>দায়েরকৃত আপিল/রিভিউ/রিভিশন<br>মামলার সংখ্যা</th>
@@ -236,17 +236,17 @@
                 <tbody>
                 <tbody>
                     <?php
-                    $totalCases = $totalDateBetween = $totalPrevUndoneCases = $totalDoneCases = $totalFavouredGov = $totalAgainstGov = $totalLastWorkDay = $totalFavouredGovAppeal = 0;
-                    foreach ($ministryWiseData as $key => $value) {
-                        $totalCases += $value->totalCase;
-                        $totalDateBetween += $value->dateBetween;
-                        $totalPrevUndoneCases += $value->prevUndoneCase;
-                        $totalDoneCases += $value->doneCase;
-                        $totalFavouredGov += $value->favouredGov;
-                        $totalAgainstGov += $value->againstGov;
-                        $totalLastWorkDay += $value->lastWorkDay;
-                        $totalFavouredGovAppeal += $value->favouredGovAppeal;
-                        ?>
+$totalCases = $totalDateBetween = $totalPrevUndoneCases = $totalDoneCases = $totalFavouredGov = $totalAgainstGov = $totalLastWorkDay = $totalFavouredGovAppeal = 0;
+foreach ($ministryWiseData as $key => $value) {
+    $totalCases += $value->totalCase;
+    $totalDateBetween += $value->dateBetween;
+    $totalPrevUndoneCases += $value->prevUndoneCase;
+    $totalDoneCases += $value->doneCase;
+    $totalFavouredGov += $value->favouredGov;
+    $totalAgainstGov += $value->againstGov;
+    $totalLastWorkDay += $value->lastWorkDay;
+    $totalFavouredGovAppeal += $value->favouredGovAppeal;
+    ?>
                     <tr>
                         <td class="text-center"><?=en2bn($key + 1)?></td>
                         <td class="text-center"><?=en2bn($value->office_name_bn)?></td>

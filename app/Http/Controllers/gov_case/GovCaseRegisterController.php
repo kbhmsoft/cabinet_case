@@ -25,9 +25,9 @@ use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Repositories\gov_case\GovCaseLogRepository;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class GovCaseRegisterController extends Controller
 {
@@ -173,7 +173,6 @@ class GovCaseRegisterController extends Controller
             );
             // dd($cases);
         };
-
 
         if (!empty($_GET['case_category_type'])) {
             $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
@@ -373,7 +372,7 @@ class GovCaseRegisterController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিস্পত্তিকৃত মামলার তালিকা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিষ্পত্তিকৃত মামলার তালিকা';
         // return $data;
         return view('gov_case.case_register.attorney_highcourt_complete')->with($data);
     }
@@ -1435,7 +1434,7 @@ class GovCaseRegisterController extends Controller
         //   return $data['ministry'];
 
         // View
-        $data['page_title'] = 'হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে নিষ্পত্তিকৃত মামলা';
 
         return view('dashboard.cabinet.cabinet_admin_highcourt_complete_total_case')->with($data);
     }
@@ -1458,9 +1457,6 @@ class GovCaseRegisterController extends Controller
                 }
             );
         }
-
-
-
 
         if ($roleID == 29 || $roleID == 31) {
             $query->whereHas(
@@ -1508,7 +1504,6 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'সরকারের বিপক্ষে আপিলের জন্য
         পেন্ডিং মামলার তালিকা';
-
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -1903,7 +1898,7 @@ class GovCaseRegisterController extends Controller
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিস্পত্তিকৃত মামলার তালিকা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিষ্পত্তিকৃত মামলার তালিকা';
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -2545,13 +2540,10 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
-
-
 
         $data['page_title'] = 'হাইকোর্ট মামলা এন্ট্রি ';
 
@@ -2608,8 +2600,6 @@ class GovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-
-
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 1)->get();
@@ -2622,7 +2612,7 @@ class GovCaseRegisterController extends Controller
 
         $data['appealCourtAdalat'] = AppealAdalat::get();
 
-        $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
+        $data['page_title'] = 'নিষ্পত্তিকৃত আপিল মামলা এন্ট্রি ';
 
         return view('gov_case.appeal_case_register.create_old_appeal_case')->with($data);
     }
@@ -3420,9 +3410,7 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
-
         $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
@@ -3446,7 +3434,6 @@ class GovCaseRegisterController extends Controller
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
 
-
         $data['ministrys'] = GovCaseOffice::get();
 
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
@@ -3466,9 +3453,7 @@ class GovCaseRegisterController extends Controller
         }
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
-
         $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-
 
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
@@ -3525,7 +3510,7 @@ class GovCaseRegisterController extends Controller
 
         $data['highCourtAdalat'] = HighcourtAdalat::get();
 
-        $data['page_title'] = 'নিস্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি ';
+        $data['page_title'] = 'নিষ্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি ';
 
         return view('gov_case.case_register.create_old_highcourt_case')->with($data);
     }
@@ -3718,9 +3703,9 @@ class GovCaseRegisterController extends Controller
     {
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-            //     ->where('is_final_order', 1)
-            // // ->pluck("case_no", "id", "year");
-            //     ->where('leave_to_appeal_is_favour_of_gov', 1)
+        //     ->where('is_final_order', 1)
+        // // ->pluck("case_no", "id", "year");
+        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
 
         return json_encode($originCaseNumber);
@@ -3874,7 +3859,7 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         // if ($id != 45) {
-            $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
+        $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
         // } else {
         //     $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
         // }
@@ -4230,8 +4215,8 @@ class GovCaseRegisterController extends Controller
     {
         $query = GovCaseRegister::where('is_final_order', 0)->where('deleted_at', null)
             ->orderby('id', 'DESC')->whereHas('bibadis', function ($query) use ($id) {
-                $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
-            })->get();
+            $query->whereIn('respondent_id', $id)->where('is_main_bibadi', 1)->groupBy('gov_case_id');
+        })->get();
         return $query;
     }
 
@@ -4912,7 +4897,6 @@ class GovCaseRegisterController extends Controller
 
         return response()->json(['message' => 'ফাইলটি সফল ভাবে মুছে ফেলা হয়েছে']);
     }
-
 
     public function adalatDelete($id)
     {

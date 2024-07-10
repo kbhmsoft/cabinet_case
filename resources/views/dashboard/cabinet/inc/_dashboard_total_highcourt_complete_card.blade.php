@@ -9,7 +9,7 @@
                 <tr>
                     <th scope="col" width="30">#</th>
                     <th scope="col">অফিসের নাম</th>
-                    <th scope="col" style="text-align:center;">হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা</th>
+                    <th scope="col" style="text-align:center;">হাইকোর্ট বিভাগে নিষ্পত্তিকৃত মামলা</th>
                 </tr>
             </thead>
             <tbody>

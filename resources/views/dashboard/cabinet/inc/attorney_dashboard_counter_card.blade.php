@@ -48,7 +48,8 @@
 
     <div class="col-md-3">
         <div class="card-counter danger">
-            <a href="{{ route('cabinet.case.attorney.highcourt.running') }}"><i class="fa fas fa-layer-group text-white"></i></a>
+            <a href="{{ route('cabinet.case.attorney.highcourt.running') }}"><i
+                    class="fa fas fa-layer-group text-white"></i></a>
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.attorney.highcourt.running') }}"><?= en2bn($running_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
@@ -63,7 +64,8 @@
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.attorney.highcourt.complete') }}"><?= en2bn($final_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}">হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা</a></span>
+                <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}">হাইকোর্ট বিভাগে নিষ্পত্তিকৃত
+                    মামলা</a></span>
         </div>
     </div>
 </div>
@@ -87,7 +89,8 @@
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.attorney.appellateDivision.running') }}"><?= en2bn($running_appeal_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.attorney.appellateDivision.running') }}">আপিল বিভাগে চলমান মামলা</a></span>
+                <a href="{{ route('cabinet.case.attorney.appellateDivision.running') }}">আপিল বিভাগে চলমান
+                    মামলা</a></span>
         </div>
     </div>
 
@@ -98,7 +101,7 @@
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}"><?= en2bn($final_appeal_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}">আপিল বিভাগে নিস্পত্তিকৃত
+                <a href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}">আপিল বিভাগে নিষ্পত্তিকৃত
                     মামলা</a></span>
         </div>
     </div>

@@ -23,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
 
@@ -43,7 +43,7 @@
         <div class="card card-custom gutter-b example example-compact" style="width:100%">
             <div class="">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
-                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট/ মূল রেসপন্ডেন্ট অফিস কর্তৃক মামলা
+                <h5 class="form-short-title">(মামলার বিষয়বস্তুর সাথে সরাসরি সংশ্লিষ্ট অফিস কর্তৃক মামলা
                     এন্ট্রি করতে হবে। মামলার রেসপন্ডেন্ট তালিকাভুক্ত হলেও বিষয়বস্তুর সাথে সংশ্লিষ্টতা না থাকলে উক্ত মামলা
                     এন্ট্রি হতে বিরত থাকুন।)*</h5>
             </div>
@@ -59,15 +59,14 @@
             @endif
 
             <div id="tab_header_tabs tab-design" class="trainee_details_card_header course_details_new_tabs">
-                <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist">
-                    <li class="nav-item nav-li-padding" role="presentation">
+                <ul class="nav details_trainee_tab nav-tabs myTab" role="tablist" style="display: flex; justify-content: center; align-items: center;">
+                    <li class="nav-item nav-li-padding" role="presentation" style="font-size: 18px; padding: 8px;">
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
-                            role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br> তথ্য</a>
+                            role="tab" aria-controls="home" aria-selected="true" style="font-size: 18px; padding: 8px;">
+                            মামলার সাধারণ তথ্য
+                        </a>
                     </li>
-                    <li class="nav-item nav-li-padding" role="presentation">
-                        <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
-                            aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
-                    </li>
+                </ul>
             </div>
 
 

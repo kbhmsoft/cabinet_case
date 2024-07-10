@@ -118,7 +118,7 @@
         $('#badiDiv tr:last').after(items);
     }
 
-    
+
 
 
 
@@ -260,13 +260,17 @@
             // alert(count);
             var items = '';
             items += '<tr id="bibadi_' + count + '">';
-            items +='<td> <span class="form-control form-control-sm">'+count+'</span></td>'
-            items += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName('+count+')" id="other_respondent_'+count+'" class="form-control form-control-sm other_respondentCls">';
+            items += '<td> <span class="form-control form-control-sm">' + count + '</span></td>'
+            items += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + count +
+                ')" id="other_respondent_' + count + '" class="form-control form-control-sm other_respondentCls">';
             items += '<option value="">-- নির্বাচন করুন --</option>';
             items +=
                 '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
             items += '<option value="0">অন্যান্য</option>';
-            items += '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_'+count+'" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
+            items +=
+                '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' +
+                count +
+                '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
 
             items +=
@@ -1371,58 +1375,58 @@
 
     //Attachment Title Change  && vallidation
     function attachmentTitle(id, selectObject) {
-            // var fileType = document.getElementById('file_type' + id).value;
-            var fileType = $('#customFile'+id).val();
-            if (fileType != '') {
+        // var fileType = document.getElementById('file_type' + id).value;
+        var fileType = $('#customFile' + id).val();
+        if (fileType != '') {
 
-                //===================For CSS Change of Duynamic File Name =============//
-                $('#file_type' + id).css("background-color", "FFFFFF");
-                $('#file_type_error' + id).hide();
-                $('#file_type' + id).css("border-color", "#FFFFFF");
+            //===================For CSS Change of Duynamic File Name =============//
+            $('#file_type' + id).css("background-color", "FFFFFF");
+            $('#file_type_error' + id).hide();
+            $('#file_type' + id).css("border-color", "#FFFFFF");
 
-                console.log(selectObject.value);
-                var value = $('#customFile' + id)[0].files[0];
-                $('.custom-input' + id).text(value['name']);
+            console.log(selectObject.value);
+            var value = $('#customFile' + id)[0].files[0];
+            $('.custom-input' + id).text(value['name']);
 
-                var filePath = selectObject.value;
-                var fileData = selectObject;
-                if (typeof(fileData.files) != "undefined") {
-                    $('#file_error' + id).hide();
-                    $('.custom-input' + id).css("border-color", "#FFFFFF");
+            var filePath = selectObject.value;
+            var fileData = selectObject;
+            if (typeof(fileData.files) != "undefined") {
+                $('#file_error' + id).hide();
+                $('.custom-input' + id).css("border-color", "#FFFFFF");
 
-                    var size = parseFloat(fileData.files[0].size / 1024).toFixed(2);
-                    if (size > 5120) {
-                    // alert('Invalid file type');
-                        document.getElementById('customFile' + id).value = '';
-                        $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
-                        $('.custom-input' + id).css("border-color", "#FF0000");
-                        $('#file_error' + id).show();
-                        $('#file_error' + id).html('ফাইলের আকার 5MB এর বেশি');
-                        return false;
-                    }
-                } else {
-                    alert("This browser does not support HTML5.");
-                }
-
-                // Allowing file type
-                var allowedExtensions = /(\.pdf)$/i;
-
-                if (!allowedExtensions.exec(filePath)) {
+                var size = parseFloat(fileData.files[0].size / 1024).toFixed(2);
+                if (size > 5120) {
                     // alert('Invalid file type');
                     document.getElementById('customFile' + id).value = '';
                     $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
                     $('.custom-input' + id).css("border-color", "#FF0000");
                     $('#file_error' + id).show();
-                    $('#file_error' + id).html("পিডিএফ ফাইল নির্বাচন করুন");
+                    $('#file_error' + id).html('ফাইলের আকার 5MB এর বেশি');
                     return false;
                 }
             } else {
-                $('#file_type' + id).css("border-color", "#FF0000");
-                $('#file_type_error' + id).show();
-                $('#file_type_error' + id).html('ফাইলের নাম লিখুন');
+                alert("This browser does not support HTML5.");
             }
 
+            // Allowing file type
+            var allowedExtensions = /(\.pdf)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                // alert('Invalid file type');
+                document.getElementById('customFile' + id).value = '';
+                $('.custom-input' + id).html('ফাইল নির্বাচন করুন');
+                $('.custom-input' + id).css("border-color", "#FF0000");
+                $('#file_error' + id).show();
+                $('#file_error' + id).html("পিডিএফ ফাইল নির্বাচন করুন");
+                return false;
+            }
+        } else {
+            $('#file_type' + id).css("border-color", "#FF0000");
+            $('#file_type_error' + id).show();
+            $('#file_type_error' + id).html('ফাইলের নাম লিখুন');
         }
+
+    }
     //Attachment Title Change
     function replyAttachmentTitle(id) {
         var value = $('#customReplyFile' + id)[0].files[0];

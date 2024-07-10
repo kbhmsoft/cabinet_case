@@ -248,7 +248,7 @@
         cursor: pointer;
         text-align: center;
         transition: background-color 0.2s ease;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
         background-color: #f0f0f0;
     }
@@ -312,9 +312,11 @@
         padding-left: 10px;
         vertical-align: middle;
     }
-    .select2-selection{
+
+    .select2-selection {
         height: 40px !important;
     }
+
     #total_badi_number {
         font-size: 12px !important;
     }

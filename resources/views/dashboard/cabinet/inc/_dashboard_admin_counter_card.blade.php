@@ -145,7 +145,7 @@
                 <i class="fa fas fa-layer-group text-white"></i>
                 <span class="count-numbers"><?= en2bn($final_high_court_case) ?></span>
                 <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                    হাইকোর্ট বিভাগে নিস্পত্তিকৃত
+                    হাইকোর্ট বিভাগে নিষ্পত্তিকৃত
                     মামলা</span>
             </div>
         </a>
@@ -153,24 +153,24 @@
 
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.totalAppellateDivision') }}">
-        <div class="card-counter danger">
-           <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($total_appeal) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-              আপিল বিভাগে মোট মামলা</span>
-        </div>
-    </a>
+            <div class="card-counter danger">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($total_appeal) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    আপিল বিভাগে মোট মামলা</span>
+            </div>
+        </a>
     </div>
 
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.appellateDivisionRunning') }}">
-        <div class="card-counter danger">
-            <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($running_appeal_case) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-               আপিল বিভাগে চলমান মামলা</span>
-        </div>
-    </a>
+            <div class="card-counter danger">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($running_appeal_case) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    আপিল বিভাগে চলমান মামলা</span>
+            </div>
+        </a>
     </div>
 
 </div>
@@ -178,48 +178,48 @@
 <div class="row mb-5">
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.appellateDivisionComplete') }}">
-        <div class="card-counter info">
-            <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($final_appeal_case) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                আপিল বিভাগে নিস্পত্তিকৃত
+            <div class="card-counter info">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($final_appeal_case) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    আপিল বিভাগে নিষ্পত্তিকৃত
                     মামলা</span>
-        </div>
+            </div>
     </div>
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.appealCaseAgainstGovt') }}">
-        <div class="card-counter info">
-            <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($appealAgainstGovt) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                সরকারের বিপক্ষে আপিলের <br>জন্য
+            <div class="card-counter info">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($appealAgainstGovt) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    সরকারের বিপক্ষে আপিলের <br>জন্য
                     পেন্ডিং</span>
-        </div>
-    </a>
+            </div>
+        </a>
     </div>
 
 
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.sentToSolicitorCase') }}">
-        <div class="card-counter info">
-            <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($sent_to_solicitor_case) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-               জবাব পেন্ডিং</span>
-        </div>
-    </a>
+            <div class="card-counter info">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($sent_to_solicitor_case) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    জবাব পেন্ডিং</span>
+            </div>
+        </a>
     </div>
 
     <div class="col-md-3">
         <a href="{{ route('cabinet.case.againstCasePostponedOrder') }}">
-        <div class="card-counter info">
-           <i class="fa fas fa-layer-group text-white"></i>
-            <span class="count-numbers"><?= en2bn($against_postpond_order) ?></span>
-            <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                স্থগিতাদেশ অন্তর্বর্তীকালীন
+            <div class="card-counter info">
+                <i class="fa fas fa-layer-group text-white"></i>
+                <span class="count-numbers"><?= en2bn($against_postpond_order) ?></span>
+                <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
+                    স্থগিতাদেশ অন্তর্বর্তীকালীন
                     <br>পেন্ডিং মামলা</span>
-        </div>
-    </a>
+            </div>
+        </a>
     </div>
 
 </div>

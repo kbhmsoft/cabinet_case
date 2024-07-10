@@ -73,7 +73,7 @@
 				<div class="row">
 					<div class="col-12 text-center mb-10">
 						<div style="font-size:13px;"><u><?=$ministry->office_name_bn?><?=$page_title?></u></div>
-						<?php if($date_start != '1970-01-01'){?>
+						<?php if ($date_start != '1970-01-01') {?>
 						<div style="font-size:13px;"><u><?=en2bn($date_start)?> থেকে <?=en2bn($date_end)?></u></div>
 						<?php }?>
 					</div>
@@ -103,7 +103,7 @@
                         <td class="text-left mb-10" ><?=$doneCase?></td>
                     </tr>
                     <tr>
-						<th class="text-left mb-10" >সরকারের বিপক্ষে নিস্পত্তিকৃত মামলার সংখ্যা</th>
+						<th class="text-left mb-10" >সরকারের বিপক্ষে নিষ্পত্তিকৃত মামলার সংখ্যা</th>
                         <td class="text-left mb-10" ><?=$againstGov?></td>
                     </tr>
                     <tr>

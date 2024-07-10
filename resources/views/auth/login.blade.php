@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta charset="utf-8"/>
-<title>লগইন | {{ config('app.name') }}</title>
+    <meta charset="utf-8" />
+    <title>লগইন | {{ config('app.name') }}</title>
     <style>
-
-
         .login-page {
             width: 360px;
             padding: 8% 0 0;
@@ -113,21 +111,24 @@
         .container .info span .fa {
             color: #EF3B3A;
         }
+
         .small-text-danger {
             color: red;
-            font-size: 12px; /* Adjust the font size as needed */
+            font-size: 12px;
+            /* Adjust the font size as needed */
         }
+
         /* body {
             background: #76b852;
             /* fallback for old browsers */
-            /* background: rgb(141, 194, 111);
+        /* background: rgb(141, 194, 111);
             background: linear-gradient(90deg, rgba(141, 194, 111, 1) 0%, rgba(118, 184, 82, 1) 50%);
             font-family: "Roboto", sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale; */
         /* } */
     </style>
-    <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}"/>
+    <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" />
 </head>
 
 <body>
@@ -144,8 +145,8 @@
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
                     <input id="login" type="text"
-                           class="form-control placeholder-no-fix @error('login') is-invalid @enderror" name="login"
-                           placeholder="ইমেইল অথবা ফোন নম্বর" value="{{ old('login') }}" required autofocus />
+                        class="form-control placeholder-no-fix @error('login') is-invalid @enderror" name="login"
+                        placeholder="ইমেইল অথবা ফোন নম্বর" value="{{ old('login') }}" required autofocus />
                     @error('login')
                         <span class="small-text-danger" role="alert">
                             <strong>{{ $message }}</strong>
@@ -157,8 +158,8 @@
                 <div class="input-icon">
                     <i class="fa fa-lock"></i>
                     <input class="form-control placeholder-no-fix @error('password') is-invalid @enderror" required
-                           autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password"
-                           name="password" />
+                        autocomplete="current-password" type="password" placeholder="পাসওয়ার্ড" id="password"
+                        name="password" />
                     @error('password')
                         <span class="small-text-danger" role="alert">
                             <strong>{{ $message }}</strong>
@@ -168,25 +169,10 @@
             </div>
             <div class="form-actions otp-hidden submit_loader">
                 <button type="submit" id="submit" class="btn pull-right" onclick="buttonDisable()">
-                    <i class="a2i_gn_login2"></i> লগইন করুণ
+                    <i class="a2i_gn_login2"></i> লগইন করুন
                 </button>
             </div>
         </form>
-
-
-        {{-- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif --}}
-
-
-
-
 
 
     </div>
@@ -195,7 +181,8 @@
     <script src="{{ asset('/login_assets/global/plugins/jquery-migrate.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/login_assets/global/plugins/uniform/jquery.uniform.min.js') }}" type="text/javascript">
+    </script>
     <script src="{{ asset('/login_assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -208,7 +195,9 @@
     <script src="{{ asset('/login_assets/admin/pages/scripts/login-soft.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         function buttonDisable() {
-            $('.submit_loader').append('<b class="pull-right"><img src="{{ asset('media/loading/loading-load.gif') }}" style="width: 20px;" alt="" /></b>');
+            $('.submit_loader').append(
+                '<b class="pull-right"><img src="{{ asset('media/loading/loading-load.gif') }}" style="width: 20px;" alt="" /></b>'
+            );
             $('.submit_loader').append('<b class="pull-right">অপেক্ষা করুণ...</b>');
             $('#submit').hide();
             return true;

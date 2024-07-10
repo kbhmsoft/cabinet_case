@@ -277,7 +277,7 @@
                                                 </div>
 
 
-                                               
+
                                             </div>
 
                                             {{-- starting সংযুক্তি  --}}
@@ -286,7 +286,8 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রায় বাস্তবায়ন/ আপিল দায়ের সংক্রান্ত কপি সংযুক্ত করুন)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রায় বাস্তবায়ন/ আপিল দায়ের
+                                                                সংক্রান্ত কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>
@@ -309,7 +310,8 @@
                                                     </div>
                                                     <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5"
-                                                            id="orderTakenDecisionFileDiv" style="border:1px solid #dcd8d8;">
+                                                            id="orderTakenDecisionFileDiv"
+                                                            style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
                                                         </table>
                                                         <input type="hidden" id="order_taken_decision_attachment_count"

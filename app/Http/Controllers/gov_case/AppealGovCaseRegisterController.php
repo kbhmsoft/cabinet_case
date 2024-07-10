@@ -330,7 +330,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিস্পত্তিকৃত মামলার তালিকা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিষ্পত্তিকৃত মামলার তালিকা';
 
         return view('gov_case.case_register.highcourt')->with($data);
     }
@@ -1187,7 +1187,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
-        $data['page_title'] = 'নিস্পত্তিকৃত আপিল মামলা এন্ট্রি ';
+        $data['page_title'] = 'নিষ্পত্তিকৃত আপিল মামলা এন্ট্রি ';
         // return $data;
         return view('gov_case.appeal_case_register.create_old_appeal_case')->with($data);
     }
@@ -2073,7 +2073,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
         $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-        $data['page_title'] = 'আপিল বিভাগে নিস্পত্তিকৃত মামলা';
+        $data['page_title'] = 'আপিল বিভাগে নিষ্পত্তিকৃত মামলা';
 
         return view('dashboard.cabinet.cabinet_admin_appeal_complete_case')->with($data);
     }
@@ -2346,7 +2346,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['surveys'] = DB::table('survey_type')->select('id', 'st_name')->get();
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
-        $data['page_title'] = 'নিস্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি ';
+        $data['page_title'] = 'নিষ্পত্তিকৃত হাইকোর্ট মামলা এন্ট্রি ';
 
         return view('gov_case.case_register.create_old_highcourt_case')->with($data);
     }

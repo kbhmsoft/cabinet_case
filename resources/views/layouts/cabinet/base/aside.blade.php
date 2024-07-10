@@ -81,7 +81,7 @@
                                             aria-haspopup="true">
                                             <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
+                                                <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত হাইকোর্ট মামলা
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
@@ -120,7 +120,7 @@
                                         <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}"
                                             class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endif
@@ -144,7 +144,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endif
@@ -181,7 +181,7 @@
                                             <a href="{{ route('cabinet.case.appellateDivision.create.old') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা
+                                                <span class="menu-text font-weight-bolder"> নিষ্পত্তিকৃত আপিল মামলা
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
@@ -209,7 +209,7 @@
                                             <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                                <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                             </a>
                                         </li>
                                     @endif
@@ -240,6 +240,36 @@
                         </div>
                     </li>
                 @endcan
+
+
+                @can('administrative_tribrunal')
+                    <li class="menu-item {{ request()->is('cabinet/case/administrativeTribrunal') ? 'menu-item-open' : '' }}"
+                        aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>প্রশাসনিক
+                                ট্রাইব্যুনাল</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+                                @can('create_new_case')
+                                    <li class="menu-item {{ request()->is('cabinet/case/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal.create') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">প্রশাসনিক মামলা
+                                                এন্ট্রি</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+
+
 
                 @can('most_important_case_list')
                     <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourtAppeal/*') ? 'menu-item-open' : '' }}"
@@ -795,7 +825,7 @@
                     <li class="menu-item mt-2 has-treeview {{ request()->is('cabinet/case/highcourt/indexApplications*', 'cabinet/case/appeal/indexApplications*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল রেসপন্ডেন্ট 
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল রেসপন্ডেন্ট
                                 হিসেবে অন্তর্ভুক্তির আবেদন</span>
                             <i class="menu-arrow"></i>
                         </a>
