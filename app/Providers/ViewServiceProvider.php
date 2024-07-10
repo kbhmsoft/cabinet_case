@@ -58,9 +58,8 @@ class ViewServiceProvider extends AppServiceProvider
                 ->where('deleted_at', null)
                 ->count();
 
-            $total_appeal = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
-                ->where('deleted_at', null)
-                ->count();
+            $total_appeal = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
+            ->where('deleted_at', null)->count();
 
             $total_case = $total_highcourt + $total_appeal;
 
