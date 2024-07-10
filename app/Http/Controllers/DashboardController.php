@@ -518,7 +518,7 @@ class DashboardController extends Controller
                 }
             )->where('deleted_at', null)->count();
 
-            $data['total_appeal'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)->where('deleted_at', null)->count();
+            $data['total_appeal'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)->where('deleted_at', null)->count();
 
             $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
 
@@ -529,13 +529,13 @@ class DashboardController extends Controller
                 }
             )->where('status', 1)->where('deleted_at', null)->count();
 
-            $data['total_appeal_case'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
+            $data['total_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->where('deleted_at', null)->count();
 
-            $data['running_appeal_case'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
+            $data['running_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->where('is_final_order', null)->where('deleted_at', null)->count();
 
-            $data['final_appeal_case'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
+            $data['final_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->where('is_final_order', 1)->where('deleted_at', null)->count();
 
             $data['appealPending'] = GovCaseRegister::whereHas(
@@ -546,13 +546,13 @@ class DashboardController extends Controller
             )->where('result', 2)
                 ->where('is_appeal', 2)->where('deleted_at', null)->count();
 
-            $data['appeal_not_against_gov'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
+            $data['appeal_not_against_gov'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->whereNull('deleted_at')
                 ->where('is_final_order', 1)
                 ->where('result', 1)
                 ->count();
 
-            $data['appeal_against_gov'] = AppealGovCaseRegister::whereIn('created_by_office', $finalOfficeIds)
+            $data['appeal_against_gov'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->whereNull('deleted_at')
                 ->where('is_final_order', 1)
                 ->where('result', 2)
@@ -627,23 +627,6 @@ class DashboardController extends Controller
                 }
             )->whereNull('appeal_against_postpond_interim_order')->where('deleted_at', null)->count();
 
-            $data['five_years_running_highcourt_case'] = GovCaseRegister::whereHas(
-                'mainBibadis',
-                function ($query) use ($finalOfficeIds) {
-                    $query->whereIn('respondent_id', $finalOfficeIds);
-                }
-            )
-                ->where('is_final_order', 0)
-                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
-                ->orderBy('id', 'DESC')
-                ->where('deleted_at', null)->count();
-
-            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('created_by_office', $finalOfficeIds)
-                ->where('is_final_order', 0)
-                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
-                ->orderBy('id', 'DESC')
-                ->where('deleted_at', null)->count();
-
             $data['ministry'] = DB::table('gov_case_office')
                 ->where('gov_case_office.parent_office_id', $finalOfficeIds)
                 ->orwhere('doptor_office_id', $finalOfficeIds)
@@ -660,11 +643,7 @@ class DashboardController extends Controller
                 array_push($arrayd, $val);
             }
 
-            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-
-            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-
+        
             $data['page_title'] = 'মিনিস্ট্রি এডমিন সহকারীর ড্যাশবোর্ড';
 
             return view('dashboard.cabinet_new.min_admin')->with($data);
