@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\ApplicationFormAsMainDefendentController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
-use App\Http\Controllers\gov_case\AdalatHighCourtController;
-use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
-use App\Http\Controllers\gov_case\GovCaseActivityLogController;
-use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseOfficeController;
-use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\gov_case\GovCaseMessageController;
+use App\Http\Controllers\gov_case\AdalatHighCourtController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\ApplicationFormAsMainDefendentController;
+use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
+use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
-use App\Http\Controllers\gov_case\SumpremCourtController;
-use Illuminate\Support\Facades\Route;
 
 Route::middleware('prevent-back-history')->group(function () {
 
@@ -305,6 +306,13 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
                 Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
                 Route::post('appealOrderTakenStore', [AppealGovCaseRegisterController::class, 'appealOrderTakenStore'])->name('appealOrderTakenStore');
+
+
+              /////////////////////   AdministrativeTribrunalController/////////////////////////
+              Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
+
+
+
 
                 Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                     Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

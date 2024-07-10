@@ -86,7 +86,7 @@
 							<th class="text-center" >বিবেচ্য সময়কালের <br>পূর্ব পর্যন্ত অনিস্পন্ন<br> মামলার সংখ্যা</th>
 							<th class="text-center" >মামলার মোট সংখ্যা</th>
 							<th class="text-center" >বিবেচ্য সময়কালে<br> নিস্পন্ন মামলার সংখ্যা</th>
-							<th class="text-center" >সরকারের বিপক্ষে <br>নিস্পত্তিকৃত মামলার সংখ্যা</th>
+							<th class="text-center" >সরকারের বিপক্ষে <br>নিষ্পত্তিকৃত মামলার সংখ্যা</th>
 							<th class="text-center" >সরকারের বিপক্ষে <br>নিস্পত্তিক্রিত মামলায় <br>স্রঃপক্ষে দায়েরকৃত আপিল/ রিভিউ<br> রিভিসশন সংখ্যা</th>
 							<th class="text-center" >বিবেচ্য সময়কালে শেষ <br>করমদিবসে অনিস্পন্ন <br>মামলার সংখ্যা</th>
 							<th class="text-center" >গুরত্বপূর্ণ বিবেচিত<br> মামলার সংখ্যা</th>
@@ -94,18 +94,18 @@
 					</thead>
 					<tbody>
 						<?php
-                            foreach ($results as $key => $value) {
-						        ?>
+foreach ($results as $key => $value) {
+    ?>
                                 <tr>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>" class="text-center"><?=en2bn($key+1)?>.</td>
-                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor']) ?>"><?=$value['ministry_name_bn']?></td>
+                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>" class="text-center"><?=en2bn($key + 1)?>.</td>
+                                    <td rowspan="<?=count($value['doptor']) == 0 ? '' : count($value['doptor'])?>"><?=$value['ministry_name_bn']?></td>
                                     <?php
-                                    if(count($value['doptor']) != 0){
-                                        foreach ($value['doptor'] as $mk => $row) {
-                                            if($mk != 0){
-                                                echo '<tr>';
-                                            }
-                                            ?>
+if (count($value['doptor']) != 0) {
+        foreach ($value['doptor'] as $mk => $row) {
+            if ($mk != 0) {
+                echo '<tr>';
+            }
+            ?>
                                                 <td class="text-left" ><?=$row->doptor_name?></td>
                                                 <td class="text-left" ><?=$row->dateBetween?></td>
                                                 <td class="text-left" ><?=$row->prevUndoneCase?></td>
@@ -116,11 +116,11 @@
                                                 <td class="text-left" ><?=$row->lastWorkDay?></td>
                                                 <td class="text-left" ><?=$row->importantCase?></td>
                                             <?php
-                                            if($mk != 0){
-                                                echo '</tr>';
-                                            }
-                                        }
-                                    } else{ ?>
+if ($mk != 0) {
+                echo '</tr>';
+            }
+        }
+    } else {?>
                                         <td >-</td>
                                         <td >-</td>
                                         <td >-</td>
@@ -131,9 +131,10 @@
                                         <td >-</td>
                                         <td >-</td>
                                     <?php
-                                    } ?>
+}?>
                                 </tr>
-						<?php } ?>
+						<?php
+}?>
 					</tbody>
 
 				</table>

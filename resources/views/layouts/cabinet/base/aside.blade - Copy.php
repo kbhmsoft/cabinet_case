@@ -34,8 +34,8 @@
     </div>
     <!--end::Brand-->
     <?php
-    $roleID = Auth::user()->role_id;
-    ?>
+$roleID = Auth::user()->role_id;
+?>
     <!--begin::Aside Menu-->
     <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
         <!--begin::Menu Container-->
@@ -75,7 +75,7 @@
                                             aria-haspopup="true">
                                             <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
+                                                <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত হাইকোর্ট মামলা
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
@@ -114,7 +114,7 @@
                                         <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}"
                                             class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endif
@@ -147,7 +147,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                            <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endif
@@ -193,7 +193,7 @@
                                             <a href="{{ route('cabinet.case.appellateDivision.create.old') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder"> নিস্পত্তিকৃত আপিল মামলা
+                                                <span class="menu-text font-weight-bolder"> নিষ্পত্তিকৃত আপিল মামলা
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
@@ -231,7 +231,7 @@
                                             <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                                <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                             </a>
                                         </li>
                                     @endif
@@ -270,7 +270,7 @@
                                             <a href="{{ route('cabinet.case.attorney.appellateDivision.complete') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                                <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                             </a>
                                         </li> --}}
                                     @endif
@@ -305,7 +305,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত হাইকোর্ট মামলা
+                                            <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত হাইকোর্ট মামলা
                                                 এন্ট্রি</span>
                                         </a>
                                     </li>
@@ -344,7 +344,7 @@
                                     <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}"
                                         class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">নিস্পত্তিকৃত মামলার তালিকা</span>
+                                        <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                     </a>
                                 </li> --}}
                             @endif

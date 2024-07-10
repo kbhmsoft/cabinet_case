@@ -63,7 +63,7 @@
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.highcourt.complete') }}"><?= en2bn($final_high_court_case) ?></a></span>
             <span class="count-name" style="font-size: 14px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.highcourt.complete') }}">হাইকোর্ট বিভাগে নিস্পত্তিকৃত মামলা</a></span>
+                <a href="{{ route('cabinet.case.highcourt.complete') }}">হাইকোর্ট বিভাগে নিষ্পত্তিকৃত মামলা</a></span>
         </div>
     </div>
 </div>
@@ -98,7 +98,7 @@
             <span class="count-numbers"><a
                     href="{{ route('cabinet.case.appellateDivision.complete') }}"><?= en2bn($final_appeal_case) ?></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
-                <a href="{{ route('cabinet.case.appellateDivision.complete') }}">আপিল বিভাগে নিস্পত্তিকৃত
+                <a href="{{ route('cabinet.case.appellateDivision.complete') }}">আপিল বিভাগে নিষ্পত্তিকৃত
                     মামলা</a></span>
         </div>
     </div>
@@ -159,8 +159,7 @@
         <div class="card-counter info">
             <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"><i
                     class="fa fas fa-layer-group text-white"></i></a>
-            <span class="count-numbers"><a
-                    href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"></a></span>
+            <span class="count-numbers"><a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}"></a></span>
             <span class="count-name" style="font-size: 15px !important; font-weight: 800 !important;">
                 <a href="{{ route('cabinet.case.postponedInterimOrderCaseList') }}">স্থগিতাদেশ অন্তর্বর্তীকালীন
                     <br>পেন্ডিং মামলা</a></span>

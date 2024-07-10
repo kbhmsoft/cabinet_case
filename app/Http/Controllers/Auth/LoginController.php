@@ -132,7 +132,7 @@ class LoginController extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
-
+      
         $employeData = $response->data->user->employee_record_id;
 
         $doptoEmployeeUserImage = $this->doptorUserImage($employeData);

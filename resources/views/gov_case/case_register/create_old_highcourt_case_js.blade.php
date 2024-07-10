@@ -285,7 +285,7 @@
             var items = '';
             items += '<tr id="bibadi_' + (count) + '">';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
             // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
             // console.log(count);
@@ -312,8 +312,39 @@
 </script>
 
 
+<script>
+    $("#addReplyFileRow").click(function(e) {
+        addReplyFileRowFunc();
+    });
+    //add row function
+    function addReplyFileRowFunc() {
+        var count = parseInt($('#reply_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#reply_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="reply_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="reply_file_name[]" onChange="replyAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="customReplyFile' + count +
+            '" required/><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count +
+            '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#replyFileDiv tr:last').after(items);
 
-/************************ //Add multiple HighCourt Adalat *************************/
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+</script>
+
 <script>
     $("#addHighcourtAdalatRow").click(function(e) {
         addHighcourtAdalatRowFunc();
@@ -330,7 +361,7 @@
             var items = '';
             items += '<tr id="highcourt_adalat_' + (count) + '">';
             items +=
-                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+                '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="highcourt_adalat[]" value="">';
 
             if (type == 'other') {
@@ -350,6 +381,52 @@
 </script>
 
 
+<script>
+    $(document).ready(function() {
+        $('.adesh_tamil_decision_div').hide();
+        $('input[name="order_tamil_decision_taken"][value="0"]').prop('checked', true);
+        $('input[name="order_tamil_decision_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('.adesh_tamil_decision_div').show();
+            } else {
+                $('.adesh_tamil_decision_div').hide();
+            }
+        });
+    });
+</script>
+<script>
+    // ====== start against gov order decision files  ======
+
+    $("#orderTamilDecisionFileRow").click(function(e) {
+        orderTamilDecisionFileRowFunc();
+    });
+    //add row function
+    function orderTamilDecisionFileRowFunc() {
+        var count = parseInt($('#order_tamil_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#order_tamil_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder="" ></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="adeshTamilAttachmentTitle(' +
+            count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adesh-tamil-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#orderTamilDecisionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`).attr('required', false);
+            $(`#customFileName${count}`).attr('required', false);
+        }
+    }
+</script>
 
 <script>
     var numbers = {
@@ -1458,6 +1535,52 @@
         var solicitorCheckbox = document.getElementById("suspension_order_solicitor_checkbox");
         var lawOfficerCheckbox = document.getElementById("suspension_order_law_officer_checkbox");
         var sendingReplyDiv = document.querySelector(".suspension_order_div");
+
+        function toggleSendingReplyDiv() {
+            if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                sendingReplyDiv.style.display = "block";
+            } else {
+                sendingReplyDiv.style.display = "none";
+            }
+        }
+
+        toggleSendingReplyDiv();
+        solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#against_order_taken_solicitor_div').hide();
+        $('#againstGovOrderTakenTrackingNumberField').hide();
+        $('input[name="adesh_tamil_decision_yes_taken"]').change(function() {
+            if ($(this).val() == '1') {
+                $('#against_order_taken_solicitor_div').show();
+            } else {
+                $('#against_order_taken_solicitor_div').hide();
+                $('#againstGovOrderTakenTrackingNumberField').hide();
+                $('.against_order_taken_appeal_submission_div').hide();
+                $('#against_order_taken_solicitor_div input').val('');
+                $('.against_order_taken_appeal_submission_div input').val('');
+                $('#against_order_taken_appeal_submission_div input[type="checkbox"]').prop('checked',
+                    false);
+            }
+        });
+
+        $('#against_order_taken_solicitor_checkbox').change(function() {
+            if ($(this).is(':checked')) {
+
+                $('#againstGovOrderTakenTrackingNumberField').show();
+            } else {
+                $('#againstGovOrderTakenTrackingNumberField').hide();
+            }
+        });
+
+        var solicitorCheckbox = document.getElementById("against_order_taken_solicitor_checkbox");
+        var lawOfficerCheckbox = document.getElementById("against_order_taken_person_law_officer");
+        var sendingReplyDiv = document.querySelector(".against_order_taken_appeal_submission_div");
 
         function toggleSendingReplyDiv() {
             if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
