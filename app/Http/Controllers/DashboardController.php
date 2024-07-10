@@ -303,8 +303,11 @@ class DashboardController extends Controller
             $data['total_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->where('deleted_at', null)->count();
 
-            $data['running_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
-                ->where('is_final_order', null)->where('deleted_at', null)->count();
+            $data['running_appeal_case'] = DB::table('appeal_gov_case_register')
+            ->whereIn('created_by_office', $finalOfficeIds)
+            ->where('is_final_order', 0)
+            ->whereNull('deleted_at')
+            ->count();
 
             $data['final_appeal_case'] = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $finalOfficeIds)
                 ->where('is_final_order', 1)->where('deleted_at', null)->count();
@@ -643,7 +646,7 @@ class DashboardController extends Controller
                 array_push($arrayd, $val);
             }
 
-        
+
             $data['page_title'] = 'মিনিস্ট্রি এডমিন সহকারীর ড্যাশবোর্ড';
 
             return view('dashboard.cabinet_new.min_admin')->with($data);
