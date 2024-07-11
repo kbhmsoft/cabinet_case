@@ -297,6 +297,12 @@ class DashboardController extends Controller
                 return $case->mainBibadis->isNotEmpty();
             })->count();
 
+            // $data['running_high_court_case'] = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
+            //     $query->whereIn('respondent_id', $finalOfficeIds);
+            // })->where('is_final_order', 0)
+            //     ->whereNull('deleted_at')
+            //     ->count();
+
             $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->filter(function ($case) {
                 return $case->mainBibadis->isNotEmpty();
             })->count();
