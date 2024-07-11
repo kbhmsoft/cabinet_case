@@ -90,10 +90,10 @@ class ViewServiceProvider extends AppServiceProvider
             }
 
             // Query to get the count of distinct case numbers for high court applications
-            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->where('is_answered',null)->count();
+            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->where('is_answered',null)->distinct('case_no')->count();
 
             // Query to get the count of distinct case numbers for appeal applications
-            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->where('is_answered',null)->count();
+            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->where('is_answered',null)->distinct('case_no')->count();
 
             $view->with([
                 'total_highcourt' => $total_highcourt,
