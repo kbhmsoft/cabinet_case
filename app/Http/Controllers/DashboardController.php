@@ -112,17 +112,6 @@ class DashboardController extends Controller
                 array_push($arrayd, $val);
             }
 
-            // return $data['ministry'] = $arrayd;
-            // $data['userManagement'] = DB::table('users')
-            //     ->join('roles', 'users.role_id', '=', 'roles.id')
-            //     ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-            //     ->select('users.*', 'roles.name as roles_name', 'gov_case_office.office_name_bn')
-            //     // ->where('users.id', $id)
-            //     ->get()->first();
-
-            // $data['name'] = UserManagement::where('name')->count();
-            // $data['name'] = UserManagement::where('name')->count();
-
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
@@ -213,7 +202,6 @@ class DashboardController extends Controller
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
             $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
-            // return view('dashboard.cabinet.cabinet_admin')->with($data);
 
             $doptorLoginCount = DoptorUserManagement::whereNotNull('office_id')->count();
             $generalLoginCount = User::whereNull('doptor_user_id')->count();
@@ -265,7 +253,6 @@ class DashboardController extends Controller
             return view('dashboard.cabinet.cabinet_admin')->with($data);
         } elseif ($roleID == 29) {
 
-            
             $childOfficeIds = DB::table('gov_case_office')
                 ->where('parent_office_id', $officeID)
                 ->pluck('doptor_office_id')
@@ -276,14 +263,20 @@ class DashboardController extends Controller
             $appealCases = DB::table('appeal_gov_case_register')
                 ->whereIn('created_by_office', $finalOfficeIds)
                 ->whereNull('deleted_at')
+                ->select('id','is_final_order','result')
                 ->get();
 
-            $govCases = GovCaseRegister::with(['mainBibadis' => function ($query) use ($finalOfficeIds) {
+
+            $govCases = GovCaseRegister::
+                whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
                 $query->whereIn('respondent_id', $finalOfficeIds);
-            }])->whereNull('deleted_at')
+            })
+            ->select('id','is_final_order','result')
+            ->whereNull('deleted_at')
                 ->get();
 
             $data['running_appeal_case'] = $appealCases->where('is_final_order', 0)->count();
+
             $data['final_appeal_case'] = $appealCases->where('is_final_order', 1)->count();
             $data['appeal_not_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 1)->count();
             $data['appeal_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 2)->count();
@@ -291,7 +284,6 @@ class DashboardController extends Controller
             $data['highcourt_not_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 1)->filter(function ($case) {
                 return $case->mainBibadis->isNotEmpty();
             })->count();
-
 
             $data['appealPending'] = $govCases->where('result', 2)->where('is_appeal', 2)->filter(function ($case) {
                 return $case->mainBibadis->isNotEmpty();
@@ -330,7 +322,6 @@ class DashboardController extends Controller
                 $val->result_sending_count = $this->countMinistryWiseSolicitorPendingCase($doptorOfficeId)->count();
                 $val->against_postponed_count = $this->countMinistryWiseHighCourtAppealPospondOrderPendingCase($doptorOfficeId)->count();
             }
-
             $data['page_title'] = 'মিনিস্ট্রি এডমিনের ড্যাশবোর্ড';
 
             return view('dashboard.cabinet_new.min_admin')->with($data);
