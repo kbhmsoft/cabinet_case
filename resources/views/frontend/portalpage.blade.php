@@ -182,7 +182,7 @@
 
 
     <div class="main-section" style="margin-top: 6rem;">
-        <div class="right-section" style="text-align: center;">
+        <div class="right-section" style="text-align: center;margin-bottom: 20px;">
             <div class="card shadow p-3 rounded" style="width: 200px; height: 250px; background-color: #F3F3F3">
                 <p style="font-size: 20px; margin-top: 20px;">উচ্চ আদালতের সরকারি স্বার্থ সংশ্লিষ্ট মামলা পরিচালনা
                     সম্পর্কিত কার্যক্রম
