@@ -141,7 +141,6 @@
                 width: 100%;
             }
         }
-
     </style>
 
     <script>
@@ -241,7 +240,7 @@
                     </div>
                     <a href="https://cabinet.gov.bd/" target="_blank">
                         <img src="images/logo1.png" alt=""
-                             style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
+                            style="width: 100px; height: 50px; margin-left: 10px; margin-bottom: 10px">
                     </a>
                 </div>
                 <div class="footer-widget">
@@ -249,8 +248,7 @@
                         <h5>কারিগরি সহায়তায়</h5>
                     </div>
                     <a href="http://mysoftheaven.com" target="_blank">
-                        <img src="https://ldtax.gov.bd/assets/images/auto.png" alt=""
-                             style="width: 150px; height: auto;">
+                        <img src="images/mysoftheaven-logo.png" alt="" style="width: 150px; height: auto;">
                     </a>
                 </div>
             </div>
