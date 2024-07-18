@@ -1,38 +1,52 @@
 <br>
-    <div class="container card">
-      <div class="card-body">
-         <table class="table table-hover mb-6 font-size-h5">
+<div class="container card">
+    @if (Auth::user()->role_id == 27)
+        <div class="d-flex justify-content-end">
+            <a href="{{ route('min_wise_list') }}" class="btn btn-info ">সকল</a>
+        </div>
+    @endif
+    <div class="card-body">
+        <table class="table table-hover mb-6 font-size-h5">
             <thead class="thead-light font-size-h6">
-               <tr>
-                  <th scope="col" width="30">#</th>
-                  <th scope="col">অফিসের নাম</th>
-                  <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
-                  <th scope="col">আপিল বিভাগে চলমান মামলা</th>
-                  <th scope="col">সরকারের বিপক্ষে আপিলের জন্য পেন্ডিং</th>
-                  <th scope="col">জবাব পেন্ডিং</th>
-                  <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th>
-                  {{-- <th scope="col">মোট এন্ট্রিকৃত মামলার সংখ্যা </th> --}}
-               </tr>
+                <tr>
+                    <th scope="col" width="30">#</th>
+                    <th scope="col">অফিসের নাম</th>
+                    @if (Auth::user()->role_id == 27)
+                        <th scope="col">চলমান মামলা</th>
+                    @endif
+                    <th scope="col">হাইকোর্ট বিভাগে চলমান মামলা</th>
+                    <th scope="col">আপিল বিভাগে চলমান মামলা</th>
+                    <th scope="col">সরকারের বিপক্ষে আপিলের জন্য পেন্ডিং</th>
+                    <th scope="col">জবাব পেন্ডিং</th>
+                    <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th>
+                    {{-- <th scope="col">মোট এন্ট্রিকৃত মামলার সংখ্যা </th> --}}
+                </tr>
             </thead>
             <tbody>
-                @foreach ($ministry as $key=>$val)
-              
-               <tr>
-                  <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
-                  <td><h4><a href="{{ route('cabinet.case.ministryWiseData', $val->doptor_office_id) }}">{{ $val->office_name_bn }}</a></h4></td>
-                  <td align="center">{{ en2bn($val->highcourt_running_case) }}</td>
-                  <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
-                  <td align="center">{{ en2bn($val->against_gov) }}</td>
-                  <td align="center">{{ en2bn($val->result_sending_count) }}</td>
-                  <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
-                  {{-- <td align="center">{{ en2bn($total_case) }}</td> --}}
-               </tr>
-               @endforeach
+                @foreach ($ministry as $key => $val)
+                    <tr>
+                        <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
+                        <td>
+                            <h4><a
+                                    href="{{ route('cabinet.case.ministryWiseData', $val->doptor_office_id) }}">{{ $val->office_name_bn }}</a>
+                            </h4>
+                        </td>
+                        @if (Auth::user()->role_id == 27)
+                            <td align="center">{{ en2bn($val->total_running_case) }}</td>
+                        @endif
+                        <td align="center">{{ en2bn($val->highcourt_running_case) }}</td>
+                        <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
+                        <td align="center">{{ en2bn($val->against_gov) }}</td>
+                        <td align="center">{{ en2bn($val->result_sending_count) }}</td>
+                        <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
+                        {{-- <td align="center">{{ en2bn($total_case) }}</td> --}}
+                    </tr>
+                @endforeach
             </tbody>
-         </table>
+        </table>
 
-         <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
             {!! $ministry->links() !!}
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
+</div>
