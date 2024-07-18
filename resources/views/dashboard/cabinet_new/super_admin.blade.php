@@ -100,43 +100,7 @@
                 </div>
             </div>
 
-            {{-- <div class="col-md-6 mb-4">
-                <div class="card" style="border-radius: 1rem; background-color: #f5f5f5;">
-                    <div class="card-body"
-                        style="margin-bottom: 3rem; background-color: #f5f5f5; border-radius: 1rem;">
-                        <div class="d-flex align-items-center">
-                            <div style="font-size: 3rem; margin-right: 2rem;">
-                                <img src="{{ asset('uploads/IconeSCMS/all (1).png') }}"
-                                    style=" height: 50px; width: 100%; margin-top: 6rem; " alt="Logo"
-                                    class="brand-image">
-                            </div>
-                            <div style="margin-top: 2rem">
-                                <h5 class="card-title font-weight-bolder" style="color: black;">
-                                    মোট এন্ট্রিকৃত মামলার সংখ্যা (<span
-                                        class="count-numbers"> <?= en2bn($total_case) ?> </span>)
-                                </h5>
-                                <div class="case-info">
-                                    <span class="count-item"
-                                        style="display: flex; justify-content: space-between; align-items: center; font-size:17px;">
-                                        <a href="{{ route('cabinet.case.highcourt') }}"
-                                            style="text-decoration: none; color: black;">
-                                            হাইকোর্ট বিভাগে মোট মামলা</a>
-                                        <span class="count-numbers"
-                                            style="margin-left:10rem; color: black">{{ en2bn($total_high_court_case) }}</span>
-                                    </span>
-                                    <span class="count-item"
-                                        style="display: flex; justify-content: space-between; align-items: center; font-size: 17px;">
-                                        <a href="{{ route('cabinet.case.appellateDivision') }}"
-                                            style="text-decoration: none; color: black;"> আপিল বিভাগে মোট মামলা</a>
-                                        <span class="count-numbers"
-                                            style="margin-left:10rem; color: black">{{ en2bn($total_appeal_case) }}</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+            
             <!-- Card 8 -->
             <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-0 " style=" background-color: #f5f5f5;">

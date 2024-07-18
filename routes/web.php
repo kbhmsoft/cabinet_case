@@ -94,6 +94,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/databaseDataUpdated', [HomeController::class, 'databaseDataUpdated']);
     /////****************** Dashboard *****************/////
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/min-wise-list', [DashboardController::class, 'minWiseList'])->name('min_wise_list');
+    Route::get('/min-wise-list/print', [DashboardController::class, 'printMinWiseList'])->name('min_wise_list.print');
     Route::get('/dashboard/hearing-case-details/{id}', [DashboardController::class, 'hearing_case_details'])->name('dashboard.hearing-case-details');
     Route::get('/dashboard/hearing-today', [DashboardController::class, 'hearing_date_today'])->name('dashboard.hearing-today');
     Route::get('/dashboard/hearing-tomorrow', [DashboardController::class, 'hearing_date_tomorrow'])->name('dashboard.hearing-tomorrow');
