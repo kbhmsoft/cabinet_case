@@ -52,6 +52,18 @@ class GovCaseBadiBibadiRepository
         $bibadi->save();
     }
 
+    public static function storeMainBibadiAdministritiveTribrunal($caseInfo, $govCaseId)
+    {
+        $officeID = userInfo()->office_id;
+        $bibadi = new GovCaseBibadiAdministritiveTribrunal();
+        $bibadi->gov_case_id = $govCaseId;
+        $bibadi->respondent_id = $officeID;
+        $bibadi->is_main_bibadi = 1;
+        $bibadi->save();
+    }
+
+
+
     public static function storeChangingMainBibadi($caseInfo, $govCaseId)
     {
         // dd($caseInfo);
@@ -73,7 +85,19 @@ class GovCaseBadiBibadiRepository
                 $bibadi->save();
             }
         }
+    }
 
+    public static function storeBibadiAdministritiveTribrunal($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->other_respondent as $key => $val) {
+            if ($caseInfo->other_respondent[$key] != null) {
+                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->respondent_id = $caseInfo->other_respondent[$key];
+                $bibadi->other_respondent_manual_name = $caseInfo->other_respondent_manual_name[$key];
+                $bibadi->save();
+            }
+        }
     }
 
     public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
@@ -98,6 +122,17 @@ class GovCaseBadiBibadiRepository
         }
     }
 
+    public static function checkAdministritiveTribrunalBibadiExist($bibadiId)
+    {
+        if (isset($bibadiId)) {
+            $bibadi = AdministritiveTribrunalBibadi::find($bibadiId);
+        } else {
+            $bibadi = new AdministritiveTribrunalBibadi();
+        }
+        return $bibadi;
+    }
+
+
     public static function checkBibadiExist($bibadiId)
     {
         if (isset($bibadiId)) {
@@ -105,7 +140,6 @@ class GovCaseBadiBibadiRepository
         } else {
             $bibadi = new GovCaseBibadi();
         }
-        // dd($bibadi);
         return $bibadi;
     }
 

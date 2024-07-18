@@ -47,6 +47,7 @@
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>
+                </ul>
             </div>
 
 
