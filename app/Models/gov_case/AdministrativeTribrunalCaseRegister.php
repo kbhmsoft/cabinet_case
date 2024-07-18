@@ -27,4 +27,23 @@ class AdministrativeTribrunalCaseRegister extends Model
 
     ];
 
+    public function bibadis()
+    {
+        return $this->hasMany(AdministrativeTribrunalBibadi::class, 'gov_case_id', 'id');
+    }
+
+    public function mainBibadis()
+    {
+        return $this->hasMany(AdministrativeTribrunalBibadi::class, 'gov_case_id', 'id')->where('is_main_bibadi', 1);
+    }
+
+    public function concernPersons()
+    {
+        return $this->hasMany(ConcernPersonAdministrativeTribrunal::class, 'gov_case_id', 'id')->where('concern_user_id', auth()->id());
+    }
+
+    public function badis()
+    {
+        return $this->hasMany(AdministrativeTribrunalBadi::class, 'gov_case_id', 'id');
+    }
 }

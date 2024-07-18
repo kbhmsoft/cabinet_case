@@ -2,32 +2,20 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Court;
-use App\Models\Office;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\gov_case\GovCaseLog;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\gov_case\GovCaseBadi;
-use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\AppealAdalat;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseRegister;
-
-use App\Models\gov_case\HighcourtAdalat;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\HighcourtAdalat;
+use App\Models\Role;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdministrativeTribrunalController extends Controller
 {
@@ -38,7 +26,91 @@ class AdministrativeTribrunalController extends Controller
         $this->middleware('permission:highcourt_case_update', ['only' => ['edit']]);
     }
 
+    public function administrativeTribrunal()
+    {
+        session()->forget('currentUrlPath');
 
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $query = AdministrativeTribrunalCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
+
+        if ($roleID == 32 || $roleID == 41) {
+            $query->whereHas(
+                'bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            );
+        }
+
+        if ($roleID == 44 || $roleID == 45) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID);
+                }
+            );
+        }
+
+        $userId = Auth::id();
+        if ($roleID == 45) {
+            $query->whereHas(
+                'concernPersons',
+                function ($query) use ($userId) {
+                    $query->where('concern_user_id', $userId);
+                }
+            );
+        };
+
+        if (!empty($_GET['case_category_type'])) {
+            $query->where('administrative_tribrunal_case_registers.case_category_type', '=', $_GET['case_category_type']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
+        }
+
+        $data['cases'] = $query->paginate(10);
+
+
+        // $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+
+        $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনালে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+
+        return view('gov_case.administritive_tribrunal.administrativeTribrunal')->with($data);
+    }
 
     public function administrativeTribrunal_create()
     {
@@ -70,11 +142,11 @@ class AdministrativeTribrunalController extends Controller
 
     public function administrativeTribrunalGeneralInfo(Request $request)
     {
-       dd($request->all());
-        $exists =  AdministrativeTribrunalCaseRegister::where('case_no', $request->input('case_no'))
-            ->where('year', $request->input('case_year'))
+        //    dd($request->all());
+        $exists = AdministrativeTribrunalCaseRegister::where('case_no', $request->input('case_no'))
+            ->where('case_year', $request->input('case_year'))
             ->where('case_category_type', $request->input('case_category_type'))
-            ->whereNull('deleted_at')
+        // ->whereNull('deleted_at')
             ->exists();
 
         if ($exists) {
@@ -92,10 +164,8 @@ class AdministrativeTribrunalController extends Controller
                 GovCaseBadiBibadiRepository::storeAdministritiveTribrunalBadi($request, $caseId);
 
                 if ($request->file_type && $_FILES["file_name"]['name']) {
-                    AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
+                    AttachmentRepository::storeAdministrativeTribrunalAttachment('gov_case', $caseId, $request);
                 }
-
-
 
                 DB::commit();
             } catch (\Exception $e) {
@@ -106,7 +176,5 @@ class AdministrativeTribrunalController extends Controller
             return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
         }
     }
-
-
 
 }

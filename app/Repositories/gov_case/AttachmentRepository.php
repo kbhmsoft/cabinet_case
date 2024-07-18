@@ -7,82 +7,29 @@
  */
 namespace App\Repositories\gov_case;
 
-use App\Models\AdalatReplySendingAttachment;
-use App\Models\AppealAttachment;
-use App\Models\AppealFinalOrderAttachment;
 use App\Models\Attachment;
-use App\Models\ContemptAttachment;
 use App\Models\FinalAttachment;
-use App\Models\gov_case\AppealOrderTakenAppealAttachment;
-use App\Models\gov_case\AppealOrderTakenAttachment;
-use App\Models\gov_case\AppealOrderTakenFinalAttachment;
-use App\Models\LeaveToAppealAnswerAttachment;
-use App\Models\LeaveToAppealAttachment;
 use App\Models\ReplyAttachment;
-use App\Models\SuspensionAppealAttachment;
-use App\Models\SuspensionAttachment;
-use App\Models\SuspensionTamilAttachment;
+use App\Models\AppealAttachment;
+use App\Models\ContemptAttachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\SuspensionAttachment;
+use App\Models\LeaveToAppealAttachment;
 use Illuminate\Support\Facades\Session;
+use App\Models\SuspensionTamilAttachment;
+use App\Models\AppealFinalOrderAttachment;
+use App\Models\SuspensionAppealAttachment;
+use App\Models\AdalatReplySendingAttachment;
+use App\Models\LeaveToAppealAnswerAttachment;
+use App\Models\AdministrativeTribrunalAttachment;
+use App\Models\gov_case\AppealOrderTakenAttachment;
+use App\Models\gov_case\AppealOrderTakenFinalAttachment;
+use App\Models\gov_case\AppealOrderTakenAppealAttachment;
 
 class AttachmentRepository
 {
-    // public static function storeAttachment($appName, $caseId, $request)
-    // {
-    //     if($request->file_name != NULL){
-    //         foreach($request->file_type as $key => $val)
-    //         {
 
-    //             $filePath = "uploads/" . $appName ."/attachment/";
-    //             dd($request->file_name);
-    //             if($request->file_name[$key] != NULL){
-
-    //                 $otherfileName = 'govCaseNo_' . $caseId.'_'.time().'.'.rand(5,9999).'.'.$request->file_name[$key]->extension();
-    //                 $request->file_name[$key]->move(public_path($filePath), $otherfileName);
-    //             }
-
-    //             $attachment = new Attachment();
-    //             $attachment->gov_case_id = $caseId;
-    //             $attachment->file_type = $request->file_type[$key];
-    //             $attachment->file_name = $filePath.$otherfileName;
-    //             $attachment->file_submission_date = date('Y-m-d H:i:s');
-    //             $attachment->created_at = date('Y-m-d H:i:s');
-    //             $attachment->created_by = userInfo()->id;
-    //             $attachment->updated_at = date('Y-m-d H:i:s');
-    //             $attachment->updated_by = userInfo()->id;
-    //             $attachment->save();
-    //         }
-    //     }
-    // }
-
-//     public static function storeAttachment($appName, $caseId, $request)
-// {
-//     if ($request->hasFile('file_name')) {
-//         foreach ($request->file('file_name') as $key => $file) {
-
-//             if ($file->isValid()) {
-
-//                 $filePath = "uploads/" . $appName . "/attachment/";
-//                 $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
-//                 $file->move(public_path($filePath), $otherfileName);
-
-//                 $attachment = new Attachment();
-//                 $attachment->gov_case_id = $caseId;
-//                 $attachment->file_type = $request->file_type[$key];
-//                 $attachment->file_name = $filePath . $otherfileName;
-//                 $attachment->file_submission_date = now();
-//                 $attachment->created_at = now();
-//                 $attachment->created_by = userInfo()->id;
-//                 $attachment->updated_at = now();
-//                 $attachment->updated_by = userInfo()->id;
-//                 $attachment->save();
-//             } else {
-//                 return response()->json(['error' => 'Invalid file uploaded.'], 400);
-//             }
-//         }
-//     }
-// }
     public static function storeAttachment($appName, $caseId, $request)
     {
         if ($request->hasFile('file_name')) {
@@ -93,7 +40,7 @@ class AttachmentRepository
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
                     $file->move(public_path($filePath), $otherfileName);
 
-                    $attachment = new Attachment();
+                    $attachment = new AdministrativeTribrunalAttachment();
                     $attachment->gov_case_id = $caseId;
                     $attachment->file_type = isset($request->file_type[$key]) ? $request->file_type[$key] : null;
                     $attachment->file_name = $filePath . $otherfileName;
@@ -102,6 +49,35 @@ class AttachmentRepository
                     $attachment->created_by = userInfo()->id;
                     $attachment->updated_at = now();
                     $attachment->updated_by = userInfo()->id;
+                    $attachment->save();
+                } else {
+                    return response()->json(['error' => 'Invalid file uploaded.'], 400);
+                }
+            }
+        }
+    }
+
+
+    public static function storeAdministrativeTribrunalAttachment($appName, $caseId, $request)
+    {
+        if ($request->hasFile('file_name')) {
+            $files = $request->file('file_name');
+            foreach ($files as $key => $file) {
+                if ($file->isValid()) {
+                    $filePath = "uploads/" . $appName . "/administrative_tribrunal/attachment/";
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $file->move(public_path($filePath), $otherfileName);
+
+                    $attachment = new AdministrativeTribrunalAttachment();
+                    $attachment->gov_case_id = $caseId;
+                    $attachment->file_type = isset($request->file_type[$key]) ? $request->file_type[$key] : null;
+                    $attachment->file_name = $filePath . $otherfileName;
+                    $attachment->file_submission_date = now();
+                    $attachment->created_at = now();
+                    $attachment->created_by = userInfo()->id;
+                    $attachment->updated_at = now();
+                    $attachment->updated_by = userInfo()->id;
+                 
                     $attachment->save();
                 } else {
                     return response()->json(['error' => 'Invalid file uploaded.'], 400);

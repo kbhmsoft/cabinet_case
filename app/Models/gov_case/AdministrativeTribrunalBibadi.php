@@ -7,7 +7,7 @@ use App\Models\gov_case\GovCaseOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdministritiveTribrunalBibadi extends Model
+class AdministrativeTribrunalBibadi extends Model
 {
 	use HasFactory;
 	// protected $table = 'mouja';

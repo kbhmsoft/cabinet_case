@@ -13,6 +13,7 @@ use App\Models\gov_case\GovCaseOrderTaken;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
 use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
 
 class GovCaseRegisterRepository
@@ -84,12 +85,13 @@ class GovCaseRegisterRepository
     public static function storeAdministritiveTribrunalHighcourtAdalat($caseInfo, $govCaseId)
     {
 
-        foreach ($caseInfo->highcourt_adalat as $key => $val) {
-            if ($caseInfo->highcourt_adalat[$key] != null) {
-                $highcourtAdalat = self::checkAdministritiveTribrunalHighcourtAdalatExist($caseInfo->highcourt_adalat_id[$key]);
-                $highcourtAdalat->gov_case_id = $govCaseId;
-                $highcourtAdalat->highcourt_adalat = $caseInfo->highcourt_adalat[$key];
-                $highcourtAdalat->save();
+        foreach ($caseInfo->administrative_adalat as $key => $val) {
+            if ($caseInfo->administrative_adalat[$key] != null) {
+                $administrativeAdalat = self::checkAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
+                $administrativeAdalat->gov_case_id = $govCaseId;
+                $administrativeAdalat->administrative_adalat = $caseInfo->administrative_adalat[$key];
+                // dd($highcourtAdalat);
+                $administrativeAdalat->save();
             }
         }
     }
@@ -648,25 +650,15 @@ class GovCaseRegisterRepository
             $case = self::checkAdministrativeTribrunalCaseExist($caseInfo['case_id']);
 
             $case->case_no = $caseInfo->case_no;
-            $case->case_type = $caseInfo->case_type;
-            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->action_user_id = userInfo()->id;
-            $case->action_user_role_id = userInfo()->role_id;
+            $case->case_category_type = 1;
+            $case->notice_given_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
             $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
-            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->court;
-            $case->case_category_id = $caseInfo->case_category;
-            $case->case_type_id = $caseInfo->case_category_type;
-            // $case->concern_person_designation = $caseInfo->concern_person_designation;
-            // $case->concern_user_id = $caseInfo->concern_user_id;
+            $case->case_year = $caseInfo->case_year;
+            $case->court = $caseInfo->court;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
 
             $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
-
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
-            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -739,10 +731,11 @@ class GovCaseRegisterRepository
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
 
-                    $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);
+                    $concernPrerson = self::checkConcernPersonAdministritiveTribrunalExist($caseInfo->concern_person_id[$key]);
                     $concernPrerson->gov_case_id = $govCaseId;
                     $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
                     $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+
                     $concernPrerson->save();
                 }
             }
@@ -1128,9 +1121,9 @@ class GovCaseRegisterRepository
     public static function checkConcernPersonAdministritiveTribrunalExist($badiId)
     {
         if (isset($badiId)) {
-            $badi = GovCaseConcernPersonAdministritiveTribrunal::find($badiId);
+            $badi = ConcernPersonAdministrativeTribrunal::find($badiId);
         } else {
-            $badi = new GovCaseConcernPersonAdministritiveTribrunal();
+            $badi = new ConcernPersonAdministrativeTribrunal();
         }
         return $badi;
     }

@@ -13,8 +13,9 @@ class AdministrativeTribrunalHighcourtAdalat extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name',
-        'status',
+        'id',
+        'gov_case_id',
+        'administrative_adalat',
     ];
 
 }

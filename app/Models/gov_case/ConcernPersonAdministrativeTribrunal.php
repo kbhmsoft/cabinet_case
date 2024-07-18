@@ -10,12 +10,12 @@ use App\Models\User;
 use App\Models\Role;
 
 
-class GovCaseConcernPersonAdministritiveTribrunal extends Model
+class ConcernPersonAdministrativeTribrunal extends Model
 {
 	use HasFactory;
 	// protected $table = 'mouja';
 	public $timestamps = true;
-    protected $table = 'concern_person_administritive_tribruals';
+    protected $table = 'concern_person_administrative_tribruals';
 	protected $fillable = [
         'id',
         'gov_case_id',

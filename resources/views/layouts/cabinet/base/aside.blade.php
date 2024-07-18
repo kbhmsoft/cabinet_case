@@ -233,6 +233,7 @@
                                                 <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
                                             </a>
                                         </li>
+
                                     @endif
                                 @endcan
                             </ul>
@@ -261,6 +262,16 @@
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">প্রশাসনিক মামলা
                                                 এন্ট্রি</span>
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @can('administrativetribrunal_list')
+                                    <li class="menu-item {{ request()->is(['cabinet/case/administrativeTribrunal']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
                                         </a>
                                     </li>
                                 @endcan
