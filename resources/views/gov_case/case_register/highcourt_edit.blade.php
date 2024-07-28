@@ -335,7 +335,7 @@
                                                         style="border:1px solid #dcd8d8;">
 
                                                         <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addBibadiRow"
@@ -345,14 +345,14 @@
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
-
+                                                        @if(!$otherBibadi->isEmpty())
                                                         @foreach ($otherBibadi as $key => $val)
                                                             <tr id="other_bibadi_{{ $val->id }}">
                                                                 @if ($val->respondent_id != 0)
                                                                     <td>
                                                                         <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
 
-                                                                                 @foreach ($ministrys as $item)
+                                                              @foreach ($ministrys as $item)
                                                                             <option value="{{ $item->doptor_office_id }}"
                                                                                 {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                 {{ $item->office_name_bn ?? '' }}
@@ -375,8 +375,8 @@
                                                                 </td>
                                                                 <input type="hidden" name="bibadi_id[]"
                                                                     value="{{ $val->id }}">
-                                                        @endif
-                                                        <td>
+                                                         @endif
+                                                         <td>
                                                             @if ($key > 0)
                                                                 <a href="javascript:void();"
                                                                     class="btn btn-sm btn-danger font-weight-bolder pr-2"
@@ -386,9 +386,10 @@
                                                                     <i class="fas fa-minus-circle"></i>
                                                                 </a>
                                                             @endif
-                                                        </td>
-                                                        </tr>
+                                                         </td>
+                                                         </tr>
                                                         @endforeach
+                                                        @endif
                                                     </table>
                                                 </div>
 

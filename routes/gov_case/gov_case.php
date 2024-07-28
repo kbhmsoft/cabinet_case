@@ -312,7 +312,7 @@ Route::middleware('prevent-back-history')->group(function () {
               Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
               Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
               Route::post('administrative-tribrunal-generalInfo/store', [AdministrativeTribrunalController::class, 'administrativeTribrunalGeneralInfo'])->name('administrativeTribrunalGeneralInfo');
-
+              Route::get('appeal/administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal.create');
 
 
 

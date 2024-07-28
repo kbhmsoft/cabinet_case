@@ -233,7 +233,6 @@
                                                 <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
                                             </a>
                                         </li>
-
                                     @endif
                                 @endcan
                             </ul>
@@ -264,14 +263,25 @@
                                                 এন্ট্রি</span>
                                         </a>
                                     </li>
-                                    @endcan
-                                    @can('administrativetribrunal_list')
+                                @endcan
+                                @can('administrativetribrunal_list')
                                     <li class="menu-item {{ request()->is(['cabinet/case/administrativeTribrunal']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}"
-                                            class="menu-link">
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('create_at_appeal_new_case')
+                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal.create') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">প্রশাসনিক আপিল ট্রাইব্যুনাল মামলা
+                                                এন্ট্রি</span>
                                         </a>
                                     </li>
                                 @endcan
