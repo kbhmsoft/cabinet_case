@@ -2708,7 +2708,6 @@ class GovCaseRegisterController extends Controller
     public function storeGeneralInfo(Request $request)
     {
 
-        // dd($request->all());
         $exists = GovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -2732,18 +2731,7 @@ class GovCaseRegisterController extends Controller
                 if ($request->file_type && $_FILES["file_name"]['name']) {
                     AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
                 }
-                if ($request->reply_file_type && $_FILES["reply_file_name"]['name']) {
-                    AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
-                }
-                if ($request->suspension_file_type && $_FILES["suspension_file_name"]['name']) {
-                    AttachmentRepository::storeSuspentionOrderAttachment('gov_case', $caseId, $request);
-                }
-                if ($request->final_order_file_type && $_FILES["final_order_file_name"]['name']) {
-                    AttachmentRepository::storeFinalOrderAttachment('gov_case', $caseId, $request);
-                }
-                if ($request->contempt_file_type && $_FILES["contempt_file_name"]['name']) {
-                    AttachmentRepository::storeContemptAttachment('gov_case', $caseId, $request);
-                }
+              
 
                 //========= Gov Case Activity Log - start ============
                 $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -2790,7 +2778,6 @@ class GovCaseRegisterController extends Controller
         GovCaseRegisterRepository::storeHighcourtAdalat($request, $id);
         GovCaseBadiBibadiRepository::storeBibadi($request, $id);
         GovCaseRegisterRepository::storeConcernPerson($request, $id);
-
         GovCaseBadiBibadiRepository::storeBadi($request, $id);
 
         if ($request->file_type && $_FILES["file_name"]['name']) {

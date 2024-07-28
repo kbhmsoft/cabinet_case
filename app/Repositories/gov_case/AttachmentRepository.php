@@ -40,7 +40,7 @@ class AttachmentRepository
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
                     $file->move(public_path($filePath), $otherfileName);
 
-                    $attachment = new AdministrativeTribrunalAttachment();
+                    $attachment = new Attachment();
                     $attachment->gov_case_id = $caseId;
                     $attachment->file_type = isset($request->file_type[$key]) ? $request->file_type[$key] : null;
                     $attachment->file_name = $filePath . $otherfileName;
@@ -77,7 +77,7 @@ class AttachmentRepository
                     $attachment->created_by = userInfo()->id;
                     $attachment->updated_at = now();
                     $attachment->updated_by = userInfo()->id;
-                 
+
                     $attachment->save();
                 } else {
                     return response()->json(['error' => 'Invalid file uploaded.'], 400);
