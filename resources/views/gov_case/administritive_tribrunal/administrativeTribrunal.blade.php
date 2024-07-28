@@ -111,7 +111,7 @@
                                 <td style="text-align:center;">
                                     {{ $row->case_category_type == 1 ? 'এটি' : '' }}
                                 </td>
-{{-- @dd($row->badis); --}}
+
                                 <td style="text-align:center;">
                                     @if ($row->badis && $row->badis->first() && $row->badis->first()->name && $row->total_badi_number > 1)
                                         {{ $row->badis->first()->name . ' ও অন্যান্য' }}

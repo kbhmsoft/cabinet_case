@@ -44,7 +44,7 @@ class GovCaseBadiBibadiRepository
                     $badi->gov_case_id = $govCaseId;
                     $badi->name = $caseInfo->badi_name[$key];
                     $badi->address = $caseInfo->badi_address[$key];
-              
+
                     $badi->save();
                 }
             }
@@ -108,13 +108,15 @@ class GovCaseBadiBibadiRepository
 
     public static function storeBibadi($caseInfo, $govCaseId)
     {
-        foreach ($caseInfo->other_respondent as $key => $val) {
-            if ($caseInfo->other_respondent[$key] != null) {
-                $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
-                $bibadi->gov_case_id = $govCaseId;
-                $bibadi->respondent_id = $caseInfo->other_respondent[$key];
-                $bibadi->other_respondent_manual_name = $caseInfo->other_respondent_manual_name[$key];
-                $bibadi->save();
+        if (is_array($caseInfo->other_respondent) || is_object($caseInfo->other_respondent)) {
+            foreach ($caseInfo->other_respondent as $key => $val) {
+                if ($caseInfo->other_respondent[$key] != null) {
+                    $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
+                    $bibadi->gov_case_id = $govCaseId;
+                    $bibadi->respondent_id = $caseInfo->other_respondent[$key];
+                    $bibadi->other_respondent_manual_name = $caseInfo->other_respondent_manual_name[$key];
+                    $bibadi->save();
+                }
             }
         }
     }
