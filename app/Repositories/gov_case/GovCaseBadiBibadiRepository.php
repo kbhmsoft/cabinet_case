@@ -7,13 +7,13 @@
  */
 namespace App\Repositories\gov_case;
 
+use App\Models\gov_case\AdministrativeTribrunalBadi;
+use App\Models\gov_case\AdministrativeTribrunalBibadi;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
-use App\Models\gov_case\AdministrativeTribrunalBadi;
-use App\Models\gov_case\AdministrativeTribrunalBibadi;
 
 class GovCaseBadiBibadiRepository
 {
@@ -62,7 +62,6 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
-
     public static function checkAdministritiveTribrunalBadiExist($badiId)
     {
         if (isset($badiId)) {
@@ -94,8 +93,6 @@ class GovCaseBadiBibadiRepository
         $bibadi->save();
     }
 
-
-
     public static function storeChangingMainBibadi($caseInfo, $govCaseId)
     {
         // dd($caseInfo);
@@ -108,7 +105,7 @@ class GovCaseBadiBibadiRepository
 
     public static function storeBibadi($caseInfo, $govCaseId)
     {
-        if (is_array($caseInfo->other_respondent) || is_object($caseInfo->other_respondent)) {
+        if (is_array($caseInfo->other_respondent)) {
             foreach ($caseInfo->other_respondent as $key => $val) {
                 if ($caseInfo->other_respondent[$key] != null) {
                     $bibadi = self::checkBibadiExist($caseInfo->bibadi_id[$key]);
@@ -167,7 +164,6 @@ class GovCaseBadiBibadiRepository
         return $bibadi;
     }
 
-
     public static function checkBibadiExist($bibadiId)
     {
         if (isset($bibadiId)) {
@@ -177,7 +173,6 @@ class GovCaseBadiBibadiRepository
         }
         return $bibadi;
     }
-
 
     public static function checkAdministrativeTribrunalBibadiExist($bibadiId)
     {
