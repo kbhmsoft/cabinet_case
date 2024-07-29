@@ -77,7 +77,7 @@
                                             <option value="">-- নির্বাচন করুন --</option>
                                             @foreach ($ministries as $value)
                                                 <option value="{{ $value->id }}"
-                                                    {{ $offices->parent_office_id == $value->id ? 'selected' : '' }}>
+                                                    {{ $offices->parent_office_id == $value->doptor_office_id ? 'selected' : '' }}>
                                                     {{ $value->office_name_bn }}
                                                 </option>
                                             @endforeach
@@ -92,7 +92,7 @@
                                             <option value="">-- নির্বাচন করুন --</option>
                                             @foreach ($divisions as $value)
                                                 <option
-                                                    value="{{ $value->id }}"{{ $offices->parent_office_id == $value->id ? 'selected' : '' }}>
+                                                    value="{{ $value->doptor_office_id }}"{{ $offices->parent_office_id == $value->doptor_office_id ? 'selected' : '' }}>
                                                     {{ $value->office_name_bn }}
                                                 </option>
                                             @endforeach
