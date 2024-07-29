@@ -406,25 +406,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Card 5 - Table with Pie Chart -->
-            {{-- <div class="row">
-                <div class="col-md-6">
-                    <div class="card" style="border-radius: 1rem;">
-                        <div class="card-body" style="margin-bottom: -6.5rem">
-                            <table class="table table-hover mb-6 font-size-h5">
-                            </table>
-                            <canvas id="pieChart1" width="100" height="100" style="margin-bottom: 5rem"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card" style="border-radius: 1rem; ">
-                        <div class="card-body" style="margin-bottom: -5rem">
-                            <canvas id="pieChart2" width="100" height="100" style="margin-bottom: 5rem"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+     
             <div class=" row mt-4">
                 @include('dashboard.cabinet.inc._dashboard_min_wise_card')
             </div>
@@ -434,5 +416,5 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   
+
 @endsection

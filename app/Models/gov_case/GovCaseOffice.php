@@ -32,4 +32,9 @@ class GovCaseOffice extends Model
     {
         return $this->hasOne(ApplicationFormAsMainDefendent::class,'office_id','doptor_office_id');
     }
+
+    public function childOffices()
+    {
+        return $this->hasMany(GovCaseOffice::class, 'parent_office_id', 'doptor_office_id');
+    }
 }
