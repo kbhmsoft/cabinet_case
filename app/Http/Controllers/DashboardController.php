@@ -899,25 +899,6 @@ class DashboardController extends Controller
 
         if ($roleID == 39) {
 
-            $data['ministry'] = GovCaseOffice::whereIn('gov_case_office.level', [1, 3])
-                ->with('childOffices')
-                ->paginate(10);
-
-            $arrayd = [];
-            foreach ($data['ministry'] as $ministry) {
-                $officeIds = array_merge([$ministry->doptor_office_id], $ministry->childOffices->pluck('doptor_office_id')->toArray());
-
-                $ministry->highcourt_running_case = $this->countHighCourtRunningCase($officeIds)->count();
-                $ministry->appeal_running_case = $this->countAppealRunningCase($officeIds)->count();
-                $ministry->total_running_case = ($this->countHighCourtRunningCase($officeIds)->count() + $this->countAppealRunningCase($officeIds)->count());
-                $ministry->against_gov = $this->countHighCourtAgainstGovCase($officeIds)->count();
-                $ministry->result_sending_count = $this->countHighCourtSolicitorPendingCase($officeIds)->count();
-                $ministry->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($officeIds)->count();
-
-                array_push($arrayd, $ministry);
-            }
-
-           
             $appealCases = DB::table('appeal_gov_case_register')
                 ->whereNull('deleted_at')
                 ->select('id', 'is_final_order', 'result')
@@ -964,6 +945,24 @@ class DashboardController extends Controller
                 ->count();
 
             $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->count();
+
+            $data['ministry'] = GovCaseOffice::whereIn('gov_case_office.level', [1, 3])
+            ->with('childOffices')
+            ->paginate(10);
+
+        $arrayd = [];
+        foreach ($data['ministry'] as $ministry) {
+            $officeIds = array_merge([$ministry->doptor_office_id], $ministry->childOffices->pluck('doptor_office_id')->toArray());
+
+            $ministry->highcourt_running_case = $this->countHighCourtRunningCase($officeIds)->count();
+            $ministry->appeal_running_case = $this->countAppealRunningCase($officeIds)->count();
+            $ministry->total_running_case = ($this->countHighCourtRunningCase($officeIds)->count() + $this->countAppealRunningCase($officeIds)->count());
+            $ministry->against_gov = $this->countHighCourtAgainstGovCase($officeIds)->count();
+            $ministry->result_sending_count = $this->countHighCourtSolicitorPendingCase($officeIds)->count();
+            $ministry->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($officeIds)->count();
+
+            array_push($arrayd, $ministry);
+        }
 
             $data['page_title'] = 'মনিটরিং ইউজারের ড্যাশবোর্ড';
             return view('dashboard.cabinet_new.monitoring_user')->with($data);
