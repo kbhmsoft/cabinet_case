@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/hearing-tomorrow', [DashboardController::class, 'hearing_date_tomorrow'])->name('dashboard.hearing-tomorrow');
     Route::get('/dashboard/hearing-nextWeek', [DashboardController::class, 'hearing_date_nextWeek'])->name('dashboard.hearing-nextWeek');
     Route::get('/dashboard/hearing-nextMonth', [DashboardController::class, 'hearing_date_nextMonth'])->name('dashboard.hearing-nextMonth');
+    Route::get('/load-table-content', [DashboardController::class, 'loadTableContent'])->name('loadTableContent');
 
     /////****************** Gov Case Report Module *************/////
     Route::get('/govcase/report', [Gov_ReportController::class, 'index'])->name('reportss');
