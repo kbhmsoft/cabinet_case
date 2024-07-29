@@ -206,34 +206,20 @@ class DashboardController extends Controller
             $data['final_appeal_case'] = $appealCases->where('is_final_order', 1)->count();
             $data['appeal_not_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 1)->count();
             $data['appeal_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 2)->count();
+            $data['highcourt_not_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 1)->count();
+            
+            $data['appealPending'] = $govCases->where('result', 2)->where('is_appeal', 2)->count();
+            
+            $data['highcourt_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 2)->count();
+            
+            $data['running_high_court_case'] = $govCases->where('is_final_order', 0)->count();
+            // return $data;
 
-            $data['highcourt_not_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 1)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->count();
 
-            $data['appealPending'] = $govCases->where('result', 2)->where('is_appeal', 2)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['sent_to_solicitor_case'] = $govCases->whereNull('result_sending_date')->where('is_final_order', 0)->count();
 
-            $data['highcourt_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 2)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['running_high_court_case'] = $govCases->where('is_final_order', 0)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['sent_to_solicitor_case'] = $govCases->whereNull('result_sending_date')->where('is_final_order', 0)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['pendingPostpondOrder'] = $govCases->whereNull('appeal_against_postpond_interim_order')->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['pendingPostpondOrder'] = $govCases->whereNull('appeal_against_postpond_interim_order')->count();
 
             $data['ministry'] = DB::table('gov_case_office')
                 ->whereIn('parent_office_id', $finalOfficeIds)
@@ -275,38 +261,23 @@ class DashboardController extends Controller
                 ->get();
 
             $data['running_appeal_case'] = $appealCases->where('is_final_order', 0)->count();
-
             $data['final_appeal_case'] = $appealCases->where('is_final_order', 1)->count();
             $data['appeal_not_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 1)->count();
             $data['appeal_against_gov'] = $appealCases->where('is_final_order', 1)->where('result', 2)->count();
+            $data['highcourt_not_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 1)->count();
+            
+            $data['appealPending'] = $govCases->where('result', 2)->where('is_appeal', 2)->count();
+            
+            $data['highcourt_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 2)->count();
+            
+            $data['running_high_court_case'] = $govCases->where('is_final_order', 0)->count();
+            // return $data;
 
-            $data['highcourt_not_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 1)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->count();
 
-            $data['appealPending'] = $govCases->where('result', 2)->where('is_appeal', 2)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['sent_to_solicitor_case'] = $govCases->whereNull('result_sending_date')->where('is_final_order', 0)->count();
 
-            $data['highcourt_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 2)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['running_high_court_case'] = $govCases->where('is_final_order', 0)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['sent_to_solicitor_case'] = $govCases->whereNull('result_sending_date')->where('is_final_order', 0)->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
-
-            $data['pendingPostpondOrder'] = $govCases->whereNull('appeal_against_postpond_interim_order')->filter(function ($case) {
-                return $case->mainBibadis->isNotEmpty();
-            })->count();
+            $data['pendingPostpondOrder'] = $govCases->whereNull('appeal_against_postpond_interim_order')->count();
 
             $data['ministry'] = DB::table('gov_case_office')
                 ->whereIn('parent_office_id', $finalOfficeIds)

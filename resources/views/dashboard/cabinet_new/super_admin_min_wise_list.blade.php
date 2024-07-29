@@ -51,7 +51,8 @@
         <div class="row">
             <div class="container card">
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('min_wise_list.print') }}" target="_blank" class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
+                    <a href="{{ route('min_wise_list.print') }}" target="_blank"
+                     class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
                  </div>
                 <div class="card-body">
                     <table class="table table-hover mb-6 font-size-h5">
