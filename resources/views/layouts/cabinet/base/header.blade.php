@@ -174,7 +174,7 @@
                 <hr class="middle-line">
             </div>
             <!-- End of header-case-count -->
-        @elseif ($roleID == 45 || $roleID == 43)
+        @elseif ($roleID == 45 || $roleID == 42 || $roleID == 43)
             <!-- White space -->
             <div style="width: 100%; height: 20px;"></div>
         @endif

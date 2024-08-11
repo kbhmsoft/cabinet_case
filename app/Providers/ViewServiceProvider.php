@@ -90,10 +90,10 @@ class ViewServiceProvider extends AppServiceProvider
             }
 
             // Query to get the count of distinct case numbers for high court applications
-            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->where('is_answered',null)->distinct('case_no')->count();
+            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->count();
 
             // Query to get the count of distinct case numbers for appeal applications
-            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->where('is_answered',null)->distinct('case_no')->count();
+            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->count();
 
             $view->with([
                 'total_highcourt' => $total_highcourt,
@@ -138,7 +138,7 @@ class ViewServiceProvider extends AppServiceProvider
             $officeInfo = user_office_info();
             $roleID = Auth::user()->role_id;
 
-            if ($roleID == 29 || $roleID == 31 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45 || $roleID == 39) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 42 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 45 || $roleID == 39) {
                 $authUserOfficeId = Auth()->user()->office_id;
                 $case_swap = MainRespondentNotification::where('previous_office_id', $authUserOfficeId)
                     ->where('is_shown', 0)
@@ -149,7 +149,7 @@ class ViewServiceProvider extends AppServiceProvider
                     ->count();
             }
 
-            if ($roleID == 29 || $roleID == 31 || $roleID == 45 || $roleID == 43) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 45 || $roleID == 42 || $roleID == 43) {
                 // ===============Ministry Admin===============//
                 $case_status = DB::table('gov_case_registers')
                     ->select('gov_case_registers.case_status_id', 'case_status.status_name', DB::raw('COUNT(gov_case_registers.id) as total_case'))

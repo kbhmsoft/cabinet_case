@@ -76,7 +76,7 @@
                                         <select name="parentMinID" id="parentMinID" class="form-control w-100">
                                             <option value="">-- নির্বাচন করুন --</option>
                                             @foreach ($ministries as $value)
-                                                <option value="{{ $value->id }}"
+                                                <option value="{{ $value->doptor_office_id }}"
                                                     {{ $offices->parent_office_id == $value->doptor_office_id ? 'selected' : '' }}>
                                                     {{ $value->office_name_bn }}
                                                 </option>

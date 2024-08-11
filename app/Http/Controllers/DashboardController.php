@@ -1017,7 +1017,7 @@ class DashboardController extends Controller
             $data['page_title'] = 'অফিস প্রধানের ড্যাশবোর্ড';
 
             return view('dashboard.cabinet_new.office_head')->with($data);
-        }if ($roleID == 43) {
+        }if ($roleID == 43 || $roleID == 42) {
 
             $data['page_title'] = 'গেস্ট ইউজারের ড্যাশবোর্ড';
             return view('dashboard.cabinet.cabinet_guest_user')->with($data);
