@@ -7,13 +7,15 @@
  */
 namespace App\Repositories\gov_case;
 
-use App\Models\gov_case\AdministrativeTribrunalBadi;
-use App\Models\gov_case\AdministrativeTribrunalBibadi;
-use App\Models\gov_case\AppealGovCaseConcernPerson;
 use App\Models\gov_case\GovCaseBadi;
 use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
+use App\Models\gov_case\AppealGovCaseConcernPerson;
+use App\Models\gov_case\AdministrativeTribrunalBadi;
+use App\Models\gov_case\AdministrativeTribrunalBibadi;
+use App\Models\gov_case\AppealAdministrativeTribrunalBadi;
+use App\Models\gov_case\AppealAdministrativeTribrunalBibadi;
 
 class GovCaseBadiBibadiRepository
 {
@@ -52,6 +54,25 @@ class GovCaseBadiBibadiRepository
         }
     }
 
+
+    public static function storeAppealAdministritiveTribrunalBadi($caseInfo, $govCaseId)
+    {
+        if ($caseInfo->badi_name) {
+
+            foreach ($caseInfo->badi_name as $key => $val) {
+                if ($caseInfo->badi_name[$key] != null) {
+                    $badi = self::checkAppealAdministritiveTribrunalBadiExist($caseInfo->badi_id[$key]);
+                    $badi->gov_case_id = $govCaseId;
+                    $badi->name = $caseInfo->badi_name[$key];
+                    $badi->address = $caseInfo->badi_address[$key];
+
+                    $badi->save();
+                }
+            }
+
+        }
+    }
+
     public static function checkBadiExist($badiId)
     {
         if (isset($badiId)) {
@@ -72,6 +93,16 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
+    public static function checkAppealAdministritiveTribrunalBadiExist($badiId)
+    {
+        if (isset($badiId)) {
+            $badi = AppealAdministrativeTribrunalBadi::find($badiId);
+        } else {
+            $badi = new AppealAdministrativeTribrunalBadi();
+        }
+        return $badi;
+    }
+
     public static function storeMainBibadi($caseInfo, $govCaseId)
     {
         $officeID = userInfo()->office_id;
@@ -86,6 +117,18 @@ class GovCaseBadiBibadiRepository
     {
         $officeID = userInfo()->office_id;
         $bibadi = new AdministrativeTribrunalBibadi();
+        $bibadi->gov_case_id = $govCaseId;
+        $bibadi->respondent_id = $officeID;
+        $bibadi->is_main_bibadi = 1;
+
+        $bibadi->save();
+    }
+
+
+    public static function storeMainBibadiAppealAdministritiveTribrunal($caseInfo, $govCaseId)
+    {
+        $officeID = userInfo()->office_id;
+        $bibadi = new AppealAdministrativeTribrunalBibadi();
         $bibadi->gov_case_id = $govCaseId;
         $bibadi->respondent_id = $officeID;
         $bibadi->is_main_bibadi = 1;
@@ -132,6 +175,20 @@ class GovCaseBadiBibadiRepository
         }
     }
 
+    public static function storeBibadiAppealAdministritiveTribrunal($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->other_respondent as $key => $val) {
+            if ($caseInfo->other_respondent[$key] != null) {
+                $bibadi = self::checkAppealAdministrativeTribrunalBibadiExist($caseInfo->bibadi_id[$key]);
+                $bibadi->gov_case_id = $govCaseId;
+                $bibadi->respondent_id = $caseInfo->other_respondent[$key];
+                $bibadi->other_respondent_manual_name = $caseInfo->other_respondent_manual_name[$key];
+
+                $bibadi->save();
+            }
+        }
+    }
+
     public static function storeBibadiForChangingMainRespondent($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->other_respondent as $key => $val) {
@@ -157,9 +214,9 @@ class GovCaseBadiBibadiRepository
     public static function checkAdministritiveTribrunalBibadiExist($bibadiId)
     {
         if (isset($bibadiId)) {
-            $bibadi = AdministritiveTribrunalBibadi::find($bibadiId);
+            $bibadi = AdministrativeTribrunalBibadi::find($bibadiId);
         } else {
-            $bibadi = new AdministritiveTribrunalBibadi();
+            $bibadi = new AdministrativeTribrunalBibadi();
         }
         return $bibadi;
     }
@@ -180,6 +237,16 @@ class GovCaseBadiBibadiRepository
             $bibadi = AdministrativeTribrunalBibadi::find($bibadiId);
         } else {
             $bibadi = new AdministrativeTribrunalBibadi();
+        }
+        return $bibadi;
+    }
+
+    public static function checkAppealAdministrativeTribrunalBibadiExist($bibadiId)
+    {
+        if (isset($bibadiId)) {
+            $bibadi = AppealAdministrativeTribrunalBibadi::find($bibadiId);
+        } else {
+            $bibadi = new AppealAdministrativeTribrunalBibadi();
         }
         return $bibadi;
     }

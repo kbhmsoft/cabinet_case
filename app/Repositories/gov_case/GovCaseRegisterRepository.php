@@ -15,6 +15,9 @@ use App\Models\gov_case\GovCaseHighcourtAdalat;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
 use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
 use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
+use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\ConcernPersonAppealAdministrativeTribrunal;
+use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
 
 class GovCaseRegisterRepository
 {
@@ -71,7 +74,6 @@ class GovCaseRegisterRepository
 
     public static function storeHighcourtAdalat($caseInfo, $govCaseId)
     {
-
         foreach ($caseInfo->highcourt_adalat as $key => $val) {
             if ($caseInfo->highcourt_adalat[$key] != null) {
                 $highcourtAdalat = self::checkHighcourtAdalatExist($caseInfo->highcourt_adalat_id[$key]);
@@ -84,13 +86,23 @@ class GovCaseRegisterRepository
 
     public static function storeAdministritiveTribrunalHighcourtAdalat($caseInfo, $govCaseId)
     {
-
         foreach ($caseInfo->administrative_adalat as $key => $val) {
             if ($caseInfo->administrative_adalat[$key] != null) {
                 $administrativeAdalat = self::checkAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
                 $administrativeAdalat->gov_case_id = $govCaseId;
                 $administrativeAdalat->administrative_adalat = $caseInfo->administrative_adalat[$key];
-                // dd($highcourtAdalat);
+                $administrativeAdalat->save();
+            }
+        }
+    }
+
+    public static function storeAppealAdministritiveTribrunalHighcourtAdalat($caseInfo, $govCaseId)
+    {
+        foreach ($caseInfo->administrative_adalat as $key => $val) {
+            if ($caseInfo->administrative_adalat[$key] != null) {
+                $administrativeAdalat = self::checkAppealAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
+                $administrativeAdalat->gov_case_id = $govCaseId;
+                $administrativeAdalat->administrative_adalat = $caseInfo->administrative_adalat[$key];
                 $administrativeAdalat->save();
             }
         }
@@ -99,7 +111,6 @@ class GovCaseRegisterRepository
     public static function checkHighcourtAdalatExist($highcourtAdalatId)
     {
         if (isset($highcourtAdalatId)) {
-
             $highcourtAdalat = GovCaseHighcourtAdalat::find($highcourtAdalatId);
         } else {
 
@@ -119,6 +130,19 @@ class GovCaseRegisterRepository
         } else {
 
             $ATAdalat = new AdministrativeTribrunalHighcourtAdalat();
+        }
+
+        return $ATAdalat;
+    }
+
+    public static function checkAppealAdministritiveTribrunalHighcourtAdalatExist($ATAdalatId)
+    {
+        if (isset($ATAdalatId)) {
+
+            $ATAdalat = AppealAdministrativeTribrunalHighcourtAdalat::find($ATAdalatId);
+        } else {
+
+            $ATAdalat = new AppealAdministrativeTribrunalHighcourtAdalat();
         }
 
         return $ATAdalat;
@@ -450,6 +474,17 @@ class GovCaseRegisterRepository
         return $case;
     }
 
+    public static function checkAppealAdministrativeTribrunalCaseExist($caseId)
+    {
+        if ($caseId != null) {
+            $case = AppealAdministrativeTribrunalCaseRegister::find($caseId);
+        } else {
+            $case = new AppealAdministrativeTribrunalCaseRegister();
+        }
+        return $case;
+    }
+
+
     public static function checkAdministrativeTribrunalCaseExist($caseId)
     {
         if ($caseId != null) {
@@ -670,6 +705,33 @@ class GovCaseRegisterRepository
         return $caseId;
     }
 
+
+    public static function storeAppealAdministrativeTribrunalGeneralInfo($caseInfo)
+    {
+        try {
+            $case = self::checkAppealAdministrativeTribrunalCaseExist($caseInfo['case_id']);
+
+            $case->case_no = $caseInfo->case_no;
+            $case->case_category_type = 1;
+            $case->notice_given_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
+            $case->create_by = userInfo()->id;
+            $case->case_year = $caseInfo->case_year;
+            $case->court = $caseInfo->court;
+            $case->subject_matter = $caseInfo->subject_matter;
+            $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
+
+            $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
+
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
     public static function storeMainRespondentChangingGeneralInfo($caseInfo, $caseId)
     {
         try {
@@ -726,7 +788,6 @@ class GovCaseRegisterRepository
 
     public static function storeConcernPersonAdministritiveTribrunal($caseInfo, $govCaseId)
     {
-
         if ($caseInfo->concernPersonDesignation) {
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
@@ -739,7 +800,24 @@ class GovCaseRegisterRepository
                     $concernPrerson->save();
                 }
             }
+        }
+    }
 
+
+    public static function storeConcernPersonAppealAdministritiveTribrunal($caseInfo, $govCaseId)
+    {
+        if ($caseInfo->concernPersonDesignation) {
+            foreach ($caseInfo->concernPersonDesignation as $key => $val) {
+                if ($caseInfo->concernPersonDesignation[$key] != null) {
+
+                    $concernPrerson = self::checkConcernPersonAppealAdministritiveTribrunalExist($caseInfo->concern_person_id[$key]);
+                    $concernPrerson->gov_case_id = $govCaseId;
+                    $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
+                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+
+                    $concernPrerson->save();
+                }
+            }
         }
     }
     public static function storeSendingReply($caseInfo)
@@ -1124,6 +1202,16 @@ class GovCaseRegisterRepository
             $badi = ConcernPersonAdministrativeTribrunal::find($badiId);
         } else {
             $badi = new ConcernPersonAdministrativeTribrunal();
+        }
+        return $badi;
+    }
+
+    public static function checkConcernPersonAppealAdministritiveTribrunalExist($badiId)
+    {
+        if (isset($badiId)) {
+            $badi = ConcernPersonAppealAdministrativeTribrunal::find($badiId);
+        } else {
+            $badi = new ConcernPersonAppealAdministrativeTribrunal();
         }
         return $badi;
     }

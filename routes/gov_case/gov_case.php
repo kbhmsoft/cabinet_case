@@ -19,6 +19,7 @@ use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
 use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
+use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
 
 Route::middleware('prevent-back-history')->group(function () {
 
@@ -312,9 +313,9 @@ Route::middleware('prevent-back-history')->group(function () {
               Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
               Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
               Route::post('administrative-tribrunal-generalInfo/store', [AdministrativeTribrunalController::class, 'administrativeTribrunalGeneralInfo'])->name('administrativeTribrunalGeneralInfo');
-              Route::get('appeal/administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal.create');
-
-
+              Route::get('appeal/administrativeTribrunal/create', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal_create'])->name('appealAdministrativeTribrunal.create');
+              Route::post('appeal-administrative-tribrunal-generalInfo/store', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunalGeneralInfo'])->name('appealAdministrativeTribrunalGeneralInfo');
+              Route::get('appealAdministrativeTribrunal', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal');
 
                 Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                     Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

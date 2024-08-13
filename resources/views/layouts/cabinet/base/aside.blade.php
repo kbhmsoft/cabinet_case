@@ -253,7 +253,8 @@
                         <div class="menu-submenu">
                             <i class="menu-arrow"></i>
                             <ul class="menu-subnav">
-                                @can('create_new_case')
+
+                                @can('create_new_at_case')
                                     <li class="menu-item {{ request()->is('cabinet/case/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.administrativeTribrunal.create') }}"
@@ -264,6 +265,7 @@
                                         </a>
                                     </li>
                                 @endcan
+
                                 @can('administrativetribrunal_list')
                                     <li class="menu-item {{ request()->is(['cabinet/case/administrativeTribrunal']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
@@ -285,6 +287,17 @@
                                         </a>
                                     </li>
                                 @endcan
+
+
+                                @can('appeal_administrativetribrunal_list')
+                                <li class="menu-item {{ request()->is(['cabinet/case/appealAdministrativeTribrunal']) ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                        <span class="menu-text font-weight-bolder">প্রশাসনিক আপিল মামলার তালিকা</span>
+                                    </a>
+                                </li>
+                            @endcan
                             </ul>
                         </div>
                     </li>

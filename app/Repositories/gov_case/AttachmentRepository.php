@@ -24,6 +24,7 @@ use App\Models\AdalatReplySendingAttachment;
 use App\Models\LeaveToAppealAnswerAttachment;
 use App\Models\AdministrativeTribrunalAttachment;
 use App\Models\gov_case\AppealOrderTakenAttachment;
+use App\Models\AppealAdministrativeTribrunalAttachment;
 use App\Models\gov_case\AppealOrderTakenFinalAttachment;
 use App\Models\gov_case\AppealOrderTakenAppealAttachment;
 
@@ -67,8 +68,35 @@ class AttachmentRepository
                     $filePath = "uploads/" . $appName . "/administrative_tribrunal/attachment/";
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
                     $file->move(public_path($filePath), $otherfileName);
-
                     $attachment = new AdministrativeTribrunalAttachment();
+                    $attachment->gov_case_id = $caseId;
+                    $attachment->file_type = isset($request->file_type[$key]) ? $request->file_type[$key] : null;
+                    $attachment->file_name = $filePath . $otherfileName;
+                    $attachment->file_submission_date = now();
+                    $attachment->created_at = now();
+                    $attachment->created_by = userInfo()->id;
+                    $attachment->updated_at = now();
+                    $attachment->updated_by = userInfo()->id;
+
+                    $attachment->save();
+                } else {
+                    return response()->json(['error' => 'Invalid file uploaded.'], 400);
+                }
+            }
+        }
+    }
+
+
+    public static function storeAppealAdministrativeTribrunalAttachment($appName, $caseId, $request)
+    {
+        if ($request->hasFile('file_name')) {
+            $files = $request->file('file_name');
+            foreach ($files as $key => $file) {
+                if ($file->isValid()) {
+                    $filePath = "uploads/" . $appName . "/appeal_administrative_tribrunal/attachment/";
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $file->move(public_path($filePath), $otherfileName);
+                    $attachment = new AppealAdministrativeTribrunalAttachment();
                     $attachment->gov_case_id = $caseId;
                     $attachment->file_type = isset($request->file_type[$key]) ? $request->file_type[$key] : null;
                     $attachment->file_name = $filePath . $otherfileName;
