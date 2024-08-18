@@ -2731,7 +2731,7 @@ class GovCaseRegisterController extends Controller
                 if ($request->file_type && $_FILES["file_name"]['name']) {
                     AttachmentRepository::storeAttachment('gov_case', $caseId, $request);
                 }
-              
+
 
                 //========= Gov Case Activity Log - start ============
                 $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
@@ -3691,6 +3691,7 @@ class GovCaseRegisterController extends Controller
         $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
         //     ->where('is_final_order', 1)
+        
         // // ->pluck("case_no", "id", "year");
         //     ->where('leave_to_appeal_is_favour_of_gov', 1)
             ->select("case_no", "id", "year")->get();
