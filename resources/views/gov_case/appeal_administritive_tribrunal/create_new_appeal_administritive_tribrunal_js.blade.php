@@ -22,10 +22,9 @@
 </script>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
         addBadiRowFunc();
-
+        $('select').select2();
         var formType = $('#formType').val();
         if (formType != 'edit') {
             addMainBibadiRowFunc();
@@ -46,7 +45,7 @@
         addAppealSubmissionFileRowFunc();
         appealSubmissionFileRowFunc();
 
-        $('select').select2();
+        // $('select').select2();
     });
 
     /*********************** Add multiple badi *************************/
@@ -67,7 +66,16 @@
         $('#badiDiv tr:last').after(items);
     }
 
-
+    //===========caseType================//
+    jQuery('select[name="appeal_office"]').on('change', function() {
+        var dataID = jQuery(this).val();
+        console.log(dataID);
+        if (dataID == 0) {
+            $('#appeal_petitioner_name').removeClass('d-none');
+        } else {
+            $('#appeal_petitioner_name').addClass('d-none');
+        }
+    });
 
 
 
@@ -389,7 +397,8 @@
             return;
         }
 
-        $('#appealAdministrativeTribrunalGeneralInfoSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        $('#appealAdministrativeTribrunalGeneralInfoSaveBtn').addClass(
+            'spinner spinner-white spinner-right disabled');
         Swal.fire({
             title: 'আপনি কি আপিল প্রশাসনিক মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
             icon: 'warning',
@@ -453,8 +462,6 @@
 
 
     // ================================Case General Info save==================================
-
-
 </script>
 
 
@@ -476,8 +483,6 @@
 <!--end::Page Scripts-->
 @include('components.Ajax')
 <script>
-
-
     // ============= Add Attachment Row ========= start =========
     $("#addFileRow").click(function(e) {
         addFileRowFunc();

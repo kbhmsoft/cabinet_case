@@ -71,6 +71,12 @@ class AppealGovCaseRegister extends Model
     {
         return $this->hasOne(GovCaseRegister::class, 'id', 'case_origin_id');
     }
+
+    public function govCaseOrigin()
+    {
+        return $this->hasOne(GovCaseRegister::class, 'id', 'case_number_origin');
+    }
+
     public function govOffice()
     {
         return $this->hasOne(GovCaseOffice::class, 'id', 'appeal_office_id');

@@ -290,14 +290,15 @@
 
 
                                 @can('appeal_administrativetribrunal_list')
-                                <li class="menu-item {{ request()->is(['cabinet/case/appealAdministrativeTribrunal']) ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                        <span class="menu-text font-weight-bolder">প্রশাসনিক আপিল মামলার তালিকা</span>
-                                    </a>
-                                </li>
-                            @endcan
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appealAdministrativeTribrunal']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">প্রশাসনিক আপিল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     </li>

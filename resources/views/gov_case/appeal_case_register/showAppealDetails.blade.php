@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                          @if (Auth::user()->role_id == 2)
+                                              @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                        </div> -->
+                                            </div> -->
                 </div>
             </div>
             {{-- {{dd($appealCase)}} --}}
@@ -172,6 +172,7 @@
                                     <td>{{ $appealCase->postponed_details }}</td>
                                 </tr>
                             @endif
+
                             @if ($appealCase->case_number_origin)
                                 <tr>
                                     <th scope="row">পূর্বের মামলা নং </th>
@@ -179,10 +180,10 @@
                                         @if (auth()->user()->can('show_details_info'))
                                             {{-- <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
                                                 target="_blank"> --}}
-                                            {{ $appealCase->case_number_origin }}
+                                            {{ $appealCase->govCaseOrigin->case_no }}
                                             {{-- </a> --}}
                                         @else
-                                            <a href="#">{{ $appealCase->case_number_origin }}</a>
+                                            <a href="#">{{ $appealCase->govCaseOrigin->case_no }}</a>
                                         @endif
                                     </td>
                                 </tr>

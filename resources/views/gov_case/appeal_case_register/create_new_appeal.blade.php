@@ -218,7 +218,6 @@
 
                                                 <div class="col-lg-6 mt-5 mb-5">
                                                     <label>যে মামলা হতে উদ্ভূত তার শ্রেণী/কেস-টাইপ </label>
-
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
                                                             class="form-control form-control-sm">
@@ -229,7 +228,6 @@
                                                                     {{ $value->name_bn }} </option>
                                                             @endforeach
                                                         </select>
-
                                                     </div>
                                                 </div>
 

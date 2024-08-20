@@ -1264,7 +1264,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
-
         $exists = AppealGovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -1721,7 +1720,7 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
-
+    //    dd($data['cases']);
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 1)->get();

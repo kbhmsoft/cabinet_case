@@ -7,6 +7,7 @@ use App\Models\FinalAttachment;
 use App\Models\ReplyAttachment;
 use Illuminate\Support\Facades\DB;
 use App\Models\SuspensionAttachment;
+use Illuminate\Support\Facades\Auth;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseOrderTaken;
@@ -119,8 +120,6 @@ class GovCaseRegisterRepository
 
         return $highcourtAdalat;
     }
-
-
 
     public static function checkAdministritiveTribrunalHighcourtAdalatExist($ATAdalatId)
     {
@@ -484,7 +483,6 @@ class GovCaseRegisterRepository
         return $case;
     }
 
-
     public static function checkAdministrativeTribrunalCaseExist($caseId)
     {
         if ($caseId != null) {
@@ -705,22 +703,31 @@ class GovCaseRegisterRepository
         return $caseId;
     }
 
-
     public static function storeAppealAdministrativeTribrunalGeneralInfo($caseInfo)
     {
         try {
             $case = self::checkAppealAdministrativeTribrunalCaseExist($caseInfo['case_id']);
+
+            $petitioner_name = '';
+            if ($caseInfo->appeal_office == 0) {
+                $petitioner_name = $caseInfo->appeal_petitioner_name;
+            }
 
             $case->case_no = $caseInfo->case_no;
             $case->case_category_type = 1;
             $case->notice_given_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
             $case->create_by = userInfo()->id;
             $case->case_year = $caseInfo->case_year;
+            $case->case_number_at_origin = $caseInfo->case_number_at_origin;
             $case->court = $caseInfo->court;
             $case->subject_matter = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
+            $case->appeal_petitioner_name = $petitioner_name;
+            $case->appeal_office_id = $caseInfo->appeal_office;
+            $case->created_by = Auth::user()->id;
+            $case->created_by_office = Auth::user()->office_id;
 
-            $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
+            // $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -785,7 +792,6 @@ class GovCaseRegisterRepository
         }
     }
 
-
     public static function storeConcernPersonAdministritiveTribrunal($caseInfo, $govCaseId)
     {
         if ($caseInfo->concernPersonDesignation) {
@@ -802,7 +808,6 @@ class GovCaseRegisterRepository
             }
         }
     }
-
 
     public static function storeConcernPersonAppealAdministritiveTribrunal($caseInfo, $govCaseId)
     {

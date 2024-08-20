@@ -175,7 +175,7 @@
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>নোটিশ জারির তারিখ <span class="text-danger">*</span></label>
+                                                    <label>মামলা দায়েরের তারিখ <span class="text-danger">*</span></label>
                                                     <input type="text" name="notice_given_date" id="notice_given_date"
                                                         class="form-control form-control-sm  common_datepicker"
                                                         placeholder="দিন/মাস/বছর" autocomplete="off" required="required">
@@ -183,6 +183,33 @@
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
+
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>আপিলকারী
+                                                        <span class="text-danger">*</span></label>
+
+                                                    <div class="" id="appeallateOffice">
+                                                        <select name="appeal_office" id="appeallateOffice"
+                                                            class="form-control form-control-sm" required="required">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($ministrys as $value)
+                                                                <option value="{{ $value->doptor_office_id }}"
+                                                                    {{ old('appeal_office') == $value->doptor_office_id }}>
+                                                                    {{ $value->office_name_bn }} </option>
+                                                            @endforeach
+                                                            <option value="0">অন্যান্য</option>
+                                                        </select>
+                                                        <span class="text-danger d-none vallidation-message">This field
+                                                            can not be empty</span>
+                                                        <input type="text" name="appeal_petitioner_name"
+                                                            id="appeal_petitioner_name"
+                                                            class="form-control form-control-sm d-none"
+                                                            placeholder="আপিলকারীর নাম লিখুন">
+                                                    </div>
+                                                </div>
+
+
 
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
@@ -215,7 +242,7 @@
                                                 <!-- jQuery -->
                                                 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
-                                                <div class="col-lg-12 mb-5">
+                                                {{-- <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="badiDiv"
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
@@ -226,10 +253,10 @@
                                                         </tr>
 
                                                     </table>
-                                                </div>
+                                                </div> --}}
 
 
-                                                <div class="col-lg-12" style="display: flex;">
+                                                {{-- <div class="col-lg-12" style="display: flex;">
                                                     <div class="col-lg-5 mb-5">
                                                         <label>মোট পিটিশনারের সংখ্যা</label>
                                                         <select name="total_badi_number" id="total_badi_number"
@@ -274,7 +301,7 @@
 
                                                     <!-- Hidden input for "অন্যান্য" -->
 
-                                                </div>
+                                                </div> --}}
 
 
                                                 <div class="col-lg-12 mb-5">
@@ -282,13 +309,28 @@
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
                                                 </div>
 
-                                                <div class="col-lg-6 mb-5">
+                                                <div class="col-lg-6 mt-5 mb-5">
+                                                    <label>মামলা নং(যে মামলা হতে উদ্ভূত তার মামলা নং) </label>
+                                                    <div class="" id="">
+                                                        <select name="case_number_at_origin" id=""
+                                                            class="form-control form-control-sm">
+                                                            <option value="">-- নির্বাচন করুন --</option>
+                                                            @foreach ($atCase as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('case_number_at_origin') == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->case_no }}/{{ $value->case_year }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                {{-- <div class="col-lg-6 mb-5">
                                                     <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা
                                                     সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য
                                                     মূল্য ইত্যাদি)
                                                     <input name="money_amount" class="form-control" id="money_amount"
                                                         rows="1" spellcheck="false"></input>
-                                                </div>
+                                                </div> --}}
 
 
 

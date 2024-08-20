@@ -196,8 +196,10 @@ class AppealAdministrativeTribrunalController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
-
+        // $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['atCase'] = DB::table('administrative_tribrunal_case_registers')->select('id', 'case_no','case_year')
+        ->where('deleted_at',null)->orderBy('id','desc')->get();
+        // dd($data['atCase']);
         $data['page_title'] = 'প্রশাসনিক আপিল ট্রাইব্যুনাল মামলা এন্ট্রি ';
 
         return view('gov_case.appeal_administritive_tribrunal.create_new_appeal_administritive_tribrunal')->with($data);
@@ -219,12 +221,12 @@ class AppealAdministrativeTribrunalController extends Controller
 
             try {
                 $caseId = GovCaseRegisterRepository::storeAppealAdministrativeTribrunalGeneralInfo($request);
-                GovCaseBadiBibadiRepository::storeMainBibadiAppealAdministritiveTribrunal($request, $caseId);
+                // GovCaseBadiBibadiRepository::storeMainBibadiAppealAdministritiveTribrunal($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPersonAppealAdministritiveTribrunal($request, $caseId);
-                GovCaseBadiBibadiRepository::storeBibadiAppealAdministritiveTribrunal($request, $caseId);
+                // GovCaseBadiBibadiRepository::storeBibadiAppealAdministritiveTribrunal($request, $caseId);
                 GovCaseRegisterRepository::storeAppealAdministritiveTribrunalHighcourtAdalat($request, $caseId);
 
-                GovCaseBadiBibadiRepository::storeAppealAdministritiveTribrunalBadi($request, $caseId);
+                // GovCaseBadiBibadiRepository::storeAppealAdministritiveTribrunalBadi($request, $caseId);
 
                 if ($request->file_type && $_FILES["file_name"]['name']) {
                     AttachmentRepository::storeAppealAdministrativeTribrunalAttachment('gov_case', $caseId, $request);

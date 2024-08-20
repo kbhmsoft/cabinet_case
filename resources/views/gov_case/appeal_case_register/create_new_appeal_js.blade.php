@@ -150,7 +150,7 @@
 
                         jQuery.each(data, function(key, value) {
                             caseNumberDropdown.append(
-                                `<option value="${value.case_no}">${value.case_no}/${value.year}</option>`
+                                `<option value="${value.id}">${value.case_no}/${value.year}</option>`
                             );
                         });
 

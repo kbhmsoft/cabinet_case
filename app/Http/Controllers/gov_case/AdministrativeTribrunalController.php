@@ -133,8 +133,8 @@ class AdministrativeTribrunalController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
 
+       
         $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনাল মামলা এন্ট্রি ';
 
         return view('gov_case.administritive_tribrunal.create_new_administritive_tribrunal')->with($data);
