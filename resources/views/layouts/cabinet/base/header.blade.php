@@ -102,15 +102,6 @@
 
 @php
 
-    // function en3bn($number)
-    // {
-    //     if ($number < 10) {
-    //         return '০' . $number;
-    //     } else {
-    //         return $number;
-    //     }
-    // }
-
     $officeInfo = user_office_info();
     $roleID = Auth::user()->role_id;
 

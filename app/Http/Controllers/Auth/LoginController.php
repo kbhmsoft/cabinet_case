@@ -109,6 +109,7 @@ class LoginController extends BaseController
 
         $data_get_method = $request->data;
         $data = json_decode(base64_decode($request->data), true);
+
         $token = '';
 
         if (!isset($data['token'])) {
@@ -136,14 +137,17 @@ class LoginController extends BaseController
 
         // Execute cURL request
         $response = curl_exec($curl);
+// dd($response);
         if (curl_errno($curl)) {
             Log::error('cURL error: ' . curl_error($curl));
+
             curl_close($curl);
             return redirect()->route('doptor.login')->with('error', 'Failed to retrieve user information.');
         }
         curl_close($curl);
 
         $response = json_decode($response);
+      
         if (!isset($response->status) || $response->status != 'success') {
             Log::warning('API response status not successful: ' . json_encode($response));
             return redirect()->route('doptor.login')->with('error', 'Invalid response from the API.');
