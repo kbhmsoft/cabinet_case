@@ -26,6 +26,52 @@
 
     ?>
     @include('gov_case.case_register.create_css')
+    <style>
+        .lawyer_title {
+            font-size: 18px;
+        }
+
+        .form-short-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-top: -20px;
+            color: rgb(235, 58, 58);
+        }
+
+        /* Tooltip container */
+        .tooltip-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-button {
+            color: #d80517;
+        }
+
+        /* Tooltip text */
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgb(237, 232, 232);
+            color: black;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip-icon:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
     <!--begin::Row-->
     <div class="row">
 
@@ -172,13 +218,11 @@
                                                             <table width="100%" border="1" id="highcourtAdalatDiv"
                                                                 class="mb-5" style="border:1px solid #dcd8d8;">
                                                                 <tr>
-                                                                    <th class="other_bibadi_name other_respondent">আদালতের
-                                                                        নাম
+                                                                    <th class="other_bibadi_name other_respondent">আদালতের নাম
                                                                         (Justice Name)<span class="text-danger">*</span>
                                                                     </th>
                                                                     <th width="50">
-                                                                        <a href="javascript:void();"
-                                                                            id="addHighcourtAdalatRow"
+                                                                        <a href="javascript:void();" id="addHighcourtAdalatRow"
                                                                             class="btn btn-sm btn-primary font-weight-bolder pr-2">
                                                                             <i class="fas fa-plus-circle"></i>
                                                                         </a>
@@ -187,6 +231,7 @@
                                                                 <tr></tr>
                                                             </table>
                                                         </div>
+
 
 
 
@@ -207,7 +252,6 @@
                                                             <table width="100%" border="1" id="advocateLawerDiv"
                                                                 style="border:1px solid #dcd8d8;">
                                                                 <tr>
-
                                                                     <th>সংশ্লিষ্ট আইন কর্মকর্তা <span
                                                                             class="text-danger">*</span></th>
                                                                     <th>সংশ্লিষ্ট আইন কর্মকর্তার নাম <span
@@ -224,6 +268,10 @@
                                                             </table>
                                                             <input type="hidden" id="survey_count" value="1">
                                                         </div>
+
+
+
+
                                                     </div>
 
                                                     <div id="secondrequriedfields" class="form-group row">
@@ -249,10 +297,6 @@
                                                             </table>
 
 
-
-
-
-
                                                             <div class="col-lg-12" style="display: flex;">
                                                                 <div class="col-lg-5 mb-5">
                                                                     <label>মোট পিটিশনারের সংখ্যা</label>
@@ -269,28 +313,39 @@
                                                                     </select>
                                                                     <input type="hidden" name="caseId" value="">
                                                                 </div>
-                                                                <div class="col-lg-7 mb-5">
+
+
+                                                                <div class="col-lg-7 mb-5 product-image">
                                                                     <table width="100%" border="1" id="bibadiDiv"
                                                                         class="mb-5" style="border:1px solid #dcd8d8;">
                                                                         <tr>
-                                                                            <th class="other_bibadi_name other_respondent">
-                                                                                অন্যান্য রেসপন্ডেন্ট নাম সমূহ<span
-                                                                                    class="text-danger">*</span>
+                                                                            <th class="other_bibadi_name other_respondent"
+                                                                                colspan="2">
+                                                                                রেসপন্ডেন্ট তালিকা
+                                                                                <span class="tooltip-icon">
+                                                                                    <i class="fas fa-info-circle tooltip-button"></i>
+                                                                                    <span class="tooltip-text">ড্রপডাউন থেকে অফিস
+                                                                                        সিলেক্ট করুণ। কোন অফিস না পেলে অন্যান্য সিলেক্ট
+                                                                                        করে নাম লিখুন</span>
+                                                                                </span>
                                                                             </th>
                                                                             <th width="50">
-                                                                                <a href="javascript:void();"
-                                                                                    id="addBibadiRow"
-                                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
+                                                                                <a href="javascript:void();" id="addBibadiRow"
+                                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2"
+                                                                                    onclick="addBibadiRowFunc()">
                                                                                     <i class="fas fa-plus-circle"></i>
                                                                                 </a>
                                                                             </th>
                                                                         </tr>
-                                                                        <tr></tr>
                                                                     </table>
                                                                 </div>
+
+
                                                             </div>
 
                                                         </div>
+
+
                                                         <div class="col-lg-12 mb-5">
                                                             <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
                                                             <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
@@ -385,9 +440,7 @@
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        {{-- </div> --}}
 
-                                        <!--end::Card-->
                                     </div>
                                 </div>
                                 <div class="form-footer mt-5">
@@ -404,8 +457,6 @@
 
                             </div>
                             {{-- ---------- end মামলার সাধারণ তথ্য----------- --}}
-
-
 
                             {{-- ------------- start জবাব প্রেরণ ------------- --}}
                             <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
@@ -1231,7 +1282,8 @@
                                                                     <div
                                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (বাস্তবায়নে গৃহীত
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (বাস্তবায়নে
+                                                                                গৃহীত
                                                                                 ব্যবস্থার কপি সংযুক্ত
                                                                                 করুন)
                                                                                 <sub class="text-danger">(PDF, সর্বোচ্চ
@@ -1279,13 +1331,13 @@
                                                         <div class="radio-inline">
                                                             <label class="radio">
                                                                 <input type="radio"
-                                                                    name="appeal_against_adesh_decision_taken"
+                                                                    name="against_gov_appeal_against_adesh_decision_taken"
                                                                     id="appeal_against_adesh_decision_taken"
                                                                     value="1" />
                                                                 <span></span>হ্যাঁ</label>
                                                             <label class="radio">
                                                                 <input type="radio"
-                                                                    name="appeal_against_adesh_decision_taken"
+                                                                    name="against_gov_appeal_against_adesh_decision_taken"
                                                                     id="appeal_against_adesh_decision_taken_not"
                                                                     value="0" checked />
                                                                 <span></span>না</label>
@@ -1300,13 +1352,13 @@
                                                             <div class="radio-inline">
                                                                 <label class="radio">
                                                                     <input type="radio"
-                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        name="against_gov_adesh_tamil_decision_yes_taken"
                                                                         id="adesh_tamil_decision_yes_taken"
                                                                         value="1" />
                                                                     <span></span>হ্যাঁ</label>
                                                                 <label class="radio">
                                                                     <input type="radio"
-                                                                        name="adesh_tamil_decision_yes_taken"
+                                                                        name="against_gov_adesh_tamil_decision_yes_taken"
                                                                         id="adesh_tamil_decision_yes_taken_not"
                                                                         value="0" checked />
                                                                     <span></span>না</label>
@@ -1318,7 +1370,8 @@
                                                     <div class="p-5" id="against_order_taken_solicitor_div">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox"
-                                                                value="1" id="solicitor_checkbox"
+                                                                value="1"
+                                                                id="against_gov_order_taken_solicitor_checkbox"
                                                                 name="against_order_taken_person_solicitor"
                                                                 id="against_order_taken_solicitor_checkbox">
                                                             <label class="form-check-label lawyer_title"
@@ -1328,7 +1381,8 @@
                                                         </div>
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox"
-                                                                value="1" id="law_officer_checkbox"
+                                                                value="1"
+                                                                id="against_gov_order_taken_law_officer_checkbox"
                                                                 name="against_order_taken_person_law_officer">
                                                             <label class="form-check-label lawyer_title"
                                                                 for="law_officer_checkbox">
@@ -1344,7 +1398,7 @@
                                                                 <label>আপিল দায়েরের অনুরোধের তারিখ
                                                                 </label>
                                                                 <input type="text"
-                                                                    name="appeal_submission_requesting_date"
+                                                                    name="against_gov_appeal_submission_requesting_date"
                                                                     id="appeal_submission_requesting_date"
                                                                     class="form-control form-control-sm  common_datepicker"
                                                                     placeholder="দিন/মাস/বছর" autocomplete="off">
@@ -1354,7 +1408,7 @@
                                                                 <label>আপিল দায়েরের অনুরোধের স্মারক
                                                                 </label>
                                                                 <input type="text"
-                                                                    name="appeal_submission_requesting_memorial"
+                                                                    name="against_gov_appeal_submission_requesting_memorial"
                                                                     id="appeal_submission_requesting_memorial"
                                                                     class="form-control form-control-sm" placeholder=""
                                                                     autocomplete="off">
@@ -1383,7 +1437,7 @@
                                                                                 data-original-title="ফাইল যুক্ত করুণ">
 
                                                                                 <div
-                                                                                    id="addAppealSubmissionRequestFileRow">
+                                                                                    id="addAgainstGovAppealSubmissionRequestFileRow">
                                                                                     <span
                                                                                         class="symbol-label font-weight-bold bg-success">
                                                                                         <i
@@ -1393,26 +1447,29 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+
+
                                                                     <div class="mt-3 px-5">
                                                                         <table width="100%" class="border-0 px-5"
-                                                                            id="addAppealSubmissionRequestFileDiv"
+                                                                            id="againstGovAppealSubmissionRequestFileDiv"
                                                                             style="border:1px solid #dcd8d8;">
                                                                             <tr></tr>
                                                                         </table>
                                                                         <input type="hidden"
-                                                                            id="appeal_submission_attachment_count"
+                                                                            id="against_gov_order_taken_appeal_submission_attachment_count"
                                                                             value="1">
                                                                     </div>
                                                                 </fieldset>
                                                             </div>
-                                                            {{-- end সংযুক্তি --}}
-                                                            <div class="col-md-8 mb-5 mt-6" id="againstGovOrderTakenTrackingNumberField"
+
+                                                            <div class="col-md-8 mb-5 mt-6"
+                                                                id="againstGovOrderTakenTrackingNumberField"
                                                                 style="display: none;">
                                                                 <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা
                                                                     হলে
                                                                     ট্র্যাকিং নম্বর প্রদান করুন</label>
                                                                 <input type="text"
-                                                                    name="soltrack_tracking_number_for_appeal_against_intreim_order"
+                                                                    name="against_gov_intreim_order_soltrack_tracking_number"
                                                                     class="form-control">
                                                             </div>
                                                         </div>
@@ -1429,7 +1486,8 @@
                                                     <div
                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রায় বাস্তবায়ন/ আপিল দায়ের সংক্রান্ত কপি সংযুক্ত করুন)
+                                                            <h3 class="mb-0 mr-8">সংযুক্তি (রায় বাস্তবায়ন/ আপিল দায়ের
+                                                                সংক্রান্ত কপি সংযুক্ত করুন)
                                                                 <span class="text-danger">*</span>
                                                             </h3>
                                                         </div>
@@ -1439,7 +1497,7 @@
                                                                 data-toggle="tooltip" data-placement="top" title=""
                                                                 role="button" data-original-title="ফাইল যুক্ত করুণ">
 
-                                                                <div id="addOrderTakenDecisionFileRow">
+                                                                <div id="addAgainstGovOrderTakenDecisionFileRow">
                                                                     <span class="symbol-label font-weight-bold bg-success">
                                                                         <i
                                                                             class="text-white fa flaticon2-plus font-size-sm"></i>
@@ -1452,10 +1510,11 @@
                                                     </div>
                                                     <div class="mt-3 px-5">
                                                         <table width="100%" class="border-0 px-5"
-                                                            id="orderTakenDecisionFileDiv" style="border:1px solid #dcd8d8;">
+                                                            id="againstGovOrderTakenDecisionFileDiv"
+                                                            style="border:1px solid #dcd8d8;">
                                                             <tr></tr>
                                                         </table>
-                                                        <input type="hidden" id="order_taken_decision_attachment_count"
+                                                        <input type="hidden" id="against_gov_order_taken_decision_attachment_count"
                                                             value="1">
                                                     </div>
                                                 </fieldset>
@@ -1469,8 +1528,9 @@
                                 <div class="form-footer mt-5">
                                     <div class="from-group row">
                                         <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="againstOrderTakenPrevtBtn" class="submit-button"><i
-                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
+                                            <button type="button" id="againstOrderTakenPrevtBtn"
+                                                class="submit-button"><i class="fas fa-arrow-left"></i> পূর্ববর্তী
+                                            </button>
                                         </div>
                                         <div class="col-md-6" style="display: flex;justify-content: right;">
                                             <button type="submit" class="action-button submit-button save-button"
@@ -1481,104 +1541,7 @@
 
                             </div>
                             {{-- ------------- start কনটেম্প্ট মামলা সম্পর্কিত------------- --}}
-                            <div class="tab-pane" id="contempt_case" role="tabpanel" aria-labelledby="home-tab">
 
-                                <div class="row_int">
-                                    <div class="col-lg-12">
-                                        <!--begin::Card-->
-
-                                        <input type="hidden" id="caseIDForContempt" name="case_id">
-                                        <fieldset>
-                                            <div class="form-group row">
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>প্রযোজ্য ক্ষেত্রে কন্টেম্পট মামলা নম্বর <span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="contempt_case_no" id="contempt_case_no"
-                                                        class="form-control form-control-sm"autocomplete="off">
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label> কন্টেম্পট মামলা রুল ইস্যুর তারিখ <span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="contempt_case_isuue_date"
-                                                        id="contempt_case_isuue_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                </div>
-
-                                                <div class="col-lg-4 mb-5">
-                                                    <label>কন্টেম্পট মামলার জবাব প্রেরণের তারিখ <span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="contempt_case_answer_sending_date"
-                                                        id="contempt_case_answer_sending_date"
-                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off">
-                                                </div>
-
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>অন্যান্য পদক্ষেপের বিবরণ<br>(যদি থাকে) <span
-                                                            class="text-danger"></span></label>
-                                                    <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
-                                                        spellcheck="false">
-                                                    </textarea>
-                                                </div>
-                                            </div>
-                                            {{-- starting সংযুক্তি  --}}
-                                            <div class="col-md-12">
-                                                <fieldset class="">
-                                                    <div
-                                                        class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
-                                                        <div class="d-flex align-items-center mr-2 py-2">
-                                                            <h3 class="mb-0 mr-8">সংযুক্তি
-                                                                (কনটেম্প্ট মামলা)
-                                                                <span class="text-danger">*</span>
-                                                            </h3>
-                                                        </div>
-
-                                                        <div class="symbol-group symbol-hover py-2">
-                                                            <div class="symbol symbol-30 symbol-light-primary"
-                                                                data-toggle="tooltip" data-placement="top" title=""
-                                                                role="button" data-original-title="ফাইল যুক্ত করুণ">
-
-                                                                <div id="addContemptFileRow">
-                                                                    <span class="symbol-label font-weight-bold bg-success">
-                                                                        <i
-                                                                            class="text-white fa flaticon2-plus font-size-sm"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="mt-3 px-5">
-                                                        <table width="100%" class="border-0 px-5" id="contemptFileDiv"
-                                                            style="border:1px solid #dcd8d8;">
-                                                            <tr></tr>
-                                                        </table>
-                                                        <input type="hidden" id="contempt_attachment_count"
-                                                            value="1">
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                            {{-- end সংযুক্তি --}}
-                                        </fieldset>
-
-                                    </div>
-                                </div>
-                                <div class="form-footer mt-5">
-                                    <div class="from-group row">
-                                        <div class="col-md-6" style="display: flex;justify-content: left;">
-                                            <button type="button" id="contemptCasePrevtBtn" class="submit-button"><i
-                                                    class="fas fa-arrow-left"></i> পূর্ববর্তী </button>
-                                        </div>
-                                        <div class="col-md-6" style="display: flex;justify-content: right;">
-                                            <button type="submit" class="action-button submit-button save-button"
-                                                id="saveOldHighCourtCaseBtn">সংরক্ষণ</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
                             {{-- ------------- end কনটেম্প্ট মামলা------------- --}}
                         </form>
 
@@ -1633,88 +1596,73 @@
 
 
     <script type="text/javascript">
-        /************************ Add multiple advocate  *************************/
-        $("#addAdvocateLawer").click(function(e) {
-            addAdvocateLawerFunc();
-            // $('select').select2();
-        });
-
-        //add row function
-        function addAdvocateLawerFunc() {
-
-            var count = parseInt($('#survey_count').val());
 
 
-            $('#survey_count').val(count + 1);
-            var items = '';
-            items += '<tr>';
+    $("#addAdvocateLawer").click(function(e) {
+        addAdvocateLawerFunc();
+    });
 
+    // Add row function
+    function addAdvocateLawerFunc() {
+        var count = parseInt($('#survey_count').val());
+        $('#survey_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<input type="hidden" name="concern_person_id[]" value="">';
+        items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+            '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+            ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+        items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+            '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+
+        if (count != 1) {
             items +=
-                '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm" onchange="getConcernPerName(' + count +
-                ')" required="required"><?php echo $concernPersonDesig; ?></select></td>';
-            items +=
-                '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
-
-            if (count != 1) {
-                items +=
-                    '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-            }
-            items += '</tr>';
-
-            $('#advocateLawerDiv tr:last').after(items);
-            //scout_id_select2_dd();
+                '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
         }
 
-        //remove row function
-        function removeAdvocateLawerRow(id) {
-            $(id).closest("tr").remove();
+        items += '</tr>';
+
+        $('#advocateLawerDiv tr:last').after(items);
+
+        // Initialize Select2 after adding new dropdowns
+        $('#concernPersonDesignation_' + count).select2();
+        $('#concern_user_id_' + count).select2();
+    }
+
+
+    //remove row function
+    function removeAdvocateLawerRow(id) {
+        $(id).closest("tr").remove();
+    }
+
+    function getConcernPerName(id) {
+        var desig = $(`#concernPersonDesignation_${id}`).val();
+        jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
+        if (desig) {
+            jQuery.ajax({
+                url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                    desig,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<div class="loadersmall"></div>');
+
+                    jQuery(`#concern_user_id_${id}`).html(
+                        '<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery.each(data, function(key, value) {
+                        jQuery(`#concern_user_id_${id}`).append(
+                            '<option value="' + key + '">' + value +
+                            '</option>');
+                    });
+                    jQuery('.loadersmall').remove();
+                }
+            });
+        } else {
+            $(`#concern_user_id_${id}`).empty();
         }
 
-        function getConcernPerName(id) {
-            var desig = $(`#concernPersonDesignation_${id}`).val();
-            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-            if (desig) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        desig,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery(`#concern_user_id_${id}`).append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $(`#concern_user_id_${id}`).empty();
-            }
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
         // dynamically change high court / appeal court

@@ -88,36 +88,36 @@
         //===========GetConsernPersonByDesignation================//
 
 
-        jQuery('select[name="concern_person_designation"]').on('change', function() {
-            var dataID = jQuery(this).val();
-            jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
+        // jQuery('select[name="concern_person_designation"]').on('change', function() {
+        //     var dataID = jQuery(this).val();
+        //     jQuery("#concern_user_id").after('<div class="loadersmall"></div>');
 
-            if (dataID) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        dataID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="concern_user_id"]').html(
-                            '<div class="loadersmall"></div>');
+        //     if (dataID) {
+        //         jQuery.ajax({
+        //             url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+        //                 dataID,
+        //             type: "GET",
+        //             dataType: "json",
+        //             success: function(data) {
+        //                 jQuery('select[name="concern_user_id"]').html(
+        //                     '<div class="loadersmall"></div>');
 
-                        jQuery('select[name="concern_user_id"]').html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery('select[name="concern_user_id"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                        // $('select[name="mouja"] .overlay').remove();
-                        // $("#loading").hide();
-                    }
-                });
-            } else {
-                $('select[name="concern_user_id"]').empty();
-            }
-        });
+        //                 jQuery('select[name="concern_user_id"]').html(
+        //                     '<option value="">-- নির্বাচন করুন --</option>');
+        //                 jQuery.each(data, function(key, value) {
+        //                     jQuery('select[name="concern_user_id"]').append(
+        //                         '<option value="' + key + '">' + value +
+        //                         '</option>');
+        //                 });
+        //                 jQuery('.loadersmall').remove();
+        //                 // $('select[name="mouja"] .overlay').remove();
+        //                 // $("#loading").hide();
+        //             }
+        //         });
+        //     } else {
+        //         $('select[name="concern_user_id"]').empty();
+        //     }
+        // });
     });
 
     /*********************** Add multiple badi *************************/
@@ -274,33 +274,34 @@
         addBibadiRowFunc();
     });
 
-    //add row function
     function addBibadiRowFunc() {
         var mk = $('#bibadiDiv tr').length;
-        var MainCount = $('#MainBibadiDiv tr').length;
+        $('#bibadiDiv tr:last').after(Item(mk + 1));
 
-        $('#bibadiDiv tr:last').after(Item(mk + 1, 'other'));
-
-        function Item(count, type = NULL) {
+        function Item(count) {
             var items = '';
-            items += '<tr id="bibadi_' + (count) + '">';
+            items += '<tr id="bibadi_' + count + '">';
+            items += '<td> <span class="form-control form-control-sm">' + count + '</span></td>'
+            items += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + count +
+                ')" id="other_respondent_' + count + '" class="form-control form-control-sm other_respondentCls">';
+            items += '<option value="">-- নির্বাচন করুন --</option>';
             items +=
-                '<td><select name="other_respondent[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($ministrys as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->office_name_bn }} </option>@endforeach</select></td>';
+                '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+            items += '<option value="0">অন্যান্য</option>';
+            items +=
+                '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' +
+                count +
+                '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
             items += '<input type="hidden" name="bibadi_id[]" value="">';
-            // items +='<td><select name="doptor[]" id="doptor_id" class="form-control form-control-sm"><option value="">-- নির্বাচন করুন --</option></select></td>';
-            // console.log(count);
-            if (type == 'other') {
-                items +=
-                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            }
+
+            items +=
+                '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
-            // console.log(items);
             return items;
         }
         $('.other_respondentCls').select2();
     }
 
-    //remove row function
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
     }
@@ -362,7 +363,7 @@
             items += '<tr id="highcourt_adalat_' + (count) + '">';
             items +=
                 '<td><select name="highcourt_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="highcourt_adalat[]" value="">';
+            items += '<input type="hidden" name="highcourt_adalat_id[]" value="">';
 
             if (type == 'other') {
                 items +=
@@ -407,10 +408,10 @@
         $('#order_tamil_attachment_count').val(count + 1);
         var items = '';
         items += '<tr>';
-        items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
+        items += '<td><input type="text" name="against_gov_order_taken_file_type[]" id="customFileName' + count +
             '" class="form-control form-control-sm" placeholder="" ></td>';
         items +=
-            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="adeshTamilAttachmentTitle(' +
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="against_gov_order_taken_file_name[]" onChange="adeshTamilAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="adeshTamilDecisionFile' + count +
             '" /><label id="file_error' +
             count +
@@ -456,18 +457,6 @@
 
     // document.getElementById('r').textContent = replaceNumbers('count'); // comment on 07/11/2022 shahajahan
 </script>
-
-{{-- start HighCourt Old Form Vallidation --}}
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-
-
-// {{-- end HighCourt Old Form Vallidation --}}
-
-
-
-
-
-
 
 <script>
     function myFunction() {
@@ -1067,11 +1056,11 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="adalat_reply_file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="adalat_reply_file_name[]" onChange="adalatReplyAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customAdalatReplyFile' + count +
-            '" required/><label id="file_error' +
+            '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-adalat-reply-input' +
             count + '" for="customFile' + count +
@@ -1103,11 +1092,11 @@
         var items = '';
         items += '<tr>';
         items += '<td><input type="text" name="final_order_file_type[]" id="customFileName' + count +
-            '" class="form-control form-control-sm" placeholder="" required><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
+            '" class="form-control form-control-sm" placeholder="" ><span class="text-danger d-none vallidation-message">This field can not be empty</span></td>';
         items +=
             '<td><div class="custom-file"><input type="file" accept="application/pdf" name="final_order_file_name[]" onChange="finalAttachmentTitle(' +
             count + ',this)" class="custom-file-input" id="customFinalFile' + count +
-            '" required/><label id="file_error' +
+            '" /><label id="file_error' +
             count +
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-final-input' +
             count + '" for="customFile' + count +
@@ -1264,6 +1253,10 @@
         var value = $('#customContemptFile' + id)[0].files[0];
         $('.custom-contempt-input' + id).text(value['name']);
     }
+
+
+
+
     //remove Attachment
     function removeBibadiRow(id) {
         $(id).closest("tr").remove();
@@ -1323,7 +1316,7 @@
                     confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        alert('okay')
+                        // alert('okay')
                         // var formData = new FormData(this);
                         var formData = new FormData(document.getElementById(
                             "oldCaseGeneralInfoFrom"));
@@ -1475,6 +1468,53 @@
         lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        // $('#sending_reply_data_details').hide();
+        // $('#trackingNumberField').hide();
+        // $('input[name="sending_reply_have"]').change(function() {
+        //     if ($(this).val() == '1') {
+
+        //         $('#sending_reply_data_details').show();
+        //     } else {
+
+        //         $('#sending_reply_data_details').hide();
+        //         $('#trackingNumberField').hide();
+        //         $('.sending_reply_div').hide();
+        //         $('#sending_reply_data_details input').val('');
+        //         $('.sending_reply_div input').val('');
+        //         $('#sending_reply_data_details input[type="checkbox"]').prop('checked', false);
+        //     }
+        // });
+
+        $('#against_gov_order_taken_solicitor_checkbox').change(function() {
+            if ($(this).is(':checked')) {
+
+                $('#againstGovOrderTakenTrackingNumberField').show();
+            } else {
+                $('#againstGovOrderTakenTrackingNumberField').hide();
+            }
+        });
+
+        var solicitorCheckbox = document.getElementById("against_gov_order_taken_solicitor_checkbox");
+        var lawOfficerCheckbox = document.getElementById("against_gov_order_taken_law_officer_checkbox");
+        var againstOrderTakenAppealSubmissionDiv = document.querySelector(
+            ".against_order_taken_appeal_submission_div");
+
+        function toggleSendingReplyDiv() {
+            if (solicitorCheckbox.checked || lawOfficerCheckbox.checked) {
+                againstOrderTakenAppealSubmissionDiv.style.display = "block";
+            } else {
+                againstOrderTakenAppealSubmissionDiv.style.display = "none";
+            }
+        }
+
+        toggleSendingReplyDiv();
+        solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
+        lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('.adesh_tamil_decision_div').hide();
@@ -1594,4 +1634,89 @@
         solicitorCheckbox.addEventListener("change", toggleSendingReplyDiv);
         lawOfficerCheckbox.addEventListener("change", toggleSendingReplyDiv);
     });
+
+
+
+
+
+    /////////============ add against gov appeal submission files ================
+    // addAgainstGovAppealSubmissionRequestFileRowFunc();
+    $("#addAgainstGovAppealSubmissionRequestFileRow").click(function(e) {
+        addAgainstGovAppealSubmissionRequestFileRowFunc();
+    });
+
+    //add row function
+    function addAgainstGovAppealSubmissionRequestFileRowFunc() {
+        var count = parseInt($('#against_gov_order_taken_appeal_submission_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#against_gov_order_taken_appeal_submission_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items +=
+            '<td><input type="text" name="against_gov_order_taken_appeal_request_submission_file_type[]" id="customFileName' +
+            count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="against_gov_order_taken_appeal_request_submission_file[]" onChange="againstGovAppealSubmissionAttachmentTitle(' +
+            count + ',this)" class="against-gov-appeal-submisiion-file-input" id="againstGovAppealSubmissionFile' +
+            count + '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#againstGovAppealSubmissionRequestFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
+
+
+    $("#addAgainstGovOrderTakenDecisionFileRow").click(function(e) {
+        addAgainstGovOrderTakenDecisionFileRowFunc();
+    });
+    //add row function
+    function addAgainstGovOrderTakenDecisionFileRowFunc() {
+        var count = parseInt($('#against_gov_order_taken_decision_attachment_count').val());
+        var formType = $('#formType').val();
+        $('#against_gov_order_taken_decision_attachment_count').val(count + 1);
+        var items = '';
+        items += '<tr>';
+        items += '<td><input type="text" name="against_gov_appeal_submission_file_type[]" id="customFileName' + count +
+            '" class="form-control form-control-sm" placeholder=""></td>';
+        items +=
+            '<td><div class="custom-file"><input type="file" accept="application/pdf" name="against_gov_appeal_submission_file[]" onChange="againstGovOrderTakenAttachmentTitle(' +
+            count + ',this)" class="against-order-taken-input" id="againstGovOrderTakenAttachmentFile' + count +
+            '" /><label id="file_error' +
+            count +
+            '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
+            count + '" for="customFile' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items += '</tr>';
+        $('#againstGovOrderTakenDecisionFileDiv tr:last').after(items);
+
+        if (formType == 'edit') {
+            $(`#customFile${count}`);
+            $(`#customFileName${count}`);
+        }
+    }
+
+
+
+    //Attachment Title Change
+    function againstGovAppealSubmissionAttachmentTitle(id) {
+        var value = $('#againstGovAppealSubmissionFile' + id)[0].files[0];
+        $('.against-gov-appeal-submisiion-file-input' + id).text(value['name']);
+    }
+
+
+    //Attachment Title Change
+    function againstGovOrderTakenAttachmentTitle(id) {
+        var value = $('#againstGovOrderTakenAttachmentFile' + id)[0].files[0];
+        $('.against-order-taken-input' + id).text(value['name']);
+    }
 </script>

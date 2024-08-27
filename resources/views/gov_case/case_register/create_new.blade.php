@@ -28,7 +28,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-    
+
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -262,6 +262,8 @@
                                                     <input type="hidden" id="survey_count" value="1">
                                                 </div>
 
+
+
                                                 <!-- jQuery -->
                                                 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
@@ -296,7 +298,6 @@
                                                     </div>
 
                                                     <div class="col-lg-7 mb-5 product-image">
-
                                                         <table width="100%" border="1" id="bibadiDiv"
                                                             class="mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>

@@ -44,23 +44,22 @@ class ViewServiceProvider extends AppServiceProvider
 
             $finalOfficeIds = array_merge([$officeID], $childOfficeIds);
 
-
             $childOfficeQuery = DB::table('gov_case_office')
                 ->select('id', 'doptor_office_id', 'parent_office_id')
                 ->whereIn('parent_office_id', $finalOfficeIds)
                 ->orWhereIn('doptor_office_id', $finalOfficeIds)
                 ->get();
-
-             foreach ($childOfficeQuery as $childOffice) {
+      
+            foreach ($childOfficeQuery as $childOffice) {
                 $childOfficeIds[] = $childOffice->doptor_office_id;
             }
 
-
-           $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($childOfficeIds) {
+            $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($childOfficeIds) {
                 $query->whereIn('respondent_id', $childOfficeIds);
             })
                 ->where('deleted_at', null)
                 ->count();
+
             // $childOfficeQuery = DB::table('gov_case_office')
             //     ->select('id', 'doptor_office_id')
             //     ->where('parent_office_id', $officeID)
