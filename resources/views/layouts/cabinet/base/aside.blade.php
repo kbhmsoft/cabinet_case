@@ -305,6 +305,46 @@
                 @endcan
 
 
+                @can('administrative_appeal_tribrunal')
+                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal') ? 'menu-item-open' : '' }}"
+                        aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>প্রশাসনিক আপিল
+                                ট্রাইব্যুনাল</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+
+                                @can('create_aat_new_case')
+                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal.create') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">নতুন মামলা
+                                                এন্ট্রি</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+
+                                @can('appeal_administrative_tribrunal_list')
+                                    <li class="menu-item {{ request()->is(['cabinet/case/appealAdministrativeTribrunal']) ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}"
+                                            class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার তালিকা</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+
 
                 @can('most_important_case_list')
                     <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourtAppeal/*') ? 'menu-item-open' : '' }}"
