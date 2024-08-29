@@ -175,6 +175,7 @@ Route::middleware('prevent-back-history')->group(function () {
 
                 Route::get('index', [GovCaseRegisterController::class, 'index'])->name('index');
                 Route::get('highcourt', [GovCaseRegisterController::class, 'high_court_case'])->name('highcourt');
+                Route::get('print/highcourt-case/list', [GovCaseRegisterController::class, 'printHighcourtCaseList'])->name('highcourt_case_list.print');
                 Route::get('ministryIdInsert', [GovCaseRegisterController::class, 'ministryIdInsert'])->name('ministryIdInsert');
                 Route::get('totalHighcourt', [GovCaseRegisterController::class, 'totalHighcourt'])->name('totalHighcourt');
                 Route::get('totalHighcourtRunning', [GovCaseRegisterController::class, 'totalHighcourtRunning'])->name('totalHighcourtRunning');
@@ -225,6 +226,8 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::post('check-appeal-case-no', [AppealGovCaseRegisterController::class, 'checkAppealCaseNo'])->name('check_appeal_caseno');
                 Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
                 Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
+               
+                
                 Route::get('appellateDivision/create/old', [GovCaseRegisterController::class, 'appellateDivision_old_case_create'])->name('appellateDivision.create.old');
                 Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
                 Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
@@ -303,6 +306,7 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('appellateDivision/mostImportantCase', [AppealGovCaseRegisterController::class, 'appellateDivisionMostImportantCase'])->name('appellateDivisionMostImportantCase');
                 Route::get('mostImportantAppealCase', [AppealGovCaseRegisterController::class, 'mostImportantAppealCase'])->name('mostImportantAppealCase');
                 Route::get('appellateDivision', [AppealGovCaseRegisterController::class, 'appellate_division_case'])->name('appellateDivision');
+                Route::get('appellateDivision/print-case-list', [AppealGovCaseRegisterController::class, 'appellateDivisionPrintCaseList'])->name('appeal_case_list.print');
                 Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
                 Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
                 Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');

@@ -1732,6 +1732,69 @@ class AppealGovCaseRegisterController extends Controller
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
+
+        // $html = view('gov_case.appeal_case_register.appealcourt_caseList_pdf')->with($data);
+        // $this->generatePDF($html);
+    }
+
+
+    public function appellateDivisionPrintCaseList()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $query = AppealGovCaseRegister::orderby('id', 'DESC')
+            ->where('deleted_at', '=', null);
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
+        if ($roleID == 32 || $roleID == 41) {
+            $query->where('created_by_office', $officeID);
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->where('created_by_office', $officeID);
+        }
+
+        if (!empty($_GET['case_category_type'])) {
+            $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
+        }
+
+        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
+            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
+        }
+
+        if (!empty($_GET['case_no'])) {
+            $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if ($roleID == 5 || $roleID == 7) {
+            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
+        } elseif ($roleID == 9 || $roleID == 21) {
+            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
+        }
+
+        $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->get();
+
+        $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
+            ->where('gov_case_division_id', 1)->get();
+
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
+
+        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+
+        // return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
+
+        $html = view('gov_case.appeal_case_register.appealcourt_caseList_pdf')->with($data);
+        $this->generatePDF($html);
     }
 
     public function appellateDivisionMostImportantCase()

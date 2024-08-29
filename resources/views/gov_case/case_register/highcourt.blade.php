@@ -100,6 +100,10 @@
                         <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
                     </a>
                 @endcan
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('cabinet.case.highcourt_case_list.print') }}" target="_blank"
+                     class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
+                 </div>
 
             </div>
         </div>

@@ -207,6 +207,84 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt')->with($data);
     }
 
+    public function printHighcourtCaseList()
+    {
+        session()->forget('currentUrlPath');
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id')
+            ->where('parent', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->id;
+        }
+
+        $finalOfficeIds = [];
+
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $query = GovCaseRegister::select('id', 'case_no', 'year', 'case_type_id', 'subject_matter', 'result_sending_date', 'is_final_order','deleted_at')->orderby('id', 'DESC')->where('deleted_at', '=', null);
+
+        if ($roleID == 32 || $roleID == 41) {
+            $query->whereHas(
+                'bibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
+                }
+            );
+        }
+
+        if ($roleID == 29 || $roleID == 31) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($finalOfficeIds) {
+                    $query->whereIn('respondent_id', $finalOfficeIds);
+                }
+            );
+        }
+
+        if ($roleID == 44 || $roleID == 45) {
+            $query->whereHas(
+                'mainBibadis',
+                function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID);
+                }
+            );
+        }
+
+        $userId = Auth::id();
+        if ($roleID == 45) {
+            $query->whereHas(
+                'concernPersons',
+                function ($query) use ($userId) {
+                    $query->where('concern_user_id', $userId);
+                }
+            );
+        };
+
+     
+        // $data['cases'] = $query->paginate(10);
+
+        $data['cases'] = $query->get();
+
+
+
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
+
+
+        $html = view('gov_case.case_register.highcourt_caseList_pdf')->with($data);
+        $this->generatePDF($html);
+    }
+
     // for all highcourt case attorney
     public function attorney_high_court_case()
     {
@@ -2583,6 +2661,8 @@ class GovCaseRegisterController extends Controller
 
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
+
+    
 
     public function appellateDivision_old_case_create()
     {
