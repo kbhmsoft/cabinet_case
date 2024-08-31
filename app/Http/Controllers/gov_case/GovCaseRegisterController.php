@@ -31,12 +31,12 @@ use Illuminate\Support\Facades\Log;
 
 class GovCaseRegisterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:create_new_case', ['only' => ['create']]);
-        $this->middleware('permission:appeal_division', ['only' => ['appellate_division_case']]);
-        $this->middleware('permission:highcourt_case_update', ['only' => ['edit']]);
-    }
+    // protected $pdf;
+
+    // public function __construct()
+    // {
+    //     $this->pdf = new \Mpdf\Mpdf();
+    // }
 
     public function index()
     {
@@ -209,79 +209,75 @@ class GovCaseRegisterController extends Controller
 
     public function printHighcourtCaseList()
     {
+
         session()->forget('currentUrlPath');
 
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
 
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
+        $finalOfficeIds = DB::table('gov_case_office')
+            ->where('parent_office_id', $officeID)
+            ->pluck('id')
+            ->toArray();
 
-        $finalOfficeIds = [];
+        array_unshift($finalOfficeIds, $officeID);
 
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
+        $query = GovCaseRegister::select('id', 'case_no', 'year', 'case_type_id', 'subject_matter', 'result_sending_date', 'is_final_order', 'deleted_at')
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC');
+
+        if ($roleID == 27) {
+
+            $data['cases'] = [];
+
+            $query->chunk(500, function ($cases) use (&$data) {
+                foreach ($cases as $case) {
+                    $data['cases'][] = $case;
+                }
+            });
         } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
-        $query = GovCaseRegister::select('id', 'case_no', 'year', 'case_type_id', 'subject_matter', 'result_sending_date', 'is_final_order','deleted_at')->orderby('id', 'DESC')->where('deleted_at', '=', null);
 
-        if ($roleID == 32 || $roleID == 41) {
-            $query->whereHas(
-                'bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
-        }
-
-        if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($finalOfficeIds) {
+            if (in_array($roleID, [32, 41])) {
+                $query->whereHas('bibadis', function ($query) use ($officeID) {
+                    $query->where('respondent_id', $officeID)
+                        ->where('is_main_bibadi', 1);
+                });
+            } elseif (in_array($roleID, [29, 31])) {
+                $query->whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
                     $query->whereIn('respondent_id', $finalOfficeIds);
-                }
-            );
-        }
-
-        if ($roleID == 44 || $roleID == 45) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($officeID) {
+                });
+            } elseif (in_array($roleID, [44, 45])) {
+                $query->whereHas('mainBibadis', function ($query) use ($officeID) {
                     $query->where('respondent_id', $officeID);
+                });
+            }
+
+            if ($roleID == 45) {
+                $userId = Auth::id();
+                $query->whereHas('concernPersons', function ($query) use ($userId) {
+                    $query->where('concern_user_id', $userId);
+                });
+            }
+
+            $data['cases'] = [];
+            $query->chunk(500, function ($cases) use (&$data) {
+                foreach ($cases as $case) {
+                    $data['cases'][] = $case;
                 }
-            );
+            });
         }
 
-        $userId = Auth::id();
-        if ($roleID == 45) {
-            $query->whereHas(
-                'concernPersons',
-                function ($query) use ($userId) {
-                    $query->where('concern_user_id', $userId);
-                }
-            );
-        };
-
-     
-        // $data['cases'] = $query->paginate(10);
-
-        $data['cases'] = $query->get();
-
-
-
-        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderBy('id', 'desc')
+            ->select('id', 'name_bn')
+            ->get();
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-
-
+        // return view('gov_case.case_register.highcourt_caseList_pdf')->with($data);
         $html = view('gov_case.case_register.highcourt_caseList_pdf')->with($data);
+
+
+        // Consider using queues for PDF generation if performance is an issue
         $this->generatePDF($html);
     }
 
@@ -2661,8 +2657,6 @@ class GovCaseRegisterController extends Controller
 
         return view('gov_case.appeal_case_register.create_new_appeal')->with($data);
     }
-
-    
 
     public function appellateDivision_old_case_create()
     {

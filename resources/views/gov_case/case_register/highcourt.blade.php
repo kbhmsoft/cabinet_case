@@ -87,6 +87,10 @@
         }
     </style>
 @section('content')
+
+<?php
+ $roleID = Auth::user()->role_id;
+?>
     <!--begin::Card-->
     <div class="card card-custom">
         <div class="card-header flex-wrap py-5">
@@ -100,10 +104,15 @@
                         <i class="la la-plus"></i>নতুন মামলা এন্ট্রি
                     </a>
                 @endcan
+
+                @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41)
+                {{-- @can('total_case_list_print') --}}
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('cabinet.case.highcourt_case_list.print') }}" target="_blank"
-                     class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
-                 </div>
+                    <a href="{{ route('cabinet.case.highcourt_case_list.print') }}" target="_blank" class="btn btn-info "><i
+                            class="fas fa-print" aria-hidden="true"></i></a>
+                </div>
+                {{-- @endcan --}}
+                @endif
 
             </div>
         </div>
@@ -307,8 +316,9 @@
 
                                     <div class="btn-group">
                                         @if ($roleID == 27)
-                                            <input type="checkbox" id="most_important" name="most_important" value="1"
-                                                data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
+                                            <input type="checkbox" id="most_important" name="most_important"
+                                                value="1" data-row-id="{{ $row->id }}"
+                                                onchange="updateDatabase(this)"
                                                 {{ $row->most_important == 1 ? 'checked' : '' }}>
                                             <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
                                         @endif

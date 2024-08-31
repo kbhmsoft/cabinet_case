@@ -182,6 +182,8 @@
     }
     </style>
 </head>
+<!-- @dd('aaaaaaaa'); -->
+
 
 <body onload="myFunction()">
     <div class="priview-body">
@@ -234,7 +236,7 @@
                     <?php foreach ($cases as $key => $row) {?>
                     <tr>
                         <td scope="row" style="text-align:center;" class="tg-bn">
-                            <?= en2bn($key + 1) ?></td>
+                            <?=en2bn($key + 1)?></td>
                         <td style="width: 10px; text-align:center;">
                             <?=en2bn($row->case_no) . '/' . en2bn($row->year)?>
                         </td>
@@ -273,6 +275,7 @@
             </table>
         </div>
 
+
     </div>
     <div class="row">
         <div class="col-md-3 text-left" style="font-size:12px;font-weight: bold;">
@@ -291,3 +294,6 @@ function myFunction() {
     window.print();
 }
 </script>
+<!-- <script>
+window.print();
+</script> -->
