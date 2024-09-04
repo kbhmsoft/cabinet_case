@@ -1506,8 +1506,9 @@
 
     <script>
         $(document).ready(function() {
-            var createApplicationFormRoute = "{{ route('cabinet.case.createApplicationForm', ':caseNo') }}";
-            // Function to trigger validation when any of the input fields change
+            var createApplicationFormRoute =
+                "{{ route('cabinet.case.createApplicationForm', [':caseNo', ':caseYear', ':caseCategory']) }}";
+
             $('#case_year, #case_no, #case_category_type').change(function() {
                 var caseNo = $('#case_no').val(); // Get the case number
                 var caseYear = $('#case_year').val(); // Get the case year
@@ -1545,7 +1546,14 @@
                                                         createApplicationFormRoute
                                                         .replace(
                                                             ':caseNo',
-                                                            caseNo);
+                                                            caseNo)
+                                                        .replace(
+                                                            ':caseYear',
+                                                            caseYear)
+                                                        .replace(
+                                                            ':caseCategory',
+                                                            caseCategory
+                                                            );
                                                     window.location
                                                         .href = url;
                                                 }

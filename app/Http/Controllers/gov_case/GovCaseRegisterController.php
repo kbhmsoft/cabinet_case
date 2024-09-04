@@ -276,7 +276,6 @@ class GovCaseRegisterController extends Controller
         // return view('gov_case.case_register.highcourt_caseList_pdf')->with($data);
         $html = view('gov_case.case_register.highcourt_caseList_pdf')->with($data);
 
-
         // Consider using queues for PDF generation if performance is an issue
         $this->generatePDF($html);
     }
@@ -2801,6 +2800,7 @@ class GovCaseRegisterController extends Controller
 
             try {
                 $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
+
                 GovCaseBadiBibadiRepository::storeMainBibadi($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPerson($request, $caseId);
                 GovCaseBadiBibadiRepository::storeBibadi($request, $caseId);
@@ -2815,25 +2815,25 @@ class GovCaseRegisterController extends Controller
                 //========= Gov Case Activity Log - start ============
                 $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
 
-                $caseRegisterData = array_merge($caseRegister, [
-                    'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
-                    'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
-                    'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
-                    'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
-                ]);
+                // $caseRegisterData = array_merge($caseRegister, [
+                //     'badi' => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+                //     'bibadi' => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+                //     'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+                //     'log_data' => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+                // ]);
 
-                $cs_activity_data['case_register_id'] = $caseId;
+                // $cs_activity_data['case_register_id'] = $caseId;
 
-                if ($request->formType != 'edit') {
-                    $cs_activity_data['activity_type'] = 'create';
-                    $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
-                } else {
-                    $cs_activity_data['activity_type'] = 'update';
-                    $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
-                }
-                $cs_activity_data['old_data'] = null;
-                $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-                gov_case_activity_logs($cs_activity_data);
+                // if ($request->formType != 'edit') {
+                //     $cs_activity_data['activity_type'] = 'create';
+                //     $cs_activity_data['message'] = 'নতুন মামলা রেজিস্ট্রেশন করা হয়েছে';
+                // } else {
+                //     $cs_activity_data['activity_type'] = 'update';
+                //     $cs_activity_data['message'] = 'মামলার তথ্য হালনাগাদ করা হয়েছে';
+                // }
+                // $cs_activity_data['old_data'] = null;
+                // $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+                // gov_case_activity_logs($cs_activity_data);
                 // ========= Gov Case Activity Log End ==========
 
                 DB::commit();
@@ -3485,24 +3485,35 @@ class GovCaseRegisterController extends Controller
         return view('gov_case.case_register.highcourt_edit')->with($data);
     }
 
-    public function editHighcourtCaseApplication($caseNo)
+    public function editHighcourtCaseApplication($caseNo, $caseYear = null, $caseCategoryType)
     {
         $roleID = userInfo()->role_id;
-
         $officeID = userInfo()->office_id;
-        $caseId = GovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+
+        $caseIdQuery = GovCaseRegister::where('case_no', $caseNo)
+            ->where('case_type_id', $caseCategoryType)
+            ->whereNull('deleted_at');
+
+        if ($caseYear !== null) {
+            $caseIdQuery->where('year', $caseYear);
+        }
+
+        $caseId = $caseIdQuery->first();
+
+        // dd($caseId); // Debugging
 
         if ($caseId) {
             $id = $caseId->id;
         }
 
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
-
         $data['ministrys'] = GovCaseOffice::get();
-
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
-
-        $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
+        $data['appealCase'] = DB::table('gov_case_registers')
+            ->select('id', 'case_no')
+            ->where('case_division_id', 2)
+            ->where('status', 3)
+            ->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['courts'] = DB::table('court')
@@ -3515,15 +3526,12 @@ class GovCaseRegisterController extends Controller
         } else {
             $data['depatments'] = Office::where('level', 12)->get();
         }
+
         $data['GovCaseDivision'] = GovCaseDivision::all();
-
         $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
-
         $data['highCourtAdalat'] = HighcourtAdalat::get();
-
-        $data['page_title'] = '	মূল বিবাদী হিসেবে অন্তর্ভুক্তির মামলা সংশোধন';
+        $data['page_title'] = 'মূল বিবাদী হিসেবে অন্তর্ভুক্তির মামলা সংশোধন';
 
         return view('gov_case.case_register.application_form_as_main_defendent.highcourt_edit')->with($data);
     }

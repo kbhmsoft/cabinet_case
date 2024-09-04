@@ -62,9 +62,18 @@
                                         </a>
                                     </td>
 
-                                    <td>
+                                    {{-- <td>
                                         <a href="{{ route('cabinet.case.editAppealCaseApplication', $row->case_no) }}"
                                             class="btn btn-primary">সম্পাদনা</a>
+                                    </td> --}}
+                           {{-- @dd($row) --}}
+                                    <td style="text-align:center;">
+                                        <a href="{{ route('cabinet.case.editAppealCaseApplication', [
+                                            'case_no' => $row->case_no,
+                                            'case_year' => $row->case_year ?? null,
+                                            'case_category_type' => $row->case_category_type
+                                        ]) }}"
+                                           class="btn btn-primary">সম্পাদনা</a>
                                     </td>
                                 </tr>
                             @endforeach

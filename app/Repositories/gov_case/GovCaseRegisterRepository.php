@@ -789,6 +789,7 @@ class GovCaseRegisterRepository
                     $concernPrerson->gov_case_id = $govCaseId;
                     $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
                     $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+                  
                     $concernPrerson->save();
                 }
             }
@@ -1028,7 +1029,7 @@ class GovCaseRegisterRepository
             $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
             // $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
             $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
-           
+
             $case->gov_case_id = $goveCaseId;
             if ($case->save()) {
                 $caseId = $case->id;

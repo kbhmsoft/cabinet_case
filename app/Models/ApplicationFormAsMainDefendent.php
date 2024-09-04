@@ -16,6 +16,7 @@ class ApplicationFormAsMainDefendent extends Model
     protected $fillable = [
         'court',
         'case_no',
+        'case_year',
         'case_category',
         'case_category_type',
         'main_defendant_comments',

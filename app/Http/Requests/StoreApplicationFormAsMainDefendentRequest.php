@@ -26,6 +26,7 @@ class StoreApplicationFormAsMainDefendentRequest extends FormRequest
         return [
             'court'                     => 'nullable',
             'case_no'                   => 'required',
+            'case_year'                 => 'required',
             'case_category'             => 'required',
             'case_category_type'        => 'required',
             'main_defendant_pdf'        => 'file', 'mimes:pdf',

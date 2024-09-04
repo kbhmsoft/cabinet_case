@@ -1276,6 +1276,7 @@ class AppealGovCaseRegisterController extends Controller
             DB::beginTransaction();
 
             try {
+
                 $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
                 AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
                 AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
@@ -1768,7 +1769,7 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
-      
+
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 

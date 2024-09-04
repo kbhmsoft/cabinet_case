@@ -34,9 +34,11 @@ class AttachmentRepository
     public static function storeAttachment($appName, $caseId, $request)
     {
         if ($request->hasFile('file_name')) {
+
             $files = $request->file('file_name');
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
+
                     $filePath = "uploads/" . $appName . "/attachment/";
                     $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
                     $file->move(public_path($filePath), $otherfileName);
@@ -50,6 +52,7 @@ class AttachmentRepository
                     $attachment->created_by = userInfo()->id;
                     $attachment->updated_at = now();
                     $attachment->updated_by = userInfo()->id;
+                    
                     $attachment->save();
                 } else {
                     return response()->json(['error' => 'Invalid file uploaded.'], 400);

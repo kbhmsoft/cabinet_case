@@ -81,4 +81,14 @@ class AppealGovCaseRegister extends Model
     {
         return $this->hasOne(GovCaseOffice::class, 'id', 'appeal_office_id');
     }
+
+    public function caseCategoryType()
+    {
+        return $this->belongsTo(GovCaseDivisionCategoryType::class, 'case_type_id', 'id');
+    }
+
+    public function case_category()
+    {
+        return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
+    }
 }

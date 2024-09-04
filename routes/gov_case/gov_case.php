@@ -152,7 +152,8 @@ Route::middleware('prevent-back-history')->group(function () {
                 // Same Case Entry
                 Route::get('/get-case-categories', [ApplicationFormAsMainDefendentController::class, 'getCaseCategories'])->name('getCaseCategories');
 
-                Route::get('createApplicationForm/{caseNo}', [ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])->name('createApplicationForm');
+                Route::get('createApplicationForm/{caseNo}/{caseYear}/{caseCategory}', [ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])->name('createApplicationForm');
+
 
                 Route::post('storeApplicationForm', [ApplicationFormAsMainDefendentController::class, 'storeApplicationForm'])->name('storeApplicationForm');
 
@@ -226,8 +227,8 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::post('check-appeal-case-no', [AppealGovCaseRegisterController::class, 'checkAppealCaseNo'])->name('check_appeal_caseno');
                 Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
                 Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
-               
-                
+
+
                 Route::get('appellateDivision/create/old', [GovCaseRegisterController::class, 'appellateDivision_old_case_create'])->name('appellateDivision.create.old');
                 Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
                 Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
@@ -251,7 +252,10 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::post('highcourt/otherbibadi/delete/{id}', [GovCaseRegisterController::class, 'otherBibadiDelete'])->name('highcourt.otherbibadi.delete');
 
                 Route::post('appeal/ruleFile/delete/{id}', [AppealGovCaseRegisterController::class, 'appealRuleFileDelete'])->name('appeal.ruleFile.delete');
-                Route::get('highcourt/case-application/{case_no}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])->name('editHighcourtCaseApplication');
+                Route::get('/edit/{case_no}/{case_year?}/{case_category_type}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])
+                ->name('editHighcourtCaseApplication');
+
+
                 Route::post('appeal/adalat/delete/{id}', [AppealGovCaseRegisterController::class, 'adalatDelete'])->name('appeal.adalat.delete');
                 Route::post('appeal/advocate/delete/{id}', [AppealGovCaseRegisterController::class, 'advocateDelete'])->name('appeal.advocate.delete');
                 Route::post('appeal/otherbibadi/delete/{id}', [AppealGovCaseRegisterController::class, 'otherBibadiDelete'])->name('appeal.otherbibadi.delete');
@@ -309,7 +313,13 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('appellateDivision/print-case-list', [AppealGovCaseRegisterController::class, 'appellateDivisionPrintCaseList'])->name('appeal_case_list.print');
                 Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
                 Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
-                Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
+
+                // Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
+
+                Route::get('appeal/edit/{case_no}/{case_year?}/{case_category_type}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])
+                ->name('editAppealCaseApplication');
+
+
                 Route::post('appealOrderTakenStore', [AppealGovCaseRegisterController::class, 'appealOrderTakenStore'])->name('appealOrderTakenStore');
 
 

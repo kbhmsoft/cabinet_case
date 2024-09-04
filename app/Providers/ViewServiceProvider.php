@@ -49,7 +49,7 @@ class ViewServiceProvider extends AppServiceProvider
                 ->whereIn('parent_office_id', $finalOfficeIds)
                 ->orWhereIn('doptor_office_id', $finalOfficeIds)
                 ->get();
-      
+
             foreach ($childOfficeQuery as $childOffice) {
                 $childOfficeIds[] = $childOffice->doptor_office_id;
             }
@@ -115,10 +115,12 @@ class ViewServiceProvider extends AppServiceProvider
             }
 
             // Query to get the count of distinct case numbers for high court applications
-            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->count();
+            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)
+                ->where('is_answered', null)->count();
 
             // Query to get the count of distinct case numbers for appeal applications
-            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->count();
+            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)
+                ->where('is_answered', null)->count();
 
             $view->with([
                 'total_highcourt' => $total_highcourt,

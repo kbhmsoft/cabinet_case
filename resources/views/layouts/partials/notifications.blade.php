@@ -4,7 +4,7 @@
         background-color: transparent !important;
         border-color: transparent !important;
     }
-    
+
 </style>
 
 <div class="dropdown">
@@ -13,7 +13,7 @@
         <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary" style="background-color: #ffffff">
             <span class="svg-icon svg-icon-xl svg-icon-primary">
                 <i class="fas fa-bell"></i>
-            </span>            
+            </span>
             <span class="pulse-ring"></span>
         </div>
     </div>
@@ -48,9 +48,9 @@
 
                             <li class="menu-item mt-2">
                                 <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
-                                    <h5 class="menu-text font-weight-bolder mt-2">হাইকোর্ট বিভাগ 
+                                    <h5 class="menu-text font-weight-bolder mt-2">হাইকোর্ট বিভাগ
                                         <?php
-                                            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->distinct('case_no')->count('case_no');
+                                            $highCourtApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 2)->where('is_answered',null)->count();
                                         ?>
                                         @if($highCourtApplicationsCount > 0)
                                             <span class="badge badge-danger float-right">{{ en2bn($highCourtApplicationsCount) }}</span>
@@ -60,13 +60,13 @@
                                     </h5>
                                 </a>
                             </li>
-                        
-                            
+
+
                             <li class="menu-item mt-2">
                                 <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
                                     <h5 class="menu-text font-weight-bolder mt-2">আপিল বিভাগ
                                         <?php
-                                            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->distinct('case_no')->count('case_no');
+                                            $appealApplicationsCount = \App\Models\ApplicationFormAsMainDefendent::where('court', 1)->where('is_answered',null)->count();
                                         ?>
                                         @if($appealApplicationsCount > 0)
                                             <span class="badge badge-danger float-right">{{ en2bn($appealApplicationsCount) }}</span>
@@ -76,7 +76,7 @@
                                     </h5>
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">

@@ -147,6 +147,7 @@ class AppealGovCaseRegisterRepository
                 $appealAdalat = self::checkHighcourtAdalatExist($caseInfo->appeal_adalat_id[$key]);
                 $appealAdalat->gov_case_id = $govCaseId;
                 $appealAdalat->appeal_adalat = $caseInfo->appeal_adalat[$key];
+
                 $appealAdalat->save();
             }
         }
@@ -169,6 +170,7 @@ class AppealGovCaseRegisterRepository
     {
 
         if ($caseInfo->concernPersonDesignation) {
+           
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
                     $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);

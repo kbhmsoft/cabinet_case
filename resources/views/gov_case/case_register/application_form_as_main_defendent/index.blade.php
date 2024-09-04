@@ -41,6 +41,7 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $key => $row)
+                            {{-- @dd($row) --}}
                                 <tr>
                                     <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th>
                                     <td style="text-align:center;">{{ $row->case_no }}</td>
@@ -59,11 +60,26 @@
                                             পিডিএফ দেখুন
                                         </a>
                                     </td>
-
+{{-- @dd($row) --}}
+                                    {{-- <td style="text-align:center;">
+                                        <a href="{{ route('cabinet.case.editHighcourtCaseApplication', [
+                                            'case_no' => $row->case_no,
+                                            'case_year' => $row->case_year,
+                                            'case_category_type' => $row->case_category_type
+                                        ]) }}"
+                                           class="btn btn-primary">সম্পাদনা</a>
+                                    </td> --}}
                                     <td style="text-align:center;">
-                                        <a href="{{ route('cabinet.case.editHighcourtCaseApplication', $row->case_no) }}"
-                                            class="btn btn-primary">সম্পাদনা</a>
+                                        <a href="{{ route('cabinet.case.editHighcourtCaseApplication', [
+                                            'case_no' => $row->case_no,
+                                            'case_year' => $row->case_year ?? null,
+                                            'case_category_type' => $row->case_category_type
+                                        ]) }}"
+                                           class="btn btn-primary">সম্পাদনা</a>
                                     </td>
+
+
+
                                 </tr>
                             @endforeach
                         </tbody>
