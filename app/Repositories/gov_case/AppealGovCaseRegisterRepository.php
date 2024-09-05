@@ -53,6 +53,42 @@ class AppealGovCaseRegisterRepository
 
 
 
+    public static function AppealMainRespondentGovCaseAllDetails($caseId)
+    {
+
+        // $case = AppealGovCaseRegister::findOrFail($caseId);
+        // $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        $appealCaseLawers = GovCaseBadiBibadiRepository::getAppealConcernPersonByCaseId($caseId->id);
+
+        // $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
+        // $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        // $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
+        // $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+
+
+        $concernpersondesig = Role::where('id', $caseId->concern_person_designation)->first();
+        $concernPersonName = User::where('id', $caseId->concern_user_id)->first();
+
+        $data = [
+            // 'appealCase' => $case,
+            // 'caseBadi' => $caseBadi,
+            'caseLawers' => $appealCaseLawers,
+
+            // 'caseMainBibadi' => $caseMainBibadi,
+            // 'caseBibadi' => $caseBibadi,
+            // 'mainBibadi' => $mainBibadi,
+            // 'otherBibadi' => $otherBibadi,
+
+            'concernpersondesig' => $concernpersondesig,
+            'concernPersonName' => $concernPersonName,
+        ];
+
+        return $data;
+    }
+
+
+
+
     public static function AppealCaseAllDetails($caseId)
     {
         $case = AppealGovCaseRegister::findOrFail($caseId);
@@ -140,6 +176,71 @@ class AppealGovCaseRegisterRepository
     }
 
 
+    public static function storeAppealMainRespondentChange($caseInfo)
+    {
+        $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
+
+        $petitioner_name = '';
+        if ($caseInfo->appeal_office == 0) {
+            $petitioner_name = $caseInfo->appeal_petitioner_name;
+        }
+
+        try {
+            $case->case_no = $caseInfo->case_no;
+            $case->case_category_id = $caseInfo->case_category;
+            $case->case_type_id = $caseInfo->case_category_type;
+            $case->year = $caseInfo->case_year;
+            $case->appeal_petitioner_name = $petitioner_name;
+            $case->appeal_office_id = $caseInfo->appeal_office;
+            $case->created_by = Auth::user()->id;
+            $case->created_by_office = $caseInfo->main_respondent ? $caseInfo->main_respondent : Auth::user()->office_id;
+
+            $case->case_division_id = 1;
+
+            if (empty($caseInfo->case_entry_date)) {
+                $case->case_entry_date = date('Y-m-d'); // Set to current date
+            } else {
+                // If $caseInfo->case_entry_date is not empty, convert and assign the value
+                $case->case_entry_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_entry_date)));
+            }
+
+            if (empty($caseInfo->postpond_date)) {
+                $case->postpond_date = date('Y-m-d'); // Set to current date
+            } else {
+                // If $caseInfo->postpond_date is not empty, convert and assign the value
+                $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
+            }
+            $case->postponed_details = $caseInfo->postponed_details ?? '';
+            if ($caseInfo->case_number_origin) {
+
+                $case->case_category_origin = $caseInfo->case_category_origin;
+
+                $case->case_number_origin = $caseInfo->case_number_origin;
+
+                $case->case_origin_id = $caseInfo->case_number_origin;
+            } else {
+                $case->case_number_origin = $caseInfo->case_number_origin_manual;
+                $case->writ_petitioner_name = $caseInfo->writ_petitioner_name;
+                $case->subject_matter = $caseInfo->subject_matter;
+                $case->case_order_date = $caseInfo->case_order_date;
+                $case->case_order_details = $caseInfo->case_order_details;
+            }
+            $case->is_appeal = 1;
+
+            if ($case->save()) {
+                $caseId = $case->id;
+                if ($caseInfo->case_number_origin != null && $caseInfo->case_number_origin != '') {
+                    self::prevCaseStatusUpdate($caseInfo->case_number_origin);
+                }
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+        return $caseId;
+    }
+
+
     public static function storeAppealAdalat($caseInfo, $govCaseId)
     {
         foreach ($caseInfo->appeal_adalat as $key => $val) {
@@ -170,7 +271,7 @@ class AppealGovCaseRegisterRepository
     {
 
         if ($caseInfo->concernPersonDesignation) {
-           
+
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
                     $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);

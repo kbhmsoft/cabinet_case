@@ -1325,6 +1325,37 @@ class AppealGovCaseRegisterController extends Controller
 
     }
 
+
+    public function appealChangingMainRespondentStore(Request $request)
+    {
+
+        // dd($request->all());
+        $caseId = $request->case_id;
+
+        DB::beginTransaction();
+
+        try {
+            AppealGovCaseRegisterRepository::storeAppealMainRespondentChange($request);
+            AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
+            AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
+            if ($request->file_type && $_FILES["file_name"]['name']) {
+                AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
+            }
+
+            DB::commit();
+
+            // Logging to verify
+            \Log::info('Case stored successfully', ['caseId' => $caseId]);
+
+            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of an error
+            \Log::error('Error storing case data', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
+        }
+
+    }
+
     public function appealFinalOrderStore(Request $request)
     {
         // dd($request);
@@ -1721,7 +1752,7 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
-    //    dd($data['cases']);
+        //    dd($data['cases']);
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 1)->get();
@@ -1737,7 +1768,6 @@ class AppealGovCaseRegisterController extends Controller
         // $html = view('gov_case.appeal_case_register.appealcourt_caseList_pdf')->with($data);
         // $this->generatePDF($html);
     }
-
 
     public function appellateDivisionPrintCaseList()
     {
@@ -1760,7 +1790,6 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('created_by_office', $officeID);
         }
 
-
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->get();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
@@ -1768,8 +1797,6 @@ class AppealGovCaseRegisterController extends Controller
             ->where('gov_case_division_id', 1)->get();
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
-
-
 
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
@@ -2953,27 +2980,41 @@ class AppealGovCaseRegisterController extends Controller
         // return response()->json(['exists' => $exists]);
     }
 
-    public function editAppealCaseApplication($caseNo)
+    public function editAppealCaseApplication($caseNo, $caseYear = null, $caseCategoryType)
     {
+        // dd($caseNo, $caseYear, $caseCategoryType);
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-        $caseId = AppealGovCaseRegister::where('case_no', $caseNo)->where('deleted_at', null)->first();
+        $caseIdQuery = AppealGovCaseRegister::where('case_no', $caseNo)
+            ->where('case_type_id', $caseCategoryType)
+            ->whereNull('deleted_at');
 
-        if ($caseId) {
-            $id = $caseId->id;
+        if ($caseYear !== null) {
+            $caseIdQuery->where('year', $caseYear);
         }
 
-        $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($id);
+        $caseId = $caseIdQuery->first();
+        $data = AppealGovCaseRegisterRepository::AppealMainRespondentGovCaseAllDetails($caseId);
 
-        $govCaseInfo = GovCaseRegister::where('case_no', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
+        // $appealCaseLawers = GovCaseBadiBibadiRepository::getAppealConcernPersonByCaseId($caseId);
+        // $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
+        // $concernPersonName = User::where('id', $case->concern_user_id)->first();
+
+
+        $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($caseId->id);
+// dd($data['appealCaseData']);
+        $govCaseInfo = GovCaseRegister::where('id', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
         $govCaseId = $govCaseInfo->id;
 
         if ($data['appealCaseData']) {
             $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
         }
 
-        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $id)->get();
+
+
+        $data['caseCourts'] = GovCaseAppealAdalat::where('gov_case_id', $caseId->id)->get();
+        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id',$caseId->id)->get();
         $data['ministrys'] = GovCaseOffice::get();
 
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
@@ -2988,11 +3029,6 @@ class AppealGovCaseRegisterController extends Controller
         $data['originCaseNumber'] = GovCaseRegister::orderby('id', 'desc')
             ->select("case_no", "id", "year")->get();
 
-        if ($roleID != 33) {
-            $data['depatments'] = Office::where('parent', $officeID)->get();
-        } else {
-            $data['depatments'] = Office::where('level', 12)->get();
-        }
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
         $data['usersInfo'] = User::all();
@@ -3008,7 +3044,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appellateNotAgainstGov()
     {
-
         session()->forget('currentUrlPath');
 
         $officeInfo = user_office_info();

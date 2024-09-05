@@ -3500,8 +3500,6 @@ class GovCaseRegisterController extends Controller
 
         $caseId = $caseIdQuery->first();
 
-        // dd($caseId); // Debugging
-
         if ($caseId) {
             $id = $caseId->id;
         }

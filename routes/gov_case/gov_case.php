@@ -293,6 +293,8 @@ Route::middleware('prevent-back-history')->group(function () {
                 // for appeal controller route
                 Route::post('appeal_store', [AppealGovCaseRegisterController::class, 'appealStore'])->name('appealStore');
                 Route::post('appeal_store/edit', [AppealGovCaseRegisterController::class, 'appealEditStore'])->name('appealEditStore');
+                Route::post('appeal/main-respondent/change', [AppealGovCaseRegisterController::class, 'appealChangingMainRespondentStore'])->name('appealChangingMainRespondentStore');
+
                 Route::post('appealFinalOrderStore', [AppealGovCaseRegisterController::class, 'appealFinalOrderStore'])->name('appealFinalOrderStore');
                 Route::post('completeAppealCaseStore', [AppealGovCaseRegisterController::class, 'completeAppealCaseStore'])->name('completeAppealCaseStore');
                 Route::get('editAppealCaseForm/{id}', [AppealGovCaseRegisterController::class, 'editAppealCaseForm'])->name('editAppealCaseForm');
