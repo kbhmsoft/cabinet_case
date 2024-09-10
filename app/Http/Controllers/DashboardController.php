@@ -171,7 +171,7 @@ class DashboardController extends Controller
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
 
-            $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
+            $data['page_title'] = 'সিস্টেম অ্যাডমিনের ড্যাশবোর্ড';
 
             $doptorLoginCount = DoptorUserManagement::whereNotNull('office_id')->count();
             $generalLoginCount = User::whereNull('doptor_user_id')->count();
@@ -947,22 +947,22 @@ class DashboardController extends Controller
             $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->count();
 
             $data['ministry'] = GovCaseOffice::whereIn('gov_case_office.level', [1, 3])
-            ->with('childOffices')
-            ->paginate(10);
+                ->with('childOffices')
+                ->paginate(10);
 
-        $arrayd = [];
-        foreach ($data['ministry'] as $ministry) {
-            $officeIds = array_merge([$ministry->doptor_office_id], $ministry->childOffices->pluck('doptor_office_id')->toArray());
+            $arrayd = [];
+            foreach ($data['ministry'] as $ministry) {
+                $officeIds = array_merge([$ministry->doptor_office_id], $ministry->childOffices->pluck('doptor_office_id')->toArray());
 
-            $ministry->highcourt_running_case = $this->countHighCourtRunningCase($officeIds)->count();
-            $ministry->appeal_running_case = $this->countAppealRunningCase($officeIds)->count();
-            $ministry->total_running_case = ($this->countHighCourtRunningCase($officeIds)->count() + $this->countAppealRunningCase($officeIds)->count());
-            $ministry->against_gov = $this->countHighCourtAgainstGovCase($officeIds)->count();
-            $ministry->result_sending_count = $this->countHighCourtSolicitorPendingCase($officeIds)->count();
-            $ministry->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($officeIds)->count();
+                $ministry->highcourt_running_case = $this->countHighCourtRunningCase($officeIds)->count();
+                $ministry->appeal_running_case = $this->countAppealRunningCase($officeIds)->count();
+                $ministry->total_running_case = ($this->countHighCourtRunningCase($officeIds)->count() + $this->countAppealRunningCase($officeIds)->count());
+                $ministry->against_gov = $this->countHighCourtAgainstGovCase($officeIds)->count();
+                $ministry->result_sending_count = $this->countHighCourtSolicitorPendingCase($officeIds)->count();
+                $ministry->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($officeIds)->count();
 
-            array_push($arrayd, $ministry);
-        }
+                array_push($arrayd, $ministry);
+            }
 
             $data['page_title'] = 'মনিটরিং ইউজারের ড্যাশবোর্ড';
             return view('dashboard.cabinet_new.monitoring_user')->with($data);
