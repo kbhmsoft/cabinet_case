@@ -11,8 +11,8 @@
       </div>
       <div class="card-toolbar">        
           @if(auth()->user()->can('create_new_case_category'))
-            <a href="{{ route('cabinet.settings.category.add') }}" class="btn btn-sm btn-primary font-weight-bolder">
-               <i class="la la-plus"></i>নতুন ক্যাটেগরি এন্ট্রি
+            <a href="{{ route('cabinet.settings.category_type.add') }}" class="btn btn-sm btn-primary font-weight-bolder">
+               <i class="la la-plus"></i>নতুন শ্রেণী এন্ট্রি
             </a> 
           @else 
             <a href="#" class="btn btn-sm btn-secondary font-weight-bolder">

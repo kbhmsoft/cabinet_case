@@ -174,16 +174,17 @@
                             @endif
 
                             @if ($appealCase->case_number_origin)
+                            {{ $appealCase->case_number_origin }}
                                 <tr>
                                     <th scope="row">পূর্বের মামলা নং </th>
                                     <td>
                                         @if (auth()->user()->can('show_details_info'))
                                             {{-- <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
                                                 target="_blank"> --}}
-                                            {{ $appealCase->govCaseOrigin->case_no }}
+                                            {{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}
                                             {{-- </a> --}}
                                         @else
-                                            <a href="#">{{ $appealCase->govCaseOrigin->case_no }}</a>
+                                            <a href="#">{{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}</a>
                                         @endif
                                     </td>
                                 </tr>

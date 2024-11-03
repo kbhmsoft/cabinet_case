@@ -112,7 +112,7 @@ class ApplicationFormAsMainDefendentController extends Controller
             $filePath = $file->move(public_path('uploads/case_same_number'), $filename);
             $main_defendant_pdf = 'uploads/case_same_number/' . $filename;
         }
-
+        // dd($request->all());
         $applicationForm = new ApplicationFormAsMainDefendent([
             'court' => $request->court,
             'case_no' => $request->case_no,

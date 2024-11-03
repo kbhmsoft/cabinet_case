@@ -40,7 +40,7 @@ class AttachmentRepository
                 if ($file->isValid()) {
 
                     $filePath = "uploads/" . $appName . "/attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new Attachment();
@@ -69,7 +69,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/administrative_tribrunal/attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
                     $attachment = new AdministrativeTribrunalAttachment();
                     $attachment->gov_case_id = $caseId;
@@ -97,7 +97,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/appeal_administrative_tribrunal/attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
                     $attachment = new AppealAdministrativeTribrunalAttachment();
                     $attachment->gov_case_id = $caseId;
@@ -124,7 +124,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/reply_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new ReplyAttachment();
@@ -151,7 +151,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/adalat_reply_sending_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new AdalatReplySendingAttachment();
@@ -178,7 +178,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/suspension_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new SuspensionAttachment();
@@ -204,7 +204,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/suspension_order_tamil_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new SuspensionTamilAttachment();
@@ -230,7 +230,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/suspension_order_appeal_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new SuspensionAppealAttachment();
@@ -257,7 +257,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/final_order_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new FinalAttachment();
@@ -283,7 +283,7 @@ class AttachmentRepository
             foreach ($request->file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/contempt_attachment/";
                 if ($request->file_name[$key] != null) {
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->getClientOriginalExtension();
                     $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new ContemptAttachment();
@@ -306,7 +306,7 @@ class AttachmentRepository
             foreach ($request->leave_to_appeal_file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/leave_to_appeal_nswera_attachment/";
                 if ($request->leave_to_appeal_file_name[$key] != null) {
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->getClientOriginalExtension();
 
                     if ($request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName)) {
                         Log::debug("File moved successfully");
@@ -338,7 +338,7 @@ class AttachmentRepository
             foreach ($request->leave_to_appeal_file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/leave_to_appeal_answer_attachment/";
                 if ($request->leave_to_appeal_file_name[$key] != null) {
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->leave_to_appeal_file_name[$key]->getClientOriginalExtension();
 
                     if ($request->leave_to_appeal_file_name[$key]->move(public_path($filePath), $otherfileName)) {
                         Log::debug("File moved successfully");
@@ -368,13 +368,13 @@ class AttachmentRepository
     public static function storeAppealAttachment($appName, $caseId, $request)
     {
         if ($request->file_name != null) {
-            // dd($request);
             foreach ($request->file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/attachment/";
                 if ($request->file_name[$key] != null) {
-                    $otherfileName = 'govAppealCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->extension();
+                    $otherfileName = 'govAppealCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->file_name[$key]->getClientOriginalExtension();
                     $request->file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
+                // dd($otherfileName);
                 $attachment = new AppealAttachment();
                 $attachment->appeal_gov_case_id = $caseId;
                 $attachment->file_type = $request->file_type[$key];
@@ -384,7 +384,6 @@ class AttachmentRepository
                 $attachment->created_by = userInfo()->id;
                 $attachment->updated_at = date('Y-m-d H:i:s');
                 $attachment->updated_by = userInfo()->id;
-                // dd($attachment);
                 $attachment->save();
             }
         }
@@ -397,7 +396,7 @@ class AttachmentRepository
             foreach ($request->final_order_file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/final_order_attachment/";
                 if ($request->final_order_file_name[$key] != null) {
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->final_order_file_name[$key]->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->final_order_file_name[$key]->getClientOriginalExtension();
                     $request->final_order_file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new AppealFinalOrderAttachment();
@@ -423,7 +422,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/appeal_orderTaken_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new AppealOrderTakenAttachment();
@@ -452,7 +451,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/appeal_orderTakenAppeal_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new AppealOrderTakenAppealAttachment();
@@ -479,7 +478,7 @@ class AttachmentRepository
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/appeal_orderTakenFinal_attachment/";
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path($filePath), $otherfileName);
 
                     $attachment = new AppealOrderTakenFinalAttachment();
@@ -502,7 +501,7 @@ class AttachmentRepository
     public static function storeSingleAttachment($path, $file, $caseId)
     {
         if ($file != null) {
-            $fileName = $caseId . '_' . time() . '_' . rand(5, 9999) . '.' . $file->extension();
+            $fileName = $caseId . '_' . time() . '_' . rand(5, 9999) . '.' . $file->getClientOriginalExtension();
             $file->move(public_path($path), $fileName);
             return $path . '/' . $fileName;
         }

@@ -77,14 +77,14 @@
                                                     এন্ট্রি</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ request()->is('cabinet/case/highcourt/create/old') ? 'menu-item-open' : '' }}"
+                                        {{-- <li class="menu-item {{ request()->is('cabinet/case/highcourt/create/old') ? 'menu-item-open' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('cabinet.case.highcourt.create.old') }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত হাইকোর্ট মামলা
                                                     এন্ট্রি</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                     @endcan
                                 @endif
 
