@@ -248,7 +248,7 @@
             var items = '';
             items += '<tr id="administrative_adalat_' + (count) + '">';
             items +=
-                '<td><select name="administrative_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($highCourtAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+                '<td><select name="administrative_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($administrativeTribrunalAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
             items += '<input type="hidden" name="administrative_adalat_id[]" value="">';
 
             if (type == 'other') {

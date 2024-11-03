@@ -18,7 +18,6 @@ class CommonController extends Controller
         return str_replace(self::$en, self::$bn, $number);
     }
 
-    
     /**
      * Display a listing of the resource.
      *

@@ -19,6 +19,7 @@ use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
 use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
+use App\Http\Controllers\gov_case\AdalatAdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
 
 Route::middleware('prevent-back-history')->group(function () {
@@ -50,6 +51,7 @@ Route::middleware('prevent-back-history')->group(function () {
 
             Route::resource('highcourt-maintain', AdalatHighCourtController::class);
             Route::resource('appeal-maintain', AdalatAppealController::class);
+            Route::resource('administrative-tribunal-maintain', AdalatAdministrativeTribrunalController::class);
 
             /////************** User Management **************/////
             Route::get('office/wise/users', [GovCaseUserManagementController::class, 'officeWiseUsers'])->name('office.wise');

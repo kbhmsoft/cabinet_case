@@ -159,7 +159,7 @@
                         </a>
                         <span class="count-numbers"
                             style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক
-                            ট্রাইব্যুনাল: ০০)</span>
+                            ট্রাইব্যুনাল: {{ en2bn($total_administrative_tribrunal) }})</span>
                     </span>
                 </div>
                 <hr class="middle-line">
@@ -181,17 +181,17 @@
         <div class="topbar">
             <!--begin::Notifications-->
             @if ($roleID == 27)
-            <div class="notifications-container" style="position: relative; margin-top: 10px">
-                @include('layouts.partials.notifications')
-                @if ($total_case > 0)
-                    @php
-                        $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
-                    @endphp
-                    <span class="badge badge-danger" style="position: absolute; top: 0; right: 0; z-index: 1;">
-                        {{ en2bn($totalApplicationsCount) }}
-                    </span>
-                @endif
-            </div>
+                <div class="notifications-container" style="position: relative; margin-top: 10px">
+                    @include('layouts.partials.notifications')
+                    @if ($total_case > 0)
+                        @php
+                            $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
+                        @endphp
+                        <span class="badge badge-danger" style="position: absolute; top: 0; right: 0; z-index: 1;">
+                            {{ en2bn($totalApplicationsCount) }}
+                        </span>
+                    @endif
+                </div>
             @endif
             <!--end::Notifications-->
             <!--begin::User-->

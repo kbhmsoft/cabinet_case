@@ -87,7 +87,7 @@
             </table>
 
         </div>
-        
+
         <div class="card-body">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -324,17 +324,21 @@
                             </tr>
                         </thead>
                         <tbody>
+                      
                             @php $k = 1; @endphp
                             @foreach ($caseBibadi as $bibadi)
                                 <tr>
                                     <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                                    <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                    <td class="tg-nluh text-center">
+                                        {{ $bibadi->respondent_id == 0 ? $bibadi->other_respondent_manual_name : ($bibadi->ministry->office_name_bn ?? '-') }}
+                                    </td>
                                     <td class="tg-nluh text-center">
                                         {{ $bibadi->is_main_bibadi == 1 ? 'মূল রেসপন্ডেন্ট ' : 'অন্যান্য রেসপন্ডেন্ট' }}
                                     </td>
                                 </tr>
                                 @php $k++; @endphp
                             @endforeach
+
                         </tbody>
                     </table>
 

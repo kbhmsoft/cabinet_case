@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\gov_case;
 
+use App\Models\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\HighcourtAdalat;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\AdministrativeTribrunalAdalat;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
 use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\HighcourtAdalat;
-use App\Models\Role;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AppealAdministrativeTribrunalController extends Controller
 {
@@ -184,7 +185,7 @@ class AppealAdministrativeTribrunalController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
 
-        $data['highCourtAdalat'] = HighcourtAdalat::get();
+        $data['administrativeTribrunalAdalat'] = AdministrativeTribrunalAdalat::where('status',1)->get();
 
         $data['concern_person_desig'] = Role::where('id', 45)->get();
 

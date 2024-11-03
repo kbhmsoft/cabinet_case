@@ -74,33 +74,7 @@
                                             </div> -->
                 </div>
             </div>
-            {{-- {{dd($appealCase)}} --}}
-            {{-- <table class="details-pdf-button">
-                <tr align="right">
-                    <th>
-                        &nbsp;
-                        <a href="{{ route('cabinet.case.appealDetailsPdf', $appealCase->id) }}"
-                            class="btn btn-sm btn-primary font-weight-bolder" target="_blank">
-                            <i class="la la-plus"></i>পিডিএফ দেখুন
-                        </a>
-                    </th>
-                </tr>
-            </table> --}}
-            {{-- </div> --}}
-            {{-- @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 21 || Auth::user()->role_id == 22 || Auth::user()->role_id == 24)
-                @if ($case->action_user_role_id == Auth::user()->role_id)
-                    @if ($case->status == 1)
-                        <div class="card-toolbar">
-                            <a href="{{ route('rmcase.edit', $case->id) }}"
-                                class="btn btn-sm btn-primary font-weight-bolder">
-                                <i class="la la-edit"></i>মামলা সংশোধন করুন
-                            </a>
-                        </div>
-                    @endif
-                @endif
-            @endif --}}
         </div>
-
 
         <div class="card-body">
             @if ($message = Session::get('success'))
@@ -174,16 +148,17 @@
                             @endif
 
                             @if ($appealCase->case_number_origin)
+                            {{-- {{ $appealCase->case_number_origin }} --}}
                                 <tr>
                                     <th scope="row">পূর্বের মামলা নং </th>
                                     <td>
                                         @if (auth()->user()->can('show_details_info'))
                                             {{-- <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
                                                 target="_blank"> --}}
-                                            {{ $appealCase->govCaseOrigin->case_no }}
+                                            {{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}
                                             {{-- </a> --}}
                                         @else
-                                            <a href="#">{{ $appealCase->govCaseOrigin->case_no }}</a>
+                                            <a href="#">{{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}</a>
                                         @endif
                                     </td>
                                 </tr>

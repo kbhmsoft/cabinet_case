@@ -21,12 +21,11 @@
          <div class="mb-12">
             <div class="form-group row">
                <div class="col-lg-4">
-                  <label>মামলার বিভাগঃ</label>
-                  <select name="gov_case_division_id" id="gov_case_division_id" class="form-control form-control-sm">
+                  <label>মামলার ক্যাটেগরিঃ</label>
+                  <select name="gov_case_category_id" id="gov_case_category_id" class="form-control form-control-sm">
                      <option value=""> -- নির্বাচন করুন --</option>
-                     @foreach ($govCaseDiv as $value)
-                          <option value="{{ $value->id }}"
-                               {{ old('gov_case_division_id') == $value->id ? 'selected' : '' }}>
+                     @foreach ($govCaseDivCat as $value)
+                          <option value="{{ $value->id }}">
                               {{ $value->name_bn }} </option>
                      @endforeach
                   </select>
