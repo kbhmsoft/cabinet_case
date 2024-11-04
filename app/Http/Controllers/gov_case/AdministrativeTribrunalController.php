@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\gov_case;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ use App\Models\gov_case\AdministrativeTribrunalAdalat;
 use App\Repositories\gov_case\GovCaseRegisterRepository;
 use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Repositories\gov_case\AdministrativeTribrunalRepository;
 
 class AdministrativeTribrunalController extends Controller
 {
@@ -178,4 +180,36 @@ class AdministrativeTribrunalController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $data = AdministrativeTribrunalRepository::AdministrativeTribrunalAllDetails($id);
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
+        $data['usersInfo'] = User::all();
+
+        // if ($data['case']->case_division_id == 2) {
+        //     $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        // } else {
+        //     $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        // }
+        $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট প্রশাসনিক মামলার মামলার বিস্তারিত তথ্য';
+        return view('gov_case.administritive_tribrunal.showDetails')->with($data);
+
+    }
+
+
+    public function administrative_tribrunal_case_delete($id)
+    {
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $data = AdministrativeTribrunalCaseRegister::findOrFail($id);
+        $data->delete();
+
+      
+        return redirect()->back()->with('message', 'WORKS!');
+    }
 }

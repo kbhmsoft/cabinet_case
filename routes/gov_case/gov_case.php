@@ -327,13 +327,21 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::post('appealOrderTakenStore', [AppealGovCaseRegisterController::class, 'appealOrderTakenStore'])->name('appealOrderTakenStore');
 
 
-              /////////////////////   AdministrativeTribrunalController/////////////////////////
+              /////////////////////   AdministrativeTribrunalController / Appeal... /////////////////////////
+              Route::get('at_case_delete/{id}', [AdministrativeTribrunalController::class, 'administrative_tribrunal_case_delete'])->name('administrative_tribrunal_case_delete');
+
+              Route::get('administritiveTribrunalDetails/{id}', [AdministrativeTribrunalController::class, 'show'])->name('administritiveTribrunalDetails');
               Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
               Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
               Route::post('administrative-tribrunal-generalInfo/store', [AdministrativeTribrunalController::class, 'administrativeTribrunalGeneralInfo'])->name('administrativeTribrunalGeneralInfo');
               Route::get('appeal/administrativeTribrunal/create', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal_create'])->name('appealAdministrativeTribrunal.create');
               Route::post('appeal-administrative-tribrunal-generalInfo/store', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunalGeneralInfo'])->name('appealAdministrativeTribrunalGeneralInfo');
               Route::get('appealAdministrativeTribrunal', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal');
+              Route::get('appealAdministritiveTribrunalDetails/{id}', [AppealAdministrativeTribrunalController::class, 'show'])->name('appealAdministritiveTribrunalDetails');
+              Route::get('aat_case_delete/{id}', [AppealAdministrativeTribrunalController::class, 'appeal_administrative_tribrunal_case_delete'])->name('appeal_administrative_tribrunal_case_delete');
+
+
+
 
                 Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                     Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

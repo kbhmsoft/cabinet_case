@@ -95,10 +95,8 @@
                                 বিষয়বস্তু</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">দফাওয়ারি
                             নোটিশ প্রেরণের তারিখ</th>
-                            {{-- <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ
-                                অবস্থা</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
-                                width="170px">অ্যাকশন</th> --}}
+                            width="170px">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,135 +124,31 @@
                                     {{ $row->notice_given_date ? en2bn($row->notice_given_date) : '-' }}</td>
 
 
-{{--
-                                <td style="text-align:center;">
-                                    <div class="btn-group">
-                                        <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle"
-                                            type="button" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">অ্যাকশন</button>
-                                        <div class="dropdown-menu">
-                                            @can('show_details_info')
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত তথ্য</a>
-                                            @endcan
-                                            @can('highcourt_case_update')
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.highcourt_edit', $row->id) }}">সংশোধন</a>
-                                            @endcan
-                                            <?php
-                                            $roleID = Auth()->user()->role_id;
-                                            ?>
-
-
-                                            @can('highcourt_adalat_reply_sending')
-                                                @if ($row->adalat_reply_submit_have == null)
-                                                    @if (empty($row->adalat_reply_sending_date))
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('cabinet.case.adalatReplySending', $row->id) }}">আদালতে
-                                                            জবাব দাখিল</a>
-                                                    @endif
-                                                @endif
-                                            @endcan
-
-
-                                            @can('highcoutr_send_answer')
-                                                @if ($row->is_final_order == 0)
-                                                    @if (empty($row->result_sending_date))
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
-                                                            জবাব প্রেরণ</a>
-                                                    @endif
-                                                    @if ($row->postponed_order != 1)
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
-                                                            স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
-                                                    @endif
+                                    <td style="text-align:center;">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle"
+                                                type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">অ্যাকশন</button>
+                                            <div class="dropdown-menu">
+                                                @can('show_details_info')
                                                     <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
-                                                        চূড়ান্ত আদেশ</a>
+                                                        href="{{ route('cabinet.case.appealAdministritiveTribrunalDetails', $row->id) }}">বিস্তারিত তথ্য</a>
+                                                @endcan
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.againstGovOrderTaken', $row->id) }}">
-                                                        সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
-                                                @elseif ($row->is_final_order == 1)
-                                                    @if ($row->result == 2)
-                                                        @if (empty($row->leave_to_appeal_no))
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('cabinet.case.leaveToAppealCreate', $row->id) }}">
-                                                                সিএমপি/লিভ টু আপিল<br>দায়ের করুণ
-                                                            </a>
-                                                        @elseif (empty($row->leave_to_appeal_order_date))
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('cabinet.case.leaveToAppealAnswerCreate', $row->id) }}">
-                                                                সিএমপি/লিভ টু আপিল<br>রায়ের তথ্য প্রদান করুণ
-                                                            </a>
-                                                        @endif
-                                                    @endif
-                                                @endif
-                                                @if ($row->contempt_case_isuue_date == null)
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.contemptCaseIssue', $row->id) }}">
-                                                        কনটেম্প্ট মামলা / অন্যান্য<br> বিষয়ে ব্যাবস্থা</a>
-                                                @endif
-                                            @endcan
-                                            @can('register')
-                                                <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.register', $row->id) }}">রেজিস্টার</a>
-                                            @endcan
-                                            <a id="caseLink{{ $key }}" class="dropdown-item"
-                                                data-case-division-id="{{ $row->case_division_id }}"
-                                                data-case-type-id="{{ $row->case_type_id }}"
-                                                data-case-number="{{ $row->case_no }}"
-                                                data-case-year="{{ $row->year }}" href="#">
-                                                মামলার বর্তমান অবস্থান
-                                            </a>
-
-                                            <!-- from মামলার বর্তমান অবস্থান button and data show from supreme court website  -->
-                                            <script>
-                                                document.getElementById('caseLink{{ $key }}').addEventListener('click', function(event) {
-                                                    event.preventDefault();
-                                                    // Prevent the default behavior of the anchor tag
-                                                    var division_id = this.getAttribute('data-case-division-id');
-                                                    var case_type_id = this.getAttribute('data-case-type-id');
-                                                    var case_number = this.getAttribute('data-case-number');
-                                                    var year = this.getAttribute('data-case-year');
-                                                    var dynamicUrl =
-                                                        `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
-
-                                                    window.open(dynamicUrl, '_blank');
-                                                });
-                                            </script>
-
+                                                <?php
+                                                $roleID = Auth()->user()->role_id;
+                                                ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="btn-group">
+                                        <div class="btn-group">
 
-                                        @if ($roleID == 27)
-                                            <a class="btn btn-bg-danger btn-sm"
-                                                href="{{ route('cabinet.case.highcourt_case_delete', $row->id) }}">মুছে
-                                                ফেলুন</a>
-                                        @endif
-                                    </div>
-
-
-                                    <div class="btn-group">
-                                        @if ($roleID == 27)
-                                            <input type="checkbox" id="most_important" name="most_important" value="1"
-                                                data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
-                                                {{ $row->most_important == 1 ? 'checked' : '' }}>
-                                            <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
-                                        @endif
-                                    </div>
-                                    <div class="btn-group">
-                                        @if ($roleID == 29 || $roleID == 31)
-                                            <input type="checkbox" id="important" name="important" value="1"
-                                                data-row-id="{{ $row->id }}"
-                                                onchange="updateImportantCaseDatabase(this)"
-                                                {{ $row->important == 1 ? 'checked' : '' }}>
-                                            <label class="checkbox-name" for="important">গুরুত্বপূর্ণ</label>
-                                        @endif
-                                    </div>
-                                </td> --}}
+                                            @if ($roleID == 27)
+                                                <a class="btn btn-bg-danger btn-sm"
+                                                    href="{{ route('cabinet.case.appeal_administrative_tribrunal_case_delete', $row->id) }}">মুছে
+                                                    ফেলুন</a>
+                                            @endif
+                                        </div>
+                                    </td>
                             </tr>
                         @endforeach
                     </tbody>

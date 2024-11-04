@@ -415,7 +415,10 @@
                             'Saved!',
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
-                        )
+                        ).then(() => {
+                            window.location.href =
+                                "{{ route('cabinet.case.administrativeTribrunal') }}";
+                        });
                         console.log(data);
 
                         $("# a").click();

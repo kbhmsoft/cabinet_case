@@ -118,7 +118,6 @@ class LoginController extends BaseController
         } else {
             $token = $data['token'];
         }
-
         session(['bearerToken' => $token]);
 
         // Initialize cURL
@@ -147,7 +146,7 @@ class LoginController extends BaseController
         curl_close($curl);
 
         $response = json_decode($response);
-      
+
         if (!isset($response->status) || $response->status != 'success') {
             Log::warning('API response status not successful: ' . json_encode($response));
             return redirect()->route('doptor.login')->with('error', 'Invalid response from the API.');
