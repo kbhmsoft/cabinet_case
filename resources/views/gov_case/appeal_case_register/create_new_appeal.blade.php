@@ -23,7 +23,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
 
@@ -64,7 +64,7 @@
                         <a class="nav-link active" id="trainee_tab_item" data-toggle="tab" href="#case_general_information"
                             role="tab" aria-controls="home" aria-selected="true">মামলার সাধারণ <br>তথ্য</a>
                     </li>
-                    <li class="nav-item nav-li-padding" role="presentation" >
+                    <li class="nav-item nav-li-padding" role="presentation">
                         <a class="nav-link" id="final_order_tab" href="#final_order" data-toggle="tab" role="tab"
                             aria-controls="contact" aria-selected="false">চূড়ান্ত আদেশ/<br>রায় সম্পর্কিত</a>
                     </li>
@@ -258,8 +258,8 @@
                                                 কলামসমুহ পুরণ করুণঃ</legend>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>হাইকোর্ট
-                                                        মামলা নং: <span class="text-danger">*</span></label>
+                                                    <label>হাইকোর্ট/প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" name="case_number_origin_manual"
                                                         id="case_number_origin_manual"
                                                         class="form-control form-control-sm"
@@ -675,68 +675,68 @@
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        var createApplicationFormRoute =
-            "{{ route('cabinet.case.createApplicationForm', [':caseNo', ':caseYear', ':caseCategory']) }}";
+    <script>
+        $(document).ready(function() {
+            var createApplicationFormRoute =
+                "{{ route('cabinet.case.createApplicationForm', [':caseNo', ':caseYear', ':caseCategory']) }}";
 
-        $('#case_year, #case_no, #case_category_type').change(function() {
-            var caseNo = $('#case_no').val(); // Get the case number
-            var caseYear = $('#case_year').val(); // Get the case year
-            var caseCategory = $('#case_category_type').val(); // Get the case category
+            $('#case_year, #case_no, #case_category_type').change(function() {
+                var caseNo = $('#case_no').val(); // Get the case number
+                var caseYear = $('#case_year').val(); // Get the case year
+                var caseCategory = $('#case_category_type').val(); // Get the case category
 
-            // Proceed with AJAX request only if all fields are filled
-            if (caseNo && caseYear && caseCategory) {
-                $.ajax({
-                    url: "{{ route('cabinet.case.check_appeal_caseno') }}",
-                    type: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'case_no': caseNo,
-                        'case_year': caseYear,
-                        'case_category': caseCategory
-                    },
-                    success: function(data) {
-                        if (data.exists) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
-                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-                                    data.officeName +
-                                    '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল রেসপন্ডেন্ট হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                onOpen: function() {
-                                    Swal.getPopup().appendChild(
-                                        $('<button>', {
-                                            text: 'অনুরোধ করুন',
-                                            id: 'saveButton',
-                                            class: 'btn btn-success',
-                                            click: function() {
-                                                var url =
-                                                    createApplicationFormRoute
-                                                    .replace(
-                                                        ':caseNo',
-                                                        caseNo)
-                                                    .replace(
-                                                        ':caseYear',
-                                                        caseYear)
-                                                    .replace(
-                                                        ':caseCategory',
-                                                        caseCategory
+                // Proceed with AJAX request only if all fields are filled
+                if (caseNo && caseYear && caseCategory) {
+                    $.ajax({
+                        url: "{{ route('cabinet.case.check_appeal_caseno') }}",
+                        type: 'POST',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'case_no': caseNo,
+                            'case_year': caseYear,
+                            'case_category': caseCategory
+                        },
+                        success: function(data) {
+                            if (data.exists) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+                                    html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                        data.officeName +
+                                        '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে এন্ট্রি করা হয়েছে। আপনি মূল রেসপন্ডেন্ট হয়ে থাকলে মন্ত্রিপরিষদ বিভাগের কাছে পরিবর্তন/সংশোধনের অনুরোধ করুন!</strong>',
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    onOpen: function() {
+                                        Swal.getPopup().appendChild(
+                                            $('<button>', {
+                                                text: 'অনুরোধ করুন',
+                                                id: 'saveButton',
+                                                class: 'btn btn-success',
+                                                click: function() {
+                                                    var url =
+                                                        createApplicationFormRoute
+                                                        .replace(
+                                                            ':caseNo',
+                                                            caseNo)
+                                                        .replace(
+                                                            ':caseYear',
+                                                            caseYear)
+                                                        .replace(
+                                                            ':caseCategory',
+                                                            caseCategory
                                                         );
-                                                window.location
-                                                    .href = url;
-                                            }
-                                        })[0]
-                                    );
-                                }
-                            });
+                                                    window.location
+                                                        .href = url;
+                                                }
+                                            })[0]
+                                        );
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection
