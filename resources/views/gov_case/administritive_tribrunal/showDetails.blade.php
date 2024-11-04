@@ -74,7 +74,7 @@
                                                                                                 </div> -->
                 </div>
             </div>
-            <table class="details-pdf-button">
+            {{-- <table class="details-pdf-button">
                 <tr align="right">
                     <th>
                         &nbsp;
@@ -84,7 +84,7 @@
                         </a>
                     </th>
                 </tr>
-            </table>
+            </table> --}}
 
         </div>
 
@@ -143,8 +143,8 @@
                                 <td>{{ $case->case_no ?? '-' }}</td>
                             </tr>
                             <tr>
-                                <th scope="row">রুল ইস্যুর তারিখ</th>
-                                <td>{{ en2bn($case->date_issuing_rule_nishi) ?? '-' }}</td>
+                                <th scope="row">নোটিশ জারির তারিখ</th>
+                                <td>{{ en2bn($case->notice_given_date) ?? '-' }}</td>
                             </tr>
 
                             @if ($case->concern_person_designation)
@@ -324,7 +324,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                      
+
                             @php $k = 1; @endphp
                             @foreach ($caseBibadi as $bibadi)
                                 <tr>
@@ -345,58 +345,7 @@
 
                 </div>
             </div>
-            {{--  @php
-        $hearings = App\Models\gov_case\GovCaseHearing::orderby('id', 'DESC')->where('gov_case_id', $case->id)->get();
-    @endphp  --}}
-            @if (count($hearings) != 0)
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped border">
-                            <thead>
-                                <tr>
-                                    <th class="h3" scope="col" colspan="6">শুনানির নোটিশ</th>
-                                </tr>
-                                <tr>
-                                    <th scope="row" width="10">ক্রম</th>
-                                    <th scope="row" class="text-center">শুনানির তারিখ</th>
-                                    <th scope="row" class="text-center">সংযুক্তি</th>
-                                    <th scope="row" class="text-center">মন্তব্য</th>
-                                    <th scope="row" class="text-center">শুনানির ফলাফলের সংযুক্তি</th>
-                                    <th scope="row" class="text-center">ফলাফলের মন্তব্য</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                @forelse ($hearings as $key=> $row)
-                                    <tr>
-                                        <td class="tg-nluh text-center" scope="row">{{ en2bn($key + 1) }}.</td>
-                                        <td class="tg-nluh text-center">{{ en2bn($row->hearing_date) }}</td>
-                                        <td class="tg-nluh text-center">
-                                            <a target="_black" href="{{ asset($row->hearing_file) }}"
-                                                class="btn btn-primary btn-sm">সংযুক্তি</a>
-                                        </td>
-                                        <td class="tg-nluh text-center" class="tg-nluh">{{ $row->comment }}</td>
-                                        <td class="tg-nluh text-center">
-                                            <a target="_black" href="{{ asset($row->hearing_result_file) }}"
-                                                class="btn btn-primary btn-sm">সংযুক্তি</a>
-                                        </td>
-                                        <td class="tg-nluh text-center" class="tg-nluh">
-                                            {{ $row->hearing_result_comments ?? '-' }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="tg-nluh text-center" colspan="4">
-                                            <h3>
-                                                শুনানির কোন নোটিশ পাওয়া যাইনি
-                                            </h3>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-            @endif
+
             <br>
             <br>
             <br>
@@ -461,8 +410,9 @@
                </div>
             </div> <!-- /modal -->
       </div>  --}}
-                @if (count($files) != 0)
-                    @foreach ($files as $file)
+      {{-- @dd($adminisTrativeTribunalFiles); --}}
+                @if (count($adminisTrativeTribunalFiles) != 0)
+                    @foreach ($adminisTrativeTribunalFiles as $file)
                         <div class="col-md-4">
                             <h4 class="font-weight-bolder mt-3">{{ $file->file_type }}</h4>
                             <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
@@ -499,199 +449,10 @@
                     @endforeach
                 @endif
 
-                @if (count($replyFiles) != 0)
-                    @foreach ($replyFiles as $reply)
-                        {{-- @dd($reply) --}}
-                        <div class="col-md-4">
-                            <h4 class="font-weight-bolder mt-3">{{ $reply->file_type }}</h4>
-                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                                data-toggle="modal" data-target="#showFileModalReply{{ $reply->id }}">
-                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $reply->file_type }}
-                            </a>
-
-                            <!-- Modal-->
-                            <div class="modal fade" id="showFileModalReply{{ $reply->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bolder font-size-h3"
-                                                id="exampleModalLabel">{{ $reply->file_type }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <i aria-hidden="true" class="ki ki-close"></i>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <embed src="{{ asset($reply->file_name) }}" type="application/pdf"
-                                                width="100%" height="400px" />
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button"
-                                                class="btn btn-light-primary font-weight-bold font-size-h5"
-                                                data-dismiss="modal">বন্ধ করুন</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- /modal -->
-                        </div>
-                    @endforeach
-                @endif
-                @if (count($suspensionFiles) != 0)
-                    @foreach ($suspensionFiles as $suspension)
-                        <div class="col-md-4">
-                            <h4 class="font-weight-bolder mt-3">{{ $suspension->file_type }}</h4>
-                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                                data-toggle="modal" data-target="#showFileModalSuspension{{ $suspension->id }}">
-                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $suspension->file_type }}
-                            </a>
-
-                            <!-- Modal-->
-                            <div class="modal fade" id="showFileModalSuspension{{ $suspension->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bolder font-size-h3"
-                                                id="exampleModalLabel">{{ $suspension->file_type }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <i aria-hidden="true" class="ki ki-close"></i>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <embed src="{{ asset($suspension->file_name) }}" type="application/pdf"
-                                                width="100%" height="400px" />
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button"
-                                                class="btn btn-light-primary font-weight-bold font-size-h5"
-                                                data-dismiss="modal">বন্ধ করুন</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- /modal -->
-                        </div>
-                    @endforeach
-                @endif
-                @if (count($finalFiles) != 0)
-                    @foreach ($finalFiles as $final)
-                        <div class="col-md-4">
-                            <h4 class="font-weight-bolder mt-5">{{ $final->file_type }}</h4>
-                            <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                                data-toggle="modal" data-target="#showFileModalFinal{{ $final->id }}">
-                                <i class="fa fas fa-file-pdf icon-md"></i> {{ $final->file_type }}
-                            </a>
-
-                            <!-- Modal-->
-                            <div class="modal fade" id="showFileModalFinal{{ $final->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bolder font-size-h3"
-                                                id="exampleModalLabel">{{ $final->file_type }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <i aria-hidden="true" class="ki ki-close"></i>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <embed src="{{ asset($final->file_name) }}" type="application/pdf"
-                                                width="100%" height="400px" />
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button"
-                                                class="btn btn-light-primary font-weight-bold font-size-h5"
-                                                data-dismiss="modal">বন্ধ করুন</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- /modal -->
-                        </div>
-                    @endforeach
-                @endif
 
             </div>
             <br>
-            <div class="row">
-                @if ($case->sf_report != null)
-                    <div class="col-md-4">
-                        <h4 class="font-weight-bolder">এস এফ এর চূড়ান্ত প্রতিবেদন</h4>
-                        <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                            data-toggle="modal" data-target="#sfFinalFile">
-                            <i class="fa fas fa-file-pdf icon-md"></i> এস এফ এর চূড়ান্ত প্রতিবেদন
-                        </a>
 
-                        <!-- Modal-->
-                        <div class="modal fade" id="sfFinalFile" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bolder font-size-h3" id="exampleModalLabel">এস
-                                            এফ এর চূড়ান্ত প্রতিবেদন</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <i aria-hidden="true" class="ki ki-close"></i>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <embed src="{{ asset('uploads/sf_report/' . $case->sf_report) }}"
-                                            type="application/pdf" width="100%" height="400px" />
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-primary font-weight-bold font-size-h5"
-                                            data-dismiss="modal">বন্ধ করুন</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /modal -->
-                    </div>
-                @endif
-                @if ($case->order_file != null)
-                    <div class="col-md-4">
-                        <h4 class="font-weight-bolder">আদেশের ফাইল</h4>
-                        <a href="#" class="btn btn-success btn-shadow font-weight-bold font-size-h4"
-                            data-toggle="modal" data-target="#orderFile">
-                            <i class="fa fas fa-file-pdf icon-md"></i> আদেশের ফাইল
-                        </a>
-
-                        <!-- Modal-->
-                        <div class="modal fade" id="orderFile" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bolder font-size-h3" id="exampleModalLabel">
-                                            আদেশের ফাইল</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <i aria-hidden="true" class="ki ki-close"></i>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <embed src="{{ asset('uploads/order/' . $case->order_file) }}"
-                                            type="application/pdf" width="100%" height="400px" />
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-primary font-weight-bold font-size-h5"
-                                            data-dismiss="modal">বন্ধ করুন</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /modal -->
-                    </div>
-            </div>
-            @endif
 
 
         </div>

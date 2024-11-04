@@ -3,15 +3,17 @@
 namespace App\Providers;
 
 // use Illuminate\Support\ServiceProvider;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\MainRespondentNotification;
-use App\Models\Message;
 use App\Models\User;
-use App\Providers\AppServiceProvider;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Message;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Providers\AppServiceProvider;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\MainRespondentNotification;
+use App\Models\gov_case\AdministrativeTribrunalAdalat;
+use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
 
 class ViewServiceProvider extends AppServiceProvider
 {
@@ -60,33 +62,17 @@ class ViewServiceProvider extends AppServiceProvider
                 ->where('deleted_at', null)
                 ->count();
 
-            // $childOfficeQuery = DB::table('gov_case_office')
-            //     ->select('id', 'doptor_office_id')
-            //     ->where('parent_office_id', $officeID)
-            //     ->get();
-
-            // foreach ($childOfficeQuery as $childOffice) {
-            //     $childOfficeIds[] = $childOffice->doptor_office_id;
-            // }
-
-            // $finalOfficeIds = [];
-            // if (empty($childOfficeIds)) {
-            //     $finalOfficeIds[] = $officeID;
-            // } else {
-            //     $finalOfficeIds[] = $officeID;
-            //     $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-            // }
-
-            // $total_highcourt = GovCaseRegister::whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
-            //     $query->whereIn('respondent_id', $finalOfficeIds);
-            // })
-            //     ->where('deleted_at', null)
-            //     ->count();
 
             $total_appeal = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $childOfficeIds)
                 ->where('deleted_at', null)->count();
 
-            $total_case = $total_highcourt + $total_appeal;
+
+                $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::whereHas('mainBibadis', function ($query) use ($childOfficeIds) {
+                    $query->whereIn('respondent_id', $childOfficeIds);
+                })->where('deleted_at', null)
+                    ->count();
+                    // dd($total_administrative_tribrunal);
+            $total_case = $total_highcourt + $total_appeal + $total_administrative_tribrunal;
 
             if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {
 
@@ -110,8 +96,9 @@ class ViewServiceProvider extends AppServiceProvider
 
                 $total_appeal = AppealGovCaseRegister::where('deleted_at', null)
                     ->count();
-
-                $total_case = $total_highcourt + $total_appeal;
+                    $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::where('deleted_at', null)
+                        ->count();
+                $total_case = $total_highcourt + $total_appeal+$total_administrative_tribrunal;
             }
 
             // Query to get the count of distinct case numbers for high court applications
@@ -125,6 +112,7 @@ class ViewServiceProvider extends AppServiceProvider
             $view->with([
                 'total_highcourt' => $total_highcourt,
                 'total_appeal' => $total_appeal,
+                'total_administrative_tribrunal' => $total_administrative_tribrunal,
                 'total_case' => $total_case,
                 'highCourtApplicationsCount' => $highCourtApplicationsCount,
                 'appealApplicationsCount' => $appealApplicationsCount,

@@ -594,13 +594,14 @@
                     success: (data) => {
                         $('#caseGeneralInfoSaveBtn').removeClass(
                             'spinner spinner-white spinner-right disabled');
-                        $orderData = data;
                         Swal.fire(
                             'Saved!',
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
-                        )
-                        console.log(data);
+                        ).then(() => {
+                            window.location.href =
+                                "{{ route('cabinet.case.highcourt') }}";
+                        });
 
                         $("# a").click();
                         $("#caseIDForAnswer").val(data.caseId);

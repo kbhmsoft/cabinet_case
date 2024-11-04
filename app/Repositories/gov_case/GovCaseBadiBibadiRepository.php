@@ -13,9 +13,14 @@ use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
 use App\Models\gov_case\AppealGovCaseConcernPerson;
 use App\Models\gov_case\AdministrativeTribrunalBadi;
+use App\Models\gov_case\AdministrativeTribrunalAdalat;
 use App\Models\gov_case\AdministrativeTribrunalBibadi;
 use App\Models\gov_case\AppealAdministrativeTribrunalBadi;
 use App\Models\gov_case\AppealAdministrativeTribrunalBibadi;
+use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
+use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
+use App\Models\gov_case\ConcernPersonAppealAdministrativeTribrunal;
+use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
 
 class GovCaseBadiBibadiRepository
 {
@@ -268,24 +273,89 @@ class GovCaseBadiBibadiRepository
         return $badi;
     }
 
+    public static function getAdministrativeTribrunalBadiByCaseId($caseId)
+    {
+        $badi = AdministrativeTribrunalBadi::where('gov_case_id', $caseId)->first();
+        return $badi;
+    }
+
+    public static function getAppealAdministrativeTribrunalBadiByCaseId($caseId)
+    {
+        $badi = AppealAdministrativeTribrunalBadi::where('gov_case_id', $caseId)->first();
+        return $badi;
+    }
+
+
     public static function getBibadiByCaseId($caseId)
     {
         $bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->get();
         return $bibadi;
     }
+
+    public static function getATBibadiByCaseId($caseId)
+    {
+        $bibadi = AdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->get();
+        return $bibadi;
+    }
+
+    public static function getAATBibadiByCaseId($caseId)
+    {
+        $bibadi = AppealAdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->get();
+        return $bibadi;
+    }
+
+
     public static function getMainBibadiByCaseId($caseId)
     {
         $main_bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', 1)->get();
         return $main_bibadi;
     }
+
+    public static function getATMainBibadiByCaseId($caseId)
+    {
+        $main_bibadi = AdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', 1)->get();
+        return $main_bibadi;
+    }
+
+    public static function getAATMainBibadiByCaseId($caseId)
+    {
+        $main_bibadi = AppealAdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', 1)->get();
+        return $main_bibadi;
+    }
+
     public static function getOthersBibadiByCaseId($caseId)
     {
         $other_bibadi = GovCaseBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', null)->get();
         return $other_bibadi;
     }
+
+    public static function getATOthersBibadiByCaseId($caseId)
+    {
+        $other_bibadi = AdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', null)->get();
+        return $other_bibadi;
+    }
+
+    public static function getAATOthersBibadiByCaseId($caseId)
+    {
+        $other_bibadi = AppealAdministrativeTribrunalBibadi::where('gov_case_id', $caseId)->where('is_main_bibadi', null)->get();
+        return $other_bibadi;
+    }
+
     public static function getConcernPersonByCaseId($caseId)
     {
         $other_bibadi = GovCaseConcernPerson::where('gov_case_id', $caseId)->get();
+        return $other_bibadi;
+    }
+
+    public static function getATConcernPersonByCaseId($caseId)
+    {
+        $other_bibadi = ConcernPersonAdministrativeTribrunal::where('gov_case_id', $caseId)->get();
+        return $other_bibadi;
+    }
+
+    public static function getAATConcernPersonByCaseId($caseId)
+    {
+        $other_bibadi = ConcernPersonAppealAdministrativeTribrunal::where('gov_case_id', $caseId)->get();
         return $other_bibadi;
     }
 
@@ -297,6 +367,18 @@ class GovCaseBadiBibadiRepository
     public static function getJusticeNameByCaseId($caseId)
     {
         $justices = GovCaseHighcourtAdalat::where('gov_case_id', $caseId)->get();
+        return $justices;
+    }
+
+    public static function getATJusticeNameByCaseId($caseId)
+    {
+        $justices = AdministrativeTribrunalHighcourtAdalat::where('gov_case_id', $caseId)->get();
+        return $justices;
+    }
+
+    public static function getAATJusticeNameByCaseId($caseId)
+    {
+        $justices = AppealAdministrativeTribrunalHighcourtAdalat::where('gov_case_id', $caseId)->get();
         return $justices;
     }
 }

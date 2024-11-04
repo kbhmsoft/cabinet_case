@@ -891,12 +891,25 @@
                                     </li>
                                 </ul>
                             @endcan
+
+                            @can('administrative_adalat')
+                                <ul class="menu-subnav">
+                                    <li class="menu-item {{ in_array(session()->get('currentUrlPath'), ['cabinet/administrative-tribunal-maintain']) ? 'hilightMenu' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ url('cabinet/administrative-tribunal-maintain') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                            <span class="menu-text font-weight-bolder">প্রশাসনিক ট্রাইবুনাল আদালত</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endcan
                         </div>
-                    </li>
-                @endcan
+            </div>
+            </li>
+        @endcan
 
 
-                {{-- @can('maintain_main_respondent_included')
+        {{-- @can('maintain_main_respondent_included')
                     <li class="menu-item mt-2 has-treeview {{ request()->is('cabinet/case/highcourt/indexApplications*', 'cabinet/case/appeal/indexApplications*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
@@ -933,7 +946,7 @@
                     </li>
                 @endcan --}}
 
-                {{-- <ul class="menu-nav">
+        {{-- <ul class="menu-nav">
                     <li class="menu-item has-treeview " aria-haspopup="true" data-menu-toggle="hover">
                         <a href="{{ route('notices.index') }}"class="nav-link {{ 'notices' }}">
                             <i class="fa-solid fa-triangle-exclamation text-dark"></i>
@@ -943,33 +956,33 @@
                     </li>
                 </ul> --}}
 
-                @can('maintain_notice')
-                    <li class="menu-item mt-2 has-treeview {{ request()->is('notices*') ? 'menu-item-open' : '' }}"
-                        aria-haspopup="true" data-menu-toggle="hover">
-                        <a href="javascript:;" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> নোটিশ
-                                পরিচালনা</span>
-                            <i class="menu-arrow"></i>
-                        </a>
+        @can('maintain_notice')
+            <li class="menu-item mt-2 has-treeview {{ request()->is('notices*') ? 'menu-item-open' : '' }}"
+                aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> নোটিশ
+                        পরিচালনা</span>
+                    <i class="menu-arrow"></i>
+                </a>
 
-                        <div class="menu-submenu">
-                            @can('maintain_notice_submenu')
-                                <ul class="menu-subnav">
-                                    <li class="menu-item {{ request()->is('notices') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('notices.index') }}" class="menu-link">
-                                            <span class="menu-text font-weight-bolder"><i
-                                                    class="menu-bullet menu-bullet-dot"><span></span></i> নোটিশ পরিচালনা</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            @endcan
-                        </div>
-                    </li>
-                @endcan
+                <div class="menu-submenu">
+                    @can('maintain_notice_submenu')
+                        <ul class="menu-subnav">
+                            <li class="menu-item {{ request()->is('notices') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('notices.index') }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder"><i
+                                            class="menu-bullet menu-bullet-dot"><span></span></i> নোটিশ পরিচালনা</span>
+                                </a>
+                            </li>
+                        </ul>
+                    @endcan
+                </div>
+            </li>
+        @endcan
 
-            </ul> <!--end::Menu Nav-->
-        </div> <!--end::Menu Container-->
-    </div> <!--end::Aside Menu-->
+        </ul> <!--end::Menu Nav-->
+    </div> <!--end::Menu Container-->
+</div> <!--end::Aside Menu-->
 </div> <!-- /aside-left -->
 </div> <!-- /aside-left -->

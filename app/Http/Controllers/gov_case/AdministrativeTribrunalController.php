@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\HighcourtAdalat;
 use App\Models\Role;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\HighcourtAdalat;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\AdministrativeTribrunalAdalat;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Repositories\gov_case\AdministrativeTribrunalRepository;
 
 class AdministrativeTribrunalController extends Controller
 {
@@ -121,7 +124,7 @@ class AdministrativeTribrunalController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
 
-        $data['highCourtAdalat'] = HighcourtAdalat::get();
+        $data['administrativeTribrunalAdalat'] = AdministrativeTribrunalAdalat::where('status',1)->get();
 
         $data['concern_person_desig'] = Role::where('id', 45)->get();
 
@@ -134,7 +137,7 @@ class AdministrativeTribrunalController extends Controller
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
 
-       
+
         $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনাল মামলা এন্ট্রি ';
 
         return view('gov_case.administritive_tribrunal.create_new_administritive_tribrunal')->with($data);
@@ -177,4 +180,36 @@ class AdministrativeTribrunalController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $data = AdministrativeTribrunalRepository::AdministrativeTribrunalAllDetails($id);
+        $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
+        $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
+        $data['usersInfo'] = User::all();
+
+        // if ($data['case']->case_division_id == 2) {
+        //     $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        // } else {
+        //     $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট হাইকোর্ট বিভাগের মামলার বিস্তারিত তথ্য';
+        // }
+        $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট প্রশাসনিক মামলার মামলার বিস্তারিত তথ্য';
+        return view('gov_case.administritive_tribrunal.showDetails')->with($data);
+
+    }
+
+
+    public function administrative_tribrunal_case_delete($id)
+    {
+
+        $officeInfo = user_office_info();
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
+
+        $data = AdministrativeTribrunalCaseRegister::findOrFail($id);
+        $data->delete();
+
+      
+        return redirect()->back()->with('message', 'WORKS!');
+    }
 }

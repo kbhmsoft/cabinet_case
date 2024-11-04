@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AppealAdministrativeTribrunalHighcourtAdalat extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'appeal_administrative_tribrunal_highcourt_adalats';
     public $timestamps = true;
 

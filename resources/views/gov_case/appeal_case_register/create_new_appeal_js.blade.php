@@ -585,10 +585,12 @@
                 contentType: false,
                 processData: false,
                 success: (data) => {
-                    console.log('Success response:', data); // Log success response
-
                     $('#appealCaseGeneralInfoSaveBtn').removeClass('spinner spinner-white spinner-right disabled');
-                    Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'success');
+                    Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'success')
+                        .then(() => {
+
+                            window.location.href = "{{ route('cabinet.case.appellateDivision') }}";
+                        });
 
                     $("#final_order").click();
                     $("#caseIDForFinalOrder").val(data.caseId);
