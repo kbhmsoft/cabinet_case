@@ -18,10 +18,9 @@
                 $concern_person_desig[$i]->name_bn .
                 '</option>';
         }
-        $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
-        for ($i = 1995; $i <= date('Y'); $i++) {
-            $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
-        }
+
+        // Add the "আইন কর্মকর্তা নিয়োগ করা হয় নি" option at the end
+        $concernPersonDesig .= '<option value="no_officer">আইন কর্মকর্তা নিয়োগ করা হয় নি</option>';
 
     @endphp
 
@@ -1553,7 +1552,7 @@
                                                         .replace(
                                                             ':caseCategory',
                                                             caseCategory
-                                                            );
+                                                        );
                                                     window.location
                                                         .href = url;
                                                 }

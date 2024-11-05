@@ -387,31 +387,73 @@
     });
 
     // Add row function
-    function addAdvocateLawerFunc() {
-        var count = parseInt($('#survey_count').val());
-        $('#survey_count').val(count + 1);
-        var items = '';
-        items += '<tr>';
-        items += '<input type="hidden" name="concern_person_id[]" value="">';
-        items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-            '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-            ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-        items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-            '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+    // function addAdvocateLawerFunc() {
+    //     var count = parseInt($('#survey_count').val());
+    //     $('#survey_count').val(count + 1);
+    //     var items = '';
+    //     items += '<tr>';
+    //     items += '<input type="hidden" name="concern_person_id[]" value="">';
+    //     items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+    //         '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+    //         ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+    //     items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+    //         '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
-        if (count != 1) {
-            items +=
-                '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-        }
+    //     if (count != 1) {
+    //         items +=
+    //             '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+    //     }
 
-        items += '</tr>';
+    //     items += '</tr>';
 
-        $('#advocateLawerDiv tr:last').after(items);
+    //     $('#advocateLawerDiv tr:last').after(items);
 
-        // Initialize Select2 after adding new dropdowns
-        $('#concernPersonDesignation_' + count).select2();
-        $('#concern_user_id_' + count).select2();
+    //     // Initialize Select2 after adding new dropdowns
+    //     $('#concernPersonDesignation_' + count).select2();
+    //     $('#concern_user_id_' + count).select2();
+    // }
+
+
+    // Add row function
+    // Add row function
+function addAdvocateLawerFunc() {
+    var count = parseInt($('#survey_count').val());
+    $('#survey_count').val(count + 1);
+    var items = '';
+    items += '<tr>';
+    items += '<input type="hidden" name="concern_person_id[]" value="">';
+    items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
+        '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count + ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+    items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
+        '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+
+    if (count != 1) {
+        items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
     }
+
+    items += '</tr>';
+
+    $('#advocateLawerDiv tr:last').after(items);
+
+    // Initialize Select2 after adding new dropdowns
+    $('#concernPersonDesignation_' + count).select2();
+    $('#concern_user_id_' + count).select2();
+
+    // Add event listener for the new dropdown
+    $('#concernPersonDesignation_' + count).on('change', function() {
+        const concernUserField = $('#concern_user_id_' + count);
+        if ($(this).val() === 'no_officer') {
+            // Hide the "concern_user_id" select box and remove required attribute
+            concernUserField.closest('td').hide();
+            concernUserField.prop('required', false);
+        } else {
+            // Show the "concern_user_id" select box and add required attribute
+            concernUserField.closest('td').show();
+            concernUserField.prop('required', true);
+        }
+    });
+}
+
 
 
     //remove row function

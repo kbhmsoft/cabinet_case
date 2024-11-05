@@ -271,17 +271,19 @@ class AppealGovCaseRegisterRepository
     {
 
         if ($caseInfo->concernPersonDesignation) {
-
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
-                if ($caseInfo->concernPersonDesignation[$key] != null) {
-                    $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_person_id[$key]);
+                if ($val !== null) {
+                    if ($val === 'no_officer') {
+                        continue;
+                    }
+                    $concernPrerson = self::checkConcernPersonExist($caseInfo->concern_user_id[$key]);
                     $concernPrerson->gov_case_id = $govCaseId;
-                    $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
-                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+                    $concernPrerson->concern_person_designation = $val;
+                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key] ?? null; // Ensure null if not provided
+
                     $concernPrerson->save();
                 }
             }
-
         }
     }
 
