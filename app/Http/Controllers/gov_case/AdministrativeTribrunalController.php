@@ -29,7 +29,7 @@ class AdministrativeTribrunalController extends Controller
         $this->middleware('permission:highcourt_case_update', ['only' => ['edit']]);
     }
 
-    public function administrativeTribrunal()
+    public function administrativeTribrunal(Request $request)
     {
         session()->forget('currentUrlPath');
 
@@ -209,7 +209,7 @@ class AdministrativeTribrunalController extends Controller
         $data = AdministrativeTribrunalCaseRegister::findOrFail($id);
         $data->delete();
 
-      
+
         return redirect()->back()->with('message', 'WORKS!');
     }
 }
