@@ -243,7 +243,7 @@
 
 
                 @can('administrative_tribrunal')
-                    <li class="menu-item {{ request()->is('cabinet/case/administrativeTribrunal') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/administrativeTribrunal', 'cabinet/case/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>প্রশাসনিক
@@ -306,7 +306,7 @@
 
 
                 @can('administrative_appeal_tribrunal')
-                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/appealAdministrativeTribrunal', 'cabinet/case/appeal/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-building"></i>প্রশাসনিক আপিল
@@ -318,7 +318,7 @@
                             <ul class="menu-subnav">
 
                                 @can('create_aat_new_case')
-                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal/create') ? 'menu-item-open' : '' }}"
+                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/administrativeTribrunal/create') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.appealAdministrativeTribrunal.create') }}"
                                             class="menu-link">
@@ -347,7 +347,7 @@
 
 
                 @can('most_important_case_list')
-                    <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourtAppeal/*') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/importgantCaseList') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-exclamation"></i>অতি গুরুত্বপূর্ণ
@@ -372,7 +372,7 @@
 
 
                                 @can('case_list')
-                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourtAppeal/importgantCaseList']) ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ request()->is(['cabinet/case/importgantCaseList']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourtAppealMostImportantCase') }}"
                                             class="menu-link">
@@ -831,26 +831,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                {{-- @can('causelist_menu')
-                                    <li class="menu-item {{ request()->is('search/supremecourt/causelist') ? 'hilightMenu' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ url('search/supremecourt/causelist') }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">কজলিস্ট</span>
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('today_hearing_cases')
-                                    @if ($supremeCourtCaseCout != 0)
-                                        <li class="menu-item {{ request()->is('show/notification/supremecourt') ? 'hilightMenu' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ url('show/notification/supremecourt') }}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text font-weight-bolder">আজকের শুনানির তালিকা</span>
-                                            </a>
-                                        </li>
-                                    @endif
-                                @endcan --}}
+
                             </ul>
                         </div>
                     </li>
