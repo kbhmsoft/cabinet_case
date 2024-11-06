@@ -592,20 +592,7 @@ class GovCaseRegisterController extends Controller
         if (!empty($_GET['case_no'])) {
             $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
         }
-        if (!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
-        }
-        if ($roleID == 5 || $roleID == 7) {
-            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
+
 
         $data['cases'] = $query->paginate(10);
 
@@ -644,11 +631,7 @@ class GovCaseRegisterController extends Controller
             $queryAppeal->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
         }
 
-        if ($roleID == 5 || $roleID == 7) {
-            $queryAppeal->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $queryAppeal->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
+     
         $data['appealCases'] = $queryAppeal->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
             ->get();
 
