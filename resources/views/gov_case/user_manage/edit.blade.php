@@ -1,8 +1,8 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
-<style type="text/css">
-      #appRowDiv td {
+    <style type="text/css">
+        #appRowDiv td {
             padding: 5px;
             border-color: #ccc;
         }
@@ -51,192 +51,153 @@
                 @endif
             </div>
 
-            <form action="{{ route('cabinet.user-management.update', $userManagement->id) }}" method="POST"
-                enctype="multipart/form-data">
+            <form action="{{ route('cabinet.user-management.update', $userManagement->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
                     <fieldset>
                         <legend>ব্যবহারকারীর তথ্য</legend>
-                        <div class=" col-12 row">
-                            <div class="col-4">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name" class=" form-control-label">পুরো নাম <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" id="name" name="name" placeholder="পুরো নাম লিখুন"
-                                        class="form-control form-control-sm"value="{{ $userManagement->name }}">
-                                    <span style="color: red">
-                                        {{ $errors->first('name') }}
-                                    </span>
+                                    <label for="name" class="form-control-label">পুরো নাম <span class="text-danger">*</span></label>
+                                    <input type="text" id="name" name="name" placeholder="পুরো নাম লিখুন" class="form-control form-control-sm" value="{{ $userManagement->name }}">
+                                    <span style="color: red">{{ $errors->first('name') }}</span>
                                 </div>
                             </div>
-                            {{-- <div class="col-4">
-                     <div class="form-group">
-                         <label for="username" class=" form-control-label">ইউজারনেম <span class="text-danger">*</span></label>
-                         <input type="text" id="username" name="username" placeholder="ব্যবহারকারীর নাম লিখুন" class="form-control form-control-sm" value="{{ $userManagement->username}}" readonly="readonly">
-                         <span style="color: red">
-                           {{ $errors->first('username') }}
-                        </span>
-                     </div>
-                  </div> --}}
-
-                            <div class="col-4">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার </label>
-                                    <input type="text" name="mobile_no" id="mobile_no" placeholder="মোবাইল নাম্বার লিখুন"
-                                        class="form-control form-control-sm" value="{{ $userManagement->mobile_no }}">
+                                    <label for="mobile_no" class="form-control-label">মোবাইল নাম্বার</label>
+                                    <input type="text" name="mobile_no" id="mobile_no" placeholder="মোবাইল নাম্বার লিখুন" class="form-control form-control-sm" value="{{ $userManagement->mobile_no }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>ইমেইল এড্রেসঃ</label>
+                                    <input type="text" name="email" class="form-control" placeholder="" value="{{ $userManagement->email }}" />
                                 </div>
                             </div>
                         </div>
-                        <div class=" col-12 row">
-                            <div class="col-4">
+{{-- @dd($userManagement) --}}
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>ইমেইল এড্রেসঃ</label>
-                                    <input type="text" name="email" class="form-control" placeholder=""
-                                        value="{{ $userManagement->email }}" />
-                                </div>
-                            </div>
-
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="role_id" class=" form-control-label">ইউজার রোল <span
-                                            class="text-danger">*</span></label>
+                                    <label for="role_id" class="form-control-label">ইউজার রোল <span class="text-danger">*</span></label>
                                     <select name="role_id" id="role_id" class="form-control-sm form-control">
                                         <option value="">-- নির্বাচন করুন --</option>
                                         @foreach ($roles as $value)
-                                            <option value="{{ $value->id }}"
-                                                {{ $value->id == $userManagement->role_id ? 'selected' : '' }}>
-                                                {{ $value->name }} </option>
+                                            <option value="{{ $value->id }}" {{ $value->id == $userManagement->role_id ? 'selected' : '' }}>
+                                                {{ $value->name_bn }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    <span style="color: red">
-                                        {{ $errors->first('role_id') }}
-                                    </span>
+                                    <span style="color: red">{{ $errors->first('role_id') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>অফিস লেভেল</label>
+                                    <select name="office_type" id="office_type" class="form-control">
+                                        <option value="">-বিভাগ নির্বাচন করুন-</option>
+                                        @foreach ($office_types as $value)
+                                            <option value="{{ $value->id }}" {{ $value->id == $userManagement->office_type ? 'selected' : '' }}>
+                                                {{ $value->type_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" id="selectMinDiv" style="display: none;">
+                                <div class="form-group">
+                                    <label>মন্ত্রণালয়/বিভাগ</label>
+                                    <select name="ministry" id="ministry" class="form-control">
+                                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>
+                                        @foreach ($ministries as $value)
+                                            <option value="{{ $value->doptor_office_id }}" {{ $value->doptor_office_id == $userManagement->ministry ? 'selected' : '' }}>
+                                                {{ $value->office_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                            {{-- <div class="col-4">
-                        <div class="form-group">
-                          <label for="office_id" class=" form-control-label">অফিস <span class="text-danger">*</span></label>
-                          <select name="office_id" id="office_id" class="form-control-sm form-control">
-                           <option value="">-- নির্বাচন করুন --</option>
-                                   @foreach ($offices as $value)
-                                       <option value="{{ $value->id }}"{{ $value->id == $userManagement->office_id ? "selected" : ''}}> {{ $value->office_name_bn }}, {{ $value->upazila_name_bn }}, {{ $value->district_name_bn }} </option>
-                                   @endforeach
-                          </select>
-                          <span style="color: red">
-                           {{ $errors->first('office_id') }}
-                           </span>
-                        </div>
-                     </div> --}}
-
-                     <div class=" col-12 row">
-                            <div class="col-4 mb-4">
-                                <label>অফিস লেভেল</label>
-                                <select name="office_type" id="office_type" class="form-control">
-                                    <option value="">-বিভাগ নির্বাচন করুন-</option>3
-                                    @foreach ($office_types as $value)
-                                        <option
-                                            value="{{ $value->id }}"
-                                            {{ $value->id == $userManagement->office_type ? 'selected' : '' }}>
-                                            {{ $value->type_name_bn }}
-
-                                        </option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-4" style="display: none;">
+                                <div class="form-group">
+                                    <label>বিভাগীয় প্রশাসন</label>
+                                    <select name="divOffice" id="divOffice" class="form-control">
+                                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>
+                                        @foreach ($divOffices as $value)
+                                            <option value="{{ $value->doptor_office_id }}" {{ $value->doptor_office_id == $userManagement->div_office ? 'selected' : '' }}>
+                                                {{ $value->office_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-
-                            <div class="form-group mb-4 col-4" id="selectMinDiv" style="display: none;">
-                                <label>মন্ত্রণালয়/বিভাগ</label>
-                                <select name="ministry" id="ministry" class="form-control">
-                                    <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                                    @foreach ($ministries as $value)
-                                        <option
-                                            value="{{ $value->id }}"{{ $value->id == $userManagement->ministry ? 'selected' : '' }}>
-                                            {{ $value->office_name_bn }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>অফিস</label>
+                                    <select name="office_id" id="office_id" class="form-control-sm form-control">
+                                        @foreach ($offices as $value)
+                                            <option value="{{ $value->doptor_office_id }}" {{ $value->doptor_office_id == $userManagement->office_id ? 'selected' : '' }}>
+                                                {{ $value->office_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span style="color: red">{{ $errors->first('office_id') }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class=" col-12 row">
 
-                            <div class="form-group mb-4 col-4" id="selectDivisionDiv" style="">
-                                <label>বিভাগীয় প্রশাসন</label>
-
-
-                                <select name="divOffice" id="divOffice" class="form-control">
-                                    <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
-                                    @foreach ($divOffices as $value)
-                                        <option
-                                            value="{{ $value->id }}"{{ $value->id == $userManagement->div_office ? 'selected' : '' }}>
-                                            {{ $value->office_name_bn }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>নতুন পাসওয়ার্ড</label>
+                                    <input id="new_password" type="password" class="form-control" placeholder="নতুন পাসওয়ার্ড" name="new_password" autocomplete="current-password" onkeyup="CheckPassword(this)">
+                                    <span toggle="#password" class="fa fa-fw fa-eye field_icon toggle-password" onclick="myFunctionNew()"></span>
+                                    <div id="passwordValidation" style="color:red"></div>
+                                </div>
                             </div>
-
-
-                            <div class="form-group mb-4 col-4 ">
-                                <label>অফিস</label>
-                                <select name="office_id" id="office_id" class="form-control-sm form-control">
-                                    {{-- <option value="">-- নির্বাচন করুন --</option> --}}
-                                    @foreach ($offices as $value)
-                                        <option
-                                            value="{{ $value->doptor_office_id }}"{{ $value->doptor_office_id == $userManagement->office_id ? 'selected' : '' }}>
-                                            {{ $value->office_name_bn }} </option>
-                                    @endforeach
-                                </select>
-                                <span style="color: red">
-                                    {{ $errors->first('office_id') }}
-                                </span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>নতুন কনফার্ম পাসওয়ার্ড</label>
+                                    <input id="new_confirm_password" type="password" class="form-control" placeholder="নতুন কনফার্ম পাসওয়ার্ড" name="new_confirm_password" autocomplete="current-password">
+                                    <span toggle="#password" class="fa fa-fw fa-eye field_icon toggle-password" onclick="myFunctionConfirm()"></span>
+                                </div>
                             </div>
-
-
-
                         </div>
 
-                        <div class="col-lg-12 mb-5">
-                            <div class="form-group row">
-                                <div class="col-lg-6 mb-5">
-                                    <label class=" form-control-label">স্বাক্ষরের স্ক্যান কপি সংযুক্তি <span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-group">
-                                        <label></label>
-                                        <div></div>
-                                        <div class="custom-file">
-                                            <input type="file" name="signature" class="custom-file-input"
-                                                id="customFile" />
-                                            <label class="custom-file-label" for="customFile">ফাইল নির্বাচন করুন</label>
-                                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="form-control-label">স্বাক্ষরের স্ক্যান কপি সংযুক্তি <span class="text-danger">*</span></label>
+                                    <div class="custom-file">
+                                        <input type="file" name="signature" class="custom-file-input" id="customFile" />
+                                        <label class="custom-file-label" for="customFile">ফাইল নির্বাচন করুন</label>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mb-5">
-                                    <label class=" form-control-label">প্রোফাইল ইমেজ সংযুক্তি <span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-group">
-                                        <label></label>
-                                        <div></div>
-                                        <div class="custom-file">
-                                            <input type="file" name="pro_pic" class="custom-file-input"
-                                                id="customFile" />
-                                            <label class="custom-file-label" for="customFile">ফাইল নির্বাচন করুন</label>
-                                        </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="form-control-label">প্রোফাইল ইমেজ সংযুক্তি <span class="text-danger">*</span></label>
+                                    <div class="custom-file">
+                                        <input type="file" name="pro_pic" class="custom-file-input" id="customFile" />
+                                        <label class="custom-file-label" for="customFile">ফাইল নির্বাচন করুন</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </fieldset>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-lg-12 text-center">
-                                <button type="submit" class="btn btn-primary font-weight-bold mr-2">সংরক্ষণ করুন</button>
-                            </div>
-                        </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary font-weight-bold">সংরক্ষণ করুন</button>
                     </div>
-
+                </div>
             </form>
+
         </div>
     </div>
     <!--end::Card-->
@@ -271,228 +232,125 @@
     <!--end::Page Scripts-->
 
     <script type="text/javascript">
-        jQuery(document).ready(function() {
+      jQuery(document).ready(function() {
+    $('#ministry, #divOffice').select2();
 
-            $('#ministry').select2();
-            $('#divOffice').select2();
-            // $('#office_id').select2();
+    function toggleSelectDivs(officeType) {
+        console.log(officeType);
+        if (officeType == 2) {
+            $('#selectMinDiv').show();
+            $('#divOffice').hide();
+            $('#divOffice').val('');
+        } else if (officeType == 4) {
+            $('#divOffice').show();
+            $('#selectMinDiv').hide();
+            $('#ministry').val('');
+        } else {
+            $('#divOffice, #selectMinDiv').hide();
+            $('#ministry, #divOffice').val('');
+        }
+    }
+    jQuery(document).ready(function() {
+    const officeTypeValue = $('#office_type').val(); // Get the initial office type value
+    toggleSelectDivs(officeTypeValue); // Pass it to the toggle function
+});
 
+    jQuery('select[name="office_type"]').on('change', function() {
+        toggleSelectDivs($(this).val());
+    });
 
-            jQuery('select[name="office_type"]').on('change', function() {
-                var officeType = jQuery(this).val();
-                // alert(officeType);
-                if (officeType == 2) {
-                    $('#selectMinDiv').show();
-                    $('#selectDivisionDiv').hide();
-                    $('#divOffice').val('');
-                } else if (officeType == 4) {
-                    $('#selectDivisionDiv').show();
-                    $('#selectMinDiv').hide();
-                    $('#ministry').val('');
-                } else {
-                    $('#selectDivisionDiv').hide();
-                    $('#selectMinDiv').hide();
-                    $('#ministry').val('');
-                    $('#divOffice').val('');
-                }
-            });
+    const searchParams = new URLSearchParams(window.location.search);
+    toggleSelectDivs(searchParams.get('office_type'));
 
-
-            const searchParams = new URLSearchParams(window.location.search);
-            var officeType = searchParams.get('office_type')
-            if (officeType == 2) {
-                $('#selectMinDiv').show();
-                $('#selectDivisionDiv').hide();
-                $('#divOffice').val('');
-            } else if (officeType == 4) {
-                $('#selectDivisionDiv').show();
-                $('#selectMinDiv').hide();
-                $('#ministry').val('');
-
-            } else {
-                $('#ministry').val('');
-                $('#divOffice').val('');
-                $('#selectDivisionDiv').hide();
-                $('#selectMinDiv').hide();
-            }
-
-
-
-
-
-            //   console.log(searchParams.get('office_type')); // true
-
-
-            // Level Wise Office
-            jQuery('select[name="office_type"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
-            });
-
-            // Ministry Wise Office
-            jQuery('select[name="ministry"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
-            });
-
-
-            // DivisionOffice Wise Office
-            jQuery('select[name="divOffice"]').on('change', function() {
-                var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
-                if (dataID) {
-                    jQuery.ajax({
-                        url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            jQuery('select[name="office_id"]').html(
-                                '<div class="loadersmall"></div>');
-                            jQuery('select[name="office_id"]').html(
-                                '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                            jQuery.each(data, function(key, value) {
-                                jQuery('select[name="office_id"]').append(
-                                    '<option value="' + key +
-                                    '">' + value + '</option>');
-                                //
-                            });
-                            jQuery('.loadersmall').remove();
-                        }
-                    });
-                } else {
-                    $('select[name="office_id"]').empty();
-                }
-            });
-
-            var officeTypeID = $('#office_type').find(":selected").val();
-
-            if (officeTypeID !== "undefined") {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentoffice/' + officeTypeID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-
-                        // jQuery('select[name="office_id"]').html(
-                        //     '<div class="loadersmall"></div>');
-                        // jQuery('select[name="office_id"]').html(
-                        //     '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
+    function loadOfficeData(url, targetSelect, selectedID) {
+        $(targetSelect).after('<div class="loadersmall"></div>');
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                $(targetSelect).html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+                $.each(data, function(key, value) {
+                    let selected = key == selectedID ? 'selected' : '';
+                    $(targetSelect).append(`<option value="${key}" ${selected}>${value}</option>`);
                 });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+                $('.loadersmall').remove();
+            },
+            error: function() {
+                $('.loadersmall').remove();
             }
-            console.log(minId);
-            if (minId !== 0) {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + minId,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="office_id"]').html(
-                            '<div class="loadersmall"></div>');
-                        jQuery('select[name="office_id"]').html(
-                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
-            }
-
-            if (dicOfficeID !== 0) {
-                jQuery.ajax({
-                    url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dicOfficeID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery('select[name="office_id"]').html(
-                            '<div class="loadersmall"></div>');
-                        jQuery('select[name="office_id"]').html(
-                            '<option value="">-- অফিস নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            if (officeID == key) {
-                                var selected = 'selected';
-                            } else {
-                                var selected = ' ';
-                            }
-                            jQuery('select[name="office_id"]').append(
-                                '<option value="' + key +
-                                '"' + selected + '>' + value + '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $('select[name="office_id"]').empty();
-                jQuery('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
-            }
-
         });
+    }
+
+    jQuery('select[name="office_type"]').on('change', function() {
+        let dataID = $(this).val();
+        if (dataID) loadOfficeData(`/cabinet/office/dropdownlist/getdependentoffice/${dataID}`, 'select[name="office_id"]');
+        else $('select[name="office_id"]').empty();
+    });
+
+    jQuery('select[name="ministry"], select[name="divOffice"]').on('change', function() {
+        let dataID = $(this).val();
+        if (dataID) loadOfficeData(`/cabinet/office/dropdownlist/getdependentchildoffice/${dataID}`, 'select[name="office_id"]');
+        else $('select[name="office_id"]').empty();
+    });
+
+    if (typeof officeTypeID !== "undefined") {
+        loadOfficeData(`/cabinet/office/dropdownlist/getdependentoffice/${officeTypeID}`, 'select[name="office_id"]', officeID);
+    }
+    if (minId) loadOfficeData(`/cabinet/office/dropdownlist/getdependentchildoffice/${minId}`, 'select[name="office_id"]', officeID);
+    if (dicOfficeID) loadOfficeData(`/cabinet/office/dropdownlist/getdependentchildoffice/${dicOfficeID}`, 'select[name="office_id"]', officeID);
+});
+
+
+
+        // for password vallidation
+        function CheckPassword(inputtxt) {
+            var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,20}$/;
+            var message = [];
+
+            if (!inputtxt.value.match(passw)) {
+                if (!inputtxt.value.match(/^(?=.*\d)/)) {
+                    message.push("কমপক্ষে একটি সংখ্যাসূচক থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[a-z])/)) {
+                    message.push("কমপক্ষে একটি ছোট হাতের অক্ষর থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[A-Z])/)) {
+                    message.push("কমপক্ষে একটি বড় হাতের অক্ষর থাকতে হবে");
+                }
+                if (!inputtxt.value.match(/^(?=.*[^a-zA-Z0-9])/)) {
+                    message.push("কমপক্ষে একটি বিশেষ ক্যারেক্টার থাকতে হবে");
+                }
+                if (inputtxt.value.length < 8 || inputtxt.value.length > 20) {
+                    message.push("পাসওয়ার্ডের দৈর্ঘ্য 8 থেকে 20 অক্ষরের মধ্যে হওয়া উচিত");
+                }
+
+                $("#passwordValidation").html(message.join(', <br>'));
+                return false;
+            } else {
+                $("#passwordValidation").html("");
+                return true;
+            }
+        }
+
+
+
+        function myFunctionNew() {
+            var x = document.getElementById("new_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        function myFunctionConfirm() {
+            var x = document.getElementById("new_confirm_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
     </script>
 @endsection

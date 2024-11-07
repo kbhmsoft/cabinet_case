@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Rules\MatchOldPassword;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Validator,Redirect,Response;
-
+use Redirect;
+use Response;
 
 class MyprofileController extends Controller
 {
@@ -24,19 +23,19 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $userManagement = DB::table('users')
-                        ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-                        ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
-                        ->leftJoin('office', 'users.office_id', '=', 'office.id')
-                        ->leftJoin('district', 'office.district_id', '=', 'district.id')
-                        ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-                        ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn',
-                            'district.district_name_bn', 'upazila.upazila_name_bn')
-                        ->where('users.id',$user_id)
-                        ->get()->first();
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->leftJoin('office', 'users.office_id', '=', 'office.id')
+            ->leftJoin('district', 'office.district_id', '=', 'district.id')
+            ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
+            ->select('users.*', 'roles.name', 'gov_case_office.office_name_bn',
+                'district.district_name_bn', 'upazila.upazila_name_bn')
+            ->where('users.id', $user_id)
+            ->get()->first();
         $page_title = "মাই প্রোফাইল";
-                  // dd($userManagement);
+        // dd($userManagement);
 
-        return view('myprofile.show', compact('userManagement','page_title'));
+        return view('myprofile.show', compact('userManagement', 'page_title'));
     }
 
     /**
@@ -49,10 +48,10 @@ class MyprofileController extends Controller
         $user_id = Auth::user()->id;
 
         $data['userManagement'] = DB::table('users')
-                        ->join('roles', 'users.role_id', '=', 'roles.id')
-                        ->select('users.*', 'roles.name')
-                        ->where('users.id',$user_id)
-                        ->get()->first();
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->select('users.*', 'roles.name')
+            ->where('users.id', $user_id)
+            ->get()->first();
 
         // $data['roles'] = DB::table('roles')
         // ->select('id', 'name')
@@ -64,7 +63,7 @@ class MyprofileController extends Controller
         // ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
         // ->get();
         $data['page_title'] = 'প্রোফাইল ইনফর্মেশন সংশোধন ফরম';
-    //    return $data;
+        //    return $data;
         return view('myprofile.edit')->with($data);
     }
 
@@ -83,11 +82,11 @@ class MyprofileController extends Controller
             'email' => 'required|unique:users,email,' . $user_id,
             'mobile_no' => 'required|unique:users,mobile_no,' . $user_id,
         ],
-        [
-            'username.required' => 'পুরো নাম লিখুন',
-            'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
-            'email.required' => 'ইমেইল লিখুন',
-        ]);
+            [
+                'username.required' => 'পুরো নাম লিখুন',
+                'email.unique' => 'ইমেইলটি ইতিমধ্যে সিস্টেমে বিদ্যমান রয়েছে',
+                'email.required' => 'ইমেইল লিখুন',
+            ]);
 
         DB::table('users')
             ->where('id', $user_id)
@@ -101,41 +100,37 @@ class MyprofileController extends Controller
             ->with('success', 'প্রোফাইলের বেসিক ইনফরমেশন সফলভাবে আপডেট হয়েছে');
     }
 
-
-
-
     public function imageUpload()
     {
         $user_id = Auth::user()->id;
 
         $data['userManagement'] = DB::table('users')
-                                ->select('users.*')
-                                ->where('users.id',$user_id)
-                                ->get()->first();
+            ->select('users.*')
+            ->where('users.id', $user_id)
+            ->get()->first();
         return view('myprofile.imageUpload')->with($data);
     }
 
-     public function image_update(Request $request)
+    public function image_update(Request $request)
     {
         $user_id = Auth::user()->id;
         $request->validate([
             'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if($file = $request->file('image')){
-            $profilePic = $user_id.'_'.time().'.'.$request->image->extension();
+        if ($file = $request->file('image')) {
+            $profilePic = $user_id . '_' . time() . '.' . $request->image->extension();
             $request->image->move(public_path('uploads/profile'), $profilePic);
-        }else{
-            $profilePic = NULL;
+        } else {
+            $profilePic = null;
         }
 
         DB::table('users')
             ->where('id', $user_id)
-            ->update(['profile_pic' =>$profilePic,]);
+            ->update(['profile_pic' => $profilePic]);
         return redirect()->route('my-profile.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');
     }
-
 
     public function change_password()
     {
@@ -143,8 +138,7 @@ class MyprofileController extends Controller
         return view('myprofile.changePassword');
     }
 
-
-     public function update_password(Request $request)
+    public function update_password(Request $request)
     {
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
@@ -152,14 +146,11 @@ class MyprofileController extends Controller
             'new_confirm_password' => ['same:new_password'],
         ]);
 
-        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
+        User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
 
-         return redirect()->route('my-profile.index')
+        return redirect()->route('my-profile.index')
             ->with('success', 'পাসওয়ার্ড সফলভাবে হালনাগাদ করা হয়েছে');
-
-        // dd('Password change successfully.');
     }
-
 
     public function store(Request $request)
     {
