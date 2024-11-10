@@ -115,8 +115,8 @@
                         {{-- start মামলার সাধারণ তথ্য --}}
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
                             aria-labelledby="home-tab">
-                            <form id="administrativeTribrunalGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"
-                                enctype="multipart/form-data">
+                            <form id="administrativeTribrunalGeneralInfoForm" action="javascript:void(0)" class="form"
+                                method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -128,8 +128,8 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div id="CaseCategorDiv">
-                                                        <input type="text" name="case_category_type" class="form-control"
-                                                            value="এটি" readonly/>
+                                                        <input type="text" name="case_category_type" id="case_category_type" class="form-control"
+                                                            value="এটি" readonly />
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
                                                     </div>
@@ -362,7 +362,43 @@
             $('#select2Dropdown').select2();
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#case_year, #case_no, #case_category_type').change(function() {
+                var caseNo = $('#case_no').val();
+                var caseYear = $('#case_year').val();
+                var caseCategory = $('#case_category_type').val();
+
+                if (caseNo && caseYear && caseCategory) {
+                    $.ajax({
+                        url: "{{ route('cabinet.case.administrative-check-case-no') }}",
+                        type: 'POST',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'case_no': caseNo,
+                            'case_year': caseYear,
+                            'case_category_type': caseCategory
+                        },
+                        success: function(data) {
+                            if (data.exists) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+                                    html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                        data.officeName +
+                                        '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে ইতিমধ্যে এন্ট্রি করা হয়েছে!</strong>',
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
     @include('gov_case.administritive_tribrunal.create_new_administritive_tribrunal_js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
 @endsection

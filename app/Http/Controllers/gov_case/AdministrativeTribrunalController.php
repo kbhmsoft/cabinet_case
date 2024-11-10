@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\gov_case;
 
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\AdministrativeTribrunalAdalat;
+use App\Models\gov_case\AdministrativeTribrunalBibadi;
+use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Models\gov_case\GovCaseOffice;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\HighcourtAdalat;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\AdministrativeTribrunalAdalat;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
 use App\Repositories\gov_case\AdministrativeTribrunalRepository;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdministrativeTribrunalController extends Controller
 {
@@ -107,7 +107,6 @@ class AdministrativeTribrunalController extends Controller
 
         $data['cases'] = $query->paginate(10);
 
-
         // $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
         $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনালে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
@@ -124,7 +123,7 @@ class AdministrativeTribrunalController extends Controller
         $data['ministrys'] = GovCaseOffice::get();
         $data['mainRespondentMinistrys'] = GovCaseOffice::where('doptor_office_id', $officeID)->get();
 
-        $data['administrativeTribrunalAdalat'] = AdministrativeTribrunalAdalat::where('status',1)->get();
+        $data['administrativeTribrunalAdalat'] = AdministrativeTribrunalAdalat::where('status', 1)->get();
 
         $data['concern_person_desig'] = Role::where('id', 45)->get();
 
@@ -137,7 +136,6 @@ class AdministrativeTribrunalController extends Controller
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
 
-
         $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনাল মামলা এন্ট্রি ';
 
         return view('gov_case.administritive_tribrunal.create_new_administritive_tribrunal')->with($data);
@@ -145,11 +143,13 @@ class AdministrativeTribrunalController extends Controller
 
     public function administrativeTribrunalGeneralInfo(Request $request)
     {
-        //    dd($request->all());
+        if ($request->input('case_category_type') == "এটি") {
+            $caseCategory = 1;
+        }
+
         $exists = AdministrativeTribrunalCaseRegister::where('case_no', $request->input('case_no'))
             ->where('case_year', $request->input('case_year'))
-            ->where('case_category_type', $request->input('case_category_type'))
-        // ->whereNull('deleted_at')
+            ->where('case_category_type', $caseCategory)
             ->exists();
 
         if ($exists) {
@@ -198,7 +198,6 @@ class AdministrativeTribrunalController extends Controller
 
     }
 
-
     public function administrative_tribrunal_case_delete($id)
     {
 
@@ -209,7 +208,41 @@ class AdministrativeTribrunalController extends Controller
         $data = AdministrativeTribrunalCaseRegister::findOrFail($id);
         $data->delete();
 
-
         return redirect()->back()->with('message', 'WORKS!');
+    }
+
+    public function checkCaseNo(Request $request)
+    {
+        $caseNo = $request->input('case_no');
+        $caseYear = $request->input('case_year');
+        if ($request->input('case_category_type') == "এটি") {
+            $caseCategory = 1;
+        }
+      
+        // Use a single query to check for the existence of the case
+        $exists = AdministrativeTribrunalCaseRegister::where('case_no', $caseNo)
+            ->where('case_year', $caseYear)
+            ->where('case_category_type', $caseCategory)
+            ->exists();
+
+        if ($exists) {
+            // Use a single query to fetch case details
+            $case = AdministrativeTribrunalCaseRegister::where('case_no', $caseNo)
+                ->where('case_year', $caseYear)
+                ->where('case_category_type', $caseCategory)
+                ->whereNull('deleted_at')
+                ->first();
+
+            $officeId = AdministrativeTribrunalBibadi::where('gov_case_id', $case->id)
+                ->where('is_main_bibadi', 1)
+                ->groupBy('gov_case_id')
+                ->first();
+
+            $officeName = GovCaseOffice::where('doptor_office_id', $officeId->respondent_id)->first();
+
+            return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
+        }
+
+        return response()->json(['exists' => false]);
     }
 }

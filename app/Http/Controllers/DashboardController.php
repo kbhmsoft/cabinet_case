@@ -163,7 +163,6 @@ class DashboardController extends Controller
             $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
             $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
 
-
             $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
             $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
 
@@ -1341,7 +1340,8 @@ class DashboardController extends Controller
         $roleID = userInfo()->role_id;
         // $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent', $ministry_id)->orwhere('id', $ministry_id)->paginate(10);
 
-        $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
+        $data['ministry_wise'] = DB::table('gov_case_office')
+            ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
 
         $arrayd = [];
         foreach ($data['ministry_wise'] as $key => $val) {

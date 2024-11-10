@@ -109,7 +109,6 @@ class Gov_ReportController extends Controller
                     ->whereIn('gov_case_office.doptor_office_id', $finalOfficeIds)
                     // ->orWhere('doptor_office_id', $dept_id)
                     ->get(['doptor_office_id', 'office_name_bn']);
-                    // dd($data['ministryWiseData']);
                 $data['ministryWiseData']->transform(function ($val) use ($data) {
                     $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
                     $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->doptor_office_id, $data)->count();

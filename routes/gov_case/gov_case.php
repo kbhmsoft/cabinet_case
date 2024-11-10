@@ -329,6 +329,8 @@ Route::middleware('prevent-back-history')->group(function () {
 
               /////////////////////   AdministrativeTribrunalController / Appeal... /////////////////////////
               Route::get('at_case_delete/{id}', [AdministrativeTribrunalController::class, 'administrative_tribrunal_case_delete'])->name('administrative_tribrunal_case_delete');
+              Route::post('administritive/check-case-no', [AdministrativeTribrunalController::class, 'checkCaseNo'])->name('administrative-check-case-no');
+              Route::post('appeal-administritive/check-case-no', [AppealAdministrativeTribrunalController::class, 'checkCaseNo'])->name('appeal-administrative-check-case-no');
 
               Route::get('administritiveTribrunalDetails/{id}', [AdministrativeTribrunalController::class, 'show'])->name('administritiveTribrunalDetails');
               Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
