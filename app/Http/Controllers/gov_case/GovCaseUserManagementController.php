@@ -50,7 +50,6 @@ class GovCaseUserManagementController extends Controller
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
 
-
         // Parent office and corresponding child office
         $childOfficeIds = [];
         $childOfficeQuery = DB::table('gov_case_office')
@@ -158,6 +157,7 @@ class GovCaseUserManagementController extends Controller
             $finalOfficeIds[] = $officeID;
             $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
         }
+        // dd($finalOfficeIds);
         $data['offices'] = DB::table('gov_case_office')->get();
         //Add Conditions
         if ($roleID == 27) {
@@ -167,7 +167,7 @@ class GovCaseUserManagementController extends Controller
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
                 ->whereNotIn('users.role_id', [42, 43])
                 ->where('users.is_gov', 1)
-                ->orderBy('users.office_id', 'ASC');
+                ->orderBy('users.office_id', 'DESC');
 
             // For Ministry Admin
         } else {
@@ -179,7 +179,7 @@ class GovCaseUserManagementController extends Controller
                 ->whereIn('users.office_id', $finalOfficeIds)
                 ->whereNotIn('users.role_id', [27, 42, 43])
                 ->where('users.is_gov', 1)
-                ->orderBy('users.office_id', 'ASC');
+                ->orderBy('users.office_id', 'DESC');
         }
 
         if (!empty($_GET['office_id'])) {
@@ -232,7 +232,6 @@ class GovCaseUserManagementController extends Controller
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
         }
 
-
         // Parent office and corresponding child office
         $childOfficeIds = [];
         $childOfficeQuery = DB::table('gov_case_office')
@@ -260,7 +259,7 @@ class GovCaseUserManagementController extends Controller
                 ->whereNotIn('users.role_id', [42, 43])
                 ->where('users.is_gov', 1)
                 ->whereNull('users.doptor_user_id') // Only include users where doptor_user_id is null
-                ->orderBy('users.office_id', 'ASC');
+                ->orderBy('users.office_id', 'DESC');
         } else {
             $query = DB::table('users')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -270,9 +269,8 @@ class GovCaseUserManagementController extends Controller
                 ->whereNotIn('users.role_id', [27, 42, 43])
                 ->where('users.is_gov', 1)
                 ->whereNull('users.doptor_user_id') // Only include users where doptor_user_id is null
-                ->orderBy('users.office_id', 'ASC');
+                ->orderBy('users.office_id', 'DESC');
         }
-
 
         if (!empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
@@ -328,7 +326,7 @@ class GovCaseUserManagementController extends Controller
                 ->get();
             $data['offices'] = DB::table('gov_case_office')
                 ->select('gov_case_office.*')
-                // ->where('level', 1)
+            // ->where('level', 1)
                 ->get();
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
         } elseif ($roleID == 29 || $roleID == 31) {
@@ -393,8 +391,6 @@ class GovCaseUserManagementController extends Controller
         $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')->whereNotIn('id', $role)->where('is_gov', 1)->orderBy('sort_order', 'ASC')->get();
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
-
-
 
         $data['ministries'] = DB::table('gov_case_office')
             ->select('gov_case_office.*')
@@ -477,7 +473,6 @@ class GovCaseUserManagementController extends Controller
         return redirect()->route('cabinet.user-management.index')->with('success', 'সাফল্যের সাথে সংযুক্তি সম্পন্ন হয়েছে');
     }
 
-
     /**
      * Display the specified resource.
      *
@@ -521,7 +516,7 @@ class GovCaseUserManagementController extends Controller
             ->get()->first();
         // dd($data['userManagement']);
         $data['roles'] = DB::table('roles')
-            ->select('id', 'name')
+            ->select('id', 'name','name_bn')
             ->get();
 
         $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
@@ -558,6 +553,8 @@ class GovCaseUserManagementController extends Controller
                 // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
                 // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
                 'signature' => 'max:10240',
+                'new_password' => ['nullable'],
+                'new_confirm_password' => ['nullable','same:new_password'],
             ],
             [
                 'name.required' => 'পুরো নাম লিখুন',
@@ -596,6 +593,7 @@ class GovCaseUserManagementController extends Controller
                 'email' => $request->email,
                 'role_id' => $request->role_id,
                 'office_id' => $request->office_id,
+                'password' => Hash::make($request->new_password),
             ]);
 
         $role = Role::where('id', $request->role_id)->first();
@@ -645,7 +643,7 @@ class GovCaseUserManagementController extends Controller
             ->join('gov_case_office', 'doptor_user_managements.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('doptor_user_managements.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
             ->where('doptor_user_managements.status', 1)
-            ->where('doptor_user_managements.user_role','!=', 42)
+            ->where('doptor_user_managements.user_role', '!=', 42)
             ->orderby('id', 'DESC');
 
         if (!empty($_GET['office_id'])) {

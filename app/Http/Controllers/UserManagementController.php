@@ -193,7 +193,10 @@ class UserManagementController extends Controller
             // 'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
             // 'mobile_no' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:users',
             'signature' => 'max:10240',
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
         ],
+
             [
                 'name.required' => 'পুরো নাম লিখুন',
                 // 'username.required' => 'ইউজার নাম লিখুন',
@@ -225,6 +228,7 @@ class UserManagementController extends Controller
                 'email' => $request->email,
                 'role_id' => $request->role_id,
                 'office_id' => $request->office_id,
+                'password' => Hash::make($request->new_password),
             ]);
         return redirect()->route('user-management.index')
             ->with('success', 'ইউজার ডাটা সফলভাবে আপডেট হয়েছে');
