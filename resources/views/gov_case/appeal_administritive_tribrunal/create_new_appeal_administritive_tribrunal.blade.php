@@ -128,7 +128,7 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div id="CaseCategorDiv">
-                                                        <input type="text" name="case_category_type" class="form-control"
+                                                        <input type="text" name="case_category_type" id="case_category_type" class="form-control"
                                                             value="এএটি" readonly/>
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
@@ -403,6 +403,44 @@
             $('#select2Dropdown').select2();
         });
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('#case_year, #case_no, #case_category_type').change(function() {
+            var caseNo = $('#case_no').val();
+            var caseYear = $('#case_year').val();
+            var caseCategory = $('#case_category_type').val();
+
+            if (caseNo && caseYear && caseCategory) {
+                $.ajax({
+                    url: "{{ route('cabinet.case.appeal-administrative-check-case-no') }}",
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'case_no': caseNo,
+                        'case_year': caseYear,
+                        'case_category_type': caseCategory
+                    },
+                    success: function(data) {
+                        if (data.exists) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                    data.officeName +
+                                    '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে ইতিমধ্যে এন্ট্রি করা হয়েছে!</strong>',
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
     @include('gov_case.appeal_administritive_tribrunal.create_new_appeal_administritive_tribrunal_js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 

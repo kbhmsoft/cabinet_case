@@ -1509,11 +1509,10 @@
                 "{{ route('cabinet.case.createApplicationForm', [':caseNo', ':caseYear', ':caseCategory']) }}";
 
             $('#case_year, #case_no, #case_category_type').change(function() {
-                var caseNo = $('#case_no').val(); // Get the case number
-                var caseYear = $('#case_year').val(); // Get the case year
-                var caseCategory = $('#case_category_type').val(); // Get the case category
+                var caseNo = $('#case_no').val();
+                var caseYear = $('#case_year').val();
+                var caseCategory = $('#case_category_type').val();
 
-                // Proceed with AJAX request only if all fields are filled
                 if (caseNo && caseYear && caseCategory) {
                     $.ajax({
                         url: "{{ route('cabinet.case.check-case-no') }}",
