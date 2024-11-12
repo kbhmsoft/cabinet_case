@@ -262,7 +262,7 @@
 
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
-                                                    <label>রিট পিটিশনারের নাম: <span class="text-danger">*</span></label>
+                                                    <label>পিটিশনারের নাম: <span class="text-danger">*</span></label>
                                                     <input type="text" name="writ_petitioner_name"
                                                         id="writ_petitioner_name" class="form-control form-control-sm"
                                                         required="required">
