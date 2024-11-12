@@ -83,6 +83,7 @@ class Gov_ReportController extends Controller
             $dept_id = $request->ministry;
 
             if ($office_type != null && $dept_id != null) {
+
                 $data['officeData'] = [$office_type, $dept_id];
                 $data['officeName'] = GovCaseOffice::where('doptor_office_id', $dept_id)->first()->office_name_bn;
 
@@ -94,19 +95,15 @@ class Gov_ReportController extends Controller
 
                 $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
 
-                $childOfficeIds = DB::table('gov_case_office')
-                    ->select('doptor_office_id')
-                    ->where('parent_office_id', $dept_id)
-                    ->pluck('doptor_office_id')
-                    ->toArray();
+                // Use the recursive function to get all nested child office IDs for the dept_id
+                $finalOfficeIds = $this->getAllChildOfficeIds([$dept_id]);
 
-                $dept_id = (int) $dept_id;
-
-                $finalOfficeIds = empty($childOfficeIds) ? [$dept_id] : array_merge([$dept_id], $childOfficeIds);
+                // Fetch all required office data for each office in the $finalOfficeIds array
                 $data['ministryWiseData'] = DB::table('gov_case_office')
                     ->whereIn('gov_case_office.doptor_office_id', $finalOfficeIds)
-                // ->orWhere('doptor_office_id', $dept_id)
                     ->get(['doptor_office_id', 'office_name_bn']);
+
+                // Transform the data with case counts for each office
                 $data['ministryWiseData']->transform(function ($val) use ($data) {
                     $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
                     $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($val->doptor_office_id, $data)->count();
@@ -120,6 +117,7 @@ class Gov_ReportController extends Controller
                     return $val;
                 });
 
+                // Generate the PDF view
                 $html = view('gov_report.pdf_num_ministry')->with($data);
                 $this->generatePDF($html);
             }
@@ -130,19 +128,12 @@ class Gov_ReportController extends Controller
                     ->whereIn('gov_case_office.level', [1, 3])
                     ->get();
 
-                $arrayd = [];
+                $data['ministry']->transform(function ($val) use ($data) {
+                    // Get all nested child office IDs for each ministry
+                    $allOfficeIds = $this->getAllChildOfficeIds([$val->doptor_office_id]);
 
-                foreach ($data['ministry'] as $key => $val) {
-
-                    $childOfficeIds = DB::table('gov_case_office')
-                        ->where('parent_office_id', $val->doptor_office_id)
-                        ->pluck('doptor_office_id')
-                        ->toArray();
-
-                    $allOfficeIds = array_merge([$val->doptor_office_id], $childOfficeIds);
                     $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                     $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
-                    // dd($val->prevUndoneCase);
                     $val->totalCase = $this->total_case_count_by_highCourt($allOfficeIds, $data)->count();
                     $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                     $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($allOfficeIds, $data)->count();
@@ -151,15 +142,16 @@ class Gov_ReportController extends Controller
                     $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                     $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
-                    array_push($arrayd, $val);
-                }
+                    return $val;
+                });
 
                 if ($office_type == null && $dept_id == null) {
-                    $data['ministryListData'] = $arrayd;
+                    $data['ministryListData'] = $data['ministry'];
                     $html = view('gov_report.pdf_num_ministry_list_data')->with($data);
                     $this->generatePDF($html);
                 }
             }
+
         }
 
         if ($request->btnsubmit == 'pdf_num_ministry_office_wise') {
@@ -207,6 +199,31 @@ class Gov_ReportController extends Controller
             $this->generatePDF($html);
         }
 
+    }
+
+    public function getAllChildOfficeIds($parentOfficeIds)
+    {
+        // Get direct child office IDs for the provided parent office IDs
+        $childOfficeIds = DB::table('gov_case_office')
+            ->whereIn('parent_office_id', $parentOfficeIds)
+            ->pluck('doptor_office_id')
+            ->toArray();
+
+        // If there are no child offices, return the input IDs as the base case
+        if (empty($childOfficeIds)) {
+            return $parentOfficeIds;
+        }
+
+        // Initialize allChildOfficeIds with the current level of child IDs
+        $allChildOfficeIds = $childOfficeIds;
+
+        // Recursively get all child offices for each child office ID
+        foreach ($childOfficeIds as $childId) {
+            $allChildOfficeIds = array_merge($allChildOfficeIds, $this->getAllChildOfficeIds([$childId]));
+        }
+
+        // Merge the initial parent IDs with all found child IDs
+        return array_merge($parentOfficeIds, $allChildOfficeIds);
     }
 
     public function case_count_by_dateBetween_highCourt($id, $data = null)
