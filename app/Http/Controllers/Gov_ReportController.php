@@ -143,6 +143,8 @@ class Gov_ReportController extends Controller
                     $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
                     return $val;
+                    // dd($allOfficeIds);
+
                 });
 
                 if ($office_type == null && $dept_id == null) {
@@ -222,8 +224,8 @@ class Gov_ReportController extends Controller
             $allChildOfficeIds = array_merge($allChildOfficeIds, $this->getAllChildOfficeIds([$childId]));
         }
 
-        // Merge the initial parent IDs with all found child IDs
-        return array_merge($parentOfficeIds, $allChildOfficeIds);
+        // Merge the initial parent IDs with all found child IDs and remove duplicates
+        return array_unique(array_merge($parentOfficeIds, $allChildOfficeIds));
     }
 
     public function case_count_by_dateBetween_highCourt($id, $data = null)
