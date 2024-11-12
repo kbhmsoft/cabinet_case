@@ -119,12 +119,12 @@ class AdalatAdministrativeTribrunalController extends Controller
      */
     public function edit($id)
     {
-        $data['adalatManagement'] = DB::table(' administrative_tribrunal_adalats')
+        $data['adalatManagement'] = DB::table('administrative_tribrunal_adalats')
             ->where('administrative_tribrunal_adalats.id', $id)
             ->get()->first();
 
         $data['page_title'] = 'আদালতের তথ্য সংশোধন ফরম';
-        return view('gov_case.administrative-tribunal-maintain.edit')->with($data);
+        return view('gov_case.administrative_tribrunal_adalat_manage.edit')->with($data);
     }
 
     /**
