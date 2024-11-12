@@ -1264,6 +1264,8 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
+
+
         $exists = AppealGovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -1278,6 +1280,7 @@ class AppealGovCaseRegisterController extends Controller
             try {
 
                 $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
+                // dd([$request->all(),$caseId]);
                 AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
                 AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
                 if ($request->file_type && $_FILES["file_name"]['name']) {
