@@ -69,7 +69,6 @@ class Gov_ReportController extends Controller
         //=========================Ministry Wise Case Report========================//
 
         if ($request->btnsubmit == 'pdf_num_office_wise') {
-
             $data['page_title'] = 'সরকারি মামলার তালিকা';
             if ($request->date_start || $request->date_end) {
                 $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
@@ -104,10 +103,9 @@ class Gov_ReportController extends Controller
                 $dept_id = (int) $dept_id;
 
                 $finalOfficeIds = empty($childOfficeIds) ? [$dept_id] : array_merge([$dept_id], $childOfficeIds);
-
                 $data['ministryWiseData'] = DB::table('gov_case_office')
                     ->whereIn('gov_case_office.doptor_office_id', $finalOfficeIds)
-                    // ->orWhere('doptor_office_id', $dept_id)
+                // ->orWhere('doptor_office_id', $dept_id)
                     ->get(['doptor_office_id', 'office_name_bn']);
                 $data['ministryWiseData']->transform(function ($val) use ($data) {
                     $val->dateBetween = $this->case_count_by_dateBetween_highCourt($val->doptor_office_id, $data)->count();
@@ -144,6 +142,7 @@ class Gov_ReportController extends Controller
                     $allOfficeIds = array_merge([$val->doptor_office_id], $childOfficeIds);
                     $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                     $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
+                    // dd($val->prevUndoneCase);
                     $val->totalCase = $this->total_case_count_by_highCourt($allOfficeIds, $data)->count();
                     $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                     $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($allOfficeIds, $data)->count();
@@ -167,7 +166,7 @@ class Gov_ReportController extends Controller
 
             $data['page_title'] = 'সরকারি মামলার তালিকা';
 
-            if($request->date_start || $request->date_end) {
+            if ($request->date_start || $request->date_end) {
                 $data['date_start'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_start)));
                 $data['date_end'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_end)));
             } else {
@@ -239,7 +238,6 @@ class Gov_ReportController extends Controller
             ->where('deleted_at', null)
             ->whereHas('bibadis', function ($query) use ($id) {
                 $idArray = is_array($id) ? $id : [$id];
-
                 $query->whereIn('respondent_id', $idArray)
                     ->where('is_main_bibadi', 1)
                     ->groupBy('gov_case_id');
@@ -250,8 +248,10 @@ class Gov_ReportController extends Controller
     }
     public function total_case_count_by_highCourt($id, $data = null)
     {
-        $from = $data['date_start'];
-        $to = $data['date_end'];
+        // Get the from and to dates if available, else set them to null
+        $from = $data['date_start'] ?? null;
+        $to = $data['date_end'] ?? null;
+
         $query = GovCaseRegister::orderby('id', 'DESC')
             ->where('deleted_at', null)
             ->whereHas('bibadis', function ($query) use ($id) {
@@ -259,10 +259,14 @@ class Gov_ReportController extends Controller
                 $query->whereIn('respondent_id', $idArray)
                     ->where('is_main_bibadi', 1)
                     ->groupBy('gov_case_id');
-            })
-            ->get();
+            });
 
-        return $query;
+        // Apply the date range filter if both $from and $to are provided
+        // if ($from && $to) {
+        //     $query->whereBetween('date_issuing_rule_nishi', [$from, $to]);
+        // }
+
+        return $query->get();
     }
 
     public function done_case_count_by_dateBetween_highCourt($id, $data = null)
