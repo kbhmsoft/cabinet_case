@@ -115,14 +115,14 @@
                                         </a>
                                     </li>
 
-                                    {{-- <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/complete']) ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ request()->is(['cabinet/case/attorney/highcourt/complete']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.attorney.highcourt.complete') }}"
                                             class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 @endif
 
                                 @if ($roleID != 33 && $roleID != 36 && $roleID != 14 && $roleID != 15)
@@ -140,13 +140,13 @@
                                             <span class="menu-text font-weight-bolder">চলমান মামলার তালিকা</span>
                                         </a>
                                     </li>
-                                    {{-- <li class="menu-item {{ request()->is(['cabinet/case/highcourt/complete']) ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ request()->is(['cabinet/case/highcourt/complete']) ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('cabinet.case.highcourt.complete') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                             <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 @endif
                             </ul>
 
@@ -203,14 +203,14 @@
                                             </a>
                                         </li>
 
-                                        {{-- <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
+                                        <li class="menu-item {{ request()->is(['cabinet/case/appellateDivision/complete']) ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('cabinet.case.appellateDivision.complete') }}"
                                                 class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text font-weight-bolder">নিষ্পত্তিকৃত মামলার তালিকা</span>
                                             </a>
-                                        </li> --}}
+                                        </li>
                                     @endif
 
                                     @if ($roleID == 33 || $roleID == 36 || $roleID == 14 || $roleID == 15)
