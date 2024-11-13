@@ -123,29 +123,27 @@ class Gov_ReportController extends Controller
             }
 
             if ($office_type == null && $dept_id == null) {
-
                 $data['ministry'] = DB::table('gov_case_office')
-                    ->whereIn('gov_case_office.level', [1, 3])
-                    ->get();
+                    ->whereIn('gov_case_office.level', [1])
+                    ->get()
+                    ->map(function ($val) use ($data) {
+                        // Get all nested child office IDs for each ministry
+                        $allOfficeIds = $this->getAllChildOfficeIds([$val->doptor_office_id]);
 
-                $data['ministry']->transform(function ($val) use ($data) {
-                    // Get all nested child office IDs for each ministry
-                    $allOfficeIds = $this->getAllChildOfficeIds([$val->doptor_office_id]);
+                        // // Fetch counts using the office IDs
+                        $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+                        $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
+                        $val->totalCase = $this->total_case_count_by_highCourt($allOfficeIds, $data)->count();
+                        $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+                        $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($allOfficeIds, $data)->count();
+                        $val->againstGov = $this->done_against_gov_case_count_highCourt($allOfficeIds, $data)->count();
+                        $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($allOfficeIds, $data);
+                        $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+                        $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
-                    $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
-                    $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
-                    $val->totalCase = $this->total_case_count_by_highCourt($allOfficeIds, $data)->count();
-                    $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
-                    $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($allOfficeIds, $data)->count();
-                    $val->againstGov = $this->done_against_gov_case_count_highCourt($allOfficeIds, $data)->count();
-                    $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($allOfficeIds, $data);
-                    $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
-                    $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
-
-                    return $val;
-                    // dd($allOfficeIds);
-
-                });
+                        return $val;
+                        // dd($allOfficeIds);
+                    });
 
                 if ($office_type == null && $dept_id == null) {
                     $data['ministryListData'] = $data['ministry'];
@@ -170,16 +168,12 @@ class Gov_ReportController extends Controller
 
             $officeID = Auth::user()->office_id;
 
-            $childOfficeIds = DB::table('gov_case_office')
-                ->select('doptor_office_id', 'parent_office_id')
-                ->where('parent_office_id', $officeID)
-                ->pluck('doptor_office_id')
-                ->toArray();
 
-            $finalOfficeIds = empty($childOfficeIds) ? [$officeID] : array_merge([$officeID], $childOfficeIds);
+            $finalOfficeIds = $this->getAllChildOfficeIds([$officeID]);
 
+            // Fetch all required office data for each office in the $finalOfficeIds array
             $data['ministryWiseData'] = DB::table('gov_case_office')
-                ->orWhereIn('doptor_office_id', $finalOfficeIds)
+                ->whereIn('gov_case_office.doptor_office_id', $finalOfficeIds)
                 ->get(['doptor_office_id', 'office_name_bn']);
 
             $data['ministryWiseData']->transform(function ($val) use ($data) {
@@ -205,26 +199,21 @@ class Gov_ReportController extends Controller
 
     public function getAllChildOfficeIds($parentOfficeIds)
     {
-        // Get direct child office IDs for the provided parent office IDs
         $childOfficeIds = DB::table('gov_case_office')
             ->whereIn('parent_office_id', $parentOfficeIds)
             ->pluck('doptor_office_id')
             ->toArray();
 
-        // If there are no child offices, return the input IDs as the base case
         if (empty($childOfficeIds)) {
             return $parentOfficeIds;
         }
 
-        // Initialize allChildOfficeIds with the current level of child IDs
         $allChildOfficeIds = $childOfficeIds;
 
-        // Recursively get all child offices for each child office ID
         foreach ($childOfficeIds as $childId) {
             $allChildOfficeIds = array_merge($allChildOfficeIds, $this->getAllChildOfficeIds([$childId]));
         }
 
-        // Merge the initial parent IDs with all found child IDs and remove duplicates
         return array_unique(array_merge($parentOfficeIds, $allChildOfficeIds));
     }
 
