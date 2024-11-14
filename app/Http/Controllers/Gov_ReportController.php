@@ -141,7 +141,7 @@ class Gov_ReportController extends Controller
                         $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
                         return $val;
-                       
+
                     });
 
                 if ($office_type == null && $dept_id == null) {
@@ -337,7 +337,7 @@ class Gov_ReportController extends Controller
         $query = AppealGovCaseRegister::whereBetween('case_entry_date', [$from, $to])
             ->where('deleted_at', null)
             ->orderby('id', 'DESC')
-            ->whereIn('appeal_office_id', $id)
+            ->whereIn('created_by_office', $id)
             ->get();
 
         return $query;
@@ -350,7 +350,7 @@ class Gov_ReportController extends Controller
         $query = AppealGovCaseRegister::whereBetween('case_entry_date', [$from, $to])
             ->where('deleted_at', null)
             ->orderby('id', 'DESC')
-            ->whereIn('appeal_office_id', [$id])
+            ->whereIn('created_by_office', [$id])
             ->get();
 
         return $query;
