@@ -95,9 +95,8 @@ class Gov_ReportController extends Controller
 
                 $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
 
-                // Use the recursive function to get all nested child office IDs for the dept_id
-                $finalOfficeIds = $this->getAllChildOfficeIds([$dept_id]);
 
+                $finalOfficeIds = $this->getTwoLevelOfficeIds([$dept_id]);
                 // Fetch all required office data for each office in the $finalOfficeIds array
                 $data['ministryWiseData'] = DB::table('gov_case_office')
                     ->whereIn('gov_case_office.doptor_office_id', $finalOfficeIds)
@@ -128,7 +127,7 @@ class Gov_ReportController extends Controller
                     ->get()
                     ->map(function ($val) use ($data) {
                         // Get all nested child office IDs for each ministry
-                        $allOfficeIds = $this->getAllChildOfficeIds([$val->doptor_office_id]);
+                        $allOfficeIds = $this->getTwoLevelOfficeIds([$val->doptor_office_id]);
 
                         // // Fetch counts using the office IDs
                         $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
@@ -142,7 +141,7 @@ class Gov_ReportController extends Controller
                         $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
                         return $val;
-                        // dd($allOfficeIds);
+                       
                     });
 
                 if ($office_type == null && $dept_id == null) {
@@ -167,9 +166,13 @@ class Gov_ReportController extends Controller
             }
 
             $officeID = Auth::user()->office_id;
-
-
-            $finalOfficeIds = $this->getAllChildOfficeIds([$officeID]);
+            $roleID = Auth::user()->role_id;
+            if ($roleID == 29 || $roleID == 31) {
+                $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
+            }
+            if ($roleID == 32 || $roleID == 41) {
+                $finalOfficeIds = [$officeID];
+            }
 
             // Fetch all required office data for each office in the $finalOfficeIds array
             $data['ministryWiseData'] = DB::table('gov_case_office')
@@ -216,6 +219,35 @@ class Gov_ReportController extends Controller
 
         return array_unique(array_merge($parentOfficeIds, $allChildOfficeIds));
     }
+
+    public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
+    {
+        $allOfficeIds = $parentOfficeIds;
+        $currentLevelIds = $parentOfficeIds;
+        $level = 1;
+        while ($level <= $maxLevels) {
+            // Get the child offices for the current level
+            $childOfficeIds = DB::table('gov_case_office')
+                ->whereIn('parent_office_id', $currentLevelIds)
+                ->pluck('doptor_office_id')
+                ->toArray();
+
+            if (empty($childOfficeIds)) {
+                break;
+            }
+
+            $allOfficeIds = array_merge($allOfficeIds, $childOfficeIds);
+
+            // Set up the child IDs as the current level for the next iteration
+            $currentLevelIds = $childOfficeIds;
+            $level++;
+        }
+
+        return array_unique($allOfficeIds);
+    }
+
+
+
 
     public function case_count_by_dateBetween_highCourt($id, $data = null)
     {

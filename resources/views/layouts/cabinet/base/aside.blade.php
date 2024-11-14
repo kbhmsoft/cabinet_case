@@ -6,13 +6,9 @@
             <!-- <img alt="Logo" src="media/logos/logo-light.png" /> -->
             <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
                 class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" />
-            <!-- <span style="font-weight: bold; font-size: 25px; color: white;">Civil Suit</span> -->
-            {{-- <img src="{{ asset('uploads/IconeSCMS/logo.png') }}" alt width="200" height="50"
-                class="d-inline-block align-text-top p-0 m-0"> --}}
+       
 
         </a>
-        <!--end::Logo-->
-        <!--begin::Toggle-->
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
             <span class="svg-icon svg-icon svg-icon-xl">
                 <!--begin::Svg Icon | path:media/svg/icons/Navigation/Angle-double-left.svg-->

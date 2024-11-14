@@ -223,7 +223,9 @@
                             <th scope="row">মামলার ক্যাটেগরি</th>
                             @php
                                 // Find the matched category based on case_category_id
-                                $matchedCategory = $GovCaseDivisionCategory->where('id', $case->case_category_id)->first();
+                                $matchedCategory = $GovCaseDivisionCategory
+                                    ->where('id', $case->case_category_id)
+                                    ->first();
                             @endphp
                             <td>
                                 @if ($matchedCategory)
@@ -238,7 +240,9 @@
                             <th scope="row">মামলার শ্রেণী/কেস-টাইপ</th>
                             @php
                                 // Find the matched category based on case_type_id
-                                $matchedDivisionCategory = $GovCaseDivisionCategoryType->where('id', $case->case_type_id)->first();
+                                $matchedDivisionCategory = $GovCaseDivisionCategoryType
+                                    ->where('id', $case->case_type_id)
+                                    ->first();
                             @endphp
                             <td>
                                 @if ($matchedDivisionCategory)
@@ -261,7 +265,9 @@
                             <th scope="row">সংশ্লিষ্ট আইন কর্মকর্তা</th>
                             @php
                                 // Find the matched category based on concern_person_designation
-                                $matchedConcernPerson = $concern_person_desig->where('id', $case->concern_person_designation)->first();
+                                $matchedConcernPerson = $concern_person_desig
+                                    ->where('id', $case->concern_person_designation)
+                                    ->first();
                             @endphp
                             <td>
                                 @if ($matchedConcernPerson)
@@ -333,17 +339,17 @@
                         <td class="tg-nluh">{{ $case->comments ?? '-' }}</td>
                     </tr>
                     @if (!empty($case->postponed_order))
-                    <tr>
-                        <th scope="row">স্থগিতাদেশ</th>
-                        <td>
-                            @if ($case->postponed_order == '1')
-                                আছে
-                            @elseif($case->postponed_order == '0')
-                                নেই
-                            @endif
-                        </td>
-                    </tr>
-                @endif
+                        <tr>
+                            <th scope="row">স্থগিতাদেশ</th>
+                            <td>
+                                @if ($case->postponed_order == '1')
+                                    আছে
+                                @elseif($case->postponed_order == '0')
+                                    নেই
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
                     {{-- @if (!empty($info->lost_reason))
                         <tr>
                             <th class="tg-19u4">পরাজয়ের কারণ</th>
@@ -388,7 +394,7 @@
             </table>
         </div>
         <div class="priview-demand">
-            <h4 class="font-weight-bolder">বাদীর বিবরণ</h4>
+            <h4 class="font-weight-bolder">পিটিশনারের বিবরণ</h4>
             <table class="table table-hover table-bordered report">
                 <thead class="headding">
                     <tr>
@@ -398,20 +404,20 @@
                     </tr>
                 <tbody>
                     @php $k = 1; @endphp
-                        @if($caseBadi->name)
+                    @if ($caseBadi->name)
                         <tr>
                             <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                            <td class="tg-nluh">{{ $caseBadi->name }}</td>
-                            <td class="tg-nluh">{{ $caseBadi->address ?? '-'}}</td>
+                            <td class="tg-nluh text-center">{{ $caseBadi->name }}</td>
+                            <td class="tg-nluh text-center">{{ $caseBadi->address ?? '-' }}</td>
                         </tr>
                         @php $k++; @endphp
-                         @endif
+                    @endif
                 </tbody>
                 </thead>
             </table>
         </div>
         <div class="priview-demand">
-            <h4 class="font-weight-bolder">বিবাদীর বিবরণ</h4>
+            <h4 class="font-weight-bolder">রেসপন্ডেন্ট বিবরণ</h4>
             <table class="table table-hover table-bordered report">
                 <thead class="headding">
                     <tr>
@@ -424,8 +430,9 @@
                     @foreach ($caseBibadi as $bibadi)
                         <tr>
                             <td class="tg-nluh">{{ en2bn($k) }}.</td>
-                            <td class="tg-nluh">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                            <td class="tg-nluh">{{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}
+                            <td class="tg-nluh text-center">{{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                            <td class="tg-nluh text-center">
+                                {{ $bibadi->is_main_bibadi == 1 ? 'মূল বিবাদী' : 'অন্যান্য বিবাদী' }}
                             </td>
                         </tr>
                         @php $k++; @endphp
