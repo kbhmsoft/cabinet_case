@@ -95,7 +95,6 @@ class Gov_ReportController extends Controller
 
                 $data['page_title'] = ' এর সরকারি স্বার্থ সংশ্লিষ্ট মামলার রিপোর্ট';
 
-
                 $finalOfficeIds = $this->getTwoLevelOfficeIds([$dept_id]);
                 // Fetch all required office data for each office in the $finalOfficeIds array
                 $data['ministryWiseData'] = DB::table('gov_case_office')
@@ -167,11 +166,17 @@ class Gov_ReportController extends Controller
 
             $officeID = Auth::user()->office_id;
             $roleID = Auth::user()->role_id;
+
             if ($roleID == 29 || $roleID == 31) {
                 $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
             }
             if ($roleID == 32 || $roleID == 41) {
                 $finalOfficeIds = [$officeID];
+                // For বিভাগীয় 
+                $data['office'] = GovCaseOffice::select('id', 'doptor_office_id', 'level')->where('doptor_office_id', $officeID)->first();
+                if ($data['office']->level == 3) {
+                    $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
+                }
             }
 
             // Fetch all required office data for each office in the $finalOfficeIds array
@@ -245,9 +250,6 @@ class Gov_ReportController extends Controller
 
         return array_unique($allOfficeIds);
     }
-
-
-
 
     public function case_count_by_dateBetween_highCourt($id, $data = null)
     {

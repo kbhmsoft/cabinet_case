@@ -721,6 +721,7 @@ class GovCaseRegisterRepository
             $case->notice_given_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
             $case->create_by = userInfo()->id;
             $case->case_year = $caseInfo->case_year;
+            $case->adalat_name = $caseInfo->adalat_name;
             $case->case_number_at_origin = $caseInfo->case_number_at_origin;
             $case->court = $caseInfo->court;
             $case->subject_matter = $caseInfo->subject_matter;

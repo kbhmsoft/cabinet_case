@@ -87,16 +87,16 @@
                                 width="30">ক্রমিক</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং
                             </th>
-                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
                                 শ্রেণী/কেস-টাইপ</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">
                                 পিটিশনারের নাম</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
                                 বিষয়বস্তু</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">দফাওয়ারি
-                            নোটিশ প্রেরণের তারিখ</th>
+                                নোটিশ প্রেরণের তারিখ</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
-                            width="170px">অ্যাকশন</th>
+                                width="170px">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,7 +107,7 @@
                                 <td style="width: 10px;" style="text-align:center;">
                                     {{ en2bn($row->case_no) }}/{{ en2bn($row->case_year) }}</td>
                                 <td style="text-align:center;">
-                                    {{ $row->case_category_type == 1 ? 'এটি' : '' }}
+                                    {{ $row->case_category_type == 1 ? 'এএটি' : '' }}
                                 </td>
 
                                 <td style="text-align:center;">
@@ -124,31 +124,32 @@
                                     {{ $row->notice_given_date ? en2bn($row->notice_given_date) : '-' }}</td>
 
 
-                                    <td style="text-align:center;">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle"
-                                                type="button" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">অ্যাকশন</button>
-                                            <div class="dropdown-menu">
-                                                @can('show_details_info')
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.appealAdministritiveTribrunalDetails', $row->id) }}">বিস্তারিত তথ্য</a>
-                                                @endcan
+                                <td style="text-align:center;">
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle"
+                                            type="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">অ্যাকশন</button>
+                                        <div class="dropdown-menu">
+                                            @can('show_details_info')
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.appealAdministritiveTribrunalDetails', $row->id) }}">বিস্তারিত
+                                                    তথ্য</a>
+                                            @endcan
 
-                                                <?php
-                                                $roleID = Auth()->user()->role_id;
-                                                ?>
-                                            </div>
+                                            <?php
+                                            $roleID = Auth()->user()->role_id;
+                                            ?>
                                         </div>
-                                        <div class="btn-group">
+                                    </div>
+                                    <div class="btn-group">
 
-                                            @if ($roleID == 27)
-                                                <a class="btn btn-bg-danger btn-sm"
-                                                    href="{{ route('cabinet.case.appeal_administrative_tribrunal_case_delete', $row->id) }}">মুছে
-                                                    ফেলুন</a>
-                                            @endif
-                                        </div>
-                                    </td>
+                                        @if ($roleID == 27)
+                                            <a class="btn btn-bg-danger btn-sm"
+                                                href="{{ route('cabinet.case.appeal_administrative_tribrunal_case_delete', $row->id) }}">মুছে
+                                                ফেলুন</a>
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

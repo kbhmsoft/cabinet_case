@@ -228,7 +228,7 @@ class AppealAdministrativeTribrunalController extends Controller
                 // GovCaseBadiBibadiRepository::storeMainBibadiAppealAdministritiveTribrunal($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPersonAppealAdministritiveTribrunal($request, $caseId);
                 // GovCaseBadiBibadiRepository::storeBibadiAppealAdministritiveTribrunal($request, $caseId);
-                GovCaseRegisterRepository::storeAppealAdministritiveTribrunalHighcourtAdalat($request, $caseId);
+                // GovCaseRegisterRepository::storeAppealAdministritiveTribrunalHighcourtAdalat($request, $caseId);
 
                 // GovCaseBadiBibadiRepository::storeAppealAdministritiveTribrunalBadi($request, $caseId);
 
