@@ -156,7 +156,7 @@
                                                 </div>
 
 
-                                                <div class="col-lg-4">
+                                                {{-- <div class="col-lg-4">
                                                     <table width="100%" border="1" id="highcourtAdalatDiv"
                                                         class="mb-5" style="border:1px solid #dcd8d8;">
                                                         <tr>
@@ -172,6 +172,16 @@
                                                         </tr>
                                                         <tr></tr>
                                                     </table>
+                                                </div> --}}
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>আদালতের নাম </label>
+                                                    <div id="adalat_name">
+                                                        <input type="text" name="adalat_name" id="adalat_name" class="form-control"
+                                                            value="প্রশাসনিক আপিল ট্রাইব্যুনাল" readonly/>
+                                                        <span class="text-danger d-none vallidation-message">This field can
+                                                            not be empty</span>
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-lg-4 mb-5">

@@ -233,38 +233,38 @@
 
 
     /************************ //Add multiple HighCourt Adalat *************************/
-    $("#addHighcourtAdalatRow").click(function(e) {
-        addHighcourtAdalatRowFunc();
-    });
+    // $("#addHighcourtAdalatRow").click(function(e) {
+    //     addHighcourtAdalatRowFunc();
+    // });
 
-    //add row function
-    function addHighcourtAdalatRowFunc() {
-        var mk = $('#highcourtAdalatDiv tr').length;
-        var MainCount = $('#MainBibadiDiv tr').length;
+    // //add row function
+    // function addHighcourtAdalatRowFunc() {
+    //     var mk = $('#highcourtAdalatDiv tr').length;
+    //     var MainCount = $('#MainBibadiDiv tr').length;
 
-        $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
+    //     $('#highcourtAdalatDiv tr:last').after(Item(mk + 1, 'other'));
 
-        function Item(count, type = NULL) {
-            var items = '';
-            items += '<tr id="administrative_adalat_' + (count) + '">';
-            items +=
-                '<td><select name="administrative_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($administrativeTribrunalAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
-            items += '<input type="hidden" name="administrative_adalat_id[]" value="">';
+    //     function Item(count, type = NULL) {
+    //         var items = '';
+    //         items += '<tr id="administrative_adalat_' + (count) + '">';
+    //         items +=
+    //             '<td><select name="administrative_adalat[]"  class="form-control form-control-sm other_respondentCls" required="required"><option value="">-- নির্বাচন করুন --</option>@foreach ($administrativeTribrunalAdalat as $value)<option value="{{ $value->id }}" {{ old('ministry') == $value->id ? 'selected' : '' }}> {{ $value->name }} </option>@endforeach</select></td>';
+    //         items += '<input type="hidden" name="administrative_adalat_id[]" value="">';
 
-            if (type == 'other') {
-                items +=
-                    '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            }
-            items += '</tr>';
-            return items;
-        }
-        $('.other_respondentCls').select2();
-    }
+    //         if (type == 'other') {
+    //             items +=
+    //                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeHighcourtAdalatRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //         }
+    //         items += '</tr>';
+    //         return items;
+    //     }
+    //     $('.other_respondentCls').select2();
+    // }
 
-    //remove row function
-    function removeHighcourtAdalatRow(id) {
-        $(id).closest("tr").remove();
-    }
+    // //remove row function
+    // function removeHighcourtAdalatRow(id) {
+    //     $(id).closest("tr").remove();
+    // }
 
 
 
@@ -424,14 +424,17 @@
                             'Saved!',
                             'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
-                        )
+                        ).then(() => {
+                            window.location.href =
+                                "{{ route('cabinet.case.appealAdministrativeTribrunal') }}";
+                        });
                         console.log(data);
 
-                        $("# a").click();
-                        $("#caseIDForAnswer").val(data.caseId);
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
+                        // $("# a").click();
+                        // $("#caseIDForAnswer").val(data.caseId);
+                        // $("#caseIDForSuspention").val(data.caseId);
+                        // $("#caseIDForFinalOrder").val(data.caseId);
+                        // $("#caseIDForContempt").val(data.caseId);
 
                     },
                     error: function(xhr, status, error) {
