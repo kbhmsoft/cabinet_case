@@ -115,6 +115,11 @@
                                 <th scope="col" width=""
                                     style="text-align:center; font-size: 12px; vertical-align: middle;">গুরুত্বপূর্ণ</th>
                             @endif
+
+                            @if ($roleID == 27)
+                                <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
+                                    width="170px">অ্যাকশন</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -124,7 +129,7 @@
                                 <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
                                 <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td>
                                 <td style="text-align:center;">
-                                   {{ $row->govOffice ? $row->govOffice->office_name_bn : '' }}
+                                    {{ $row->govOffice ? $row->govOffice->office_name_bn : '' }}
                                 </td>
 
                                 <?php
@@ -134,7 +139,7 @@
                                 } else {
                                     $subjectMatterData = '';
                                 }
-
+                                
                                 ?>
 
                                 <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
@@ -169,7 +174,23 @@
                                         @endif
                                     </div>
                                 </td>
+                                @if ($roleID == 27)
+                                    <td style="text-align:center;">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle"
+                                                type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">অ্যাকশন</button>
+                                            <div class="dropdown-menu">
+                                                {{-- @can('show_details_info') --}}
+                                                <a class="dropdown-item"
+                                                    href="{{ route('cabinet.case.appealCaseDetails', $row->id) }}">বিস্তারিত
+                                                    তথ্য</a>
+                                                {{-- @endcan --}}
 
+                                            </div>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -220,6 +241,11 @@
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">
                                 গুরুত্বপূর্ণ</th>
                         @endif
+
+                        @if ($roleID == 27)
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
+                                width="170px">অ্যাকশন</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -262,9 +288,8 @@
                             <td>
                                 <div class="btn-group">
                                     @if ($roleID == 27)
-                                        <input type="checkbox" id="most_important" name="most_important"
-                                            value="1" data-row-id="{{ $row->id }}"
-                                            onchange="updateDatabase(this)"
+                                        <input type="checkbox" id="most_important" name="most_important" value="1"
+                                            data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
                                             {{ $row->most_important == 1 ? 'checked' : '' }}>
                                         <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
                                     @endif
@@ -273,14 +298,32 @@
                                 <div class="btn-group">
                                     @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
                                         <input type="checkbox" id="important" name="important" value="1"
-                                            data-row-id="{{ $row->id }}" onchange="updateImportantCaseDatabase(this)"
+                                            data-row-id="{{ $row->id }}"
+                                            onchange="updateImportantCaseDatabase(this)"
                                             {{ $row->important == 1 ? 'checked' : '' }}>
                                         <label class="checkbox-name" for="important"> গুরুত্বপূর্ণ</label>
                                     @endif
                                 </div>
-                            </td>
+                                @if ($roleID == 27)
+                            <td style="text-align:center;">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary font-weight-bold btn-sm dropdown-toggle" type="button"
+                                        data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">অ্যাকশন</button>
+                                    <div class="dropdown-menu">
+                                        {{-- @can('show_details_info') --}}
+                                        <a class="dropdown-item"
+                                            href="{{ route('cabinet.case.details', $row->id) }}">বিস্তারিত
+                                            তথ্য</a>
+                                        {{-- @endcan --}}
 
-                        </tr>
+                                    </div>
+                                </div>
+                            </td>
+                    @endif
+                    </td>
+
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -335,39 +378,39 @@
         }
     </script>
 
-<script>
-    function updateAppealImportantCaseDatabase(checkbox) {
+    <script>
+        function updateAppealImportantCaseDatabase(checkbox) {
 
-        const rowId = checkbox.getAttribute("data-row-id");
-        const isChecked = checkbox.checked;
+            const rowId = checkbox.getAttribute("data-row-id");
+            const isChecked = checkbox.checked;
 
-        const importantValue = isChecked ? 1 : null;
-        const data = {
-            rowId: rowId,
-            important: importantValue
-        };
+            const importantValue = isChecked ? 1 : null;
+            const data = {
+                rowId: rowId,
+                important: importantValue
+            };
 
-        const routeUrl = "{{ route('cabinet.case.highcourtImportantSave') }}";
+            const routeUrl = "{{ route('cabinet.case.highcourtImportantSave') }}";
 
-        fetch(routeUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Data saved successfully.');
-                } else {
+            fetch(routeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data saved successfully.');
+                    } else {
 
-                    console.error('Failed to save data.');
-                }
-            })
-            .catch(error => {
+                        console.error('Failed to save data.');
+                    }
+                })
+                .catch(error => {
 
-                console.error('Error:', error);
-            });
-    }
-</script>
+                    console.error('Error:', error);
+                });
+        }
+    </script>
