@@ -115,8 +115,8 @@
                         {{-- start মামলার সাধারণ তথ্য --}}
                         <div class="tab-pane active" id="case_general_information" role="tabpanel"
                             aria-labelledby="home-tab">
-                            <form id="administrativeTribrunalGeneralInfoForm" action="javascript:void(0)" class="form" method="POST"
-                                enctype="multipart/form-data">
+                            <form id="administrativeTribrunalGeneralInfoForm" action="javascript:void(0)" class="form"
+                                method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
@@ -128,8 +128,9 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div id="CaseCategorDiv">
-                                                        <input type="text" name="case_category_type" id="case_category_type" class="form-control"
-                                                            value="এএটি" readonly/>
+                                                        <input type="text" name="case_category_type"
+                                                            id="case_category_type" class="form-control" value="এএটি"
+                                                            readonly />
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
                                                     </div>
@@ -156,29 +157,12 @@
                                                 </div>
 
 
-                                                {{-- <div class="col-lg-4">
-                                                    <table width="100%" border="1" id="highcourtAdalatDiv"
-                                                        class="mb-5" style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th class="other_bibadi_name other_respondent">আদালতের নাম
-                                                                (Justice Name)<span class="text-danger">*</span>
-                                                            </th>
-                                                            <th width="50">
-                                                                <a href="javascript:void();" id="addHighcourtAdalatRow"
-                                                                    class="btn btn-sm btn-primary font-weight-bolder pr-2">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr></tr>
-                                                    </table>
-                                                </div> --}}
-
                                                 <div class="col-lg-4 mb-5">
                                                     <label>আদালতের নাম </label>
                                                     <div id="adalat_name">
-                                                        <input type="text" name="adalat_name" id="adalat_name" class="form-control"
-                                                            value="প্রশাসনিক আপিল ট্রাইব্যুনাল" readonly/>
+                                                        <input type="text" name="adalat_name" id="adalat_name"
+                                                            class="form-control" value="প্রশাসনিক আপিল ট্রাইব্যুনাল"
+                                                            readonly />
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
                                                     </div>
@@ -219,8 +203,6 @@
                                                     </div>
                                                 </div>
 
-
-
                                                 <div class="col-lg-12 mb-5">
                                                     <table width="100%" border="1" id="advocateLawerDiv"
                                                         style="border:1px solid #dcd8d8;">
@@ -249,71 +231,6 @@
                                                     <input type="hidden" id="survey_count" value="1">
                                                 </div>
 
-                                                <!-- jQuery -->
-                                                {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-
-                                                {{-- <div class="col-lg-12 mb-5">
-                                                    <table width="100%" border="1" id="badiDiv"
-                                                        style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>পিটিশনারের নাম <span class="text-danger">*</span> </th>
-
-                                                            <th>পিটিশনারের ঠিকানা <span class="text-danger"></span></th>
-
-                                                        </tr>
-
-                                                    </table>
-                                                </div> --}}
-
-
-                                                {{-- <div class="col-lg-12" style="display: flex;">
-                                                    <div class="col-lg-5 mb-5">
-                                                        <label>মোট পিটিশনারের সংখ্যা</label>
-                                                        <select name="total_badi_number" id="total_badi_number"
-                                                            class="form-control form-control-sm">
-                                                            <option value="">মোট পিটিশনারের সংখ্যা নির্বাচন করুন
-                                                            </option>
-                                                            <?php
-                                                            for ($i = 1; $i <= 1000; $i++) {
-                                                                echo "<option value='$i'>$i</option>";
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                        <input type="hidden" name="caseId" value="">
-                                                    </div>
-
-                                                    <div class="col-lg-7 mb-5 product-image">
-
-                                                        <table width="100%" border="1" id="bibadiDiv"
-                                                            class="mb-5" style="border:1px solid #dcd8d8;">
-                                                            <tr>
-                                                                <th class="other_bibadi_name other_respondent"
-                                                                    colspan="2">
-                                                                    রেসপন্ডেন্ট তালিকা
-                                                                    <span class="tooltip-icon">
-                                                                        <i class="fas fa-info-circle tooltip-button"></i>
-                                                                        <span class="tooltip-text">ড্রপডাউন থেকে অফিস
-                                                                            সিলেক্ট করুণ। কোন অফিস না পেলে অন্যান্য সিলেক্ট
-                                                                            করে নাম লিখুন</span>
-                                                                    </span>
-                                                                </th>
-                                                                <th width="50">
-                                                                    <a href="javascript:void();" id="addBibadiRow"
-                                                                        class="btn btn-sm btn-primary font-weight-bolder pr-2"
-                                                                        onclick="addBibadiRowFunc()">
-                                                                        <i class="fas fa-plus-circle"></i>
-                                                                    </a>
-                                                                </th>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-
-
-                                                    <!-- Hidden input for "অন্যান্য" -->
-
-                                                </div> --}}
-
-
                                                 <div class="col-lg-12 mb-5">
                                                     <label>বিষয়বস্তু(সংক্ষিপ্ত) </label>
                                                     <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"></textarea>
@@ -334,15 +251,56 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- <div class="col-lg-6 mb-5">
-                                                    <label>মামলা সংশ্লিষ্ট অর্থের পরিমান</label>(যদি আর্থিক সংশ্লেষ থাকে বা
-                                                    সরকারি অর্থ ব্যয়/প্রদানের বিষয় থাকে অথবা মামলাভুক্ত সম্পত্তির সম্ভাব্য
-                                                    মূল্য ইত্যাদি)
-                                                    <input name="money_amount" class="form-control" id="money_amount"
-                                                        rows="1" spellcheck="false"></input>
-                                                </div> --}}
 
 
+
+
+                                                <div class="col-md-12" id="showHighCourtCaseManualDiv">
+                                                    <fieldset class="mb-8">
+                                                        <legend>প্রশাসনিক আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
+                                                            নিম্নের
+                                                            কলামসমুহ পুরণ করুণঃ</legend>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="at_case_number_origin_manual"
+                                                                    id="at_case_number_origin_manual"
+                                                                    class="form-control form-control-sm"
+                                                                    placeholder="(Type digits in English)"
+                                                                    required="required">
+
+                                                            </div>
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>পিটিশনারের নাম: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="writ_petitioner_name"
+                                                                    id="writ_petitioner_name"
+                                                                    class="form-control form-control-sm"
+                                                                    required="required">
+                                                            </div>
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
+                                                                        class="text-danger">
+                                                                    </small> </label>
+                                                                <textarea name="at_case_subject_matter" class="form-control" id="at_case_subject_matter" rows="3" spellcheck="false"></textarea>
+                                                            </div>
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>রায়/আদেশ প্রদানের তারিখ: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="case_order_date"
+                                                                    id="case_order_date"
+                                                                    class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                                    required="required">
+                                                            </div>
+                                                            <div class="col-lg-8 mb-5">
+                                                                <label>রায়/আদেশের বিবরণ:<small class="text-danger">
+                                                                    </small> </label>
+                                                                <textarea name="at_case_order_details" class="form-control" id="at_case_order_details" rows="3" spellcheck="false"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
 
                                                 {{-- starting সংযুক্তি  --}}
                                                 <div class="col-md-12">
@@ -385,6 +343,7 @@
 
                                                 {{-- end সংযুক্তি --}}
                                             </div>
+
                                         </fieldset>
                                         {{-- </div> --}}
 
@@ -414,44 +373,43 @@
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('#case_year, #case_no, #case_category_type').change(function() {
-            var caseNo = $('#case_no').val();
-            var caseYear = $('#case_year').val();
-            var caseCategory = $('#case_category_type').val();
+    <script>
+        $(document).ready(function() {
+            $('#case_year, #case_no, #case_category_type').change(function() {
+                var caseNo = $('#case_no').val();
+                var caseYear = $('#case_year').val();
+                var caseCategory = $('#case_category_type').val();
 
-            if (caseNo && caseYear && caseCategory) {
-                $.ajax({
-                    url: "{{ route('cabinet.case.appeal-administrative-check-case-no') }}",
-                    type: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'case_no': caseNo,
-                        'case_year': caseYear,
-                        'case_category_type': caseCategory
-                    },
-                    success: function(data) {
-                        if (data.exists) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: '<span style="color: red;font-size: larger;">দুঃখিত...',
-                                html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
-                                    data.officeName +
-                                    '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে ইতিমধ্যে এন্ট্রি করা হয়েছে!</strong>',
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                            });
+                if (caseNo && caseYear && caseCategory) {
+                    $.ajax({
+                        url: "{{ route('cabinet.case.appeal-administrative-check-case-no') }}",
+                        type: 'POST',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'case_no': caseNo,
+                            'case_year': caseYear,
+                            'case_category_type': caseCategory
+                        },
+                        success: function(data) {
+                            if (data.exists) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '<span style="color: red;font-size: larger;">দুঃখিত...',
+                                    html: '<strong>মামলাটি <span style="color: red;font-size: larger;">' +
+                                        data.officeName +
+                                        '</span> কর্তৃক মূল রেসপন্ডেন্ট হিসেবে ইতিমধ্যে এন্ট্রি করা হয়েছে!</strong>',
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                });
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 
     @include('gov_case.appeal_administritive_tribrunal.create_new_appeal_administritive_tribrunal_js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
 @endsection
