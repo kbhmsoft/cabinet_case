@@ -90,7 +90,7 @@
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
             @else
                 @include('gov_case.search')
-          
+
                 <table class="table table-hover mb-6 font-size-h5">
                     <thead class="thead-light font-size-h6">
                         <tr>
@@ -118,10 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        {{-- {{dd($cases)}} --}}
                         @foreach ($appealCases as $key => $row)
-                            {{-- {{dd($row->highcourtCaseDetail)}} --}}
                             <tr>
                                 <td scope="row" class="tg-bn">{{ en2bn($key + $cases->firstItem()) }}.</td>
                                 <td style="width: 10px;">{{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}</td>
@@ -139,12 +136,8 @@
                                 }
 
                                 ?>
-                                {{-- {{ dd($subjectMatterData) }} --}}
 
                                 <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
-                                {{-- <td style="text-align:center;">{{ is_null($subjectMatter) ? 'p' : '-' }}</td> --}}
-
-
                                 <td style="text-align:center;">
                                     <div>
                                         @if ($row->result == '1')
@@ -267,14 +260,15 @@
                             </td>
 
                             <td>
-                                {{-- <div class="btn-group">
+                                <div class="btn-group">
                                     @if ($roleID == 27)
-                                        <input type="checkbox" id="most_important" name="most_important" value="1"
-                                            data-row-id="{{ $row->id }}" onchange="updateDatabase(this)"
+                                        <input type="checkbox" id="most_important" name="most_important"
+                                            value="1" data-row-id="{{ $row->id }}"
+                                            onchange="updateDatabase(this)"
                                             {{ $row->most_important == 1 ? 'checked' : '' }}>
-                                        <label class="checkbox-name" for="most_important"> গুরুত্বপূর্ণ</label>
+                                        <label class="checkbox-name" for="most_important">অতি গুরুত্বপূর্ণ</label>
                                     @endif
-                                </div> --}}
+                                </div>
 
                                 <div class="btn-group">
                                     @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 44)
