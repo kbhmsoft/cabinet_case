@@ -631,7 +631,7 @@ class GovCaseRegisterController extends Controller
             $queryAppeal->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
         }
 
-     
+
         $data['appealCases'] = $queryAppeal->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')
             ->get();
 
@@ -3296,7 +3296,7 @@ class GovCaseRegisterController extends Controller
 
     public function finalOrderStore(Request $request)
     {
-
+dd($request->all());
         $caseId = $request->case_id;
         $request->validate(
             [

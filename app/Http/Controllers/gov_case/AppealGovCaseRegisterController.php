@@ -1265,7 +1265,6 @@ class AppealGovCaseRegisterController extends Controller
     public function appealStore(Request $request)
     {
 
-
         $exists = AppealGovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -1361,7 +1360,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealFinalOrderStore(Request $request)
     {
-        // dd($request);
+        // dd($request->all());
         $caseId = $request->case_id;
 
         $request->validate([

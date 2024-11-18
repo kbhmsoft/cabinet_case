@@ -395,7 +395,7 @@ class AttachmentRepository
             foreach ($request->final_order_file_type as $key => $val) {
                 $filePath = "uploads/" . $appName . "/final_order_attachment/";
                 if ($request->final_order_file_name[$key] != null) {
-                    $otherfileName = 'govCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->final_order_file_name[$key]->getClientOriginalExtension();
+                    $otherfileName = 'govAppealCaseNo_' . $caseId . '_' . time() . '.' . rand(5, 9999) . '.' . $request->final_order_file_name[$key]->getClientOriginalExtension();
                     $request->final_order_file_name[$key]->move(public_path($filePath), $otherfileName);
                 }
                 $attachment = new AppealFinalOrderAttachment();

@@ -121,13 +121,14 @@ class Gov_ReportController extends Controller
             }
 
             if ($office_type == null && $dept_id == null) {
+                $start = microtime(true);
+
                 $data['ministry'] = DB::table('gov_case_office')
                     ->whereIn('gov_case_office.level', [1])
                     ->get()
                     ->map(function ($val) use ($data) {
                         // Get all nested child office IDs for each ministry
                         $allOfficeIds = $this->getTwoLevelOfficeIds([$val->doptor_office_id]);
-
                         // // Fetch counts using the office IDs
                         $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
                         $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
@@ -140,15 +141,53 @@ class Gov_ReportController extends Controller
                         $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
 
                         return $val;
-
                     });
-
+                    $time = microtime(true) - $start;
+                    // dd($time);
                 if ($office_type == null && $dept_id == null) {
                     $data['ministryListData'] = $data['ministry'];
                     $html = view('gov_report.pdf_num_ministry_list_data')->with($data);
                     $this->generatePDF($html);
                 }
             }
+
+            // if ($office_type == null && $dept_id == null) {
+            //     $data['ministry'] = [];
+            //             $start = microtime(true);
+            //             // dd($start);
+            //     DB::table('gov_case_office')
+            //         ->whereIn('gov_case_office.level', [1])
+            //         ->orderBy('id') // Necessary for chunking
+            //         ->chunk(500, function ($rows) use (&$data) {
+            //             foreach ($rows as $val) {
+            //                 // Get all nested child office IDs for each ministry
+            //                 $allOfficeIds = $this->getTwoLevelOfficeIds([$val->doptor_office_id]);
+
+            //                 // Fetch counts using the office IDs
+            //                 $val->dateBetween = $this->case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+            //                 $val->prevUndoneCase = $this->previous_undone_case_count_firstDate_highCourt($allOfficeIds, $data)->count();
+            //                 $val->totalCase = $this->total_case_count_by_highCourt($allOfficeIds, $data)->count();
+            //                 $val->doneCase = $this->done_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+            //                 $val->favouredGov = $this->done_favoured_gov_case_count_highCourt($allOfficeIds, $data)->count();
+            //                 $val->againstGov = $this->done_against_gov_case_count_highCourt($allOfficeIds, $data)->count();
+            //                 $val->lastWorkDay = $this->previous_undone_case_count_lastDate_highCourt($allOfficeIds, $data);
+            //                 $val->importantCase = $this->imprtant_case_count_by_dateBetween_highCourt($allOfficeIds, $data)->count();
+            //                 $val->favouredGovAppeal = $this->done_favoured_gov_appeal_case_count($allOfficeIds, $data)->count();
+
+            //                 $data['ministry'][] = $val;
+            //             }
+            //         });
+
+            //     $time = microtime(true) - $start;
+            //     // dd($time);
+
+            //     if ($office_type == null && $dept_id == null) {
+            //         $data['ministryListData'] = $data['ministry'];
+            //         $html = view('gov_report.pdf_num_ministry_list_data')->with($data);
+            //         $this->generatePDF($html);
+            //     }
+
+            // }
 
         }
 
@@ -172,7 +211,7 @@ class Gov_ReportController extends Controller
             }
             if ($roleID == 32 || $roleID == 41) {
                 $finalOfficeIds = [$officeID];
-                // For বিভাগীয় 
+                // For বিভাগীয়
                 $data['office'] = GovCaseOffice::select('id', 'doptor_office_id', 'level')->where('doptor_office_id', $officeID)->first();
                 if ($data['office']->level == 3) {
                     $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);

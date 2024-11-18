@@ -97,17 +97,7 @@ class GovCaseRegisterRepository
         }
     }
 
-    public static function storeAppealAdministritiveTribrunalHighcourtAdalat($caseInfo, $govCaseId)
-    {
-        foreach ($caseInfo->administrative_adalat as $key => $val) {
-            if ($caseInfo->administrative_adalat[$key] != null) {
-                $administrativeAdalat = self::checkAppealAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
-                $administrativeAdalat->gov_case_id = $govCaseId;
-                $administrativeAdalat->administrative_adalat = $caseInfo->administrative_adalat[$key];
-                $administrativeAdalat->save();
-            }
-        }
-    }
+   
 
     public static function checkHighcourtAdalatExist($highcourtAdalatId)
     {
