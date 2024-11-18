@@ -227,10 +227,7 @@ class AppealAdministrativeTribrunalController extends Controller
                 $caseId = GovCaseRegisterRepository::storeAppealAdministrativeTribrunalGeneralInfo($request);
                 // GovCaseBadiBibadiRepository::storeMainBibadiAppealAdministritiveTribrunal($request, $caseId);
                 GovCaseRegisterRepository::storeConcernPersonAppealAdministritiveTribrunal($request, $caseId);
-                // GovCaseBadiBibadiRepository::storeBibadiAppealAdministritiveTribrunal($request, $caseId);
-                // GovCaseRegisterRepository::storeAppealAdministritiveTribrunalHighcourtAdalat($request, $caseId);
-
-                // GovCaseBadiBibadiRepository::storeAppealAdministritiveTribrunalBadi($request, $caseId);
+                
 
                 if ($request->file_type && $_FILES["file_name"]['name']) {
                     AttachmentRepository::storeAppealAdministrativeTribrunalAttachment('gov_case', $caseId, $request);
