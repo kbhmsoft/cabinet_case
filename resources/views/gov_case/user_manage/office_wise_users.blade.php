@@ -154,25 +154,31 @@
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
                                             title="বিস্তারিত"></i></a>
-                                    <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
-                                        class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
-                                            title="সংশোধন"></i></a>
-                                    @if (Auth::user()->role_id == 27)
-                                        <form method="post"
-                                            action="{{ route('cabinet.user-management.destroy', $row->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div class="form-group">
-                                                <button type="submit"
-                                                    class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"
-                                                    onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
-                                                    title="মুছে ফেলুন">
-                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}"
-                                                        style="height: 20px; width: auto;" alt="Logo" class="mr-2">
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @endif
+
+                                    @can('user-edit-delete')
+                                        @if ($row->doptor_user_id == null)
+                                            <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
+                                                class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
+                                                    title="সংশোধন"></i></a>
+                                            @if (Auth::user()->role_id == 27)
+                                                <form method="post"
+                                                    action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <div class="form-group">
+                                                        <button type="submit"
+                                                            class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"
+                                                            onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
+                                                            title="মুছে ফেলুন">
+                                                            <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}"
+                                                                style="height: 20px; width: auto;" alt="Logo"
+                                                                class="mr-2">
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            @endif
+                                        @endif
+                                    @endcan
                                 </td>
 
                             </tr>
@@ -262,7 +268,10 @@
                     }
                 },
                 pageLength: 10,
-                lengthMenu: [[10, 30, 50], [10, 30, 50]]
+                lengthMenu: [
+                    [10, 30, 50],
+                    [10, 30, 50]
+                ]
             });
 
             $('#ministry').select2();
