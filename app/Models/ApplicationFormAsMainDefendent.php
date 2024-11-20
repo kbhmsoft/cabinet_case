@@ -36,6 +36,6 @@ class ApplicationFormAsMainDefendent extends Model
 
     public function office()
     {
-        return $this->belongsTo(GovCaseOffice::class,'doptor_office_id','office_id');
+        return $this->hasOne(GovCaseOffice::class,'doptor_office_id','office_id');
     }
 }

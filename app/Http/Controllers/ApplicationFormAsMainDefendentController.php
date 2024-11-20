@@ -35,11 +35,18 @@ class ApplicationFormAsMainDefendentController extends Controller
     {
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
+        // dd()
 
-        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 2)
+        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 2)->where('is_answered', null)
 
             ->orderBy('id', 'DESC');
 
+            if (!empty($_GET['case_no'])) {
+                $query->where('case_no', 'like', '%' . $_GET['case_no'] . '%');
+            }
+            if (!empty($_GET['office_id'])) {
+                $query->where('office_id', '=', $_GET['office_id']);
+            }
         $data['users'] = $query->paginate(10)->withQueryString();
         $data['ministrys'] = GovCaseOffice::get();
         $data['page_title'] = 'হাইকোর্ট মামলা তালিকা';
@@ -59,8 +66,14 @@ class ApplicationFormAsMainDefendentController extends Controller
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
-        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 1)
+        $query = ApplicationFormAsMainDefendent::with('office')->where('court', 1)->where('is_answered', null)
             ->orderBy('id', 'DESC');
+            if (!empty($_GET['case_no'])) {
+                $query->where('case_no', 'like', '%' . $_GET['case_no'] . '%');
+            }
+            if (!empty($_GET['office_id'])) {
+                $query->where('office_id', '=', $_GET['office_id']);
+            }
         $data['ministrys'] = GovCaseOffice::get();
         $data['users'] = $query->paginate(10)->withQueryString();
         //   dd($data['users']);

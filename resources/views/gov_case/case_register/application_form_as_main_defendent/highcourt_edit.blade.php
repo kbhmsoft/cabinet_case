@@ -344,7 +344,7 @@
                                                             @foreach ($caseMainBibadi as $key => $val)
                                                                 @if ($val->respondent_id != 0)
                                                                     <div>
-                                                                        <select {{ request('red') ? 'disabled' : '' }} name="main_respondent" id="ministry_id" class="form-control form-control-sm select_2">
+                                                                        <select {{ request('red') ? 'disabled' : '' }} name="main_respondent" id="main_ministry_id" class="form-control form-control-sm select_2">
                                                                             @foreach ($ministrys as $item)
                                                                                 <option value="{{ $item->doptor_office_id }}" {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
                                                                                     {{ $item->office_name_bn ?? '' }}
@@ -1770,6 +1770,7 @@
 
     <script>
         $(document).ready(function() {
+            $('#main_ministry_id').select2();
             $('#sending_reply_data_details').hide();
             $('#trackingNumberField').hide();
             $('input[name="sending_reply_have"]').change(function() {
