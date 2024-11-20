@@ -1339,7 +1339,6 @@ class DashboardController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
 
-
         $data['ministry_wise'] = DB::table('gov_case_office')
             ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
 
@@ -1419,7 +1418,7 @@ class DashboardController extends Controller
         $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
         $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
 
-        $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
+
 
         $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
         $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
@@ -1431,6 +1430,8 @@ class DashboardController extends Controller
         return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
         // return view('dashboard.cabinet.cabinet_admin_ministry_wise_old')->with($data);
     }
+
+    
 
     public function get_drildown_gov_case_count($ministry = null, $department = null, $status = null)
     {
