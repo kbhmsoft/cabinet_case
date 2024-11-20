@@ -428,14 +428,6 @@
                             window.location.href =
                                 "{{ route('cabinet.case.appealAdministrativeTribrunal') }}";
                         });
-                        console.log(data);
-
-                        // $("# a").click();
-                        // $("#caseIDForAnswer").val(data.caseId);
-                        // $("#caseIDForSuspention").val(data.caseId);
-                        // $("#caseIDForFinalOrder").val(data.caseId);
-                        // $("#caseIDForContempt").val(data.caseId);
-
                     },
                     error: function(xhr, status, error) {
                         $('#appealAdministrativeTribrunalGeneralInfoSaveBtn').removeClass(

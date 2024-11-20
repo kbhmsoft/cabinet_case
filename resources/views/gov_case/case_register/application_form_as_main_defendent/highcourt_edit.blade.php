@@ -2190,37 +2190,19 @@
                         processData: false,
                         contentType: false,
                         data: formData,
-                        success: function(response) {
-                            $('#caseGeneralInfoSaveBtnForEdit').removeClass(
-                                'spinner spinner-white spinner-right disabled');
-                            $orderData = response;
-                            Swal.fire(
-                                'Saved!',
-                                'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                                'success'
-                            )
-
-                            // $("#sending_reply_tab").click();
-                            // $("#caseIDForAnswer").val(response.caseId);
-                            // $("#caseIDForSuspention").val(response.caseId);
-                            // $("#caseIDForFinalOrder").val(response.caseId);
-                            // $("#caseIDForContempt").val(response.caseId);
-
-                            // $('#sendingReplySaveBtn').prop('disabled', false);
-                            // $('#sendingReplySaveBtn').removeClass("disable-button");
-                            // $('#suspensionOrderSaveBtn').prop('disabled', false);
-                            // $('#suspensionOrderSaveBtn').removeClass(
-                            //     "disable-button");
-                            // $('#finalOrderSaveBtn').prop('disabled', false);
-                            // $('#finalOrderSaveBtn').removeClass("disable-button");
-                            // $('#contemptCaseSaveBtn').prop('disabled', false);
-                            // $('#contemptCaseSaveBtn').removeClass("disable-button");
-                            console.log(response);
-
-                            if (response.redirect) {
-                                window.location.href = response.redirect;
-                            }
-                        },
+                        success: (data) => {
+                        $('#caseGeneralInfoSaveBtnForEdit').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        $orderData = data;
+                        Swal.fire(
+                            'Saved!',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'success'
+                        ).then(() => {
+                            window.location.href =
+                                "{{ route('cabinet.case.highcourtIndexApplications') }}";
+                        });
+                    },
                         error: function(xhr, status, error) {
                             console.error(error);
                         }

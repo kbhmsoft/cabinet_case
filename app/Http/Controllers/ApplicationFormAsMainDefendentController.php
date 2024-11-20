@@ -90,7 +90,6 @@ class ApplicationFormAsMainDefendentController extends Controller
 
     public function createApplicationForm($caseNo, $caseYear, $caseCategory)
     {
-        // dd([$caseNo, $caseYear, $caseCategory]);
         $data = [];
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['ministrys'] = GovCaseOffice::get();
@@ -105,7 +104,7 @@ class ApplicationFormAsMainDefendentController extends Controller
             ->where('year', $caseYear)
             ->where('case_type_id', $caseCategory)
             ->first();
-// dd($data['appealGovCaseData']);
+
         $GovCaseDivisionCategoryType = GovCaseDivisionCategoryType::all();
         $data['GovCaseDivisionCategoryType'] = $GovCaseDivisionCategoryType;
 

@@ -118,22 +118,8 @@ class GovCaseRegisterController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
 
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
 
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
         $query = GovCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
@@ -146,6 +132,7 @@ class GovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
+            $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
             $query->whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -188,7 +175,7 @@ class GovCaseRegisterController extends Controller
         }
 
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -199,6 +186,32 @@ class GovCaseRegisterController extends Controller
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
         return view('gov_case.case_register.highcourt')->with($data);
+    }
+
+    public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
+    {
+        $allOfficeIds = $parentOfficeIds;
+        $currentLevelIds = $parentOfficeIds;
+        $level = 1;
+        while ($level <= $maxLevels) {
+            // Get the child offices for the current level
+            $childOfficeIds = DB::table('gov_case_office')
+                ->whereIn('parent_office_id', $currentLevelIds)
+                ->pluck('doptor_office_id')
+                ->toArray();
+
+            if (empty($childOfficeIds)) {
+                break;
+            }
+
+            $allOfficeIds = array_merge($allOfficeIds, $childOfficeIds);
+
+            // Set up the child IDs as the current level for the next iteration
+            $currentLevelIds = $childOfficeIds;
+            $level++;
+        }
+
+        return array_unique($allOfficeIds);
     }
 
     public function printHighcourtCaseList()
@@ -316,7 +329,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -374,7 +387,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -433,7 +446,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -1416,8 +1429,8 @@ class GovCaseRegisterController extends Controller
             ->leftJoin('gov_case_registers as gcr', 'gcb.gov_case_id', '=', 'gcr.id')
             ->whereIn('gov_case_office.level', [1, 3]);
 
-        $data['ministry'] = $ministry->groupBy('gov_case_office.id')
-            ->paginate(10);
+        $data['ministry'] = $ministry->groupBy('gov_case_office.id')->
+        paginate(10)->withQueryString();
 
         $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
@@ -1750,7 +1763,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
@@ -1768,22 +1781,7 @@ class GovCaseRegisterController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
 
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
-
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
         $query = GovCaseRegister::orderby('id', 'DESC')
             ->where('is_final_order', 0)->where('deleted_at', '=', null);
 
@@ -1797,6 +1795,7 @@ class GovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
+            $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
             $query->whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -1835,7 +1834,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
@@ -1856,23 +1855,6 @@ class GovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
         $childOfficeIds = [];
 
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
-
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
-
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
-
         $query = GovCaseRegister::orderby('id', 'DESC')
             ->where('is_final_order', 1)->where('deleted_at', '=', null);
 
@@ -1886,6 +1868,7 @@ class GovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
+            $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
             $query->whereHas(
                 'mainBibadis',
                 function ($query) use ($finalOfficeIds) {
@@ -1931,7 +1914,7 @@ class GovCaseRegisterController extends Controller
             $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
         }
 
-        $data['cases'] = $query->paginate(10);
+        $data['cases'] = $query->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
