@@ -47,40 +47,24 @@ class DashboardController extends Controller
         $data['rm_case_status'] = [];
 
         if ($roleID == 27) {
-
             $data['ministry'] = DB::table('gov_case_office')
-                ->whereIn('gov_case_office.level', [1, 3])
-                ->paginate(10);
+            ->whereIn('gov_case_office.level', [1])
+            ->paginate(10) // Change the number to your desired items per page
+            ->through(function ($val) use ($data) {
+                $allOfficeIds = $this->getTwoLevelOfficeIds([$val->doptor_office_id]);
+                $val->highcourt_running_case = $this->countHighCourtRunningCase($allOfficeIds)->count();
+                $val->appeal_running_case = $this->countAppealRunningCase($allOfficeIds)->count();
+                $val->total_running_case = $val->highcourt_running_case + $val->appeal_running_case;
+                $val->against_gov = $this->countHighCourtAgainstGovCase($allOfficeIds)->count();
+                $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($allOfficeIds)->count();
+                $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($allOfficeIds)->count();
+        
+                return $val;
+            });
+        
 
-            $arrayd = [];
-            foreach ($data['ministry'] as $key => $val) {
-                $childOfficeIds = [];
 
-                $childOfficeQuery = DB::table('gov_case_office')
-                    ->select('id', 'doptor_office_id')
-                    ->where('parent_office_id', $val->doptor_office_id)->get();
-
-                foreach ($childOfficeQuery as $childOffice) {
-                    $childOfficeIds[] = $childOffice->doptor_office_id;
-                }
-
-                $finalOfficeIds = [];
-
-                if (empty($childOfficeIds)) {
-                    $finalOfficeIds[] = $val->doptor_office_id;
-                } else {
-                    $finalOfficeIds[] = $val->doptor_office_id;
-                    $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-                }
-
-                $val->highcourt_running_case = $this->countHighCourtRunningCase($finalOfficeIds)->count();
-                $val->appeal_running_case = $this->countAppealRunningCase($finalOfficeIds)->count();
-                $val->total_running_case = ($this->countHighCourtRunningCase($finalOfficeIds)->count() + $this->countAppealRunningCase($finalOfficeIds)->count());
-                $val->against_gov = $this->countHighCourtAgainstGovCase($finalOfficeIds)->count();
-                $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($finalOfficeIds)->count();
-                $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($finalOfficeIds)->count();
-                array_push($arrayd, $val);
-            }
+      
 
             $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
@@ -1339,8 +1323,12 @@ class DashboardController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
 
+        $parentOfficeIds = $this->getTwoLevelOfficeIds([$ministry_id]);
+
         $data['ministry_wise'] = DB::table('gov_case_office')
-            ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
+        ->whereIn('gov_case_office.doptor_office_id', $parentOfficeIds)->paginate(10);
+
+
 
         $arrayd = [];
         foreach ($data['ministry_wise'] as $key => $val) {
@@ -1431,7 +1419,31 @@ class DashboardController extends Controller
         // return view('dashboard.cabinet.cabinet_admin_ministry_wise_old')->with($data);
     }
 
-    
+    public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
+    {
+        $allOfficeIds = $parentOfficeIds;
+        $currentLevelIds = $parentOfficeIds;
+        $level = 1;
+        while ($level <= $maxLevels) {
+            // Get the child offices for the current level
+            $childOfficeIds = DB::table('gov_case_office')
+                ->whereIn('parent_office_id', $currentLevelIds)
+                ->pluck('doptor_office_id')
+                ->toArray();
+
+            if (empty($childOfficeIds)) {
+                break;
+            }
+
+            $allOfficeIds = array_merge($allOfficeIds, $childOfficeIds);
+
+            // Set up the child IDs as the current level for the next iteration
+            $currentLevelIds = $childOfficeIds;
+            $level++;
+        }
+
+        return array_unique($allOfficeIds);
+    }
 
     public function get_drildown_gov_case_count($ministry = null, $department = null, $status = null)
     {

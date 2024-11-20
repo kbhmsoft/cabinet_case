@@ -23,6 +23,7 @@
                 </tr>
             </thead>
             <tbody>
+                {{-- @dd($ministry) --}}
                 @foreach ($ministry as $key => $val)
                     <tr>
                         <td>{{ en2bn($key + $ministry->firstItem()) }}</td>
