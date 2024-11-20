@@ -344,8 +344,6 @@ class AppealGovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-
-
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
@@ -397,7 +395,6 @@ class AppealGovCaseRegisterController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-
 
         $query = AppealGovCaseRegister::with('highcourtCaseDetail')->orderby('id', 'DESC')
             ->where('is_final_order', 1)
@@ -1272,7 +1269,6 @@ class AppealGovCaseRegisterController extends Controller
 
     }
 
-
     public function appealChangingMainRespondentStore(Request $request)
     {
 
@@ -1693,8 +1689,6 @@ class AppealGovCaseRegisterController extends Controller
             $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
         }
 
-
-
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10)->withQueryString();
 
         $data['case_divisions'] = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
@@ -1735,7 +1729,6 @@ class AppealGovCaseRegisterController extends Controller
 
         return array_unique($allOfficeIds);
     }
-
 
     public function appellateDivisionPrintCaseList()
     {
@@ -2743,7 +2736,7 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
-            // ->where('concern_user_id', $authUserId)
+        // ->where('concern_user_id', $authUserId)
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
 
@@ -2771,7 +2764,6 @@ class AppealGovCaseRegisterController extends Controller
         if (!empty($_GET['case_no'])) {
             $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
         }
-
 
         $data['cases'] = $query->with('highcourtCaseDetail:id,case_no,subject_matter', 'badis:id,gov_case_id,name')->paginate(10);
         dd($data);
@@ -2966,7 +2958,6 @@ class AppealGovCaseRegisterController extends Controller
         // $concernpersondesig = Role::where('id', $case->concern_person_designation)->first();
         // $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
-
         $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($caseId->id);
 // dd($data['appealCaseData']);
         $govCaseInfo = GovCaseRegister::where('id', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
@@ -2976,10 +2967,8 @@ class AppealGovCaseRegisterController extends Controller
             $data['govCaseRegister'] = GovCaseRegisterRepository::GovCaseAllDetails($govCaseId);
         }
 
-
-
         $data['caseCourts'] = GovCaseAppealAdalat::where('gov_case_id', $caseId->id)->get();
-        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id',$caseId->id)->get();
+        $data['appealAttachment'] = AppealAttachment::where('appeal_gov_case_id', $caseId->id)->get();
         $data['ministrys'] = GovCaseOffice::get();
 
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();

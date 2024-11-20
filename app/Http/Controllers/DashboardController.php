@@ -1338,7 +1338,7 @@ class DashboardController extends Controller
     {
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
-        // $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent', $ministry_id)->orwhere('id', $ministry_id)->paginate(10);
+
 
         $data['ministry_wise'] = DB::table('gov_case_office')
             ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
