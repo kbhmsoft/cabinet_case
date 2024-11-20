@@ -1339,10 +1339,9 @@ class DashboardController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         // $data['ministry_wise'] = DB::table('gov_case_office')->where('gov_case_office.parent', $ministry_id)->orwhere('id', $ministry_id)->paginate(10);
-
         $data['ministry_wise'] = DB::table('gov_case_office')
-            ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
-
+        ->where('gov_case_office.parent_office_id', $ministry_id)->orwhere('doptor_office_id', $ministry_id)->paginate(10);
+        
         $arrayd = [];
         foreach ($data['ministry_wise'] as $key => $val) {
             $doptorOfficeId = $val->doptor_office_id;
@@ -1358,47 +1357,47 @@ class DashboardController extends Controller
         $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
         $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
         $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-
+        
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
-            ->where('is_final_order', 0)->count();
-
+        ->where('is_final_order', 0)->count();
+        
         $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
-
+        
         $data['total_appeal_case'] = AppealGovCaseRegister::count();
         $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)->count();
         $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->count();
-
+        
         $data['highcourt_not_against_gov'] = GovCaseRegister::where('is_final_order', 1)
-            ->where('result', 1)
-            ->whereNull('deleted_at')
-            ->count();
-
+        ->where('result', 1)
+        ->whereNull('deleted_at')
+        ->count();
+        
         $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('in_favour_govt', 2)
-            ->where('is_appeal', 0)->count();
-
+        ->where('is_appeal', 0)->count();
+        
         $data['highcourt_against_gov'] = GovCaseRegister::where('is_final_order', 1)
-            ->where('result', 2)
-            ->whereNull('deleted_at')
-            ->count();
-
+        ->where('result', 2)
+        ->whereNull('deleted_at')
+        ->count();
+        
         $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
-
+        
         $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('result_sending_date')->count();
-
+        
         $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
-
+        
         $data['five_years_running_highcourt_case'] = GovCaseRegister::where('deleted_at', '=', null)->where('is_final_order', 0)
-            ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
-            ->orderBy('id', 'DESC')
-            ->count();
-
+        ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+        ->orderBy('id', 'DESC')
+        ->count();
+        
         $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
-            ->where('deleted_at', '=', null)
+        ->where('deleted_at', '=', null)
             ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
             ->orderBy('id', 'DESC')
             ->count();
-
-        $data['appeal_not_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
+            
+            $data['appeal_not_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
             ->where('is_final_order', 1)
             ->where('result', 1)
             ->count();
@@ -1407,27 +1406,27 @@ class DashboardController extends Controller
             ->where('is_final_order', 1)
             ->where('result', 2)
             ->count();
+            
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+            
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
 
-        $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-        $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
-
-        $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
-
-        $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
-        $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
-        $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
-        $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
-        $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
-
-        $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
-
-        $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-        $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
-        $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
-        $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
-        $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-
-        $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
+            $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
+            $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
+            
+            // $data['cases'] = DB::table('gov_case_registers')->select('gov_case_registers.*')->get();
+            
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            $data['sent_to_solicitor_case'] = GovCaseRegisterRepository::sendToSolicotorCases();
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            
+            $data['page_title'] = 'মন্ত্রিপরিষদ সচিবের ড্যাশবোর্ড';
         return view('dashboard.cabinet.cabinet_admin_ministry_wise')->with($data);
         // return view('dashboard.cabinet.cabinet_admin_ministry_wise_old')->with($data);
     }
