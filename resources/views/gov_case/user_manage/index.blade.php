@@ -145,11 +145,13 @@
                                     <a href="{{ route('cabinet.user-management.show', $row->id) }}"
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-info-circle text-info"
                                             title="বিস্তারিত"></i></a>
+
+
                                     <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
                                             title="সংশোধন"></i></a>
                                     @if (Auth::user()->role_id == 27)
-                 
+
                                         <form method="post" action="{{ route('cabinet.user-management.destroy', $row->id) }}">
                                             @csrf
                                             @method('DELETE')
@@ -160,26 +162,8 @@
                                             </div>
                                         </form>
                                     @endif
+                           
                                 </td>
-
-                                {{-- <td>
-                                    @if (auth()->user()->can('show_user_details'))
-                                        <a href="{{ route('cabinet.user-management.show', $row->id) }}"
-                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">বিস্তারিত</a>
-                                    @else
-                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                            বিস্তারিত
-                                        </a>
-                                    @endif
-                                    @if (auth()->user()->can('update_user_info'))
-                                        <a href="{{ route('cabinet.user-management.edit', $row->id) }}"
-                                            class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</a>
-                                    @else
-                                        <a href="#" class="btn btn-secondary btn-sm font-weight-bold pt-1 pb-1">
-                                            সংশোধন
-                                        </a>
-                                    @endif
-                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>

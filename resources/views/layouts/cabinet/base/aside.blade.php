@@ -6,8 +6,6 @@
             <!-- <img alt="Logo" src="media/logos/logo-light.png" /> -->
             <img alt="Logo" src="{{ asset(App\Models\SiteSetting::first()->site_logo) }}" height="45"
                 class="mr-4" style="border: 0px solid #8a8a8a; padding: 2px;" />
-       
-
         </a>
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
             <span class="svg-icon svg-icon svg-icon-xl">

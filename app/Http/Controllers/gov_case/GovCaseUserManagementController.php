@@ -157,7 +157,7 @@ class GovCaseUserManagementController extends Controller
             $finalOfficeIds[] = $officeID;
             $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
         }
-        // dd($finalOfficeIds);
+
         $data['offices'] = DB::table('gov_case_office')->get();
         //Add Conditions
         if ($roleID == 27) {
@@ -165,9 +165,9 @@ class GovCaseUserManagementController extends Controller
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
-                ->whereNotIn('users.role_id', [42, 43])
+                // ->whereNotIn('users.role_id', [42, 43])
                 ->where('users.is_gov', 1)
-                ->orderBy('users.office_id', 'DESC');
+                ->orderBy('users.id', 'DESC');
 
             // For Ministry Admin
         } else {
@@ -179,7 +179,7 @@ class GovCaseUserManagementController extends Controller
                 ->whereIn('users.office_id', $finalOfficeIds)
                 ->whereNotIn('users.role_id', [27, 42, 43])
                 ->where('users.is_gov', 1)
-                ->orderBy('users.office_id', 'DESC');
+                ->orderBy('users.id', 'DESC');
         }
 
         if (!empty($_GET['office_id'])) {
@@ -201,14 +201,6 @@ class GovCaseUserManagementController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
-        ///////// start run script
-        // ***** assing role for all users
-        // $userItem = User::where('is_gov', 1)->get();
-        // foreach($userItem as $user){
-        //     $user->assignRole($user->role);
-        // }
-        ///////// run script
-        // return $data['offices'];
 
         $data['page_title'] = 'ব্যবহারকারীর তালিকা';
 
@@ -484,17 +476,16 @@ class GovCaseUserManagementController extends Controller
     {
         $data['userManagement'] = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.id')
+            ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
             ->select('users.*', 'roles.name as roles_name', 'gov_case_office.office_name_bn')
             ->where('users.id', $id)
             ->get()->first();
-        // dd($data['userManagement']);
 
         $data['roles'] = DB::table('roles')
-            ->select('id', 'name')
+            ->select('id', 'name','name_bn')
             ->get();
 
-        // dd($data['roles']);
+
         $data['page_title'] = 'ব্যবহারকারীর বিস্তারিত';
         return view('gov_case.user_manage.show')->with($data);
     }

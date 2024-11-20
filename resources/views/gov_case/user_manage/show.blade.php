@@ -27,7 +27,7 @@
 
             @foreach ($roles as $value)
             @if($value->id == $userManagement->role_id )
-             {{ $value->name }}
+             {{ $value->name_bn }}
              @endif
             @endforeach
 
