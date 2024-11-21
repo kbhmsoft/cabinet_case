@@ -430,22 +430,18 @@
                                                 <div class="col-lg-6 mb-5 mb-5">
                                                     <table width="100%" border="1" id=""
                                                         class="table mb-5" style="border:1px solid #dcd8d8;">
-
                                                         <tr>
                                                             <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                             </th>
 
                                                         </tr>
                                                         <tbody>
-
                                                             @foreach ($mainBibadi as $bibadi)
                                                                 <tr>
                                                                     <td class="tg-nluh">
-
                                                                         {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
                                                                 </tr>
                                                             @endforeach
-
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -453,7 +449,6 @@
                                                 <div class="col-lg-6 mb-5 mb-5">
                                                     <table width="100%" border="1" id=""
                                                         class="table mb-5" style="border:1px solid #dcd8d8;">
-
                                                         <tr>
                                                             <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
                                                         </tr>
@@ -464,20 +459,9 @@
                                                                         {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
                                                                 </tr>
                                                             @endforeach
-
                                                         </tbody>
                                                     </table>
                                                 </div>
-
-
-
-                                                {{-- <div class="col-lg-6 mb-5 mb-5">
-                                                    <label>বিষয়বস্তু(সংক্ষিপ্ত)<small class="text-danger">
-                                                        </small> </label>
-                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false"
-                                                        disabled>{{ $govCaseRegister['case']->subject_matter }}</textarea>
-                                                </div> --}}
-
 
                                                 <div class="col-lg-6 mb-5 mb-5">
                                                     <label>এফিডেভিট দাখিলকারী রেসপন্ডেন্ট <span
@@ -485,7 +469,6 @@
                                                     <input type="text" name="cmp_no" id="cmp_no"
                                                         class="form-control form-control-sm" placeholder=""
                                                         required="required" disabled>
-                                                    {{-- <input type="hidden" name="caseId" value=""> --}}
                                                     <span class="text-danger d-none vallidation-message">This field can
                                                         not be empty</span>
                                                 </div>
@@ -514,65 +497,16 @@
                                             </div>
 
                                             <div class="form-group row mt-5">
-                                                {{-- <div class="col-lg-6 mb-5">
-                                                    <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
-                                                    <input type="text" name="result_date" id="result_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="দিন/মাস/বছর" autocomplete="off" disabled
-                                                        value="{{ $govCaseRegister['case']->result_date }}">
-                                                </div>
 
-
-                                                <div class="col-md-6">
-                                                    <label class="form-group font-weight-bolder font-size-h5">রায় ফলাফল
-                                                    </label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" name="result" id="result"
-                                                                value="1"
-                                                                {{ $govCaseRegister['case']->in_favour_govt == 1 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <span></span>সরকারের পক্ষে</label>
-                                                        <label class="radio">
-                                                            <input type="radio" name="result" id="result"
-                                                                value="2"
-                                                                {{ $govCaseRegister['case']->in_favour_govt == 2 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <span></span>সরকারের বিপক্ষে</label>
-                                                    </div>
-                                                </div> --}}
                                             </div>
 
 
                                             <div class="col-md-12">
-                                                {{-- <label class="form-group font-weight-bolder font-size-h5">মামলার রায়ের
-                                                    সংক্ষিপ্ত বিবরণ</label>
-                                                <textarea name="result_short_dtails" class="form-control" id="result_short_dtails" rows="3"
-                                                    spellcheck="false" disabled> {{ $govCaseRegister['case']->result_short_dtails }} </textarea> --}}
+
                                             </div>
 
                                             <div class="form-group row mt-5">
-                                                {{-- <div class="col-lg-6 mb-5 mb-5">
-                                                    <label>রায়ের নকল প্রাপ্তির জন্য আবেদনের তারিখ<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="result_copy_asking_date"
-                                                        id="result_copy_asking_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="" autocomplete="off"
-                                                        value="{{ $govCaseRegister['case']->result_copy_asking_date }}"
-                                                        disabled>
-                                                </div>
 
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    <label>রায়ের নকল প্রাপ্তির তারিখ<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="result_copy_reciving_date"
-                                                        id="result_copy_reciving_date"
-                                                        class="form-control form-control-sm  common_datepicker"
-                                                        placeholder="" autocomplete="off"
-                                                        value="{{ $govCaseRegister['case']->result_copy_reciving_date }}"
-                                                        disabled>
-                                                </div> --}}
                                             </div>
 
                                         </fieldset>
@@ -595,13 +529,12 @@
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        {{-- <div class="step"> --}}
+
                                         <input type="hidden" id="caseIDForFinalOrder" name="case_id"
                                             value="{{ $case->id }}">
-                                        {{-- {{dd($case->is_final_order)}} --}}
+
                                         <fieldset class="mb-8">
-                                            {{-- <legend> মামলার ফলাফল</legend> --}}
+
                                             <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
