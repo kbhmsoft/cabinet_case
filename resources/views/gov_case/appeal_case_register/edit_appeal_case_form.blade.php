@@ -370,11 +370,11 @@
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>ধরনর মামলা উদ্ভূত<span class="text-danger">*</span></label>
+                                                    <label>ধরনর মামলা উদ্ভূত</label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             @foreach ($GovCaseDivisionCategoryHighcourt as $value)
                                                                 <option value="{{ $value->id }}"
@@ -389,11 +389,11 @@
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>মামলা নং(উদ্ভূত)<span class="text-danger">*</span></label>
+                                                    <label>মামলা নং(উদ্ভূত)</label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_number_origin" id="case_number_origin"
-                                                            class="form-control form-control-sm" required="required">
+                                                            class="form-control form-control-sm">
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             {{-- {{dd($caseNumberOrigin)}} --}}
                                                             @foreach ($originCaseNumber as $value)
@@ -1204,7 +1204,6 @@
         //add row function
         function addAdvocateLawerFunc() {
             var count = parseInt($('#survey_count').val());
-            // alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';
