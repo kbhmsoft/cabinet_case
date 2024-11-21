@@ -143,11 +143,14 @@
 
 
                                                 <div class="col-lg-4 mb-5">
-                                                    <table width="100%" border="1" id="AppealAdalatDiv" class="mb-5" style="border:1px solid #dcd8d8;">
+                                                    <table width="100%" border="1" id="AppealAdalatDiv" class="mb-5"
+                                                        style="border:1px solid #dcd8d8;">
                                                         <tr>
-                                                            <th>আদালতের নাম (Justice Name) <span class="text-danger">*</span></th>
+                                                            <th>আদালতের নাম (Justice Name) <span
+                                                                    class="text-danger">*</span></th>
                                                             <th width="30">
-                                                                <a href="javascript:void(0);" id="AppealAdalatRow" class="btn btn-sm btn-primary pr-2">
+                                                                <a href="javascript:void(0);" id="AppealAdalatRow"
+                                                                    class="btn btn-sm btn-primary pr-2">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </a>
                                                             </th>
@@ -157,7 +160,9 @@
                                                         @foreach ($caseCourts as $key => $row)
                                                             <tr id="adalat_{{ $row->id }}">
                                                                 <td>
-                                                                    <select name="appeal_adalat[]" id="ministry_id_{{ $key }}" class="form-control form-control-sm">
+                                                                    <select name="appeal_adalat[]"
+                                                                        id="ministry_id_{{ $key }}"
+                                                                        class="form-control form-control-sm">
                                                                         @foreach ($appealCourtAdalat as $value)
                                                                             <option value="{{ $value->id }}"
                                                                                 {{ old('appeal_adalat') == $value->id || $row->appeal_adalat == $value->id ? 'selected' : '' }}>
@@ -165,7 +170,8 @@
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <input type="hidden" name="appeal_adalat_id[]" value="{{ $row->id }}">
+                                                                    <input type="hidden" name="appeal_adalat_id[]"
+                                                                        value="{{ $row->id }}">
                                                                 </td>
                                                                 <td>
                                                                     @if ($key > 0)
@@ -1095,89 +1101,83 @@
     /////// For Adalat Delete ----------///////////////////
 
     function deleteAdalat(id) {
-    Swal.fire({
-        title: 'আপনি কি মামলার আদালতটি মুছে ফেলতে চান?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'হ্যাঁ',
-        cancelButtonText: 'না'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var deleteButton = $('#deleteAdalatBtn_' + id);
-            deleteButton.addClass('loadersmall');
-            $.ajax({
-                url: '{{ url('/') }}/cabinet/case/appeal/adalat/delete/' + id,
-                type: "post",
-                dataType: "json",
-                success: function(data) {
-                    Swal.fire(
-                        'সফল!',
-                        data.message,
-                        'success'
-                    ).then(() => {
-                        $('#adalat_' + id).remove();
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX Error:", textStatus, errorThrown);
-                    Swal.fire(
-                        'ব্যর্থ!',
-                        'কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
-                        'error'
-                    );
-                },
-                complete: function() {
-                    // Remove the loader class after the request completes
-                    deleteButton.removeClass('loadersmall');
-                }
-            });
-        }
-    });
-}
+        Swal.fire({
+            title: 'আপনি কি মামলার আদালতটি মুছে ফেলতে চান?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'হ্যাঁ',
+            cancelButtonText: 'না'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var deleteButton = $('#deleteAdalatBtn_' + id);
+                deleteButton.addClass('loadersmall');
+                $.ajax({
+                    url: '{{ url('/') }}/cabinet/case/appeal/adalat/delete/' + id,
+                    type: "post",
+                    dataType: "json",
+                    success: function(data) {
+                        Swal.fire(
+                            'সফল!',
+                            data.message,
+                            'success'
+                        ).then(() => {
+                            $('#adalat_' + id).remove();
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX Error:", textStatus, errorThrown);
+                        Swal.fire(
+                            'ব্যর্থ!',
+                            'কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+                            'error'
+                        );
+                    },
+                    complete: function() {
+                        // Remove the loader class after the request completes
+                        deleteButton.removeClass('loadersmall');
+                    }
+                });
+            }
+        });
+    }
 
 
-  /////// For Advocate Delete ----------///////////////////
+    /////// For Advocate Delete ----------///////////////////
 
-  function deleteAdvocate(id) {
-            Swal.fire({
-                title: 'আপনি কি মামলার সংশ্লিষ্ট আইন কর্মকর্তাটি মুছে ফেলতে চান?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'হ্যাঁ',
-                cancelButtonText: 'না'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#deleteAdvocateBtn_' + id).addClass('loadersmall');
-                    $.ajax({
-                        url: '{{ url('/') }}/cabinet/case/appeal/advocate/delete/' + id,
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(data) {
-                            Swal.fire(
-                                'সফল!',
-                                data.message,
-                                'success'
-                            ).then(() => {
-                                // Remove the corresponding row
-                                $('#advocate_' + id).remove();
-                            });
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("AJAX Error:", textStatus, errorThrown);
-                        }
-                    });
-                }
-            });
-        }
-
-
-
-
-
-
+    function deleteAdvocate(id) {
+        Swal.fire({
+            title: 'আপনি কি মামলার সংশ্লিষ্ট আইন কর্মকর্তাটি মুছে ফেলতে চান?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'হ্যাঁ',
+            cancelButtonText: 'না'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#deleteAdvocateBtn_' + id).addClass('loadersmall');
+                $.ajax({
+                    url: '{{ url('/') }}/cabinet/case/appeal/advocate/delete/' + id,
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        Swal.fire(
+                            'সফল!',
+                            data.message,
+                            'success'
+                        ).then(() => {
+                            // Remove the corresponding row
+                            $('#advocate_' + id).remove();
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX Error:", textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
 </script>
 
 
@@ -1205,7 +1205,7 @@
         function addAdvocateLawerFunc() {
 
             var count = parseInt($('#survey_count').val());
-            // alert(count)
+            alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';
@@ -1213,22 +1213,25 @@
             items += '<input type="hidden" name="concern_person_id[]" value="">';
             items +=
                 '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-                '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+                '" class="form-control form-control-sm concern_select2" onchange="getConcernPerName(' + count +
                 ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
             items +=
                 '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-                '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
+                '" class="form-control form-control-sm concern_select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
             if (count > 0) {
                 items +=
                     '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
             }
             items += '</tr>';
+            // return items;
 
             $('#advocateLawerDiv tr:last').after(items);
 
-            $('.select2').select2();
+            $('.concern_select2').select2();
         }
+
+      
 
         //remove row function
         function removeAdvocateLawerRow(id) {
