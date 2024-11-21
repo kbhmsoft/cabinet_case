@@ -1395,12 +1395,7 @@ class DashboardController extends Controller
             
            
 
-        $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-        $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
-
-        $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
-
-        $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+    
         $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
         $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
         $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
