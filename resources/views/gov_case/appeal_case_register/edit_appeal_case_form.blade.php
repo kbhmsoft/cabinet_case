@@ -1203,9 +1203,7 @@
 
         //add row function
         function addAdvocateLawerFunc() {
-
             var count = parseInt($('#survey_count').val());
-            // alert(count)
             $('#survey_count').val(count + 1);
             var items = '';
             items += '<tr>';

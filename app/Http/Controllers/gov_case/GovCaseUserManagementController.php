@@ -646,7 +646,7 @@ class GovCaseUserManagementController extends Controller
 
         // $data['users'] = $query->paginate(10)->withQueryString();
         $data['users'] = $query->get();
-        // dd($data['users']);
+    
         $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')
             ->whereNotIn('id', $role)
             ->where('is_gov', 1)
@@ -656,7 +656,7 @@ class GovCaseUserManagementController extends Controller
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
-        // dd($data);
+
 
         $data['page_title'] = 'অনুমোদিত
         ই-নথি ব্যবহারকারী তালিকা';

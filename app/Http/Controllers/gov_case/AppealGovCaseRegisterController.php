@@ -2349,7 +2349,6 @@ class AppealGovCaseRegisterController extends Controller
 
     public function highcourt_old_case_create()
     {
-
         session()->forget('currentUrlPath');
 
         $roleID = userInfo()->role_id;
