@@ -2283,11 +2283,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['originCaseNumber'] = GovCaseRegister::orderby('id', 'desc')
             ->select("case_no", "id", "year")->get();
 
-        if ($roleID != 33) {
-            $data['depatments'] = Office::where('parent', $officeID)->get();
-        } else {
-            $data['depatments'] = Office::where('level', 12)->get();
-        }
+     
 
         $data['usersInfo'] = User::all();
         if ($roleID != 27) {

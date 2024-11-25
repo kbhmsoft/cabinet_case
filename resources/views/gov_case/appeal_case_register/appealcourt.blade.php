@@ -181,7 +181,6 @@
                                     @endif
                                 </td>
 
-                                {{-- <td style="text-align:center;"> {{ $row->badis['name'] ?? '' }} </td> --}}
                                 <?php
                                 $subjectMatter = $row->highcourt_case_detail;
                                 if ($row->highcourt_case_detail !== null) {
@@ -192,7 +191,6 @@
                                 ?>
                                 <td style="text-align:center;"> {{ Str::limit($subjectMatterData, 100) }}</td>
 
-                                {{-- <td style="text-align:center;">{{ '-' }} </td> --}}
 
 
                                 <td class="notice-popup">

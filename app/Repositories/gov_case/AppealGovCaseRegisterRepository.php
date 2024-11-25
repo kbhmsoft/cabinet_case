@@ -112,14 +112,12 @@ class AppealGovCaseRegisterRepository
 
     public static function storeAppeal($caseInfo)
     {
-        //    dd($caseInfo);
         $case = self::checkAppealGovCaseExist($caseInfo['caseId']);
 
         $petitioner_name = '';
         if ($caseInfo->appeal_office == 0) {
             $petitioner_name = $caseInfo->appeal_petitioner_name;
         }
-
         try {
             $case->case_no = $caseInfo->case_no;
             $case->case_category_id = $caseInfo->case_category;

@@ -408,10 +408,70 @@
                                                     </div>
                                                 </div>
 
-                                        </fieldset>
-                                        {{-- </div> --}}
 
-                                        <!--end::Card-->
+                                                <div class="col-md-12" id="showHighCourtCaseManualDiv">
+                                                    <fieldset class="mb-8">
+                                                        <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
+                                                            নিম্নের
+                                                            কলামসমুহ পুরণ করুণঃ</legend>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>হাইকোর্ট/প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="case_number_origin_manual"
+                                                                    id="case_number_origin_manual"
+                                                                    class="form-control form-control-sm"
+                                                                    value="{{ $case->case_number_origin ?? '' }}"
+                                                                    placeholder="(Type digits in English)"
+                                                                    required="required"
+                                                                    onkeypress="return allowBanglaAndEnglishNumerals(event)">
+
+                                                            </div>
+
+
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>পিটিশনারের নাম: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="writ_petitioner_name"
+                                                                    id="writ_petitioner_name"
+                                                                    class="form-control form-control-sm"
+                                                                    value="{{ $case->writ_petitioner_name ?? '' }}">
+
+                                                            </div>
+
+
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
+                                                                        class="text-danger">
+                                                                    </small> </label>
+                                                                <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">
+                                                                    {{ $case->subject_matter ?? '' }}
+                                                                </textarea>
+                                                            </div>
+
+
+                                                            <div class="col-lg-4 mb-5">
+                                                                <label>রায়/আদেশ প্রদানের তারিখ: <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="case_order_date"
+                                                                    id="case_order_date"
+                                                                    class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                                    {{ $case->case_order_date ?? '' }}>
+                                                            </div>
+
+
+                                                            <div class="col-lg-8 mb-5">
+                                                                <label>রায়/আদেশের বিবরণ:<small class="text-danger">
+                                                                    </small> </label>
+                                                                <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"> {{ $case->case_order_details ?? '' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+                                        </fieldset>
+
                                     </div>
                                     <div class="col-md-12" id="showHighCourtCaseDiv">
                                         <fieldset>

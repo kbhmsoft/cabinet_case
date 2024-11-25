@@ -258,7 +258,8 @@
                                                     <input type="text" name="case_number_origin_manual"
                                                         id="case_number_origin_manual"
                                                         class="form-control form-control-sm"
-                                                        placeholder="(Type digits in English)" required="required">
+                                                        placeholder="(Type digits in English)" required="required"
+                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
 
                                                 </div>
                                                 <div class="col-lg-4 mb-5">
