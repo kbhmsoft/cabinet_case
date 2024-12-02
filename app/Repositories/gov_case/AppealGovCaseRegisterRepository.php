@@ -131,26 +131,27 @@ class AppealGovCaseRegisterRepository
             $case->case_division_id = 1;
 
             if (empty($caseInfo->case_entry_date)) {
-                $case->case_entry_date = date('Y-m-d'); // Set to current date
+                $case->case_entry_date = date('Y-m-d');
             } else {
                 // If $caseInfo->case_entry_date is not empty, convert and assign the value
                 $case->case_entry_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_entry_date)));
             }
 
             if (empty($caseInfo->postpond_date)) {
-                $case->postpond_date = date('Y-m-d'); // Set to current date
+                $case->postpond_date = date('Y-m-d');
             } else {
                 // If $caseInfo->postpond_date is not empty, convert and assign the value
                 $case->postpond_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->postpond_date)));
             }
             $case->postponed_details = $caseInfo->postponed_details ?? '';
+
             if ($caseInfo->case_number_origin) {
 
                 $case->case_category_origin = $caseInfo->case_category_origin;
 
                 $case->case_number_origin = $caseInfo->case_number_origin;
 
-                $case->case_origin_id = $caseInfo->case_number_origin;
+                // $case->case_origin_id = $caseInfo->case_number_origin;
             } else {
                 $case->case_number_origin = $caseInfo->case_number_origin_manual;
                 $case->writ_petitioner_name = $caseInfo->writ_petitioner_name;

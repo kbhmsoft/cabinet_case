@@ -46,20 +46,6 @@ class LoginController extends BaseController
         $this->middleware('guest')->except('logout');
     }
 
-    // public function doptorLogin(Request $request)
-    // {
-
-    //     $userEmail = $request->email;
-    //     $password = $request->password;
-    //     if (Auth::attempt(['email' => $userEmail, 'password' => $password])) {
-    //         $user = Auth::user();
-    //         $success['user_id'] = $user->id;
-    //         return redirect()->route('dashboard');
-    //     } else {
-    //         return redirect()->back()->with('error', '!! User Credential Not Matched !!');
-    //     }
-    // }
-
     public function doptorLogin(Request $request)
     {
         // Validate the form data
@@ -136,7 +122,7 @@ class LoginController extends BaseController
 
         // Execute cURL request
         $response = curl_exec($curl);
-// dd($response);
+
         if (curl_errno($curl)) {
             Log::error('cURL error: ' . curl_error($curl));
 
@@ -195,7 +181,7 @@ class LoginController extends BaseController
             'role_id' => $organoGramUserInfo->user_role ?? 43,
             'office_id' => $officeId,
             'is_gov' => 1,
-            'password' => Hash::make('!(MHL@9865@MMR#CSMS@)'),
+            'password' => Hash::make('!(MHL@9865@MMR#SCMS@)'),
             'unit_name_bn' => $unitNameBn,
             'designation' => $designation,
             'organogram_id' => $organogramId ?? null,
@@ -379,8 +365,9 @@ class LoginController extends BaseController
         $employee_record_ids = $employeeRecordId;
         curl_setopt_array($curl, array(
 
-            CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/user/images',
-
+            // CURLOPT_URL => 'https://n-doptor-api.nothi.gov.bd/api/user/images',
+            // CURLOPT_URL => 'https://apigw-stage.doptor.gov.bd/api/user/images',
+            CURLOPT_URL => DOPTOR_ENDPOINT() . '/api/user/images',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -393,7 +380,7 @@ class LoginController extends BaseController
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'api-version: 1',
-                'apikey: 8XI1PI',
+                'apikey: YED1EN',
                 'Authorization: Bearer ' . $token,
             ),
         ));

@@ -592,7 +592,8 @@ class GovCaseOfficeController extends Controller
         } elseif ($roleID == 29 || $roleID == 31) {
             $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
         } else {
-            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+            // $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
         }
 
         $query = DB::table('users')->orderBy('id', 'DESC')
@@ -694,7 +695,7 @@ class GovCaseOfficeController extends Controller
     public function doptor_user_office(Request $request)
     {
         session()->put('currentUrlPath', request()->path());
-
+        // dd($request->all());
         $doptoOrganogramOffice = '';
 
         if ($request->office_type != null && $request->ministry == null && $request->divOffice == null && $request->office_id != null) {
@@ -774,7 +775,8 @@ class GovCaseOfficeController extends Controller
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'api-version: 1',
-                'apikey: YED1EN',
+                // 'apikey: 8XI1PI',
+                 'apikey: YED1EN',
                 'Authorization: Bearer ' . $token,
             ),
         ));

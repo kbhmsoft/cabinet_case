@@ -134,8 +134,7 @@
                             <tr>
                                 {{-- <th scope="row" class="tg-bn">{{ en2bn($key + $users->firstItem()) }}</th> --}}
                                 <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
-                                <td>{{ $row->name }}</td>
-
+                                <td>{{ $row->name}}</td>
                                 <td>{{ $row->roleName }}</td>
                                 <td>{{ $row->office_name_bn }}</td>
                                 <td>{{ $row->mobile_no ? en2bn($row->mobile_no) : '-' }}</td>
@@ -151,18 +150,22 @@
                                         class="font-weight-bold pt-1 pb-1"><i class="fas fa-edit text-success"
                                             title="সংশোধন"></i></a>
                                     @if (Auth::user()->role_id == 27)
-
-                                        <form method="post" action="{{ route('cabinet.user-management.destroy', $row->id) }}">
+                                        <form method="post"
+                                            action="{{ route('cabinet.user-management.destroy', $row->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5" onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')" title="মুছে ফেলুন">
-                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}" style="height: 20px; width: auto;" alt="Logo" class="mr-2">
+                                                <button type="submit"
+                                                    class="btn btn-shadow btn-sm font-weight-bold pt-1 pb-1 mt-5"
+                                                    onclick="return confirm('আপনি কি ইউজারেরে তথ্য মুছে দিতে চান')"
+                                                    title="মুছে ফেলুন">
+                                                    <img src="{{ asset('uploads/IconeSCMS/cross-button.jpg') }}"
+                                                        style="height: 20px; width: auto;" alt="Logo" class="mr-2">
                                                 </button>
                                             </div>
                                         </form>
                                     @endif
-                           
+
                                 </td>
                             </tr>
                         @endforeach
