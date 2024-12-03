@@ -693,7 +693,7 @@
                 var caseNo = $('#case_no').val(); // Get the case number
                 var caseYear = $('#case_year').val(); // Get the case year
                 var caseCategory = $('#case_category_type').val(); // Get the case category
-
+// console.log(caseNo,caseYear,caseCategory);
                 // Proceed with AJAX request only if all fields are filled
                 if (caseNo && caseYear && caseCategory) {
                     $.ajax({
