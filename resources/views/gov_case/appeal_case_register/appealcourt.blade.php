@@ -95,9 +95,9 @@
                 @endcan
 
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('cabinet.case.appeal_case_list.print') }}" target="_blank"
-                     class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
-                 </div>
+                    <a href="{{ route('cabinet.case.appeal_case_list.print') }}" target="_blank" class="btn btn-info "><i
+                            class="fas fa-print" aria-hidden="true"></i></a>
+                </div>
             </div>
 
 
@@ -151,9 +151,13 @@
                                 <td style="width: 10px;">
                                     {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}
                                     <br>
-                                    @if ($row->case_origin)
-
-                                    ( {{  en2bn($row->case_origin->case_no) }}/{{  en2bn($row->case_origin->year) }} নং {{ $row->case_origin->case_category->name_bn }} হতে উদ্ভূত)
+                                    @if ($row->case_origin != 0)
+                                        @if ($row->case_origin)
+                                            ({{ en2bn($row->case_origin->case_no) }}/{{ en2bn($row->case_origin->year) }}
+                                            নং {{ $row->case_origin->case_category->name_bn }} হতে উদ্ভূত)
+                                        @endif
+                                    @else
+                                        {{ en2bn($row->case_origin->case_no) }}/{{ en2bn($row->case_origin->year) }} নং
                                     @endif
 
                                 </td>
@@ -167,17 +171,16 @@
                                 </td>
 
                                 <td style="text-align:center;">
-                                    @if($row->appeal_office_id != 0)
-                                    @php
-                                        $govCaseOffice = App\Models\gov_case\GovCaseOffice::where(
-                                            'doptor_office_id',
-                                            $row->appeal_office_id,
-                                        )->first();
-                                    @endphp
-                                    {{ $govCaseOffice->office_name_bn ?? '' }}
+                                    @if ($row->appeal_office_id != 0)
+                                        @php
+                                            $govCaseOffice = App\Models\gov_case\GovCaseOffice::where(
+                                                'doptor_office_id',
+                                                $row->appeal_office_id,
+                                            )->first();
+                                        @endphp
+                                        {{ $govCaseOffice->office_name_bn ?? '' }}
                                     @else
-                                    {{ $row->appeal_petitioner_name ?? '' }}
-
+                                        {{ $row->appeal_petitioner_name ?? '' }}
                                     @endif
                                 </td>
 
@@ -243,8 +246,8 @@
                                                 @endif
 
                                                 <a class="dropdown-item"
-                                                href="{{ route('cabinet.case.appealAgainstGovOrderTaken', $row->id) }}">
-                                                সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
+                                                    href="{{ route('cabinet.case.appealAgainstGovOrderTaken', $row->id) }}">
+                                                    সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
                                             </div>
                                         </div>
 
@@ -306,8 +309,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                                           <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                                         -->
+                                                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                             -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')
