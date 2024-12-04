@@ -2906,7 +2906,6 @@ class AppealGovCaseRegisterController extends Controller
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
 
-      
     }
 
     public function editAppealCaseApplication($caseNo, $caseYear = null, $caseCategoryType)
