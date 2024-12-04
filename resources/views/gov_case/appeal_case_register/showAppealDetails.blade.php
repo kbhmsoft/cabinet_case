@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                              @if (Auth::user()->role_id == 2)
+                                                      @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                            </div> -->
+                                                    </div> -->
                 </div>
             </div>
         </div>
@@ -148,17 +148,26 @@
                             @endif
 
                             @if ($appealCase->case_number_origin)
-                            {{-- {{ $appealCase->case_number_origin }} --}}
+                                {{-- {{ $appealCase->case_number_origin }} --}}
                                 <tr>
                                     <th scope="row">পূর্বের মামলা নং </th>
                                     <td>
                                         @if (auth()->user()->can('show_details_info'))
                                             {{-- <a href="{{ route('cabinet.case.details', $govCaseRegister['case']->id) }}"
                                                 target="_blank"> --}}
-                                            {{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}
+                                            @if ($appealCase->case_origin_id != 0)
+                                                {{ isset($appealCase->govCaseOrigin) ? $appealCase->govCaseOrigin->case_no : '' }}
+                                            @else
+                                                {{ $appealCase->case_number_origin }}
+                                            @endif
+
                                             {{-- </a> --}}
                                         @else
-                                            <a href="#">{{ isset($appealCase->govCaseOrigin)?$appealCase->govCaseOrigin->case_no: '' }}</a>
+                                            @if ($appealCase->case_origin_id != 0)
+                                                <a href="#">{{ isset($appealCase->govCaseOrigin) ? $appealCase->govCaseOrigin->case_no : '' }}</a>
+                                            @else
+                                                {{ $appealCase->case_number_origin }}
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
