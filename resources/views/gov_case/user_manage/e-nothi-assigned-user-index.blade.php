@@ -121,17 +121,20 @@
                             <th scope="col">নাম</th>
                             <th scope="col">ইউজার রোল</th>
                             <th scope="col">অফিসের নাম</th>
+                               <th scope="col">মোবাইল</th>
                             <th scope="col">ইমেইল এড্রেস</th>
 
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach ($users as $key => $row)
                             <tr>
                                 <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
-                                <td>{{ $row->name_bng ?? ''}}</td>
+                                <td>{{ $row->name ?? ''}}</td>
                                 <td>{{ $row->roleName ?? ''}}</td>
                                 <td>{{ $row->office_name_bn ??''}}</td>
+                                <td>{{ $row->mobile_no ??''}}</td>
                                 <td>{{ $row->email ?? '' }}</td>
                             </tr>
                         @endforeach

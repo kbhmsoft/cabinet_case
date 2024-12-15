@@ -187,7 +187,8 @@
                         @php
                             $totalApplicationsCount = $highCourtApplicationsCount + $appealApplicationsCount;
                         @endphp
-                        <span class="badge badge-danger" style="position: absolute; top: 0; right: 0; z-index: 1;">
+                        <span class="badge badge-danger"
+                            style="position: absolute; top: 0; right: 0; z-index: 1; pointer-events: none;">
                             {{ en2bn($totalApplicationsCount) }}
                         </span>
                     @endif

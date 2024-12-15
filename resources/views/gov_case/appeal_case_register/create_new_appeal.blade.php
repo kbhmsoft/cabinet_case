@@ -122,7 +122,8 @@
                                                     <input type="text" name="case_no" id="case_no"
                                                         class="form-control form-control-sm"
                                                         placeholder="(type digits in English)" required="required"
-                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
+                                                        onkeypress="return allowEnglishOnly(event)"
+                                                        oninput="sanitizeEnglishDigits(this)">
                                                     <input type="hidden" name="caseId" value="">
                                                     <span class="text-danger d-none vallidation-message">This field can not
                                                         be empty</span>
@@ -132,9 +133,10 @@
                                                     <label>বছর <span class="text-danger">*</span></label>
                                                     <input type="text" name="case_year" id="case_year"
                                                         class="form-control form-control-sm common_yearpicker"
-                                                        placeholder="বছর" autocomplete="off" required="required">
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
+                                                        placeholder="বছর" autocomplete="off" required="required"
+                                                        oninput="sanitizeEnglishDigits(this)">
+                                                    <span class="text-danger d-none vallidation-message">This field can not
+                                                        be empty</span>
                                                 </div>
 
 
@@ -143,7 +145,8 @@
                                                         style="border:1px solid #dcd8d8;">
                                                         <tr>
                                                             <th class="other_bibadi_name other_respondent">
-                                                                আদালতের নাম (Justice Name)<span class="text-danger">*</span>
+                                                                আদালতের নাম (Justice Name)<span
+                                                                    class="text-danger">*</span>
                                                             </th>
                                                             <th width="50">
                                                                 <a href="javascript:void();" id="addAppealAdalatRow"
@@ -499,6 +502,23 @@
 
 
     @include('gov_case.appeal_case_register.create_new_appeal_js')
+
+
+    <script>
+        function allowEnglishOnly(event) {
+            const charCode = event.charCode || event.keyCode;
+            if (charCode >= 48 && charCode <= 57 || charCode === 8 || charCode === 46) {
+                return true;
+            }
+            return false;
+        }
+
+
+        function sanitizeEnglishDigits(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             addBadiRowFunc();
@@ -563,31 +583,34 @@
 
         function getConcernPerName(id) {
             var desig = $(`#concernPersonDesignation_${id}`).val();
-            jQuery(`#concern_user_id_${id}`).after('<div class="loadersmall"></div>');
-            if (desig) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
-                        desig,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<div class="loadersmall"></div>');
+            var concernUserDropdown = $(`#concern_user_id_${id}`);
+            concernUserDropdown.after('<div class="loadersmall"></div>');
 
-                        jQuery(`#concern_user_id_${id}`).html(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-                        jQuery.each(data, function(key, value) {
-                            jQuery(`#concern_user_id_${id}`).append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
-                        });
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                $(`#concern_user_id_${id}`).empty();
+            if (!desig || desig === '-- নির্বাচন করুন --') {
+                concernUserDropdown.html('<option value="">-- নির্বাচন করুন --</option>');
+                jQuery('.loadersmall').remove();
+                return;
             }
 
+            jQuery.ajax({
+                url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' + desig,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+
+                    concernUserDropdown.html('<option value="">-- নির্বাচন করুন --</option>');
+                    jQuery('.loadersmall').remove();
+                    jQuery.each(data, function(key, value) {
+                        concernUserDropdown.append('<option value="' + key + '">' + value +
+                            '</option>');
+                    });
+                },
+                error: function() {
+                    // Handle error and remove loader
+                    jQuery('.loadersmall').remove();
+                    console.error("Error fetching dependent concern persons.");
+                }
+            });
         }
     </script>
 
@@ -693,8 +716,7 @@
                 var caseNo = $('#case_no').val(); // Get the case number
                 var caseYear = $('#case_year').val(); // Get the case year
                 var caseCategory = $('#case_category_type').val(); // Get the case category
-// console.log(caseNo,caseYear,caseCategory);
-                // Proceed with AJAX request only if all fields are filled
+
                 if (caseNo && caseYear && caseCategory) {
                     $.ajax({
                         url: "{{ route('cabinet.case.check_appeal_caseno') }}",

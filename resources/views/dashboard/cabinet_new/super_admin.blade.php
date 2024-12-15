@@ -162,6 +162,7 @@
                                 </h5>
                                 <div class="text-secondary ml-10">
                                     <div class="d-flex justify-content-between">
+                                        {{-- <a href="{{ route('cabinet.case.appealAgainstGovtPending') }}" --}}
                                         <a href="#" class="text-dark">আপিল দায়েরের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($appealAgainstGovt) }}</span>
                                     </div>
@@ -169,10 +170,10 @@
                                         <a href="#" class="text-dark">জবাব প্রেরণের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between">
+                                    {{-- <div class="d-flex justify-content-between">
                                         <a href="#" class="text-dark">স্থগিতাদেশ সম্পর্কিত পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($against_postpond_order) }}</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -253,7 +254,8 @@
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('cabinet.case.highcourtNotAgainstGov') }}"
                                             class="text-dark">সরকারের-পক্ষে</a>
-                                        <span class="count-numbers ml-10">{{ en2bn($highcourt_not_against_gov) }}</span>
+                                        <span
+                                            class="count-numbers ml-10">{{ en2bn($highcourt_not_against_gov) }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('cabinet.case.highcourtAgainstGov') }}"
@@ -319,7 +321,10 @@
                                 <h5 class="fw-bold text-primary">প্রশাসনিক ট্রাইব্যুনাল</h5>
                                 <div class="text-secondary ml-10">
                                     <div class="d-flex align-items-center">
-                                        <a href="#" class="text-dark">চলমান মামলা</a>
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}"
+                                            class="text-dark">চলমান মামলা</a>
+                                        <span class="count-numbers ml-10">{{ en2bn($atRunningCaseTotal) }}</span>
+
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <a href="#" class="text-dark">নিষ্পত্তিকৃত মামলা</a>

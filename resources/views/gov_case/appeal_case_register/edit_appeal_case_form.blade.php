@@ -288,11 +288,9 @@
 
                                                 <div class="col-md-12 mb-5">
                                                     <label>স্থগিতাদেশের বিবরণ</label>
-                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false">
-                                                        {{ $case->postponed_details ?? '' }}
-
-                                                    </textarea>
+                                                    <textarea name="postponed_details" class="form-control" id="postponed_details" rows="3" spellcheck="false">{{ $case->postponed_details ?? '' }}</textarea>
                                                 </div>
+
 
 
                                                 {{-- starting সংযুক্তি  --}}
@@ -325,7 +323,7 @@
                                                             <table width="100%" class="border-0 px-5" id="fileDiv"
                                                                 style="border:1px solid #dcd8d8;">
                                                                 <tr>
-                                                                    @foreach ($appealAttachment as $row)
+                                                                    @foreach ($appealAttachment as $key => $row)
                                                                         <div class="form-group mb-2"
                                                                             id="deleteFile{{ $row->id }}">
                                                                             <div class="input-group">
@@ -349,7 +347,7 @@
                                                                                 </div>
                                                                                 <div class="input-group-append">
                                                                                     <a href="javascript:void(0);"
-                                                                                        id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                        id="deleteRuleFileBtn_{{ $row->id }}"
                                                                                         onclick="deleteRuleFile({{ $row->id }} )"
                                                                                         class="btn btn-danger">
                                                                                         <i class="fas fa-trash-alt"></i>
@@ -364,6 +362,7 @@
                                                             <input type="hidden" id="other_attachment_count"
                                                                 value="1">
                                                         </div>
+
                                                     </fieldset>
                                                 </div>
 
@@ -441,13 +440,10 @@
 
 
                                                             <div class="col-lg-4 mb-5">
-                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
-                                                                        class="text-danger">
-                                                                    </small> </label>
-                                                                <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">
-                                                                    {{ $case->subject_matter ?? '' }}
-                                                                </textarea>
+                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small class="text-danger"></small></label>
+                                                                <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">{{ $case->subject_matter ?? '' }}</textarea>
                                                             </div>
+
 
 
                                                             <div class="col-lg-4 mb-5">
@@ -1406,64 +1402,67 @@
         }
     </script>
 
-    <script>
-        $('#appealCaseGeneralInfoForm').submit(function(e) {
-            e.preventDefault();
+<script>
+    $('#appealCaseGeneralInfoForm').submit(function(e) {
+        e.preventDefault();
 
-            $('#appealCaseGeneralInfoEditSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-            Swal.fire({
-                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var formData = new FormData(this);
-                    console.log([...formData.entries()]);
+        $('#appealCaseGeneralInfoEditSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+        Swal.fire({
+            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData(this);
+                console.log([...formData.entries()]);
 
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('cabinet.case.appealEditStore') }}",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: (data) => {
-                            console.log('Success response:', data);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('cabinet.case.appealEditStore') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        console.log('Success response:', data);
 
-                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
-                                'spinner spinner-white spinner-right disabled');
-                            Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
-                                'success');
+                        $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'success')
+                            .then(() => {
+                                window.location.reload(true); // Force reload to bypass cache
+                            });
 
-                            $("#final_order").click();
-                            $("#caseIDForFinalOrder").val(data.caseId);
-                            $('#finalOrderSaveBtn').prop('disabled', false);
-                            $('#finalOrderSaveBtn').removeClass("disable-button");
-                        },
-                        error: (xhr, status, error) => {
-                            console.log('Error response:', xhr, status, error);
+                        // Ensure the additional actions occur before reload if needed
+                        $("#final_order").click();
+                        $("#caseIDForFinalOrder").val(data.caseId);
+                        $('#finalOrderSaveBtn').prop('disabled', false);
+                        $('#finalOrderSaveBtn').removeClass("disable-button");
+                    },
+                    error: (xhr, status, error) => {
+                        console.log('Error response:', xhr, status, error);
 
-                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
-                                'spinner spinner-white spinner-right disabled');
-                            if (xhr.status === 422) {
-                                Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
-                            } else {
-                                Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
-                                    'error');
-                            }
+                        $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                            'spinner spinner-white spinner-right disabled');
+                        if (xhr.status === 422) {
+                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                        } else {
+                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন', 'error');
                         }
-                    });
-                } else {
-                    $('#appealCaseGeneralInfoSaveBtn').removeClass(
-                        'spinner spinner-white spinner-right disabled');
-                    Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
-                }
-            });
+                    }
+                });
+            } else {
+                $('#appealCaseGeneralInfoSaveBtn').removeClass(
+                    'spinner spinner-white spinner-right disabled');
+                Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+            }
         });
-    </script>
+    });
+</script>
+
 
 
     {{-- @include('gov_case.appeal_case_register.create_new_appeal_js') --}}
@@ -1571,7 +1570,6 @@
 
     <script>
         function deleteRuleFile(id) {
-            // alert(id);
             Swal.fire({
                 title: 'আপনি কি মামলার রুল কপি মুছে ফেলতে চান?',
                 icon: 'warning',
@@ -1580,21 +1578,30 @@
                 cancelButtonText: 'না'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#deleteRuleFileBtn_' + id).addClass('loadersmall')
+                    const button = $('#deleteRuleFileBtn_' + id);
+                    const originalText = button.html();
+                    button.html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> মুছে ফেলা হচ্ছে...'
+                        );
+                    button.prop('disabled', true);
+
                     jQuery.ajax({
-                        url: '{{ url('/') }}/cabinet/case/appeal/ruleFile/delete/' +
-                            id,
-                        type: "post",
+                        url: '{{ url('/') }}/cabinet/case/appeal/ruleFile/delete/' + id,
+                        type: "POST",
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
                         dataType: "json",
                         success: function(data) {
-                            Swal.fire(
-                                'সফল!',
-                                data.message,
-                                'success'
-                            )
-                            addMainFileRowFunc();
+                            Swal.fire('সফল!', data.message, 'success');
                             $('#deleteFile' + id).remove();
-
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            Swal.fire('ব্যর্থ!',
+                                'ফাইলটি মুছতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।', 'error');
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                            button.html(originalText);
+                            button.prop('disabled', false);
                         }
                     });
                 }

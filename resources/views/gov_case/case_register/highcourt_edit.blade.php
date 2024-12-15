@@ -472,8 +472,6 @@
                                                         <div class="mt-3 px-5">
                                                             <table width="100%" class="border-0 px-5" id="mainFileDiv"
                                                                 style="border:1px solid #dcd8d8;">
-
-
                                                                 <tr>
                                                                     @foreach ($files as $key => $row)
                                                                         <div class="form-group mb-2"
@@ -499,7 +497,7 @@
                                                                                 </div>
                                                                                 <div class="input-group-append">
                                                                                     <a href="javascript:void(0);"
-                                                                                        id="deleteRuleFileBtn_({{ $row->id }}"
+                                                                                        id=deleteRuleFileBtn_"({{ $row->id }}"
                                                                                         onclick="deleteRuleFile({{ $row->id }} )"
                                                                                         class="btn btn-danger">
                                                                                         <i class="fas fa-trash-alt"></i>
@@ -1780,7 +1778,6 @@
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             console.error("AJAX Error:", textStatus, errorThrown);
-                            // Handle the error appropriately, e.g., display an error message to the user
                         }
                     });
                 }

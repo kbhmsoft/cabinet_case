@@ -88,9 +88,13 @@
     </style>
 @section('content')
 
-<?php
- $roleID = Auth::user()->role_id;
-?>
+    <head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    </head>
+
+    <?php
+    $roleID = Auth::user()->role_id;
+    ?>
     <!--begin::Card-->
     <div class="card card-custom">
         <div class="card-header flex-wrap py-5">
@@ -106,12 +110,12 @@
                 @endcan
 
                 @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41)
-                {{-- @can('total_case_list_print') --}}
-                <div class="d-flex justify-content-end">
-                    <a href="{{ route('cabinet.case.highcourt_case_list.print') }}" target="_blank" class="btn btn-info "><i
-                            class="fas fa-print" aria-hidden="true"></i></a>
-                </div>
-                {{-- @endcan --}}
+                    {{-- @can('total_case_list_print') --}}
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ route('cabinet.case.highcourt_case_list.print') }}" target="_blank"
+                            class="btn btn-info "><i class="fas fa-print" aria-hidden="true"></i></a>
+                    </div>
+                    {{-- @endcan --}}
                 @endif
 
             </div>

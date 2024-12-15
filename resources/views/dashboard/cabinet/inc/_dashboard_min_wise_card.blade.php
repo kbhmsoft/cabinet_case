@@ -18,7 +18,7 @@
                     <th scope="col">আপিল বিভাগে চলমান মামলা</th>
                     <th scope="col">সরকারের বিপক্ষে আপিলের জন্য পেন্ডিং</th>
                     <th scope="col">জবাব পেন্ডিং</th>
-                    <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th>
+                    {{-- <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th> --}}
                     {{-- <th scope="col">মোট এন্ট্রিকৃত মামলার সংখ্যা </th> --}}
                 </tr>
             </thead>
@@ -39,7 +39,7 @@
                         <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
                         <td align="center">{{ en2bn($val->against_gov) }}</td>
                         <td align="center">{{ en2bn($val->result_sending_count) }}</td>
-                        <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
+                        {{-- <td align="center">{{ en2bn($val->against_postponed_count) }}</td> --}}
                         {{-- <td align="center">{{ en2bn($total_case) }}</td> --}}
                     </tr>
                 @endforeach

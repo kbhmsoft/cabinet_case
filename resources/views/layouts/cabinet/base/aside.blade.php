@@ -461,7 +461,7 @@
                                         aria-haspopup="true">
                                         <a href="{{ route('report.govcaselist') }}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                            <span class="menu-text font-weight-bolder">সরকারি মামলার রিপোর্ট</span>
+                                            <span class="menu-text font-weight-bolder">সকল মামলার রিপোর্ট</span>
                                         </a>
                                     </li>
                                 @endcan

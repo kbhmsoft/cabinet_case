@@ -155,7 +155,6 @@
 
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার ক্যাটেগরি <span class="text-danger">*</span></label>
-
                                                     <div class="" id="CaseCategorDiv">
                                                         <select name="case_category" id="CaseCategory"
                                                             class="form-control form-control-sm" required="required">
@@ -1326,14 +1325,19 @@
             });
         });
     </script>
+
     <script>
         //===========caseType================//
         jQuery('select[name="case_category"]').on('change', function() {
             var dataID = jQuery(this).val();
 
-            jQuery("#case_category_type").after('<div class="loadersmall"></div>');
+            // Remove existing loader and reset dependent dropdown
+            jQuery('.loadersmall').remove();
+            jQuery('select[name="case_category_type"]').html('<option value="">-- নির্বাচন করুন --</option>');
 
             if (dataID) {
+                jQuery("#case_category_type").after('<div class="loadersmall"></div>');
+
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
                         dataID,
@@ -1341,23 +1345,22 @@
                     dataType: "json",
                     success: function(data) {
                         jQuery('select[name="case_category_type"]').html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery('select[name="case_category_type"]').html(
                             '<option value="">-- নির্বাচন করুন --</option>');
+
                         jQuery.each(data, function(key, value) {
                             jQuery('select[name="case_category_type"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
+                                '<option value="' + key + '">' + value + '</option>'
+                            );
                         });
+
                         jQuery('.loadersmall').remove();
                     }
                 });
-            } else {
-                $('select[name="case_category_type"]').empty();
             }
         });
     </script>
+
+
 
     @include('gov_case.case_register.create_js')
     <script type="text/javascript">

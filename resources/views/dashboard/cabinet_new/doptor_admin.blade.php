@@ -94,12 +94,12 @@
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
-                                    <div style="display: flex; align-items: center;">
+                                    {{-- <div style="display: flex; align-items: center;">
                                         <a href="{{ route('cabinet.case.highcourt.pendingPostpondOrder') }}"
                                             style="color: black; flex: 1;">স্থগিতাদেশ সম্পর্কিত পেন্ডিং</a>
                                         <span class="count-numbers"
                                             style="color: black;">{{ en2bn($pendingPostpondOrder) }}</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
             <!-- Card 3 -->
             <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                 <div class="card border-0" style=" background-color: #f5f5f5;;">
-            
+
                     <div class="card-body"
                         style=" background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
@@ -144,15 +144,15 @@
 
             <!-- Card 4 -->
             <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
-                
+
                 <div class="card border-0" style=" background-color: #f5f5f5; ">
-                   
+
                     <div class="card-body"
                         style="background-color: #f5f5f5; border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC;">
                         <div style="display: flex; align-items: center;">
                             <!-- Icon -->
                             <div style="font-size: 3rem; margin-right: 2rem; margin-bottom: 1.7rem;">
-                                
+
                                 <img src="{{ asset('uploads/IconeSCMS/Couse_List (1).png') }}"
                                     style=" height: 50px; width: 80%; margin-top: 3rem; " alt="Logo"
                                     class="brand-image">
@@ -294,16 +294,17 @@
                             </div>
                             <!-- Content -->
                             <div>
-                                <h5 class="font-weight-bolder" style="color:#05bbed">
-                                    প্রশাসনিক ট্রাইব্যুনাল
-                                </h5>
-                                <!-- Links -->
-                                <div style="font-size: 15px;">
-                                    <a href="#" target="_blank" style=" color: black;">চলমান মামলা</a><br>
-                                    <a href="#" target="_blank" style=" color: black;">নিষ্পত্তিকৃত
-                                        মামলা</a><br>
-                                    <a href="#" target="_blank" style=" color: black;">সরকার-পক্ষে</a><br>
-                                    <a href="#" target="_blank" style=" color: black;">সরকার-বিপক্ষে</a><br>
+                                <h5 class="fw-bold text-primary">প্রশাসনিক ট্রাইব্যুনাল</h5>
+                                <div class="text-secondary ml-10">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}"
+                                            class="text-dark">চলমান মামলা</a>
+                                        <span class="count-numbers ml-10">{{ en2bn($atRunningCaseTotal) }}</span>
+
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="#" class="text-dark">নিষ্পত্তিকৃত মামলা</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -347,7 +348,7 @@
                             <th scope="col">আপিল বিভাগে সরকারি স্বার্থ সংশ্লিষ্ট চলমান মামলা</th>
                             <th scope="col">আপিলের জন্য পেন্ডিং</th>
                             <th scope="col">জবাব পেন্ডিং</th>
-                            <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th>
+                            {{-- <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -362,7 +363,7 @@
                                 <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
                                 <td align="center">{{ en2bn($val->against_gov) }}</td>
                                 <td align="center">{{ en2bn($val->result_sending_count) }}</td>
-                                <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
+                                {{-- <td align="center">{{ en2bn($val->against_postponed_count) }}</td> --}}
                             </tr>
                         @endforeach
                     </tbody>

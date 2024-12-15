@@ -71,11 +71,11 @@
                                         <span
                                             class="count-numbers text-black ml-10">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between">
+                                    {{-- <div class="d-flex justify-content-between">
                                         <a href="{{ route('cabinet.case.highcourt.pendingPostpondOrder') }}"
                                             class="text-dark  flex-grow-1">স্থগিতাদেশ সম্পর্কিত পেন্ডিং</a>
                                         <span class="count-numbers text-black ml-10">{{ en2bn($pendingPostpondOrder) }}</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -241,17 +241,21 @@
                             </div>
                             <!-- Content -->
                             <div>
-                                <h5 class="font-weight-bolder" style="color: #05bbed;">
-                                    প্রশাসনিক ট্রাইব্যুনাল
-                                </h5>
-                                <!-- Links -->
-                                <div style="font-size: 15px;">
-                                    <a href="#" target="_blank" style="color: black;">চলমান মামলা</a><br>
-                                    <a href="#" target="_blank" style="color: black;">নিষ্পত্তিকৃত মামলা</a><br>
-                                    <a href="#" target="_blank" style="color: black;">সরকার-পক্ষে</a><br>
-                                    <a href="#" target="_blank" style="color: black;">সরকার-বিপক্ষে</a><br>
+                                <h5 class="fw-bold text-primary">প্রশাসনিক ট্রাইব্যুনাল</h5>
+                                <div class="text-secondary ml-10">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('cabinet.case.administrativeTribrunal') }}"
+                                            class="text-dark">চলমান মামলা</a>
+                                        <span class="count-numbers ml-10">{{ en2bn($atRunningCaseTotal) }}</span>
+
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="#" class="text-dark">নিষ্পত্তিকৃত মামলা</a>
+                                    </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -275,7 +279,7 @@
                             <th scope="col">আপিল বিভাগে সরকারি স্বার্থ সংশ্লিষ্ট চলমান মামলা</th>
                             <th scope="col">আপিলের জন্য পেন্ডিং</th>
                             <th scope="col">জবাব পেন্ডিং</th>
-                            <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th>
+                            {{-- <th scope="col">স্থগিতাদেশ অন্তর্বর্তীকালীন পেন্ডিং মামলা</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -290,7 +294,7 @@
                                 <td align="center">{{ en2bn($val->appeal_running_case) }}</td>
                                 <td align="center">{{ en2bn($val->against_gov) }}</td>
                                 <td align="center">{{ en2bn($val->result_sending_count) }}</td>
-                                <td align="center">{{ en2bn($val->against_postponed_count) }}</td>
+                                {{-- <td align="center">{{ en2bn($val->against_postponed_count) }}</td> --}}
                             </tr>
                         @endforeach
                     </tbody>

@@ -45,7 +45,8 @@
                                     <div class="col-lg-12">
                                         <!--begin::Card-->
 
-                                        <input type="hidden" id="caseIDForContempt" name="case_id" value="{{ $case->id }}">
+                                        <input type="hidden" id="caseIDForContempt" name="case_id"
+                                            value="{{ $case->id }}">
                                         <fieldset>
                                             <div class="form-group row">
                                                 <div class="col-lg-4 mb-5">
@@ -72,12 +73,11 @@
                                                 </div>
 
                                                 <div class="col-lg-6 mb-5">
-                                                    <label>অন্যান্য পদক্ষেপের বিবরণ<br>(যদি থাকে) <span
-                                                            class="text-danger"></span></label>
+                                                    <label>অন্যান্য পদক্ষেপের বিবরণ<br>(যদি থাকে) </label>
                                                     <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
-                                                        spellcheck="false">
-                                                </textarea>
+                                                        spellcheck="false"></textarea>
                                                 </div>
+
                                             </div>
                                             {{-- starting সংযুক্তি  --}}
                                             <div class="col-md-12">

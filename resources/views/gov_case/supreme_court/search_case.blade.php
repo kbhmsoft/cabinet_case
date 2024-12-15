@@ -59,19 +59,34 @@
                             </div>
                         </div>
                         <div class="row mt-5">
-                            <div class="col-md-4"><label for="exampleFormControlInput1" class="form-label"><b>মামলা
-                                        নং</b></label>
-                                <input type="text" class="form-control required1" name="case_number" id="case_number"
-                                    placeholder="" required>
+                            <div class="col-md-4">
+                                <label for="case_number" class="form-label"><b>মামলা নং</b></label>
+                                <input
+                                    type="text"
+                                    class="form-control required1"
+                                    name="case_number"
+                                    id="case_number"
+                                    placeholder=""
+                                    required
+                                    oninput="validateEnglishInput(this)"
+                                    onchange="validateEnglishInput(this)"
+                                >
                             </div>
-                            <div class="col-md-4"><label for="exampleFormControlInput1"
-                                    class="form-label"><b>বছর</b></label>
-                                <input type="text" class="form-control required1 common_yearpicker" id="year"
-                                    name="year" placeholder="" value="{{ date('Y') }}">
+                            <div class="col-md-4">
+                                <label for="year" class="form-label"><b>বছর</b></label>
+                                <input
+                                    type="text"
+                                    class="form-control required1 common_yearpicker"
+                                    id="year"
+                                    name="year"
+                                    placeholder=""
+                                    value="{{ date('Y') }}"
+                                    oninput="validateEnglishInput(this)"
+                                    onchange="validateEnglishInput(this)"
+                                >
                             </div>
                             <div class="col-md-4"></div>
                         </div>
-
                     </form>
                     <div class="col-md-3"><button class="btn btn-primary mt-4"
                             id="suprime_court_case_search_button">অনুসন্ধান</button></div>
@@ -81,7 +96,6 @@
                 <div class="col-md-12" id="search_result_supream_court">
                     <iframe src="" title="description" id="itr" class="d-none iframe_resizing"></iframe>
                 </div>
-
             </div>
         </div>
 
@@ -216,4 +230,26 @@
             }
         });
     </script>
+
+<script>
+    // Function to validate English-only input
+    function validateEnglishInput(input) {
+        const nonEnglishRegex = /[^\x00-\x7F0-9]/g;
+        input.value = input.value.replace(nonEnglishRegex, '');
+    }
+
+    // Function to validate form before submission
+    function validateForm(event) {
+        const caseNumberField = document.getElementById('case_number');
+        const yearField = document.getElementById('year');
+
+
+        const nonEnglishRegex = /[^\x00-\x7F0-9]/g;
+        if (nonEnglishRegex.test(caseNumberField.value) || nonEnglishRegex.test(yearField.value)) {
+            alert('Fields "মামলা নং" and "বছর" must contain English numbers only.');
+            return false;
+        }
+        return true;
+    }
+</script>
 @endsection

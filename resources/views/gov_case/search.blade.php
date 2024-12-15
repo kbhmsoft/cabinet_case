@@ -34,7 +34,6 @@ if (!empty($_GET['case_no']) && !empty($_GET['case_category_type'])) {
             </select>
         </div>
 
-
         <div class="col-lg-6 px-2">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" name="case_no" placeholder="মামলা নং"
@@ -44,6 +43,7 @@ if (!empty($_GET['case_no']) && !empty($_GET['case_category_type'])) {
                 </div>
             </div>
         </div>
+
     </div>
 </form>
 

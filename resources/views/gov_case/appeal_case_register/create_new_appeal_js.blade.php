@@ -58,9 +58,14 @@
 
         jQuery('select[name="case_category"]').on('change', function() {
             var dataID = jQuery(this).val();
-            jQuery("#case_category_type").after('<div class="loadersmall"></div>');
+
+            // Remove existing loader and reset dependent dropdown
+            jQuery('.loadersmall').remove();
+            jQuery('select[name="case_category_type"]').html('<option value="">-- নির্বাচন করুন --</option>');
 
             if (dataID) {
+                jQuery("#case_category_type").after('<div class="loadersmall"></div>');
+
                 jQuery.ajax({
                     url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentcasecategorytype/' +
                         dataID,
@@ -68,22 +73,17 @@
                     dataType: "json",
                     success: function(data) {
                         jQuery('select[name="case_category_type"]').html(
-                            '<div class="loadersmall"></div>');
-
-                        jQuery('select[name="case_category_type"]').html(
                             '<option value="">-- নির্বাচন করুন --</option>');
+
                         jQuery.each(data, function(key, value) {
                             jQuery('select[name="case_category_type"]').append(
-                                '<option value="' + key + '">' + value +
-                                '</option>');
+                                '<option value="' + key + '">' + value + '</option>'
+                            );
                         });
+
                         jQuery('.loadersmall').remove();
-                        // $('select[name="mouja"] .overlay').remove();
-                        // $("#loading").hide();
                     }
                 });
-            } else {
-                $('select[name="case_category_type"]').empty();
             }
         });
 

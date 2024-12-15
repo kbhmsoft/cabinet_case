@@ -252,41 +252,58 @@
 
 
 
+
     function addBibadiRowFunc() {
-        var mk = $('#bibadiDiv tr').length;
-        $('#bibadiDiv tr:last').after(Item(mk + 1));
+        var count = $('#bibadiDiv tr').length; // Get current row count (including header)
+        $('#bibadiDiv tr:last').after(createRow(count));
 
-        function Item(count) {
-            // alert(count);
-            var items = '';
-            items += '<tr id="bibadi_' + count + '">';
-            items += '<td> <span class="form-control form-control-sm">' + count + '</span></td>'
-            items += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + count +
-                ')" id="other_respondent_' + count + '" class="form-control form-control-sm other_respondentCls">';
-            items += '<option value="">-- নির্বাচন করুন --</option>';
-            items +=
+        function createRow(rowNumber) {
+            var rowHtml = '';
+            rowHtml += '<tr id="bibadi_' + rowNumber + '">';
+            rowHtml += '<td> <span class="form-control form-control-sm">' + rowNumber + '</span></td>';
+            rowHtml += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + rowNumber +
+                ')" id="other_respondent_' + rowNumber + '" class="form-control form-control-sm other_respondentCls">';
+            rowHtml += '<option value="">-- নির্বাচন করুন --</option>';
+            rowHtml +=
                 '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
-            items += '<option value="0">অন্যান্য</option>';
-            items +=
+            rowHtml += '<option value="0">অন্যান্য</option>';
+            rowHtml +=
                 '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' +
-                count +
+                rowNumber +
                 '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
-            items += '<input type="hidden" name="bibadi_id[]" value="">';
+            rowHtml += '<input type="hidden" name="bibadi_id[]" value="">';
 
-            items +=
+            rowHtml +=
                 '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            items += '</tr>';
-            return items;
+            rowHtml += '</tr>';
+            return rowHtml;
         }
 
-
+        renumberRows(); // Renumber rows after adding a new one
         $('.other_respondentCls').select2();
     }
 
-
-    function removeBibadiRow(id) {
-        $(id).closest("tr").remove();
+    function removeBibadiRow(element) {
+        $(element).closest('tr').remove(); // Remove the selected row
+        renumberRows(); // Renumber rows after removing one
     }
+
+
+    function renumberRows() {
+        $('#bibadiDiv tr').each(function(index) {
+            if (index > 0) {
+                $(this).find('td:first span').text(index);
+                $(this).attr('id', 'bibadi_' + index);
+                const selectElement = $(this).find('select');
+                selectElement.attr('id', 'other_respondent_' + index);
+                selectElement.attr('onChange', 'getManualOtherRespondentName(' + index + ')');
+
+                // Update the text input's ID
+                $(this).find('input[type="text"]').attr('id', 'other_respondent_manual_name_' + index);
+            }
+        });
+    }
+
 
     function getManualOtherRespondentName(data) {
         var other_respondent_manual_name_ = $('#other_respondent_manual_name_' + data);
@@ -386,49 +403,22 @@
         addAdvocateLawerFunc();
     });
 
-    // Add row function
-    // function addAdvocateLawerFunc() {
-    //     var count = parseInt($('#survey_count').val());
-    //     $('#survey_count').val(count + 1);
-    //     var items = '';
-    //     items += '<tr>';
-    //     items += '<input type="hidden" name="concern_person_id[]" value="">';
-    //     items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-    //         '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
-    //         ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
-    //     items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
-    //         '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
-
-    //     if (count != 1) {
-    //         items +=
-    //             '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
-    //     }
-
-    //     items += '</tr>';
-
-    //     $('#advocateLawerDiv tr:last').after(items);
-
-    //     // Initialize Select2 after adding new dropdowns
-    //     $('#concernPersonDesignation_' + count).select2();
-    //     $('#concern_user_id_' + count).select2();
-    // }
-
-
-    // Add row function
-    // Add row function
-function addAdvocateLawerFunc() {
+    function addAdvocateLawerFunc() {
     var count = parseInt($('#survey_count').val());
     $('#survey_count').val(count + 1);
+
     var items = '';
     items += '<tr>';
     items += '<input type="hidden" name="concern_person_id[]" value="">';
     items += '<td><select name="concernPersonDesignation[]" id="concernPersonDesignation_' + count +
-        '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count + ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
+        '" class="form-control form-control-sm select2" onchange="getConcernPerName(' + count +
+        ')" required="required"><?php echo $concernPersonDesig; ?></select> </td>';
     items += '<td><select name="concern_user_id[]" id="concern_user_id_' + count +
         '" class="form-control form-control-sm select2" required="required"><option value="">-- নির্বাচন করুন --</option></select></td>';
 
     if (count != 1) {
-        items += '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
+        items +=
+            '<td><a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeAdvocateLawerRow(this)"> <i class="fas fa-trash"></i> </a> </td>';
     }
 
     items += '</tr>';
@@ -441,19 +431,34 @@ function addAdvocateLawerFunc() {
 
     // Add event listener for the new dropdown
     $('#concernPersonDesignation_' + count).on('change', function() {
+        const selectedValue = $(this).val();
         const concernUserField = $('#concern_user_id_' + count);
-        if ($(this).val() === 'no_officer') {
-            // Hide the "concern_user_id" select box and remove required attribute
-            concernUserField.closest('td').hide();
+
+        if (!selectedValue || selectedValue === 'no_officer') {
+            // Reset and hide the dependent dropdown when "নির্বাচন করুন" or "no_officer" is selected
+            concernUserField.html('<option value="">-- নির্বাচন করুন --</option>').closest('td').hide();
             concernUserField.prop('required', false);
         } else {
-            // Show the "concern_user_id" select box and add required attribute
+            // Show and reset the dependent dropdown when a valid option is selected
             concernUserField.closest('td').show();
             concernUserField.prop('required', true);
+
+            // Optionally, make an AJAX call to populate dependent dropdown based on selected value
+            // Example: Replace `your_ajax_url` with your actual URL
+            $.ajax({
+                url: 'your_ajax_url/' + selectedValue,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    concernUserField.html('<option value="">-- নির্বাচন করুন --</option>');
+                    $.each(data, function(key, value) {
+                        concernUserField.append('<option value="' + key + '">' + value + '</option>');
+                    });
+                }
+            });
         }
     });
 }
-
 
 
     //remove row function
@@ -1161,8 +1166,8 @@ function addAdvocateLawerFunc() {
             '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-reply-input' +
             count + '" for="customFile' + count +
             '">ফাইল নির্বাচন করুন</label><span class="text-danger d-none vallidation-message">This field can not be empty</span></div></td>';
-        // items +=
-        //     '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+        items +=
+            '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
         items += '</tr>';
         $('#replyFileDiv tr:last').after(items);
 

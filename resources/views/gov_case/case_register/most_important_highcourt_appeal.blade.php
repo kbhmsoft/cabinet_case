@@ -242,7 +242,7 @@
                             } else {
                                 $subjectMatterData = '';
                             }
-                            
+
                             ?> --}}
                             {{-- {{ dd($subjectMatterData) }} --}}
 
@@ -314,7 +314,7 @@
                                         @if ($row->is_final_order == '1')
                                             <span class="indicator">নিষ্পত্তিকৃত মামলা</span>
                                         @else
-                                            <span class="indicator" style="margin-left: 5rem;">মামলা চলমান</span>
+                                            <span class="indicator" style="text-align:center;">মামলা চলমান</span>
                                         @endif
                                         <div class="product-text">
                                             <div class="card card-custom">

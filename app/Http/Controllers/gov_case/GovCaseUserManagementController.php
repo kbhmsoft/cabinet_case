@@ -311,7 +311,7 @@ class GovCaseUserManagementController extends Controller
         if ($roleID == 27) {
             $data['roles'] = DB::table('roles')
                 ->select('id', 'name', 'name_bn')
-                // ->whereNotIn('id', $role)
+            // ->whereNotIn('id', $role)
                 ->where('is_gov', 1)
                 ->orderBy('sort_order', 'ASC')
                 ->get();
@@ -626,22 +626,60 @@ class GovCaseUserManagementController extends Controller
         $role = array('1', '27');
         $roleID = Auth::user()->role_id;
         $officeInfo = user_office_info();
-        $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        $officeID = userInfo()->office_id;
+        if ($roleID == 27) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        } elseif ($roleID == 29 || $roleID == 31) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } elseif ($roleID == 32 || $roleID == 41) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
 
+        // Parent office and corresponding child office
+        $childOfficeIds = [];
+        $childOfficeQuery = DB::table('gov_case_office')
+            ->select('id', 'doptor_office_id')
+            ->where('parent_office_id', $officeID)->get();
+
+        foreach ($childOfficeQuery as $childOffice) {
+            $childOfficeIds[] = $childOffice->doptor_office_id;
+        }
+
+        $finalOfficeIds = [];
+        if (empty($childOfficeIds)) {
+            $finalOfficeIds[] = $officeID;
+        } else {
+            $finalOfficeIds[] = $officeID;
+            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+        }
+        $data['offices'] = DB::table('gov_case_office')->get();
         //Add Conditions
-        $query = DB::table('doptor_user_managements')->orderBy('id', 'DESC')
-            ->join('roles', 'doptor_user_managements.user_role', '=', 'roles.id')
-            ->join('gov_case_office', 'doptor_user_managements.office_id', '=', 'gov_case_office.doptor_office_id')
-            ->select('doptor_user_managements.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
-            ->where('doptor_user_managements.status', 1)
-            ->where('doptor_user_managements.user_role', '!=', 42)
-            ->orderby('id', 'DESC');
+        if ($roleID == 27) {
+            $query = DB::table('users')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereNotIn('users.role_id', [42, 43])
+                ->where('users.is_gov', 1)
+                ->whereNotNull('users.doptor_user_id')
+                ->orderBy('users.office_id', 'DESC');
+        } else {
+            $query = DB::table('users')
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
+                ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
+                ->whereIn('users.office_id', $finalOfficeIds)
+                ->whereNotIn('users.role_id', [27, 42, 43])
+                ->where('users.is_gov', 1)
+                ->whereNotNull('users.doptor_user_id')
+                ->orderBy('users.office_id', 'DESC');
+        }
 
         if (!empty($_GET['office_id'])) {
-            $query->where('doptor_user_managements.office_id', '=', $_GET['office_id']);
+            $query->where('users.office_id', '=', $_GET['office_id']);
         }
         if (!empty($_GET['role'])) {
-            $query->where('doptor_user_managements.role_id', '=', $_GET['role']);
+            $query->where('users.role_id', '=', $_GET['role']);
         }
 
         // $data['users'] = $query->paginate(10)->withQueryString();
@@ -652,7 +690,7 @@ class GovCaseUserManagementController extends Controller
             ->where('is_gov', 1)
             ->orderBy('sort_order', 'ASC')
             ->get();
-        $data['offices'] = GovCaseOffice::orderby('id', 'DESC');
+
         $data['ministries'] = GovCaseOffice::where('level', 1)->get();
         $data['divOffices'] = GovCaseOffice::where('level', 3)->get();
 
