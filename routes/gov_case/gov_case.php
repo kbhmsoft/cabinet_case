@@ -191,6 +191,8 @@ Route::middleware('prevent-back-history')->group(function () {
 
                 Route::get('highcourt/sentToSolicitor', [GovCaseRegisterController::class, 'sentToSolicitor'])->name('sentToSolicitor');
                 Route::get('highcourt/appealAgainstGovtPending', [GovCaseRegisterController::class, 'appealAgainstGovtPending'])->name('appealAgainstGovtPending');
+                Route::get('highcourt/sendingReplyPending', [GovCaseRegisterController::class, 'sendingReplyPending'])->name('sendingReplyPending');
+
                 Route::get('highcourt/againstPostponedOrder', [GovCaseRegisterController::class, 'againstPostponedOrder'])->name('againstPostponedOrder');
                 Route::get('appellateDivision/running', [AppealGovCaseRegisterController::class, 'appellate_division_running_case'])->name('appellateDivision.running');
                 Route::get('appealCaseAgainstGovt', [GovCaseRegisterController::class, 'appealCaseAgainstGovt'])->name('appealCaseAgainstGovt');

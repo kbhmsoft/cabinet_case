@@ -49,21 +49,12 @@ class MyprofileController extends Controller
 
         $data['userManagement'] = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*', 'roles.name')
+            ->select('users.*')
             ->where('users.id', $user_id)
             ->get()->first();
 
-        // $data['roles'] = DB::table('roles')
-        // ->select('id', 'name')
-        // ->get();
-
-        // $data['offices'] = DB::table('office')
-        // ->leftJoin('district', 'office.district_id', '=', 'district.id')
-        // ->leftJoin('upazila', 'office.upazila_id', '=', 'upazila.id')
-        // ->select('office.id', 'office.office_name_bn', 'district.district_name_bn', 'upazila.upazila_name_bn')
-        // ->get();
         $data['page_title'] = 'প্রোফাইল ইনফর্মেশন সংশোধন ফরম';
-        //    return $data;
+
         return view('myprofile.edit')->with($data);
     }
 
@@ -96,7 +87,7 @@ class MyprofileController extends Controller
                 'email' => $request->email,
             ]);
 
-        return redirect()->route('myprofile.index')
+        return redirect()->route('my-profile.index')
             ->with('success', 'প্রোফাইলের বেসিক ইনফরমেশন সফলভাবে আপডেট হয়েছে');
     }
 

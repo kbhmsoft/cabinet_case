@@ -22,7 +22,9 @@
       </div>
 
       <form action="{{ route('my-profile.basic_update') }}" method="POST" enctype="multipart/form-data">
-         @csrf
+        {{-- @dd($userManagement) --}}
+       
+        @csrf
          <div class="card-body">
             <fieldset>
                <legend>ব্যবহারকারীর তথ্য</legend>
@@ -30,7 +32,7 @@
                   <div class="col-4">
                      <div class="form-group">
                          <label for="username" class=" form-control-label">পুরো নাম <span class="text-danger">*</span></label>
-                         <input type="text" id="username" name="username" placeholder="পুরো নাম লিখুন" class="form-control form-control-sm"value="{{ $userManagement->username}}">
+                         <input type="text" id="username" name="username" placeholder="পুরো নাম লিখুন" class="form-control form-control-sm"value="{{ $userManagement->name}}">
                          <span style="color: red">
                            {{ $errors->first('name') }}
                         </span>

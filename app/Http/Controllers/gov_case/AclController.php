@@ -3,19 +3,15 @@
 namespace App\Http\Controllers\gov_case;
 
 use App\Http\Controllers\Controller;
+use App\Models\ParentPermission;
+use App\Models\ParentPermissionName;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\RoleHasPermission;
+use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-use App\Models\User;
-use App\Models\ParentPermissionName;
-use App\Models\RolePermission;
-use App\Models\ModelHasPermission;
-
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\RoleHasPermission;
-use App\Models\ParentPermission;
-use DB;
-use Auth;
 
 class AclController extends Controller
 {
@@ -25,32 +21,30 @@ class AclController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
+    public function __construct()
     {
-         // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
-
+        // $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:manage_role_menu', ['only' => ['roleManagement']]);
 
     }
 
-
-
     // for roles
-    public function roleManagement(){
+    public function roleManagement()
+    {
 
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
         $data['page_title'] = 'ভূমিকা পরিচালনা';
 
-
         $roles = Role::paginate(25);
         return view('gov_case.roles.create', compact('roles'))->with($data);
     }
 
-    public function storeRole(Request $request){
+    public function storeRole(Request $request)
+    {
         $this->validate($request, [
-            'name' => 'required|unique:roles'
+            'name' => 'required|unique:roles',
         ]);
 
         Role::create([
@@ -62,13 +56,14 @@ class AclController extends Controller
             'is_gov' => 1,
         ]);
 
-         return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
+        return back()->with('success', 'সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
     }
 
-    public function updateRole(Request $request){
+    public function updateRole(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required',
-            'name_bn' => 'required'
+            'name_bn' => 'required',
         ]);
 
         Role::where('id', $request->role_id)->update([
@@ -77,21 +72,21 @@ class AclController extends Controller
             'status' => $request->status,
         ]);
 
-         return back()->with('success','সাফল্যের সাথে সংশোধন সম্পন্ন হয়েছে');
+        return back()->with('success', 'সাফল্যের সাথে সংশোধন সম্পন্ন হয়েছে');
     }
 
-    public function roleItemDelete(Request $request, $id){
+    public function roleItemDelete(Request $request, $id)
+    {
         Role::where('id', $id)->delete();
 
-         return back()->with('success','ভুমিকাটি মুছে ফেলা হয়েছে');
+        return back()->with('success', 'ভুমিকাটি মুছে ফেলা হয়েছে');
     }
 
     // end for roles
 
-
-
     // for permissions
-    public function permissionManagement(){
+    public function permissionManagement()
+    {
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 
@@ -100,20 +95,20 @@ class AclController extends Controller
         $permissions = Permission::orderBy('created_at', 'ASC')
             ->paginate(25);
 
-
         $parentPermissions = ParentPermissionName::where('status', 1)->get();
 
         // if(Auth::user()->role_id == 27 || Auth::user()->role->name == 'ডেভলপার'){
-            return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data);
+        return view('gov_case.permissions.create', compact('permissions', 'parentPermissions'))->with($data);
         // }else{
         //     abort(403);
         // }
 
     }
 
-    public function storePermission(Request $request){
+    public function storePermission(Request $request)
+    {
         $this->validate($request, [
-            'name' => 'required|unique:permissions'
+            'name' => 'required|unique:permissions',
         ]);
 
         $nameLower = str_replace(' ', '_', $request->name);
@@ -127,13 +122,14 @@ class AclController extends Controller
             'status' => 1,
         ]);
 
-        return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
+        return back()->with('success', 'সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
     }
 
-    public function updatePermission(Request $request){
+    public function updatePermission(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required',
-            'display_name' => 'required'
+            'display_name' => 'required',
         ]);
         $nameLower = str_replace(' ', '_', $request->name);
         $permissionName = strtolower($nameLower);
@@ -144,39 +140,36 @@ class AclController extends Controller
             'status' => $request->status,
         ]);
 
-         return back()->with('success','সাফল্যের সাথে সংশোধন সম্পন্ন হয়েছে');
+        return back()->with('success', 'সাফল্যের সাথে সংশোধন সম্পন্ন হয়েছে');
     }
 
-    public function permissionItemDelete(Request $request, $id){
+    public function permissionItemDelete(Request $request, $id)
+    {
         Permission::where('id', $id)->delete();
 
-         return back()->with('success','ভুমিকাটি মুছে ফেলা হয়েছে');
+        return back()->with('success', 'ভুমিকাটি মুছে ফেলা হয়েছে');
     }
     // end for permissions
 
-
-
     // for parent permission name
 
-    public function storePatentPermissionName(Request $request){
+    public function storePatentPermissionName(Request $request)
+    {
         ParentPermissionName::create([
             'name' => $request->name,
             'user_id' => Auth::user()->id,
             'status' => 1,
         ]);
 
-         return back()->with('success','সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
+        return back()->with('success', 'সাফল্যের সাথে সংরক্ষণ সম্পন্ন হয়েছে');
     }
-
-
 
     // end parent permission name
 
-
-
     // for give user permissions
 
-    public function permissionToUserManagement(Request $request){
+    public function permissionToUserManagement(Request $request)
+    {
 
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
@@ -188,45 +181,46 @@ class AclController extends Controller
         return view('gov_case.user_permissions.index', $data);
     }
 
-
-
-    public function storeUpdateUserPermissionAll(Request $request){
-
+    public function storeUpdateUserPermissionAll(Request $request)
+    {
         $role = Role::find($request->role_id);
 
+        // Retrieve existing permissions for the role
         $rolePermissions = RoleHasPermission::where('role_id', $request->role_id)->get();
 
-
-        if(!empty($rolePermissions)){
-            foreach($rolePermissions as $rolePermissions) {
-                $permission = Permission::find($rolePermissions->permission_id);
+        // Revoke existing permissions
+        if (!empty($rolePermissions)) {
+            foreach ($rolePermissions as $rolePermission) {
+                $permission = Permission::find($rolePermission->permission_id);
 
                 $role->revokePermissionTo($permission);
                 $permission->removeRole($role);
             }
         }
 
+        // Delete existing role-permission mappings
         RoleHasPermission::where('role_id', $request->role_id)->delete();
 
+        // Assign new permissions
         $allPermissions = $request->permissionId;
-        if(!empty($allPermissions)){
-            foreach ($allPermissions as $key => $permission_id) {
+        if (!empty($allPermissions)) {
+            foreach ($allPermissions as $permission_id) {
                 $permission = Permission::find($permission_id);
 
                 $role->givePermissionTo($permission);
             }
         }
-        return back()->with('success','সফলতার সাথে অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');
 
+        // Redirect to the desired route with a success message
+        return redirect()->route('cabinet.permissionToUserManagement')->with('success', 'সফলতার সাথে অনুমতি বরাদ্দ সংশোধন সম্পন্ন হয়েছে');
     }
 
-
-
     /**
-    *  manage permissions page
-    *  @return void
-    */
-    public function updateRolePermissions(Request $request, $id){
+     *  manage permissions page
+     *  @return void
+     */
+    public function updateRolePermissions(Request $request, $id)
+    {
         $data['role'] = Role::find($id);
 
         $data['permissions'] = Permission::with('parent')->paginate(25);
@@ -235,8 +229,8 @@ class AclController extends Controller
         return view('backend.roles.manage_permissions', $data);
     }
 
-
-    public function userPermissionManage(Request $request, $role_id){
+    public function userPermissionManage(Request $request, $role_id)
+    {
         $data['page_title'] = 'অনুমতি প্রদান পরিচালনা করুন';
         $data['parentPermissions'] = ParentPermissionName::with('permissions')->where('status', 1)->paginate(25);
         $data['role'] = Role::find($role_id);
@@ -245,20 +239,17 @@ class AclController extends Controller
         return view('gov_case.user_permissions.manage_permissions', $data);
     }
 
-    public function getPermissionByAjax(Request $request){
-        if($request->id == '123123'){
+    public function getPermissionByAjax(Request $request)
+    {
+        if ($request->id == '123123') {
             $data['permissions'] = Permission::paginate(250);
-        }else{
+        } else {
             $data['permissions'] = Permission::where('parent_permission_name_id', $request->id)
-            ->paginate(80);
+                ->paginate(80);
         }
         return view('gov_case.others_action.permissions_table', $data);
     }
 
-
     // end user permissions
-
-
-
 
 }

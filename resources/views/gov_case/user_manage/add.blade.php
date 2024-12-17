@@ -62,12 +62,17 @@
 
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="mobile_no" class=" form-control-label">মোবাইল নাম্বার <span
-                                        class="text-danger">*</span></label>
+                                    <label for="mobile_no" class="form-control-label">
+                                        মোবাইল নাম্বার <span class="text-danger">*</span>
+                                    </label>
                                     <input type="text" name="mobile_no" id="mobile_no" placeholder="মোবাইল নাম্বার লিখুন"
-                                        class="form-control form-control-sm" required>
+                                        class="form-control form-control-sm" placeholder="(type digits in English)"
+                                        required="required" onkeypress="return allowEnglishOnly(event)"
+                                        oninput="sanitizeEnglishDigits(this)">
                                 </div>
                             </div>
+
+
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="name" class=" form-control-label">শাখা <span
@@ -114,7 +119,10 @@
                                     </span>
                                 </div>
                             </div>
-                            @if (Auth::user()->role_id != 29 && Auth::user()->role_id != 31 && Auth::user()->role_id != 32 && Auth::user()->role_id != 41)
+                            @if (Auth::user()->role_id != 29 &&
+                                    Auth::user()->role_id != 31 &&
+                                    Auth::user()->role_id != 32 &&
+                                    Auth::user()->role_id != 41)
 
                                 <div class="col-4 mb-4">
                                     <div class="form-group">
@@ -270,22 +278,24 @@
             </div>
         </div>
     </div>
-    <style>
-        /* .select2-container .select2-selection--single {
-                                                                height: 37px !important;
-                                                            }
 
-                                                            .select2-container--default .select2-selection--single .select2-selection__arrow {
-                                                                top: 5px !important;
-                                                            }
-
-                                                            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                                                                line-height: 25px !important;
-                                                            } */
-    </style>
 @endsection
 @section('scripts')
 
+    <script>
+        function allowEnglishOnly(event) {
+            const charCode = event.charCode || event.keyCode;
+            if (charCode >= 48 && charCode <= 57 || charCode === 8 || charCode === 46) {
+                return true;
+            }
+            return false;
+        }
+
+
+        function sanitizeEnglishDigits(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+    </script>
 
     <script>
         function CheckPassword(inputtxt) {

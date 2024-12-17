@@ -1,11 +1,7 @@
 @extends('layouts.cabinet.cab_default')
 
 @section('content')
-    @php//echo $userManagement->name;
-        //exit();
-    @endphp
 
-    <!--begin::Card-->
     <div class="card card-custom col-7">
         <div class="card-header flex-wrap py-5">
             <div class="card-title">

@@ -162,12 +162,12 @@
                                 </h5>
                                 <div class="text-secondary ml-10">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <a href="{{ route('cabinet.case.appealAgainstGovtPending') }}" --}}
-                                        <a href="#" class="text-dark">আপিল দায়েরের জন্য পেন্ডিং</a>
+                                        <a href="{{ route('cabinet.case.appealAgainstGovtPending') }}"
+                                        class="text-dark">আপিল দায়েরের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($appealAgainstGovt) }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark">জবাব প্রেরণের জন্য পেন্ডিং</a>
+                                        <a href="{{ route('cabinet.case.sendingReplyPending') }}" class="text-dark">জবাব প্রেরণের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
                                     {{-- <div class="d-flex justify-content-between">
