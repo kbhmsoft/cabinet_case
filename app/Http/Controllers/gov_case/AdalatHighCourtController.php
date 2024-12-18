@@ -24,8 +24,19 @@ class AdalatHighCourtController extends Controller
 
         //Add Conditions
         $query = DB::table('highcourt_adalats')
-            ->where('deleted_at', '=', null)
+            ->whereNull('deleted_at')
             ->orderBy('name');
+
+        if (!empty($_GET['adalat_name'])) {
+            $adalatName = $_GET['adalat_name'];
+            $words = explode(' ', $adalatName); // Split the input into words
+
+            $query->where(function ($subQuery) use ($words) {
+                foreach ($words as $word) {
+                    $subQuery->orWhere('highcourt_adalats.name', 'LIKE', '%' . $word . '%');
+                }
+            });
+        }
 
         $data['users'] = $query->paginate(10)->withQueryString();
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\SettingsController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\gov_case\GovCaseRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ use App\Http\Controllers\API\MessageController;
 
 
 Route::post('login', [LoginController::class, 'login']);
+
+Route::post('file-upload/data-migration', [GovCaseRegisterController::class, 'fileUploadDataMigration']);
 
 
 // With Auth

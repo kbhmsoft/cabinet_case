@@ -38,13 +38,11 @@
             <div class="card-title">
                 <h2> {{ $page_title }} </h2>
             </div>
-
             <div class="card-toolbar">
                 <a href="{{ route('cabinet.highcourt-maintain.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
                     <i class="la la-plus"></i>নতুন আদালত এন্ট্রি
                 </a>
             </div>
-
         </div>
 
         <div class="card-body">
@@ -54,56 +52,8 @@
                 </div>
             @endif
 
-            {{-- <form class="form-inline" method="GET">
-                <div class="form-group mb-2 mr-2">
-                    <select name="office_type" id="office_type" class="form-control">
-                        <option value="">-বিভাগ নির্বাচন করুন-</option>3
-                        @foreach ($office_types as $value)
-                            <option
-                                value="{{ $value->id }}"{{ (isset($_GET['office_type']) ? $_GET['office_type'] : '') == $value->id ? 'selected' : '' }}>
-                                {{ $value->type_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group mb-2 mr-2" id="selectMinDiv" style="display: none;">
-                    <select name="ministry" id="ministry" class="form-control">
-                        <option value="">-মন্ত্রণালয়/বিভাগ নির্বাচন করুন-</option>3
-                        @foreach ($ministries as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['ministry']) ? $_GET['ministry'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group mb-2 mr-2" id="selectDivisionDiv" style="display: none;">
-                    <select name="divOffice" id="divOffice" class="form-control">
-                        <option value="">- বিভাগীয় প্রশাসন নির্বাচন করুন-</option>3
-                        @foreach ($divOffices as $value)
-                            <option
-                                value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
-                                {{ $value->office_name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
+            @include('gov_case.highcourt_adalat_search')
 
-                <div class="form-group mb-2 mr-2">
-                    <select name="office_id" id="office_id" class="form-control">
-                        <option value="">- অফিস নির্বাচন করুন-</option>3
-
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <select name="role" class="form-control w-100">
-                        <option value=''>-ইউজার রোল নির্বাচন করুন-</option>
-                        @foreach ($user_role as $value)
-                            <option value="{{ $value->id }}"
-                                {{ $value->id == (isset($_GET['role']) ? $_GET['role'] : '') ? 'selected' : '' }}>
-                                {{ $value->name_bn }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success ">অনুসন্ধান করুন</button>
-            </form> --}}
 
             @if ($users && $users->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>

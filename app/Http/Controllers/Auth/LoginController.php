@@ -127,7 +127,7 @@ class LoginController extends BaseController
             $organoGramUserInfo = DB::table('doptor_user_managements')
                 ->select('id', 'organogram_id', 'user_role')
                 ->whereIn('doptor_user_managements.organogram_id', $organogramIds)
-                ->first();
+                ->latest()->first();
         }
 
         // Assuming $response->data->office_info is an array of objects
