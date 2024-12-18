@@ -139,10 +139,7 @@ class GovCaseRegisterRepository
 
     public static function storeGovCase($caseInfo)
     {
-
-        // dd($caseInfo['caseId']);
         $case = self::checkGovCaseExist($caseInfo['caseId']);
-        // dd($case);
         $ref_case_num = null;
         if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
             $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
@@ -395,7 +392,6 @@ class GovCaseRegisterRepository
             $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial ?? null;
             $case->tamil_requesting_date = $tamil_requesting_date ?? null;
 
-// dd($caseInfo);
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -404,7 +400,6 @@ class GovCaseRegisterRepository
             $caseId = null;
         }
 
-        // dd($caseId);
         return $caseId;
     }
     public function prevCaseStatusUpdate($prevCaseId)
@@ -1195,5 +1190,9 @@ class GovCaseRegisterRepository
         return $badi;
     }
 
+
+
+    ////// Data Migration /////////////
+ 
 
 }

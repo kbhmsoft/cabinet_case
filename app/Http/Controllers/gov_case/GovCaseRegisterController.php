@@ -31,13 +31,6 @@ use Illuminate\Support\Facades\Log;
 
 class GovCaseRegisterController extends Controller
 {
-    // protected $pdf;
-
-    // public function __construct()
-    // {
-    //     $this->pdf = new \Mpdf\Mpdf();
-    // }
-
     public function index()
     {
         $officeInfo = user_office_info();
@@ -182,7 +175,7 @@ class GovCaseRegisterController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['gov_case_division_category_type']=GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
         $data['selected_office_id'] = request('office_id', null);
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
@@ -1499,7 +1492,6 @@ class GovCaseRegisterController extends Controller
 
         $query = GovCaseRegister::where('deleted_at', '=', null)->where('result', 2)->where('is_appeal', 2);
 
-
         if ($roleID == 32 || $roleID == 41) {
             $query->whereHas(
                 'bibadis',
@@ -1550,11 +1542,9 @@ class GovCaseRegisterController extends Controller
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
 
-       
-
-        $query= GovCaseRegister::where('deleted_at', '=', null)
-        ->where('is_final_order', 0)
-        ->whereNull('result_sending_date');
+        $query = GovCaseRegister::where('deleted_at', '=', null)
+            ->where('is_final_order', 0)
+            ->whereNull('result_sending_date');
 
         if ($roleID == 32 || $roleID == 41) {
             $query->whereHas(
@@ -5007,5 +4997,21 @@ class GovCaseRegisterController extends Controller
             ->delete();
 
         return response()->json(['message' => 'সফল ভাবে মুছে ফেলা হয়েছে']);
+    }
+
+    public function fileUploadDataMigration(Request $request)
+    {
+        try {
+            $caseId = GovCaseRegisterRepository::storeDataMigrationGovCase($request);
+            GovCaseBadiBibadiRepository::storeDataMigrationBadi($request, $caseId);
+            GovCaseBadiBibadiRepository::storeDataMigrationMainBibadi($request, $caseId);
+            GovCaseBadiBibadiRepository::storeDataMigrationBibadi($request, $caseId);
+
+            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+
+        } catch (\Exception $e) {
+            // DB::rollBack();
+            return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
+        }
     }
 }
