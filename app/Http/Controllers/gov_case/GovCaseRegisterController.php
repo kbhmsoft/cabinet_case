@@ -2,32 +2,34 @@
 
 namespace App\Http\Controllers\gov_case;
 
-use App\Http\Controllers\Controller;
-use App\Models\Attachment;
-use App\Models\Court;
-use App\Models\gov_case\AppealAdalat;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseBibadi;
-use App\Models\gov_case\GovCaseDivision;
-use App\Models\gov_case\GovCaseDivisionCategory;
-use App\Models\gov_case\GovCaseDivisionCategoryType;
-use App\Models\gov_case\GovCaseLog;
-use App\Models\gov_case\GovCaseOffice;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\HighcourtAdalat;
-use App\Models\Office;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
-use App\Repositories\gov_case\AttachmentRepository;
-use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
-use App\Repositories\gov_case\GovCaseLogRepository;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Models\Court;
+use App\Models\Office;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Imports\GovCaseImport;
 use Illuminate\Support\Facades\DB;
+use App\Models\gov_case\GovCaseLog;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\gov_case\GovCaseBadi;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\gov_case\AppealAdalat;
+use App\Models\gov_case\GovCaseBibadi;
+use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseDivision;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\HighcourtAdalat;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseDivisionCategory;
+use App\Repositories\gov_case\AttachmentRepository;
+use App\Repositories\gov_case\GovCaseLogRepository;
+use App\Models\gov_case\GovCaseDivisionCategoryType;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\GovCaseBadiBibadiRepository;
+use App\Repositories\gov_case\AppealGovCaseRegisterRepository;
 
 class GovCaseRegisterController extends Controller
 {
@@ -5001,17 +5003,34 @@ class GovCaseRegisterController extends Controller
 
     public function fileUploadDataMigration(Request $request)
     {
-        try {
-            $caseId = GovCaseRegisterRepository::storeDataMigrationGovCase($request);
-            GovCaseBadiBibadiRepository::storeDataMigrationBadi($request, $caseId);
-            GovCaseBadiBibadiRepository::storeDataMigrationMainBibadi($request, $caseId);
-            GovCaseBadiBibadiRepository::storeDataMigrationBibadi($request, $caseId);
+        // try {
+            // Validate the uploaded file
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls',
+            ]);
 
-            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
+            // Process the uploaded file
+            $file = $request->file('file');
+            // Move the file to a permanent location
+            $filePath = $file->storeAs('uploads', $file->getClientOriginalName());
+            // dd($filePath);
+            $importData = Excel::toArray(new GovCaseImport, storage_path("app/" . $filePath));
 
-        } catch (\Exception $e) {
-            // DB::rollBack();
-            return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
-        }
+            // Example: Debug the imported data
+            dd($importData);
+
+            foreach ($importData[0] as $row) {
+                $caseId = GovCaseRegisterRepository::storeDataMigrationGovCase($row);
+                GovCaseRegisterRepository::storeDataMigrationBadi($row, $caseId);
+                GovCaseRegisterRepository::storeDataMigrationMainBibadi($row, $caseId);
+            }
+
+            return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে']);
+
+        // } catch (\Exception $e) {
+        //     return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি', 'message' => $e->getMessage()], 500);
+        // }
     }
+
+
 }

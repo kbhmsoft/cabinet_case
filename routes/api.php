@@ -5,18 +5,19 @@ use Illuminate\Support\Facades\Route;
 
 /*
 https://www.itsolutionstuff.com/post/laravel-8-rest-api-with-passport-authentication-tutorialexample.html
-use App\Http\Controllers\API\RegisterController;
-use App\Http\Controllers\API\ProductController;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\API\LoginController;
 */
 
-use App\Http\Controllers\API\LoginController;
-use App\Http\Controllers\API\CaseRegisterController;
-use App\Http\Controllers\API\ProfileController;
-use App\Http\Controllers\API\SettingsController;
-use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\SettingsController;
+use App\Http\Controllers\API\CaseRegisterController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
-
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,7 +29,10 @@ use App\Http\Controllers\gov_case\GovCaseRegisterController;
 |
 */
 
-
+Route::get('/optimize', function () {
+    $exitCode = Artisan::call('optimize');
+    return '<h1>Reoptimized class loader</h1>';
+});
 Route::post('login', [LoginController::class, 'login']);
 
 Route::post('file-upload/data-migration', [GovCaseRegisterController::class, 'fileUploadDataMigration']);

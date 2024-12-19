@@ -9,7 +9,8 @@ use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
 use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
 use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
 use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
-use App\Models\gov_case\ConcernPersonAppealAdministrativeTribrunal;
+use App\Models\gov_case\GovCaseBadi;
+use App\Models\gov_case\GovCaseBibadi;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseHighcourtAdalat;
@@ -17,7 +18,6 @@ use App\Models\gov_case\GovCaseOrderTaken;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\ReplyAttachment;
 use App\Models\SuspensionAttachment;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GovCaseRegisterRepository
@@ -96,8 +96,6 @@ class GovCaseRegisterRepository
             }
         }
     }
-
-
 
     public static function checkHighcourtAdalatExist($highcourtAdalatId)
     {
@@ -691,8 +689,6 @@ class GovCaseRegisterRepository
         return $caseId;
     }
 
-
-
     public static function storeMainRespondentChangingGeneralInfo($caseInfo, $caseId)
     {
         try {
@@ -782,7 +778,6 @@ class GovCaseRegisterRepository
         }
 
     }
-
 
     public static function storeSendingReply($caseInfo)
     {
@@ -1190,9 +1185,54 @@ class GovCaseRegisterRepository
         return $badi;
     }
 
-
-
     ////// Data Migration /////////////
- 
+    public static function storeDataMigrationGovCase($caseInfo)
+    {
+        $case = new GovCaseRegister;
+        try {
+            $case->case_division_id = $caseInfo->highcourt_adalat_0;
+            $case->case_category_id = $caseInfo->case_category;
+            $case->case_type_id = $caseInfo->case_category_type;
+            $case->case_no = $caseInfo->case_no;
+            $case->year = $caseInfo->case_year;
+            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->casedate)));
+            $case->total_badi_number = $caseInfo->total_badi_number;
+            $case->subject_matter = $caseInfo->subject_matter;
+            $case->postponed_order = $caseInfo->postponed_order;
+            $case->status = 1;
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have ?? null;
+            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details ?? null;
+
+            if ($case->save()) {
+                $caseId = $case->id;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            $caseId = null;
+        }
+
+        return $caseId;
+    }
+
+    public static function storeDataMigrationBadi($caseInfo, $govCaseId)
+    {
+        if ($caseInfo->badi_name_0) {
+            $badi = new GovCaseBadi();
+            $badi->gov_case_id = $govCaseId;
+            $badi->name = $caseInfo->badi_name_0;
+            $badi->address = $caseInfo->badi_address_0;
+            $badi->save();
+        }
+    }
+
+    public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
+    {
+        $officeID = $caseInfo->main_respondent;
+        $bibadi = new GovCaseBibadi();
+        $bibadi->gov_case_id = $govCaseId;
+        $bibadi->respondent_id = $officeID;
+        $bibadi->is_main_bibadi = 1;
+        $bibadi->save();
+    }
 
 }
