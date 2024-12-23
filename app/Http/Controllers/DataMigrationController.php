@@ -54,7 +54,7 @@ class DataMigrationController extends Controller
         $data = [
             'data_migration_file' => null,
         ];
-
+        $data['page_title'] = 'হাইকোর্ট বিভাগ ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
         return view('gov_case.data-migration.create', compact('data'));
     }
 
