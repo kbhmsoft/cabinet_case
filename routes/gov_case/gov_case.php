@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
+use App\Http\Controllers\DataMigrationController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
@@ -25,6 +26,12 @@ use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
 Route::middleware('prevent-back-history')->group(function () {
 
     Route::middleware('auth')->group(function () {
+
+       // For Data Migration
+        // Route::get('/data-migration', [DashboardController::class, 'data_migration']);
+        Route::resource('data-migration', DataMigrationController::class);
+
+
 
         /////************** Supream Court **************/////
 

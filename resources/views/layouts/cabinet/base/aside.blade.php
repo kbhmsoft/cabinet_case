@@ -878,85 +878,69 @@
                                 </ul>
                             @endcan
                         </div>
-            </div>
-            </li>
-        @endcan
+                    </li>
+                @endcan
 
 
-        {{-- @can('maintain_main_respondent_included')
-                    <li class="menu-item mt-2 has-treeview {{ request()->is('cabinet/case/highcourt/indexApplications*', 'cabinet/case/appeal/indexApplications*') ? 'menu-item-open' : '' }}"
+
+
+                @can('maintain_notice')
+                    <li class="menu-item mt-2 has-treeview {{ request()->is('notices*') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
-                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> মূল রেসপন্ডেন্ট
-                                হিসেবে অন্তর্ভুক্তির আবেদন</span>
+                            <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> নোটিশ
+                                পরিচালনা</span>
                             <i class="menu-arrow"></i>
                         </a>
 
                         <div class="menu-submenu">
-                            @can('highcourt_same_case_menu')
+                            @can('maintain_notice_submenu')
                                 <ul class="menu-subnav">
-                                    <li class="menu-item {{ request()->is('cabinet/case/highcourt/indexApplications') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ request()->is('notices') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.highcourtIndexApplications') }}" class="menu-link">
+                                        <a href="{{ route('notices.index') }}" class="menu-link">
                                             <span class="menu-text font-weight-bolder"><i
-                                                    class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            @endcan
-
-                            @can('appeal_same_case_menu')
-                                <ul class="menu-subnav">
-                                    <li class="menu-item {{ request()->is('cabinet/case/appeal/indexApplications') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('cabinet.case.appealIndexApplications') }}" class="menu-link">
-                                            <span class="menu-text font-weight-bolder"><i
-                                                    class="menu-bullet menu-bullet-dot"><span></span></i>আপিল বিভাগ</span>
+                                                    class="menu-bullet menu-bullet-dot"><span></span></i> নোটিশ পরিচালনা</span>
                                         </a>
                                     </li>
                                 </ul>
                             @endcan
                         </div>
                     </li>
-                @endcan --}}
+                @endcan
 
-        {{-- <ul class="menu-nav">
-                    <li class="menu-item has-treeview " aria-haspopup="true" data-menu-toggle="hover">
-                        <a href="{{ route('notices.index') }}"class="nav-link {{ 'notices' }}">
-                            <i class="fa-solid fa-triangle-exclamation text-dark"></i>
-                            <span class="menu-text font-weight-bolder" style="font-size:18px;"><i
-                                    class="fas fa-solid fa-file"></i> নোটিশ পরিচালনা</span>
-                        </a>
-                    </li>
-                </ul> --}}
+                {{-- @can('maintain_notice') --}}
+                <li class="menu-item mt-2 has-treeview {{ request()->is('data-migration*') ? 'menu-item-open' : '' }}"
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> ডাটা মাইগ্রেশন</span>
+                        <i class="menu-arrow"></i>
+                    </a>
 
-        @can('maintain_notice')
-            <li class="menu-item mt-2 has-treeview {{ request()->is('notices*') ? 'menu-item-open' : '' }}"
-                aria-haspopup="true" data-menu-toggle="hover">
-                <a href="javascript:;" class="menu-link menu-toggle">
-                    <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> নোটিশ
-                        পরিচালনা</span>
-                    <i class="menu-arrow"></i>
-                </a>
+                    <div class="menu-submenu">
+                        {{-- @can('maintain_notice_submenu') --}}
+                            <ul class="menu-subnav">
+                                <li class="menu-item {{ request()->is('data-migration') ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('data-migration.create') }}" class="menu-link">
+                                        <span class="menu-text font-weight-bolder"><i
+                                                class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ ডাটা মাইগ্রেশন</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        {{-- @endcan --}}
 
-                <div class="menu-submenu">
-                    @can('maintain_notice_submenu')
-                        <ul class="menu-subnav">
-                            <li class="menu-item {{ request()->is('notices') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('notices.index') }}" class="menu-link">
-                                    <span class="menu-text font-weight-bolder"><i
-                                            class="menu-bullet menu-bullet-dot"><span></span></i> নোটিশ পরিচালনা</span>
-                                </a>
-                            </li>
-                        </ul>
-                    @endcan
-                </div>
-            </li>
-        @endcan
 
-        </ul> <!--end::Menu Nav-->
-    </div> <!--end::Menu Container-->
-</div> <!--end::Aside Menu-->
+                    </div>
+
+
+                </li>
+            {{-- @endcan --}}
+
+            </ul> <!--end::Menu Nav-->
+
+
+        </div> <!--end::Menu Container-->
+    </div> <!--end::Aside Menu-->
 </div> <!-- /aside-left -->
 </div> <!-- /aside-left -->

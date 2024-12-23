@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use Maatwebsite\Excel\Concerns\ToArray;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class GovCaseImport implements ToArray
+class GovCaseImport implements ToCollection
 {
-    public function array(array $array)
+    public function collection(Collection $rows)
     {
-        // Returning the Excel data as an array for processing
-        return $array;
+        return $rows;
     }
 }
