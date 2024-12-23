@@ -1219,17 +1219,13 @@ class AppealGovCaseRegisterController extends Controller
             DB::beginTransaction();
 
             try {
-
                 $caseId = AppealGovCaseRegisterRepository::storeAppeal($request);
-                // dd([$request->all(),$caseId]);
                 AppealGovCaseRegisterRepository::storeConcernPerson($request, $caseId);
                 AppealGovCaseRegisterRepository::storeAppealAdalat($request, $caseId);
                 if ($request->file_type && $_FILES["file_name"]['name']) {
                     AttachmentRepository::storeAppealAttachment('appeal_gov_case', $caseId, $request);
                 }
-
                 DB::commit();
-                // Logging to verify
                 \Log::info('Case stored successfully', ['caseId' => $caseId]);
 
                 return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);

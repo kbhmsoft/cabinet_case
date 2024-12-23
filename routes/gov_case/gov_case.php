@@ -1,37 +1,38 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppealDataMigrationController;
+use App\Http\Controllers\ApplicationFormAsMainDefendentController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\DataMigrationController;
+use App\Http\Controllers\gov_case\AclController;
+use App\Http\Controllers\gov_case\AdalatAdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
-use App\Http\Controllers\gov_case\SumpremCourtController;
+use App\Http\Controllers\gov_case\AdalatHighCourtController;
+use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
+use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
+use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseOfficeController;
-use App\Http\Controllers\gov_case\GovCaseMessageController;
-use App\Http\Controllers\gov_case\AdalatHighCourtController;
+use App\Http\Controllers\gov_case\GovCaseOtherActionController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
-use App\Http\Controllers\gov_case\GovCaseActivityLogController;
-use App\Http\Controllers\gov_case\GovCaseOtherActionController;
-use App\Http\Controllers\ApplicationFormAsMainDefendentController;
-use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
-use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
-use App\Http\Controllers\gov_case\AdalatAdministrativeTribrunalController;
-use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('prevent-back-history')->group(function () {
 
     Route::middleware('auth')->group(function () {
 
-       // For Data Migration
+        // For Data Migration
         // Route::get('/data-migration', [DashboardController::class, 'data_migration']);
         Route::resource('data-migration', DataMigrationController::class);
 
-
+        Route::resource('data-migration-appeal', AppealDataMigrationController::class);
 
         /////************** Supream Court **************/////
 
@@ -163,7 +164,6 @@ Route::middleware('prevent-back-history')->group(function () {
 
                 Route::get('createApplicationForm/{caseNo}/{caseYear}/{caseCategory}', [ApplicationFormAsMainDefendentController::class, 'createApplicationForm'])->name('createApplicationForm');
 
-
                 Route::post('storeApplicationForm', [ApplicationFormAsMainDefendentController::class, 'storeApplicationForm'])->name('storeApplicationForm');
 
                 Route::get('indexApplications', [ApplicationFormAsMainDefendentController::class, 'indexApplications'])->name('indexApplications');
@@ -239,7 +239,6 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('highcourt/create/old', [GovCaseRegisterController::class, 'highcourt_old_case_create'])->name('highcourt.create.old');
                 Route::get('appellateDivision/create', [GovCaseRegisterController::class, 'appellateDivision_create'])->name('appellateDivision.create');
 
-
                 Route::get('appellateDivision/create/old', [GovCaseRegisterController::class, 'appellateDivision_old_case_create'])->name('appellateDivision.create.old');
                 Route::get('create_appeal/{id}', [GovCaseRegisterController::class, 'create_appeal'])->name('create_appeal');
                 Route::post('store', [GovCaseRegisterController::class, 'store'])->name('store');
@@ -264,8 +263,7 @@ Route::middleware('prevent-back-history')->group(function () {
 
                 Route::post('appeal/ruleFile/delete/{id}', [AppealGovCaseRegisterController::class, 'appealRuleFileDelete'])->name('appeal.ruleFile.delete');
                 Route::get('/edit/{case_no}/{case_year?}/{case_category_type}', [GovCaseRegisterController::class, 'editHighcourtCaseApplication'])
-                ->name('editHighcourtCaseApplication');
-
+                    ->name('editHighcourtCaseApplication');
 
                 Route::post('appeal/adalat/delete/{id}', [AppealGovCaseRegisterController::class, 'adalatDelete'])->name('appeal.adalat.delete');
                 Route::post('appeal/advocate/delete/{id}', [AppealGovCaseRegisterController::class, 'advocateDelete'])->name('appeal.advocate.delete');
@@ -330,29 +328,24 @@ Route::middleware('prevent-back-history')->group(function () {
                 // Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
 
                 Route::get('appeal/edit/{case_no}/{case_year?}/{case_category_type}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])
-                ->name('editAppealCaseApplication');
-
+                    ->name('editAppealCaseApplication');
 
                 Route::post('appealOrderTakenStore', [AppealGovCaseRegisterController::class, 'appealOrderTakenStore'])->name('appealOrderTakenStore');
 
+                /////////////////////   AdministrativeTribrunalController / Appeal... /////////////////////////
+                Route::get('at_case_delete/{id}', [AdministrativeTribrunalController::class, 'administrative_tribrunal_case_delete'])->name('administrative_tribrunal_case_delete');
+                Route::post('administritive/check-case-no', [AdministrativeTribrunalController::class, 'checkCaseNo'])->name('administrative-check-case-no');
+                Route::post('appeal-administritive/check-case-no', [AppealAdministrativeTribrunalController::class, 'checkCaseNo'])->name('appeal-administrative-check-case-no');
 
-              /////////////////////   AdministrativeTribrunalController / Appeal... /////////////////////////
-              Route::get('at_case_delete/{id}', [AdministrativeTribrunalController::class, 'administrative_tribrunal_case_delete'])->name('administrative_tribrunal_case_delete');
-              Route::post('administritive/check-case-no', [AdministrativeTribrunalController::class, 'checkCaseNo'])->name('administrative-check-case-no');
-              Route::post('appeal-administritive/check-case-no', [AppealAdministrativeTribrunalController::class, 'checkCaseNo'])->name('appeal-administrative-check-case-no');
-
-              Route::get('administritiveTribrunalDetails/{id}', [AdministrativeTribrunalController::class, 'show'])->name('administritiveTribrunalDetails');
-              Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
-              Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
-              Route::post('administrative-tribrunal-generalInfo/store', [AdministrativeTribrunalController::class, 'administrativeTribrunalGeneralInfo'])->name('administrativeTribrunalGeneralInfo');
-              Route::get('appeal/administrativeTribrunal/create', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal_create'])->name('appealAdministrativeTribrunal.create');
-              Route::post('appeal-administrative-tribrunal-generalInfo/store', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunalGeneralInfo'])->name('appealAdministrativeTribrunalGeneralInfo');
-              Route::get('appealAdministrativeTribrunal', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal');
-              Route::get('appealAdministritiveTribrunalDetails/{id}', [AppealAdministrativeTribrunalController::class, 'show'])->name('appealAdministritiveTribrunalDetails');
-              Route::get('aat_case_delete/{id}', [AppealAdministrativeTribrunalController::class, 'appeal_administrative_tribrunal_case_delete'])->name('appeal_administrative_tribrunal_case_delete');
-
-
-
+                Route::get('administritiveTribrunalDetails/{id}', [AdministrativeTribrunalController::class, 'show'])->name('administritiveTribrunalDetails');
+                Route::get('administrativeTribrunal', [AdministrativeTribrunalController::class, 'administrativeTribrunal'])->name('administrativeTribrunal');
+                Route::get('administrativeTribrunal/create', [AdministrativeTribrunalController::class, 'administrativeTribrunal_create'])->name('administrativeTribrunal.create');
+                Route::post('administrative-tribrunal-generalInfo/store', [AdministrativeTribrunalController::class, 'administrativeTribrunalGeneralInfo'])->name('administrativeTribrunalGeneralInfo');
+                Route::get('appeal/administrativeTribrunal/create', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal_create'])->name('appealAdministrativeTribrunal.create');
+                Route::post('appeal-administrative-tribrunal-generalInfo/store', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunalGeneralInfo'])->name('appealAdministrativeTribrunalGeneralInfo');
+                Route::get('appealAdministrativeTribrunal', [AppealAdministrativeTribrunalController::class, 'appealAdministrativeTribrunal'])->name('appealAdministrativeTribrunal');
+                Route::get('appealAdministritiveTribrunalDetails/{id}', [AppealAdministrativeTribrunalController::class, 'show'])->name('appealAdministritiveTribrunalDetails');
+                Route::get('aat_case_delete/{id}', [AppealAdministrativeTribrunalController::class, 'appeal_administrative_tribrunal_case_delete'])->name('appeal_administrative_tribrunal_case_delete');
 
                 Route::group(['prefix' => 'action/', 'as' => 'action.'], function () {
                     Route::get('receive/{id}', [GovCaseActionController::class, 'receive'])->name('receive');

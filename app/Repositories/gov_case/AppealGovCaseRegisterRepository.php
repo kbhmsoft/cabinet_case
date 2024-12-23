@@ -7,10 +7,12 @@ use App\Models\User;
 use App\Models\Attachment;
 use App\Models\AppealAttachment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gov_case\GovCaseHearing;
 use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\AppealOrderTaken;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use App\Models\gov_case\GovCaseAppealAdalat;
 use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\AppealGovCaseOrderTaken;
@@ -851,4 +853,89 @@ class AppealGovCaseRegisterRepository
         }
         return $badi;
     }
+
+
+
+       ////// Appeal Data Migration /////////////
+
+       public static function convertBanglaToEnglish($number)
+       {
+           if (is_null($number)) {
+               return null;
+           }
+
+           $banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+           $englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+           return str_replace($banglaDigits, $englishDigits, $number);
+       }
+
+       public static function storeDataMigrationGovCase($caseInfo)
+       {
+           try {
+               $case = new AppealGovCaseRegister;
+
+               if (!empty($caseInfo['case_no'])) {
+                   $convertedCaseNo = self::convertBanglaToEnglish($caseInfo['case_no']);
+                   $case->case_no = strtok($convertedCaseNo, '/');
+               } else {
+                   $case->case_no = null;
+               }
+
+               $case->case_division_id = $caseInfo['court'] ?? null;
+               $case->case_category_id = $caseInfo['case_category'] ?? null;
+               $case->case_type_id = $caseInfo['case_category_type'] ?? null;
+               $case->year = $caseInfo['case_year'] ?? null;
+
+               if (!empty($caseInfo['casedate'])) {
+                   $case->case_entry_date = Date::excelToDateTimeObject($caseInfo['casedate'])->format('Y-m-d');
+               } else {
+                   $case->case_entry_date = null;
+               }
+               $case->created_by_office = $caseInfo['main_respondent'] ?? null;
+               $case->appeal_petitioner_name = $caseInfo['badi_name_0'] ?? null;
+               $case->subject_matter = $caseInfo['subject_matter'] ?? null;
+
+
+               if ($case->save()) {
+                   return $case->id;
+               }
+           } catch (\Exception $e) {
+               Log::error('Error inserting case data: ' . $e->getMessage());
+               return null;
+           }
+       }
+
+      public static function cleanAddress($address)
+       {
+           $cleanedAddress = str_replace('_x000D_', ' ', $address);
+           return trim(preg_replace('/\s+/', ' ', $cleanedAddress));
+       }
+
+    //    public static function storeDataMigrationBadi($caseInfo, $govCaseId)
+    //    {
+    //        $cleanedAddress = self::cleanAddress($caseInfo['badi_address_0']);
+    //        if (isset($caseInfo['badi_name_0']) && !empty($cleanedAddress)) {
+    //            $badi = new GovCaseBadi();
+    //            $badi->gov_case_id = $govCaseId;
+    //            $badi->name = $caseInfo['badi_name_0'];
+    //            $badi->address = $cleanedAddress;
+    //            $badi->save();
+    //        }
+    //    }
+
+
+    //    public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
+    //    {
+    //        if (isset($caseInfo['main_respondent'])) {
+    //            $officeID = $caseInfo['main_respondent'];
+    //            $bibadi = new GovCaseBibadi();
+    //            $bibadi->gov_case_id = $govCaseId;
+    //            $bibadi->respondent_id = $officeID;
+    //            $bibadi->is_main_bibadi = 1;
+    //            $bibadi->other_respondent_manual_name = null;
+    //            $bibadi->department_id = null;
+    //            $bibadi->save();
+    //        }
+    //    }
 }

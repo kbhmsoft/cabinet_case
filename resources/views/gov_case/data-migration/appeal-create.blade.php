@@ -19,9 +19,9 @@
 @section('content')
     <div class="card">
         <div class="card-body mb-5">
-        
-            <h3 class="card-title h2 font-weight-bolder">{{$data['page_title']}}</h3>
-            <form id="dataMigrationForm" action="{{ route('data-migration.store') }}" method="POST"
+
+            <h3 class="card-title h2 font-weight-bolder">{{ $data['page_title'] }}</h3>
+            <form id="dataMigrationForm" action="{{ route('data-migration-appeal.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <a href="{{ route('data-migration.create') }}" class="btn btn-danger">বাতিল করুন</a>
+                    <a href="{{ route('data-migration-appeal.create') }}" class="btn btn-danger">বাতিল করুন</a>
                     <button class="btn btn-primary" type="submit">তৈরি করুন</button>
                 </div>
             </form>
@@ -55,11 +55,11 @@
 @endsection
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.getElementById('dataMigrationForm').addEventListener('submit', function(e) {
-        Swal.fire({
-            html: `
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('dataMigrationForm').addEventListener('submit', function(e) {
+            Swal.fire({
+                html: `
                 <div style="display: flex; flex-direction: column; align-items: center;">
                     <div class="clock-loader" style="width: 80px; height: 80px; position: relative;">
                         <div class="clock-face" style="width: 100%; height: 100%; border: 5px solid #007BFF; border-radius: 50%; position: relative;">
@@ -70,17 +70,17 @@
                     <p>মাইগ্রেশন সম্পন্ন হওয়া পর্যন্ত অনুগ্রহ করে অপেক্ষা করুন।</p>
                 </div>
             `,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            customClass: {
-                popup: 'animated-popup',
-            }
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                customClass: {
+                    popup: 'animated-popup',
+                }
+            });
         });
-    });
 
-    // Add clock animation styles
-    const style = document.createElement('style');
-    style.innerHTML = `
+        // Add clock animation styles
+        const style = document.createElement('style');
+        style.innerHTML = `
         @keyframes tick {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -93,8 +93,8 @@
             100% { opacity: 1; }
         }
     `;
-    document.head.appendChild(style);
-</script>
+        document.head.appendChild(style);
+    </script>
 
 
 @endsection

@@ -909,33 +909,39 @@
                     </li>
                 @endcan
 
-                {{-- @can('maintain_notice') --}}
-                <li class="menu-item mt-2 has-treeview {{ request()->is('data-migration*') ? 'menu-item-open' : '' }}"
+                @can('maintain_notice')
+                <li class="menu-item {{ in_array(request()->route()->getName(), ['data-migration.create', 'data-migration-appeal.create']) ? 'menu-item-open' : '' }}"
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
-                        <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> ডাটা মাইগ্রেশন</span>
+                        <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> ডাটা
+                            মাইগ্রেশন</span>
                         <i class="menu-arrow"></i>
                     </a>
 
                     <div class="menu-submenu">
-                        {{-- @can('maintain_notice_submenu') --}}
-                            <ul class="menu-subnav">
-                                <li class="menu-item {{ request()->is('data-migration') ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('data-migration.create') }}" class="menu-link">
-                                        <span class="menu-text font-weight-bolder"><i
-                                                class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ ডাটা মাইগ্রেশন</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        {{-- @endcan --}}
-
-
+                        <ul class="menu-subnav">
+                            <li class="menu-item {{ request()->route()->getName() === 'data-migration.create' ? 'hilightMenu' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('data-migration.create') }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder"><i
+                                            class="menu-bullet menu-bullet-dot"><span></span></i> হাইকোর্ট বিভাগ ডাটা
+                                        মাইগ্রেশন</span>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->route()->getName() === 'data-migration-appeal.create' ? 'hilightMenu' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('data-migration-appeal.create') }}" class="menu-link">
+                                    <span class="menu-text font-weight-bolder"><i
+                                            class="menu-bullet menu-bullet-dot"><span></span></i> আপিল বিভাগ ডাটা
+                                        মাইগ্রেশন</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-
-
                 </li>
-            {{-- @endcan --}}
+
+
+                @endcan
 
             </ul> <!--end::Menu Nav-->
 
