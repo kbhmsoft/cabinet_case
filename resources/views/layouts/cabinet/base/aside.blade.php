@@ -909,7 +909,7 @@
                     </li>
                 @endcan
 
-                @can('maintain_notice')
+                {{-- @can('maintain_notice') --}}
                 <li class="menu-item {{ in_array(request()->route()->getName(), ['data-migration.create', 'data-migration-appeal.create']) ? 'menu-item-open' : '' }}"
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
@@ -941,7 +941,7 @@
                 </li>
 
 
-                @endcan
+                {{-- @endcan --}}
 
             </ul> <!--end::Menu Nav-->
 
