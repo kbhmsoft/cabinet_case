@@ -1,28 +1,29 @@
 <?php
 
-use App\Http\Controllers\AppealDataMigrationController;
-use App\Http\Controllers\ApplicationFormAsMainDefendentController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DataMigrationController;
 use App\Http\Controllers\gov_case\AclController;
-use App\Http\Controllers\gov_case\AdalatAdministrativeTribrunalController;
+use App\Http\Controllers\DataMigrationController;
+use App\Http\Controllers\ATDataMigrationController;
+use App\Http\Controllers\AppealDataMigrationController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
-use App\Http\Controllers\gov_case\AdalatHighCourtController;
-use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
-use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
-use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
+use App\Http\Controllers\gov_case\SumpremCourtController;
 use App\Http\Controllers\gov_case\GovCaseActionController;
-use App\Http\Controllers\gov_case\GovCaseActivityLogController;
-use App\Http\Controllers\gov_case\GovCaseMessageController;
 use App\Http\Controllers\gov_case\GovCaseNoticeController;
 use App\Http\Controllers\gov_case\GovCaseOfficeController;
-use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\gov_case\GovCaseMessageController;
+use App\Http\Controllers\gov_case\AdalatHighCourtController;
 use App\Http\Controllers\gov_case\GovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseSettingsController;
+use App\Http\Controllers\gov_case\GovCaseActivityLogController;
+use App\Http\Controllers\gov_case\GovCaseOtherActionController;
+use App\Http\Controllers\ApplicationFormAsMainDefendentController;
+use App\Http\Controllers\gov_case\AppealGovCaseRegisterController;
 use App\Http\Controllers\gov_case\GovCaseUserManagementController;
+use App\Http\Controllers\gov_case\AdministrativeTribrunalController;
 use App\Http\Controllers\gov_case\GovCaseUserNotificationController;
-use App\Http\Controllers\gov_case\SumpremCourtController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\gov_case\AdalatAdministrativeTribrunalController;
+use App\Http\Controllers\gov_case\AppealAdministrativeTribrunalController;
 
 Route::middleware('prevent-back-history')->group(function () {
 
@@ -31,6 +32,7 @@ Route::middleware('prevent-back-history')->group(function () {
         // For Data Migration
         // Route::get('/data-migration', [DashboardController::class, 'data_migration']);
         Route::resource('data-migration', DataMigrationController::class);
+        Route::resource('data-migration-at', ATDataMigrationController::class);
 
         Route::resource('data-migration-appeal', AppealDataMigrationController::class);
 
