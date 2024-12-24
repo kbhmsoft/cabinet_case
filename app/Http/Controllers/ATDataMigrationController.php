@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\NoticeResource;
-use App\Imports\GovCaseImport;
 use App\Models\Notice;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
 use Illuminate\Http\Request;
+use App\Imports\GovCaseImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Resources\NoticeResource;
+use App\Repositories\gov_case\GovCaseRegisterRepository;
+use App\Repositories\gov_case\AdministrativeTribrunalRepository;
 
 class ATDataMigrationController extends Controller
 {
@@ -38,11 +39,10 @@ class ATDataMigrationController extends Controller
                 }
 
                 if (is_array($row) && !empty(array_filter($row))) {
-                    // dd(array_combine($importData[0][0], $row));
-                    $caseId = GovCaseRegisterRepository::storeDataMigrationGovCase(array_combine($importData[0][0], $row));
-                    GovCaseRegisterRepository::storeDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
-                    GovCaseRegisterRepository::storeDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
 
+                    $caseId = AdministrativeTribrunalRepository::storeDataMigrationGovCase(array_combine($importData[0][0], $row));
+                    AdministrativeTribrunalRepository::storeDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
+                    AdministrativeTribrunalRepository::storeDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
                 }
             }
 
