@@ -1215,7 +1215,7 @@ class GovCaseRegisterRepository
 
             // dd($case->case_no);
 
-            $case->case_division_id = $caseInfo['court'] ?? null;
+            $case->case_division_id = $caseInfo['highcourt_adalat_0'] ?? null;
             $case->case_category_id = $caseInfo['case_category'] ?? null;
             $case->case_type_id = $caseInfo['case_category_type'] ?? null;
             $case->year = $caseInfo['case_year'] ?? null;

@@ -2,25 +2,16 @@
 
 namespace App\Repositories\gov_case;
 
-use App\Models\Attachment;
-use App\Models\FinalAttachment;
-use App\Models\ReplyAttachment;
-use Illuminate\Support\Facades\DB;
-use App\Models\SuspensionAttachment;
-use Illuminate\Support\Facades\Auth;
-use App\Models\gov_case\GovCaseHearing;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\GovCaseOrderTaken;
-use App\Models\gov_case\GovCaseConcernPerson;
-use App\Models\gov_case\GovCaseHighcourtAdalat;
 use App\Models\AdministrativeTribrunalAttachment;
 use App\Models\AppealAdministrativeTribrunalAttachment;
+use App\Models\gov_case\AdministrativeTribrunalBadi;
+use App\Models\gov_case\AdministrativeTribrunalBibadi;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
-use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
-use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
 use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
 use App\Models\gov_case\ConcernPersonAppealAdministrativeTribrunal;
-use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class AdministrativeTribrunalRepository
 {
@@ -34,7 +25,6 @@ class AdministrativeTribrunalRepository
         $mainBibadi = GovCaseBadiBibadiRepository::getATMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getATOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-
 
         $adminisTrativeTribunalFiles = AdministrativeTribrunalAttachment::where('gov_case_id', $caseId)->get();
 
@@ -54,7 +44,6 @@ class AdministrativeTribrunalRepository
         return $data;
     }
 
-
     public static function AppealAdministrativeTribrunalAllDetails($caseId)
     {
         $case = AppealAdministrativeTribrunalCaseRegister::findOrFail($caseId);
@@ -65,7 +54,6 @@ class AdministrativeTribrunalRepository
         $mainBibadi = GovCaseBadiBibadiRepository::getAATMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getAATOthersBibadiByCaseId($caseId);
         $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-
 
         $appealAdminisTrativeTribunalFiles = AppealAdministrativeTribrunalAttachment::where('gov_case_id', $caseId)->get();
 
@@ -121,8 +109,6 @@ class AdministrativeTribrunalRepository
             }
             $case->at_case_order_details = $caseInfo->at_case_order_details;
 
-
-
             // $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
 
             if ($case->save()) {
@@ -172,7 +158,88 @@ class AdministrativeTribrunalRepository
         return $badi;
     }
 
+////// Data Migration /////////////
 
+    public static function convertBanglaToEnglish($number)
+    {
+        if (is_null($number)) {
+            return null;
+        }
 
-    
+        $banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        $englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        return str_replace($banglaDigits, $englishDigits, $number);
+    }
+
+    public static function storeDataMigrationGovCase($caseInfo)
+    {
+        try {
+            $case = new AdministrativeTribrunalCaseRegister;
+
+            if (!empty($caseInfo['case_no'])) {
+                $convertedCaseNo = self::convertBanglaToEnglish($caseInfo['case_no']);
+                $case->case_no = strtok($convertedCaseNo, '/');
+            } else {
+                $case->case_no = null;
+            }
+
+            // $case->case_division_id = $caseInfo['highcourt_adalat_0'] ?? null;
+            $case->case_category_type = $caseInfo['case_category'] ?? null;
+            // $case->case_type_id = $caseInfo['case_category_type'] ?? null;
+            $case->case_year = $caseInfo['case_year'] ?? null;
+
+            if (!empty($caseInfo['casedate'])) {
+                $case->notice_given_date = Date::excelToDateTimeObject($caseInfo['casedate'])->format('Y-m-d');
+            } else {
+                $case->notice_given_date = null;
+            }
+
+            $case->total_badi_number = $caseInfo['total_badi_number'] ?? null;
+            $case->subject_matter = $caseInfo['subject_matter'] ?? null;
+            // $case->postponed_order = $caseInfo['postponed_order'] ?? null;
+            // $case->status = 1;
+            // $case->postponed_interim_have = $caseInfo['postponed_interim_have'] ?? null;
+            // $case->postponed_interim_data_details = $caseInfo['postponed_interim_data_details'] ?? null;
+
+            if ($case->save()) {
+                return $case->id;
+            }
+        } catch (\Exception $e) {
+            Log::error('Error inserting case data: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    public static function cleanAddress($address)
+    {
+        $cleanedAddress = str_replace('_x000D_', ' ', $address);
+        return trim(preg_replace('/\s+/', ' ', $cleanedAddress));
+    }
+
+    public static function storeDataMigrationBadi($caseInfo, $govCaseId)
+    {
+        $cleanedAddress = self::cleanAddress($caseInfo['badi_address_0']);
+        if (isset($caseInfo['badi_name_0']) && !empty($cleanedAddress)) {
+            $badi = new AdministrativeTribrunalBadi();
+            $badi->gov_case_id = $govCaseId;
+            $badi->name = $caseInfo['badi_name_0'];
+            $badi->address = $cleanedAddress;
+            $badi->save();
+        }
+    }
+
+    public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
+    {
+        if (isset($caseInfo['main_respondent'])) {
+            $officeID = $caseInfo['main_respondent'];
+            $bibadi = new AdministrativeTribrunalBibadi();
+            $bibadi->gov_case_id = $govCaseId;
+            $bibadi->respondent_id = $officeID;
+            $bibadi->is_main_bibadi = 1;
+            $bibadi->other_respondent_manual_name = null;
+            $bibadi->save();
+        }
+    }
+
 }

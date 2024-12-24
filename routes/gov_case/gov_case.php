@@ -33,7 +33,7 @@ Route::middleware('prevent-back-history')->group(function () {
         // Route::get('/data-migration', [DashboardController::class, 'data_migration']);
         Route::resource('data-migration', DataMigrationController::class);
         Route::resource('data-migration-at', ATDataMigrationController::class);
-
+        Route::resource('data-migration-aat', AATDataMigrationController::class);
         Route::resource('data-migration-appeal', AppealDataMigrationController::class);
 
         /////************** Supream Court **************/////

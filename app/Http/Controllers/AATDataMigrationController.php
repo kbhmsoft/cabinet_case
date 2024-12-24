@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notice;
-use Illuminate\Http\Request;
 use App\Imports\GovCaseImport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Resources\NoticeResource;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
 use App\Repositories\gov_case\AdministrativeTribrunalRepository;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-class ATDataMigrationController extends Controller
+class AATDataMigrationController extends Controller
 {
     public function create()
     {
         $data = [
             'data_migration_file' => null,
         ];
-        $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনাল ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
+        $data['page_title'] = 'আপিল প্রশাসনিক ট্রাইব্যুনাল ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
         return view('gov_case.data-migration.at_create', compact('data'));
     }
 

@@ -911,10 +911,7 @@
 
 
                 @if ($roleID == 1)
-                    {{-- @can('data-migration') --}}
-                    <li class="menu-item {{ request()->route()->getName() === 'data-migration-at.create' ? 'hilightMenu' : '' }}"
-                        <li
-                        class="menu-item {{ in_array(request()->route()->getName(), ['data-migration.create', 'data-migration-appeal.create', 'data-migration-at.create']) ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ in_array(request()->route()->getName(), ['data-migration.create', 'data-migration-appeal.create', 'data-migration-at.create', 'data-migration-aat.create']) ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-solid fa-file"></i> ডাটা
@@ -947,6 +944,16 @@
                                     <a href="{{ route('data-migration-at.create') }}" class="menu-link">
                                         <span class="menu-text font-weight-bolder"><i
                                                 class="menu-bullet menu-bullet-dot"><span></span></i> প্রশাসনিক
+                                            ট্রাইব্যুনাল ডাটা
+                                            মাইগ্রেশন</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item {{ request()->route()->getName() === 'data-migration-aat.create' ? 'hilightMenu' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('data-migration-aat.create') }}" class="menu-link">
+                                        <span class="menu-text font-weight-bolder"><i
+                                                class="menu-bullet menu-bullet-dot"><span></span></i> আপিল প্রশাসনিক
                                             ট্রাইব্যুনাল ডাটা
                                             মাইগ্রেশন</span>
                                     </a>
