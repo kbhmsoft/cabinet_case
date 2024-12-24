@@ -322,8 +322,9 @@
 
                 var dataID = jQuery(this).val();
                 // alert(dataID);
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
+                
                 if (dataID) {
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
                     jQuery.ajax({
                         url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
                         type: "GET",
@@ -344,14 +345,15 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
             });
 
             // Ministry Wise Office
             jQuery('select[name="ministry"]').on('change', function() {
                 var dataID = jQuery(this).val();
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
                     jQuery.ajax({
                         url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
                         type: "GET",
@@ -371,6 +373,8 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+
                 }
             });
 
@@ -379,8 +383,8 @@
             jQuery('select[name="divOffice"]').on('change', function() {
                 var dataID = jQuery(this).val();
                 // alert(dataID);
-                jQuery("#office_id").after('<div class="loadersmall"></div>');
                 if (dataID) {
+                    jQuery("#office_id").after('<div class="loadersmall"></div>');
                     jQuery.ajax({
                         url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
                         type: "GET",
@@ -401,6 +405,7 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
+                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
             });
 
