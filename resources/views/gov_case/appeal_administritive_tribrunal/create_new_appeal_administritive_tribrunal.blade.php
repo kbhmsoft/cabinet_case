@@ -262,22 +262,20 @@
                                                             কলামসমুহ পুরণ করুণঃ</legend>
                                                         <div class="form-group row">
                                                             <div class="col-lg-4 mb-5">
-                                                                <label>প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
-                                                                        class="text-danger">*</span></label>
+                                                                <label>প্রশাসনিক ট্রাইবুনাল মামলা নং: </label>
                                                                 <input type="text" name="at_case_number_origin_manual"
                                                                     id="at_case_number_origin_manual"
                                                                     class="form-control form-control-sm"
                                                                     placeholder="(Type digits in English)"
-                                                                    required="required">
+                                                                    >
 
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
-                                                                <label>পিটিশনারের নাম: <span
-                                                                        class="text-danger">*</span></label>
+                                                                <label>পিটিশনারের নাম: </label>
                                                                 <input type="text" name="writ_petitioner_name"
                                                                     id="writ_petitioner_name"
                                                                     class="form-control form-control-sm"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
@@ -286,12 +284,11 @@
                                                                 <textarea name="at_case_subject_matter" class="form-control" id="at_case_subject_matter" rows="3" spellcheck="false"></textarea>
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
-                                                                <label>রায়/আদেশ প্রদানের তারিখ: <span
-                                                                        class="text-danger">*</span></label>
+                                                                <label>রায়/আদেশ প্রদানের তারিখ: </label>
                                                                 <input type="text" name="case_order_date"
                                                                     id="case_order_date"
                                                                     class="form-control form-control-sm  common_datepicker"autocomplete="off"
-                                                                    required="required">
+                                                                  >
                                                             </div>
                                                             <div class="col-lg-8 mb-5">
                                                                 <label>রায়/আদেশের বিবরণ:<small class="text-danger">

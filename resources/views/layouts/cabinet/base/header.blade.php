@@ -134,7 +134,7 @@
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <!--begin::Header Menu Wrapper-->
-        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 44 || $roleID == 39)
+        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID==1|| $roleID == 44 || $roleID == 39)
             <!-- Move this part into a separate div -->
             <div class="header-case-count ">
                 <div class="header-content">
@@ -180,7 +180,7 @@
         <!--begin::Topbar-->
         <div class="topbar">
             <!--begin::Notifications-->
-            @if ($roleID == 27)
+            @if ($roleID == 27 || $roleID==1)
                 <div class="notifications-container" style="position: relative; margin-top: 10px">
                     @include('layouts.partials.notifications')
                     @if ($total_case > 0)

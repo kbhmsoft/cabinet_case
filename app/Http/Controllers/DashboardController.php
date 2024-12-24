@@ -158,6 +158,120 @@ class DashboardController extends Controller
 
             return view('dashboard.cabinet_new.super_admin')->with($data + compact('doptorLoginCount', 'generalLoginCount'));
         }
+
+
+        if ($roleID == 1) {
+            $data['ministry'] = DB::table('gov_case_office')
+                ->whereIn('gov_case_office.level', [1])
+                ->paginate(10) // Change the number to your desired items per page
+                ->through(function ($val) use ($data) {
+                    $allOfficeIds = $this->getTwoLevelOfficeIds([$val->doptor_office_id]);
+                    $val->highcourt_running_case = $this->countHighCourtRunningCase($allOfficeIds)->count();
+                    $val->appeal_running_case = $this->countAppealRunningCase($allOfficeIds)->count();
+                    $val->total_running_case = $val->highcourt_running_case + $val->appeal_running_case;
+                    $val->against_gov = $this->countHighCourtAgainstGovCase($allOfficeIds)->count();
+                    $val->result_sending_count = $this->countHighCourtSolicitorPendingCase($allOfficeIds)->count();
+                    $val->against_postponed_count = $this->countHighCourtAppealPospondOrderPendingCase($allOfficeIds)->count();
+
+                    return $val;
+                });
+
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_case'] = $data['total_appeal'] + $data['total_highcourt'];
+            $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            // return $data['total_high_court_case'];
+            $data['running_high_court_case'] = GovCaseRegister::where('is_final_order', 0)
+                ->where('deleted_at', '=', null)
+                ->count();
+
+            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->whereNotNull('result')->where('deleted_at', '=', null)->count();
+
+            $data['total_appeal_case'] = AppealGovCaseRegister::count();
+            $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
+                ->where('deleted_at', '=', null)
+                ->count();
+            $data['final_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 1)->whereNotNull('result')->where('deleted_at', '=', null)->count();
+
+            $data['appealAgainstGovt'] = GovCaseRegister::where('deleted_at', '=', null)->where('result', 2)
+                ->where('is_appeal', 2)->count();
+
+            $data['not_against_gov'] = GovCaseRegister::where('in_favour_govt', 1)->count();
+
+            $data['sent_to_solicitor_case'] = GovCaseRegister::where('deleted_at', '=', null)
+                ->where('is_final_order', 0)
+                ->whereNull('result_sending_date')
+                ->count();
+
+            $data['against_postpond_order'] = GovCaseRegister::where('deleted_at', '=', null)->whereNull('appeal_against_postpond_interim_order')->count();
+
+            $data['five_years_running_highcourt_case'] = GovCaseRegister::where('deleted_at', '=', null)->where('is_final_order', 0)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['highcourt_not_against_gov'] = GovCaseRegister::where('is_final_order', 1)
+                ->where('result', 1)
+                ->whereNull('deleted_at')
+                ->count();
+
+            $data['highcourt_against_gov'] = GovCaseRegister::where('is_final_order', 1)
+                ->where('result', 2)
+                ->whereNull('deleted_at')
+                ->count();
+
+            $data['appeal_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
+                ->where('is_final_order', 1)
+                ->where('result', 2)
+                ->count();
+
+            $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
+                ->where('deleted_at', '=', null)
+                ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
+                ->orderBy('id', 'DESC')
+                ->count();
+
+            $data['most_important_appeal_case'] = AppealGovCaseRegister::orderby('id', 'DESC')
+                ->where('deleted_at', '=', null)
+                ->where('most_important', 1)
+                ->count();
+
+            $data['appeal_not_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
+                ->where('is_final_order', 1)
+                ->where('result', 1)
+                ->count();
+
+            $data['most_important_highcourt_case'] = GovCaseRegister::orderby('id', 'DESC')
+                ->where('deleted_at', '=', null)
+                ->where('most_important', 1)
+                ->count();
+
+            $data['total_highcourt'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_appeal'] = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+
+            $data['total_case'] = $data['total_highcourt'] + $data['total_appeal'];
+
+            $data['total_office'] = DB::table('office')->whereNotIn('id', [1, 2, 7])->count();
+            $data['total_ministry'] = DB::table('gov_case_office')->where('level', 1)->count();
+            $data['total_division'] = DB::table('gov_case_office')->where('level', 3)->count();
+            $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
+            $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
+
+            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
+            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+
+            $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
+            // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
+            $data['atRunningCaseTotal'] = AdministrativeTribrunalCaseRegister::where('deleted_at', null)->count();
+            $data['page_title'] = 'ডেভেলপার ড্যাশবোর্ড';
+
+            $doptorLoginCount = User::whereNotIn('role_id', [42, 43])->whereNotNull('doptor_user_id')->count();
+
+            $generalLoginCount = User::whereNull('doptor_user_id')->count();
+
+            return view('dashboard.cabinet_new.super_admin')->with($data + compact('doptorLoginCount', 'generalLoginCount'));
+        }
+
         if ($roleID == 29) {
 
             $childOfficeIds = DB::table('gov_case_office')
