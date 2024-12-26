@@ -15,7 +15,7 @@ class AATDataMigrationController extends Controller
             'data_migration_file' => null,
         ];
         $data['page_title'] = 'আপিল প্রশাসনিক ট্রাইব্যুনাল ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
-        return view('gov_case.data-migration.at_create', compact('data'));
+        return view('gov_case.data-migration.aat_create', compact('data'));
     }
 
     public function store(Request $request)
@@ -28,15 +28,14 @@ class AATDataMigrationController extends Controller
 
         try {
             $importData = Excel::toArray(new GovCaseImport, $file);
-
             foreach ($importData[0] as $key => $row) {
                 if ($key === 0) {
                     continue;
                 }
                 if (is_array($row) && !empty(array_filter($row))) {
-                    $caseId = AdministrativeTribrunalRepository::storeDataMigrationGovCase(array_combine($importData[0][0], $row));
-                    AdministrativeTribrunalRepository::storeDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
-                    AdministrativeTribrunalRepository::storeDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
+                    $caseId = AdministrativeTribrunalRepository::storeAATDataMigrationGovCase(array_combine($importData[0][0], $row));
+                    // AdministrativeTribrunalRepository::storeAATDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
+                    // AdministrativeTribrunalRepository::storeAATDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
                 }
             }
 

@@ -252,9 +252,6 @@
                                                 </div>
 
 
-
-
-
                                                 <div class="col-md-12" id="showHighCourtCaseManualDiv">
                                                     <fieldset class="mb-8">
                                                         <legend>প্রশাসনিক আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে

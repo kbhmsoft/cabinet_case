@@ -229,17 +229,40 @@ class AdministrativeTribrunalRepository
         }
     }
 
-    public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
+
+
+    public static function storeAATDataMigrationGovCase($caseInfo)
     {
-        if (isset($caseInfo['main_respondent'])) {
-            $officeID = $caseInfo['main_respondent'];
-            $bibadi = new AdministrativeTribrunalBibadi();
-            $bibadi->gov_case_id = $govCaseId;
-            $bibadi->respondent_id = $officeID;
-            $bibadi->is_main_bibadi = 1;
-            $bibadi->other_respondent_manual_name = null;
-            $bibadi->save();
+        try {
+            $case = new AppealAdministrativeTribrunalCaseRegister;
+
+            if (!empty($caseInfo['case_no'])) {
+                $convertedCaseNo = self::convertBanglaToEnglish($caseInfo['case_no']);
+                $case->case_no = strtok($convertedCaseNo, '/');
+            } else {
+                $case->case_no = null;
+            }
+
+            $case->court = 3;
+            $case->case_category_type = $caseInfo['case_category'] ?? null;
+            $case->case_year = $caseInfo['case_year'] ?? null;
+
+            if (!empty($caseInfo['casedate'])) {
+                $case->notice_given_date = Date::excelToDateTimeObject($caseInfo['casedate'])->format('Y-m-d');
+            } else {
+                $case->notice_given_date = null;
+            }
+            $case->created_by_office = $caseInfo['main_respondent'] ?? null;
+            $case->writ_petitioner_name = $caseInfo['badi_name_0'] ?? null;
+            $case->subject_matter = $caseInfo['subject_matter'] ?? null;
+
+
+            if ($case->save()) {
+                return $case->id;
+            }
+        } catch (\Exception $e) {
+            Log::error('Error inserting case data: ' . $e->getMessage());
+            return null;
         }
     }
-
 }

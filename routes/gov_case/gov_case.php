@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\DataMigrationController;
 use App\Http\Controllers\ATDataMigrationController;
+use App\Http\Controllers\AATDataMigrationController;
 use App\Http\Controllers\AppealDataMigrationController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
