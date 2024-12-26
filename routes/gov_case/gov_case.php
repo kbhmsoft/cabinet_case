@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\gov_case\AclController;
 use App\Http\Controllers\DataMigrationController;
 use App\Http\Controllers\ATDataMigrationController;
+use App\Http\Controllers\AATDataMigrationController;
 use App\Http\Controllers\AppealDataMigrationController;
 use App\Http\Controllers\gov_case\AdalatAppealController;
 use App\Http\Controllers\gov_case\SumpremCourtController;
@@ -33,7 +34,7 @@ Route::middleware('prevent-back-history')->group(function () {
         // Route::get('/data-migration', [DashboardController::class, 'data_migration']);
         Route::resource('data-migration', DataMigrationController::class);
         Route::resource('data-migration-at', ATDataMigrationController::class);
-
+        Route::resource('data-migration-aat', AATDataMigrationController::class);
         Route::resource('data-migration-appeal', AppealDataMigrationController::class);
 
         /////************** Supream Court **************/////

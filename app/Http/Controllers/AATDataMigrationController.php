@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notice;
-use Illuminate\Http\Request;
 use App\Imports\GovCaseImport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Resources\NoticeResource;
-use App\Repositories\gov_case\GovCaseRegisterRepository;
 use App\Repositories\gov_case\AdministrativeTribrunalRepository;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-class ATDataMigrationController extends Controller
+class AATDataMigrationController extends Controller
 {
     public function create()
     {
         $data = [
             'data_migration_file' => null,
         ];
-        $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনাল ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
-        return view('gov_case.data-migration.at_create', compact('data'));
+        $data['page_title'] = 'আপিল প্রশাসনিক ট্রাইব্যুনাল ডাটা মাইগ্রেশন ফাইল এন্ট্রি';
+        return view('gov_case.data-migration.aat_create', compact('data'));
     }
 
     public function store(Request $request)
@@ -31,15 +28,14 @@ class ATDataMigrationController extends Controller
 
         try {
             $importData = Excel::toArray(new GovCaseImport, $file);
-
             foreach ($importData[0] as $key => $row) {
                 if ($key === 0) {
                     continue;
                 }
                 if (is_array($row) && !empty(array_filter($row))) {
-                    $caseId = AdministrativeTribrunalRepository::storeDataMigrationGovCase(array_combine($importData[0][0], $row));
-                    AdministrativeTribrunalRepository::storeDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
-                    AdministrativeTribrunalRepository::storeDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
+                    $caseId = AdministrativeTribrunalRepository::storeAATDataMigrationGovCase(array_combine($importData[0][0], $row));
+                    // AdministrativeTribrunalRepository::storeAATDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
+                    // AdministrativeTribrunalRepository::storeAATDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
                 }
             }
 

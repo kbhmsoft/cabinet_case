@@ -144,8 +144,7 @@ class DashboardController extends Controller
             $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
             $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
 
-            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+
 
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
@@ -257,8 +256,7 @@ class DashboardController extends Controller
             $data['total_district'] = DB::table('gov_case_office')->where('level', 4)->count();
             $data['total_doptor'] = DB::table('gov_case_office')->whereIn('level', [2, 5])->count();
 
-            $data['gov_case_status'] = GovCaseRegisterRepository::caseStatusByRoleId($roleID);
-            $data['against_gov_case'] = GovCaseRegisterRepository::againestGovCases();
+            
 
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
