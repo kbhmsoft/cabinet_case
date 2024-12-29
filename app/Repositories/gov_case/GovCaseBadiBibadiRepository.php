@@ -20,7 +20,7 @@ use App\Models\gov_case\AppealAdministrativeTribrunalBibadi;
 use App\Models\gov_case\ConcernPersonAdministrativeTribrunal;
 use App\Models\gov_case\AdministrativeTribrunalHighcourtAdalat;
 use App\Models\gov_case\ConcernPersonAppealAdministrativeTribrunal;
-use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
+// use App\Models\gov_case\AppealAdministrativeTribrunalHighcourtAdalat;
 
 class GovCaseBadiBibadiRepository
 {
@@ -376,9 +376,9 @@ class GovCaseBadiBibadiRepository
         return $justices;
     }
 
-    public static function getAATJusticeNameByCaseId($caseId)
-    {
-        $justices = AppealAdministrativeTribrunalHighcourtAdalat::where('gov_case_id', $caseId)->get();
-        return $justices;
-    }
+    // public static function getAATJusticeNameByCaseId($caseId)
+    // {
+    //     $justices = AppealAdministrativeTribrunalHighcourtAdalat::where('gov_case_id', $caseId)->get();
+    //     return $justices;
+    // }
 }

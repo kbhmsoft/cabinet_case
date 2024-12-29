@@ -49,7 +49,7 @@ class AdministrativeTribrunalRepository
         $case = AppealAdministrativeTribrunalCaseRegister::findOrFail($caseId);
         $caseBadi = GovCaseBadiBibadiRepository::getAppealAdministrativeTribrunalBadiByCaseId($caseId);
         $caseLawers = GovCaseBadiBibadiRepository::getAATConcernPersonByCaseId($caseId);
-        $caseCourts = GovCaseBadiBibadiRepository::getAATJusticeNameByCaseId($caseId);
+        // $caseCourts = GovCaseBadiBibadiRepository::getAATJusticeNameByCaseId($caseId);
         $caseBibadi = GovCaseBadiBibadiRepository::getAATBibadiByCaseId($caseId);
         $mainBibadi = GovCaseBadiBibadiRepository::getAATMainBibadiByCaseId($caseId);
         $otherBibadi = GovCaseBadiBibadiRepository::getAATOthersBibadiByCaseId($caseId);
@@ -61,7 +61,7 @@ class AdministrativeTribrunalRepository
             'case' => $case,
             'caseBadi' => $caseBadi,
             'caseLawers' => $caseLawers,
-            'caseCourts' => $caseCourts,
+            // 'caseCourts' => $caseCourts,
             'caseMainBibadi' => $caseMainBibadi,
             'caseBibadi' => $caseBibadi,
             'mainBibadi' => $mainBibadi,
@@ -229,7 +229,18 @@ class AdministrativeTribrunalRepository
         }
     }
 
-
+    public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
+    {
+        if (isset($caseInfo['main_respondent'])) {
+            $officeID = $caseInfo['main_respondent'];
+            $bibadi = new AdministrativeTribrunalBibadi();
+            $bibadi->gov_case_id = $govCaseId;
+            $bibadi->respondent_id = $officeID;
+            $bibadi->is_main_bibadi = 1;
+            $bibadi->other_respondent_manual_name = null;
+            $bibadi->save();
+        }
+    }
 
     public static function storeAATDataMigrationGovCase($caseInfo)
     {
@@ -255,7 +266,6 @@ class AdministrativeTribrunalRepository
             $case->created_by_office = $caseInfo['main_respondent'] ?? null;
             $case->writ_petitioner_name = $caseInfo['badi_name_0'] ?? null;
             $case->subject_matter = $caseInfo['subject_matter'] ?? null;
-
 
             if ($case->save()) {
                 return $case->id;

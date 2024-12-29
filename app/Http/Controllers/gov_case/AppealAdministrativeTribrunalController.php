@@ -36,60 +36,36 @@ class AppealAdministrativeTribrunalController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
-
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
-
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
+      
         $query = AppealAdministrativeTribrunalCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->whereHas(
-                'bibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID)->where('is_main_bibadi', 1);
-                }
-            );
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($finalOfficeIds) {
-                    $query->whereIn('respondent_id', $finalOfficeIds);
-                }
-            );
+            $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
+            $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
-        if ($roleID == 44 || $roleID == 45) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID);
-                }
-            );
-        }
+        // if ($roleID == 44 || $roleID == 45) {
+        //     $query->whereHas(
+        //         'mainBibadis',
+        //         function ($query) use ($officeID) {
+        //             $query->where('respondent_id', $officeID);
+        //         }
+        //     );
+        // }
 
-        $userId = Auth::id();
-        if ($roleID == 45) {
-            $query->whereHas(
-                'concernPersons',
-                function ($query) use ($userId) {
-                    $query->where('concern_user_id', $userId);
-                }
-            );
-        };
+        // $userId = Auth::id();
+        // if ($roleID == 45) {
+        //     $query->whereHas(
+        //         'concernPersons',
+        //         function ($query) use ($userId) {
+        //             $query->where('concern_user_id', $userId);
+        //         }
+        //     );
+        // };
 
         if (!empty($_GET['case_category_type'])) {
             $query->where('administrative_tribrunal_case_registers.case_category_type', '=', $_GET['case_category_type']);
@@ -110,6 +86,33 @@ class AppealAdministrativeTribrunalController extends Controller
         $data['page_title'] = 'প্রশাসনিক আপিল ট্রাইব্যুনালে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
         return view('gov_case.appeal_administritive_tribrunal.appealAdministrativeTribrunal')->with($data);
+    }
+
+
+    public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
+    {
+        $allOfficeIds = $parentOfficeIds;
+        $currentLevelIds = $parentOfficeIds;
+        $level = 1;
+        while ($level <= $maxLevels) {
+            // Get the child offices for the current level
+            $childOfficeIds = DB::table('gov_case_office')
+                ->whereIn('parent_office_id', $currentLevelIds)
+                ->pluck('doptor_office_id')
+                ->toArray();
+
+            if (empty($childOfficeIds)) {
+                break;
+            }
+
+            $allOfficeIds = array_merge($allOfficeIds, $childOfficeIds);
+
+            // Set up the child IDs as the current level for the next iteration
+            $currentLevelIds = $childOfficeIds;
+            $level++;
+        }
+
+        return array_unique($allOfficeIds);
     }
 
     // public function appealAdministrativeTribrunal()
