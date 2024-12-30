@@ -260,8 +260,8 @@
 
             // Ministry Wise Office
             
-            var dataID = jQuery(this).val();
             jQuery('select[name="ministry"]').on('change', function() {
+                var dataID = jQuery(this).val();
                 // alert(dataID);
                 if (dataID) {
                     jQuery("#office_id").after('<div class="loadersmall"></div>');
