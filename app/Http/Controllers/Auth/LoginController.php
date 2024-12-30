@@ -92,9 +92,9 @@ class LoginController extends BaseController
     {
         // Log the initial request for debugging
         Log::info('ndoptor_sso_callback called with data: ' . $request->data);
-
         // Decode and validate request data
         $data = json_decode(base64_decode($request->data), true);
+
         if (!isset($data['token'])) {
             Log::warning('Token not found in the callback data');
             return redirect()->route('doptor.login');
