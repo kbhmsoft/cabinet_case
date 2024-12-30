@@ -68,7 +68,7 @@ class AppealAdministrativeTribrunalController extends Controller
         // };
 
         if (!empty($_GET['case_category_type'])) {
-            $query->where('administrative_tribrunal_case_registers.case_category_type', '=', $_GET['case_category_type']);
+            $query->where('case_category_type', '=', $_GET['case_category_type']);
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
@@ -78,7 +78,7 @@ class AppealAdministrativeTribrunalController extends Controller
         }
 
         if (!empty($_GET['case_no'])) {
-            $query->where('administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
+            $query->where('case_no', '=', $_GET['case_no']);
         }
 
         $data['cases'] = $query->paginate(10);

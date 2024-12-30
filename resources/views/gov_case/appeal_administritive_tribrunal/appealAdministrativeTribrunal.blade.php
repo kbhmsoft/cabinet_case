@@ -75,7 +75,7 @@
                 </div>
             @endif
 
-            {{-- @include('gov_case.search') --}}
+            @include('gov_case.at_search')
 
             @if ($cases && $cases->isEmpty())
                 <p class="no-users-message">--- তথ্য পাওয়া যায়নি ---</p>
