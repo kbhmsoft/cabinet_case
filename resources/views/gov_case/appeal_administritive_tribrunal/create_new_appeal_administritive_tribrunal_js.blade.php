@@ -313,6 +313,7 @@
     function addAdvocateLawerFunc() {
         var count = parseInt($('#survey_count').val());
         $('#survey_count').val(count + 1);
+
         var items = '';
         items += '<tr>';
         items += '<input type="hidden" name="concern_person_id[]" value="">';
@@ -334,6 +335,35 @@
         // Initialize Select2 after adding new dropdowns
         $('#concernPersonDesignation_' + count).select2();
         $('#concern_user_id_' + count).select2();
+
+        // Add event listener for the new dropdown
+        $('#concernPersonDesignation_' + count).on('change', function() {
+            const selectedValue = $(this).val();
+            const concernUserField = $('#concern_user_id_' + count);
+
+            if (!selectedValue || selectedValue === 'no_officer') {
+                concernUserField.html('<option value="">-- নির্বাচন করুন --</option>').closest('td').hide();
+                concernUserField.prop('required', false);
+            } else {
+                // Show and reset the dependent dropdown when a valid option is selected
+                concernUserField.closest('td').show();
+                concernUserField.prop('required', true);
+
+                $.ajax({
+                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentconcernperson/' +
+                        selectedValue,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        concernUserField.html('<option value="">-- নির্বাচন করুন --</option>');
+                        $.each(data, function(key, value) {
+                            concernUserField.append('<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+                    }
+                });
+            }
+        });
     }
 
 

@@ -16,10 +16,9 @@
                 $concern_person_desig[$i]->name_bn .
                 '</option>';
         }
-        $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
-        for ($i = 1995; $i <= date('Y'); $i++) {
-            $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
-        }
+
+        // Add the "আইন কর্মকর্তা নিয়োগ করা হয় নি" option at the end
+        $concernPersonDesig .= '<option value="no_officer">আইন কর্মকর্তা নিয়োগ করা হয় নি</option>';
 
     @endphp
 
@@ -254,7 +253,8 @@
 
                                                 <div class="col-md-12" id="showHighCourtCaseManualDiv">
                                                     <fieldset class="mb-8">
-                                                        <legend>প্রশাসনিক আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
+                                                        <legend>প্রশাসনিক আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে
+                                                            থাকলে
                                                             নিম্নের
                                                             কলামসমুহ পুরণ করুণঃ</legend>
                                                         <div class="form-group row">
@@ -263,34 +263,33 @@
                                                                 <input type="text" name="at_case_number_origin_manual"
                                                                     id="at_case_number_origin_manual"
                                                                     class="form-control form-control-sm"
-                                                                    placeholder="(Type digits in English)"
-                                                                    >
+                                                                    placeholder="(Type digits in English)">
 
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>পিটিশনারের নাম: </label>
                                                                 <input type="text" name="writ_petitioner_name"
                                                                     id="writ_petitioner_name"
-                                                                    class="form-control form-control-sm"
-                                                                    >
+                                                                    class="form-control form-control-sm">
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
                                                                         class="text-danger">
                                                                     </small> </label>
-                                                                <textarea name="at_case_subject_matter" class="form-control" id="at_case_subject_matter" rows="3" spellcheck="false"></textarea>
+                                                                <textarea name="at_case_subject_matter" class="form-control" id="at_case_subject_matter" rows="3"
+                                                                    spellcheck="false"></textarea>
                                                             </div>
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>রায়/আদেশ প্রদানের তারিখ: </label>
                                                                 <input type="text" name="case_order_date"
                                                                     id="case_order_date"
-                                                                    class="form-control form-control-sm  common_datepicker"autocomplete="off"
-                                                                  >
+                                                                    class="form-control form-control-sm  common_datepicker"autocomplete="off">
                                                             </div>
                                                             <div class="col-lg-8 mb-5">
                                                                 <label>রায়/আদেশের বিবরণ:<small class="text-danger">
                                                                     </small> </label>
-                                                                <textarea name="at_case_order_details" class="form-control" id="at_case_order_details" rows="3" spellcheck="false"></textarea>
+                                                                <textarea name="at_case_order_details" class="form-control" id="at_case_order_details" rows="3"
+                                                                    spellcheck="false"></textarea>
                                                             </div>
                                                         </div>
                                                     </fieldset>

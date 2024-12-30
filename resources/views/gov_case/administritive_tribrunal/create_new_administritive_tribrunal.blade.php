@@ -16,17 +16,15 @@
                 $concern_person_desig[$i]->name_bn .
                 '</option>';
         }
-        $pass_year_data = '<option value="">-- নির্বাচন করুন --</option>';
-        for ($i = 1995; $i <= date('Y'); $i++) {
-            $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
-        }
 
+        // Add the "আইন কর্মকর্তা নিয়োগ করা হয় নি" option at the end
+        $concernPersonDesig .= '<option value="no_officer">আইন কর্মকর্তা নিয়োগ করা হয় নি</option>';
     @endphp
 
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -128,8 +126,9 @@
                                                 <div class="col-lg-4 mb-5">
                                                     <label>মামলার শ্রেণী/কেস-টাইপ <span class="text-danger">*</span></label>
                                                     <div id="CaseCategorDiv">
-                                                        <input type="text" name="case_category_type" id="case_category_type" class="form-control"
-                                                            value="এটি" readonly />
+                                                        <input type="text" name="case_category_type"
+                                                            id="case_category_type" class="form-control" value="এটি"
+                                                            readonly />
                                                         <span class="text-danger d-none vallidation-message">This field can
                                                             not be empty</span>
                                                     </div>
