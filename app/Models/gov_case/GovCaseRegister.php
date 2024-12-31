@@ -198,4 +198,9 @@ class GovCaseRegister extends Model
     {
         return $this->hasMany(GovCaseConcernPerson::class, 'gov_case_id', 'id')->where('concern_user_id', auth()->id());
     }
+
+    public function orderTakenAgainstGov()
+    {
+        return $this->hasOne(GovCaseOrderTaken::class, 'gov_case_id', 'id');
+    }
 }
