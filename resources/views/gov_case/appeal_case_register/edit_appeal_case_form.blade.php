@@ -1246,69 +1246,7 @@
         });
     }
 </script>
-<script>
-    $(document).ready(function() {
-        jQuery('select[name="case_category_origin"]').on('change', function() {
-            var dataID = jQuery(this).val();
-            var caseNumberDropdown = jQuery('select[name="case_number_origin"]');
-            var loadersmall = '<div class="loadersmall"></div>';
 
-            caseNumberDropdown.after(loadersmall);
-
-            if (dataID) {
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
-                        dataID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-
-                        caseNumberDropdown.empty();
-                        caseNumberDropdown.append(
-                            '<option value="">-- নির্বাচন করুন --</option>');
-
-                        jQuery.each(data, function(key, value) {
-                            caseNumberDropdown.append(
-                                `<option value="${value.id}">${value.case_no}/${value.year}</option>`
-                            );
-                        });
-
-                        jQuery('.loadersmall').remove();
-                    }
-                });
-            } else {
-                caseNumberDropdown.empty();
-                jQuery('.loadersmall').remove();
-            }
-        });
-
-
-        jQuery('select[name="case_number_origin"]').on('change', function() {
-            var dataID = jQuery(this).val();
-            //   console.log(dataID);
-            var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
-
-            if (dataID) {
-                $('#showHighCourtCaseManualDiv').empty();
-                $('#showHighCourtCaseManualDiv').hide();
-                jQuery.ajax({
-                    url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
-                    type: "GET",
-                    success: function(response) {
-                        showHighCourtCaseDiv.html(
-                            response);
-                        // console.log(response);
-                    },
-                    error: function() {
-                        showHighCourtCaseDiv.empty();
-                    }
-                });
-            } else {
-                showHighCourtCaseDiv.empty();
-            }
-        });
-    });
-</script>
 
 @section('scripts')
     <script>
@@ -1322,7 +1260,69 @@
             });
         });
     </script>
-
+    <script>
+        $(document).ready(function() {
+            jQuery('select[name="case_category_origin"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                var caseNumberDropdown = jQuery('select[name="case_number_origin"]');
+                var loadersmall = '<div class="loadersmall"></div>';
+    
+                caseNumberDropdown.after(loadersmall);
+    
+                if (dataID) {
+                    jQuery.ajax({
+                        url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
+                            dataID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+    
+                            caseNumberDropdown.empty();
+                            caseNumberDropdown.append(
+                                '<option value="">-- নির্বাচন করুন --</option>');
+    
+                            jQuery.each(data, function(key, value) {
+                                caseNumberDropdown.append(
+                                    `<option value="${value.id}">${value.case_no}/${value.year}</option>`
+                                );
+                            });
+    
+                            jQuery('.loadersmall').remove();
+                        }
+                    });
+                } else {
+                    caseNumberDropdown.empty();
+                    jQuery('.loadersmall').remove();
+                }
+            });
+    
+    
+            jQuery('select[name="case_number_origin"]').on('change', function() {
+                var dataID = jQuery(this).val();
+                //   console.log(dataID);
+                var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
+    
+                if (dataID) {
+                    $('#showHighCourtCaseManualDiv').empty();
+                    $('#showHighCourtCaseManualDiv').hide();
+                    jQuery.ajax({
+                        url: '{{ url('/') }}/cabinet/case/highcourtcasedetails/' + dataID,
+                        type: "GET",
+                        success: function(response) {
+                            showHighCourtCaseDiv.html(
+                                response);
+                            // console.log(response);
+                        },
+                        error: function() {
+                            showHighCourtCaseDiv.empty();
+                        }
+                    });
+                } else {
+                    showHighCourtCaseDiv.empty();
+                }
+            });
+        });
+    </script>
 
     <script>
         /************************ Add multiple advocate  *************************/
