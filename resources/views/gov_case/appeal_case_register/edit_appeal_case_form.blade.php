@@ -407,7 +407,7 @@
                                                     </div>
                                                 </div>
 
-
+                                            @if($case->case_category_origin == 0)
                                                 <div class="col-md-12" id="showHighCourtCaseManualDiv">
                                                     <fieldset class="mb-8">
                                                         <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
@@ -473,12 +473,13 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-
+                                            @endif
 
                                         </fieldset>
 
                                     </div>
-                                    {{-- <div class="col-md-12" id="showHighCourtCaseDiv">
+                                    @if($case->case_category_origin != 0)
+                                    <div class="col-md-12" id="showHighCourtCaseDiv">
                                         <fieldset>
                                             <div class="form-group row">
 
@@ -583,7 +584,8 @@
                                         </fieldset>
 
 
-                                    </div> --}}
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
                                     <button type="submit" id="appealCaseGeneralInfoEditSaveBtn"

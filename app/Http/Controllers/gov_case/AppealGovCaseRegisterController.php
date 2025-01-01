@@ -2310,14 +2310,21 @@ class AppealGovCaseRegisterController extends Controller
             ->get();
 
         $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
-        $data['originCaseNumber'] = GovCaseRegister::where('case_category_id', $data['case']->case_category_origin)
+        if($roleID != 27){
+
+            $data['originCaseNumber'] = GovCaseRegister::where('case_category_id', $data['case']->case_category_origin)
             ->whereHas('bibadis', function ($query) use ($officeID) {
                 $query->where('respondent_id', $officeID);
             })
             ->orderby('id', 'desc')
             ->select("case_no", "id", "year")
-            ->count();
-        // return $data['originCaseNumber'];
+            ->get();
+        }else{
+            $data['originCaseNumber']= GovCaseRegister::where('case_category_id', $data['case']->case_category_origin)
+            ->orderby('id', 'desc')
+            ->select("case_no", "id", "year")
+            ->get();
+        }
         // $data['originCaseNumber'] = 1;
 
 
