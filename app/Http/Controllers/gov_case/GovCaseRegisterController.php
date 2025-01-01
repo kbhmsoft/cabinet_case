@@ -3791,9 +3791,7 @@ class GovCaseRegisterController extends Controller
 
             $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-            ->whereHas('bibadis', function ($query) use ($officeID) {
-                $query->where('respondent_id', $officeID);
-            })
+            
             ->select("case_no", "id", "year")->get();
         }
 
