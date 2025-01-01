@@ -353,8 +353,13 @@
                                                             <label class="radio">
                                                                 <input type="radio" name="postponed_interim_have"
                                                                     id="postponed_interim_have_not" value="0"
-                                                                    checked />
+                                                                     />
                                                                 <span></span>না</label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="postponed_interim_have"
+                                                                    id="postponed_interim_have_not" value="2"
+                                                                     />
+                                                                <span></span>এখনও হয়নি</label>
                                                         </div>
                                                     </div>
 
@@ -1280,7 +1285,7 @@
     <script>
         $(document).ready(function() {
             $('#postponed_interim_data_details_create_new').hide();
-            $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
+            // $('input[name="postponed_interim_have"][value="0"]').prop('checked', true);
             $('input[name="postponed_interim_have"]').change(function() {
                 if ($(this).val() == '1') {
                     $('#postponed_interim_data_details_create_new').show();
