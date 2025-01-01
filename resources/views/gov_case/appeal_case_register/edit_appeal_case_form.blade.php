@@ -369,7 +369,7 @@
 
 
                                                 <div class="col-lg-6 mt-5 mb-5">
-                                                    <label>ধরনর মামলা উদ্ভূত</label>
+                                                    <label>যে ধরণের মামলা থেকে উদ্ভূত</label>
 
                                                     <div class="" id="CaseCategorOriginDiv">
                                                         <select name="case_category_origin" id="CaseCategory"
