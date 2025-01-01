@@ -46,7 +46,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC');
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -54,7 +55,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -102,7 +104,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -110,7 +113,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -170,7 +174,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('is_final_order', 0);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -178,7 +183,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -235,7 +241,6 @@ class AppealGovCaseRegisterController extends Controller
         $data['page_title'] = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
         // return $data;
         return view('gov_case.appeal_case_register.showAppealDetails')->with($data);
-
     }
 
     public function appealDetailsPdf($id)
@@ -252,7 +257,6 @@ class AppealGovCaseRegisterController extends Controller
         $html = view('gov_case.appeal_case_register.showAppealDetailsPdf')->with($data);
 
         $this->generatePDF($html);
-
     }
 
     public function generatePDF($html)
@@ -280,7 +284,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('is_final_order', 1);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -288,7 +293,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -451,7 +457,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->whereIn('gov_case_registers.status', [1, 2]);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -459,7 +466,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -522,7 +530,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 1)->where('status', '!=', 3);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -530,7 +539,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -593,7 +603,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('status', 3);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -601,7 +612,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -696,7 +708,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('gov_case_registers.in_favour_govt', 1);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -704,7 +717,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -767,7 +781,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('status', 3)->where('gov_case_registers.in_favour_govt', 0);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -775,7 +790,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -838,7 +854,8 @@ class AppealGovCaseRegisterController extends Controller
         $query = GovCaseRegister::orderby('id', 'DESC')->where('gov_case_registers.case_division_id', $id)->where('status', '!=', 3);
 
         if ($roleID == 32 || $roleID == 33) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('department_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -846,7 +863,8 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas('bibadis',
+            $query->whereHas(
+                'bibadis',
                 function ($query) use ($officeID) {
                     $query->where('ministry_id', $officeID)->where('is_main_bibadi', 1);
                 }
@@ -906,7 +924,10 @@ class AppealGovCaseRegisterController extends Controller
         // dd($id);
 
         $query = DB::table('office')
-            ->select('office.id', 'office.office_name_bn', 'office.office_name_en',
+            ->select(
+                'office.id',
+                'office.office_name_bn',
+                'office.office_name_en',
                 \DB::raw('SUM(CASE WHEN gcr.status != "3" THEN 1 ELSE 0 END) AS running_case'),
                 \DB::raw('SUM(CASE WHEN gcr.status = "3" THEN 1 ELSE 0 END) AS completed_case'),
                 \DB::raw('SUM(CASE WHEN gcr.in_favour_govt = "0" THEN 1 ELSE 0 END) AS against_gov'),
@@ -1139,18 +1160,19 @@ class AppealGovCaseRegisterController extends Controller
         //$query =  DB::table('gov_case_registers')->where('id',$request->case_id)->first();
         $query = GovCaseRegister::where('id', $request->case_id)->first();
         return $query;
-
     }
 
     public function store(Request $request)
     {
         $caseId = $request->caseId;
-        $request->validate([
-            'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
-        ],
+        $request->validate(
+            [
+                'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
+            ],
             [
                 'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeGovCase($request);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
@@ -1206,7 +1228,7 @@ class AppealGovCaseRegisterController extends Controller
 
     public function appealStore(Request $request)
     {
-
+        // dd($request->all());
         $exists = AppealGovCaseRegister::where('case_no', $request->input('case_no'))
             ->where('year', $request->input('case_year'))
             ->where('case_type_id', $request->input('case_category_type'))
@@ -1262,7 +1284,6 @@ class AppealGovCaseRegisterController extends Controller
             \Log::error('Error storing case data', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
         }
-
     }
 
     public function appealChangingMainRespondentStore(Request $request)
@@ -1292,7 +1313,6 @@ class AppealGovCaseRegisterController extends Controller
             \Log::error('Error storing case data', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'তথ্য সংরক্ষণ করা হয়নি '], 500);
         }
-
     }
 
     public function appealFinalOrderStore(Request $request)
@@ -1300,12 +1320,14 @@ class AppealGovCaseRegisterController extends Controller
         // dd($request->all());
         $caseId = $request->case_id;
 
-        $request->validate([
-            'case_id' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+            ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppealFinalOrder($request);
 
@@ -1338,18 +1360,19 @@ class AppealGovCaseRegisterController extends Controller
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
-
     }
 
     public function completeAppealCaseStore(Request $request)
     {
         $caseId = $request->caseId;
-        $request->validate([
-            'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseId,
-        ],
+        $request->validate(
+            [
+                'case_no' => 'required|unique:appeal_gov_case_register,case_no,' . $caseId,
+            ],
             [
                 'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-            ]);
+            ]
+        );
         try {
             $caseId = AppealGovCaseRegisterRepository::storeCompleteAppeal($request);
 
@@ -1385,14 +1408,16 @@ class AppealGovCaseRegisterController extends Controller
 
     public function storeGeneralInfo(Request $request)
     {
-        // dd($request);
+        dd($request);
         $caseId = $request->caseId;
-        $request->validate([
-            'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
-        ],
+        $request->validate(
+            [
+                'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
+            ],
             [
                 'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeGeneralInfo($request);
             GovCaseBadiBibadiRepository::storeBadi($request, $caseId);
@@ -1484,12 +1509,14 @@ class AppealGovCaseRegisterController extends Controller
     {
         // dd($request);
         $caseId = $request->case_id;
-        $request->validate([
-            'case_id' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+            ],
             [
                 'case_id' => 'জবাব প্রেরণের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseInfo = GovCaseRegisterRepository::storeSendingReply($request);
 
@@ -1606,12 +1633,14 @@ class AppealGovCaseRegisterController extends Controller
     {
         // dd($_FILES["file_name"]['name']);
         $caseId = $request->case_id;
-        $request->validate([
-            'case_id' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+            ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeSuspensionOrder($request);
             if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -1698,7 +1727,6 @@ class AppealGovCaseRegisterController extends Controller
         $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
-
     }
     public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
     {
@@ -1885,7 +1913,10 @@ class AppealGovCaseRegisterController extends Controller
         session()->forget('currentUrlPath');
 
         $ministry = DB::table('gov_case_office')
-            ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+            ->select(
+                'gov_case_office.id',
+                'gov_case_office.office_name_bn',
+                'gov_case_office.office_name_en',
                 DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND agcr.deleted_at IS NULL) AS total_appeal_case')
             )
             ->whereIn('gov_case_office.level', [1, 3]);
@@ -1901,8 +1932,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
 
-        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->
-            where('deleted_at', '=', null)->count();
+        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
         $data['total_appeal_case'] = AppealGovCaseRegister::count();
         $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
@@ -1922,8 +1952,7 @@ class AppealGovCaseRegisterController extends Controller
             ->orderBy('id', 'DESC')
             ->count();
 
-        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
-            where('is_final_order', null)
+        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)
             ->where('deleted_at', '=', null)
             ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
             ->orderBy('id', 'DESC')
@@ -1962,7 +1991,10 @@ class AppealGovCaseRegisterController extends Controller
         session()->forget('currentUrlPath');
 
         $ministry = DB::table('gov_case_office')
-            ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+            ->select(
+                'gov_case_office.id',
+                'gov_case_office.office_name_bn',
+                'gov_case_office.office_name_en',
                 DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND
                 agcr.is_final_order = 0 AND agcr.deleted_at IS NULL) AS total_running_appeal_case')
             )
@@ -1979,8 +2011,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
 
-        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->
-            where('deleted_at', '=', null)->count();
+        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
         $data['total_appeal_case'] = AppealGovCaseRegister::count();
         $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
@@ -2000,8 +2031,7 @@ class AppealGovCaseRegisterController extends Controller
             ->orderBy('id', 'DESC')
             ->count();
 
-        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
-            where('is_final_order', null)
+        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)
             ->where('deleted_at', '=', null)
             ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
             ->orderBy('id', 'DESC')
@@ -2037,7 +2067,10 @@ class AppealGovCaseRegisterController extends Controller
         session()->forget('currentUrlPath');
 
         $ministry = DB::table('gov_case_office')
-            ->select('gov_case_office.id', 'gov_case_office.office_name_bn', 'gov_case_office.office_name_en',
+            ->select(
+                'gov_case_office.id',
+                'gov_case_office.office_name_bn',
+                'gov_case_office.office_name_en',
                 DB::raw('(SELECT IFNULL(SUM(1), 0) FROM appeal_gov_case_register agcr WHERE agcr.created_by_office = gov_case_office.id AND
                 agcr.is_final_order = "1" AND agcr.deleted_at IS NULL) AS total_complete_appeal_case')
             )
@@ -2054,8 +2087,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['running_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)
             ->where('is_final_order', 0)->count();
 
-        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->
-            where('deleted_at', '=', null)->count();
+        $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
         $data['total_appeal_case'] = AppealGovCaseRegister::count();
         $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)->count();
@@ -2075,8 +2107,7 @@ class AppealGovCaseRegisterController extends Controller
             ->orderBy('id', 'DESC')
             ->count();
 
-        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::
-            where('is_final_order', null)
+        $data['five_years_running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', null)
             ->where('deleted_at', '=', null)
             ->whereDate('updated_at', '<=', now()->subYears(5)->toDateString())
             ->orderBy('id', 'DESC')
@@ -2213,12 +2244,14 @@ class AppealGovCaseRegisterController extends Controller
     {
 
         $caseId = $request->case_id;
-        $request->validate([
-            'case_id' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+            ],
             [
                 'case_id' => 'স্থগিতাদেশের/অন্তর্বর্তীকালীন আদেশের তথ্য মামলার অ্যাকশন থেকে পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeContemptCase($request);
             if ($request->file_type && $_FILES["file_name"]['name']) {
@@ -2276,8 +2309,16 @@ class AppealGovCaseRegisterController extends Controller
             ->whereIn('id', [1, 2])
             ->get();
 
-        $data['originCaseNumber'] = GovCaseRegister::orderby('id', 'desc')
-            ->select("case_no", "id", "year")->get();
+        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
+        $data['originCaseNumber'] = GovCaseRegister::where('case_category_id', $data['case']->case_category_origin)
+            ->whereHas('bibadis', function ($query) use ($officeID) {
+                $query->where('respondent_id', $officeID);
+            })
+            ->orderby('id', 'desc')
+            ->select("case_no", "id", "year")
+            ->count();
+        // return $data['originCaseNumber'];
+        // $data['originCaseNumber'] = 1;
 
 
 
@@ -2290,14 +2331,12 @@ class AppealGovCaseRegisterController extends Controller
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
         $data['usersInfo'] = User::all();
-        $data['GovCaseDivisionCategoryHighcourt'] = GovCaseDivisionCategory::where('gov_case_division_id', 2)->get();
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36])->get();
 
         $data['appealCourtAdalat'] = AppealAdalat::get();
         $data['concern_person_desig'] = Role::whereIn('id', [14, 15, 33, 36, 45])->get();
 
         $data['page_title'] = 'আপিল বিভাগ মামলা সংশোধন';
-
         return view('gov_case.appeal_case_register.edit_appeal_case_form')->with($data);
     }
 
@@ -2392,13 +2431,15 @@ class AppealGovCaseRegisterController extends Controller
     {
         // return $request;
         $caseId = $request->case_id;
-        $request->validate([
-            'case_id' => 'required',
-            'leave_to_appeal_no' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+                'leave_to_appeal_no' => 'required',
+            ],
             [
                 'leave_to_appeal_no' => 'লিভ টু আপিল নম্বর পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeLeaveToAppealInfo($request);
             if ($request->leave_to_appeal_file_type && $_FILES["leave_to_appeal_file_name"]['name']) {
@@ -2454,13 +2495,15 @@ class AppealGovCaseRegisterController extends Controller
     {
         // dd($request);
         $caseId = $request->case_id;
-        $request->validate([
-            'case_id' => 'required',
-            'leave_to_appeal_order_date' => 'required',
-        ],
+        $request->validate(
+            [
+                'case_id' => 'required',
+                'leave_to_appeal_order_date' => 'required',
+            ],
             [
                 'leave_to_appeal_order_date' => 'লিভ টু আপিলের রায় প্রদানের তারিখ পূরণ করুণ',
-            ]);
+            ]
+        );
         try {
             $caseId = GovCaseRegisterRepository::storeLeaveToAppealAnswerInfo($request);
             if ($request->leave_to_appeal_file_type && $_FILES["leave_to_appeal_file_name"]['name']) {
@@ -2518,13 +2561,15 @@ class AppealGovCaseRegisterController extends Controller
         // dd($caseId);
         // 'email' => 'unique:users,email_address,'.$user->id
 
-        $request->validate([
-            'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
-        ],
+        $request->validate(
+            [
+                'case_no' => 'required|unique:gov_case_registers,case_no,' . $caseId,
+            ],
             [
                 'case_no.unique' => 'মামলা নং ইতিমধ্যে বিদ্যমান আছে',
 
-            ]);
+            ]
+        );
         try {
             $caseId = AppealGovCaseRegisterRepository::storeAppeal($request, $id);
             // dd($caseId);
@@ -2546,14 +2591,12 @@ class AppealGovCaseRegisterController extends Controller
     {
         $categories = GovCaseDivisionCategory::orderby('id', 'desc')->where('gov_case_division_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
-
     }
 
     public function getDependentCaseCategoryType($id)
     {
         $categories = GovCaseDivisionCategoryType::orderby('id', 'desc')->where('gov_case_category_id', $id)->pluck("name_bn", "id");
         return json_encode($categories);
-
     }
 
     // for appeal origin case number
@@ -2565,7 +2608,6 @@ class AppealGovCaseRegisterController extends Controller
             ->pluck("case_no", "id");
 
         return json_encode($originCaseNumber);
-
     }
 
     public function getOriginCaseDetails($id)
@@ -2578,7 +2620,6 @@ class AppealGovCaseRegisterController extends Controller
 
         // $data = GovCaseRegister::where('id', $id)->first();
         return json_encode($data);
-
     }
     public function getHighCourtCaseDetails($id)
     {
@@ -2659,7 +2700,6 @@ class AppealGovCaseRegisterController extends Controller
 
         // $query = GovCaseRegister::orderby('id', 'DESC')->where('case_division_id', 2)->where('deleted_at', '=', null);
         return redirect()->back()->with('message', 'IT WORKS!');
-
     }
     // for attorney
     public function attorney_appellate_division_case()
@@ -2727,7 +2767,7 @@ class AppealGovCaseRegisterController extends Controller
         $officeID = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
-        // ->where('concern_user_id', $authUserId)
+            // ->where('concern_user_id', $authUserId)
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
 
@@ -2901,7 +2941,6 @@ class AppealGovCaseRegisterController extends Controller
 
             return response()->json(['exists' => $exists, 'officeName' => $officeName->office_name_bn]);
         }
-
     }
 
     public function editAppealCaseApplication($caseNo, $caseYear = null, $caseCategoryType)
@@ -2926,7 +2965,7 @@ class AppealGovCaseRegisterController extends Controller
         // $concernPersonName = User::where('id', $case->concern_user_id)->first();
 
         $data['appealCaseData'] = AppealGovCaseRegister::findOrFail($caseId->id);
-// dd($data['appealCaseData']);
+        // dd($data['appealCaseData']);
         $govCaseInfo = GovCaseRegister::where('id', $data['appealCaseData']->case_number_origin)->where('deleted_at', null)->first();
         $govCaseId = $govCaseInfo->id;
 
@@ -3071,14 +3110,12 @@ class AppealGovCaseRegisterController extends Controller
             if ($request->file_type_order_tamil && $_FILES["file_name_order_tamil"]['name']) {
                 AttachmentRepository::storeOrderTakenFinalAttachment('gov_case', $caseId, $request);
             }
-
         } catch (\Exception $e) {
             dd($e);
             $flag = 'false';
             return redirect()->back()->with('error', 'তথ্য সংরক্ষণ করা হয়নি ');
         }
         return response()->json(['success' => 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'caseId' => $caseId]);
-
     }
 
     public function appellateAgainstGov()
@@ -3192,5 +3229,4 @@ class AppealGovCaseRegisterController extends Controller
 
         return response()->json(['message' => 'সফল ভাবে মুছে ফেলা হয়েছে']);
     }
-
 }

@@ -396,9 +396,9 @@
                                                             <option value="">-- নির্বাচন করুন --</option>
                                                             {{-- {{dd($caseNumberOrigin)}} --}}
                                                             @foreach ($originCaseNumber as $value)
-                                                                <option value="{{ $value->case_no }}"
-                                                                    {{ old('case_number_origin') == $value->case_no || $case->case_number_origin == $value->case_no ? 'selected' : '' }}>
-                                                                    {{ $value->case_no }}
+                                                                <option value="{{ $value->id }}"
+                                                                    {{ old('case_number_origin') == $value->id || $case->case_number_origin == $value->id ? 'selected' : '' }}>
+                                                                    {{ $value->case_no }}/{{ $value->year }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -417,14 +417,22 @@
                                                             <div class="col-lg-4 mb-5">
                                                                 <label>হাইকোর্ট/প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="text" name="case_number_origin_manual"
-                                                                    id="case_number_origin_manual"
-                                                                    class="form-control form-control-sm"
-                                                                    value="{{ $case->case_number_origin ?? '' }}"
-                                                                    placeholder="(Type digits in English)"
-                                                                    required="required"
-                                                                    onkeypress="return allowBanglaAndEnglishNumerals(event)">
-
+                                                                @if ($case->case_category_origin == 0)
+                                                                    <input type="text" name="case_number_origin_manual"
+                                                                        id="case_number_origin_manual"
+                                                                        class="form-control form-control-sm"
+                                                                        value="{{ $case->case_number_origin ?? '' }}"
+                                                                        placeholder="(Type digits in English)"
+                                                                        required="required"
+                                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
+                                                                @else
+                                                                    <input type="text" name="case_number_origin_manual"
+                                                                        id="case_number_origin_manual"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="(Type digits in English)"
+                                                                        required="required"
+                                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
+                                                                @endif
                                                             </div>
 
 
@@ -440,7 +448,8 @@
 
 
                                                             <div class="col-lg-4 mb-5">
-                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small class="text-danger"></small></label>
+                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
+                                                                        class="text-danger"></small></label>
                                                                 <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">{{ $case->subject_matter ?? '' }}</textarea>
                                                             </div>
 
@@ -469,7 +478,7 @@
                                         </fieldset>
 
                                     </div>
-                                    <div class="col-md-12" id="showHighCourtCaseDiv">
+                                    {{-- <div class="col-md-12" id="showHighCourtCaseDiv">
                                         <fieldset>
                                             <div class="form-group row">
 
@@ -574,7 +583,7 @@
                                         </fieldset>
 
 
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
                                     <button type="submit" id="appealCaseGeneralInfoEditSaveBtn"
@@ -1402,66 +1411,69 @@
         }
     </script>
 
-<script>
-    $('#appealCaseGeneralInfoForm').submit(function(e) {
-        e.preventDefault();
+    <script>
+        $('#appealCaseGeneralInfoForm').submit(function(e) {
+            e.preventDefault();
 
-        $('#appealCaseGeneralInfoEditSaveBtn').addClass('spinner spinner-white spinner-right disabled');
-        Swal.fire({
-            title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var formData = new FormData(this);
-                console.log([...formData.entries()]);
+            $('#appealCaseGeneralInfoEditSaveBtn').addClass('spinner spinner-white spinner-right disabled');
+            Swal.fire({
+                title: 'আপনি কি মামলার সাধারন তথ্য সংরক্ষণ করতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var formData = new FormData(this);
+                    console.log([...formData.entries()]);
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('cabinet.case.appealEditStore') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        console.log('Success response:', data);
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('cabinet.case.appealEditStore') }}",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: (data) => {
+                            console.log('Success response:', data);
 
-                        $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে', 'success')
-                            .then(() => {
-                                window.location.reload(true); // Force reload to bypass cache
-                            });
+                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                                    'success')
+                                .then(() => {
+                                    window.location.reload(
+                                        true); // Force reload to bypass cache
+                                });
 
-                        // Ensure the additional actions occur before reload if needed
-                        $("#final_order").click();
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $('#finalOrderSaveBtn').prop('disabled', false);
-                        $('#finalOrderSaveBtn').removeClass("disable-button");
-                    },
-                    error: (xhr, status, error) => {
-                        console.log('Error response:', xhr, status, error);
+                            // Ensure the additional actions occur before reload if needed
+                            $("#final_order").click();
+                            $("#caseIDForFinalOrder").val(data.caseId);
+                            $('#finalOrderSaveBtn').prop('disabled', false);
+                            $('#finalOrderSaveBtn').removeClass("disable-button");
+                        },
+                        error: (xhr, status, error) => {
+                            console.log('Error response:', xhr, status, error);
 
-                        $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
-                            'spinner spinner-white spinner-right disabled');
-                        if (xhr.status === 422) {
-                            Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
-                        } else {
-                            Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন', 'error');
+                            $('#appealCaseGeneralInfoEditSaveBtn').removeClass(
+                                'spinner spinner-white spinner-right disabled');
+                            if (xhr.status === 422) {
+                                Swal.fire('সমস্যা...!', xhr.responseJSON.error, 'error');
+                            } else {
+                                Swal.fire('সমস্যা...!', 'অনুগ্রহ করে সকল ফিল্ড গুলো পূরণ করুন',
+                                    'error');
+                            }
                         }
-                    }
-                });
-            } else {
-                $('#appealCaseGeneralInfoSaveBtn').removeClass(
-                    'spinner spinner-white spinner-right disabled');
-                Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
-            }
+                    });
+                } else {
+                    $('#appealCaseGeneralInfoSaveBtn').removeClass(
+                        'spinner spinner-white spinner-right disabled');
+                    Swal.fire('Canceled!', 'মামলার সাধারণ তথ্য সংরক্ষণ বাতিল করা হয়েছে', 'info');
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 
 
@@ -1582,7 +1594,7 @@
                     const originalText = button.html();
                     button.html(
                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> মুছে ফেলা হচ্ছে...'
-                        );
+                    );
                     button.prop('disabled', true);
 
                     jQuery.ajax({
