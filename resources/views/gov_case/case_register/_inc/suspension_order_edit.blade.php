@@ -34,7 +34,7 @@
             @endif
 
 
-
+{{-- @dd($case) --}}
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">

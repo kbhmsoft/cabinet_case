@@ -875,15 +875,12 @@ class GovCaseRegisterRepository
             $tamil_requesting_date = null;
         }
 
-        if ($case->postponed_interim_have == 0) {
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
-        }
-
         if ($case->postponed_interim_data_details == null) {
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
         }
 
         try {
+            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
             $case->adesh_tamil_decision_taken = $caseInfo->adesh_tamil_decision_taken;
             $case->adesh_tamil_decision_data_details = $caseInfo->adesh_tamil_decision_data_details;
             $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;

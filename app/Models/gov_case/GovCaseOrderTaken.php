@@ -26,7 +26,7 @@ class GovCaseOrderTaken extends Model
         'updated_at',
     ];
 
-    // public function gov_case_register(){
-    //     return $this->hasOne(GovCaseRegister::class, 'id', 'gov_case_id');
-    // }
+    public function gov_case_register(){
+        return $this->belongsTo(GovCaseRegister::class, 'id', 'gov_case_id');
+    }
 }

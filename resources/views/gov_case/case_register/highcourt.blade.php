@@ -155,6 +155,8 @@
                     </thead>
                     <tbody>
                         @foreach ($cases as $key => $row)
+
+                        {{-- @dd($row->orderTakenAgainstGov) --}}
                             <tr>
                                 <td scope="row" style="text-align:center;" class="tg-bn">
                                     {{ en2bn($key + $cases->firstItem()) }}.</td>
@@ -240,23 +242,27 @@
 
                                             @can('highcoutr_send_answer')
                                                 @if ($row->is_final_order == 0)
-                                                    @if (empty($row->result_sending_date))
+                                                    @if ($row->result_sending_date == null)
                                                         <a class="dropdown-item"
                                                             href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
                                                             জবাব প্রেরণ</a>
                                                     @endif
-                                                    @if ($row->postponed_order != 1)
+                                                    @if ($row->postponed_interim_have == null)
                                                         <a class="dropdown-item"
                                                             href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
                                                             স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
                                                     @endif
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
-                                                        চূড়ান্ত আদেশ</a>
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('cabinet.case.againstGovOrderTaken', $row->id) }}">
-                                                        সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন</a>
+                                                    @if ($row->is_final_order == 0 && $row->result == null)
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.finalOrderEdit', $row->id) }}">
+                                                            চূড়ান্ত আদেশ</a>
+                                                    @endif
+                                                    @if ($row->orderTakenAgainstGov== null)
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('cabinet.case.againstGovOrderTaken', $row->id) }}">
+                                                            সরকারের বিপক্ষে প্রদত্ত রায় বাস্তবায়ন
+                                                        </a>
+                                                    @endif
                                                 @elseif ($row->is_final_order == 1)
                                                     @if ($row->result == 2)
                                                         @if (empty($row->leave_to_appeal_no))
