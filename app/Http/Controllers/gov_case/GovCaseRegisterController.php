@@ -3776,13 +3776,26 @@ class GovCaseRegisterController extends Controller
     // for appeal origin case number
     public function getDependentCaseOriginNumber($id)
     {
-        $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
-            ->where('case_category_id', $id)
-        //     ->where('is_final_order', 1)
+        $roleID = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
 
-        // // ->pluck("case_no", "id", "year");
-        //     ->where('leave_to_appeal_is_favour_of_gov', 1)
+        if($roleID != 27){
+
+            $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
+            ->where('case_category_id', $id)
+            ->whereHas('bibadis', function ($query) use ($officeID) {
+                $query->where('respondent_id', $officeID);
+            })
             ->select("case_no", "id", "year")->get();
+        }else{
+
+            $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
+            ->where('case_category_id', $id)
+            ->whereHas('bibadis', function ($query) use ($officeID) {
+                $query->where('respondent_id', $officeID);
+            })
+            ->select("case_no", "id", "year")->get();
+        }
 
         return json_encode($originCaseNumber);
     }
