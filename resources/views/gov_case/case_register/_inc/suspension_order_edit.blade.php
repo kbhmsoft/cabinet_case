@@ -34,7 +34,7 @@
             @endif
 
 
-{{-- @dd($case) --}}
+            {{-- @dd($case) --}}
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
@@ -72,6 +72,11 @@
                                                                 id="postponed_interim_have_not" value="0"
                                                                 {{ $case->postponed_interim_have == 0 ? 'checked' : '' }}>
                                                             <span></span>না</label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="postponed_interim_have"
+                                                                id="postponed_interim_have_not" value="2"
+                                                                {{ $case->postponed_interim_have == 2 ? 'checked' : '' }}>
+                                                            <span></span>এখনও হয়নি</label>
                                                     </div>
                                                 </div>
 
@@ -80,7 +85,7 @@
                                                     <div class="col-md-12 mb-5">
                                                         <label>স্থগিতাদেশের সংক্ষিপ্ত বিবরণ</label>
                                                         <textarea name="postponed_interim_data_details" class="form-control" id="postponed_interim_data_details" rows="5"
-                                                            spellcheck="false">{{ $case->postponed_interim_data_details }}</textarea>
+                                                            spellcheck="false">{{ $case->postponed_interim_data_details ?? null }}</textarea>
                                                     </div>
                                                 </div>
 
@@ -253,7 +258,8 @@
                                                                     <div
                                                                         class="rounded bg-success-o-75 d-flex align-items-center justify-content-between flex-wrap px-5 py-0">
                                                                         <div class="d-flex align-items-center mr-2 py-2">
-                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (আপিল দায়েরের অনুরোধ কপি
+                                                                            <h3 class="mb-0 mr-8">সংযুক্তি (আপিল দায়েরের
+                                                                                অনুরোধ কপি
                                                                                 সংযুক্ত
                                                                                 করুন)
                                                                                 <sub class="text-danger">(PDF, সর্বোচ্চ
@@ -295,7 +301,8 @@
                                                                 <label>সলিসিটর বরাবর প্রেরীত জবাব সলট্র্যাক-এ এন্ট্রি করা
                                                                     হলে
                                                                     ট্র্যাকিং নম্বর প্রদান করুন</label>
-                                                                <input type="text" name="soltrack_tracking_number_for_appeal_against_intreim_order"
+                                                                <input type="text"
+                                                                    name="soltrack_tracking_number_for_appeal_against_intreim_order"
                                                                     class="form-control">
                                                             </div>
                                                         </div>
