@@ -85,6 +85,13 @@
                                     {{ $value->office_name_bn }} </option>
                             @endforeach
                         </select>
+                        {{-- <select name="divOffice" id="divOffice" class="form-control">
+                            @foreach ($divOffices as $value)
+                                <option
+                                    value="{{ $value->doptor_office_id }}"{{ (isset($_GET['divOffice']) ? $_GET['divOffice'] : '') == $value->doptor_office_id ? 'selected' : '' }}>
+                                    {{ $value->office_name_bn }} </option>
+                            @endforeach
+                        </select> --}}
                     </div>
                 @endif
                 <div class="form-group mb-2 mr-2">
@@ -290,9 +297,8 @@
 
 
             // DivisionOffice Wise Office
-            var dataID = jQuery(this).val();
             jQuery('select[name="divOffice"]').on('change', function() {
-
+                var dataID = jQuery(this).val();
                 if (dataID) {
                     jQuery("#office_id").after('<div class="loadersmall"></div>');
                     jQuery.ajax({

@@ -49,9 +49,10 @@ class AppealAdministrativeTribrunalController extends Controller
         }
 
 
+   
 
         if (!empty($_GET['case_no'])) {
-            $query->where('appeal_administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
+            $query->where('case_no', '=', $_GET['case_no']);
         }
 
         $data['cases'] = $query->paginate(10);
