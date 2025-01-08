@@ -36,7 +36,7 @@ class AppealAdministrativeTribrunalController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-      
+
         $query = AppealAdministrativeTribrunalCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
@@ -48,37 +48,10 @@ class AppealAdministrativeTribrunalController extends Controller
             $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
-        // if ($roleID == 44 || $roleID == 45) {
-        //     $query->whereHas(
-        //         'mainBibadis',
-        //         function ($query) use ($officeID) {
-        //             $query->where('respondent_id', $officeID);
-        //         }
-        //     );
-        // }
 
-        // $userId = Auth::id();
-        // if ($roleID == 45) {
-        //     $query->whereHas(
-        //         'concernPersons',
-        //         function ($query) use ($userId) {
-        //             $query->where('concern_user_id', $userId);
-        //         }
-        //     );
-        // };
-
-        if (!empty($_GET['case_category_type'])) {
-            $query->where('administrative_tribrunal_case_registers.case_category_type', '=', $_GET['case_category_type']);
-        }
-
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
-        }
 
         if (!empty($_GET['case_no'])) {
-            $query->where('administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
+            $query->where('appeal_administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
         }
 
         $data['cases'] = $query->paginate(10);

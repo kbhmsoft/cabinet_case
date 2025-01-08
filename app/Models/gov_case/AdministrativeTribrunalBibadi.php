@@ -24,4 +24,8 @@ class AdministrativeTribrunalBibadi extends Model
     public function ministry(){
         return $this->hasOne(GovCaseOffice::class, 'doptor_office_id', 'respondent_id');
     }
+
+    public function bibadibelongs(){
+        return $this->belongsTo(AdministrativeTribrunalCaseRegister::class,'gov_case_id','id');
+    }
 }
