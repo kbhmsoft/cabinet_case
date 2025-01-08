@@ -36,22 +36,8 @@ class AdministrativeTribrunalController extends Controller
         $officeInfo = user_office_info();
         $roleID = userInfo()->role_id;
         $officeID = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
 
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
-
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
-        }
+        $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
         $query = AdministrativeTribrunalCaseRegister::orderby('id', 'DESC')->where('deleted_at', '=', null);
 
         if ($roleID == 32 || $roleID == 41) {
@@ -72,34 +58,7 @@ class AdministrativeTribrunalController extends Controller
             );
         }
 
-        if ($roleID == 44 || $roleID == 45) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID);
-                }
-            );
-        }
 
-        $userId = Auth::id();
-        if ($roleID == 45) {
-            $query->whereHas(
-                'concernPersons',
-                function ($query) use ($userId) {
-                    $query->where('concern_user_id', $userId);
-                }
-            );
-        };
-
-        if (!empty($_GET['case_category_type'])) {
-            $query->where('administrative_tribrunal_case_registers.case_category_type', '=', $_GET['case_category_type']);
-        }
-
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
-        }
 
         if (!empty($_GET['case_no'])) {
             $query->where('administrative_tribrunal_case_registers.case_no', '=', $_GET['case_no']);
@@ -107,7 +66,6 @@ class AdministrativeTribrunalController extends Controller
 
         $data['cases'] = $query->paginate(10);
 
-        // $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
         $data['page_title'] = 'প্রশাসনিক ট্রাইব্যুনালে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
 
@@ -218,7 +176,7 @@ class AdministrativeTribrunalController extends Controller
         if ($request->input('case_category_type') == "এটি") {
             $caseCategory = 1;
         }
-      
+
         // Use a single query to check for the existence of the case
         $exists = AdministrativeTribrunalCaseRegister::where('case_no', $caseNo)
             ->where('case_year', $caseYear)
@@ -244,5 +202,31 @@ class AdministrativeTribrunalController extends Controller
         }
 
         return response()->json(['exists' => false]);
+    }
+
+    public function getTwoLevelOfficeIds($parentOfficeIds, $maxLevels = 2)
+    {
+        $allOfficeIds = $parentOfficeIds;
+        $currentLevelIds = $parentOfficeIds;
+        $level = 1;
+        while ($level <= $maxLevels) {
+            // Get the child offices for the current level
+            $childOfficeIds = DB::table('gov_case_office')
+                ->whereIn('parent_office_id', $currentLevelIds)
+                ->pluck('doptor_office_id')
+                ->toArray();
+
+            if (empty($childOfficeIds)) {
+                break;
+            }
+
+            $allOfficeIds = array_merge($allOfficeIds, $childOfficeIds);
+
+            // Set up the child IDs as the current level for the next iteration
+            $currentLevelIds = $childOfficeIds;
+            $level++;
+        }
+
+        return array_unique($allOfficeIds);
     }
 }
