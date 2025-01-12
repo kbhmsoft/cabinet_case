@@ -354,8 +354,11 @@ class AppealGovCaseRegisterController extends Controller
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
 
+
+
+
         if ($roleID == 32 || $roleID == 41) {
-            $query->whereIn('created_by_office', $officeID);
+            $query->where('created_by_office', $officeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
@@ -388,8 +391,8 @@ class AppealGovCaseRegisterController extends Controller
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
-        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট মামলার তালিকা';
-        // return $data;
+        $data['page_title'] = 'আপিল বিভাগে সরকারি স্বার্থসংশ্লিষ্ট চলমান মামলার তালিকা';
+
         return view('gov_case.appeal_case_register.appealcourt')->with($data);
     }
 
