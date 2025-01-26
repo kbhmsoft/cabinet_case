@@ -381,7 +381,7 @@
 
 
                 @can('important_case_list')
-                    <li class="menu-item {{ request()->is('cabinet/case/highcourt', 'cabinet/case/highcourt-appeal/importgantCaseList') ? 'menu-item-open' : '' }}"
+                    <li class="menu-item {{ request()->is('cabinet/case/highcourt-appeal/importgantCaseList') ? 'menu-item-open' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text font-weight-bolder"><i class="fas fa-exclamation"></i>গুরুত্বপূর্ণ
