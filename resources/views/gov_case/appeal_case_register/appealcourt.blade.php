@@ -269,13 +269,16 @@
 
                                         <div class="btn-group">
                                             @if ($roleID == 27)
-                                                <input type="checkbox" id="most_important" name="most_important"
-                                                    value="1" data-row-id="{{ $row->id }}"
+                                                <input type="checkbox" id="most_important_{{ $row->id }}"
+                                                    name="most_important" value="1" data-row-id="{{ $row->id }}"
                                                     onchange="updateDatabase(this)"
                                                     {{ $row->most_important == 1 ? 'checked' : '' }}>
-                                                <label class="checkbox-name" for="most_important">অধিক গুরুত্বপূর্ণ</label>
+                                                <label class="checkbox-name"for="most_important_{{ $row->id }}">অতি
+                                                    গুরুত্বপূর্ণ</label>
                                             @endif
                                         </div>
+
+
                                         <div class="btn-group">
                                             @if ($roleID == 29 || $roleID == 31)
                                                 <input type="checkbox" id="important" name="important" value="1"
@@ -309,8 +312,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                                               <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                                             -->
+                                                                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                                 -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')
