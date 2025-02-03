@@ -1200,6 +1200,7 @@ class GovCaseRegisterRepository
 
     public static function storeDataMigrationGovCase($caseInfo)
     {
+
         try {
             $case = new GovCaseRegister;
 
@@ -1210,9 +1211,7 @@ class GovCaseRegisterRepository
                 $case->case_no = null;
             }
 
-            // dd($case->case_no);
-
-            $case->case_division_id = $caseInfo['highcourt_adalat_0'] ?? null;
+            $case->case_division_id = $caseInfo['court'] ?? null;
             $case->case_category_id = $caseInfo['case_category'] ?? null;
             $case->case_type_id = $caseInfo['case_category_type'] ?? null;
             $case->year = $caseInfo['case_year'] ?? null;
@@ -1223,16 +1222,20 @@ class GovCaseRegisterRepository
                 $case->date_issuing_rule_nishi = null;
             }
 
-            $case->total_badi_number = $caseInfo['total_badi_number'] ?? null;
+            $case->total_badi_number = $caseInfo['total_badi_number'] ?? 1;
             $case->subject_matter = $caseInfo['subject_matter'] ?? null;
             $case->postponed_order = $caseInfo['postponed_order'] ?? null;
             $case->status = 1;
             $case->postponed_interim_have = $caseInfo['postponed_interim_have'] ?? null;
             $case->postponed_interim_data_details = $caseInfo['postponed_interim_data_details'] ?? null;
 
-            if ($case->save()) {
-                return $case->id;
-            }
+if ($case->save()) {
+    return $case->id;
+} else {
+    Log::error('Validation failed: ' . json_encode($case->getErrors()));
+    return null;
+}
+
         } catch (\Exception $e) {
             Log::error('Error inserting case data: ' . $e->getMessage());
             return null;
@@ -1247,12 +1250,20 @@ class GovCaseRegisterRepository
 
     public static function storeDataMigrationBadi($caseInfo, $govCaseId)
     {
-        $cleanedAddress = self::cleanAddress($caseInfo['badi_address_0']);
-        if (isset($caseInfo['badi_name_0']) && !empty($cleanedAddress)) {
+        // $cleanedAddress = self::cleanAddress($caseInfo['badi_address_0']);
+        // if (isset($caseInfo['badi_name_0']) && !empty($cleanedAddress)) {
+        //     $badi = new GovCaseBadi();
+        //     $badi->gov_case_id = $govCaseId;
+        //     $badi->name = $caseInfo['badi_name_0'];
+        //     $badi->address = $cleanedAddress;
+        //     $badi->save();
+        // }
+
+        if (isset($caseInfo['badi_name_0'])) {
             $badi = new GovCaseBadi();
             $badi->gov_case_id = $govCaseId;
             $badi->name = $caseInfo['badi_name_0'];
-            $badi->address = $cleanedAddress;
+            // $badi->address = $cleanedAddress;
             $badi->save();
         }
     }

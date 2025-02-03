@@ -17,6 +17,7 @@ class GovCaseRegister extends Model
     use HasFactory, SoftDeletes;
 
     public $timestamps = true;
+    protected $table="gov_case_registers";
     protected $fillable = [
         'id',
         'case_no',

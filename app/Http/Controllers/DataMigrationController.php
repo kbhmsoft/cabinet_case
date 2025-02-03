@@ -78,6 +78,7 @@ class DataMigrationController extends Controller
                 if (is_array($row) && !empty(array_filter($row))) {
                     // dd(array_combine($importData[0][0], $row));
                     $caseId = GovCaseRegisterRepository::storeDataMigrationGovCase(array_combine($importData[0][0], $row));
+
                     GovCaseRegisterRepository::storeDataMigrationBadi(array_combine($importData[0][0], $row), $caseId);
                     GovCaseRegisterRepository::storeDataMigrationMainBibadi(array_combine($importData[0][0], $row), $caseId);
 
