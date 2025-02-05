@@ -253,54 +253,92 @@
 
 
 
+    // function addBibadiRowFunc() {
+    //     var count = $('#bibadiDiv tr').length;
+    //     $('#bibadiDiv tr:last').after(createRow(count));
+
+    //     function createRow(rowNumber) {
+    //         var rowHtml = '';
+    //         rowHtml += '<tr id="bibadi_' + rowNumber + '">';
+    //         rowHtml += '<td> <span class="form-control form-control-sm">' + rowNumber + '</span></td>';
+    //         rowHtml += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + rowNumber +
+    //             ')" id="other_respondent_' + rowNumber + '" class="form-control form-control-sm other_respondentCls">';
+    //         rowHtml += '<option value="">-- নির্বাচন করুন --</option>';
+    //         rowHtml +=
+    //             '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
+    //         rowHtml += '<option value="0">অন্যান্য</option>';
+    //         rowHtml +=
+    //             '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' +
+    //             rowNumber +
+    //             '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
+    //         rowHtml += '<input type="hidden" name="bibadi_id[]" value="">';
+
+    //         rowHtml +=
+    //             '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
+    //         rowHtml += '</tr>';
+    //         return rowHtml;
+    //     }
+
+
+    //     $('.other_respondentCls').select2();
+    // }
+
+    // function removeBibadiRow(element) {
+    //     $(element).closest('tr').remove();
+
+    // }
+
     function addBibadiRowFunc() {
-        var count = $('#bibadiDiv tr').length; // Get current row count (including header)
-        $('#bibadiDiv tr:last').after(createRow(count));
+        var count = $('#bibadiDiv tr').length + 1; // Get total rows and add 1
+        $('#bibadiDiv').append(createRow(count)); // Append new row at the end
 
         function createRow(rowNumber) {
-            var rowHtml = '';
-            rowHtml += '<tr id="bibadi_' + rowNumber + '">';
-            rowHtml += '<td> <span class="form-control form-control-sm">' + rowNumber + '</span></td>';
-            rowHtml += '<td><select name="other_respondent[]" onChange="getManualOtherRespondentName(' + rowNumber +
-                ')" id="other_respondent_' + rowNumber + '" class="form-control form-control-sm other_respondentCls">';
-            rowHtml += '<option value="">-- নির্বাচন করুন --</option>';
-            rowHtml +=
-                '@foreach ($ministrys as $value)<option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}> {{ $value->office_name_bn }} </option>@endforeach';
-            rowHtml += '<option value="0">অন্যান্য</option>';
-            rowHtml +=
-                '</select> <br> <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_' +
-                rowNumber +
-                '" class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none"></td>';
-            rowHtml += '<input type="hidden" name="bibadi_id[]" value="">';
-
-            rowHtml +=
-                '<td><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
-            rowHtml += '</tr>';
-            return rowHtml;
+            return `
+        <tr id="bibadi_${rowNumber}">
+            <td><span class="form-control form-control-sm row-number">${rowNumber}</span></td>
+            <td>
+                <select name="other_respondent[]" onChange="getManualOtherRespondentName(${rowNumber})"
+                    id="other_respondent_${rowNumber}" class="form-control form-control-sm other_respondentCls">
+                    <option value="">-- নির্বাচন করুন --</option>
+                    @foreach ($ministrys as $value)
+                        <option value="{{ $value->doptor_office_id }}" {{ old('ministry') == $value->doptor_office_id }}>
+                            {{ $value->office_name_bn }}
+                        </option>
+                    @endforeach
+                    <option value="0">অন্যান্য</option>
+                </select>
+                <br>
+                <input type="text" name="other_respondent_manual_name[]" id="other_respondent_manual_name_${rowNumber}"
+                    class="form-control form-control-sm" placeholder="অন্যান্য রেসপন্ডেন্টর নাম লিখুন" style="display: none">
+            </td>
+            <input type="hidden" name="bibadi_id[]" value="">
+            <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                   onclick="removeRespondantBibadiRow(this)">
+                    <i class="fas fa-minus-circle"></i>
+                </a>
+            </td>
+        </tr>`;
         }
 
-        renumberRows(); // Renumber rows after adding a new one
-        $('.other_respondentCls').select2();
+        $('.other_respondentCls').select2(); 
     }
 
-    function removeBibadiRow(element) {
-        $(element).closest('tr').remove(); // Remove the selected row
-        renumberRows(); // Renumber rows after removing one
+    function removeRespondantBibadiRow(element) {
+        $(element).closest('tr').remove();
+        updateRowNumbers();
     }
 
-
-    function renumberRows() {
+    function updateRowNumbers() {
         $('#bibadiDiv tr').each(function(index) {
-            if (index > 0) {
-                $(this).find('td:first span').text(index);
-                $(this).attr('id', 'bibadi_' + index);
-                const selectElement = $(this).find('select');
-                selectElement.attr('id', 'other_respondent_' + index);
-                selectElement.attr('onChange', 'getManualOtherRespondentName(' + index + ')');
-
-                // Update the text input's ID
-                $(this).find('input[type="text"]').attr('id', 'other_respondent_manual_name_' + index);
-            }
+            var newIndex = index + 1;
+            $(this).attr('id', 'bibadi_' + newIndex); // Update row ID
+            $(this).find('.row-number').text(newIndex); // Update visible row number
+            $(this).find('select')
+                .attr('id', 'other_respondent_' + newIndex)
+                .attr("onChange", "getManualOtherRespondentName(" + newIndex + ")"); // Update select ID & event
+            $(this).find('input[type="text"]').attr('id', 'other_respondent_manual_name_' +
+                newIndex);
         });
     }
 

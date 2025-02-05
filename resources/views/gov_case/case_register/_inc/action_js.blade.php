@@ -699,8 +699,8 @@
     });
     // ================================Final Order Save==================================//
 
-// ================================Suspention Order Save==================================//
-$('#OrderTakenForm').submit(function(e) {
+    // ================================Suspention Order Save==================================//
+    $('#OrderTakenForm').submit(function(e) {
         // alert(1);
         e.preventDefault();
         $('#orderTakenSaveBtn').addClass('spinner spinner-white spinner-right disabled');
@@ -793,16 +793,12 @@ $('#OrderTakenForm').submit(function(e) {
                         $orderData = data;
                         Swal.fire(
                             'Saved!',
-                            'কনটেম্প্ট মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
+                            'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                             'success'
-                        )
-                        console.log(data);
-                        // console.log(data.caseId);
-                        // $("#contempt_case").click();
-                        $("#caseIDForSuspention").val(data.caseId);
-                        $("#caseIDForFinalOrder").val(data.caseId);
-                        $("#caseIDForContempt").val(data.caseId);
-
+                        ).then(function() {
+                            window.location =
+                                "{{ route('cabinet.case.highcourt') }}";
+                        });
                     },
                     error: function(data) {
                         console.log(data);
@@ -1103,15 +1099,15 @@ $('#OrderTakenForm').submit(function(e) {
         $(id).closest("tr").remove();
     }
 
-       //Attachment Title Change
-       function orderTamilAttachmentTitle(id) {
+    //Attachment Title Change
+    function orderTamilAttachmentTitle(id) {
 
         var value = $('#orderTamilFile' + id)[0].files[0];
         $('.custom-reply-input' + id).text(value['name']);
     }
 
-     //Attachment Title Change
-     function appealRequestAttachmentTitle(id) {
+    //Attachment Title Change
+    function appealRequestAttachmentTitle(id) {
         // var value = $('#customFile' + id).val();
         var value = $('#appealRequestFile' + id)[0].files[0];
         $('.custom-reply-input' + id).text(value['name']);
@@ -1280,9 +1276,9 @@ $('#OrderTakenForm').submit(function(e) {
 
 
 
-     /////////============ add appeal submission files ================
+    /////////============ add appeal submission files ================
 
-     $("#addOrderTakenDecisionFileRow").click(function(e) {
+    $("#addOrderTakenDecisionFileRow").click(function(e) {
         addOrderTakenDecisionFileRowFunc();
     });
     //add row function

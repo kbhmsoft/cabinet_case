@@ -3791,7 +3791,7 @@ class GovCaseRegisterController extends Controller
 
             $originCaseNumber = GovCaseRegister::orderby('id', 'desc')
             ->where('case_category_id', $id)
-            
+
             ->select("case_no", "id", "year")->get();
         }
 
@@ -4755,7 +4755,6 @@ class GovCaseRegisterController extends Controller
         }
 
         if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            // dd(1);
             $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
             $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
             $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
@@ -4773,7 +4772,8 @@ class GovCaseRegisterController extends Controller
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
-        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট জবাব প্রেরণের জন্য পেন্ডিংমামলার তালিকা';
+        $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট জবাব প্রেরণের জন্য পেন্ডিং
+        মামলার তালিকা';
 
         return view('gov_case.case_register.highcourt_sentToSolicitorPending')->with($data);
     }

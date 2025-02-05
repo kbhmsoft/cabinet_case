@@ -2337,12 +2337,6 @@
                 '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#mainFileDiv tr:last').after(items);
-            console.log(items);
-
-            // if (formType == 'edit') {
-            //     $(`#customFile${count}`).attr('required', false);
-            //     $(`#customFileName${count}`).attr('required', false);
-            // }
         }
 
 

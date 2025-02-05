@@ -310,7 +310,7 @@
                                                                     </span>
                                                                 </th>
                                                                 <th width="50">
-                                                                    <a href="javascript:void();" id="addBibadiRow"
+                                                                    <a href="javascript:void(0);" id="addBibadiRow"
                                                                         class="btn btn-sm btn-primary font-weight-bolder pr-2"
                                                                         onclick="addBibadiRowFunc()">
                                                                         <i class="fas fa-plus-circle"></i>

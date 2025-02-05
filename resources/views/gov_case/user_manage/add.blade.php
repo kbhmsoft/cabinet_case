@@ -66,9 +66,9 @@
                                         মোবাইল নাম্বার <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" name="mobile_no" id="mobile_no" placeholder="মোবাইল নাম্বার লিখুন"
-                                        class="form-control form-control-sm" placeholder="(type digits in English)"
-                                        required="required" onkeypress="return allowEnglishOnly(event)"
-                                        oninput="sanitizeEnglishDigits(this)">
+                                        class="form-control form-control-sm" required="required"
+                                        onkeypress="return allowEnglishOnly(event)" oninput="sanitizeEnglishDigits(this)">
+                                    <small class="mobile-error" class="text-danger"></small>
                                 </div>
                             </div>
 
@@ -126,7 +126,8 @@
 
                                 <div class="col-4 mb-4">
                                     <div class="form-group">
-                                        <label for="office_type" class=" form-control-label">অফিস লেভেল</label>
+                                        <label for="office_type" class=" form-control-label">অফিস লেভেল<span
+                                                class="text-danger">*</span></label>
                                         <select name="office_type" id="office_type" class="form-control">
                                             <option value="">-বিভাগ নির্বাচন করুন-</option>3
                                             @foreach ($office_types as $value)
@@ -172,7 +173,7 @@
                             </div>
                             @if (Auth::user()->role_id == 27)
                                 <div class="form-group mb-4 col-lg-4 ">
-                                    <label>অফিস</label>
+                                    <label>অফিস<span class="text-danger">*</span></label>
                                     <select name="office_id" id="office_id" class="form-control">
                                         <option value="">- অফিস নির্বাচন করুন-</option>
                                     </select>
@@ -203,11 +204,12 @@
                                     <label for="password" class=" form-control-label">পাসওয়ার্ড <span
                                             class="text-danger">*</span></label>
                                     <input type="text" name="password" id="password" placeholder="পাসওয়ার্ড লিখুন"
-                                        class="form-control" onkeyup="CheckPassword(this)">
+                                        class="form-control" onkeyup="CheckPassword(this)" onblur="CheckPassword(this)"
+                                        required>
+
                                     <span style="color: red">
                                         {{ $errors->first('password') }}
                                     </span>
-                                    {{-- <sub class="text-danger special-character">(পাসওয়ার্ডে অবশ্যই ৮ অক্ষর থাকতে হবে <br> )</sub> --}}
                                 </div>
                                 <div id="passwordValidation" style="color:red">
 
@@ -221,7 +223,7 @@
                             <div class="col-lg-4"></div>
                             <div class="col-lg-4">
                                 <button type="submit" class="btn btn-success mr-2"
-                                    onclick="return confirm('আপনি কি সংরক্ষণ করতে চান?')">সংরক্ষণ করুন</button>
+                                    onclick="return validateForm()">সংরক্ষণ করুন</button>
                             </div>
                         </div>
                     </div>
@@ -282,6 +284,36 @@
 @endsection
 @section('scripts')
 
+
+    <script>
+        function validateForm() {
+            let officeType = document.querySelector('select[name="office_type"]').value;
+            let officeId = document.querySelector('select[name="office_id"]').value;
+            let roleId = document.querySelector('select[name="role_id"]').value;
+            console.log(officeType, officeId);
+
+            if (!roleId) {
+                alert('ইউজার রোল নির্বাচন করুন');
+                return false;
+            }
+
+            if (!officeType) {
+                alert('অফিস লেভেল নির্বাচন করুন');
+                return false;
+            }
+
+            if (!officeId) {
+                alert('অফিস নির্বাচন করুন');
+                return false;
+            }
+
+            return confirm('আপনি কি সংরক্ষণ করতে চান?');
+        }
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function allowEnglishOnly(event) {
             const charCode = event.charCode || event.keyCode;
@@ -295,6 +327,26 @@
         function sanitizeEnglishDigits(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
         }
+
+        $(document).ready(function () {
+        $("input[name='mobile_no']").on("input", function (event) {
+            let mobile = $(this).val();
+            let errorMsg = $(this).siblings(".mobile-error");
+            // Allow only numeric input
+            $(this).val(mobile.replace(/[^0-9]/g, ''));
+
+            if (mobile.length === 1 && mobile[0] !== '0') {
+                errorMsg.text("মোবাইল নাম্বার 0 দিয়ে শুরু হতে হবে!").addClass("text-danger");
+                $(this).val(''); // Clear input if first digit is not 0
+            } else if (mobile.length > 11) {
+                $(this).val(mobile.substring(0, 11)); // Limit to 11 digits
+            } else if (mobile.length > 0 && mobile.length < 11) {
+                errorMsg.text("মোবাইল নাম্বার অবশ্যই ১১ সংখ্যার হতে হবে!").addClass("text-danger");
+            } else {
+                errorMsg.text("").removeClass("text-danger");
+            }
+        });
+    });
     </script>
 
     <script>
@@ -453,21 +505,11 @@
                     $('#selectMinDiv').hide();
                 }
 
-
-
-
-
-                //   console.log(searchParams.get('office_type')); // true
-
-
-                // Level Wise Office
-                // if (Auth::user() - > role_id != 29) {
-
-
                 jQuery('select[name="office_type"]').on('change', function() {
                     var dataID = jQuery(this).val();
-                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+
                     if (dataID) {
+                        jQuery("#office_id").after('<div class="loadersmall"></div>');
                         jQuery.ajax({
                             url: '/cabinet/office/dropdownlist/getdependentoffice/' + dataID,
                             type: "GET",
@@ -493,8 +535,9 @@
                 // Ministry Wise Office
                 jQuery('select[name="ministry"]').on('change', function() {
                     var dataID = jQuery(this).val();
-                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+
                     if (dataID) {
+                        jQuery("#office_id").after('<div class="loadersmall"></div>');
                         jQuery.ajax({
                             url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
                             type: "GET",
@@ -522,8 +565,9 @@
                 // DivisionOffice Wise Office
                 jQuery('select[name="divOffice"]').on('change', function() {
                     var dataID = jQuery(this).val();
-                    jQuery("#office_id").after('<div class="loadersmall"></div>');
+
                     if (dataID) {
+                        jQuery("#office_id").after('<div class="loadersmall"></div>');
                         jQuery.ajax({
                             url: '/cabinet/office/dropdownlist/getdependentchildoffice/' + dataID,
                             type: "GET",

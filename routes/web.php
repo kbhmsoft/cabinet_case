@@ -82,6 +82,7 @@ Route::get('rm-case-hearing-list', [FrontHomeController::class, 'dateWaysRMCase'
 Route::delete('/notices/{id}', [NoticeController::class, 'destroy'])->name('notices.delete');
 Route::get('all-notice', [NoticeController::class, 'show'])->name('notices.details');
 Route::resource('notices', NoticeController::class);
+Route::post('delete-notice-file', [NoticeController::class, 'ruleFileDelete']);
 
 Route::middleware('prevent-back-history')->group(function () {
 Route::middleware('auth')->group(function () {

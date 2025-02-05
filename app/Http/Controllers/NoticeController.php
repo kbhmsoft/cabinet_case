@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\NoticeResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreNoticeRequest;
 use App\Http\Requests\UpdateNoticeRequest;
-use App\Http\Resources\NoticeResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class NoticeController extends Controller
 {
@@ -141,4 +144,22 @@ class NoticeController extends Controller
 
         return redirect()->route('notices.index')->with('সাফল্য', 'বিজ্ঞপ্তি সফলভাবে মুছে ফেলা হয়েছে');
     }
+    public function ruleFileDelete(Request $request)
+    {
+
+        $rowId = $request->row_id; // Getting row ID
+        $filePath = 'storage/' . $request->file_name; // Adjust path based on storage
+
+        if (File::exists(public_path($filePath))) {
+            File::delete(public_path($filePath));
+
+            // Optionally, you can delete the record from the database
+            DB::table('notices')->where('id', $rowId)->update(['notice_pdf' => null]);
+
+            return response()->json(['message' => 'ফাইল সফলভাবে মুছে ফেলা হয়েছে!']);
+        }
+
+        return response()->json(['message' => 'ফাইল খুঁজে পাওয়া যায়নি!'], 404);
+    }
+
 }

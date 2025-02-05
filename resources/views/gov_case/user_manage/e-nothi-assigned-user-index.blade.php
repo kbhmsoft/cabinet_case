@@ -2,6 +2,14 @@
 
 @section('content')
     <style type="text/css">
+        select.form-control {
+            width: auto;
+            min-width: 250px;
+            max-width: 100%;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
         #appRowDiv td {
             padding: 5px;
             border-color: #ccc;
@@ -42,7 +50,8 @@
             </div>
             <div class="card-toolbar">
                 @if (auth()->user()->can('create_new_user'))
-                    <a href="{{ route('cabinet.user-management.create') }}" class="btn btn-sm btn-primary font-weight-bolder">
+                    <a href="{{ route('cabinet.user-management.create') }}"
+                        class="btn btn-sm btn-primary font-weight-bolder">
                         <i class="la la-plus"></i>নতুন ইউজার এন্ট্রি
                     </a>
                 @else
@@ -121,7 +130,7 @@
                             <th scope="col">নাম</th>
                             <th scope="col">ইউজার রোল</th>
                             <th scope="col">অফিসের নাম</th>
-                               <th scope="col">মোবাইল</th>
+                            <th scope="col">মোবাইল</th>
                             <th scope="col">ইমেইল এড্রেস</th>
 
                         </tr>
@@ -131,10 +140,10 @@
                         @foreach ($users as $key => $row)
                             <tr>
                                 <th scope="row" class="tg-bn">{{ $key + 1 }}</th>
-                                <td>{{ $row->name ?? ''}}</td>
-                                <td>{{ $row->roleName ?? ''}}</td>
-                                <td>{{ $row->office_name_bn ??''}}</td>
-                                <td>{{ $row->mobile_no ??''}}</td>
+                                <td>{{ $row->name ?? '' }}</td>
+                                <td>{{ $row->roleName ?? '' }}</td>
+                                <td>{{ $row->office_name_bn ?? '' }}</td>
+                                <td>{{ $row->mobile_no ?? '' }}</td>
                                 <td>{{ $row->email ?? '' }}</td>
                             </tr>
                         @endforeach
@@ -291,7 +300,8 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
-                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+                    $('select[name="office_id"]').html(
+                        '<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
             });
 
@@ -319,7 +329,8 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
-                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+                    $('select[name="office_id"]').html(
+                        '<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
             });
 
@@ -350,7 +361,8 @@
                     });
                 } else {
                     $('select[name="office_id"]').empty();
-                    $('select[name="office_id"]').html('<option value="">-- অফিস নির্বাচন করুন --</option>');
+                    $('select[name="office_id"]').html(
+                        '<option value="">-- অফিস নির্বাচন করুন --</option>');
                 }
             });
 

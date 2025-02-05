@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repositories\gov_case;
 
 use App\Models\Attachment;
@@ -26,36 +25,36 @@ class GovCaseRegisterRepository
 {
     public static function GovCaseAllDetails($caseId)
     {
-        $case = GovCaseRegister::findOrFail($caseId);
-        $caseBadi = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
-        $caseLawers = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
-        $caseCourts = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
-        $caseBibadi = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
-        $mainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-        $otherBibadi = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
-        $caseMainBibadi = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
-        $caseLog = GovCaseLogRepository::getCaseLogByCaseId($caseId);
-        $hearings = GovCaseHearing::where('gov_case_id', $caseId)->get();
-        $files = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
-        $replyFiles = ReplyAttachment::where('gov_case_id', $caseId)->get();
+        $case            = GovCaseRegister::findOrFail($caseId);
+        $caseBadi        = GovCaseBadiBibadiRepository::getBadiByCaseId($caseId);
+        $caseLawers      = GovCaseBadiBibadiRepository::getConcernPersonByCaseId($caseId);
+        $caseCourts      = GovCaseBadiBibadiRepository::getJusticeNameByCaseId($caseId);
+        $caseBibadi      = GovCaseBadiBibadiRepository::getBibadiByCaseId($caseId);
+        $mainBibadi      = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        $otherBibadi     = GovCaseBadiBibadiRepository::getOthersBibadiByCaseId($caseId);
+        $caseMainBibadi  = GovCaseBadiBibadiRepository::getMainBibadiByCaseId($caseId);
+        $caseLog         = GovCaseLogRepository::getCaseLogByCaseId($caseId);
+        $hearings        = GovCaseHearing::where('gov_case_id', $caseId)->get();
+        $files           = Attachment::where('gov_case_id', $caseId)->where('is_deleted', 0)->get();
+        $replyFiles      = ReplyAttachment::where('gov_case_id', $caseId)->get();
         $suspensionFiles = SuspensionAttachment::where('gov_case_id', $caseId)->get();
-        $finalFiles = FinalAttachment::where('gov_case_id', $caseId)->get();
+        $finalFiles      = FinalAttachment::where('gov_case_id', $caseId)->get();
 
         $data = [
-            'case' => $case,
-            'caseBadi' => $caseBadi,
-            'caseLawers' => $caseLawers,
-            'caseCourts' => $caseCourts,
-            'caseMainBibadi' => $caseMainBibadi,
-            'caseBibadi' => $caseBibadi,
-            'mainBibadi' => $mainBibadi,
-            'otherBibadi' => $otherBibadi,
-            'caseLogs' => $caseLog,
-            'hearings' => $hearings,
-            'files' => $files,
-            'replyFiles' => $replyFiles,
+            'case'            => $case,
+            'caseBadi'        => $caseBadi,
+            'caseLawers'      => $caseLawers,
+            'caseCourts'      => $caseCourts,
+            'caseMainBibadi'  => $caseMainBibadi,
+            'caseBibadi'      => $caseBibadi,
+            'mainBibadi'      => $mainBibadi,
+            'otherBibadi'     => $otherBibadi,
+            'caseLogs'        => $caseLog,
+            'hearings'        => $hearings,
+            'files'           => $files,
+            'replyFiles'      => $replyFiles,
             'suspensionFiles' => $suspensionFiles,
-            'finalFiles' => $finalFiles,
+            'finalFiles'      => $finalFiles,
 
         ];
 
@@ -79,8 +78,8 @@ class GovCaseRegisterRepository
     {
         foreach ($caseInfo->highcourt_adalat as $key => $val) {
             if ($caseInfo->highcourt_adalat[$key] != null) {
-                $highcourtAdalat = self::checkHighcourtAdalatExist($caseInfo->highcourt_adalat_id[$key]);
-                $highcourtAdalat->gov_case_id = $govCaseId;
+                $highcourtAdalat                   = self::checkHighcourtAdalatExist($caseInfo->highcourt_adalat_id[$key]);
+                $highcourtAdalat->gov_case_id      = $govCaseId;
                 $highcourtAdalat->highcourt_adalat = $caseInfo->highcourt_adalat[$key];
                 $highcourtAdalat->save();
             }
@@ -91,8 +90,8 @@ class GovCaseRegisterRepository
     {
         foreach ($caseInfo->administrative_adalat as $key => $val) {
             if ($caseInfo->administrative_adalat[$key] != null) {
-                $administrativeAdalat = self::checkAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
-                $administrativeAdalat->gov_case_id = $govCaseId;
+                $administrativeAdalat                        = self::checkAdministritiveTribrunalHighcourtAdalatExist($caseInfo->administrative_adalat_id[$key]);
+                $administrativeAdalat->gov_case_id           = $govCaseId;
                 $administrativeAdalat->administrative_adalat = $caseInfo->administrative_adalat[$key];
                 $administrativeAdalat->save();
             }
@@ -139,7 +138,7 @@ class GovCaseRegisterRepository
 
     public static function storeGovCase($caseInfo)
     {
-        $case = self::checkGovCaseExist($caseInfo['caseId']);
+        $case         = self::checkGovCaseExist($caseInfo['caseId']);
         $ref_case_num = null;
         if ($caseInfo->appeal_case_id != null && $caseInfo->appeal_case_id != '') {
             $ref_case_num = DB::table('gov_case_registers')->select('case_no')->where('id', $caseInfo->appeal_case_id)->first()->case_no;
@@ -272,125 +271,125 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->case_no = $caseInfo->case_no;
-            $case->case_type = $caseInfo->case_type;
-            $case->court_id = $caseInfo->court;
-            $case->action_user_id = userInfo()->id;
-            $case->action_user_role_id = userInfo()->role_id;
-            $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
+            $case->case_no                 = $caseInfo->case_no;
+            $case->case_type               = $caseInfo->case_type;
+            $case->court_id                = $caseInfo->court;
+            $case->action_user_id          = userInfo()->id;
+            $case->action_user_role_id     = userInfo()->role_id;
+            $case->create_by               = userInfo()->id;
+            $case->year                    = $caseInfo->case_year;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->court;
-            $case->case_category_id = $caseInfo->case_category;
-            $case->case_type_id = $caseInfo->case_category_type;
+            $case->case_division_id        = $caseInfo->court;
+            $case->case_category_id        = $caseInfo->case_category;
+            $case->case_type_id            = $caseInfo->case_category_type;
             // $case->concern_person_designation = $caseInfo->concern_person_designation;
             // $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->subject_matter = $caseInfo->subject_matter;
+            $case->subject_matter  = $caseInfo->subject_matter;
             $case->postponed_order = $caseInfo->postponed_order;
 
-            $case->important_cause = $caseInfo->important_cause;
-            $case->gov_case_ref_id = $caseInfo->appeal_case_id;
-            $case->ref_gov_case_no = $ref_case_num;
-            $case->result_sending_date = $result_sending_date;
-            $case->result_sending_memorial = $caseInfo->result_sending_memorial;
-            $case->result_sending_date_solisitor_to_ag = $result_sending_date_solisitor_to_ag;
+            $case->important_cause                         = $caseInfo->important_cause;
+            $case->gov_case_ref_id                         = $caseInfo->appeal_case_id;
+            $case->ref_gov_case_no                         = $ref_case_num;
+            $case->result_sending_date                     = $result_sending_date;
+            $case->result_sending_memorial                 = $caseInfo->result_sending_memorial;
+            $case->result_sending_date_solisitor_to_ag     = $result_sending_date_solisitor_to_ag;
             $case->result_sending_memorial_solisitor_to_ag = $caseInfo->result_sending_memorial_solisitor_to_ag;
-            $case->reply_submission_date = $reply_submission_date;
-            $case->result_short_dtails = $caseInfo->result_short_dtails ?? null;
-            $case->result = $caseInfo->result ?? null;
-            $case->in_favour_govt = $in_favour_govt ?? null;
-            $case->is_appeal = $caseInfo->is_appeal ?? null;
+            $case->reply_submission_date                   = $reply_submission_date;
+            $case->result_short_dtails                     = $caseInfo->result_short_dtails ?? null;
+            $case->result                                  = $caseInfo->result ?? null;
+            $case->in_favour_govt                          = $in_favour_govt ?? null;
+            $case->is_appeal                               = $caseInfo->is_appeal ?? null;
             // $case->comments = $caseInfo->comments;
             $case->is_final_order = $is_final_order ?? null;
-            $case->arji_file = null;
-            $case->status = 1;
+            $case->arji_file      = null;
+            $case->status         = 1;
 
-            $case->case_status_id = 33;
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial ?? null;
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing ?? null;
-            $case->contempt_case_no = $caseInfo->contempt_case_no ?? null;
-            $case->contempt_case_order = $caseInfo->contempt_case_order ?? null;
-            $case->appeal_requesting_date = $appeal_requesting_date ?? null;
-            $case->contempt_case_isuue_date = $contempt_case_isuue_date ?? null;
-            $case->contempt_case_answer_sending_date = $contempt_case_answer_sending_date ?? null;
-            $case->leave_to_appeal_no = $caseInfo->leave_to_appeal_no ?? null;
-            $case->leave_to_appeal_date = $leave_to_appeal_date ?? null;
-            $case->leave_to_appeal_order_date = $leave_to_appeal_order_date ?? null;
-            $case->leave_to_appeal_order_details = $caseInfo->leave_to_appeal_order_details ?? null;
-            $case->review_case_no = $caseInfo->review_case_no ?? null;
-            $case->review_case_date = $review_case_date ?? null;
-            $case->review_case_order_date = $review_case_order_date ?? null;
-            $case->review_case_order_details = $caseInfo->review_case_ord ?? null;
-            $case->civil_appeal_order_date = $civil_appeal_order_date ?? null;
-            $case->civil_appeal_order_details = $caseInfo->civil_appeal_order_details ?? null;
+            $case->case_status_id                             = 33;
+            $case->appeal_requesting_memorial                 = $caseInfo->appeal_requesting_memorial ?? null;
+            $case->reason_of_not_appealing                    = $caseInfo->reason_of_not_appealing ?? null;
+            $case->contempt_case_no                           = $caseInfo->contempt_case_no ?? null;
+            $case->contempt_case_order                        = $caseInfo->contempt_case_order ?? null;
+            $case->appeal_requesting_date                     = $appeal_requesting_date ?? null;
+            $case->contempt_case_isuue_date                   = $contempt_case_isuue_date ?? null;
+            $case->contempt_case_answer_sending_date          = $contempt_case_answer_sending_date ?? null;
+            $case->leave_to_appeal_no                         = $caseInfo->leave_to_appeal_no ?? null;
+            $case->leave_to_appeal_date                       = $leave_to_appeal_date ?? null;
+            $case->leave_to_appeal_order_date                 = $leave_to_appeal_order_date ?? null;
+            $case->leave_to_appeal_order_details              = $caseInfo->leave_to_appeal_order_details ?? null;
+            $case->review_case_no                             = $caseInfo->review_case_no ?? null;
+            $case->review_case_date                           = $review_case_date ?? null;
+            $case->review_case_order_date                     = $review_case_order_date ?? null;
+            $case->review_case_order_details                  = $caseInfo->review_case_ord ?? null;
+            $case->civil_appeal_order_date                    = $civil_appeal_order_date ?? null;
+            $case->civil_appeal_order_details                 = $caseInfo->civil_appeal_order_details ?? null;
             $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date ?? null;
 
-            $case->result_date = $result_date ?? null;
-            $case->result_copy_asking_date = $result_copy_asking_date ?? null;
-            $case->result_copy_reciving_date = $result_copy_reciving_date ?? null;
-            $case->others_action_detials = $caseInfo->others_action_detials ?? null;
-            $case->contents_of_proposal_civil_revision = $caseInfo->contents_of_proposal_civil_revision ?? null;
-            $case->sending_motions_in_view_of_that_litigation_civil_revision = $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision ?? null;
-            $case->proposal_date_civil_revision = $proposal_date_civil_revision ?? null;
-            $case->proposal_memorial_civil_revision = $caseInfo->proposal_memorial_civil_revision ?? null;
-            $case->contact_email_civil_revision = $caseInfo->contact_email_civil_revision ?? null;
-            $case->focal_person_name_civil_revision = $caseInfo->focal_person_name_civil_revision ?? null;
-            $case->focal_person_designation_civil_revision = $caseInfo->focal_person_designation_civil_revision ?? null;
-            $case->focal_person_mobile_civil_revision = $caseInfo->focal_person_mobile_civil_revision ?? null;
-            $case->contents_of_proposal_civil_suit = $caseInfo->contents_of_proposal_civil_suit ?? null;
-            $case->case_type_civil_suit = $caseInfo->case_type_civil_suit ?? null;
-            $case->case_number_civil_suit = $caseInfo->case_number_civil_suit ?? null;
-            $case->proposal_date_civil_suit = $proposal_date_civil_suit ?? null;
-            $case->proposal_memorial_civil_suit = $caseInfo->proposal_memorial_civil_suit ?? null;
-            $case->contact_email_civil_suit = $caseInfo->contact_email_civil_suit ?? null;
-            $case->focal_person_name_civil_suit = $caseInfo->focal_person_name_civil_suit ?? null;
-            $case->focal_person_designation_civil_suit = $caseInfo->focal_person_designation_civil_suit ?? null;
-            $case->focal_person_mobile_civil_suit = $caseInfo->focal_person_mobile_civil_suit ?? null;
-            $case->contents_of_proposal_writ = $caseInfo->contents_of_proposal_writ ?? null;
-            $case->case_number_writ = $caseInfo->case_number_writ ?? null;
-            $case->proposal_date_writ = $proposal_date_writ ?? null;
-            $case->proposal_memorial_writ = $caseInfo->proposal_memorial_writ ?? null;
-            $case->contact_email_writ = $caseInfo->contact_email_writ ?? null;
-            $case->focal_person_name_writ = $caseInfo->focal_person_name_writ ?? null;
-            $case->focal_person_designation_writ = $caseInfo->focal_person_designation_writ ?? null;
-            $case->focal_person_mobile_writ = $caseInfo->focal_person_mobile_writ ?? null;
-            $case->contents_of_proposal_leave_to_appeal = $caseInfo->contents_of_proposal_leave_to_appeal ?? null;
+            $case->result_date                                                = $result_date ?? null;
+            $case->result_copy_asking_date                                    = $result_copy_asking_date ?? null;
+            $case->result_copy_reciving_date                                  = $result_copy_reciving_date ?? null;
+            $case->others_action_detials                                      = $caseInfo->others_action_detials ?? null;
+            $case->contents_of_proposal_civil_revision                        = $caseInfo->contents_of_proposal_civil_revision ?? null;
+            $case->sending_motions_in_view_of_that_litigation_civil_revision  = $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision ?? null;
+            $case->proposal_date_civil_revision                               = $proposal_date_civil_revision ?? null;
+            $case->proposal_memorial_civil_revision                           = $caseInfo->proposal_memorial_civil_revision ?? null;
+            $case->contact_email_civil_revision                               = $caseInfo->contact_email_civil_revision ?? null;
+            $case->focal_person_name_civil_revision                           = $caseInfo->focal_person_name_civil_revision ?? null;
+            $case->focal_person_designation_civil_revision                    = $caseInfo->focal_person_designation_civil_revision ?? null;
+            $case->focal_person_mobile_civil_revision                         = $caseInfo->focal_person_mobile_civil_revision ?? null;
+            $case->contents_of_proposal_civil_suit                            = $caseInfo->contents_of_proposal_civil_suit ?? null;
+            $case->case_type_civil_suit                                       = $caseInfo->case_type_civil_suit ?? null;
+            $case->case_number_civil_suit                                     = $caseInfo->case_number_civil_suit ?? null;
+            $case->proposal_date_civil_suit                                   = $proposal_date_civil_suit ?? null;
+            $case->proposal_memorial_civil_suit                               = $caseInfo->proposal_memorial_civil_suit ?? null;
+            $case->contact_email_civil_suit                                   = $caseInfo->contact_email_civil_suit ?? null;
+            $case->focal_person_name_civil_suit                               = $caseInfo->focal_person_name_civil_suit ?? null;
+            $case->focal_person_designation_civil_suit                        = $caseInfo->focal_person_designation_civil_suit ?? null;
+            $case->focal_person_mobile_civil_suit                             = $caseInfo->focal_person_mobile_civil_suit ?? null;
+            $case->contents_of_proposal_writ                                  = $caseInfo->contents_of_proposal_writ ?? null;
+            $case->case_number_writ                                           = $caseInfo->case_number_writ ?? null;
+            $case->proposal_date_writ                                         = $proposal_date_writ ?? null;
+            $case->proposal_memorial_writ                                     = $caseInfo->proposal_memorial_writ ?? null;
+            $case->contact_email_writ                                         = $caseInfo->contact_email_writ ?? null;
+            $case->focal_person_name_writ                                     = $caseInfo->focal_person_name_writ ?? null;
+            $case->focal_person_designation_writ                              = $caseInfo->focal_person_designation_writ ?? null;
+            $case->focal_person_mobile_writ                                   = $caseInfo->focal_person_mobile_writ ?? null;
+            $case->contents_of_proposal_leave_to_appeal                       = $caseInfo->contents_of_proposal_leave_to_appeal ?? null;
             $case->sending_motions_in_view_of_that_litigation_leave_to_appeal = $caseInfo->sending_motions_in_view_of_that_litigation_leave_to_appeal ?? null;
-            $case->proposal_date_leave_to_appeal = $proposal_date_leave_to_appeal ?? null;
-            $case->proposal_memorial_leave_to_appeal = $caseInfo->proposal_memorial_leave_to_appeal ?? null;
-            $case->contact_email_leave_to_appeal = $caseInfo->contact_email_leave_to_appeal ?? null;
-            $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal ?? null;
-            $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal ?? null;
-            $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal ?? null;
-            $case->total_badi_number = $caseInfo->total_badi_number ?? null;
+            $case->proposal_date_leave_to_appeal                              = $proposal_date_leave_to_appeal ?? null;
+            $case->proposal_memorial_leave_to_appeal                          = $caseInfo->proposal_memorial_leave_to_appeal ?? null;
+            $case->contact_email_leave_to_appeal                              = $caseInfo->contact_email_leave_to_appeal ?? null;
+            $case->focal_person_name_leave_to_appeal                          = $caseInfo->focal_person_name_leave_to_appeal ?? null;
+            $case->focal_person_designation_leave_to_appeal                   = $caseInfo->focal_person_designation_leave_to_appeal ?? null;
+            $case->focal_person_mobile_leave_to_appeal                        = $caseInfo->focal_person_mobile_leave_to_appeal ?? null;
+            $case->total_badi_number                                          = $caseInfo->total_badi_number ?? null;
 
-            $case->money_amount = $caseInfo->money_amount ?? null;
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have ?? null;
-            $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details ?? null;
-            $case->sending_reply_have = $caseInfo->sending_reply_have ?? null;
-            $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor ?? null;
+            $case->money_amount                     = $caseInfo->money_amount ?? null;
+            $case->postponed_interim_have           = $caseInfo->postponed_interim_have ?? null;
+            $case->postponed_interim_data_details   = $caseInfo->postponed_interim_data_details ?? null;
+            $case->sending_reply_have               = $caseInfo->sending_reply_have ?? null;
+            $case->sending_reply_person_solicitor   = $caseInfo->sending_reply_person_solicitor ?? null;
             $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer ?? null;
-            $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number ?? null;
-            $case->adalat_reply_sending_date = $adalat_reply_sending_date ?? null;
-            $case->adalat_reply_submit_have = $caseInfo->adalat_reply_submit_have ?? null;
+            $case->soltrack_tracking_number         = $caseInfo->soltrack_tracking_number ?? null;
+            $case->adalat_reply_sending_date        = $adalat_reply_sending_date ?? null;
+            $case->adalat_reply_submit_have         = $caseInfo->adalat_reply_submit_have ?? null;
 
-            $case->adesh_tamil_decision_taken = $caseInfo->adesh_tamil_decision_taken ?? null;
-            $case->adesh_tamil_decision_data_details = $caseInfo->adesh_tamil_decision_data_details ?? null;
-            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken ?? null;
-            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken ?? null;
-            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor ?? 0;
+            $case->adesh_tamil_decision_taken                                    = $caseInfo->adesh_tamil_decision_taken ?? null;
+            $case->adesh_tamil_decision_data_details                             = $caseInfo->adesh_tamil_decision_data_details ?? null;
+            $case->appeal_against_adesh_decision_taken                           = $caseInfo->appeal_against_adesh_decision_taken ?? null;
+            $case->adesh_tamil_decision_yes_taken                                = $caseInfo->adesh_tamil_decision_yes_taken ?? null;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor   = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor ?? 0;
             $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer ?? 0;
-            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date ?? null;
+            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date ?? null;
 
-            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial ?? null;
-            $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date ?? null;
+            $case->appeal_submission_requesting_memorial                     = $caseInfo->appeal_submission_requesting_memorial ?? null;
+            $case->appeal_against_postpond_interim_order_date                = $appeal_against_postpond_interim_order_date ?? null;
             $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order ?? null;
 
-            $case->appeal_against_postpond_interim_order = $caseInfo->appeal_against_postpond_interim_order ?? null;
-            $case->postponed_details = $caseInfo->postponed_details ?? null;
+            $case->appeal_against_postpond_interim_order         = $caseInfo->appeal_against_postpond_interim_order ?? null;
+            $case->postponed_details                             = $caseInfo->postponed_details ?? null;
             $case->appeal_against_postpond_interim_order_details = $caseInfo->appeal_against_postpond_interim_order_details ?? null;
-            $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial ?? null;
-            $case->tamil_requesting_date = $tamil_requesting_date ?? null;
+            $case->tamil_requesting_memorial                     = $caseInfo->tamil_requesting_memorial ?? null;
+            $case->tamil_requesting_date                         = $tamil_requesting_date ?? null;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -415,32 +414,32 @@ class GovCaseRegisterRepository
 
     public static function storeAppealGovCase($caseInfo, $id)
     {
-        $case = self::checkGovCaseExist($caseInfo['caseId']);
+        $case    = self::checkGovCaseExist($caseInfo['caseId']);
         $oldcase = self::checkGovCaseExist($id);
 
         try {
-            $case->case_no = $caseInfo->case_no;
-            $case->court_id = $caseInfo->court;
-            $case->action_user_id = userInfo()->id;
-            $case->action_user_role_id = userInfo()->role_id;
-            $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
-            $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->case_department;
-            $case->case_category_id = $caseInfo->case_category;
+            $case->case_no                    = $caseInfo->case_no;
+            $case->court_id                   = $caseInfo->court;
+            $case->action_user_id             = userInfo()->id;
+            $case->action_user_role_id        = userInfo()->role_id;
+            $case->create_by                  = userInfo()->id;
+            $case->year                       = $caseInfo->case_year;
+            $case->date_issuing_rule_nishi    = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
+            $case->case_division_id           = $caseInfo->case_department;
+            $case->case_category_id           = $caseInfo->case_category;
             $case->concern_person_designation = $caseInfo->concern_person_designation;
-            $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->subject_matter = $caseInfo->subject_matter;
-            $case->postponed_details = $caseInfo->postponed_details;
-            $case->interim_order = $caseInfo->interim_order;
-            $case->important_cause = $caseInfo->important_cause;
-            $case->arji_file = null;
-            $case->status = 1;
-            $case->gov_case_ref_id = $id;
-            $case->ref_gov_case_no = $oldcase->case_no;
-            $case->case_status_id = 43;
+            $case->concern_user_id            = $caseInfo->concern_user_id;
+            $case->subject_matter             = $caseInfo->subject_matter;
+            $case->postponed_details          = $caseInfo->postponed_details;
+            $case->interim_order              = $caseInfo->interim_order;
+            $case->important_cause            = $caseInfo->important_cause;
+            $case->arji_file                  = null;
+            $case->status                     = 1;
+            $case->gov_case_ref_id            = $id;
+            $case->ref_gov_case_no            = $oldcase->case_no;
+            $case->case_status_id             = 43;
             if ($case->save()) {
-                $caseId = $case->id;
+                $caseId             = $case->id;
                 $oldcase->is_appeal = 1;
                 $oldcase->save();
             }
@@ -485,25 +484,25 @@ class GovCaseRegisterRepository
     {
         if ($request->main_min_id) {
             $case_data = [
-                'case_status_id' => $request->status_id,
-                'action_user_role_id' => $request->group,
+                'case_status_id'       => $request->status_id,
+                'action_user_role_id'  => $request->group,
                 'selected_main_min_id' => $request->main_min_id,
             ];
         } elseif ($request->main_dept_id) {
             $case_data = [
-                'case_status_id' => $request->status_id,
-                'action_user_role_id' => $request->group,
+                'case_status_id'        => $request->status_id,
+                'action_user_role_id'   => $request->group,
                 'selected_main_dept_id' => $request->main_dept_id,
             ];
         } elseif ($request->group == 36) {
             $case_data = [
-                'case_status_id' => $request->status_id,
-                'action_user_role_id' => $request->group,
+                'case_status_id'         => $request->status_id,
+                'action_user_role_id'    => $request->group,
                 'ag_office_sending_date' => date("Y-m-d"),
             ];
         } else {
             $case_data = [
-                'case_status_id' => $request->status_id,
+                'case_status_id'      => $request->status_id,
                 'action_user_role_id' => $request->group,
             ];
         }
@@ -513,7 +512,7 @@ class GovCaseRegisterRepository
     {
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
-        $query = GovCaseRegister::select('case_status_id', DB::raw('COUNT(id) as total_case'))->where('status', '!=', 3)->where('action_user_role_id', $roleID);
+        $query  = GovCaseRegister::select('case_status_id', DB::raw('COUNT(id) as total_case'))->where('status', '!=', 3)->where('action_user_role_id', $roleID);
         if ($roleID == 29 || $roleID == 31) {
             $query->where('selected_main_min_id', $office);
         } elseif ($roleID == 32 || $roleID == 33) {
@@ -528,7 +527,7 @@ class GovCaseRegisterRepository
     {
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
-        $query = GovCaseRegister::where('in_favour_govt', 0)->whereNull('result_copy_asking_date');
+        $query  = GovCaseRegister::where('in_favour_govt', 0)->whereNull('result_copy_asking_date');
         if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('bibadis', function ($q) use ($office) {
                 $q->where('respondent_id', $office);
@@ -540,8 +539,8 @@ class GovCaseRegisterRepository
     }
     public static function sendToSolicotorCases()
     {
-        $roleID = userInfo()->role_id;
-        $officeID = userInfo()->office_id;
+        $roleID         = userInfo()->role_id;
+        $officeID       = userInfo()->office_id;
         $childOfficeIds = [];
 
         $childOfficeQuery = DB::table('gov_case_office')
@@ -558,7 +557,7 @@ class GovCaseRegisterRepository
             $finalOfficeIds[] = $officeID;
         } else {
             $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            $finalOfficeIds   = array_merge($finalOfficeIds, $childOfficeIds);
         }
 
         $query = GovCaseRegister::where('deleted_at', null)->whereNull('result_sending_date');
@@ -574,7 +573,7 @@ class GovCaseRegisterRepository
     {
         $roleID = userInfo()->role_id;
         $office = userInfo()->office_id;
-        $query = GovCaseRegister::where('deleted_at', null)->whereNull('result_sending_date_solisitor_to_ag');
+        $query  = GovCaseRegister::where('deleted_at', null)->whereNull('result_sending_date_solisitor_to_ag');
         if ($roleID != 27 && $roleID != 28) {
             $query->orWhereHas('bibadis', function ($q) use ($office) {
                 $q->where('respondent_id', $office);
@@ -586,7 +585,7 @@ class GovCaseRegisterRepository
     }
     public static function stepNotTakenAgainstPostpondOrderCases()
     {
-        $roleID = userInfo()->role_id;
+        $roleID   = userInfo()->role_id;
         $officeID = userInfo()->office_id;
         // return $officeID;
         $childOfficeIds = [];
@@ -605,7 +604,7 @@ class GovCaseRegisterRepository
             $finalOfficeIds[] = $officeID;
         } else {
             $finalOfficeIds[] = $officeID;
-            $finalOfficeIds = array_merge($finalOfficeIds, $childOfficeIds);
+            $finalOfficeIds   = array_merge($finalOfficeIds, $childOfficeIds);
         }
 
         $query = GovCaseRegister::whereNull('appeal_against_postpond_interim_order');
@@ -620,7 +619,7 @@ class GovCaseRegisterRepository
     }
     public static function caseStatusByRoleIds($roleID = [])
     {
-        $office = userInfo()->office_id;
+        $office      = userInfo()->office_id;
         $case_status = GovCaseRegister::select('case_status_id', DB::raw('COUNT(id) as total_case'))
             ->whereIn('action_user_role_id', $roleID)
             ->groupBy('case_status_id')
@@ -634,25 +633,25 @@ class GovCaseRegisterRepository
         try {
             $case = self::checkGovCaseExist($caseInfo['case_id']);
 
-            $case->case_no = $caseInfo->case_no;
-            $case->case_type = $caseInfo->case_type;
+            $case->case_no                 = $caseInfo->case_no;
+            $case->case_type               = $caseInfo->case_type;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->action_user_id = userInfo()->id;
-            $case->action_user_role_id = userInfo()->role_id;
-            $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
+            $case->action_user_id          = userInfo()->id;
+            $case->action_user_role_id     = userInfo()->role_id;
+            $case->create_by               = userInfo()->id;
+            $case->year                    = $caseInfo->case_year;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->court;
-            $case->case_category_id = $caseInfo->case_category;
-            $case->case_type_id = $caseInfo->case_category_type;
+            $case->case_division_id        = $caseInfo->court;
+            $case->case_category_id        = $caseInfo->case_category;
+            $case->case_type_id            = $caseInfo->case_category_type;
             // $case->concern_person_designation = $caseInfo->concern_person_designation;
             // $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->subject_matter = $caseInfo->subject_matter;
+            $case->subject_matter    = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
 
             $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
 
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+            $case->postponed_interim_have         = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
 
             if ($case->save()) {
@@ -670,14 +669,14 @@ class GovCaseRegisterRepository
         try {
             $case = self::checkAdministrativeTribrunalCaseExist($caseInfo['case_id']);
 
-            $case->case_no = $caseInfo->case_no;
+            $case->case_no            = $caseInfo->case_no;
             $case->case_category_type = 1;
-            $case->notice_given_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
-            $case->create_by = userInfo()->id;
-            $case->case_year = $caseInfo->case_year;
-            $case->court = $caseInfo->court;
-            $case->subject_matter = $caseInfo->subject_matter;
-            $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
+            $case->notice_given_date  = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->notice_given_date)));
+            $case->create_by          = userInfo()->id;
+            $case->case_year          = $caseInfo->case_year;
+            $case->court              = $caseInfo->court;
+            $case->subject_matter     = $caseInfo->subject_matter;
+            $case->total_badi_number  = $caseInfo->total_badi_number ?? 0;
 
             $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
 
@@ -694,26 +693,26 @@ class GovCaseRegisterRepository
     public static function storeMainRespondentChangingGeneralInfo($caseInfo, $caseId)
     {
         try {
-            $case = GovCaseRegister::find($caseId);
-            $case->case_no = $caseInfo->case_no;
-            $case->case_type = $caseInfo->case_type;
+            $case                          = GovCaseRegister::find($caseId);
+            $case->case_no                 = $caseInfo->case_no;
+            $case->case_type               = $caseInfo->case_type;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
             // $case->action_user_id = userInfo()->id;
             // $case->action_user_role_id = userInfo()->role_id;
             // $case->create_by = userInfo()->id;
-            $case->year = $caseInfo->case_year;
+            $case->year                    = $caseInfo->case_year;
             $case->date_issuing_rule_nishi = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->case_date)));
-            $case->case_division_id = $caseInfo->court;
-            $case->case_category_id = $caseInfo->case_category;
-            $case->case_type_id = $caseInfo->case_category_type;
+            $case->case_division_id        = $caseInfo->court;
+            $case->case_category_id        = $caseInfo->case_category;
+            $case->case_type_id            = $caseInfo->case_category_type;
             // $case->concern_person_designation = $caseInfo->concern_person_designation;
             // $case->concern_user_id = $caseInfo->concern_user_id;
-            $case->subject_matter = $caseInfo->subject_matter;
+            $case->subject_matter    = $caseInfo->subject_matter;
             $case->total_badi_number = $caseInfo->total_badi_number ?? 0;
 
             $case->money_amount = str_replace(',', '', $caseInfo->money_amount);
 
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
+            $case->postponed_interim_have         = $caseInfo->postponed_interim_have;
             $case->postponed_interim_data_details = $caseInfo->postponed_interim_data_details;
 
             if ($case->save()) {
@@ -754,10 +753,10 @@ class GovCaseRegisterRepository
                     if ($val === 'no_officer') {
                         continue;
                     }
-                    $concernPrerson = self::checkConcernPersonExist($caseInfo['concern_person_id'][$key]);
-                    $concernPrerson->gov_case_id = $govCaseId;
+                    $concernPrerson                             = self::checkConcernPersonExist($caseInfo['concern_person_id'][$key]);
+                    $concernPrerson->gov_case_id                = $govCaseId;
                     $concernPrerson->concern_person_designation = $val;
-                    $concernPrerson->concern_user_id = $caseInfo['concern_user_id'][$key] ?? null;
+                    $concernPrerson->concern_user_id            = $caseInfo['concern_user_id'][$key] ?? null;
 
                     $concernPrerson->save();
                 }
@@ -770,10 +769,10 @@ class GovCaseRegisterRepository
         if ($caseInfo->concernPersonDesignation) {
             foreach ($caseInfo->concernPersonDesignation as $key => $val) {
                 if ($caseInfo->concernPersonDesignation[$key] != null) {
-                    $concernPrerson = self::checkConcernPersonAdministritiveTribrunalExist($caseInfo->concern_person_id[$key]);
-                    $concernPrerson->gov_case_id = $govCaseId;
+                    $concernPrerson                             = self::checkConcernPersonAdministritiveTribrunalExist($caseInfo->concern_person_id[$key]);
+                    $concernPrerson->gov_case_id                = $govCaseId;
                     $concernPrerson->concern_person_designation = $caseInfo->concernPersonDesignation[$key];
-                    $concernPrerson->concern_user_id = $caseInfo->concern_user_id[$key];
+                    $concernPrerson->concern_user_id            = $caseInfo->concern_user_id[$key];
                     $concernPrerson->save();
                 }
             }
@@ -806,17 +805,17 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->result_sending_date = $result_sending_date;
-            $case->result_sending_date_solisitor_to_ag = $result_sending_date_solisitor_to_ag;
-            $case->reply_submission_date = $reply_submission_date;
-            $case->result_sending_memorial = $caseInfo->result_sending_memorial;
+            $case->result_sending_date                     = $result_sending_date;
+            $case->result_sending_date_solisitor_to_ag     = $result_sending_date_solisitor_to_ag;
+            $case->reply_submission_date                   = $reply_submission_date;
+            $case->result_sending_memorial                 = $caseInfo->result_sending_memorial;
             $case->result_sending_memorial_solisitor_to_ag = $caseInfo->result_sending_memorial_solisitor_to_ag;
-            $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial;
-            $case->tamil_requesting_date = $tamil_requesting_date;
-            $case->sending_reply_have = $caseInfo->sending_reply_have;
-            $case->sending_reply_person_solicitor = $caseInfo->sending_reply_person_solicitor;
-            $case->sending_reply_person_law_officer = $caseInfo->sending_reply_person_law_officer;
-            $case->soltrack_tracking_number = $caseInfo->soltrack_tracking_number;
+            $case->tamil_requesting_memorial               = $caseInfo->tamil_requesting_memorial;
+            $case->tamil_requesting_date                   = $tamil_requesting_date;
+            $case->sending_reply_have                      = $caseInfo->sending_reply_have;
+            $case->sending_reply_person_solicitor          = $caseInfo->sending_reply_person_solicitor;
+            $case->sending_reply_person_law_officer        = $caseInfo->sending_reply_person_law_officer;
+            $case->soltrack_tracking_number                = $caseInfo->soltrack_tracking_number;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -842,7 +841,7 @@ class GovCaseRegisterRepository
 
         try {
             $case->adalat_reply_sending_date = $adalat_reply_sending_date;
-            $case->adalat_reply_submit_have = $caseInfo->adalat_reply_submit_have;
+            $case->adalat_reply_submit_have  = $caseInfo->adalat_reply_submit_have;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -880,25 +879,25 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->postponed_interim_have = $caseInfo->postponed_interim_have;
-            $case->adesh_tamil_decision_taken = $caseInfo->adesh_tamil_decision_taken;
-            $case->adesh_tamil_decision_data_details = $caseInfo->adesh_tamil_decision_data_details;
-            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;
-            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken;
-            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
+            $case->postponed_interim_have                                        = $caseInfo->postponed_interim_have;
+            $case->adesh_tamil_decision_taken                                    = $caseInfo->adesh_tamil_decision_taken;
+            $case->adesh_tamil_decision_data_details                             = $caseInfo->adesh_tamil_decision_data_details;
+            $case->appeal_against_adesh_decision_taken                           = $caseInfo->appeal_against_adesh_decision_taken;
+            $case->adesh_tamil_decision_yes_taken                                = $caseInfo->adesh_tamil_decision_yes_taken;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor   = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
             $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
-            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date;
-            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
-            $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
-            $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
-            $case->postponed_order = $caseInfo->postponed_order;
-            $case->appeal_against_postpond_interim_order = $caseInfo->appeal_against_postpond_interim_order;
-            $case->postponed_details = $caseInfo->postponed_details;
-            $case->appeal_against_postpond_interim_order_details = $caseInfo->appeal_against_postpond_interim_order_details;
-            $case->tamil_requesting_memorial = $caseInfo->tamil_requesting_memorial;
-            $case->tamil_requesting_date = $tamil_requesting_date;
-            $case->interim_order = $caseInfo->interim_order;
-            $case->interim_order_details = $caseInfo->interim_order_details;
+            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_memorial                         = $caseInfo->appeal_submission_requesting_memorial;
+            $case->appeal_against_postpond_interim_order_date                    = $appeal_against_postpond_interim_order_date;
+            $case->soltrack_tracking_number_for_appeal_against_intreim_order     = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
+            $case->postponed_order                                               = $caseInfo->postponed_order;
+            $case->appeal_against_postpond_interim_order                         = $caseInfo->appeal_against_postpond_interim_order;
+            $case->postponed_details                                             = $caseInfo->postponed_details;
+            $case->appeal_against_postpond_interim_order_details                 = $caseInfo->appeal_against_postpond_interim_order_details;
+            $case->tamil_requesting_memorial                                     = $caseInfo->tamil_requesting_memorial;
+            $case->tamil_requesting_date                                         = $tamil_requesting_date;
+            $case->interim_order                                                 = $caseInfo->interim_order;
+            $case->interim_order_details                                         = $caseInfo->interim_order_details;
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -913,7 +912,7 @@ class GovCaseRegisterRepository
     {
         // $case = self::creatingObjectModel($caseInfo['case_id']);
         $goveCaseId = ($caseInfo['case_id']);
-        $case = new GovCaseOrderTaken();
+        $case       = new GovCaseOrderTaken();
 
         if ($caseInfo->appeal_submission_requesting_date != null && $caseInfo->appeal_submission_requesting_date != '') {
             $appeal_submission_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_submission_requesting_date)));
@@ -927,14 +926,14 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->order_tamil_decision_taken = $caseInfo->order_tamil_decision_taken;
-            $case->order_tamil_decision_data_details = $caseInfo->order_tamil_decision_data_details;
-            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;
-            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken;
-            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
+            $case->order_tamil_decision_taken                                    = $caseInfo->order_tamil_decision_taken;
+            $case->order_tamil_decision_data_details                             = $caseInfo->order_tamil_decision_data_details;
+            $case->appeal_against_adesh_decision_taken                           = $caseInfo->appeal_against_adesh_decision_taken;
+            $case->adesh_tamil_decision_yes_taken                                = $caseInfo->adesh_tamil_decision_yes_taken;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor   = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
             $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
-            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date;
-            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
+            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_memorial                         = $caseInfo->appeal_submission_requesting_memorial;
             // $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
             $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
 
@@ -953,7 +952,7 @@ class GovCaseRegisterRepository
     {
         // $case = self::creatingObjectModel($caseInfo['case_id']);
         $goveCaseId = $govCaseId;
-        $case = new GovCaseOrderTaken();
+        $case       = new GovCaseOrderTaken();
 
         if ($caseInfo->appeal_submission_requesting_date != null && $caseInfo->appeal_submission_requesting_date != '') {
             $appeal_submission_requesting_date = date('Y-m-d', strtotime(str_replace('/', '-', $caseInfo->appeal_submission_requesting_date)));
@@ -967,14 +966,14 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->order_tamil_decision_taken = $caseInfo->order_tamil_decision_taken;
-            $case->order_tamil_decision_data_details = $caseInfo->order_tamil_decision_data_details;
-            $case->appeal_against_adesh_decision_taken = $caseInfo->appeal_against_adesh_decision_taken;
-            $case->adesh_tamil_decision_yes_taken = $caseInfo->adesh_tamil_decision_yes_taken;
-            $case->sending_request_for_appeal_against_intreim_person_solicitor = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
+            $case->order_tamil_decision_taken                                    = $caseInfo->order_tamil_decision_taken;
+            $case->order_tamil_decision_data_details                             = $caseInfo->order_tamil_decision_data_details;
+            $case->appeal_against_adesh_decision_taken                           = $caseInfo->appeal_against_adesh_decision_taken;
+            $case->adesh_tamil_decision_yes_taken                                = $caseInfo->adesh_tamil_decision_yes_taken;
+            $case->sending_request_for_appeal_against_intreim_person_solicitor   = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
             $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
-            $case->appeal_submission_requesting_date = $appeal_submission_requesting_date;
-            $case->appeal_submission_requesting_memorial = $caseInfo->appeal_submission_requesting_memorial;
+            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_memorial                         = $caseInfo->appeal_submission_requesting_memorial;
             // $case->appeal_against_postpond_interim_order_date = $appeal_against_postpond_interim_order_date;
             $case->soltrack_tracking_number_for_appeal_against_intreim_order = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
 
@@ -1031,33 +1030,33 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->is_final_order = $caseInfo->is_final_order;
-            $case->result = $caseInfo->result;
-            $case->in_favour_govt = $in_favour_govt;
-            $case->result_short_dtails = $caseInfo->result_short_dtails;
-            $case->is_appeal = $caseInfo->is_appeal;
-            $case->result_date = $result_date;
-            $case->result_copy_asking_date = $result_copy_asking_date;
-            $case->result_copy_reciving_date = $result_copy_reciving_date;
-            $case->appeal_requesting_memorial = $caseInfo->appeal_requesting_memorial;
-            $case->appeal_requesting_date = $appeal_requesting_date;
-            $case->reason_of_not_appealing = $caseInfo->reason_of_not_appealing;
-            $case->contents_of_proposal_civil_revision = $caseInfo->contents_of_proposal_civil_revision;
+            $case->is_final_order                                            = $caseInfo->is_final_order;
+            $case->result                                                    = $caseInfo->result;
+            $case->in_favour_govt                                            = $in_favour_govt;
+            $case->result_short_dtails                                       = $caseInfo->result_short_dtails;
+            $case->is_appeal                                                 = $caseInfo->is_appeal;
+            $case->result_date                                               = $result_date;
+            $case->result_copy_asking_date                                   = $result_copy_asking_date;
+            $case->result_copy_reciving_date                                 = $result_copy_reciving_date;
+            $case->appeal_requesting_memorial                                = $caseInfo->appeal_requesting_memorial;
+            $case->appeal_requesting_date                                    = $appeal_requesting_date;
+            $case->reason_of_not_appealing                                   = $caseInfo->reason_of_not_appealing;
+            $case->contents_of_proposal_civil_revision                       = $caseInfo->contents_of_proposal_civil_revision;
             $case->sending_motions_in_view_of_that_litigation_civil_revision = $caseInfo->sending_motions_in_view_of_that_litigation_civil_revision;
-            $case->proposal_date_civil_revision = $proposal_date_civil_revision;
-            $case->proposal_memorial_civil_revision = $caseInfo->proposal_memorial_civil_revision;
-            $case->contact_email_civil_revision = $caseInfo->contact_email_civil_revision;
-            $case->focal_person_name_civil_revision = $caseInfo->focal_person_name_civil_revision;
-            $case->focal_person_designation_civil_revision = $caseInfo->focal_person_designation_civil_revision;
-            $case->focal_person_mobile_civil_revision = $caseInfo->focal_person_mobile_civil_revision;
-            $case->contents_of_proposal_writ = $caseInfo->contents_of_proposal_writ;
-            $case->case_number_writ = $caseInfo->case_number_writ;
-            $case->proposal_date_writ = $proposal_date_writ;
-            $case->proposal_memorial_writ = $caseInfo->proposal_memorial_writ;
-            $case->contact_email_writ = $caseInfo->contact_email_writ;
-            $case->focal_person_name_writ = $caseInfo->focal_person_name_writ;
-            $case->focal_person_designation_writ = $caseInfo->focal_person_designation_writ;
-            $case->focal_person_mobile_writ = $caseInfo->focal_person_mobile_writ;
+            $case->proposal_date_civil_revision                              = $proposal_date_civil_revision;
+            $case->proposal_memorial_civil_revision                          = $caseInfo->proposal_memorial_civil_revision;
+            $case->contact_email_civil_revision                              = $caseInfo->contact_email_civil_revision;
+            $case->focal_person_name_civil_revision                          = $caseInfo->focal_person_name_civil_revision;
+            $case->focal_person_designation_civil_revision                   = $caseInfo->focal_person_designation_civil_revision;
+            $case->focal_person_mobile_civil_revision                        = $caseInfo->focal_person_mobile_civil_revision;
+            $case->contents_of_proposal_writ                                 = $caseInfo->contents_of_proposal_writ;
+            $case->case_number_writ                                          = $caseInfo->case_number_writ;
+            $case->proposal_date_writ                                        = $proposal_date_writ;
+            $case->proposal_memorial_writ                                    = $caseInfo->proposal_memorial_writ;
+            $case->contact_email_writ                                        = $caseInfo->contact_email_writ;
+            $case->focal_person_name_writ                                    = $caseInfo->focal_person_name_writ;
+            $case->focal_person_designation_writ                             = $caseInfo->focal_person_designation_writ;
+            $case->focal_person_mobile_writ                                  = $caseInfo->focal_person_mobile_writ;
             if ($case->save()) {
                 $caseId = $case->id;
             }
@@ -1084,9 +1083,9 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->contempt_case_no = $caseInfo->contempt_case_no;
-            $case->others_action_detials = $caseInfo->others_action_detials;
-            $case->contempt_case_isuue_date = $contempt_case_isuue_date;
+            $case->contempt_case_no                  = $caseInfo->contempt_case_no;
+            $case->others_action_detials             = $caseInfo->others_action_detials;
+            $case->contempt_case_isuue_date          = $contempt_case_isuue_date;
             $case->contempt_case_answer_sending_date = $contempt_case_answer_sending_date;
 
             if ($case->save()) {
@@ -1117,16 +1116,16 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->leave_to_appeal_no = $caseInfo->leave_to_appeal_no;
-            $case->leave_to_appeal_date = $leave_to_appeal_date;
-            $case->contents_of_proposal_leave_to_appeal = $caseInfo->contents_of_proposal_leave_to_appeal;
+            $case->leave_to_appeal_no                                         = $caseInfo->leave_to_appeal_no;
+            $case->leave_to_appeal_date                                       = $leave_to_appeal_date;
+            $case->contents_of_proposal_leave_to_appeal                       = $caseInfo->contents_of_proposal_leave_to_appeal;
             $case->sending_motions_in_view_of_that_litigation_leave_to_appeal = $caseInfo->sending_motions_in_view_of_that_litigation_leave_to_appeal;
-            $case->proposal_date_leave_to_appeal = $proposal_date_leave_to_appeal;
-            $case->proposal_memorial_leave_to_appeal = $caseInfo->proposal_memorial_leave_to_appeal;
-            $case->contact_email_leave_to_appeal = $caseInfo->contact_email_leave_to_appeal;
-            $case->focal_person_name_leave_to_appeal = $caseInfo->focal_person_name_leave_to_appeal;
-            $case->focal_person_designation_leave_to_appeal = $caseInfo->focal_person_designation_leave_to_appeal;
-            $case->focal_person_mobile_leave_to_appeal = $caseInfo->focal_person_mobile_leave_to_appeal;
+            $case->proposal_date_leave_to_appeal                              = $proposal_date_leave_to_appeal;
+            $case->proposal_memorial_leave_to_appeal                          = $caseInfo->proposal_memorial_leave_to_appeal;
+            $case->contact_email_leave_to_appeal                              = $caseInfo->contact_email_leave_to_appeal;
+            $case->focal_person_name_leave_to_appeal                          = $caseInfo->focal_person_name_leave_to_appeal;
+            $case->focal_person_designation_leave_to_appeal                   = $caseInfo->focal_person_designation_leave_to_appeal;
+            $case->focal_person_mobile_leave_to_appeal                        = $caseInfo->focal_person_mobile_leave_to_appeal;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -1150,9 +1149,9 @@ class GovCaseRegisterRepository
         }
 
         try {
-            $case->leave_to_appeal_order_date = $leave_to_appeal_order_date;
+            $case->leave_to_appeal_order_date       = $leave_to_appeal_order_date;
             $case->leave_to_appeal_is_favour_of_gov = $caseInfo->leave_to_appeal_is_favour_of_gov;
-            $case->leave_to_appeal_order_details = $caseInfo->leave_to_appeal_order_details;
+            $case->leave_to_appeal_order_details    = $caseInfo->leave_to_appeal_order_details;
 
             if ($case->save()) {
                 $caseId = $case->id;
@@ -1192,7 +1191,7 @@ class GovCaseRegisterRepository
             return null;
         }
 
-        $banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        $banglaDigits  = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
         $englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
         return str_replace($banglaDigits, $englishDigits, $number);
@@ -1204,37 +1203,37 @@ class GovCaseRegisterRepository
         try {
             $case = new GovCaseRegister;
 
-            if (!empty($caseInfo['case_no'])) {
+            if (! empty($caseInfo['case_no'])) {
                 $convertedCaseNo = self::convertBanglaToEnglish($caseInfo['case_no']);
-                $case->case_no = strtok($convertedCaseNo, '/');
+                $case->case_no   = strtok($convertedCaseNo, '/');
             } else {
                 $case->case_no = null;
             }
 
             $case->case_division_id = $caseInfo['court'] ?? null;
             $case->case_category_id = $caseInfo['case_category'] ?? null;
-            $case->case_type_id = $caseInfo['case_category_type'] ?? null;
-            $case->year = $caseInfo['case_year'] ?? null;
+            $case->case_type_id     = $caseInfo['case_category_type'] ?? null;
+            $case->year             = $caseInfo['case_year'] ?? null;
 
-            if (!empty($caseInfo['casedate'])) {
+            if (! empty($caseInfo['casedate'])) {
                 $case->date_issuing_rule_nishi = Date::excelToDateTimeObject($caseInfo['casedate'])->format('Y-m-d');
             } else {
                 $case->date_issuing_rule_nishi = null;
             }
 
-            $case->total_badi_number = $caseInfo['total_badi_number'] ?? 1;
-            $case->subject_matter = $caseInfo['subject_matter'] ?? null;
-            $case->postponed_order = $caseInfo['postponed_order'] ?? null;
-            $case->status = 1;
-            $case->postponed_interim_have = $caseInfo['postponed_interim_have'] ?? null;
+            $case->total_badi_number              = $caseInfo['total_badi_number'] ?? 1;
+            $case->subject_matter                 = $caseInfo['subject_matter'] ?? null;
+            $case->postponed_order                = $caseInfo['postponed_order'] ?? null;
+            $case->status                         = 1;
+            $case->postponed_interim_have         = $caseInfo['postponed_interim_have'] ?? null;
             $case->postponed_interim_data_details = $caseInfo['postponed_interim_data_details'] ?? null;
 
-if ($case->save()) {
-    return $case->id;
-} else {
-    Log::error('Validation failed: ' . json_encode($case->getErrors()));
-    return null;
-}
+            if ($case->save()) {
+                return $case->id;
+            } else {
+                Log::error('Validation failed: ' . json_encode($case->getErrors()));
+                return null;
+            }
 
         } catch (\Exception $e) {
             Log::error('Error inserting case data: ' . $e->getMessage());
@@ -1242,7 +1241,7 @@ if ($case->save()) {
         }
     }
 
-   public static function cleanAddress($address)
+    public static function cleanAddress($address)
     {
         $cleanedAddress = str_replace('_x000D_', ' ', $address);
         return trim(preg_replace('/\s+/', ' ', $cleanedAddress));
@@ -1260,25 +1259,24 @@ if ($case->save()) {
         // }
 
         if (isset($caseInfo['badi_name_0'])) {
-            $badi = new GovCaseBadi();
+            $badi              = new GovCaseBadi();
             $badi->gov_case_id = $govCaseId;
-            $badi->name = $caseInfo['badi_name_0'];
+            $badi->name        = $caseInfo['badi_name_0'];
             // $badi->address = $cleanedAddress;
             $badi->save();
         }
     }
 
-
     public static function storeDataMigrationMainBibadi($caseInfo, $govCaseId)
     {
         if (isset($caseInfo['main_respondent'])) {
-            $officeID = $caseInfo['main_respondent'];
-            $bibadi = new GovCaseBibadi();
-            $bibadi->gov_case_id = $govCaseId;
-            $bibadi->respondent_id = $officeID;
-            $bibadi->is_main_bibadi = 1;
+            $officeID                             = $caseInfo['main_respondent'];
+            $bibadi                               = new GovCaseBibadi();
+            $bibadi->gov_case_id                  = $govCaseId;
+            $bibadi->respondent_id                = $officeID;
+            $bibadi->is_main_bibadi               = 1;
             $bibadi->other_respondent_manual_name = null;
-            $bibadi->department_id = null;
+            $bibadi->department_id                = null;
             $bibadi->save();
         }
     }
