@@ -407,184 +407,191 @@
                                                     </div>
                                                 </div>
 
-                                            @if($case->case_category_origin == 0)
-                                                <div class="col-md-12" id="showHighCourtCaseManualDiv">
-                                                    <fieldset class="mb-8">
-                                                        <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
-                                                            নিম্নের
-                                                            কলামসমুহ পুরণ করুণঃ</legend>
-                                                        <div class="form-group row">
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>হাইকোর্ট/প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
-                                                                        class="text-danger">*</span></label>
-                                                                @if ($case->case_category_origin == 0)
-                                                                    <input type="text" name="case_number_origin_manual"
-                                                                        id="case_number_origin_manual"
+                                                @if ($case->case_category_origin == 0)
+                                                    <div class="col-md-12" id="showHighCourtCaseManualDiv">
+                                                        <fieldset class="mb-8">
+                                                            <legend>আপিল মামলাটি যে মামলা হতে উদ্ভুত তা এন্ট্রি না হয়ে থাকলে
+                                                                নিম্নের
+                                                                কলামসমুহ পুরণ করুণঃ</legend>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-4 mb-5">
+                                                                    <label>হাইকোর্ট/প্রশাসনিক ট্রাইবুনাল মামলা নং: <span
+                                                                            class="text-danger">*</span></label>
+                                                                    @if ($case->case_category_origin == 0)
+                                                                        <input type="text"
+                                                                            name="case_number_origin_manual"
+                                                                            id="case_number_origin_manual"
+                                                                            class="form-control form-control-sm"
+                                                                            value="{{ $case->case_number_origin ?? '' }}"
+                                                                            placeholder="(Type digits in English)"
+                                                                            required="required"
+                                                                            onkeypress="return allowBanglaAndEnglishNumerals(event)">
+                                                                    @else
+                                                                        <input type="text"
+                                                                            name="case_number_origin_manual"
+                                                                            id="case_number_origin_manual"
+                                                                            class="form-control form-control-sm"
+                                                                            placeholder="(Type digits in English)"
+                                                                            required="required"
+                                                                            onkeypress="return allowBanglaAndEnglishNumerals(event)">
+                                                                    @endif
+                                                                </div>
+
+
+                                                                <div class="col-lg-4 mb-5">
+                                                                    <label>পিটিশনারের নাম: <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" name="writ_petitioner_name"
+                                                                        id="writ_petitioner_name"
                                                                         class="form-control form-control-sm"
-                                                                        value="{{ $case->case_number_origin ?? '' }}"
-                                                                        placeholder="(Type digits in English)"
-                                                                        required="required"
-                                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
-                                                                @else
-                                                                    <input type="text" name="case_number_origin_manual"
-                                                                        id="case_number_origin_manual"
-                                                                        class="form-control form-control-sm"
-                                                                        placeholder="(Type digits in English)"
-                                                                        required="required"
-                                                                        onkeypress="return allowBanglaAndEnglishNumerals(event)">
-                                                                @endif
+                                                                        value="{{ $case->writ_petitioner_name ?? '' }}">
+
+                                                                </div>
+
+
+                                                                <div class="col-lg-4 mb-5">
+                                                                    <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
+                                                                            class="text-danger"></small></label>
+                                                                    <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">{{ $case->subject_matter ?? '' }}</textarea>
+                                                                </div>
+
+
+
+                                                                <div class="col-lg-4 mb-5">
+                                                                    <label>রায়/আদেশ প্রদানের তারিখ: <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" name="case_order_date"
+                                                                        id="case_order_date"
+                                                                        class="form-control form-control-sm  common_datepicker"autocomplete="off"
+                                                                        {{ $case->case_order_date ?? '' }}>
+                                                                </div>
+
+
+                                                                <div class="col-lg-8 mb-5">
+                                                                    <label>রায়/আদেশের বিবরণ:<small class="text-danger">
+                                                                        </small> </label>
+                                                                    <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"> {{ $case->case_order_details ?? '' }}</textarea>
+                                                                </div>
                                                             </div>
-
-
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>পিটিশনারের নাম: <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" name="writ_petitioner_name"
-                                                                    id="writ_petitioner_name"
-                                                                    class="form-control form-control-sm"
-                                                                    value="{{ $case->writ_petitioner_name ?? '' }}">
-
-                                                            </div>
-
-
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>মামলার বিষয়বস্তু(সংক্ষিপ্ত):<small
-                                                                        class="text-danger"></small></label>
-                                                                <textarea name="subject_matter" class="form-control" id="subject_matter" rows="3" spellcheck="false">{{ $case->subject_matter ?? '' }}</textarea>
-                                                            </div>
-
-
-
-                                                            <div class="col-lg-4 mb-5">
-                                                                <label>রায়/আদেশ প্রদানের তারিখ: <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" name="case_order_date"
-                                                                    id="case_order_date"
-                                                                    class="form-control form-control-sm  common_datepicker"autocomplete="off"
-                                                                    {{ $case->case_order_date ?? '' }}>
-                                                            </div>
-
-
-                                                            <div class="col-lg-8 mb-5">
-                                                                <label>রায়/আদেশের বিবরণ:<small class="text-danger">
-                                                                    </small> </label>
-                                                                <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"> {{ $case->case_order_details ?? '' }}</textarea>
-                                                            </div>
-                                                        </div>
-                                                    </fieldset>
-                                                </div>
-                                            @endif
+                                                        </fieldset>
+                                                    </div>
+                                                @endif
 
                                         </fieldset>
 
                                     </div>
-                                    @if($case->case_category_origin != 0)
-                                    <div class="col-md-12" id="showHighCourtCaseDiv">
-                                        <fieldset>
-                                            <div class="form-group row">
+                                    @if ($case->case_category_origin != 0)
+                                        <div class="col-md-12" id="showHighCourtCaseDiv">
+                                            <fieldset>
+                                                <div class="form-group row">
 
-                                                <div class="col-lg-12 mb-5">
-                                                    <table class="table mb-5" width="100%" border="1"
-                                                        id="" style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>রিট পিটিশনারের নাম <span class="text-danger">*</span> </th>
-                                                            <th>ঠিকানা <span class="text-danger">*</span></th>
-                                                        </tr>
-                                                        <tbody>
+                                                    <div class="col-lg-12 mb-5">
+                                                        <table class="table mb-5" width="100%" border="1"
+                                                            id="" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <td>{{ $caseBadi->name ?? '-' }}</td>
-                                                                <td>{{ $caseBadi->address ?? '-' }}</td>
+                                                                <th>রিট পিটিশনারের নাম <span class="text-danger">*</span>
+                                                                </th>
+                                                                <th>ঠিকানা <span class="text-danger">*</span></th>
                                                             </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    <table width="100%" border="1" id=""
-                                                        class="table mb-5" style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                            </th>
-
-                                                        </tr>
-                                                        <tbody>
-                                                            @foreach ($mainBibadi as $bibadi)
+                                                            <tbody>
                                                                 <tr>
-                                                                    <td class="tg-nluh">
-                                                                        {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
+                                                                    <td>{{ $caseBadi->name ?? '-' }}</td>
+                                                                    <td>{{ $caseBadi->address ?? '-' }}</td>
                                                                 </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="col-lg-6 mb-5 mb-5">
+                                                        <table width="100%" border="1" id=""
+                                                            class="table mb-5" style="border:1px solid #dcd8d8;">
+                                                            <tr>
+                                                                <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                                </th>
+
+                                                            </tr>
+                                                            <tbody>
+                                                                @foreach ($mainBibadi as $bibadi)
+                                                                    <tr>
+                                                                        <td class="tg-nluh">
+                                                                            {{ $bibadi->ministry->office_name_bn ?? '-' }}
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="col-lg-6 mb-5 mb-5">
+                                                        <table width="100%" border="1" id=""
+                                                            class="table mb-5" style="border:1px solid #dcd8d8;">
+                                                            <tr>
+                                                                <th>অন্যান্য রেসপন্ডেন্ট নাম <span
+                                                                        class="text-danger">*</span>
+                                                            </tr>
+                                                            <tbody>
+                                                                @foreach ($otherBibadi as $bibadi)
+                                                                    <tr>
+                                                                        <td class="tg-nluh">
+                                                                            {{ $bibadi->ministry->office_name_bn ?? '-' }}
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="col-lg-6 mb-5 mb-5">
+                                                        <label>এফিডেভিট দাখিলকারী রেসপন্ডেন্ট <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="cmp_no" id="cmp_no"
+                                                            class="form-control form-control-sm" placeholder=""
+                                                            required="required" disabled>
+                                                        <span class="text-danger d-none vallidation-message">This field can
+                                                            not be empty</span>
+                                                    </div>
+
+
+                                                    <div class="col-lg-6 mb-5">
+                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তা <br> (ধরনর মামলা উদ্ভূত)<span
+                                                                class="text-danger"></span></label>
+                                                        <input type="text" name="concern_person_designation"
+                                                            id="concern_person_designation"
+                                                            class="form-control form-control-sm" placeholder=""
+                                                            autocomplete="off" disabled
+                                                            value="{{ $concernpersondesig->name ?? '' }}">
+                                                    </div>
+
+                                                    <div class="col-lg-6 mb-5">
+                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)<span
+                                                                class="text-danger"></span></label>
+                                                        <input type="text" name="appeal_concern_user_id"
+                                                            id="appeal_concern_user_id"
+                                                            class="form-control form-control-sm" placeholder=""
+                                                            autocomplete="off" disabled
+                                                            value="{{ $concernPersonName->name ?? '' }}">
+                                                    </div>
+
+
                                                 </div>
 
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    <table width="100%" border="1" id=""
-                                                        class="table mb-5" style="border:1px solid #dcd8d8;">
-                                                        <tr>
-                                                            <th>অন্যান্য রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
-                                                        </tr>
-                                                        <tbody>
-                                                            @foreach ($otherBibadi as $bibadi)
-                                                                <tr>
-                                                                    <td class="tg-nluh">
-                                                                        {{ $bibadi->ministry->office_name_bn ?? '-' }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <div class="form-group row mt-5">
 
-                                                <div class="col-lg-6 mb-5 mb-5">
-                                                    <label>এফিডেভিট দাখিলকারী রেসপন্ডেন্ট <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" name="cmp_no" id="cmp_no"
-                                                        class="form-control form-control-sm" placeholder=""
-                                                        required="required" disabled>
-                                                    <span class="text-danger d-none vallidation-message">This field can
-                                                        not be empty</span>
                                                 </div>
 
 
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তা <br> (ধরনর মামলা উদ্ভূত)<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="concern_person_designation"
-                                                        id="concern_person_designation"
-                                                        class="form-control form-control-sm" placeholder=""
-                                                        autocomplete="off" disabled
-                                                        value="{{ $concernpersondesig->name ?? '' }}">
+                                                <div class="col-md-12">
+
                                                 </div>
 
-                                                <div class="col-lg-6 mb-5">
-                                                    <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)<span
-                                                            class="text-danger"></span></label>
-                                                    <input type="text" name="appeal_concern_user_id"
-                                                        id="appeal_concern_user_id" class="form-control form-control-sm"
-                                                        placeholder="" autocomplete="off" disabled
-                                                        value="{{ $concernPersonName->name ?? '' }}">
+                                                <div class="form-group row mt-5">
+
                                                 </div>
 
-
-                                            </div>
-
-                                            <div class="form-group row mt-5">
-
-                                            </div>
+                                            </fieldset>
 
 
-                                            <div class="col-md-12">
-
-                                            </div>
-
-                                            <div class="form-group row mt-5">
-
-                                            </div>
-
-                                        </fieldset>
-
-
-                                    </div>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-footer mt-5" style="display: flex;justify-content: center;">
@@ -1266,9 +1273,9 @@
                 var dataID = jQuery(this).val();
                 var caseNumberDropdown = jQuery('select[name="case_number_origin"]');
                 var loadersmall = '<div class="loadersmall"></div>';
-    
+
                 caseNumberDropdown.after(loadersmall);
-    
+
                 if (dataID) {
                     jQuery.ajax({
                         url: '{{ url('/') }}/cabinet/case/dropdownlist/getdependentorigincasenumber/' +
@@ -1276,17 +1283,17 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-    
+
                             caseNumberDropdown.empty();
                             caseNumberDropdown.append(
                                 '<option value="">-- নির্বাচন করুন --</option>');
-    
+
                             jQuery.each(data, function(key, value) {
                                 caseNumberDropdown.append(
                                     `<option value="${value.id}">${value.case_no}/${value.year}</option>`
                                 );
                             });
-    
+
                             jQuery('.loadersmall').remove();
                         }
                     });
@@ -1295,13 +1302,13 @@
                     jQuery('.loadersmall').remove();
                 }
             });
-    
-    
+
+
             jQuery('select[name="case_number_origin"]').on('change', function() {
                 var dataID = jQuery(this).val();
                 //   console.log(dataID);
                 var showHighCourtCaseDiv = $('#showHighCourtCaseDiv');
-    
+
                 if (dataID) {
                     $('#showHighCourtCaseManualDiv').empty();
                     $('#showHighCourtCaseManualDiv').hide();
@@ -1461,17 +1468,25 @@
             items += '<td><input type="text" name="file_type[]" id="customFileName' + count +
                 '" class="form-control form-control-sm" placeholder="" ></td>';
             items +=
-                '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentTitle(' +
-                count + ',this)" class="custom-file-input" id="customFile' + count + '" /><label id="file_error' +
+                '<td><div class="custom-file"><input type="file" accept="application/pdf" name="file_name[]" onChange="attachmentGeneralInfoEditTitle(' +
+                count + ',this)" class="custom-file-input" id="customGeneralInfoEditFile' + count +
+                '" /><label id="file_error' +
                 count +
                 '" class="text-danger font-weight-bolder mt-2 mb-2"></label> <label class="custom-file-label custom-input' +
                 count + '" for="customFile' + count +
-                '">ফাইল নির্বাচন করুন</label></div></td>';
+                '" id="custom-file-label' + count + '">ফাইল নির্বাচন করুন</label></div></td>';
             items +=
                 '<td width="40"><a href="javascript:void();" class="btn btn-sm btn-danger font-weight-bolder pr-2" onclick="removeBibadiRow(this)"> <i class="fas fa-minus-circle"></i></a></td>';
             items += '</tr>';
             $('#fileDiv tr:last').after(items);
             console.log(items);
+        }
+    </script>
+
+    <script>
+        function attachmentGeneralInfoEditTitle(id) {
+            var value = $('#customGeneralInfoEditFile' + id)[0].files[0];
+            $('#custom-file-label' + id).text(value['name']);
         }
     </script>
 

@@ -321,7 +321,7 @@
         </tr>`;
         }
 
-        $('.other_respondentCls').select2(); 
+        $('.other_respondentCls').select2();
     }
 
     function removeRespondantBibadiRow(element) {

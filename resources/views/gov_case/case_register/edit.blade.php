@@ -438,13 +438,6 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-
-                                                {{-- end সংযুক্তি --}}
-
-
-
-
-
                                             </div>
                                         </fieldset>
                                         {{-- </div> --}}
@@ -1220,7 +1213,7 @@
                                                     <textarea name="others_action_detials" class="form-control" id="others_action_detials" rows="3"
                                                         spellcheck="false">{{ $case->others_action_detials ?? '' }}
                                                             </textarea>
-                                                    
+
                                                 </div>
                                             </div>
                                         </fieldset>
