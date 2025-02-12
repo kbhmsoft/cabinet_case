@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\gov_case;
 
 use App\Http\Controllers\Controller;
@@ -1067,8 +1068,8 @@ class AppealGovCaseRegisterController extends Controller
         $data['land_types'] = DB::table('land_type')->select('id', 'lt_name')->get();
 
         $data['page_title'] = 'নতুন/চলমান হাইকোর্ট মামলা এন্ট্রি '; //exit;
-                                                                                                                              // dd($data);
-                                                                                                                              // return $data;
+        // dd($data);
+        // return $data;
         return view('gov_case.case_register.create_new')->with($data);
     }
 
@@ -2326,11 +2327,9 @@ class AppealGovCaseRegisterController extends Controller
         }
 
         $data['usersInfo'] = User::all();
-        if ($roleID != 27) {
-            $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->where('office_id', $officeID)->get();
-        } else {
-            $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
-        }
+
+        $data['lawerInfo'] = User::whereIn('role_id', [14, 15, 33, 36, 45])->get();
+
         $data['GovCaseDivision'] = GovCaseDivision::all();
 
         $data['usersInfo']            = User::all();
@@ -2553,7 +2552,7 @@ class AppealGovCaseRegisterController extends Controller
         $data['courts']          = Court::select('id', 'court_name')->get();
         $data['GovCaseDivision'] = GovCaseDivision::all();
         $data['page_title']      = 'আপিল মামলা এন্ট্রি ফরম'; //exit;
-                                                                                                   // dd($data);
+        // dd($data);
         return view('gov_case.case_register.creat_appeal')->with($data);
     }
 
@@ -2776,7 +2775,7 @@ class AppealGovCaseRegisterController extends Controller
         $officeID   = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
-        // ->where('concern_user_id', $authUserId)
+            // ->where('concern_user_id', $authUserId)
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
 

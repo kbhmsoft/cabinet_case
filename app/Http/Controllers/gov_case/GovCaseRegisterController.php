@@ -3943,13 +3943,8 @@ class GovCaseRegisterController extends Controller
     }
     public function getDependentConcernPerson($id)
     {
-        $officeID = userInfo()->office_id;
-
-        // if ($id != 45) {
         $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
-        // } else {
-        //     $getdependentUser = User::where('role_id', $id)->where('office_id', $officeID)->pluck("name", "id");
-        // }
+        
         return json_encode($getdependentUser);
     }
 
