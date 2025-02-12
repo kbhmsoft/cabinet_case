@@ -71,7 +71,7 @@ class ViewServiceProvider extends AppServiceProvider
                     $query->whereIn('respondent_id', $childOfficeIds);
                 })->where('deleted_at', null)
                     ->count();
-                    // dd($total_administrative_tribrunal);
+                
             $total_case = $total_highcourt + $total_appeal + $total_administrative_tribrunal;
 
             if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {

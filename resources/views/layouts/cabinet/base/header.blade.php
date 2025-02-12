@@ -148,6 +148,7 @@
                             style="text-decoration: none; color: rgb(241, 230, 11);">
                             ( হাইকোর্ট বিভাগ:
                         </a>
+                 
                         <span class="count-numbers"
                             style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_highcourt) }};</span>
                     </span>

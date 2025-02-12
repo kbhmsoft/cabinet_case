@@ -62,15 +62,14 @@ class DashboardController extends Controller
                 });
 
             $data['total_appeal']          = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
-            $data['total_highcourt']       = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_highcourt']= GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['total_case']            = $data['total_appeal'] + $data['total_highcourt'];
             $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
-            // return $data['total_high_court_case'];
             $data['running_high_court_case'] = GovCaseRegister::where('is_final_order', 0)
                 ->where('deleted_at', '=', null)
                 ->count();
 
-            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->whereNotNull('result')->where('deleted_at', '=', null)->count();
+            $data['final_high_court_case'] = GovCaseRegister::where('is_final_order', 1)->where('deleted_at', '=', null)->count();
 
             $data['total_appeal_case']   = AppealGovCaseRegister::count();
             $data['running_appeal_case'] = AppealGovCaseRegister::where('is_final_order', 0)
@@ -97,12 +96,14 @@ class DashboardController extends Controller
 
             $data['highcourt_not_against_gov'] = GovCaseRegister::where('is_final_order', 1)
                 ->where('result', 1)
+                ->where('in_favour_govt', 1)
                 ->whereNull('deleted_at')
                 ->count();
 
             $data['highcourt_against_gov'] = GovCaseRegister::where('is_final_order', 1)
                 ->where('result', 2)
                 ->whereNull('deleted_at')
+                ->where('in_favour_govt', 0)
                 ->count();
 
             $data['appeal_against_gov'] = AppealGovCaseRegister::whereNull('deleted_at')
