@@ -88,7 +88,8 @@
                </td>
 
                <td class="text-center">
-                  {{-- <button type="button" onclick="updatePermissionModal('{{$permission->id}}', '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button> --}}
+                  <button type="button" onclick="updatePermissionModal('{{$permission->id}}', '{{$permission->name}}','{{$permission->display_name}}', '{{$permission->status}}')" class="btn btn-success btn-shadow btn-sm font-weight-bold pt-1 pb-1">সংশোধন</button>
+
                   <a href="{{ route('cabinet.permissionItemDelete', $permission->id) }}" onclick="return confirm('আপনি কি নিশ্চিত ?')" class="btn btn-warning btn-shadow btn-sm font-weight-bold pt-1 pb-1">মুছে দিন</a>
                </td>
             </tr>
@@ -103,11 +104,11 @@
 <!--end::Card-->
 
       <!-- update Modal -->
-      <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">ভূমিকা সংশোধন করুন</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">সংশোধন করুন</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -249,24 +250,20 @@
 
 
 <script>
-   function updatePermissionModal(id, name,display_name, status){
-       $('#updateRoleItem').modal().show();
+    function updatePermissionModal(id, name, display_name, status) {
+        // Open the modal
+        $('#updateRoleItem').modal('show');
 
-       $('#roleID').val(id);
-       $('#update_name').val(name);
-       $('#update_displayname').val(display_name);
+        // Set values in the modal
+        $('#roleID').val(id);
+        $('#update_name').val(name);
+        $('#update_displayname').val(display_name);
 
-       var checkstatus = status;
+        // Correctly update the status select field
+        $("select[name='status']").val(status);
+    }
+ </script>
 
-        $('.status2').attr('selected', false);
-        $('.status2').attr('selected', false);
-       if(checkstatus == '0'){
-            $('.status2').attr('selected','selected');
-       }else{
-          $('.status1').attr('selected','selected');
-       }
-   }
-</script>
 <script>
    $('#parent_name_for_search').on('change', function(){
       var id = $(this).val();

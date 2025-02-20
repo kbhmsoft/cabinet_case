@@ -53,7 +53,7 @@
                                     <label for="name" class=" form-control-label">পুরো নাম <span
                                             class="text-danger">*</span></label>
                                     <input type="text" id="name" name="name" placeholder="পুরো নাম লিখুন"
-                                        class="form-control form-control-sm">
+                                        class="form-control form-control-sm" required>
                                     <span style="color: red">
                                         {{ $errors->first('name') }}
                                     </span>
@@ -78,8 +78,7 @@
                                     <label for="name" class=" form-control-label">শাখা <span
                                             class="text-danger">*</span></label>
                                     <input type="text" id="unit_name_bn" name="unit_name_bn"
-                                        placeholder="ব্যবহার কারীর শাখা লিখুন" class="form-control form-control-sm"
-                                        required>
+                                        placeholder="ব্যবহারকারীর শাখা লিখুন" class="form-control form-control-sm" required>
                                     <span style="color: red">
                                         {{ $errors->first('unit_name_bn') }}
                                     </span>
@@ -90,8 +89,7 @@
                                     <label for="name" class=" form-control-label">পদবী <span
                                             class="text-danger">*</span></label>
                                     <input type="text" id="designation" name="designation"
-                                        placeholder="ব্যবহার কারীর পদবী লিখুন" class="form-control form-control-sm"
-                                        required>
+                                        placeholder="ব্যবহারকারীর পদবী লিখুন" class="form-control form-control-sm" required>
                                     <span style="color: red">
                                         {{ $errors->first('designation') }}
                                     </span>
@@ -227,54 +225,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="myModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title">নতুন ইউজার তথ্য</h4>
-                                    <button type="button" class="close" data-dismiss="modal">×</button>
-                                </div>
-
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                    <table class="tg">
-                                        <tr>
-                                            <th class="tg-19u4 text-center">পুরো নাম </th>
-                                            <td class="tg-nluh" id="previewName"></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="tg-19u4 text-center">ইউজারনেম</th>
-                                            <td class="tg-nluh" id="previewUsername"></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="tg-19u4 text-center">মোবাইল নাম্বার </th>
-                                            <td class="tg-nluh" id="previewMobile_no"></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="tg-19u4 text-center">ইমেল</th>
-                                            <td class="tg-nluh" id="previewEmail"></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="tg-19u4 text-center">ভূমিকা </th>
-                                            <td class="tg-nluh" id="previewRole_id"></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="tg-19u4 text-center">অফিস</th>
-                                            <td class="tg-nluh" id="previewOffice_id"></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
 
                 </form>
             </div>
@@ -286,30 +236,82 @@
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let mobileField = document.getElementById("mobile_no");
+
+            mobileField.addEventListener("blur", function() {
+                checkDuplicateMobile(this.value);
+            });
+        });
+
         function validateForm() {
+            // Clear previous errors
+            document.querySelectorAll(".error-message").forEach(el => el.innerText = "");
+
+            let isValid = true;
+            let requiredFields = ["name", "mobile_no", "unit_name_bn", "designation", "password", "role_id"];
+
+            requiredFields.forEach(field => {
+                let inputField = document.getElementsByName(field)[0];
+                let errorField = document.getElementById(field + "_error");
+
+                if (!inputField.value.trim()) {
+                    errorField.innerText = inputField.previousElementSibling.innerText + " আবশ্যক!";
+                    isValid = false;
+                } else {
+                    errorField.innerText = "";
+                }
+            });
+
             let officeType = document.querySelector('select[name="office_type"]').value;
             let officeId = document.querySelector('select[name="office_id"]').value;
             let roleId = document.querySelector('select[name="role_id"]').value;
-            console.log(officeType, officeId);
 
             if (!roleId) {
-                alert('ইউজার রোল নির্বাচন করুন');
-                return false;
+                document.getElementById("role_id_error").innerText = "ইউজার রোল নির্বাচন করুন";
+                isValid = false;
             }
 
             if (!officeType) {
-                alert('অফিস লেভেল নির্বাচন করুন');
-                return false;
+                document.getElementById("office_type_error").innerText = "অফিস লেভেল নির্বাচন করুন";
+                isValid = false;
             }
 
             if (!officeId) {
-                alert('অফিস নির্বাচন করুন');
-                return false;
+                document.getElementById("office_id_error").innerText = "অফিস নির্বাচন করুন";
+                isValid = false;
             }
+
+            if (!isValid) return false;
 
             return confirm('আপনি কি সংরক্ষণ করতে চান?');
         }
+
+        function checkDuplicateMobile(mobileNumber) {
+            if (!mobileNumber.trim()) return;
+
+            fetch("{{ route('cabinet.check.mobile') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                    },
+                    body: JSON.stringify({
+                        mobile_no: mobileNumber
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        alert("এই মোবাইল নাম্বারটি ইতিমধ্যে নিবন্ধিত রয়েছে!");
+                        document.getElementById("mobile_no").value = "";
+                        document.getElementById("mobile_no").focus();
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
     </script>
+
 
 
 
@@ -328,25 +330,25 @@
             input.value = input.value.replace(/[^0-9]/g, '');
         }
 
-        $(document).ready(function () {
-        $("input[name='mobile_no']").on("input", function (event) {
-            let mobile = $(this).val();
-            let errorMsg = $(this).siblings(".mobile-error");
-            // Allow only numeric input
-            $(this).val(mobile.replace(/[^0-9]/g, ''));
+        $(document).ready(function() {
+            $("input[name='mobile_no']").on("input", function(event) {
+                let mobile = $(this).val();
+                let errorMsg = $(this).siblings(".mobile-error");
+                // Allow only numeric input
+                $(this).val(mobile.replace(/[^0-9]/g, ''));
 
-            if (mobile.length === 1 && mobile[0] !== '0') {
-                errorMsg.text("মোবাইল নাম্বার 0 দিয়ে শুরু হতে হবে!").addClass("text-danger");
-                $(this).val(''); // Clear input if first digit is not 0
-            } else if (mobile.length > 11) {
-                $(this).val(mobile.substring(0, 11)); // Limit to 11 digits
-            } else if (mobile.length > 0 && mobile.length < 11) {
-                errorMsg.text("মোবাইল নাম্বার অবশ্যই ১১ সংখ্যার হতে হবে!").addClass("text-danger");
-            } else {
-                errorMsg.text("").removeClass("text-danger");
-            }
+                if (mobile.length === 1 && mobile[0] !== '0') {
+                    errorMsg.text("মোবাইল নাম্বার 0 দিয়ে শুরু হতে হবে!").addClass("text-danger");
+                    $(this).val(''); // Clear input if first digit is not 0
+                } else if (mobile.length > 11) {
+                    $(this).val(mobile.substring(0, 11)); // Limit to 11 digits
+                } else if (mobile.length > 0 && mobile.length < 11) {
+                    errorMsg.text("মোবাইল নাম্বার অবশ্যই ১১ সংখ্যার হতে হবে!").addClass("text-danger");
+                } else {
+                    errorMsg.text("").removeClass("text-danger");
+                }
+            });
         });
-    });
     </script>
 
     <script>
