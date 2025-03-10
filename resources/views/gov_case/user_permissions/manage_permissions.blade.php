@@ -70,8 +70,6 @@
 </div>
 <!--end::Card-->
 
-
-
 @endsection
 
 <!-- {{-- Includable CSS Related Page --}} -->

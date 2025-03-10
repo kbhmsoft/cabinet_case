@@ -30,7 +30,6 @@
          <tbody>
             <?php
                $i = 1;
-
             ?>
             @foreach ($roles as $role)
                <?php

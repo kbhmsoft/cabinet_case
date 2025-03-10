@@ -104,7 +104,7 @@
 <!--end::Card-->
 
       <!-- update Modal -->
-      <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+      <div class="modal fade" id="updateRoleItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -139,7 +139,7 @@
                   </div>
                </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ</button>
+              <button type="button" class="btn btn-secondary close-modal-button" data-dismiss="modal">বন্ধ</button>
               <button type="submit" class="btn btn-primary">সংশোধন করুন</button>
             </div>
          </form>
@@ -264,6 +264,15 @@
     }
  </script>
 
+
+ <script>
+
+$(document).on('click', '.close-modal-button', function() {
+    $('#updateRoleItem').modal('hide');
+});
+</script>
+
+
 <script>
    $('#parent_name_for_search').on('change', function(){
       var id = $(this).val();
@@ -280,9 +289,6 @@
                     document.getElementById('updateAjaxData').innerHTML = response;
          }
       })
-
-
-
    });
 </script>
 

@@ -138,7 +138,7 @@ class UserManagementController extends Controller
                 'district.district_name_bn', 'upazila.upazila_name_bn')
             ->where('users.id', $id)
             ->get()->first();
-        // dd($userManagement);
+   
 
         $data['page_title'] = 'ব্যবহারকারীর বিস্তারিত';
         return view('user_manage.show')->with($data);

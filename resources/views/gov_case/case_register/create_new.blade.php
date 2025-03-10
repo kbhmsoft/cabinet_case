@@ -343,7 +343,7 @@
                                                     <div class="col-md-6">
                                                         <label
                                                             class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন
-                                                            আদেশ প্রদান করা হয়েছে কিনা
+                                                            আদেশ প্রদান করা হয়েছে কিনা?
                                                         </label>
                                                         <div class="radio-inline">
                                                             <label class="radio">
@@ -699,7 +699,7 @@
                                                 <div class="col-md-6">
                                                     <label class="form-group font-weight-bolder font-size-h5">
                                                         স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন আদেশ প্রদান করা হয়েছে
-                                                        কিনা
+                                                        কিনা?
                                                     </label>
                                                     <div class="radio-inline">
                                                         <label class="radio">

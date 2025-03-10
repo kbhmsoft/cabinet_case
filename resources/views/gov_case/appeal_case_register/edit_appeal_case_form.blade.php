@@ -489,9 +489,9 @@
                                                         <table class="table mb-5" width="100%" border="1"
                                                             id="" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th>রিট পিটিশনারের নাম <span class="text-danger">*</span>
+                                                                <th>রিট পিটিশনারের নাম
                                                                 </th>
-                                                                <th>ঠিকানা <span class="text-danger">*</span></th>
+                                                                <th>ঠিকানা </th>
                                                             </tr>
                                                             <tbody>
                                                                 <tr>
@@ -506,7 +506,7 @@
                                                         <table width="100%" border="1" id=""
                                                             class="table mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th>মূল রেসপন্ডেন্ট নাম <span class="text-danger">*</span>
+                                                                <th>মূল রেসপন্ডেন্ট নাম
                                                                 </th>
 
                                                             </tr>
@@ -526,8 +526,7 @@
                                                         <table width="100%" border="1" id=""
                                                             class="table mb-5" style="border:1px solid #dcd8d8;">
                                                             <tr>
-                                                                <th>অন্যান্য রেসপন্ডেন্ট নাম <span
-                                                                        class="text-danger">*</span>
+                                                                <th>অন্যান্য রেসপন্ডেন্ট নাম
                                                             </tr>
                                                             <tbody>
                                                                 @foreach ($otherBibadi as $bibadi)
@@ -542,8 +541,7 @@
                                                     </div>
 
                                                     <div class="col-lg-6 mb-5 mb-5">
-                                                        <label>এফিডেভিট দাখিলকারী রেসপন্ডেন্ট <span
-                                                                class="text-danger">*</span></label>
+                                                        <label>এফিডেভিট দাখিলকারী রেসপন্ডেন্ট </label>
                                                         <input type="text" name="cmp_no" id="cmp_no"
                                                             class="form-control form-control-sm" placeholder=""
                                                             required="required" disabled>
@@ -553,8 +551,7 @@
 
 
                                                     <div class="col-lg-6 mb-5">
-                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তা <br> (ধরনর মামলা উদ্ভূত)<span
-                                                                class="text-danger"></span></label>
+                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তা <br> (ধরনর মামলা উদ্ভূত)</label>
                                                         <input type="text" name="concern_person_designation"
                                                             id="concern_person_designation"
                                                             class="form-control form-control-sm" placeholder=""
@@ -563,8 +560,7 @@
                                                     </div>
 
                                                     <div class="col-lg-6 mb-5">
-                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)<span
-                                                                class="text-danger"></span></label>
+                                                        <label>সংশ্লিষ্ট আইন কর্মকর্তার নাম<br> (ধরনর মামলা উদ্ভূত)</label>
                                                         <input type="text" name="appeal_concern_user_id"
                                                             id="appeal_concern_user_id"
                                                             class="form-control form-control-sm" placeholder=""
@@ -1483,6 +1479,11 @@
         }
     </script>
 
+<script>
+      function removeBibadiRow(id) {
+        $(id).closest("tr").remove();
+    }
+</script>
     <script>
         function attachmentGeneralInfoEditTitle(id) {
             var value = $('#customGeneralInfoEditFile' + id)[0].files[0];
