@@ -345,49 +345,52 @@
                                                             </th>
                                                         </tr>
                                                         <tr></tr>
-                                                        @if(!$otherBibadi->isEmpty())
-                                                        @foreach ($otherBibadi as $key => $val)
-                                                            <tr id="other_bibadi_{{ $val->id }}">
-                                                                @if ($val->respondent_id != 0)
-                                                                    <td>
-                                                                        <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
+                                                        @if (!$otherBibadi->isEmpty())
+                                                            @foreach ($otherBibadi as $key => $val)
+                                                                <tr id="other_bibadi_{{ $val->id }}">
+                                                                    @if ($val->respondent_id != 0)
+                                                                        <td>
+                                                                            <select {{ request('red') ? 'disabled' : '' }} " name="other_respondent[]" id="ministry_id" class="form-control form-control-sm select_2">
 
-                                                              @foreach ($ministrys as $item)
-                                                                            <option value="{{ $item->doptor_office_id }}"
-                                                                                {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
-                                                                                {{ $item->office_name_bn ?? '' }}
-                                                                            </option>
-                                                                @endforeach
-                                                                </select>
-                                                                </td>
-                                                                <input type="hidden"
-                                                                    name="other_respondent_manual_name[]" value="">
-                                                                <input type="hidden" name="bibadi_id[]"
-                                                                    value="{{ $val->id }}">
-                                                            @else
-                                                                <td>
-                                                                    <input type="hidden" name="other_respondent[]"
-                                                                        value="0">
-                                                                    <input class="form-control form-control-sm"
-                                                                        type="text"
+                                                                   @foreach ($ministrys as
+                                                                                $item)
+                                                                                <option
+                                                                                    value="{{ $item->doptor_office_id }}"
+                                                                                    {{ $item->doptor_office_id == $val->respondent_id ? 'selected' : '' }}>
+                                                                                    {{ $item->office_name_bn ?? '' }}
+                                                                                </option>
+                                                                    @endforeach
+                                                                    </select>
+                                                                    </td>
+                                                                    <input type="hidden"
                                                                         name="other_respondent_manual_name[]"
-                                                                        value="{{ $val->other_respondent_manual_name }}">
-                                                                </td>
-                                                                <input type="hidden" name="bibadi_id[]"
-                                                                    value="{{ $val->id }}">
-                                                         @endif
-                                                         <td>
-                                                            @if ($key > 0)
-                                                                <a href="javascript:void();"
-                                                                    class="btn btn-sm btn-danger font-weight-bolder pr-2"
-                                                                    data-id="{{ $value->doptor_office_id }}"
-                                                                    id="deleteOtherBibadiBtn_{{ $val->id }}"
-                                                                    onclick="deleteOtherBibadi({{ $val->id }})">
-                                                                    <i class="fas fa-minus-circle"></i>
-                                                                </a>
+                                                                        value="">
+                                                                    <input type="hidden" name="bibadi_id[]"
+                                                                        value="{{ $val->id }}">
+                                                                @else
+                                                                    <td>
+                                                                        <input type="hidden" name="other_respondent[]"
+                                                                            value="0">
+                                                                        <input class="form-control form-control-sm"
+                                                                            type="text"
+                                                                            name="other_respondent_manual_name[]"
+                                                                            value="{{ $val->other_respondent_manual_name }}">
+                                                                    </td>
+                                                                    <input type="hidden" name="bibadi_id[]"
+                                                                        value="{{ $val->id }}">
                                                             @endif
-                                                         </td>
-                                                         </tr>
+                                                            <td>
+                                                                @if ($key > 0)
+                                                                    <a href="javascript:void();"
+                                                                        class="btn btn-sm btn-danger font-weight-bolder pr-2"
+                                                                        data-id="{{ $value->doptor_office_id }}"
+                                                                        id="deleteOtherBibadiBtn_{{ $val->id }}"
+                                                                        onclick="deleteOtherBibadi({{ $val->id }})">
+                                                                        <i class="fas fa-minus-circle"></i>
+                                                                    </a>
+                                                                @endif
+                                                            </td>
+                                                            </tr>
                                                         @endforeach
                                                         @endif
                                                     </table>
@@ -2269,13 +2272,14 @@
                             success: function(response) {
                                 $('#caseGeneralInfoSaveBtn').removeClass(
                                     'spinner spinner-white spinner-right disabled');
-                                $orderData = response;
                                 Swal.fire(
                                     'Saved!',
                                     'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                                     'success'
-                                )
-                                console.log(response);
+                                ).then(() => {
+                                    window.location.href =
+                                        "{{ route('cabinet.case.highcourt') }}";
+                                });
 
                                 $("#sending_reply_tab").click();
                                 $("#caseIDForAnswer").val(response.caseId);
@@ -2283,21 +2287,18 @@
                                 $("#caseIDForFinalOrder").val(response.caseId);
                                 $("#caseIDForContempt").val(response.caseId);
 
-                                $('#sendingReplySaveBtn').prop('disabled', false);
-                                $('#sendingReplySaveBtn').removeClass("disable-button");
-                                $('#suspensionOrderSaveBtn').prop('disabled', false);
-                                $('#suspensionOrderSaveBtn').removeClass(
-                                    "disable-button");
-                                $('#finalOrderSaveBtn').prop('disabled', false);
-                                $('#finalOrderSaveBtn').removeClass("disable-button");
-                                $('#contemptCaseSaveBtn').prop('disabled', false);
-                                $('#contemptCaseSaveBtn').removeClass("disable-button");
-                                console.log(response);
+                                $('#sendingReplySaveBtn').prop('disabled', false)
+                                    .removeClass("disable-button");
+                                $('#suspensionOrderSaveBtn').prop('disabled', false)
+                                    .removeClass("disable-button");
+                                $('#finalOrderSaveBtn').prop('disabled', false)
+                                    .removeClass("disable-button");
+                                $('#contemptCaseSaveBtn').prop('disabled', false)
+                                    .removeClass("disable-button");
 
-                                if (response.redirect) {
-                                    window.location.href = response.redirect;
-                                }
+                                console.log(response);
                             },
+
                             error: function(xhr, status, error) {
                                 console.error(error);
                             }

@@ -112,35 +112,20 @@ class GovCaseActionController extends Controller
 
     public function details($id)
     {
-      
         $data = GovCaseRegisterRepository::GovCaseAllDetails($id);
         $data['roles'] = Role::whereIn('id', [14, 27, 28, 29, 31, 32, 33, 36, 14])->orderby('sort_order')->get();
         $data['forward_map'] = DB::table('case_forward_map')
             ->where('case_forward_map.sender_role_id', '=', userInfo()->role_id)
             ->first();
-        $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
+        $data['page_title'] = 'মামলার বিস্তারিত তথ্য';
         // return $data;
         return view('gov_case.action.notification_case_details')->with($data);
-
-        // $data['info'] = GovCaseRegister::findOrFail($id);
-        // $data['roles'] = Role::all();
-        // $roleID = userInfo()->role_id;
-        // $data['forward_map'] = DB::table('case_forward_map')
-        // ->where('case_forward_map.sender_role_id', '=', $roleID)
-        // ->first();
-
-        // $data['logs'] = RM_CaseLog::where('gov_case_id', $id)
-        // ->orderBy('id', 'desc')
-        // ->get();
-
-        // $data['page_title'] = 'মামলার বিস্তারিত তথ্য'; //exit;
-        // return view('gov_case.action.case_details')->with($data);
     }
 
     public function receive($statusID)
     {
 
- 
+
         session()->forget('currentUrlPath');
         session()->put('currentUrlPath', request()->path());
 

@@ -27,7 +27,7 @@
     <?php
     $case = [];
     $case['create_by'] = '';
-
+    
     ?>
     @include('gov_case.case_register.create_css')
     <style>
@@ -343,7 +343,7 @@
                                                     <div class="col-md-6">
                                                         <label
                                                             class="form-group font-weight-bolder font-size-h5">স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন
-                                                            আদেশ প্রদান করা হয়েছে কিনা?
+                                                            আদেশ প্রদান করা হয়েছে কিনা?<span class="text-danger">*</span>
                                                         </label>
                                                         <div class="radio-inline">
                                                             <label class="radio">
@@ -352,13 +352,11 @@
                                                                 <span></span>হ্যাঁ</label>
                                                             <label class="radio">
                                                                 <input type="radio" name="postponed_interim_have"
-                                                                    id="postponed_interim_have_not" value="0"
-                                                                     />
+                                                                    id="postponed_interim_have_not" value="0" />
                                                                 <span></span>না</label>
                                                             <label class="radio">
                                                                 <input type="radio" name="postponed_interim_have"
-                                                                    id="postponed_interim_have_not" value="2"
-                                                                     />
+                                                                    id="postponed_interim_have_not" value="2" />
                                                                 <span></span>এখনও হয়নি</label>
                                                         </div>
                                                     </div>

@@ -1479,11 +1479,11 @@
         }
     </script>
 
-<script>
-      function removeBibadiRow(id) {
-        $(id).closest("tr").remove();
-    }
-</script>
+    <script>
+        function removeBibadiRow(id) {
+            $(id).closest("tr").remove();
+        }
+    </script>
     <script>
         function attachmentGeneralInfoEditTitle(id) {
             var value = $('#customGeneralInfoEditFile' + id)[0].files[0];
@@ -1523,11 +1523,11 @@
                             Swal.fire('Saved!', 'মামলার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে',
                                     'success')
                                 .then(() => {
-                                    window.location.reload(
-                                        true); // Force reload to bypass cache
+                                    window.location.href =
+                                        "{{ route('cabinet.case.appellateDivision') }}"; // Redirect to the appellateDivision route
                                 });
 
-                            // Ensure the additional actions occur before reload if needed
+                            // Ensure the additional actions occur before the redirect if needed
                             $("#final_order").click();
                             $("#caseIDForFinalOrder").val(data.caseId);
                             $('#finalOrderSaveBtn').prop('disabled', false);

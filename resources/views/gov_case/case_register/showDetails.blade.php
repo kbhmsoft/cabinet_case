@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                                                                  @if (Auth::user()->role_id == 2)
+                                                                                                              @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                                                                </div> -->
+                                                                                                            </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -271,6 +271,32 @@
                                     </td>
                                 </tr>
                             @endif
+
+                            @if (isset($case->postponed_interim_have))
+                                <tr>
+                                    <th scope="row">স্থগিতাদেশ/স্থিতাবস্থা/অন্তর্বর্তীকালীন আদেশ প্রদান করা হয়েছে কিনা?
+                                    </th>
+                                    <td>
+                                        @if ($case->postponed_interim_have == '1')
+                                            হ্যাঁ
+                                        @elseif($case->postponed_interim_have == '0')
+                                            না
+                                        @elseif($case->postponed_interim_have == '2')
+                                            এখনও হয়নি
+                                        @endif
+                                    </td>
+                                </tr>
+                                @if ($case->postponed_interim_have != '0')
+                                    <tr>
+                                        <th scope="row">স্থগিতাদেশের সংক্ষিপ্ত বিবরণ
+                                        </th>
+                                        <td>
+                                            {{ $case->postponed_interim_data_details ?? '-' }}
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endif
+
                         </tbody>
                     </table>
                 </div>
@@ -291,21 +317,21 @@
                             @php $k = 1; @endphp
 
 
-                                <tr>
-                                    <td>{{ en2bn($k) }}.</td>
-                                    <td class="text-center">
-                                        @if(isset($caseBadi->name))
+                            <tr>
+                                <td>{{ en2bn($k) }}.</td>
+                                <td class="text-center">
+                                    @if (isset($caseBadi->name))
                                         @if ($caseBadi->name && $case->total_badi_number > 1)
                                             {{ $caseBadi->name . ' ও অন্যান্য' }}
                                         @elseif ($caseBadi->name)
                                             {{ $caseBadi->name }}
                                         @endif
-                                        @endif
+                                    @endif
 
-                                    </td>
-                                    <td class="text-center">{{ $caseBadi->address ?? '-' }}</td>
-                                </tr>
-                                @php $k++; @endphp
+                                </td>
+                                <td class="text-center">{{ $caseBadi->address ?? '-' }}</td>
+                            </tr>
+                            @php $k++; @endphp
 
                         </tbody>
                     </table>
@@ -324,13 +350,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                      
+
                             @php $k = 1; @endphp
                             @foreach ($caseBibadi as $bibadi)
                                 <tr>
                                     <td class="tg-nluh">{{ en2bn($k) }}.</td>
                                     <td class="tg-nluh text-center">
-                                        {{ $bibadi->respondent_id == 0 ? $bibadi->other_respondent_manual_name : ($bibadi->ministry->office_name_bn ?? '-') }}
+                                        {{ $bibadi->respondent_id == 0 ? $bibadi->other_respondent_manual_name : $bibadi->ministry->office_name_bn ?? '-' }}
                                     </td>
                                     <td class="tg-nluh text-center">
                                         {{ $bibadi->is_main_bibadi == 1 ? 'মূল রেসপন্ডেন্ট ' : 'অন্যান্য রেসপন্ডেন্ট' }}
