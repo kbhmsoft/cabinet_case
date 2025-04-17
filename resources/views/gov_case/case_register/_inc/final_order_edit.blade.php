@@ -12,17 +12,12 @@
 
 
     @include('gov_case.case_register.create_css')
-    {{-- @dd($case) --}}
-    <!--begin::Row-->
     <div class="row">
-
-        {{-- <div class="col-md-12"> --}}
-        <!--begin::Card-->
         <div class="card card-custom gutter-b example example-compact" style="width: 100%;">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
-            <!-- <div class="loadersmall"></div> -->
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -33,13 +28,9 @@
                 </div>
             @endif
 
-
-
             <div class="card-body">
                 <div class="table-responsive ajax-data-container pt-3">
                     <div class="tab-content" id="myTabContent">
-
-
                         {{-- ------------- start জবাব প্রেরণ ------------- --}}
                         <div class="tab-pane" id="sending_reply" role="tabpanel" aria-labelledby="home-tab">
                             <form id="finalOrderForm" action="javascript:void(0)" class="form" method="POST"
@@ -47,11 +38,9 @@
                                 @csrf
                                 <div class="row_int">
                                     <div class="col-lg-12">
-                                        <!--begin::Card-->
-                                        {{-- <div class="step"> --}}
+
                                         <input type="hidden" id="caseIDForFinalOrder" name="case_id">
-                                        <fieldset class="mb-8">
-                                            {{-- <legend> মামলার ফলাফল</legend> --}}
+
                                             <div class="form-group row">
                                                 <div class="col-md-12 mb-5">
                                                     <input type="checkbox" id="is_final_order" name="is_final_order"
@@ -64,8 +53,6 @@
                                             <div id="finalOrderDiv">
                                                 <div class="form-group row">
                                                     <input type="hidden" name="case_id" value="{{ $case->id }}">
-
-
                                                     <div class="col-lg-4">
                                                         <label>রায় ঘোষণার তারিখ<span class="text-danger"></span></label>
                                                         <input type="text" name="result_date"
@@ -74,7 +61,6 @@
                                                     </div>
 
                                                     <div class="col-md-6 mb-5">
-
                                                         <label class="form-group font-weight-bolder font-size-h5">ফলাফল
                                                         </label>
                                                         <div class="radio-inline">
@@ -118,7 +104,6 @@
                                                             <div class="d-flex align-items-center mr-2 py-2">
                                                                 <h3 class="mb-0 mr-8">সংযুক্তি
                                                                     (চূড়ান্ত আদেশ/রায় সম্পর্কিত কপি সংযুক্ত করুন)
-
                                                                 </h3>
                                                             </div>
 
@@ -150,10 +135,8 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                {{-- end সংযুক্তি --}}
                                             </div>
                                         </fieldset>
-                                        {{-- </div> --}}
 
                                     </div>
                                 </div>

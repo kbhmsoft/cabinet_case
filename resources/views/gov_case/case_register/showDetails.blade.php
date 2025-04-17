@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                                                                              @if (Auth::user()->role_id == 2)
+                                                                                                                  @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                                                                            </div> -->
+                                                                                                                </div> -->
                 </div>
             </div>
             <table class="details-pdf-button">
@@ -350,7 +350,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             @php $k = 1; @endphp
                             @foreach ($caseBibadi as $bibadi)
                                 <tr>
@@ -367,8 +366,6 @@
 
                         </tbody>
                     </table>
-
-
                 </div>
             </div>
             {{--  @php
@@ -427,7 +424,6 @@
             <br>
             <br>
             <br>
-
             <div class="row">
                 <div class="col-md-5">
                     @if ($case->order_date != null)

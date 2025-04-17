@@ -1531,6 +1531,8 @@ class GovCaseRegisterController extends Controller
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->get();
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
+
+
         $data['page_title'] = 'আপিলের দায়েরের জন্য পেন্ডিং মামলার তালিকা';
 
         return view('gov_case.case_register.appeal_submission_against_pending')->with($data);
@@ -3264,6 +3266,7 @@ class GovCaseRegisterController extends Controller
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
+        
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])
@@ -3944,7 +3947,7 @@ class GovCaseRegisterController extends Controller
     public function getDependentConcernPerson($id)
     {
         $getdependentUser = User::where('role_id', $id)->pluck("name", "id");
-        
+
         return json_encode($getdependentUser);
     }
 
