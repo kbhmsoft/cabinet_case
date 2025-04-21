@@ -98,7 +98,7 @@
             gap: var(--section-gap);
             padding: 2rem;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1160px;
             margin: 0 auto;
         }
 
@@ -275,7 +275,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0.5rem;
-            gap: 3rem;
+            gap: 50rem;
         }
 
         .footer-widget {

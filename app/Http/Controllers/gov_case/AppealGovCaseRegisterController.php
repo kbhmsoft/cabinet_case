@@ -234,12 +234,12 @@ class AppealGovCaseRegisterController extends Controller
     public function appealCaseShow($id)
     {
         $data['appealCase']                  = AppealGovCaseRegister::findOrFail($id);
+        $data['GovCaseOffice']               = GovCaseOffice::get();
         $data['appealAdalat']                = GovCaseAppealAdalat::with('appealAdalat')->where('gov_case_id', $id)->get();
         $data['GovCaseDivisionCategory']     = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
         $data['appealAttachment']            = AppealAttachment::where('appeal_gov_case_id', $id)->get();
         $data['page_title']                  = 'সরকারি স্বার্থসংশ্লিষ্ট আপিল বিভাগের মামলার বিস্তারিত তথ্য';
-        // return $data;
         return view('gov_case.appeal_case_register.showAppealDetails')->with($data);
     }
 

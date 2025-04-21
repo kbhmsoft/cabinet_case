@@ -1946,29 +1946,10 @@ class GovCaseRegisterController extends Controller
             $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
         }
 
-        if (!empty($_GET['date_start']) && !empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
-        }
-
         if (!empty($_GET['case_no'])) {
             $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
         }
-        if (!empty($_GET['division'])) {
-            $query->where('gov_case_registers.division_id', '=', $_GET['division']);
-        }
-        if (!empty($_GET['district'])) {
-            $query->where('gov_case_registers.district_id', '=', $_GET['district']);
-        }
-        if (!empty($_GET['upazila'])) {
-            $query->where('gov_case_registers.upazila_id', '=', $_GET['upazila']);
-        }
-        if ($roleID == 5 || $roleID == 7) {
-            $query->where('district_id', $officeInfo->district_id)->orderby('id', 'DESC');
-        } elseif ($roleID == 9 || $roleID == 21) {
-            $query->where('upazila_id', $officeInfo->upazila_id)->orderby('id', 'DESC');
-        }
+
 
         $data['cases'] = $query->paginate(10)->withQueryString();
 
@@ -1980,7 +1961,7 @@ class GovCaseRegisterController extends Controller
 
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট নিষ্পত্তিকৃত মামলার তালিকা';
 
-        return view('gov_case.case_register.highcourt')->with($data);
+        return view('gov_case.case_register.highcourt_complete_case')->with($data);
     }
 
     //     public function appellate_division_complete_case()
@@ -3266,7 +3247,7 @@ class GovCaseRegisterController extends Controller
         $data['appealCase'] = DB::table('gov_case_registers')->select('id', 'case_no')->where('case_division_id', 2)->where('status', 3)->get();
         $data['GovCaseDivisionCategory'] = GovCaseDivisionCategory::all();
         $data['GovCaseDivisionCategoryType'] = GovCaseDivisionCategoryType::all();
-        
+
         $data['courts'] = DB::table('court')
             ->select('id', 'court_name')
             ->whereIn('id', [1, 2])

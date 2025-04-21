@@ -68,10 +68,10 @@
                     {{-- <div class="col-8">fdsafsad</div> --}}
                     {{-- <div class="col-2"><a href="{{ route('messages_group') }}" class="btn btn-primary float-right">Message</a></div> --}}
                     <!--  <div class="col-2">
-                                                      @if (Auth::user()->role_id == 2)
+                                                          @if (Auth::user()->role_id == 2)
     <a href="{{ route('messages_group') }}?c={{ $case->id }}" class="btn btn-primary float-right">বার্তা</a>
     @endif
-                                                    </div> -->
+                                                        </div> -->
                 </div>
             </div>
         </div>
@@ -164,7 +164,8 @@
                                             {{-- </a> --}}
                                         @else
                                             @if ($appealCase->case_origin_id != 0)
-                                                <a href="#">{{ isset($appealCase->govCaseOrigin) ? $appealCase->govCaseOrigin->case_no : '' }}</a>
+                                                <a
+                                                    href="#">{{ isset($appealCase->govCaseOrigin) ? $appealCase->govCaseOrigin->case_no : '' }}</a>
                                             @else
                                                 {{ $appealCase->case_number_origin }}
                                             @endif
@@ -277,7 +278,73 @@
                             @endif
 
                     </table>
+                    <table class="table table-striped border">
+                        <thead>
+                            @if (!empty($GovCaseOffice))
+                                @php
+                                    $matchedOffice = $GovCaseOffice->firstWhere(
+                                        'doptor_office_id',
+                                        $appealCase->appeal_office_id,
+                                    );
+                                @endphp
 
+                                @if ($matchedOffice)
+                                    <table class="table table-striped border">
+                                        <thead>
+                                            <tr>
+                                                <th class="h3" scope="col" colspan="2">আপিলকারি অফিস</th>
+                                            </tr>
+                                            <tr class="bg-light-primary">
+                                            
+                                                <th scope="row" class="text-center" width="200">নাম</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                <td class="tg-nluh text-center">{{ $matchedOffice->office_name_bn }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                @endif
+                            @endif
+
+                    </table>
+
+
+                    <table class="table table-striped border">
+                        <thead>
+                            @if (!empty($GovCaseOffice))
+                                @php
+                                    $matchedOffice = $GovCaseOffice->firstWhere(
+                                        'doptor_office_id',
+                                        $appealCase->created_by_office,
+                                    );
+                                @endphp
+
+                                @if ($matchedOffice)
+                                    <table class="table table-striped border">
+                                        <thead>
+                                            <tr>
+                                                <th class="h3" scope="col" colspan="2"> মূল রেসপন্ডেন্ট আপিল অফিস
+                                                </th>
+                                            </tr>
+                                            <tr class="bg-light-primary">
+
+                                                <th scope="row" class="text-center" width="200">নাম</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                <td class="tg-nluh text-center">{{ $matchedOffice->office_name_bn }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                @endif
+                            @endif
+
+                    </table>
 
                     <table class="table table-striped border">
                         <thead>
@@ -485,9 +552,11 @@
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bolder font-size-h3" id="exampleModalLabel">
+                                            <h5 class="modal-title font-weight-bolder font-size-h3"
+                                                id="exampleModalLabel">
                                                 {{ $file->file_type }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
                                                 <i aria-hidden="true" class="ki ki-close"></i>
                                             </button>
                                         </div>
