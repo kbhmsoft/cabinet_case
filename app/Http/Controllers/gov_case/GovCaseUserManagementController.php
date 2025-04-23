@@ -183,11 +183,15 @@ class GovCaseUserManagementController extends Controller
         if (! empty($_GET['office_id'])) {
             $query->where('users.office_id', '=', $_GET['office_id']);
         }
-        if (! empty($_GET['role'])) {
-            $query->where('users.role_id', '=', $_GET['role']);
+
+        if (! empty($_GET['case_category_type'])) {
+            $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
         }
 
-        // $data['users'] = $query->paginate(10)->withQueryString();
+        if (! empty($_GET['case_no'])) {
+            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        }
+
         $data['users'] = $query->get();
 
         $data['user_role'] = DB::table('roles')->select('id', 'name', 'name_bn')

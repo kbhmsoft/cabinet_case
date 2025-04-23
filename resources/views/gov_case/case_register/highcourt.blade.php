@@ -226,8 +226,6 @@
                                             <?php
                                             $roleID = Auth()->user()->role_id;
                                             ?>
-
-
                                             @can('highcourt_adalat_reply_sending')
                                                 @if ($row->adalat_reply_submit_have == null)
                                                     @if (empty($row->adalat_reply_sending_date))
@@ -444,3 +442,6 @@
                     });
             }
         </script>
+
+
+     

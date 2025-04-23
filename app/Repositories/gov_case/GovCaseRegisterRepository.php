@@ -886,7 +886,7 @@ class GovCaseRegisterRepository
             $case->adesh_tamil_decision_yes_taken                                = $caseInfo->adesh_tamil_decision_yes_taken;
             $case->sending_request_for_appeal_against_intreim_person_solicitor   = $caseInfo->sending_request_for_appeal_against_intreim_person_solicitor;
             $case->sending_request_for_appeal_against_intreim_person_law_officer = $caseInfo->sending_request_for_appeal_against_intreim_person_law_officer;
-            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date;
+            $case->appeal_submission_requesting_date                             = $appeal_submission_requesting_date ?? null;
             $case->appeal_submission_requesting_memorial                         = $caseInfo->appeal_submission_requesting_memorial;
             $case->appeal_against_postpond_interim_order_date                    = $appeal_against_postpond_interim_order_date;
             $case->soltrack_tracking_number_for_appeal_against_intreim_order     = $caseInfo->soltrack_tracking_number_for_appeal_against_intreim_order;
