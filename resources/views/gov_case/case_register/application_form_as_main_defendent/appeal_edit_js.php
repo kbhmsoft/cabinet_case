@@ -392,7 +392,7 @@ function addBibadiRowFunc() {
         items += '</tr>';
         // console.log(items);
         return items;
-    }
+}
     $('.other_respondentCls').select2();
 }
 

@@ -155,7 +155,7 @@
                     </thead>
                     <tbody>
                         @foreach ($cases as $key => $row)
-                            {{-- @dd($row->orderTakenAgainstGov) --}}
+
                             <tr>
                                 <td scope="row" style="text-align:center;" class="tg-bn">
                                     {{ en2bn($key + $cases->firstItem()) }}.</td>
@@ -244,7 +244,7 @@
                                                             href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
                                                             জবাব প্রেরণ</a>
                                                     @endif
-                                                    @if ($row->postponed_interim_have !== 0)
+                                                    @if ($row->postponed_interim_have == 0 )
                                                         <a class="dropdown-item"
                                                             href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
                                                             স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
@@ -444,4 +444,4 @@
         </script>
 
 
-     
+

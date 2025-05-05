@@ -1540,11 +1540,11 @@ class GovCaseRegisterController extends Controller
             $query->where('gov_case_registers.case_category_id', '=', $_GET['case_category_id']);
         }
 
-        if (! empty($_GET['date_start']) && ! empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo   = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
-        }
+        // if (! empty($_GET['date_start']) && ! empty($_GET['date_end'])) {
+        //     $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
+        //     $dateTo   = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
+        //     $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        // }
 
         $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
 
@@ -3630,24 +3630,24 @@ class GovCaseRegisterController extends Controller
             }
             //========= Gov Case Activity Log -  start ============
             $caseRegister     = GovCaseRegister::findOrFail($caseId)->toArray();
-            $caseRegisterData = array_merge($caseRegister, [
-                'badi'       => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
-                'bibadi'     => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
-                'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
-                'log_data'   => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
-            ]);
+            // $caseRegisterData = array_merge($caseRegister, [
+            //     'badi'       => GovCaseBadi::where('gov_case_id', $caseId)->get()->toArray(),
+            //     'bibadi'     => GovCaseBibadi::where('gov_case_id', $caseId)->get()->toArray(),
+            //     'attachment' => Attachment::where('gov_case_id', $caseId)->get()->toArray(),
+            //     'log_data'   => GovCaseLog::where('gov_case_id', $caseId)->get()->toArray(),
+            // ]);
             // return $caseRegisterData;
-            $cs_activity_data['case_register_id'] = $caseId;
-            if ($request->formType != 'edit') {
-                $cs_activity_data['activity_type'] = 'create';
-                $cs_activity_data['message']       = 'লিভ টু আপিল করা হয়েছে';
-            } else {
-                $cs_activity_data['activity_type'] = 'update';
-                $cs_activity_data['message']       = 'লিভ টু আপিল করা হয়েছে';
-            }
-            $cs_activity_data['old_data'] = null;
-            $cs_activity_data['new_data'] = json_encode($caseRegisterData);
-            gov_case_activity_logs($cs_activity_data);
+            // $cs_activity_data['case_register_id'] = $caseId;
+            // if ($request->formType != 'edit') {
+            //     $cs_activity_data['activity_type'] = 'create';
+            //     $cs_activity_data['message']       = 'লিভ টু আপিল করা হয়েছে';
+            // } else {
+            //     $cs_activity_data['activity_type'] = 'update';
+            //     $cs_activity_data['message']       = 'লিভ টু আপিল করা হয়েছে';
+            // }
+            // $cs_activity_data['old_data'] = null;
+            // $cs_activity_data['new_data'] = json_encode($caseRegisterData);
+            // gov_case_activity_logs($cs_activity_data);
             // ========= Gov Case Activity Log  End ==========
 
         } catch (\Exception $e) {
