@@ -354,6 +354,16 @@ class AppealGovCaseRegisterController extends Controller
             ->where('is_final_order', 0)
             ->where('deleted_at', '=', null);
 
+        if ($roleID == 27) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        } elseif ($roleID == 29 || $roleID == 31) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } elseif ($roleID == 32 || $roleID == 41) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
         if ($roleID == 32 || $roleID == 41) {
             $query->where('created_by_office', $officeID);
         }
@@ -363,22 +373,27 @@ class AppealGovCaseRegisterController extends Controller
             $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
-        if ($roleID == 44) {
-            $query->where('created_by_office', $officeID);
-        }
+        $caseNo       = request('case_no');
+        $categoryType = request('case_category_type');
+        $officeId     = request('office_id');
+
+        $data['ministries']                      = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices']                      = GovCaseOffice::where('level', 3)->get();
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::whereIn('gov_case_category_id', [7, 8, 9, 10])
+            ->orderBy('id', 'desc')
+            ->select('id', 'name_bn', 'gov_case_category_id')
+            ->get();
 
         if (! empty($_GET['case_category_type'])) {
             $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
 
-        if (! empty($_GET['date_start']) && ! empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo   = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
-        }
-
         if (! empty($_GET['case_no'])) {
             $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if (! empty($_GET['office_id'])) {
+            $query->where('appeal_gov_case_register.created_by_office', '=', $_GET['office_id']);
         }
 
         $data['cases']               = $query->paginate(10)->withQueryString();
@@ -406,6 +421,16 @@ class AppealGovCaseRegisterController extends Controller
             ->where('is_final_order', 1)
             ->where('deleted_at', '=', null);
 
+        if ($roleID == 27) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        } elseif ($roleID == 29 || $roleID == 31) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } elseif ($roleID == 32 || $roleID == 41) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
+
+        $data['offices'] = DB::table('gov_case_office')->get();
+
         if ($roleID == 32 || $roleID == 41) {
             $query->where('created_by_office', $officeID);
         }
@@ -415,23 +440,27 @@ class AppealGovCaseRegisterController extends Controller
             $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
-        if ($roleID == 44) {
-            $query->where('created_by_office', $officeID);
-        }
+        $caseNo       = request('case_no');
+        $categoryType = request('case_category_type');
+        $officeId     = request('office_id');
+
+        $data['ministries']                      = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices']                      = GovCaseOffice::where('level', 3)->get();
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::whereIn('gov_case_category_id', [7, 8, 9, 10])
+            ->orderBy('id', 'desc')
+            ->select('id', 'name_bn', 'gov_case_category_id')
+            ->get();
 
         if (! empty($_GET['case_category_type'])) {
             $query->where('appeal_gov_case_register.case_type_id', '=', $_GET['case_category_type']);
         }
 
-        if (! empty($_GET['date_start']) && ! empty($_GET['date_end'])) {
-            // dd(1);
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo   = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi   ', [$dateFrom, $dateTo]);
-        }
-
         if (! empty($_GET['case_no'])) {
             $query->where('appeal_gov_case_register.case_no', '=', $_GET['case_no']);
+        }
+
+        if (! empty($_GET['office_id'])) {
+            $query->where('appeal_gov_case_register.created_by_office', '=', $_GET['office_id']);
         }
 
         $data['cases']               = $query->paginate(10)->withQueryString();
@@ -1683,8 +1712,9 @@ class AppealGovCaseRegisterController extends Controller
         session()->forget('currentUrlPath');
 
         $officeInfo = user_office_info();
-        $roleID     = userInfo()->role_id;
-        $officeID   = userInfo()->office_id;
+
+        $roleID   = userInfo()->role_id;
+        $officeID = userInfo()->office_id;
 
         $query = AppealGovCaseRegister::orderby('id', 'DESC')
             ->where('deleted_at', '=', null);
@@ -1736,7 +1766,6 @@ class AppealGovCaseRegisterController extends Controller
         $data['case_divisions']      = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
         $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')
             ->where('gov_case_division_id', 1)->get();
-
 
         $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
