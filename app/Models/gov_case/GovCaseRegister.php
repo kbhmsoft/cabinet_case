@@ -130,6 +130,7 @@ class GovCaseRegister extends Model
         'sending_reply_person_unit',
         'adalat_reply_submit_have',
         'adalat_reply_sending_date',
+        'postponed_page_saved'
     ];
 
     public function users()

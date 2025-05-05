@@ -145,6 +145,8 @@
                                 পিটিশনারের নাম</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
                                 বিষয়বস্তু</th>
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">আপিলের
+                                সময়/তামাদি গননা</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">দফাওয়ারি
                                 জবাব প্রেরণের তারিখ</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ
@@ -155,8 +157,34 @@
                     </thead>
                     <tbody>
                         @foreach ($cases as $key => $row)
+                            @php
+                                $resultDate = $row->result_date ? \Carbon\Carbon::parse($row->result_date) : null;
+                                $today = \Carbon\Carbon::today();
+                                $workingDays = 0;
 
-                            <tr>
+                                if ($resultDate && $resultDate->lessThanOrEqualTo($today)) {
+                                    $period = \Carbon\CarbonPeriod::create($resultDate, $today);
+                                    foreach ($period as $date) {
+                                        if (
+                                            !in_array($date->dayOfWeek, [
+                                                \Carbon\Carbon::FRIDAY,
+                                                \Carbon\Carbon::SATURDAY,
+                                            ])
+                                        ) {
+                                            $workingDays++;
+                                        }
+                                    }
+                                }
+
+                                $hasAppealInfo = !empty($row->leave_to_appeal_date) && !empty($row->leave_to_appeal_no);
+                                $highlightRow = $workingDays > 30 && !$hasAppealInfo;
+
+                                // $rowStyle = $workingDays > 30 ? 'background-color: #ffe6e6;' : '';
+
+                            @endphp
+
+                            <tr @if ($highlightRow) style="background-color: #f8d7da;" @endif>
+
                                 <td scope="row" style="text-align:center;" class="tg-bn">
                                     {{ en2bn($key + $cases->firstItem()) }}.</td>
                                 <td style="width: 10px;" style="text-align:center;">
@@ -178,6 +206,13 @@
                                 </td>
 
                                 <td style="text-align:center;">{{ Str::limit($row->subject_matter, 100) ?? '-' }}</td>
+
+
+                                <td style="text-align:center;">
+                                    {{ $row->result_date ? ' ' . en2bn($workingDays) . ' দিন অতিবাহিত হয়েছে' : '-' }}
+                                </td>
+
+
 
                                 <td style="text-align:center;">
                                     {{ $row->result_sending_date ? en2bn($row->result_sending_date) : '-' }}</td>
@@ -244,7 +279,7 @@
                                                             href="{{ route('cabinet.case.sendingReplyEdit', $row->id) }}">
                                                             জবাব প্রেরণ</a>
                                                     @endif
-                                                    @if ($row->postponed_interim_have !== 0 )
+                                                    @if ($row->postponed_interim_have !== 0)
                                                         <a class="dropdown-item"
                                                             href="{{ route('cabinet.case.suspensionOrderEdit', $row->id) }}">
                                                             স্থগিতাদেশের/অন্তর্বর্তীকালীন<br>আদেশের বিষয়ে ব্যাবস্থা</a>
@@ -342,9 +377,11 @@
                                         @endif
                                     </div>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             @endif
             <div class="d-flex justify-content-center">
@@ -442,6 +479,3 @@
                     });
             }
         </script>
-
-
-

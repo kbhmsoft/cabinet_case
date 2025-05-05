@@ -898,6 +898,7 @@ class GovCaseRegisterRepository
             $case->tamil_requesting_date                                         = $tamil_requesting_date;
             $case->interim_order                                                 = $caseInfo->interim_order;
             $case->interim_order_details                                         = $caseInfo->interim_order_details;
+            $case->postponed_page_saved                                          = 1;
             if ($case->save()) {
                 $caseId = $case->id;
             }
