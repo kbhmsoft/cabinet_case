@@ -826,11 +826,11 @@ class GovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 33) {
-            $queryAppeal->where('appeal_office_id', $officeID);
+            $queryAppeal->where('appeal_office_id', $effectiveOfficeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $queryAppeal->where('appeal_office_id', $officeID);
+            $queryAppeal->where('appeal_office_id', $effectiveOfficeID);
         }
 
         if ($roleID == 27) {
@@ -844,11 +844,11 @@ class GovCaseRegisterController extends Controller
         $data['offices'] = DB::table('gov_case_office')->get();
 
         if ($roleID == 32 || $roleID == 41) {
-            $query->where('created_by_office', $officeID);
+            $query->where('created_by_office', $effectiveOfficeID);
         }
 
         if ($roleID == 29 || $roleID == 31) {
-            $finalOfficeIds = $this->getTwoLevelOfficeIds([$officeID]);
+            $finalOfficeIds = $this->getTwoLevelOfficeIds([$effectiveOfficeID]);
             $query->whereIn('created_by_office', $finalOfficeIds);
         }
 
@@ -5359,73 +5359,154 @@ class GovCaseRegisterController extends Controller
 
         return view('gov_case.case_register.highcourt_against_highcourt_gov')->with($data);
     }
-    public function sentToSolicitorPending()
+    public function sentToSolicitorPending(Request $request)
     {
         session()->forget('currentUrlPath');
 
-        $officeInfo       = user_office_info();
-        $roleID           = userInfo()->role_id;
-        $officeID         = userInfo()->office_id;
-        $childOfficeQuery = DB::table('gov_case_office')
-            ->select('id')
-            ->where('parent', $officeID)->get();
+        $officeInfo = user_office_info();
+        $roleID     = userInfo()->role_id;
+        $loginOfficeID   = userInfo()->office_id;
 
-        foreach ($childOfficeQuery as $childOffice) {
-            $childOfficeIds[] = $childOffice->id;
-        }
-
-        $finalOfficeIds = [];
-
-        if (empty($childOfficeIds)) {
-            $finalOfficeIds[] = $officeID;
-        } else {
-            $finalOfficeIds[] = $officeID;
-            $finalOfficeIds   = array_merge($finalOfficeIds, $childOfficeIds);
-        }
+        $requestedOfficeID = $request->input('office_id');
+        $effectiveOfficeID = $requestedOfficeID ?? $loginOfficeID;
 
         $query = GovCaseRegister::orderby('id', 'DESC')
-            ->whereNull('result_sending_date')->where('is_final_order', 0)->where('deleted_at', null);
+        ->whereNull('result_sending_date')->where('is_final_order', 0)->where('deleted_at', null);
+        // Office types based on role
+        if ($roleID == 27) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->get();
+        } elseif ($roleID == 29 || $roleID == 31) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [1, 2, 5])->get();
+        } elseif ($roleID == 32 || $roleID == 41) {
+            $data['office_types'] = GovCaseOfficeType::orderby('id', 'ASC')->whereIn('id', [5])->get();
+        }
 
-        if ($roleID == 32 || $roleID == 41) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($officeID) {
-                    $query->where('respondent_id', $officeID);
+        $data['ministries']                      = GovCaseOffice::where('level', 1)->get();
+        $data['divOffices']                      = GovCaseOffice::where('level', 3)->get();
+        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::whereIn('gov_case_category_id', [1, 2, 3, 4, 5])
+            ->orderBy('id', 'desc')
+            ->select('id', 'name_bn', 'gov_case_category_id')
+            ->get();
+
+        $data['panel_lawyer'] = User::where('role_id', 45)
+            ->orderBy('id', 'asc')
+            ->select('id', 'name', 'role_id')
+            ->get();
+
+        // Only apply default role-office filter when office_id is NOT passed in request
+        if (empty($requestedOfficeID)) {
+            if ($roleID == 32 || $roleID == 41) {
+                $query->whereHas('bibadis', function ($q) use ($effectiveOfficeID) {
+                    $q->where('respondent_id', $effectiveOfficeID)->where('is_main_bibadi', 1);
+                });
+            } elseif ($roleID == 29 || $roleID == 31) {
+                $finalOfficeIds = $this->getTwoLevelOfficeIds([$effectiveOfficeID]);
+                $query->whereHas('mainBibadis', function ($q) use ($finalOfficeIds) {
+                    $q->whereIn('respondent_id', $finalOfficeIds);
+                });
+            } elseif ($roleID == 44 || $roleID == 45) {
+                $query->whereHas('mainBibadis', function ($q) use ($effectiveOfficeID) {
+                    $q->where('respondent_id', $effectiveOfficeID);
+                });
+            }
+        }
+
+        // Additional filter for panel lawyers
+        $userId = Auth::id();
+        if ($roleID == 45) {
+            $query->whereHas('concernPersons', function ($q) use ($userId) {
+                $q->where('concern_user_id', $userId);
+            });
+        }
+
+        // Filters from request
+        $caseNo                   = $request->input('case_no');
+        $categoryType             = $request->input('case_category_type');
+        $concernPersonDesignation = $request->input('concern_person_designation');
+        $concernPersonName        = $request->input('concern_person_name');
+
+        if (!empty($requestedOfficeID)) {
+            $query->whereHas('bibadis', function ($q) use ($requestedOfficeID) {
+                $q->where('respondent_id', $requestedOfficeID)->where('is_main_bibadi', 1);
+            });
+        }
+
+        if (!empty($concernPersonDesignation)) {
+            $query->whereHas('concernusers', function ($q) use ($concernPersonDesignation, $concernPersonName) {
+                $q->where('concern_person_designation', $concernPersonDesignation);
+                if (!empty($concernPersonName)) {
+                    $q->where('concern_user_id', $concernPersonName);
                 }
-            );
+            });
         }
 
-        if ($roleID == 29 || $roleID == 31) {
-            $query->whereHas(
-                'mainBibadis',
-                function ($query) use ($finalOfficeIds) {
-                    $query->whereIn('respondent_id', $finalOfficeIds);
-                }
-            );
+        if (!empty($categoryType)) {
+            $query->where('gov_case_registers.case_type_id', $categoryType);
         }
 
-        if (! empty($_GET['case_category_type'])) {
-            $query->where('gov_case_registers.case_type_id', '=', $_GET['case_category_type']);
+        if (!empty($caseNo)) {
+            $query->where('gov_case_registers.case_no', $caseNo);
         }
 
-        if (! empty($_GET['date_start']) && ! empty($_GET['date_end'])) {
-            $dateFrom = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_start'])));
-            $dateTo   = date('Y-m-d', strtotime(str_replace('/', '-', $_GET['date_end'])));
-            $query->whereBetween('date_issuing_rule_nishi', [$dateFrom, $dateTo]);
+        $data['office'] = DB::table('gov_case_office')->select('id', 'doptor_office_id', 'office_name_bn')->get();
+        $data['cases']  = $query->paginate(10)->withQueryString();
+
+        // Concern person designations
+        $concernRoleIdsQuery = DB::table('gov_case_concern_persons')
+            ->join('gov_case_registers', 'gov_case_concern_persons.gov_case_id', '=', 'gov_case_registers.id')
+            ->whereNull('gov_case_registers.deleted_at')
+            ->whereNotNull('gov_case_concern_persons.concern_person_designation');
+
+        if (empty($requestedOfficeID)) {
+            if ($roleID == 32 || $roleID == 41) {
+                $concernRoleIdsQuery->whereExists(function ($sub) use ($effectiveOfficeID) {
+                    $sub->select(DB::raw(1))
+                        ->from('gov_case_bibadis')
+                        ->whereColumn('gov_case_bibadis.gov_case_id', 'gov_case_registers.id')
+                        ->where('respondent_id', $effectiveOfficeID)
+                        ->where('is_main_bibadi', 1);
+                });
+            } elseif ($roleID == 29 || $roleID == 31) {
+                $finalOfficeIds = $this->getTwoLevelOfficeIds([$effectiveOfficeID]);
+                $concernRoleIdsQuery->whereExists(function ($sub) use ($finalOfficeIds) {
+                    $sub->select(DB::raw(1))
+                        ->from('gov_case_bibadis')
+                        ->whereColumn('gov_case_bibadis.gov_case_id', 'gov_case_registers.id')
+                        ->whereIn('respondent_id', $finalOfficeIds);
+                });
+            } elseif ($roleID == 44 || $roleID == 45) {
+                $concernRoleIdsQuery->whereExists(function ($sub) use ($effectiveOfficeID) {
+                    $sub->select(DB::raw(1))
+                        ->from('gov_case_bibadis')
+                        ->whereColumn('gov_case_bibadis.gov_case_id', 'gov_case_registers.id')
+                        ->where('respondent_id', $effectiveOfficeID);
+                });
+            }
         }
 
-        if (! empty($_GET['case_no'])) {
-            $query->where('gov_case_registers.case_no', '=', $_GET['case_no']);
+        if ($roleID == 45) {
+            $concernRoleIdsQuery->where('concern_user_id', $userId);
         }
 
-        $data['cases'] = $query->paginate(10);
+        $concernRoleIds = $concernRoleIdsQuery
+            ->select('gov_case_concern_persons.concern_person_designation')
+            ->distinct()
+            ->pluck('concern_person_designation')
+            ->toArray();
+
+        $data['concernPersonDesignation'] = Role::select('id', 'name_bn')
+            ->whereIn('id', $concernRoleIds)
+            ->orderBy('name_bn')
+            ->get();
 
         $data['case_divisions']      = DB::table('gov_case_divisions')->select('id', 'name_bn')->get();
-        $data['division_categories'] = DB::table('gov_case_division_categories')->select('id', 'name_bn')->where('gov_case_division_id', 2)->get();
-        $data['user_role']           = DB::table('roles')->select('id', 'name')->get();
+        $data['division_categories'] = DB::table('gov_case_division_categories')
+            ->select('id', 'name_bn')
+            ->where('gov_case_division_id', 2)
+            ->get();
+        $data['user_role'] = DB::table('roles')->select('id', 'name')->get();
 
-        $data['gov_case_division_category_type'] = GovCaseDivisionCategoryType::orderby('id', 'desc')->select('id', 'name_bn')->get();
-
+        $data['selected_office_id'] = $requestedOfficeID;
         $data['page_title'] = 'হাইকোর্ট বিভাগে সরকারি স্বার্থসংশ্লিষ্ট জবাব প্রেরণের জন্য পেন্ডিং
         মামলার তালিকা';
 
