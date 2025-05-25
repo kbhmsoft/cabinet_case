@@ -90,11 +90,13 @@
                                                 <div class="sending_reply_div">
                                                     <div class="form-group row">
                                                         <div class="col-lg-6 mb-5 mt-8">
-                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ </label>
+                                                            <label>দফাওয়ারি জবাব সলিসিটর অনুবিভাগে প্রেরণের তারিখ <span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" name="result_sending_date"
                                                                 id="result_sending_date"
                                                                 class="form-control form-control-sm  common_datepicker"
-                                                                placeholder="দিন/মাস/বছর" autocomplete="off">
+                                                                placeholder="দিন/মাস/বছর" autocomplete="off"
+                                                                required="required">
                                                         </div>
 
                                                         <div class="col-lg-6 mb-5 mt-8">
@@ -362,6 +364,53 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Initially hide the tracking number field (if not already hidden)
+            $('#trackingNumberField').hide();
+
+            // When "সলিসিটর" checkbox is clicked
+            $('#solicitor_checkbox').change(function() {
+                if ($(this).is(':checked')) {
+                    // Uncheck the law officer checkbox
+                    $('#law_officer_checkbox').prop('checked', false);
+                    // Show the tracking number field (since Solicitor is selected)
+                    $('#trackingNumberField').show();
+                    // Restore all labels to "সলিসিটর"
+                    updateLabels('সলিসিটর');
+                } else {
+                    // If unchecked, hide the tracking field
+                    $('#trackingNumberField').hide();
+                }
+            });
+
+            // When "আইন কর্মকর্তা/প্যানেল আইনজীবী" checkbox is clicked
+            $('#law_officer_checkbox').change(function() {
+                if ($(this).is(':checked')) {
+                    // Uncheck the solicitor checkbox
+                    $('#solicitor_checkbox').prop('checked', false);
+                    // Hide the tracking number field (since Law Officer is selected)
+                    $('#trackingNumberField').hide();
+                    // Update all labels to "আইন কর্মকর্তা/প্যানেল আইনজীবী"
+                    updateLabels('আইন কর্মকর্তা/প্যানেল আইনজীবী');
+                }
+            });
+
+            // Function to update labels dynamically
+            function updateLabels(replacementText) {
+                $('.sending_reply_div label').each(function() {
+                    var labelText = $(this).text();
+                    if (replacementText === 'সলিসিটর') {
+                        // Replace "আইন কর্মকর্তা/প্যানেল আইনজীবী" back to "সলিসিটর"
+                        $(this).text(labelText.replace('আইন কর্মকর্তা/প্যানেল আইনজীবী', 'সলিসিটর'));
+                    } else {
+                        // Replace "সলিসিটর" with "আইন কর্মকর্তা/প্যানেল আইনজীবী"
+                        $(this).text(labelText.replace('সলিসিটর', replacementText));
+                    }
+                });
+            }
         });
     </script>
 @endsection

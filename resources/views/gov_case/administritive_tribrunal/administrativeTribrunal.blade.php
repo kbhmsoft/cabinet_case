@@ -87,16 +87,15 @@
                                 width="30">ক্রমিক</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলা নং
                             </th>
-                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
                                 শ্রেণী/কেস-টাইপ</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">
                                 পিটিশনারের নাম</th>
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">মামলার
                                 বিষয়বস্তু</th>
-                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">দফাওয়ারি
-                            নোটিশ প্রেরণের তারিখ</th>
-                            {{-- {{-- <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">সর্বশেষ --}}
-                                {{-- অবস্থা</th> --}}
+                            <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;">নোটিশ
+                                জারির তারিখ</th>
+
                             <th scope="col" style="text-align:center; font-size: 12px; vertical-align: middle;"
                                 width="170px">অ্যাকশন</th>
                         </tr>
@@ -133,7 +132,8 @@
                                         <div class="dropdown-menu">
                                             @can('show_details_info')
                                                 <a class="dropdown-item"
-                                                    href="{{ route('cabinet.case.administritiveTribrunalDetails', $row->id) }}">বিস্তারিত তথ্য</a>
+                                                    href="{{ route('cabinet.case.administritiveTribrunalDetails', $row->id) }}">বিস্তারিত
+                                                    তথ্য</a>
                                             @endcan
 
                                             <?php

@@ -176,14 +176,10 @@
                                     }
                                 }
 
-                                $hasAppealInfo = !empty($row->leave_to_appeal_date) && !empty($row->leave_to_appeal_no);
-                                $highlightRow = $workingDays > 30 && !$hasAppealInfo;
-
-                                // $rowStyle = $workingDays > 30 ? 'background-color: #ffe6e6;' : '';
-
+                                $rowStyle = $workingDays > 30 ? 'background-color: #ffe6e6;' : '';
                             @endphp
 
-                            <tr @if ($highlightRow) style="background-color: #f8d7da;" @endif>
+                            <tr style="{{ $rowStyle }}">
 
                                 <td scope="row" style="text-align:center;" class="tg-bn">
                                     {{ en2bn($key + $cases->firstItem()) }}.</td>

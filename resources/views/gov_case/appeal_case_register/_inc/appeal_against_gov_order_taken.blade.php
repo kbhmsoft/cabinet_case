@@ -128,7 +128,7 @@
 
                                                     <div class="col-md-6">
                                                         <label class="form-group font-weight-bolder font-size-h5">রায়ের
-                                                            বিরুদ্ধে আপিলের সিদ্ধান্ত গ্রহণ করা হয়েছে
+                                                            বিরুদ্ধে রিভিশনের সিদ্ধান্ত গ্রহণ করা হয়েছে
                                                         </label>
                                                         <div class="radio-inline">
                                                             <label class="radio">

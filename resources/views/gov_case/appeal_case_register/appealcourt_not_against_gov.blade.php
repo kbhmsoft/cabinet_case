@@ -32,48 +32,46 @@
         }
     </script>
 
-<style>
+    <style>
+        .product-image {
+            position: relative;
+        }
 
+        .product-text {
+            position: absolute;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-    .product-image {
-        position: relative;
-    }
+        .product-image:hover .product-text {
+            display: block;
+            opacity: 1;
+            /* Show tooltip */
+            bottom: 54px;
+            left: -79px;
+            z-index: 999;
+            width: 200px;
+        }
 
-    .product-text {
-        position: absolute;
-        display: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+        .indicator {
+            position: relative;
+            cursor: pointer;
+        }
 
-    .product-image:hover .product-text {
-        display: block;
-        opacity: 1;
-        /* Show tooltip */
-        bottom: 54px;
-        left: -79px;
-        z-index: 999;
-        width: 200px;
-    }
-
-    .indicator {
-        position: relative;
-        cursor: pointer;
-    }
-
-    .indicator:hover::after {
-        content: '';
-        position: absolute;
-        top: calc(100% + 5px);
-        left: 50%;
-        transform: translateX(-50%);
-        width: 10px;
-        height: 10px;
-        background-color: black;
-        border-radius: 50%;
-        z-index: 999;
-    }
-</style>
+        .indicator:hover::after {
+            content: '';
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            z-index: 999;
+        }
+    </style>
     <!--begin::Card-->
     <div class="card card-custom">
         <div class="card-header flex-wrap py-5">
@@ -99,7 +97,7 @@
                 </div>
             @endif
 
-            @include('gov_case.search')
+            @include('gov_case.appealSearch')
 
             <table class="table table-hover mb-6 font-size-h5">
                 <thead class="thead-light font-size-h6">
@@ -145,7 +143,10 @@
 
                             <td style="text-align:center;">
                                 @php
-                                    $govCaseOffice = App\Models\gov_case\GovCaseOffice::where('doptor_office_id', $row->appeal_office_id)->first();
+                                    $govCaseOffice = App\Models\gov_case\GovCaseOffice::where(
+                                        'doptor_office_id',
+                                        $row->appeal_office_id,
+                                    )->first();
                                 @endphp
                                 {{ $govCaseOffice->office_name_bn ?? '' }}
                             </td>
@@ -175,11 +176,11 @@
                                         <div class="product-text">
                                             <div class="card card-custom">
                                                 <div class="card-body">
-                                                    <a href="#"
-                                                    data-case-division-id="{{ $row->case_division_id }}"
-                                                    data-case-type-id="{{ $row->case_type_id }}" data-case-number="{{ $row->case_no }}"
-                                                    data-case-year="{{ $row->year }}"
-                                                    class="caseLinkAppealCourt">শুনানির
+                                                    <a href="#" data-case-division-id="{{ $row->case_division_id }}"
+                                                        data-case-type-id="{{ $row->case_type_id }}"
+                                                        data-case-number="{{ $row->case_no }}"
+                                                        data-case-year="{{ $row->year }}"
+                                                        class="caseLinkAppealCourt">শুনানির
                                                         তারিখ/সংক্ষিপ্ত আদেশ দেখতে এখানে ক্লিক করুন</a>
                                                 </div>
                                             </div>
@@ -263,8 +264,8 @@
     {{-- Scripts Section Related Page --}}
     @section('scripts')
         <!-- <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
-                                                                   <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
-                                                                 -->
+                                                                       <script src="{{ asset('js/pages/crud/datatables/advanced/multiple-controls.js') }}"></script>
+                                                                     -->
         <!--end::Page Scripts-->
     @endsection
     @section('scripts')
@@ -291,26 +292,25 @@
         </script> --}}
     @endsection
 
-       <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var linkElements = document.querySelectorAll('.caseLinkAppealCourt');
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var linkElements = document.querySelectorAll('.caseLinkAppealCourt');
 
-                linkElements.forEach(function(linkElement) {
-                    linkElement.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        var division_id = linkElement.getAttribute('data-case-division-id');
-                        var case_type_id = linkElement.getAttribute('data-case-type-id');
-                        var case_number = linkElement.getAttribute('data-case-number');
-                        var year = linkElement.getAttribute('data-case-year');
+            linkElements.forEach(function(linkElement) {
+                linkElement.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var division_id = linkElement.getAttribute('data-case-division-id');
+                    var case_type_id = linkElement.getAttribute('data-case-type-id');
+                    var case_number = linkElement.getAttribute('data-case-number');
+                    var year = linkElement.getAttribute('data-case-year');
 
-                        var link =
-                            `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
+                    var link =
+                        `https://supremecourt.gov.bd/web/case_history/case_history.php?div_id=${division_id}&case_type_id=${case_type_id}&case_number=${case_number}&year=${year}`;
 
-                        if (link) {
-                            window.location.href = link;
-                        }
-                    });
+                    if (link) {
+                        window.location.href = link;
+                    }
                 });
             });
-        </script>
-
+        });
+    </script>

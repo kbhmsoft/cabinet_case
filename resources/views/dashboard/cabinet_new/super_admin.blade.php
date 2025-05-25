@@ -163,11 +163,12 @@
                                 <div class="text-secondary ml-10">
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('cabinet.case.appealAgainstGovtPending') }}"
-                                        class="text-dark">আপিল দায়েরের জন্য পেন্ডিং</a>
+                                            class="text-dark">আপিল দায়েরের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($appealAgainstGovt) }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <a href="{{ route('cabinet.case.sendingReplyPending') }}" class="text-dark">জবাব প্রেরণের জন্য পেন্ডিং</a>
+                                        <a href="{{ route('cabinet.case.sendingReplyPending') }}"
+                                            class="text-dark">জবাব প্রেরণের জন্য পেন্ডিং</a>
                                         <span class="count-numbers ml-10">{{ en2bn($sent_to_solicitor_case) }}</span>
                                     </div>
                                     {{-- <div class="d-flex justify-content-between">
@@ -335,25 +336,35 @@
                     </div>
                 </div>
             </div>
-            <!-- Card 5 - Table with Pie Chart -->
-            {{-- <div class="row">
-                <div class="col-md-6">
-                    <div class="card" style="border-radius: 1rem;">
-                        <div class="card-body" style="margin-bottom: -6.5rem">
-                            <table class="table table-hover mb-6 font-size-h5">
-                            </table>
-                            <canvas id="pieChart1" width="100" height="100" style="margin-bottom: 5rem"></canvas>
+
+            <!-- Card 7 -->
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0 h-100" style="background-color: #f5f5f5;">
+                    <div class="card-body d-flex flex-column"
+                        style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="font-size: 3rem; margin-right: 2rem;">
+                                <img src="{{ asset('uploads/IconeSCMS/1320101.webp') }}"
+                                    style="height: 50px; width: 80%;" alt="Logo" class="brand-image">
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-primary">প্রশাসনিক আপিল ট্রাইব্যুনাল</h5>
+                                <div class="text-secondary ml-10">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}"
+                                            class="text-dark">চলমান মামলা</a>
+                                        <span class="count-numbers ml-10">{{ en2bn($aatRunningCaseTotal) }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="#" class="text-dark">নিষ্পত্তিকৃত মামলা</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card" style="border-radius: 1rem; ">
-                        <div class="card-body" style="margin-bottom: -5rem">
-                            <canvas id="pieChart2" width="100" height="100" style="margin-bottom: 5rem"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+            </div>
+
             <div class=" row mt-4">
                 @include('dashboard.cabinet.inc._dashboard_min_wise_card')
             </div>

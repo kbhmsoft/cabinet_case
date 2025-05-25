@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ApplicationFormAsMainDefendent;
 use App\Models\Dashboard;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
 use App\Models\gov_case\AppealGovCaseRegister;
 use App\Models\gov_case\GovCaseConcernPerson;
 use App\Models\gov_case\GovCaseOffice;
@@ -61,10 +62,10 @@ class DashboardController extends Controller
                     return $val;
                 });
 
-            $data['total_appeal']          = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
-            $data['total_highcourt']= GovCaseRegister::where('deleted_at', '=', null)->count();
-            $data['total_case']            = $data['total_appeal'] + $data['total_highcourt'];
-            $data['total_high_court_case'] = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_appeal']            = AppealGovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_highcourt']         = GovCaseRegister::where('deleted_at', '=', null)->count();
+            $data['total_case']              = $data['total_appeal'] + $data['total_highcourt'];
+            $data['total_high_court_case']   = GovCaseRegister::where('deleted_at', '=', null)->count();
             $data['running_high_court_case'] = GovCaseRegister::where('is_final_order', 0)
                 ->where('deleted_at', '=', null)
                 ->count();
@@ -145,13 +146,12 @@ class DashboardController extends Controller
 
             $data['sent_to_ag_from_sol_case'] = GovCaseRegisterRepository::sendToAgFromSolCases();
             // $data['against_postpond_order'] = GovCaseRegisterRepository::stepNotTakenAgainstPostpondOrderCases();
-            $data['atRunningCaseTotal'] = AdministrativeTribrunalCaseRegister::where('deleted_at', null)->count();
-            $data['page_title']         = 'সিস্টেম অ্যাডমিনের ড্যাশবোর্ড';
+            $data['atRunningCaseTotal']  = AdministrativeTribrunalCaseRegister::where('deleted_at', null)->count();
+            $data['aatRunningCaseTotal'] = AppealAdministrativeTribrunalCaseRegister::where('deleted_at', null)->count();
+
+            $data['page_title'] = 'সিস্টেম অ্যাডমিনের ড্যাশবোর্ড';
 
             $doptorLoginCount = User::whereNotIn('role_id', [42, 43])->whereNotNull('doptor_user_id')->count();
-
-            // $generalLoginCount = User::whereNull('doptor_user_id')->whereNotIn('users.role_id', [42, 43])
-            // ->where('users.is_gov', 1)->count();
 
             $generalLoginCount = DB::table('users')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -275,7 +275,6 @@ class DashboardController extends Controller
         }
 
         if ($roleID == 29) {
-
             $childOfficeIds = DB::table('gov_case_office')
                 ->where('parent_office_id', $officeID)
                 ->pluck('doptor_office_id')
@@ -307,16 +306,17 @@ class DashboardController extends Controller
             $data['highcourt_against_gov'] = $govCases->where('is_final_order', 1)->where('result', 2)->count();
 
             $data['running_high_court_case'] = $govCases->where('is_final_order', 0)->count();
-            // return $data;
-
-            $data['final_high_court_case'] = $govCases->where('is_final_order', 1)->whereNotNull('result')->count();
+            $data['final_high_court_case']   = $govCases->where('is_final_order', 1)->whereNotNull('result')->count();
 
             $data['sent_to_solicitor_case'] = $govCases->whereNull('result_sending_date')->where('is_final_order', 0)->count();
 
             $data['atRunningCaseTotal'] = AdministrativeTribrunalCaseRegister::whereHas('mainBibadis', function ($query) use ($finalOfficeIds) {
                 $query->whereIn('respondent_id', $finalOfficeIds);
             })
+                ->whereNull('deleted_at')
+                ->count();
 
+            $data['appealAdministrativeTribrunal'] = AppealAdministrativeTribrunalCaseRegister::whereIn('created_by_office', $finalOfficeIds)
                 ->whereNull('deleted_at')
                 ->count();
 
@@ -384,6 +384,10 @@ class DashboardController extends Controller
                 $query->whereIn('respondent_id', $finalOfficeIds);
             })
 
+                ->whereNull('deleted_at')
+                ->count();
+
+            $data['appealAdministrativeTribrunal'] = AppealAdministrativeTribrunalCaseRegister::whereIn('created_by_office', $finalOfficeIds)
                 ->whereNull('deleted_at')
                 ->count();
 

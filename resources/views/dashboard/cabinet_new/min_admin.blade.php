@@ -260,10 +260,34 @@
                     </div>
                 </div>
             </div>
+
+               <!-- Card 7 -->
+
+            <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+                <div class="card border-0 h-100" style="background-color: #f5f5f5;">
+                    <div class="card-body d-flex flex-column" style="border-right: 3px solid #CCCCCC; border-bottom: 3px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; background-color: #f5f5f5;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="font-size: 3rem; margin-right: 2rem;">
+                                <img src="{{ asset('uploads/IconeSCMS/1320101.webp') }}" style="height: 50px; width: 80%;" alt="Logo" class="brand-image">
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-primary">প্রশাসনিক আপিল ট্রাইব্যুনাল</h5>
+                                <div class="text-secondary ml-10">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('cabinet.case.appealAdministrativeTribrunal') }}"
+                                            class="text-dark">চলমান মামলা</a>
+                                        <span class="count-numbers ml-10">{{ en2bn($appealAdministrativeTribrunal) }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="#" class="text-dark">নিষ্পত্তিকৃত মামলা</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-
 
         <div class="row mt-4">
             <!-- Card 7 -->

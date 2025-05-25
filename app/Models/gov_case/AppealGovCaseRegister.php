@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Models\gov_case;
 
 use App\Models\gov_case\GovCaseBadi;
-use App\Models\gov_case\GovCaseRegister;
 use App\Models\gov_case\GovCaseOffice;
+use App\Models\gov_case\GovCaseRegister;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,8 +12,8 @@ class AppealGovCaseRegister extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public $timestamps = true;
-    protected $table = 'appeal_gov_case_register';
+    public $timestamps  = true;
+    protected $table    = 'appeal_gov_case_register';
     protected $fillable = [
         'id',
         'case_no',
@@ -46,7 +45,7 @@ class AppealGovCaseRegister extends Model
         'appeal_requesting_date',
         'reason_of_not_appealing',
         'most_important',
-        'case_entry_date'
+        'case_entry_date',
     ];
 
     // public function bibadis()
@@ -63,7 +62,8 @@ class AppealGovCaseRegister extends Model
         return $this->hasOne(GovCaseOffice::class, 'id', 'appeal_office_id');
     }
 
-    public function badis(){
+    public function badis()
+    {
         return $this->hasOne(GovCaseBadi::class, 'gov_case_id', 'case_origin_id');
     }
 
@@ -90,5 +90,10 @@ class AppealGovCaseRegister extends Model
     public function case_category()
     {
         return $this->hasOne(GovCaseDivisionCategory::class, 'id', 'case_category_id');
+    }
+
+    public function concernUsersAppeal()
+    {
+        return $this->hasMany(AppealGovCaseConcernPerson::class, 'gov_case_id', 'id');
     }
 }

@@ -1,19 +1,18 @@
 <?php
-
 namespace App\Providers;
 
 // use Illuminate\Support\ServiceProvider;
-use App\Models\User;
-use App\Models\Message;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
-use App\Providers\AppServiceProvider;
-use App\Models\gov_case\GovCaseRegister;
-use App\Models\gov_case\AppealGovCaseRegister;
-use App\Models\gov_case\MainRespondentNotification;
-use App\Models\gov_case\AdministrativeTribrunalAdalat;
 use App\Models\gov_case\AdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\AppealAdministrativeTribrunalCaseRegister;
+use App\Models\gov_case\AppealGovCaseRegister;
+use App\Models\gov_case\GovCaseRegister;
+use App\Models\gov_case\MainRespondentNotification;
+use App\Models\Message;
+use App\Models\User;
+use App\Providers\AppServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class ViewServiceProvider extends AppServiceProvider
 {
@@ -33,8 +32,8 @@ class ViewServiceProvider extends AppServiceProvider
         // });
 
         view()->composer('layouts.cabinet.base.header', function ($view) {
-            $roleID = Auth::user()->role_id;
-            $officeID = Auth::user()->office_id;
+            $roleID         = Auth::user()->role_id;
+            $officeID       = Auth::user()->office_id;
             $childOfficeIds = [];
             $finalOfficeIds = [];
 
@@ -62,17 +61,17 @@ class ViewServiceProvider extends AppServiceProvider
                 ->where('deleted_at', null)
                 ->count();
 
-
             $total_appeal = DB::table('appeal_gov_case_register')->whereIn('created_by_office', $childOfficeIds)
                 ->where('deleted_at', null)->count();
 
+            $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::whereHas('mainBibadis', function ($query) use ($childOfficeIds) {
+                $query->whereIn('respondent_id', $childOfficeIds);
+            })->where('deleted_at', null)
+                ->count();
+            $total_appeal_administrative_tribrunal = DB::table('appeal_administrative_tribrunal_case_registers')->whereIn('created_by_office', $childOfficeIds)
+                ->where('deleted_at', null)->count();
 
-                $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::whereHas('mainBibadis', function ($query) use ($childOfficeIds) {
-                    $query->whereIn('respondent_id', $childOfficeIds);
-                })->where('deleted_at', null)
-                    ->count();
-                
-            $total_case = $total_highcourt + $total_appeal + $total_administrative_tribrunal;
+            $total_case = $total_highcourt + $total_appeal + $total_administrative_tribrunal + $total_appeal_administrative_tribrunal;
 
             if ($roleID == 32 || $roleID == 41 || $roleID == 44 || $roleID == 45) {
 
@@ -96,9 +95,11 @@ class ViewServiceProvider extends AppServiceProvider
 
                 $total_appeal = AppealGovCaseRegister::where('deleted_at', null)
                     ->count();
-                    $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::where('deleted_at', null)
-                        ->count();
-                $total_case = $total_highcourt + $total_appeal+$total_administrative_tribrunal;
+                $total_administrative_tribrunal = AdministrativeTribrunalCaseRegister::where('deleted_at', null)
+                    ->count();
+                $total_appeal_administrative_tribrunal = AppealAdministrativeTribrunalCaseRegister::where('deleted_at', null)
+                    ->count();
+                $total_case = $total_highcourt + $total_appeal + $total_administrative_tribrunal+$total_appeal_administrative_tribrunal;
             }
 
             // Query to get the count of distinct case numbers for high court applications
@@ -110,26 +111,27 @@ class ViewServiceProvider extends AppServiceProvider
                 ->where('is_answered', null)->count();
 
             $view->with([
-                'total_highcourt' => $total_highcourt,
-                'total_appeal' => $total_appeal,
+                'total_highcourt'                => $total_highcourt,
+                'total_appeal'                   => $total_appeal,
                 'total_administrative_tribrunal' => $total_administrative_tribrunal,
-                'total_case' => $total_case,
-                'highCourtApplicationsCount' => $highCourtApplicationsCount,
-                'appealApplicationsCount' => $appealApplicationsCount,
+                'total_appeal_administrative_tribrunal'=>$total_appeal_administrative_tribrunal,
+                'total_case'                     => $total_case,
+                'highCourtApplicationsCount'     => $highCourtApplicationsCount,
+                'appealApplicationsCount'        => $appealApplicationsCount,
             ]);
         });
 
         view()->composer('messages.inc.search', function ($view) {
-            $roleID = Auth::user()->role_id;
+            $roleID     = Auth::user()->role_id;
             $officeInfo = user_office_info();
             // Dorpdown
-            $upazilas = null;
-            $courts = DB::table('court')->select('id', 'court_name')->get();
+            $upazilas  = null;
+            $courts    = DB::table('court')->select('id', 'court_name')->get();
             $divisions = DB::table('division')->select('id', 'division_name_bn')->get();
             $user_role = DB::table('roles')->select('id', 'name')->get();
 
             if ($roleID == 5 || $roleID == 6 || $roleID == 7 || $roleID == 8 || $roleID == 13 || $roleID == 16) {
-                $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', null)->get();
+                $courts   = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', null)->get();
                 $upazilas = DB::table('upazila')->select('id', 'upazila_name_bn')->where('district_id', $officeInfo->district_id)->get();
             } elseif ($roleID == 9 || $roleID == 10 || $roleID == 11 || $roleID == 12) {
                 $courts = DB::table('court')->select('id', 'court_name')->where('district_id', $officeInfo->district_id)->orWhere('district_id', null)->get();
@@ -138,24 +140,24 @@ class ViewServiceProvider extends AppServiceProvider
             $gp_users = DB::table('users')->select('id', 'name')->where('role_id', 13)->get();
 
             $view->with([
-                'upazilas' => $upazilas,
-                'courts' => $courts,
+                'upazilas'  => $upazilas,
+                'courts'    => $courts,
                 'divisions' => $divisions,
-                'gp_users' => $gp_users,
+                'gp_users'  => $gp_users,
                 'user_role' => $user_role,
             ]);
         });
 
         view()->composer('layouts.cabinet.base.aside', function ($view) {
-            $notification_count = 0;
+            $notification_count    = 0;
             $case_status_highcourt = [];
-            $notificationCount = 0;
-            $officeInfo = user_office_info();
-            $roleID = Auth::user()->role_id;
+            $notificationCount     = 0;
+            $officeInfo            = user_office_info();
+            $roleID                = Auth::user()->role_id;
 
-            if ($roleID == 29 || $roleID == 31 || $roleID == 42 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 ||$roleID == 1|| $roleID == 44 || $roleID == 45 || $roleID == 39) {
+            if ($roleID == 29 || $roleID == 31 || $roleID == 42 || $roleID == 43 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID == 1 || $roleID == 44 || $roleID == 45 || $roleID == 39) {
                 $authUserOfficeId = Auth()->user()->office_id;
-                $case_swap = MainRespondentNotification::where('previous_office_id', $authUserOfficeId)
+                $case_swap        = MainRespondentNotification::where('previous_office_id', $authUserOfficeId)
                     ->where('is_shown', 0)
                     ->get();
 
@@ -238,10 +240,10 @@ class ViewServiceProvider extends AppServiceProvider
                 $Ncount = $NewMessagesCount + $msg_request_count;
 
                 $view->with([
-                    'Ncount' => $Ncount,
-                    'case_status' => $case_status,
-                    'case_swap' => $case_swap,
-                    'NewMessagesCount' => $NewMessagesCount,
+                    'Ncount'            => $Ncount,
+                    'case_status'       => $case_status,
+                    'case_swap'         => $case_swap,
+                    'NewMessagesCount'  => $NewMessagesCount,
                     'msg_request_count' => $msg_request_count,
                     'notificationCount' => $notificationCount,
                 ]);

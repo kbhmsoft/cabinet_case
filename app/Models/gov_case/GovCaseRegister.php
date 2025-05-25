@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\gov_case;
 
 use App\Models\CaseStatus;
@@ -16,8 +15,8 @@ class GovCaseRegister extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public $timestamps = true;
-    protected $table="gov_case_registers";
+    public $timestamps  = true;
+    protected $table    = "gov_case_registers";
     protected $fillable = [
         'id',
         'case_no',
@@ -130,7 +129,7 @@ class GovCaseRegister extends Model
         'sending_reply_person_unit',
         'adalat_reply_submit_have',
         'adalat_reply_sending_date',
-        'postponed_page_saved'
+        'postponed_page_saved',
     ];
 
     public function users()
@@ -205,4 +204,14 @@ class GovCaseRegister extends Model
     {
         return $this->hasOne(GovCaseOrderTaken::class, 'gov_case_id', 'id');
     }
+
+    public function concernusers()
+    {
+        return $this->hasMany(GovCaseConcernPerson::class, 'gov_case_id', 'id');
+    }
+
+    // public function concernUsersDesignation()
+    // {
+    //     return $this->hasMany(GovCaseConcernPerson::class, 'gov_case_id', 'id');
+    // }
 }

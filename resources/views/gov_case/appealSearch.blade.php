@@ -238,7 +238,7 @@
                     console.log('Fetching users for designation:', designationId);
 
                     $.ajax({
-                        url: '{{ route('cabinet.case.getUsersByDesignation') }}',
+                        url: '{{ route('cabinet.case.getAppealUsersByDesignation') }}',
                         type: 'GET',
                         data: {
                             designation_id: designationId

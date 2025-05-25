@@ -134,7 +134,15 @@
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <!--begin::Header Menu Wrapper-->
-        @if ($roleID == 29 || $roleID == 31 || $roleID == 32 || $roleID == 41 || $roleID == 27 || $roleID==1|| $roleID == 44 || $roleID == 39)
+        @if (
+            $roleID == 29 ||
+                $roleID == 31 ||
+                $roleID == 32 ||
+                $roleID == 41 ||
+                $roleID == 27 ||
+                $roleID == 1 ||
+                $roleID == 44 ||
+                $roleID == 39)
             <!-- Move this part into a separate div -->
             <div class="header-case-count ">
                 <div class="header-content">
@@ -148,7 +156,7 @@
                             style="text-decoration: none; color: rgb(241, 230, 11);">
                             ( হাইকোর্ট বিভাগ:
                         </a>
-                 
+
                         <span class="count-numbers"
                             style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_highcourt) }};</span>
                     </span>
@@ -160,7 +168,8 @@
                         </a>
                         <span class="count-numbers"
                             style="margin-left: 1rem; color: rgb(241, 230, 11);">{{ en2bn($total_appeal) }}, প্রশাসনিক
-                            ট্রাইব্যুনাল: {{ en2bn($total_administrative_tribrunal) }})</span>
+                            ট্রাইব্যুনাল: {{ en2bn($total_administrative_tribrunal) }}, প্রশাসনিক আপিল ট্রাইব্যুনাল:
+                            {{ en2bn($total_appeal_administrative_tribrunal) }})</span>
                     </span>
                 </div>
                 <hr class="middle-line">
@@ -181,7 +190,7 @@
         <!--begin::Topbar-->
         <div class="topbar">
             <!--begin::Notifications-->
-            @if ($roleID == 27 || $roleID==1)
+            @if ($roleID == 27 || $roleID == 1)
                 <div class="notifications-container" style="position: relative; margin-top: 10px">
                     @include('layouts.partials.notifications')
                     @if ($total_case > 0)

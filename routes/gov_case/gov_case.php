@@ -200,6 +200,8 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('highcourt/sent-To-SolicitorPending', [GovCaseRegisterController::class, 'sentToSolicitorPending'])->name('highcourt.sentToSolicitorPending');
                 Route::get('highcourt/pending-postpondOrder', [GovCaseRegisterController::class, 'pendingPostpondOrder'])->name('highcourt.pendingPostpondOrder');
 
+                Route::get('getUsersByDesignation', [GovCaseRegisterController::class, 'getUsersByDesignation'])->name('getUsersByDesignation');
+
                 Route::get('highcourt/sentToSolicitor', [GovCaseRegisterController::class, 'sentToSolicitor'])->name('sentToSolicitor');
                 Route::get('highcourt/appealAgainstGovtPending', [GovCaseRegisterController::class, 'appealAgainstGovtPending'])->name('appealAgainstGovtPending');
                 Route::get('highcourt/sendingReplyPending', [GovCaseRegisterController::class, 'sendingReplyPending'])->name('sendingReplyPending');
@@ -328,6 +330,7 @@ Route::middleware('prevent-back-history')->group(function () {
                 Route::get('appellateDivision/print-case-list', [AppealGovCaseRegisterController::class, 'appellateDivisionPrintCaseList'])->name('appeal_case_list.print');
                 Route::get('appellateDivision/five_years_appeal_running', [AppealGovCaseRegisterController::class, 'fiveYearsRunningAppealCase'])->name('fiveYearsRunningAppealCase');
                 Route::get('appeal/final/order/{id}', [AppealGovCaseRegisterController::class, 'appealFinalOrderEdit'])->name('appealFinalOrderEdit');
+                Route::get('getAppealUsersByDesignation', [AppealGovCaseRegisterController::class, 'getAppealUsersByDesignation'])->name('getAppealUsersByDesignation');
 
                 // Route::get('appeal/case-application/{case_no}', [AppealGovCaseRegisterController::class, 'editAppealCaseApplication'])->name('editAppealCaseApplication');
 
