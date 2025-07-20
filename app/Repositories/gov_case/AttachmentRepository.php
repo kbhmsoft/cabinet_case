@@ -118,8 +118,8 @@ class AttachmentRepository
 
     public static function storeReplyAttachment($appName, $caseId, $request)
     {
-        if ($request->hasFile('reply_file_name')) {
-            $files = $request->file('reply_file_name');
+        if ($request->hasFile('file_name_reply_file')) {
+            $files = $request->file('file_name_reply_file');
             foreach ($files as $key => $file) {
                 if ($file->isValid()) {
                     $filePath = "uploads/" . $appName . "/reply_attachment/";
@@ -128,7 +128,7 @@ class AttachmentRepository
 
                     $attachment = new ReplyAttachment();
                     $attachment->gov_case_id = $caseId;
-                    $attachment->file_type = isset($request->reply_file_type[$key]) ? $request->reply_file_type[$key] : null;
+                    $attachment->file_type = isset($request->file_type_reply_file[$key]) ? $request->file_type_reply_file[$key] : null;
                     $attachment->file_name = $filePath . $otherfileName;
                     $attachment->file_submission_date = now();
                     $attachment->created_at = now();

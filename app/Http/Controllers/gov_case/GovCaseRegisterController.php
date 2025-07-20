@@ -3497,10 +3497,10 @@ class GovCaseRegisterController extends Controller
         );
         try {
             $caseInfo = GovCaseRegisterRepository::storeSendingReply($request);
-
             //========= Gov Case Activity Log -  start ============
             $caseRegister = GovCaseRegister::findOrFail($caseId)->toArray();
-            if ($request->file_type && $_FILES["file_name"]['name']) {
+
+            if ($request->file_type_reply_file && $_FILES["file_name_reply_file"]['name']) {
                 AttachmentRepository::storeReplyAttachment('gov_case', $caseId, $request);
             }
             $caseRegisterData = array_merge($caseRegister, [

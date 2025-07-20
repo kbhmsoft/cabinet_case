@@ -7,22 +7,16 @@
         for ($i = 1995; $i <= date('Y'); $i++) {
             $pass_year_data .= '<option value="' . $i . '">' . $i . '</option>';
         }
-
     @endphp
 
 
     @include('gov_case.case_register.create_css')
-    {{-- @dd($case) --}}
-    <!--begin::Row-->
-    <div class="row">
 
-        {{-- <div class="col-md-12"> --}}
-        <!--begin::Card-->
+    <div class="row">
         <div class="card card-custom gutter-b example example-compact">
             <div class="card-header">
                 <h3 class="card-title h2 font-weight-bolder">{{ $page_title }}</h3>
             </div>
-            <!-- <div class="loadersmall"></div> -->
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

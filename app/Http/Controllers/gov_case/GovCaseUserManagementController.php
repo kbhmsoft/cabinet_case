@@ -164,7 +164,7 @@ class GovCaseUserManagementController extends Controller
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
-                ->whereNotIn('users.role_id', [42, 43])
+                ->whereNotIn('users.role_id', [43])
                 ->where('users.is_gov', 1)
                 ->orderBy('users.id', 'DESC');
 
@@ -175,7 +175,7 @@ class GovCaseUserManagementController extends Controller
                 ->join('gov_case_office', 'users.office_id', '=', 'gov_case_office.doptor_office_id')
                 ->select('users.*', 'roles.name_bn as roleName', 'gov_case_office.office_name_bn')
                 ->whereIn('users.office_id', $finalOfficeIds)
-                ->whereNotIn('users.role_id', [27, 42, 43])
+                ->whereNotIn('users.role_id', [27,43])
                 ->where('users.is_gov', 1)
                 ->orderBy('users.id', 'DESC');
         }
