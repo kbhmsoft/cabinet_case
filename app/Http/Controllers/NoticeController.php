@@ -139,10 +139,16 @@ class NoticeController extends Controller
 
     public function destroy($id)
     {
-        $resource = Notice::findOrFail($id);
-        $resource->delete();
+        // Delete the notice by ID
+        $deleted = Notice::destroy($id);
 
-        return redirect()->route('notices.index')->with('সাফল্য', 'বিজ্ঞপ্তি সফলভাবে মুছে ফেলা হয়েছে');
+        if ($deleted) {
+            return redirect()->route('notices.index')
+                ->with('success', 'বিজ্ঞপ্তি সফলভাবে মুছে ফেলা হয়েছে');
+        }
+
+        return redirect()->route('notices.index')
+            ->with('error', 'বিজ্ঞপ্তি মুছে ফেলা যায়নি');
     }
     public function ruleFileDelete(Request $request)
     {
@@ -161,5 +167,4 @@ class NoticeController extends Controller
 
         return response()->json(['message' => 'ফাইল খুঁজে পাওয়া যায়নি!'], 404);
     }
-
 }
