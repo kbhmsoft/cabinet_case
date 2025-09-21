@@ -152,13 +152,17 @@
                                     {{ en2bn($row->case_no) }}/{{ en2bn($row->year) }}
                                     <br>
                                     @if ($row->case_category_origin != 0)
-                                        @if ($row->case_origin)
-                                            ({{ en2bn($row->case_origin->case_no) }}/{{ en2bn($row->case_origin->year) }}
-                                            নং হতে উদ্ভূত)
-                                        @endif
-                                    @else
-                                        ({{ en2bn($row->case_number_origin) }}/{{en2bn($row->year)}}  নং হতে উদ্ভূত)
+                                    @if ($row->case_origin)
+                                        ({{ en2bn($row->case_origin->case_no) }}/{{ en2bn($row->case_origin->year) }} নং হতে উদ্ভূত)
                                     @endif
+                                @else
+                                    @if (!empty($row->case_origin_year))
+                                        ({{ en2bn($row->case_number_origin) }}/{{ en2bn($row->case_origin_year) }} নং হতে উদ্ভূত)
+                                    @else
+                                        ({{ en2bn($row->case_number_origin) }} নং হতে উদ্ভূত)
+                                    @endif
+                                @endif
+
 
                                 </td>
 

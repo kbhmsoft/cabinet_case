@@ -125,6 +125,7 @@ class AppealGovCaseRegisterRepository
             $case->case_category_id = $caseInfo->case_category;
             $case->case_type_id = $caseInfo->case_category_type;
             $case->year = $caseInfo->case_year;
+            $case->case_origin_year = $caseInfo->case_origin_year;
             $case->appeal_petitioner_name = $petitioner_name;
             $case->appeal_office_id = $caseInfo->appeal_office;
             $case->created_by = Auth::user()->id;

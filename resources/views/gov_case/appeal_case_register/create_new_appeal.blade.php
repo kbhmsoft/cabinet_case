@@ -283,11 +283,24 @@
                                                         class="form-control form-control-sm  common_datepicker"autocomplete="off"
                                                         required="required">
                                                 </div>
-                                                <div class="col-lg-8 mb-5">
-                                                    <label>রায়/আদেশের বিবরণ:<small class="text-danger">
-                                                        </small> </label>
-                                                    <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"></textarea>
+
+
+
+                                                <div class="col-lg-4 mb-5">
+                                                    <label>উদ্ভুত মামলার বছর <span class="text-danger">*</span></label>
+                                                    <input type="text" name="case_origin_year" id="case_year"
+                                                        class="form-control form-control-sm common_yearpicker"
+                                                        placeholder="বছর" autocomplete="off" required="required"
+                                                        oninput="sanitizeEnglishDigits(this)">
+                                                    <span class="text-danger d-none vallidation-message">This field can not
+                                                        be empty</span>
                                                 </div>
+
+                                            </div>
+                                            <div class="col-lg-8 mb-5">
+                                                <label>রায়/আদেশের বিবরণ:<small class="text-danger">
+                                                    </small> </label>
+                                                <textarea name="case_order_details" class="form-control" id="case_order_details" rows="3" spellcheck="false"></textarea>
                                             </div>
                                         </fieldset>
                                     </div>
